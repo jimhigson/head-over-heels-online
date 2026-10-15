@@ -20,13 +20,16 @@ import {
 import { type PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
 import { type Tool } from "../RoomEditingArea/interactivity/Tool";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
+import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "./inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomFromLevelEditorState,
   selectCursorRoomIdFromLevelEditorState,
+  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
   selectCursorSubRoomIdFromLevelEditorState,
   selectItemInLevelEditorState,
-  selectItemIsSelectedInLevelEditorState,
+  selectItemIsSelectedInCursorRoomInLevelEditorState,
+  selectRoomHasUnsavedChangesFromLevelEditorState,
 } from "./levelEditorSelectors";
 import { addOrRemoveRoomReducers } from "./reducers/addOrRemoveRoomReducers";
 import { applyItemToolReducers } from "./reducers/applyItemToolReducers";
@@ -57,6 +60,10 @@ import { monsterMovementReducers } from "./reducers/monsterMovementReducers";
 import { moveItemsToRoomReducers } from "./reducers/moveItemsToRoomReducers";
 import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
 import { roomSelectionReducers } from "./reducers/roomSelectionReducers";
+import {
+  roomTabsReducers,
+  roomTabsSelectors,
+} from "./reducers/roomTabsReducers";
 import { rotateItemReducers } from "./reducers/rotateItemReducers";
 import { saveAndLoadReducers } from "./reducers/saveAndLoadReducers";
 import { selectionsReducers } from "./reducers/selectionsReducers";
@@ -68,6 +75,7 @@ import {
   undoReducers,
   undoSelectors,
 } from "./reducers/undoReducers";
+import { type RoomTab } from "./RoomTab";
 
 export type HoveredItem = {
   jsonItemId: EditorRoomItemId;
@@ -88,6 +96,11 @@ export type LevelEditorState = {
   remoteCampaign: EditorCampaign | undefined;
   selectedRoomIds: EditorRoomId[];
   cursorRoom: { roomId: EditorRoomId; subRoomId: string };
+  /**
+   * the rooms open in the editing pane's tabs, in order. The cursor room's tab
+   * is the active one
+   */
+  openRoomTabs: RoomTab[];
   editingRoomIdHistory: {
     back: EditorRoomId[];
     forward: EditorRoomId[];
@@ -112,7 +125,8 @@ export type LevelEditorState = {
   contextMenuXy?: Xy;
   hoveredItem?: HoveredItem;
   clickableAnnotationHovered: boolean;
-  selectedJsonItemIds: Array<EditorRoomItemId>;
+  /** each room's selected items, kept while other rooms are being edited */
+  selectedJsonItemIdsByRoom: Partial<Record<EditorRoomId, EditorRoomItemId[]>>;
   gridResolution: GridResolution;
   /** the 90°-increment camera rotation the editor is viewing the room from */
   cameraAngle: Xy;
@@ -153,7 +167,7 @@ export const levelEditorSlice = createSlice({
 
       // unselect if using an item tool
       if (tool.type === "item") {
-        state.selectedJsonItemIds = [];
+        setSelectedJsonItemIdsOnCursorRoomInPlace(state, []);
         state.hoveredItem = undefined;
         clearContextMenuXyInPlace(state);
       }
@@ -199,6 +213,7 @@ export const levelEditorSlice = createSlice({
     ...saveAndLoadReducers,
     ...addOrRemoveRoomReducers,
     ...changeRoomReducers,
+    ...roomTabsReducers,
     ...roomSelectionReducers,
     ...coalesceRoomsReducers,
     ...coalesceItemsReducers,
@@ -238,11 +253,15 @@ export const levelEditorSlice = createSlice({
     selectCmdKSearch: (state) => state.cmdKSearch,
     selectEditorCameraAngle: (state) => state.cameraAngle,
     selectContextMenuXy: (state) => state.contextMenuXy,
-    selectSelectedJsonItemIds: (state) => state.selectedJsonItemIds,
+    selectCursorRoomSelectedJsonItemIds:
+      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
     selectHoveredItem: (state) => state.hoveredItem,
-    selectItemIsSelected: selectItemIsSelectedInLevelEditorState,
+    selectItemIsSelected: selectItemIsSelectedInCursorRoomInLevelEditorState,
+    selectRoomHasUnsavedChanges:
+      selectRoomHasUnsavedChangesFromLevelEditorState,
     ...undoSelectors,
     ...changeRoomSelectors,
+    ...roomTabsSelectors,
   },
 });
 
@@ -262,6 +281,8 @@ export const {
   changeToRoom,
   changeWallsFloorsLocked,
   clearRoom,
+  closeOtherRoomTabs,
+  closeRoomTab,
   closeItemContextMenu,
   coalesceSelectedItems,
   coalesceSelectedRooms,
@@ -288,6 +309,7 @@ export const {
   saveSuccessful,
   selectAllRooms,
   setAutoCoalesce,
+  pinRoomTab,
   setCampaignName,
   setCampaignPublished,
   setCampaignUserId,
@@ -328,8 +350,10 @@ export const {
   selectHoveredItem,
   selectItem,
   selectItemIsSelected,
+  selectOpenRoomTabs,
   selectRedoHistory,
-  selectSelectedJsonItemIds,
+  selectRoomHasUnsavedChanges,
+  selectCursorRoomSelectedJsonItemIds,
   selectTool,
   selectUndoHistory,
 } = levelEditorSlice.selectors;

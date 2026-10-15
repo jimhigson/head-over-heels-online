@@ -23,6 +23,9 @@ export const campaignManagementReducers = {
     // anyway
     const state = _state as LevelEditorState;
     state.campaignInProgress = campaign;
+    state.openRoomTabs = state.openRoomTabs.filter(
+      ({ roomId }) => roomId in campaign.rooms,
+    );
   },
   newCampaign(_state) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
@@ -39,6 +42,7 @@ export const campaignManagementReducers = {
         "campaignInProgress",
         "selectedRoomIds",
         "cursorRoom",
+        "openRoomTabs",
         "remoteCampaign",
         "history",
         "editingRoomIdHistory",

@@ -7,14 +7,16 @@ import {
   closeItemContextMenu,
   selectCurrentCampaignInProgress,
   selectCurrentCommittedRoomJson,
-  selectSelectedJsonItemIds,
+  selectCursorRoomSelectedJsonItemIds,
   setSelectedTeleportersDestination,
 } from "../../slice/levelEditorSlice";
 
 /** choose where the selected teleporters lead. Hidden unless all are teleporters */
 export const TeleporterDestinationMenuItem = () => {
   const dispatch = useAppDispatch();
-  const selectedJsonItemIds = useEditorAppSelector(selectSelectedJsonItemIds);
+  const selectedJsonItemIds = useEditorAppSelector(
+    selectCursorRoomSelectedJsonItemIds,
+  );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
   const campaign = useEditorAppSelector(selectCurrentCampaignInProgress);
 

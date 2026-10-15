@@ -3,8 +3,11 @@ import { produce } from "immer";
 import { useAppDispatch } from "../../../store/hooks";
 import { editorStore, useEditorAppSelector } from "../../../store/store";
 import { pick } from "../../../utils/pick";
-import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../../slice/levelEditorSelectors";
-import { roomJsonEdited } from "../../slice/levelEditorSlice";
+import {
+  roomJsonEdited,
+  selectCurrentCommittedRoomJson,
+  selectCursorRoomSelectedJsonItemIds,
+} from "../../slice/levelEditorSlice";
 import { type UndoDescription } from "../../slice/reducers/undoDescription";
 import { ToolbarButton } from "./ToolbarButton";
 import { IconWithTwoLineHoverText } from "./ToolbarButtonContentPatterns";
@@ -13,7 +16,7 @@ export const CopyPasteButtons = () => {
   const dispatch = useAppDispatch();
 
   const somethingSelected = useEditorAppSelector(
-    (state) => state.levelEditor.selectedJsonItemIds.length > 0,
+    (state) => selectCursorRoomSelectedJsonItemIds(state).length > 0,
   );
 
   return (
@@ -22,11 +25,11 @@ export const CopyPasteButtons = () => {
         ariaLabel="Copy"
         disabled={!somethingSelected}
         onClick={async () => {
-          const storeState = editorStore.getState().levelEditor;
+          const storeState = editorStore.getState();
 
-          const { selectedJsonItemIds } = storeState;
-          const currentRoomJson =
-            selectCurrentCommittedRoomJsonFromLevelEditorState(storeState);
+          const selectedJsonItemIds =
+            selectCursorRoomSelectedJsonItemIds(storeState);
+          const currentRoomJson = selectCurrentCommittedRoomJson(storeState);
 
           const selectedItemMap = pick(
             currentRoomJson.items,
@@ -56,9 +59,8 @@ export const CopyPasteButtons = () => {
             const clipboardText = await navigator.clipboard.readText();
             const clipboardItems = JSON.parse(clipboardText);
 
-            const storeState = editorStore.getState().levelEditor;
-            const currentRoomJson =
-              selectCurrentCommittedRoomJsonFromLevelEditorState(storeState);
+            const storeState = editorStore.getState();
+            const currentRoomJson = selectCurrentCommittedRoomJson(storeState);
 
             const updatedRoom = produce(currentRoomJson, (draft) => {
               Object.assign(draft.items, clipboardItems);

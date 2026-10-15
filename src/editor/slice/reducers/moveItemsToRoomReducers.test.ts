@@ -9,6 +9,7 @@ import {
   type EditorRoomJson,
 } from "../../editorTypes";
 import { dropItemsOnRoomThunk } from "../dropItemsOnRoomThunk";
+import { selectCursorRoomSelectedJsonItemIdsFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import {
   editorStateWithOneRoomWithNoItems,
@@ -139,7 +140,11 @@ test("makes the destination the current room", () => {
 });
 
 test("selects the moved items in the destination", () => {
-  expect(drop(baseState, [blockId]).selectedJsonItemIds).toEqual(["block1"]);
+  expect(
+    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(
+      drop(baseState, [blockId]),
+    ),
+  ).toEqual(["block1"]);
 });
 
 test("pushes an undo entry onto the destination room", () => {

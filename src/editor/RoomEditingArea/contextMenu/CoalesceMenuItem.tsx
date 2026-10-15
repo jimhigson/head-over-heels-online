@@ -9,7 +9,7 @@ import { type EditorRoomJsonItems } from "../../editorTypes";
 import {
   coalesceSelectedItems,
   selectCurrentCommittedRoomJson,
-  selectSelectedJsonItemIds,
+  selectCursorRoomSelectedJsonItemIds,
 } from "../../slice/levelEditorSlice";
 
 /**
@@ -20,7 +20,9 @@ import {
  */
 export const CoalesceMenuItem = () => {
   const dispatch = useAppDispatch();
-  const selectedJsonItemIds = useEditorAppSelector(selectSelectedJsonItemIds);
+  const selectedJsonItemIds = useEditorAppSelector(
+    selectCursorRoomSelectedJsonItemIds,
+  );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 
   const canCoalesce = useMemo(() => {

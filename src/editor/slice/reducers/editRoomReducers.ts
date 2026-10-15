@@ -39,9 +39,11 @@ import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomIn
 import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
 import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
 import { deleteItemInPlace } from "../inPlaceMutators/deleteItemInPlace";
+import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "../inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomIdFromLevelEditorState,
+  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
   selectCursorSubRoomIdFromLevelEditorState,
   selectRoomFromLevelEditorState,
 } from "../levelEditorSelectors";
@@ -234,17 +236,21 @@ export const editRoomReducers = {
     rooms[cursorRoomId] = newRoomJson;
 
     // selected items may no longer exist in the room after reloading - remove these selections:
-    const selectedJsonItemIdsThatStillExist = state.selectedJsonItemIds.filter(
-      (id) => newRoomJson.items[id] !== undefined,
-    );
+    const selectedJsonItemIdsThatStillExist =
+      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state).filter(
+        (id) => newRoomJson.items[id] !== undefined,
+      );
     if (
       // check first for removals, since state.foo = state.foo.filter() creates a state change even
       // if all items are kept
       selectedJsonItemIdsThatStillExist.length !==
-      state.selectedJsonItemIds.length
+      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state).length
     ) {
       // some items were removed, so update the selection
-      state.selectedJsonItemIds = selectedJsonItemIdsThatStillExist;
+      setSelectedJsonItemIdsOnCursorRoomInPlace(
+        state,
+        selectedJsonItemIdsThatStillExist,
+      );
     }
 
     clearContextMenuXyInPlace(state);
@@ -375,21 +381,23 @@ export const editRoomReducers = {
 
     const roomJson = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
 
-    const items: UndoItemEntry[] = state.selectedJsonItemIds.map((id) => [
-      id,
-      roomJson.items[id],
-    ]);
+    const items: UndoItemEntry[] =
+      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state).map(
+        (id) => [id, roomJson.items[id]],
+      );
     pushUndoToCursorRoomInPlace(
       state,
       { kind: "itemAction", verb: "Delete", items },
       timestamp,
     );
 
-    for (const id of state.selectedJsonItemIds) {
+    for (const id of selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(
+      state,
+    )) {
       deleteItemInPlace(roomJson, id);
     }
 
-    state.selectedJsonItemIds = [];
+    setSelectedJsonItemIdsOnCursorRoomInPlace(state, []);
     clearContextMenuXyInPlace(state);
 
     if (state.autoCoalesce) {
@@ -418,8 +426,11 @@ export const editRoomReducers = {
       ) {
         // remove all items except the floor and walls
         delete roomJson.items[k];
-        state.selectedJsonItemIds = state.selectedJsonItemIds.filter(
-          (id) => id !== k,
+        setSelectedJsonItemIdsOnCursorRoomInPlace(
+          state,
+          selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state).filter(
+            (id) => id !== k,
+          ),
         );
       }
     }

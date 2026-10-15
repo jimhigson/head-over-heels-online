@@ -61,6 +61,16 @@ export const changeIdOfCurrentRoomInPlace = (
   state.selectedRoomIds = state.selectedRoomIds.map((id) =>
     id === prevRoomId ? newRoomId : id,
   );
+  for (const roomTab of state.openRoomTabs) {
+    if (roomTab.roomId === prevRoomId) {
+      roomTab.roomId = newRoomId;
+    }
+  }
+  if (state.selectedJsonItemIdsByRoom[prevRoomId] !== undefined) {
+    state.selectedJsonItemIdsByRoom[newRoomId] =
+      state.selectedJsonItemIdsByRoom[prevRoomId];
+    delete state.selectedJsonItemIdsByRoom[prevRoomId];
+  }
 
   state.editingRoomIdHistory.back = state.editingRoomIdHistory.back.map((id) =>
     id === prevRoomId ? newRoomId : id,

@@ -1,3 +1,4 @@
+import { Color } from "pixi.js";
 import { type CSSProperties } from "preact/compat";
 import { capitalize } from "string-transform";
 
@@ -26,9 +27,15 @@ declare module "preact" {
     interface CSSProperties {
       /** the room's base background colour; the command components derive the rest */
       ["--command-secondary"]?: string;
+      /** in place of the foreground the command components derive */
+      ["--command-primary"]?: string;
     }
   }
 }
+
+/** a colour at half brightness, like the Amiga's halfbrite */
+const halfbrite = (colour: Color): Color =>
+  new Color(colour).multiply(0x80_80_80);
 
 /**
  * Inline style for an element coloured by a room hue: it just provides the base
@@ -40,7 +47,17 @@ declare module "preact" {
 export const cssForRoomColour = (
   hue: ZxSpectrumRoomHue,
   uncolourised: boolean,
+  /** in the dim version of the room's colour */
+  dim = false,
 ): CSSProperties => {
+  if (dim) {
+    const dimColour = (
+      uncolourised ?
+        halfbrite(zxSpectrumColor(hue))
+      : gameColour(`swop_${hue}Dim`)).toHex();
+    return { "--command-secondary": dimColour, borderColor: dimColour };
+  }
+
   const hueColour =
     uncolourised ?
       zxSpectrumColor(hue, "dimmed").toHex()

@@ -4,7 +4,7 @@ import { useEditorAppSelector } from "../../../store/store";
 import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
 import {
   selectCurrentCommittedRoomJson,
-  selectSelectedJsonItemIds,
+  selectCursorRoomSelectedJsonItemIds,
   setSelectedDoorsToGameEnd,
 } from "../../slice/levelEditorSlice";
 
@@ -14,7 +14,9 @@ import {
  */
 export const DoorGameEndMenuItem = () => {
   const dispatch = useAppDispatch();
-  const selectedJsonItemIds = useEditorAppSelector(selectSelectedJsonItemIds);
+  const selectedJsonItemIds = useEditorAppSelector(
+    selectCursorRoomSelectedJsonItemIds,
+  );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 
   const items = selectedJsonItemIds.map((id) => roomJson.items[id]);

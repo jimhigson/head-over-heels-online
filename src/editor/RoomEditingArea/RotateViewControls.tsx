@@ -42,7 +42,8 @@ export const RotateViewControls = () => {
         <span class="text-single-line">↺</span>
       </ToolbarButton>
       <ToolbarButton
-        class={`px-1 ${cameraAngleXy4 === "away" ? "bg-moss" : "bg-shadow"} items-center flex text-single-line pt-half`}
+        small
+        class={`${cameraAngleXy4 === "away" ? "bg-moss" : "bg-shadow"} items-center flex text-single-line`}
         tooltipContent="Reset view rotation"
         onClick={() => store.dispatch(rotateViewTo("away"))}
       >

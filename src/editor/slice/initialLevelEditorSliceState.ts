@@ -52,6 +52,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   remoteCampaign: undefined,
   selectedRoomIds: [initialRoomId],
   cursorRoom: { roomId: initialRoomId, subRoomId: "*" },
+  openRoomTabs: [{ roomId: initialRoomId, isPreview: false }],
   editingRoomIdHistory: {
     back: [],
     forward: [],
@@ -61,7 +62,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   cmdKSearch: "",
   hoveredItem: undefined,
   clickableAnnotationHovered: false,
-  selectedJsonItemIds: [],
+  selectedJsonItemIdsByRoom: {},
   gridResolution: 1,
   cameraAngle: cameraAngleBase,
   autoCoalesce: true,

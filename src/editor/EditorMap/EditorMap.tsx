@@ -23,6 +23,7 @@ import { selectCursorRoomFromLevelEditorState } from "../slice/levelEditorSelect
 import {
   addRoomToSelection,
   changeToRoom,
+  pinRoomTab,
   selectAllRooms,
   toggleRoomInSelection,
 } from "../slice/levelEditorSlice";
@@ -37,11 +38,15 @@ import { MapAreaSwitcher } from "./MapAreaSwitcher";
 import { useEditorMapData } from "./useEditorMapData";
 
 const editorClickableRoomBehaviour = createClickableRoomBehaviour<EditorRoomId>(
-  (roomId, subRoomId, { metaKey, ctrlKey }) => {
+  (roomId, subRoomId, { metaKey, ctrlKey, detail: clickCount }) => {
     if (metaKey || ctrlKey) {
       store.dispatch(toggleRoomInSelection({ roomId, subRoomId }));
     } else {
       store.dispatch(changeToRoom({ roomId, subRoomId }));
+      if (clickCount === 2) {
+        // double-clicked: keep its tab open, rather than a preview tab
+        store.dispatch(pinRoomTab(roomId));
+      }
     }
   },
 );

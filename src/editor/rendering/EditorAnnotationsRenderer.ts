@@ -29,8 +29,8 @@ import { editorUiScale } from "../editorUiScale";
 import { type EditorViewport } from "../RoomEditingArea/viewport/EditorViewport";
 import {
   changeToRoom,
+  selectCursorRoomSelectedJsonItemIds,
   selectHoveredItem,
-  selectSelectedJsonItemIds,
   selectTool,
   setClickableAnnotationHovered,
 } from "../slice/levelEditorSlice";
@@ -485,7 +485,7 @@ class EditorAnnotationsRenderer<
 
     const state = editorStore.getState();
     const hoveredJsonItem = selectHoveredItem(state);
-    const selectedJsonItemIds = selectSelectedJsonItemIds(state);
+    const selectedJsonItemIds = selectCursorRoomSelectedJsonItemIds(state);
     const tool = selectTool(state);
 
     const isHovered =

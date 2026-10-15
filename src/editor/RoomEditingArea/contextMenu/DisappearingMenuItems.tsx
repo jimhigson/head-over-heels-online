@@ -3,7 +3,7 @@ import { useEditorAppSelector } from "../../../store/store";
 import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
 import {
   selectCurrentCommittedRoomJson,
-  selectSelectedJsonItemIds,
+  selectCursorRoomSelectedJsonItemIds,
   setSelectedItemsDisappearing,
 } from "../../slice/levelEditorSlice";
 
@@ -15,7 +15,9 @@ import {
  */
 export const DisappearingMenuItems = () => {
   const dispatch = useAppDispatch();
-  const selectedJsonItemIds = useEditorAppSelector(selectSelectedJsonItemIds);
+  const selectedJsonItemIds = useEditorAppSelector(
+    selectCursorRoomSelectedJsonItemIds,
+  );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 
   const items = selectedJsonItemIds

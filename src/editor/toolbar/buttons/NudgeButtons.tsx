@@ -20,6 +20,7 @@ import {
   rotateCurrentToolItem,
   rotateSelectedItems,
   selectCurrentCommittedRoomJson,
+  selectCursorRoomSelectedJsonItemIds,
   selectEditorCameraAngle,
   selectTool,
 } from "../../slice/levelEditorSlice";
@@ -70,7 +71,7 @@ export const NudgeButtons = () => {
   const getRoomState = useGetEditorRoomState();
 
   const selectedJsonItems = useEditorAppSelector((state) =>
-    state.levelEditor.selectedJsonItemIds.map(
+    selectCursorRoomSelectedJsonItemIds(state).map(
       (jsonItemId) => selectCurrentCommittedRoomJson(state).items[jsonItemId],
     ),
   );
@@ -119,11 +120,11 @@ export const NudgeButtons = () => {
   const nudgeBy =
     (posVector: Xyz = originXyz, timesDelta?: Partial<Xyz>) =>
     () => {
-      const levelEditorStoreState = editorStore.getState().levelEditor;
+      const editorState = editorStore.getState();
       const roomState = getRoomState();
 
-      const { gridResolution, selectedJsonItemIds: jsonItemIds } =
-        levelEditorStoreState;
+      const { gridResolution } = editorState.levelEditor;
+      const jsonItemIds = selectCursorRoomSelectedJsonItemIds(editorState);
 
       // scale the position vector by grid resolution in all directions but z:
       const positionDelta =

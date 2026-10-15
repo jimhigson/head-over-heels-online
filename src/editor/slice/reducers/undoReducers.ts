@@ -9,6 +9,7 @@ import {
 import { emptyObject } from "../../../utils/empty";
 import { type EditorRoomId, type EditorRoomJson } from "../../editorTypes";
 import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
+import { pinRoomTabInPlace } from "../inPlaceMutators/pinRoomTabInPlace";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomIdFromLevelEditorState,
@@ -63,6 +64,8 @@ export const pushUndoForRoomInPlace = (
   state.hoveredUndoIndex = 0;
 
   undo.push({ room: previousRoom, description, timestamp });
+  // an edited room's tab stays open:
+  pinRoomTabInPlace(state, roomId);
 };
 
 export const pushUndoToCursorRoomInPlace = (

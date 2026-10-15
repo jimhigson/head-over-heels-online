@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { useEditorAppSelector } from "../../store/store";
 import { twClass } from "../../utils/twClass" with { type: "macro" };
 import { type EditorRoomItemId } from "../editorTypes";
+import { selectCursorRoomSelectedJsonItemIds } from "../slice/levelEditorSlice";
 import { useLoadMonaco } from "./useLoadMonaco";
 
 const useMonacoEditorText = (
@@ -86,7 +87,7 @@ export const useSyncStoreItemSelectionToMonacoDecorations = (
   }
 
   const selectedJsonItemIds = useEditorAppSelector(
-    (state) => state.levelEditor.selectedJsonItemIds,
+    selectCursorRoomSelectedJsonItemIds,
   );
 
   // we also want to update decorations whe the text changes

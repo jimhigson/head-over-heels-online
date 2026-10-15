@@ -1,6 +1,7 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { type Xy } from "../../../utils/vectors/vectors";
+import { selectCursorRoomSelectedJsonItemIdsFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 
 /**
@@ -23,7 +24,9 @@ export const contextMenuReducers = {
     { payload: { scrXy } }: PayloadAction<{ scrXy: Xy }>,
   ) {
     // only show a context menu when there is a selection to provide context for:
-    if (state.selectedJsonItemIds.length > 0) {
+    if (
+      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state).length > 0
+    ) {
       state.contextMenuXy = scrXy;
     }
   },

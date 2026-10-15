@@ -16,13 +16,16 @@ The level editor registers webmcp tools in every build, dev and production. This
 | `getSelectedItems` | - | the selected items in the current room, id -> item json |
 | `listRooms` | - | every room in the campaign, as `{id, planet}` |
 | `getOpenCampaign` | - | the open campaign's `locator` and `meta` |
-| `getEditorView` | - | camera angle, tool, current sub-room, grid resolution |
+| `getEditorView` | - | camera angle, tool, current sub-room, grid resolution, and `openRoomTabs` (in order, each `{roomId, isPreview}` - a preview tab is replaced by the next room browsed to) |
 | `dispatchAction` | `type`, `payload?` | dispatches a plain redux action |
 | `getActionLog` | `typePrefix?` | last 50 actions - **dev builds only** (empty in production) |
 | `getVerificationIssues` | - | the same errors/warnings as the toolbar's verify button, each with `fixable`, `fixText` and `issueData` |
 | `fixVerificationIssue` | `verifier`, `issueData` (both unchanged from `getVerificationIssues`) | auto-fixes that one issue, as the verify dialog's Fix button does; re-checks first, so stale or non-fixable issues are refused. Returns the issues remaining |
 | `fixAllVerificationIssues` | - | auto-fixes every fixable issue, as "Fix all" does. Returns the issues remaining |
 | `loadCampaign` | `username?`, `campaignName?`, `version?` | loads a campaign like the Open dialog (discards unsaved changes). No username/name = the sequel campaign |
+| `closeRoomTab` | `roomId` | closes a room's tab like its x (the last tab can't be closed; closing the current room's moves to the next tab); returns `openRoomTabs` |
+| `closeOtherRoomTabs` | `roomId` | closes every tab but that room's, which becomes current; returns `openRoomTabs` |
+| `pinRoomTab` | `roomId` | keeps a preview tab open when browsing on, like double-clicking it; returns `openRoomTabs` |
 | `revertCampaign` | - | reloads the open campaign as last saved, like the toolbar's revert button (discards unsaved changes) |
 | `saveCampaign` | `campaignName?`, `publish?`, `overwriteConfirmed?` | saves a new version to the db like the toolbar's save button, showing the same flash/failure dialog; with `campaignName`, saves as that name like the Save As dialog. Returns `saved` (the new locator), `saveFailed`, or `needsConfirmation` when the name is another existing campaign - ask the user before re-calling with `overwriteConfirmed: true` |
 | `moveItemsToRoom` | `roomId`, `subRoomId?`, `itemIds?` (default the selection) | moves items from the current room to another like dropping them on its map tile: same offset from the room's corner, nudged to the nearest free whole-block spot; walls/floors/doors stay; links between items that don't both move are dropped; teleporters follow. The other room becomes current |

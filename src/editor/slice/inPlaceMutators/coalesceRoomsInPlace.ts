@@ -35,6 +35,7 @@ import {
   roomFloorMinY,
 } from "../roomJsonSelectors";
 import { changeCurrentRoomInPlace } from "./changeCurrentRoomInPlace";
+import { deleteRoomsInPlace } from "./deleteRoomsInPlace";
 
 type FloorBounds = {
   minX: number;
@@ -676,10 +677,7 @@ export const coalesceRoomsInPlace = (state: LevelEditorState): void => {
 
   transferMeta(cursorRoom, layout);
 
-  for (const deletedRoomId of mergedRoomIds) {
-    delete state.campaignInProgress.rooms[deletedRoomId];
-    delete state.history[deletedRoomId];
-  }
+  deleteRoomsInPlace(state, mergedRoomIds);
 
   // repoint any room whose vertical link or non-contiguous relationship pointed
   // at a merged room (or at the survivor) onto the survivor's specific sub-room
@@ -710,10 +708,4 @@ export const coalesceRoomsInPlace = (state: LevelEditorState): void => {
   changeCurrentRoomInPlace(state, cursorRoomId);
 
   cursorRoom.items = consolidateItemsMap(cursorRoom.items);
-
-  const isNotDeleted = (id: EditorRoomId) => !mergedRoomIds.has(id);
-  state.editingRoomIdHistory.back =
-    state.editingRoomIdHistory.back.filter(isNotDeleted);
-  state.editingRoomIdHistory.forward =
-    state.editingRoomIdHistory.forward.filter(isNotDeleted);
 };

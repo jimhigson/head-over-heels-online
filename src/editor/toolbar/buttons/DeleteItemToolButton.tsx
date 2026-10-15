@@ -1,10 +1,13 @@
 import { store, useEditorAppSelector } from "../../../store/store";
-import { deleteSelected } from "../../slice/levelEditorSlice";
+import {
+  deleteSelected,
+  selectCursorRoomSelectedJsonItemIds,
+} from "../../slice/levelEditorSlice";
 import { ToolbarButton } from "./ToolbarButton";
 
 export const DeleteItemToolButton = () => {
   const somethingSelected = useEditorAppSelector(
-    (state) => state.levelEditor.selectedJsonItemIds.length > 0,
+    (state) => selectCursorRoomSelectedJsonItemIds(state).length > 0,
   );
 
   return (

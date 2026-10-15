@@ -10,6 +10,7 @@ import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import { addDoorInPlace } from "../inPlaceMutators/addDoorInPlace";
 import { addItemInPlace } from "../inPlaceMutators/addItemInPlace";
 import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
+import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "../inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { type UndoItemEntry } from "./undoDescription";
@@ -71,7 +72,7 @@ export const applyItemToolReducers = {
         timestamp,
       };
     }
-    state.selectedJsonItemIds = [];
+    setSelectedJsonItemIdsOnCursorRoomInPlace(state, []);
 
     let addedEntry: UndoItemEntry;
 

@@ -5,7 +5,7 @@ import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
 import {
   explodeSelectedItems,
   selectCurrentCommittedRoomJson,
-  selectSelectedJsonItemIds,
+  selectCursorRoomSelectedJsonItemIds,
 } from "../../slice/levelEditorSlice";
 
 /**
@@ -14,7 +14,9 @@ import {
  */
 export const ExplodeMenuItem = () => {
   const dispatch = useAppDispatch();
-  const selectedJsonItemIds = useEditorAppSelector(selectSelectedJsonItemIds);
+  const selectedJsonItemIds = useEditorAppSelector(
+    selectCursorRoomSelectedJsonItemIds,
+  );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 
   const selectedItems = selectedJsonItemIds

@@ -3,6 +3,7 @@ import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 import { keys } from "../../../utils/entries";
 import { type EditorRoomId } from "../../editorTypes";
 import { firstSubRoomId } from "../inPlaceMutators/changeCurrentRoomInPlace";
+import { openRoomTabInPlace } from "../inPlaceMutators/openRoomTabInPlace";
 import { type LevelEditorState } from "../levelEditorSlice";
 
 export const roomSelectionReducers = {
@@ -21,6 +22,7 @@ export const roomSelectionReducers = {
         if (state.cursorRoom.roomId === roomId) {
           const newCursorRoomId = state.selectedRoomIds.at(-1)!;
           const newCursorRoom = state.campaignInProgress.rooms[newCursorRoomId];
+          openRoomTabInPlace(state, newCursorRoomId);
           state.cursorRoom = {
             roomId: newCursorRoomId,
             subRoomId: firstSubRoomId(newCursorRoom),
@@ -29,6 +31,7 @@ export const roomSelectionReducers = {
       }
     } else {
       state.selectedRoomIds.push(roomId);
+      openRoomTabInPlace(state, roomId);
       state.cursorRoom = { roomId, subRoomId };
     }
   },
@@ -43,6 +46,7 @@ export const roomSelectionReducers = {
     if (!state.selectedRoomIds.includes(roomId)) {
       state.selectedRoomIds.push(roomId);
     }
+    openRoomTabInPlace(state, roomId);
     state.cursorRoom = { roomId, subRoomId };
   },
 

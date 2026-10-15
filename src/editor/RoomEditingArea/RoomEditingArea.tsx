@@ -9,6 +9,7 @@ import { makeEditorAnnotationsDecorateItemRenderer } from "../rendering/EditorAn
 import { ItemContextMenu } from "./contextMenu/ItemContextMenu";
 import { useRoomEditorInteractivity } from "./interactivity/useRoomEditorInteractivity";
 import { PixiApplicationProvider } from "./PixiApplicationProvider";
+import { RoomTabBar } from "./RoomTabBar";
 import { RotateViewControls } from "./RotateViewControls";
 import { useAddApplicationCanvasToDom } from "./useAddApplicationCanvasToDom";
 import { useEditorMainLoop } from "./useEditorMainLoop";
@@ -61,15 +62,21 @@ const RoomEditingAreaInner = () => {
       class="w-full h-full relative"
       aria-description="Room preview area showing a rendering of the currently selected (cursor) room that is interactive and allows editing by dragging or a right-click context menu"
     >
-      <div class="absolute scale-editor top-0 right-1 z-slightlyAbove flex gap-1 leading-none text-white">
-        <ZoomControls />
-        <RotateViewControls />
+      {/* the tabs take the width they need; the controls sit beside them while
+          there is room, and drop below them when not. Clicks in the gap between them go
+          through to the pane: */}
+      <div class="absolute scale-editor top-0 left-0 right-1 z-slightlyAbove flex flex-wrap items-start gap-x-1 gap-y-half leading-none text-white pointer-events-none">
+        <RoomTabBar class="pointer-events-auto" />
+        <div class="ml-auto flex flex-nowrap items-start shrink-0 gap-1 pointer-events-auto">
+          <ZoomControls />
+          <RotateViewControls />
+        </div>
       </div>
       <div
         ref={setRenderArea}
         tabIndex={1}
         // remove outline when has focus:
-        class={`w-full h-full ${cursorClassname} bg-editor-checkerboard overflow-hidden focus-visible:outline-none`}
+        class={`w-full h-full ${cursorClassname} bg-shadowHalfbrite overflow-hidden focus-visible:outline-none`}
       />
       <ItemContextMenu renderArea={renderArea} />
     </div>

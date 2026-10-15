@@ -1,17 +1,20 @@
 import { isConsolidatable } from "../../consolidateItems/ConsolidatableJsonItem";
 import { type EditorRootState, useEditorAppSelector } from "../../store/store";
 import { twClass } from "../../utils/twClass" with { type: "macro" };
-import { selectItemInLevelEditorState } from "../slice/levelEditorSelectors";
+import {
+  selectCursorRoomSelectedJsonItemIds,
+  selectItem,
+} from "../slice/levelEditorSlice";
 import { resizeCursorForPointingAt } from "./cursor/resizeCursorForPointingAt";
 
-const selectCursor = ({ levelEditor }: EditorRootState): `cursor-${string}` => {
+const selectCursor = (editorState: EditorRootState): `cursor-${string}` => {
   const {
     dragInProgress,
     clickableAnnotationHovered,
     hoveredItem,
-    selectedJsonItemIds,
     cameraAngle,
-  } = levelEditor;
+  } = editorState.levelEditor;
+  const selectedJsonItemIds = selectCursorRoomSelectedJsonItemIds(editorState);
 
   if (dragInProgress) {
     return twClass("cursor-grabbing");
@@ -22,10 +25,7 @@ const selectCursor = ({ levelEditor }: EditorRootState): `cursor-${string}` => {
   }
 
   if (hoveredItem) {
-    const hoveredItemJson = selectItemInLevelEditorState(
-      levelEditor,
-      hoveredItem.jsonItemId,
-    );
+    const hoveredItemJson = selectItem(editorState, hoveredItem.jsonItemId);
 
     if (hoveredItemJson !== undefined && isConsolidatable(hoveredItemJson)) {
       const resizeCursor = resizeCursorForPointingAt(

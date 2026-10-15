@@ -38,6 +38,7 @@ import {
   commitCurrentPreviewedEdits,
   moveOrResizeItemAsPreview,
   openItemContextMenu,
+  selectCursorRoomSelectedJsonItemIds,
   selectItem,
   selectItemIsSelected,
   setHoveredItemInRoom,
@@ -97,7 +98,7 @@ const getJsonItemIdsToUseForPointingAt = (
     return emptyArray;
   }
 
-  const { selectedJsonItemIds } = storeState.levelEditor;
+  const selectedJsonItemIds = selectCursorRoomSelectedJsonItemIds(storeState);
 
   return selectedJsonItemIds.includes(mouseDownJsonItemId) ?
       // interacted with an already selected item - use all selected items:
