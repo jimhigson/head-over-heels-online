@@ -112,6 +112,22 @@ describe("changing the id of the current room updates all references to that roo
     },
   );
 
+  test("the renamed room's own json id", () => {
+    const currentRoom = stateWithTwoRooms.campaignInProgress.rooms[
+      testRoomId
+    ] as EditorRoomJson;
+
+    const state = reduceLevelEditorActions(
+      stateWithTwoRooms,
+      roomJsonEdited({
+        roomJson: { ...currentRoom, id: newRoomId },
+        timestamp: 0,
+      }),
+    );
+
+    expect(state.campaignInProgress.rooms[newRoomId].id).toBe(newRoomId);
+  });
+
   test("doors that reference the old room id in their config", () => {
     // add a door to our editor state linking back to the test room:
     const state1 = produce(stateWithTwoRooms, (draft) => {
