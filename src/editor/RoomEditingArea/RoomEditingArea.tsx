@@ -50,9 +50,8 @@ const RoomEditingAreaInner = () => {
 
   const cursorClassname = useRoomEditingAreaCursorClassName();
 
-  const fitRoom = useFitRoomInView();
-  // the canvas fills the pane; fit the room once the pane's size is first known:
-  useResizePixiApplicationToPane(renderArea, fitRoom);
+  useFitRoomInView();
+  useResizePixiApplicationToPane(renderArea);
   useRoomEditorInteractivity(renderArea, roomRendererRef);
   useAddApplicationCanvasToDom(renderArea);
   useRemoveCursorPreviewsWhenToolChanges();

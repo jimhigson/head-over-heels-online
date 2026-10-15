@@ -1,37 +1,20 @@
-import { useState } from "preact/hooks";
-
-import { type JsonItemConfig } from "../../../model/json/JsonItem";
 import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { store, useEditorAppSelector } from "../../../store/store";
 import { Switch } from "../../../ui/Switch";
 import { twClass } from "../../../utils/twClass" with { type: "macro" };
-import { type EditorRoomItemId } from "../../editorTypes";
+import { doorItemTool } from "../../RoomEditingArea/interactivity/doorItemTool";
 import {
-  type EditorToolRoomId,
-  type ItemTool,
-} from "../../RoomEditingArea/interactivity/Tool";
-import {
+  changeDoorAutoAddsRoom,
   selectCurrentCommittedRoomJson,
-  setTool,
+  selectDoorAutoAddsRoom,
 } from "../../slice/levelEditorSlice";
 import { buttonSpriteRevertColourClasses } from "../buttonSizeClassNames";
 import { ItemToolButton } from "../ItemToolButton";
-import { useIsCurrentItemTool } from "../useIsCurrentItemTool";
 import { MenuButton } from "./MenuButton";
 import { LabelledToolbarIcon } from "./ToolbarButtonContentPatterns";
 
-function doorItemTool(autoAddRoom: boolean): ItemTool {
-  return {
-    type: "door",
-    config: {
-      direction: "away", // arbitrary, to be corrected on placement
-      toRoom: autoAddRoom ? "+" : "nowhere",
-    } satisfies JsonItemConfig<"door", EditorToolRoomId, EditorRoomItemId>,
-  };
-}
-
 export const DoorToolButton = () => {
-  const [autoAddRoom, setAutoAddRoom] = useState(true);
+  const autoAddRoom = useEditorAppSelector(selectDoorAutoAddsRoom);
   const scenery = useEditorAppSelector(
     (state) => selectCurrentCommittedRoomJson(state).planet,
   );
@@ -41,15 +24,11 @@ export const DoorToolButton = () => {
       twClass<TextureTailwindClass>("texture-door_frame_moonbase_d0_whole")
     : twClass<TextureTailwindClass>("texture-door_frame_generic_d0_whole");
 
-  const itemTool: ItemTool = doorItemTool(autoAddRoom);
-
-  const isCurrentTool = useIsCurrentItemTool(itemTool);
-
   return (
     <MenuButton
       main={
         <ItemToolButton
-          itemTool={itemTool}
+          itemTool={doorItemTool(autoAddRoom)}
           shortcutKeys={["D"]}
           ariaLabel={autoAddRoom ? "Door (adds adjacent room)" : "Door"}
         >
@@ -68,13 +47,7 @@ export const DoorToolButton = () => {
           label="auto + room"
           ariaLabel="Auto-add room with door"
           onChange={(value) => {
-            setAutoAddRoom(value);
-            if (isCurrentTool) {
-              // if the door tool was selected, move to the new version of the tool:
-              store.dispatch(
-                setTool({ type: "item", item: doorItemTool(value) }),
-              );
-            }
+            store.dispatch(changeDoorAutoAddsRoom(value));
           }}
         />,
       ]}

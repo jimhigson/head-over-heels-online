@@ -50,8 +50,8 @@ test("browsing to a room opens it in a preview tab after the current one", () =>
   const state = reduceLevelEditorActions(baseState, changeToRoom(roomB));
 
   expect<RoomTab[]>(tabsOf(state)).toEqual([
-    { roomId: testRoomId, isPreview: false },
-    { roomId: roomB, isPreview: true },
+    { roomId: testRoomId, isPreview: false, view: undefined },
+    { roomId: roomB, isPreview: true, view: undefined },
   ]);
 });
 
@@ -63,8 +63,8 @@ test("browsing to another room replaces the preview tab", () => {
   );
 
   expect<RoomTab[]>(tabsOf(state)).toEqual([
-    { roomId: testRoomId, isPreview: false },
-    { roomId: roomC, isPreview: true },
+    { roomId: testRoomId, isPreview: false, view: undefined },
+    { roomId: roomC, isPreview: true, view: undefined },
   ]);
 });
 

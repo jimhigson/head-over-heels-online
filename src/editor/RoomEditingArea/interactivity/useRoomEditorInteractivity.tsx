@@ -15,6 +15,8 @@ import {
 } from "../../slice/levelEditorSelectors";
 import {
   changeDragInProgress,
+  cursorRoomViewPanned,
+  cursorRoomViewZoomed,
   resetPreviewedEdits,
   selectTool,
 } from "../../slice/levelEditorSlice";
@@ -91,10 +93,15 @@ export const useRoomEditorInteractivity = (
     }
     const gridSteps = Math.round(viewport.zoom / wheelZoomStep);
     const rect = renderArea.getBoundingClientRect();
-    viewport.setZoom((gridSteps + direction) * wheelZoomStep, {
-      x: wheelEvent.clientX - rect.left,
-      y: wheelEvent.clientY - rect.top,
-    });
+    store.dispatch(
+      cursorRoomViewZoomed({
+        zoom: (gridSteps + direction) * wheelZoomStep,
+        fixedPanePoint: {
+          x: wheelEvent.clientX - rect.left,
+          y: wheelEvent.clientY - rect.top,
+        },
+      }),
+    );
   });
 
   useEffect(() => {
@@ -188,10 +195,12 @@ export const useRoomEditorInteractivity = (
           }
         }
         if (panSession.active) {
-          viewport.panBy({
-            x: mouseEvent.movementX,
-            y: mouseEvent.movementY,
-          });
+          store.dispatch(
+            cursorRoomViewPanned({
+              x: mouseEvent.movementX,
+              y: mouseEvent.movementY,
+            }),
+          );
           return;
         }
       }
