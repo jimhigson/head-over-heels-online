@@ -12,7 +12,7 @@ import { insertRoomInPlace } from "../inPlaceMutators/insertRoomInPlace";
 import { removeInboundRoomReferencesInPlace } from "../inPlaceMutators/removeInboundRoomReferencesInPlace";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomId,
+  selectCursorRoomIdFromLevelEditorState,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 
@@ -54,7 +54,7 @@ export const addOrRemoveRoomReducers = {
       roomId !== undefined ? [roomId] : state.selectedRoomIds,
     );
 
-    const cursorRoomId = selectCursorRoomId(state);
+    const cursorRoomId = selectCursorRoomIdFromLevelEditorState(state);
 
     // to stay near the deleted room, find another room adjacent to it:
     const cursorRoom = state.campaignInProgress.rooms[cursorRoomId];

@@ -1,7 +1,7 @@
 import { campaignToDataParam } from "../db/campaignToDataParam";
 import { type TypedURLSearchParams } from "../options/queryParams";
 import { type EditorRootState } from "../store/store";
-import { selectCursorRoomId } from "./slice/levelEditorSelectors";
+import { selectCursorRoomIdFromLevelEditorState } from "./slice/levelEditorSelectors";
 import { selectCurrentCampaignInProgress } from "./slice/levelEditorSlice";
 
 /** the game url that plays the editor's open campaign, unsaved */
@@ -30,7 +30,7 @@ export const playtestUrl = async (
     searchParams.set("playAsHeels", "1");
   }
   if (!fromStart) {
-    url.hash = selectCursorRoomId(state.levelEditor);
+    url.hash = selectCursorRoomIdFromLevelEditorState(state.levelEditor);
   }
   return url.toString();
 };

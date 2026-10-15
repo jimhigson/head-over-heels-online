@@ -24,7 +24,7 @@ import { keys } from "../../utils/entries";
 import { naturalCompare } from "../../utils/naturalCompare";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import { type EditorCampaign, type EditorRoomId } from "../editorTypes";
-import { selectCursorRoom } from "../slice/levelEditorSelectors";
+import { selectCursorRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 
 /** the parts of the map that depend only on the campaign, not the cursor */
 export type EditorMapAreas = Pick<
@@ -136,7 +136,8 @@ export const selectEditorMapData = createSelector(
   [
     selectCampaignInProgress,
     selectEditorMapAreas,
-    (state: EditorRootState) => selectCursorRoom(state.levelEditor),
+    (state: EditorRootState) =>
+      selectCursorRoomFromLevelEditorState(state.levelEditor),
   ],
   (campaign, mapAreas, { roomId, subRoomId }) =>
     editorMapData(campaign, mapAreas, roomId, subRoomId),

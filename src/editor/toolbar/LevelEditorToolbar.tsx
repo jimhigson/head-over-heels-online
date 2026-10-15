@@ -7,7 +7,7 @@ import {
   ToolbarSectionContents,
   ToolbarSectionHeader,
 } from "../../ui/Toolbar";
-import { selectCursorRoomId } from "../slice/levelEditorSelectors";
+import { selectCursorRoomIdFromLevelEditorState } from "../slice/levelEditorSelectors";
 import { changeToRoom } from "../slice/levelEditorSlice";
 import { buttonDefinitions } from "./buttonDefinitions";
 import { AddAndDeleteRoomButtons } from "./buttons/AddAndDeleteRoomButtons";
@@ -50,7 +50,7 @@ export const LevelEditorToolbar = () => {
     (state) => state.levelEditor.campaignInProgress,
   );
   const currentlyEditingRoomId = useEditorAppSelector((state) =>
-    selectCursorRoomId(state.levelEditor),
+    selectCursorRoomIdFromLevelEditorState(state.levelEditor),
   );
   const dispatch = useAppDispatch();
 

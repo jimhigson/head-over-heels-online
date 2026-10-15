@@ -13,18 +13,23 @@ import {
 } from "../editorTypes";
 import { type LevelEditorState } from "./levelEditorSlice";
 
-export const selectCursorRoom = (state: LevelEditorState) => state.cursorRoom;
+export const selectCursorRoomFromLevelEditorState = (state: LevelEditorState) =>
+  state.cursorRoom;
 
-export const selectCursorRoomId = (state: LevelEditorState) =>
-  selectCursorRoom(state).roomId;
+export const selectCursorRoomIdFromLevelEditorState = (
+  state: LevelEditorState,
+) => selectCursorRoomFromLevelEditorState(state).roomId;
 
-export const selectCursorSubRoomId = (state: LevelEditorState) =>
-  selectCursorRoom(state).subRoomId;
+export const selectCursorSubRoomIdFromLevelEditorState = (
+  state: LevelEditorState,
+) => selectCursorRoomFromLevelEditorState(state).subRoomId;
 
 export const selectCurrentCommittedRoomJsonFromLevelEditorState = (
   state: LevelEditorState,
 ) =>
-  state.campaignInProgress.rooms[selectCursorRoomId(state)] as EditorRoomJson;
+  state.campaignInProgress.rooms[
+    selectCursorRoomIdFromLevelEditorState(state)
+  ] as EditorRoomJson;
 
 /** the vertical (above/below) link of the current cursor sub-room, if any */
 export const selectCursorSubRoomVerticalLink = (
@@ -34,7 +39,7 @@ export const selectCursorSubRoomVerticalLink = (
   roomVerticalLink(
     selectCurrentCommittedRoomJsonFromLevelEditorState(state),
     direction,
-    selectCursorSubRoomId(state),
+    selectCursorSubRoomIdFromLevelEditorState(state),
   );
 
 export const selectRoomFromLevelEditorState = (
@@ -48,9 +53,9 @@ export const selectItemInLevelEditorState = (
   /** if not given, uses the cursor room */
   roomId?: EditorRoomId,
 ) =>
-  state.campaignInProgress.rooms[roomId ?? selectCursorRoomId(state)]?.items[
-    itemId
-  ] as EditorJsonItemUnion | undefined;
+  state.campaignInProgress.rooms[
+    roomId ?? selectCursorRoomIdFromLevelEditorState(state)
+  ]?.items[itemId] as EditorJsonItemUnion | undefined;
 
 export const selectItemIsSelectedInLevelEditorState = (
   state: LevelEditorState,
@@ -85,7 +90,7 @@ const selectHoveredUndoRoom = (
   state: EditorRootState,
 ): EditorRoomJson | undefined => {
   const { hoveredUndoIndex, history } = state.levelEditor;
-  const roomId = selectCursorRoomId(state.levelEditor);
+  const roomId = selectCursorRoomIdFromLevelEditorState(state.levelEditor);
   if (hoveredUndoIndex === 0) {
     return undefined;
   }

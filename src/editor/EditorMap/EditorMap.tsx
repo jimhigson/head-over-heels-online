@@ -6,21 +6,24 @@ import { type RoomBehaviourComponent } from "../../game/components/dialogs/menuD
 import { type Key } from "../../game/input/keys";
 import { type SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRoomGridPositions";
 import { startAppListening } from "../../store/listenerMiddleware";
-import { store, useEditorAppSelector } from "../../store/store";
+import { editorStore, store, useEditorAppSelector } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
 import { useElementSize } from "../../utils/preact/useElementSize";
 import { unitVectors } from "../../utils/vectors/unitVectors";
-import { addXyz, xyzEqual } from "../../utils/vectors/vectors";
+import {
+  addXyz,
+  type DirectionXyz4,
+  xyzEqual,
+} from "../../utils/vectors/vectors";
 import { EditorErrorBoundary } from "../EditorErrorBoundary";
 import { type EditorRoomId } from "../editorTypes";
 import { EditorMapRoomTooltipBehaviour } from "../roomPreview/EditorMapRoomTooltipBehaviour";
-import { selectCursorRoom } from "../slice/levelEditorSelectors";
+import { insertRoomInDirectionThunk } from "../slice/insertRoomInDirectionThunk";
+import { selectCursorRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 import {
   addRoomToSelection,
   changeToRoom,
-  insertRoom,
   selectAllRooms,
-  setRoomAboveOrBelow,
   toggleRoomInSelection,
 } from "../slice/levelEditorSlice";
 import { confirmDeleteRoomThunk } from "../toolbar/confirmThunk";
@@ -56,26 +59,28 @@ const editorPostfixDecorators = [
   LazyEditorMapInsertButtonDecorator,
 ];
 
-const keyToUnitVector = {
+const keyToDirectionXyz4 = {
   ArrowLeft: "left",
   ArrowRight: "right",
   ArrowUp: "away",
   ArrowDown: "towards",
   PageUp: "up",
   PageDown: "down",
-} as const satisfies { [K in Key]?: keyof typeof unitVectors };
+} as const satisfies { [K in Key]?: DirectionXyz4 };
 
-type NavigationKey = keyof typeof keyToUnitVector;
+type NavigationKey = keyof typeof keyToDirectionXyz4;
 
 const isNavigationKey = (key: string): key is NavigationKey =>
-  key in keyToUnitVector;
+  key in keyToDirectionXyz4;
 
 const navigateToAdjacentRoom = (
   key: NavigationKey,
   gridPositions: SortedObjectOfRoomGridPositionSpecs<EditorRoomId>,
 ) => {
-  const { roomId, subRoomId } = selectCursorRoom(store.getState().levelEditor);
-  const direction = keyToUnitVector[key];
+  const { roomId, subRoomId } = selectCursorRoomFromLevelEditorState(
+    store.getState().levelEditor,
+  );
+  const direction = keyToDirectionXyz4[key];
   if (!direction) {
     return;
   }
@@ -117,8 +122,10 @@ const extendSelectionInDirection = (
   key: NavigationKey,
   gridPositions: SortedObjectOfRoomGridPositionSpecs<EditorRoomId>,
 ) => {
-  const { roomId, subRoomId } = selectCursorRoom(store.getState().levelEditor);
-  const direction = keyToUnitVector[key];
+  const { roomId, subRoomId } = selectCursorRoomFromLevelEditorState(
+    store.getState().levelEditor,
+  );
+  const direction = keyToDirectionXyz4[key];
 
   const currentRoomPosition = valuesIter(gridPositions).find(
     (spec) => spec.roomId === roomId && spec.subRoomId === subRoomId,
@@ -143,27 +150,6 @@ const extendSelectionInDirection = (
       subRoomId: targetSpec.subRoomId,
     }),
   );
-};
-
-const insertInDirection = (key: NavigationKey) => {
-  const direction = keyToUnitVector[key];
-  switch (direction) {
-    case "left":
-    case "right":
-    case "away":
-    case "towards":
-      store.dispatch(insertRoom({ direction }));
-      break;
-    case "up":
-    case "down":
-      store.dispatch(
-        setRoomAboveOrBelow({
-          direction: direction === "up" ? "above" : "below",
-          createNew: true,
-        }),
-      );
-      break;
-  }
 };
 
 const roomsChanged = (
@@ -197,7 +183,7 @@ const EditorMap = () => {
     (state) => state.levelEditor.selectedRoomIds,
   );
   const { roomId: cursorRoomId } = useEditorAppSelector((state) =>
-    selectCursorRoom(state.levelEditor),
+    selectCursorRoomFromLevelEditorState(state.levelEditor),
   );
 
   const mapRendering = mapContainerHeight !== 0 && !mapData.isError;
@@ -236,7 +222,9 @@ const EditorMap = () => {
           } else if (isNavigationKey(e.key)) {
             e.preventDefault();
             if (e.altKey) {
-              insertInDirection(e.key);
+              editorStore.dispatch(
+                insertRoomInDirectionThunk(keyToDirectionXyz4[e.key]),
+              );
             } else if (e.shiftKey) {
               extendSelectionInDirection(e.key, shownArea.gridPositions);
             } else {

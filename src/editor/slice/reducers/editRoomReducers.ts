@@ -39,8 +39,8 @@ import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCur
 import { deleteItemInPlace } from "../inPlaceMutators/deleteItemInPlace";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomId,
-  selectCursorSubRoomId,
+  selectCursorRoomIdFromLevelEditorState,
+  selectCursorSubRoomIdFromLevelEditorState,
   selectRoomFromLevelEditorState,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
@@ -217,7 +217,7 @@ export const editRoomReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
     const { rooms } = state.campaignInProgress;
-    const cursorRoomId = selectCursorRoomId(state);
+    const cursorRoomId = selectCursorRoomIdFromLevelEditorState(state);
     const prevRoomJson = rooms[cursorRoomId];
 
     const description =
@@ -243,7 +243,7 @@ export const editRoomReducers = {
 
     clearContextMenuXyInPlace(state);
 
-    if (newRoomJson.id !== selectCursorRoomId(state)) {
+    if (newRoomJson.id !== selectCursorRoomIdFromLevelEditorState(state)) {
       changeIdOfCurrentRoomInPlace(state, newRoomJson.id);
     }
 
@@ -351,7 +351,7 @@ export const editRoomReducers = {
       }
       if (
         roomNonContiguousRelationship(prevNcrRoom)?.with.room ===
-        selectCursorRoomId(state)
+        selectCursorRoomIdFromLevelEditorState(state)
       ) {
         writeRoomNonContiguousRelationship(prevNcrRoom, undefined);
       }
@@ -434,7 +434,7 @@ export const editRoomReducers = {
 
     const currentRoomJson =
       selectCurrentCommittedRoomJsonFromLevelEditorState(state);
-    const currentSubRoomId = selectCursorSubRoomId(state);
+    const currentSubRoomId = selectCursorSubRoomIdFromLevelEditorState(state);
 
     const previouslyLinkedRoomId = roomVerticalLink(
       currentRoomJson,
@@ -528,7 +528,7 @@ export const editRoomReducers = {
 
     if (!payload.createNew && previouslyLinkedRoom) {
       const back = roomVerticalLink(previouslyLinkedRoom, reverseDirection);
-      if (back?.room === selectCursorRoomId(state)) {
+      if (back?.room === selectCursorRoomIdFromLevelEditorState(state)) {
         writeVerticalLink(
           previouslyLinkedRoom,
           primarySubRoomId(previouslyLinkedRoom),

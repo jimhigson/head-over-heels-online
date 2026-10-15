@@ -9,7 +9,10 @@ import {
 import { keys } from "../../utils/entries";
 import { type EditorRoomJson } from "../editorTypes";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
-import { selectCursorRoom, selectCursorRoomId } from "./levelEditorSelectors";
+import {
+  selectCursorRoomFromLevelEditorState,
+  selectCursorRoomIdFromLevelEditorState,
+} from "./levelEditorSelectors";
 
 expect.extend(roomJsonMatchers);
 import { selectIsCoalesceable } from "../EditorMap/CoalesceButton";
@@ -37,7 +40,9 @@ const expectValidMapData: ReducibleAction = (_dispatch, getState) => {
 };
 
 test("insert room right, select both, coalesce", () => {
-  const originalRoomId = selectCursorRoomId(initialLevelEditorSliceState);
+  const originalRoomId = selectCursorRoomIdFromLevelEditorState(
+    initialLevelEditorSliceState,
+  );
 
   const result = reduceLevelEditorActions(
     initialLevelEditorSliceState,
@@ -64,7 +69,8 @@ test("insert room right, select both, coalesce", () => {
   expect.soft(walls).toHaveLength(4);
   expect.soft(doors).toHaveLength(0);
 
-  const { subRoomId: cursorSubRoomId } = selectCursorRoom(result);
+  const { subRoomId: cursorSubRoomId } =
+    selectCursorRoomFromLevelEditorState(result);
   expect
     .soft(() =>
       roomGridPositions({
@@ -80,7 +86,7 @@ const selectFirstNNonCursorRoomsThunk =
   (n: number): ReducibleAction =>
   (dispatch, getState) => {
     const { levelEditor } = getState();
-    const cursorRoomId = selectCursorRoomId(levelEditor);
+    const cursorRoomId = selectCursorRoomIdFromLevelEditorState(levelEditor);
     const otherRoomIds = keys(levelEditor.campaignInProgress.rooms).filter(
       (id) => id !== cursorRoomId,
     );
@@ -90,7 +96,9 @@ const selectFirstNNonCursorRoomsThunk =
   };
 
 test("in a line", () => {
-  const originalRoomId = selectCursorRoomId(initialLevelEditorSliceState);
+  const originalRoomId = selectCursorRoomIdFromLevelEditorState(
+    initialLevelEditorSliceState,
+  );
 
   const result = reduceLevelEditorActions(
     initialLevelEditorSliceState,
@@ -220,7 +228,8 @@ test.for<{
 
   expect.soft(room).toHaveCompletePerimeter();
 
-  const { subRoomId: cursorSubRoomId } = selectCursorRoom(result);
+  const { subRoomId: cursorSubRoomId } =
+    selectCursorRoomFromLevelEditorState(result);
   expect
     .soft(
       () =>
@@ -254,7 +263,7 @@ test("coalescing rooms below a room that has a room above does not break map geo
     coalesceSelectedRooms(),
   );
 
-  const { roomId, subRoomId } = selectCursorRoom(result);
+  const { roomId, subRoomId } = selectCursorRoomFromLevelEditorState(result);
 
   const specs = roomGridPositions({
     campaign: result.campaignInProgress,
@@ -312,7 +321,7 @@ test("merging two rooms below a room that is above one of them does not break ma
     coalesceSelectedRooms(),
   );
 
-  const { roomId, subRoomId } = selectCursorRoom(result);
+  const { roomId, subRoomId } = selectCursorRoomFromLevelEditorState(result);
 
   expect(
     () =>

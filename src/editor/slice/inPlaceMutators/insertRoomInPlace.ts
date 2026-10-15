@@ -24,7 +24,7 @@ import {
 } from "../../editorTypes";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorSubRoomId,
+  selectCursorSubRoomIdFromLevelEditorState,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import {
@@ -105,7 +105,7 @@ export const insertRoomInPlace = (
   const currentRoom = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
   const oppositeDir = oppositeDirection(direction);
 
-  const subRoomId = selectCursorSubRoomId(state);
+  const subRoomId = selectCursorSubRoomIdFromLevelEditorState(state);
   const currentSubRoomBounds = getSubRoomFloorBounds(currentRoom, subRoomId);
 
   const currentRoomDoorsInDirection = iterateRoomJsonItemsWithIds(
@@ -150,7 +150,7 @@ export const insertRoomInPlace = (
   const gridPositions = roomGridPositions({
     campaign: state.campaignInProgress,
     roomId: currentRoom.id,
-    subRoomId: selectCursorSubRoomId(state),
+    subRoomId: selectCursorSubRoomIdFromLevelEditorState(state),
   }).nodes;
   const targetSpec = gridPositions.find(({ gridPosition }) =>
     xyzEqual(gridPosition, unitVectors[direction]),
@@ -276,10 +276,6 @@ export const insertRoomInPlace = (
         fromRoomJson: currentRoom,
         toRoomJson: existingRoomAtTarget,
         outgoingDoorEntry: [outDoorId, outDoor],
-        outgoingDoorRelativeTo: {
-          x: currentSubRoomBounds.minX,
-          y: currentSubRoomBounds.minY,
-        },
       });
 
       changeCurrentRoomInPlace(state, existingRoomAtTarget.id as EditorRoomId);
@@ -305,10 +301,6 @@ export const insertRoomInPlace = (
           outDoorId as EditorRoomItemId,
           outDoor as EditorJsonItem<"door">,
         ],
-        outgoingDoorRelativeTo: {
-          x: currentSubRoomBounds.minX,
-          y: currentSubRoomBounds.minY,
-        },
       });
 
       outDoor.config.toRoom = newRoom.id;
@@ -391,10 +383,6 @@ export const insertRoomInPlace = (
       fromRoomJson: currentRoom,
       toRoomJson: newRoom,
       outgoingDoorEntry: [outDoorId, outDoor],
-      outgoingDoorRelativeTo: {
-        x: currentSubRoomBounds.minX,
-        y: currentSubRoomBounds.minY,
-      },
     });
   }
 

@@ -10,7 +10,10 @@ import { type DirectionXy4 } from "../../utils/vectors/vectors";
 import { areRoomsCoalesceable } from "../EditorMap/areRoomsCoalesceable";
 import { type EditorRoomId, type EditorRoomJson } from "../editorTypes";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
-import { selectCursorRoom, selectCursorRoomId } from "./levelEditorSelectors";
+import {
+  selectCursorRoomFromLevelEditorState,
+  selectCursorRoomIdFromLevelEditorState,
+} from "./levelEditorSelectors";
 import {
   coalesceSelectedRooms,
   insertRoom,
@@ -27,7 +30,7 @@ expect.extend(roomJsonMatchers);
 const directions: DirectionXy4[] = ["left", "right", "away", "towards"];
 
 const solveMapGeometry = (state: typeof initialLevelEditorSliceState) => {
-  const { roomId, subRoomId } = selectCursorRoom(state);
+  const { roomId, subRoomId } = selectCursorRoomFromLevelEditorState(state);
   const positions = roomGridPositions({
     campaign: state.campaignInProgress,
     roomId,
@@ -124,7 +127,7 @@ test.for(seeds)("fuzz insert+coalesce (seed %i)", ([seed]) => {
         // not all rooms are coalesceable (different z-levels etc), try selecting a subset
         // pick 2-3 rooms and try
         const count = Math.min(allRoomIds.length, 2 + Math.floor(rng() * 2));
-        const cursorRoomId = selectCursorRoomId(state);
+        const cursorRoomId = selectCursorRoomIdFromLevelEditorState(state);
 
         // start from cursor, add adjacent rooms
         actions.length = 0;
@@ -185,7 +188,9 @@ test.for(seeds)("fuzz insert+coalesce (seed %i)", ([seed]) => {
       // navigate to a different room
       const allRoomIds = keys(state.campaignInProgress.rooms);
       const otherRoomId = pick(
-        allRoomIds.filter((id) => id !== selectCursorRoomId(state)),
+        allRoomIds.filter(
+          (id) => id !== selectCursorRoomIdFromLevelEditorState(state),
+        ),
       );
       if (otherRoomId) {
         state = reduceLevelEditorActions(state, ((dispatch, getState) => {

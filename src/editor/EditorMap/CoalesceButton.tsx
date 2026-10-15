@@ -6,7 +6,7 @@ import {
   useEditorAppSelector,
 } from "../../store/store";
 import { Button } from "../../ui/Button";
-import { selectCursorRoom } from "../slice/levelEditorSelectors";
+import { selectCursorRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 import { coalesceSelectedRooms } from "../slice/levelEditorSlice";
 import { areRoomsCoalesceable } from "./areRoomsCoalesceable";
 import { mapAreaIndexOfRoom } from "./mapAreaIndexOfRoom";
@@ -16,7 +16,8 @@ export const selectIsCoalesceable = createSelector(
   [
     selectEditorMapData,
     (state: EditorRootState) => state.levelEditor.selectedRoomIds,
-    (state: EditorRootState) => selectCursorRoom(state.levelEditor).roomId,
+    (state: EditorRootState) =>
+      selectCursorRoomFromLevelEditorState(state.levelEditor).roomId,
   ],
   (mapData, selectedRoomIds, cursorRoomId) => {
     if (mapData.isError) {

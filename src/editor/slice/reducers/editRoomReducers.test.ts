@@ -23,7 +23,7 @@ const roomAboveOf = <RoomId extends string>(room: {
 const roomBelowOf = <RoomId extends string>(room: {
   meta?: { subRooms?: SubRooms<RoomId> };
 }): RoomId | undefined => roomVerticalLink(room, "below")?.room;
-import { selectCursorRoomId } from "../levelEditorSelectors";
+import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import {
   applyItemTool,
   deleteSelected,
@@ -698,9 +698,11 @@ describe("setRoomAboveOrBelow", () => {
       setRoomAboveOrBelow({ direction: "above", createNew: true }),
     );
 
-    expect(selectCursorRoomId(result)).not.toBe(testRoomId);
+    expect(selectCursorRoomIdFromLevelEditorState(result)).not.toBe(testRoomId);
     const originalRoom = result.campaignInProgress.rooms[testRoomId];
-    expect(selectCursorRoomId(result)).toBe(roomAboveOf(originalRoom));
+    expect(selectCursorRoomIdFromLevelEditorState(result)).toBe(
+      roomAboveOf(originalRoom),
+    );
   });
 
   test("createNew splices between existing rooms", () => {

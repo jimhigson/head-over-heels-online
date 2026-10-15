@@ -18,7 +18,7 @@ import {
 } from "../../editorTypes";
 import { type Tool } from "../../RoomEditingArea/interactivity/Tool";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
-import { selectCursorRoomId } from "../levelEditorSelectors";
+import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import {
   applyItemTool,
   deleteSelected,
@@ -450,7 +450,7 @@ describe("applying tools", () => {
 
   const currentRoom = (state: LevelEditorState) =>
     state.campaignInProgress.rooms[
-      selectCursorRoomId(state)!
+      selectCursorRoomIdFromLevelEditorState(state)!
     ] as EditorRoomJson;
 
   const findFloor = (state: LevelEditorState) => {

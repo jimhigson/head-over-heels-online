@@ -3,7 +3,7 @@ import { describe, expect, test } from "vitest";
 import { iterateRoomJsonItemsWithIds } from "../../model/RoomJson";
 import { type EditorRoomId, type EditorRoomJson } from "../editorTypes";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
-import { selectCursorRoomId } from "./levelEditorSelectors";
+import { selectCursorRoomIdFromLevelEditorState } from "./levelEditorSelectors";
 import {
   applyItemTool,
   changeRoomColour,
@@ -24,9 +24,9 @@ const reduce = (state: LevelEditorState, action: LevelEditorSliceAction) => {
 };
 
 const roomUndo = (state: LevelEditorState) =>
-  state.history[selectCursorRoomId(state)]?.undo ?? [];
+  state.history[selectCursorRoomIdFromLevelEditorState(state)]?.undo ?? [];
 const roomRedo = (state: LevelEditorState) =>
-  state.history[selectCursorRoomId(state)]?.redo ?? [];
+  state.history[selectCursorRoomIdFromLevelEditorState(state)]?.redo ?? [];
 
 describe(// concerns of the slice that don't fit into any particular *Reducers.test.ts file
 "cross-cutting concerns", () => {
@@ -232,7 +232,7 @@ describe(// concerns of the slice that don't fit into any particular *Reducers.t
 
   test("renaming a room via JSON edit can be undone", () => {
     const state0 = initialLevelEditorSliceState;
-    const originalRoomId = selectCursorRoomId(state0);
+    const originalRoomId = selectCursorRoomIdFromLevelEditorState(state0);
     const newRoomId = "renamedRoom" as EditorRoomId;
 
     const currentRoom = state0.campaignInProgress.rooms[
@@ -247,19 +247,19 @@ describe(// concerns of the slice that don't fit into any particular *Reducers.t
       }),
     );
 
-    expect(selectCursorRoomId(state1)).toBe(newRoomId);
+    expect(selectCursorRoomIdFromLevelEditorState(state1)).toBe(newRoomId);
     expect(state1.campaignInProgress.rooms[newRoomId]).toBeDefined();
     expect(state1.campaignInProgress.rooms[originalRoomId]).toBeUndefined();
 
     const state2 = reduce(state1, undo());
 
-    expect(selectCursorRoomId(state2)).toBe(originalRoomId);
+    expect(selectCursorRoomIdFromLevelEditorState(state2)).toBe(originalRoomId);
     expect(state2.campaignInProgress.rooms[originalRoomId]).toBeDefined();
     expect(state2.campaignInProgress.rooms[newRoomId]).toBeUndefined();
 
     const state3 = reduce(state2, redo());
 
-    expect(selectCursorRoomId(state3)).toBe(newRoomId);
+    expect(selectCursorRoomIdFromLevelEditorState(state3)).toBe(newRoomId);
     expect(state3.campaignInProgress.rooms[newRoomId]).toBeDefined();
     expect(state3.campaignInProgress.rooms[originalRoomId]).toBeUndefined();
   });
