@@ -158,6 +158,7 @@ Very high block`,
   },
   "monster.dalek": {
     label: "Mojo (dalek)",
+    synonyms: ["robot"],
     type: "itemTool",
     itemTool: {
       type: "monster",
@@ -179,6 +180,7 @@ patrols randomly in a diagonal pattern`,
   },
   "monster.cyberman": {
     label: "Guard (cyberman)",
+    synonyms: ["robot", "soldier"],
     type: "itemTool",
     itemTool: {
       type: "monster",
@@ -382,6 +384,7 @@ Stationary, but deadly`,
   },
   "monster.emperorsGuardian": {
     label: "Emperor's guardian",
+    synonyms: ["boss"],
     type: "itemTool",
     itemTool: {
       type: "monster",
@@ -428,6 +431,7 @@ The end boss, usually found guarding his Blacktooth crown`,
   },
   "pickup.extraLife": {
     label: "Extra life pickup",
+    synonyms: ["bunny", "rabbit", "lives"],
     type: "itemTool",
     itemTool: { type: "pickup", config: { gives: "extra-life" } },
     icon: (
@@ -441,6 +445,7 @@ The end boss, usually found guarding his Blacktooth crown`,
   },
   "pickup.shield": {
     label: "Shield pickup",
+    synonyms: ["invincible", "invulnerable", "iron pills", "bunny", "rabbit"],
     type: "itemTool",
     itemTool: { type: "pickup", config: { gives: "shield" } },
     icon: (
@@ -454,6 +459,7 @@ The end boss, usually found guarding his Blacktooth crown`,
   },
   "pickup.jumps": {
     label: "Extra jumps pickup",
+    synonyms: ["spring", "bunny", "rabbit"],
     type: "itemTool",
     itemTool: { type: "pickup", config: { gives: "jumps" } },
     icon: (
@@ -465,6 +471,7 @@ The end boss, usually found guarding his Blacktooth crown`,
   },
   "pickup.fast": {
     label: "Speed pickup",
+    synonyms: ["quick", "bunny", "rabbit"],
     type: "itemTool",
     itemTool: { type: "pickup", config: { gives: "fast" } },
     icon: (
@@ -476,6 +483,7 @@ The end boss, usually found guarding his Blacktooth crown`,
   },
   "pickup.bag": {
     label: "Bag pickup",
+    synonyms: ["handbag", "purse", "carry"],
     type: "itemTool",
     itemTool: { type: "pickup", config: { gives: "bag" } },
     icon: (
@@ -486,6 +494,7 @@ The end boss, usually found guarding his Blacktooth crown`,
   },
   "pickup.hooter": {
     label: "Hooter pickup",
+    synonyms: ["horn", "weapon"],
     type: "itemTool",
     itemTool: {
       type: "pickup",
@@ -502,6 +511,7 @@ head's doughnut firing hooter`,
   },
   "pickup.doughnuts": {
     label: "Doughnuts pickup",
+    synonyms: ["ammo", "tray"],
     type: "itemTool",
     itemTool: { type: "pickup", config: { gives: "doughnuts" } },
     icon: (
@@ -512,6 +522,7 @@ head's doughnut firing hooter`,
   },
   "pickup.reincarnation": {
     label: "Reincarnation pickup",
+    synonyms: ["fish", "save", "checkpoint"],
     type: "itemTool",
     itemTool: { type: "pickup", config: { gives: "reincarnation" } },
     icon: (
@@ -552,6 +563,7 @@ head's doughnut firing hooter`,
   },
   "deadlyBlock.volcano": {
     label: "Volcano",
+    synonyms: ["hazard"],
     type: "itemTool",
     itemTool: { type: "deadlyBlock", config: { style: "volcano" } },
     tooltipContent: `## Volcano`,
@@ -564,6 +576,7 @@ head's doughnut firing hooter`,
   },
   "deadlyBlock.toaster": {
     label: "Toaster",
+    synonyms: ["hazard"],
     type: "itemTool",
     itemTool: { type: "deadlyBlock", config: { style: "toaster" } },
     tooltipContent: `## Toaster\n\ncharging stations for the Emperor's Guardians`,
@@ -575,6 +588,7 @@ head's doughnut firing hooter`,
   },
   "slidingDeadly.spikyBall": {
     label: "Spiky ball",
+    synonyms: ["hazard"],
     type: "itemTool",
     itemTool: {
       type: "slidingDeadly",
@@ -632,6 +646,7 @@ rotates to the other diagonal when collided with`,
   },
   spikes: {
     label: "Spikes",
+    synonyms: ["deadly", "hazard"],
     type: "itemTool",
     itemTool: { type: "spikes", config: emptyObject },
     tooltipContent: `## spikes
@@ -647,6 +662,7 @@ safe to run into the sides`,
   },
   "moveableDeadly.deadFish": {
     label: "Dead fish",
+    synonyms: ["deadly fish", "poison"],
     type: "itemTool",
     itemTool: { type: "moveableDeadly", config: { style: "deadFish" } },
     tooltipContent: `## dead fish
@@ -692,6 +708,7 @@ Change *which* Charles in the json`,
   },
   switch: {
     label: "Switch",
+    synonyms: ["toggle"],
     type: "itemTool",
     itemTool: {
       type: "switch",
@@ -719,6 +736,7 @@ edit the json to choose:
   },
   button: {
     label: "Button",
+    synonyms: ["toggle"],
     type: "itemTool",
     itemTool: {
       type: "button",
@@ -776,6 +794,7 @@ edit the json to choose:
   },
   "portableBlock.cube": {
     label: "Portable cube",
+    synonyms: ["carry", "pick up"],
     type: "itemTool",
     itemTool: { type: "portableBlock", config: { style: "cube" } },
     icon: (
@@ -786,6 +805,7 @@ edit the json to choose:
   },
   "portableBlock.drum": {
     label: "Portable drum",
+    synonyms: ["carry", "pick up"],
     type: "itemTool",
     itemTool: { type: "portableBlock", config: { style: "drum" } },
     icon: (
@@ -796,6 +816,7 @@ edit the json to choose:
   },
   "portableBlock.sticks": {
     label: "Portable sticks",
+    synonyms: ["carry", "pick up"],
     type: "itemTool",
     itemTool: { type: "portableBlock", config: { style: "sticks" } },
     icon: (
@@ -858,6 +879,7 @@ Why are the books slippery?`,
   },
   lift: {
     label: "Lift",
+    synonyms: ["elevator"],
     type: "itemTool",
     itemTool: { type: "lift", config: { top: 11, bottom: 0 } },
     toolbarClass: "inline relative",
@@ -874,6 +896,7 @@ Why are the books slippery?`,
   },
   "conveyor.away": {
     label: "Conveyor moving away",
+    synonyms: ["belt"],
     type: "itemTool",
     itemTool: { type: "conveyor", config: { direction: "away" } },
     icon: (
@@ -885,6 +908,7 @@ Why are the books slippery?`,
   },
   "conveyor.towards": {
     label: "Conveyor moving towards",
+    synonyms: ["belt"],
     type: "itemTool",
     itemTool: { type: "conveyor", config: { direction: "towards" } },
     icon: (
@@ -896,6 +920,7 @@ Why are the books slippery?`,
   },
   "conveyor.left": {
     label: "Conveyor moving left",
+    synonyms: ["belt"],
     type: "itemTool",
     itemTool: { type: "conveyor", config: { direction: "left" } },
     icon: (
@@ -907,6 +932,7 @@ Why are the books slippery?`,
   },
   "conveyor.right": {
     label: "Conveyor moving right",
+    synonyms: ["belt"],
     type: "itemTool",
     itemTool: { type: "conveyor", config: { direction: "right" } },
     icon: (
@@ -918,6 +944,7 @@ Why are the books slippery?`,
   },
   teleporter: {
     label: "Teleporter",
+    synonyms: ["transporter"],
     type: "itemTool",
     itemTool: {
       type: "teleporter",
@@ -967,6 +994,7 @@ Why a sandwich?`,
   },
   hushPuppy: {
     label: "Hush puppy",
+    synonyms: ["dog", "vanishing block"],
     type: "itemTool",
     itemTool: {
       type: "hushPuppy",
@@ -997,6 +1025,7 @@ Why a sandwich?`,
   },
   "player.head": {
     label: "Head start position",
+    synonyms: ["spawn"],
     type: "itemTool",
     itemTool: {
       type: "player",
@@ -1015,6 +1044,7 @@ This is where head will start the game`,
   },
   "player.heels": {
     label: "Heels start position",
+    synonyms: ["spawn"],
     type: "itemTool",
     itemTool: {
       type: "player",

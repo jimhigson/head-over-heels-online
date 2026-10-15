@@ -62,6 +62,7 @@ export const actionCommandDefinitions = {
   pointerTool: {
     type: "action",
     label: "Pointer tool",
+    synonyms: ["select", "arrow"],
     icon: (
       <span
         class={`sprite ${"texture-pointer" satisfies TextureTailwindClass} relative`}
@@ -81,6 +82,7 @@ export const actionCommandDefinitions = {
   eyeDropperTool: {
     type: "action",
     label: "Eye-dropper",
+    synonyms: ["pick", "copy item"],
     icon: (
       <span
         class={`relative sprite ${"texture-editor_tool_eyedropper" satisfies TextureTailwindClass} leading-none`}
@@ -339,6 +341,7 @@ Give anyone the link to your game
   playtest: {
     type: "action",
     label: "Playtest",
+    synonyms: ["run"],
     icon: (
       <IconWithTwoLineHoverText
         topText="pl"
@@ -363,6 +366,7 @@ Give anyone the link to your game
   verifyCampaign: {
     type: "action",
     label: "Verify and fix…",
+    synonyms: ["check", "validate", "lint"],
     selectIsAvailable: (state) => selectVerification(state).length > 0,
     action: () => showVerifyIssuesThunk(),
   },
@@ -387,6 +391,7 @@ Give anyone the link to your game
   fitRoomInView: {
     type: "action",
     label: "Fit room in view",
+    synonyms: ["zoom to fit", "reset view"],
     icon: <span class="text-single-line">Fit</span>,
     shortcutKeys: ["0"],
     tooltipContent: `## fit\n\nzoom and pan the room to exactly fit the pane`,
