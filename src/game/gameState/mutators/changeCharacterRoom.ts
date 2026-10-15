@@ -450,6 +450,8 @@ export function changeCharacterRoom<
 
   // latent movement does not apply outside of the room it was given in:
   playableItem.state.latentMovement = [];
+  // carried speed is timed in the old room's time:
+  playableItem.state.liftVel = { z: 0, atRoomTime: neverTime };
   // previous standing on (from the old room) no longer applies:
   playableItem.state.previousStandingOnItemId = null;
   playableItem.state.standingOnUntilRoomTime = neverTime;

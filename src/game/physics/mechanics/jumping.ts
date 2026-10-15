@@ -14,6 +14,7 @@ import {
 import { smallItemAabb } from "../../collision/boundingBoxes";
 import { type GameState } from "../../gameState/GameState";
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { liftVelZ } from "../liftVelZ";
 import {
   type Mechanic,
   type MechanicResult,
@@ -128,7 +129,7 @@ export const jumping: Mechanic<CharacterName> = <
   playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
-  //_deltaMS: number,
+  deltaMS: number,
 ): MechanicResult<CharacterName, RoomId, RoomItemId> => {
   const {
     state: { standingOnItemId },
@@ -194,11 +195,15 @@ export const jumping: Mechanic<CharacterName> = <
   const isBigJump =
     playableItem.type === "heels" && playableItem.state.bigJumps > 0;
 
-  const velZ = getJumpInitialVelocity(
-    playableItem,
-    effectivelyStandingOn[itemBehaviourKey].jumpBoostPx,
-    isBigJump,
-  );
+  const velZ =
+    getJumpInitialVelocity(
+      playableItem,
+      effectivelyStandingOn[itemBehaviourKey].jumpBoostPx,
+      isBigJump,
+    ) +
+    // jumping off something rising goes faster, but is never weakened by
+    // jumping off something descending:
+    Math.max(liftVelZ(playableItem, room, deltaMS), 0);
 
   // handled this input but don't set jump input off - it is
   // ok to keep jump pressed to keep jumping

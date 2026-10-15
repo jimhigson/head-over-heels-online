@@ -1,5 +1,6 @@
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import {
+  type FreeItem,
   isFreeItem,
   isSlidingItem,
   type UnionOfAllItemInPlayTypes,
@@ -391,6 +392,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       }
 
       if (visited.size < maxPushRecursionDepth) {
+        const pushedZBefore = collidedWithItem.state.box.z;
         // recursively apply push to pushed item
         // (but only if we didn't already recurse down to the maximum depth)
         causedHelpful ||= moveItem({
@@ -405,6 +407,19 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         });
         // that recursive call is done now, and path is edited in-place to reduce gc
         visited.delete(subjectItem.id);
+
+        if (
+          isFreeItem(collidedWithItem) &&
+          collidedWithItem.state.standingOnItemId === subjectItem.id
+        ) {
+          // carried up by what it stands on:
+          recordLiftVel(
+            collidedWithItem,
+            collidedWithItem.state.box.z - pushedZBefore,
+            room,
+            deltaMS,
+          );
+        }
       } else if (log) {
         console.warn("hit recursion depth limit", new Error());
       }
@@ -603,6 +618,7 @@ const moveRidersDown = <RoomId extends string, RoomItemId extends string>(
       -rider[itemBehaviourKey].terminalFallVelocity(rider) * deltaMS;
 
     recordActedOnBy(movedItem.id, rider, room, false, true);
+    const riderZBefore = rider.state.box.z;
     moveItem({
       subjectItem: rider,
       posDelta: {
@@ -619,5 +635,26 @@ const moveRidersDown = <RoomId extends string, RoomItemId extends string>(
       handleTouches,
     });
     visited.delete(movedItem.id);
+    recordLiftVel(rider, rider.state.box.z - riderZBefore, room, deltaMS);
+  }
+};
+
+/**
+ * records how fast a rider was carried in z by what it stands on, so it can
+ * keep that speed on leaving. A rider can be carried more than once in a tick
+ */
+const recordLiftVel = <RoomId extends string, RoomItemId extends string>(
+  rider: FreeItem<RoomId, RoomItemId>,
+  /** how far the rider was actually carried in z */
+  carriedZ: number,
+  room: RoomState<RoomId, RoomItemId>,
+  deltaMS: number,
+) => {
+  const { liftVel } = rider.state;
+  if (liftVel.atRoomTime === room.roomTime) {
+    liftVel.z += carriedZ / deltaMS;
+  } else {
+    liftVel.z = carriedZ / deltaMS;
+    liftVel.atRoomTime = room.roomTime;
   }
 };

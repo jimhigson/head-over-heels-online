@@ -4,9 +4,14 @@ import {
   migrateWallTilesInPlace,
 } from "../../../model/inPlaceMutators/migrateWallTilesInPlace";
 import { type ItemInPlayConfig } from "../../../model/ItemInPlay";
+import {
+  isFreeItem,
+  type UnionOfAllItemInPlayTypes,
+} from "../../../model/ItemInPlayNarrowedUnions";
 import { type HeelsAbilities } from "../../../model/ItemStateMap";
 import { type Progression, roomItemsIterable } from "../../../model/RoomState";
 import { valuesIter } from "../../../utils/entries";
+import { neverTime } from "../../../utils/neverTime";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   alongAxisOfDirectionXy,
@@ -108,6 +113,17 @@ const deleteWouldPickUpNextInPlace = (item: { state: object }): void => {
 };
 
 /**
+ * saves from before free items recorded the speed they were carried at omit it
+ */
+const migrateLiftVelInPlace = (
+  item: UnionOfAllItemInPlayTypes<string, string>,
+): void => {
+  if (isFreeItem(item)) {
+    item.state.liftVel ??= { z: 0, atRoomTime: neverTime };
+  }
+};
+
+/**
  * saves from before Heels held what to pick up next omit it, and their
  * carried item still marks it
  */
@@ -117,6 +133,7 @@ const migrateHeelsAbilitiesInPlace = (
   heelsAbilities.wouldPickUpNextItemId ??= null;
   if (heelsAbilities.carrying !== null) {
     deleteWouldPickUpNextInPlace(heelsAbilities.carrying);
+    migrateLiftVelInPlace(heelsAbilities.carrying);
   }
 };
 
@@ -166,6 +183,7 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
       migrateItemBoxInPlace(item as LegacyBoxCarrier);
       item.state.movedOrResizedOnProgression ??= 0 as Progression;
       deleteWouldPickUpNextInPlace(item);
+      migrateLiftVelInPlace(item);
       if (item.hintShadowDirections !== undefined) {
         item.hintShadowDirections =
           item.hintShadowDirections.map(asDirectionVector);

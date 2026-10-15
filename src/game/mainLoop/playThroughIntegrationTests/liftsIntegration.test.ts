@@ -11,7 +11,11 @@ import {
   setUpBasicGame,
   type TestRoomId,
 } from "../../../_testUtils/basicRoom";
-import { heelsState, itemState } from "../../../_testUtils/characterState";
+import {
+  headState,
+  heelsState,
+  itemState,
+} from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
@@ -29,6 +33,8 @@ import {
   blockSizePx,
   defaultRoomHeightBlocks,
   maxLiftSpeed,
+  playerJumpHeightPx,
+  terminalVelocityPixPerMs,
 } from "../../physics/mechanicsConstants";
 
 beforeEach(() => {
@@ -687,6 +693,169 @@ describe("riding lifts", () => {
 
     expect(itemState<"portableBlock">(gameState, "rider").vels.gravity.z).toBe(
       0,
+    );
+  });
+
+  test("head gliding off a descending lift falls at terminal velocity from the start", () => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        head: {
+          type: "player",
+          config: { which: "head" },
+          position: { x: 0, y: 0, z: 7 },
+        },
+        lift: {
+          type: "lift",
+          config: { bottom: 0, top: 6 },
+          position: { x: 0, y: 0, z: 6 },
+        },
+      },
+    });
+
+    const headFallingSpeeds: number[] = [];
+    let hasLeftLift = false;
+    playGameThrough(gameState, {
+      frameCallbacks(gameState) {
+        if (
+          itemState<"lift">(gameState, "lift").vels.lift.z < 0 &&
+          headState(gameState).standingOnItemId === null
+        ) {
+          // falling speed is set from the tick after leaving:
+          if (hasLeftLift) {
+            headFallingSpeeds.push(headState(gameState).vels.gravity.z);
+          }
+          hasLeftLift = true;
+        }
+      },
+      until: 500,
+    });
+
+    expect(headFallingSpeeds).not.toHaveLength(0);
+    expect(headFallingSpeeds.map((speed) => speed.toFixed(4))).toEqual(
+      new Array(headFallingSpeeds.length).fill(
+        (-terminalVelocityPixPerMs.glide).toFixed(4),
+      ),
+    );
+  });
+
+  test("walking off a descending lift keeps the lift's falling speed", () => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          config: { which: "heels" },
+          position: { x: 4, y: 4, z: 7 },
+        },
+        lift: {
+          type: "lift",
+          config: { bottom: 0, top: 6 },
+          position: { x: 4, y: 4, z: 6 },
+        },
+      },
+    });
+
+    let speedsWhenWalkedOff: { heels: number; lift: number } | undefined;
+    let liftVelZWhenLeft: number | undefined;
+    playGameThrough(gameState, {
+      frameCallbacks(gameState, mockInputStateTracker) {
+        const liftVelZ = itemState<"lift">(gameState, "lift").vels.lift.z;
+        if (liftVelZ >= 0) {
+          return;
+        }
+        mockInputStateTracker.mockDirectionPressed = "right";
+        if (heelsState(gameState).standingOnItemId !== null) {
+          return;
+        }
+        // falling speed is set from the tick after leaving:
+        if (liftVelZWhenLeft === undefined) {
+          liftVelZWhenLeft = liftVelZ;
+        } else {
+          speedsWhenWalkedOff ??= {
+            heels: heelsState(gameState).vels.gravity.z,
+            lift: liftVelZWhenLeft,
+          };
+        }
+      },
+      until: () => speedsWhenWalkedOff !== undefined,
+    });
+
+    expect(speedsWhenWalkedOff!.heels).toBeCloseTo(
+      speedsWhenWalkedOff!.lift,
+      2,
+    );
+  });
+
+  test("jumping off a rising lift goes higher than a normal jump", () => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          config: { which: "heels" },
+          position: { x: 0, y: 0, z: 1 },
+        },
+        lift: {
+          type: "lift",
+          config: { bottom: 0, top: 10 },
+          position: { x: 0, y: 0, z: 0 },
+        },
+      },
+    });
+
+    let maxZWhileJumping = 0;
+    playGameThrough(gameState, {
+      frameCallbacks(gameState, mockInputStateTracker) {
+        if (gameState.gameTime > 1_000 && gameState.gameTime < 1_050) {
+          mockInputStateTracker.mockPressing("jump");
+        } else {
+          mockInputStateTracker.mockNotPressing("jump");
+        }
+        const heels = heelsState(gameState);
+        if (heels.jumped && heels.standingOnItemId === null) {
+          maxZWhileJumping = Math.max(maxZWhileJumping, heels.box.z);
+        }
+      },
+      until: 2_000,
+    });
+
+    expect(maxZWhileJumping - heelsState(gameState).jumpStartZ).toBeGreaterThan(
+      playerJumpHeightPx.heels + 8,
+    );
+  });
+
+  test("jumping off a descending lift is not weakened", () => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          config: { which: "heels" },
+          position: { x: 0, y: 0, z: 11 },
+        },
+        lift: {
+          type: "lift",
+          config: { bottom: 0, top: 10 },
+          position: { x: 0, y: 0, z: 10 },
+        },
+      },
+    });
+
+    let maxZWhileJumping = 0;
+    playGameThrough(gameState, {
+      frameCallbacks(gameState, mockInputStateTracker) {
+        if (gameState.gameTime > 1_000 && gameState.gameTime < 1_050) {
+          mockInputStateTracker.mockPressing("jump");
+        } else {
+          mockInputStateTracker.mockNotPressing("jump");
+        }
+        const heels = heelsState(gameState);
+        if (heels.jumped && heels.standingOnItemId === null) {
+          maxZWhileJumping = Math.max(maxZWhileJumping, heels.box.z);
+        }
+      },
+      until: 2_000,
+    });
+
+    expect(maxZWhileJumping - heelsState(gameState).jumpStartZ).toBeGreaterThan(
+      playerJumpHeightPx.heels - 1,
     );
   });
 });

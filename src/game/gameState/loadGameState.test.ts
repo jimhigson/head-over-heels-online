@@ -4,6 +4,7 @@ import { campaign } from "../../_generated/originalCampaign/campaign";
 import { type OriginalCampaignRoomId } from "../../_generated/originalCampaign/OriginalCampaignRoomId";
 import blacktooth33v25 from "../../../e2e/fixtures/saves/v25/blacktooth33.json";
 import bookworld21v25 from "../../../e2e/fixtures/saves/v25/bookworld21.json";
+import { isFreeItem } from "../../model/ItemInPlayNarrowedUnions";
 import {
   type Progression,
   roomItemsIterable,
@@ -166,4 +167,14 @@ test("old saves of monsters load with their touch timing initialised", () => {
 
   // the save has a cyberman and a dalek:
   expect(monsterDurationsOfTouch).toEqual([0, 0]);
+});
+
+test("old saves load free items with no carried speed", () => {
+  const freeItemsWithCarriedSpeed = loadedRoomItemsFromFixture(
+    blacktooth33v25 as unknown as SaveFixture,
+  )
+    .filter(isFreeItem)
+    .filter((freeItem) => freeItem.state.liftVel.z !== 0);
+
+  expect(freeItemsWithCarriedSpeed).toEqual([]);
 });
