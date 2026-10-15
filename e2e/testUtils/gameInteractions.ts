@@ -168,8 +168,9 @@ const holdKeysUntilFrozen = async (
 ) => {
   await setKeysHeld(page, keys, true);
   await settleInput(page);
+  let elapsedMs = 0;
   try {
-    for (let elapsedMs = 0; elapsedMs < maxMs; elapsedMs += stepMs) {
+    for (; elapsedMs < maxMs; elapsedMs += stepMs) {
       if (await arrived()) {
         return;
       }
@@ -190,8 +191,13 @@ const holdKeysUntilFrozen = async (
     if (await arrived()) {
       return;
     }
+    const openMenuIds = await page.evaluate(() =>
+      window._e2e_store
+        ?.getState()
+        .gameMenus.openMenus.map((openMenu) => openMenu.menuId),
+    );
     throw new Error(
-      `held ${keys.map(({ key }) => key).join("+")} for up to ${maxMs}ms of game time without arriving`,
+      `held ${keys.map(({ key }) => key).join("+")} for ${elapsedMs}ms of game time (budget ${maxMs}ms) without arriving; open menus: [${openMenuIds?.join(", ")}]`,
     );
   } finally {
     await setKeysHeld(page, keys, false);

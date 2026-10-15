@@ -1,5 +1,6 @@
 import { expect } from "@playwright/test";
 
+import { isMenuOpen } from "./testUtils/advanceGameTime";
 import {
   clickCheat,
   holdKeysUntil,
@@ -66,7 +67,7 @@ test.describe("game completion - both characters reach freedom", () => {
       // heels walks into the portal → characterReachesFreedom("heels") →
       // no other character playing → gameOver listener opens [score, mainMenu].
       await holdKeysUntil(page, [{ key: "ArrowUp", code: "ArrowUp" }], () =>
-        page.locator('[data-dialog-id="score"]').isVisible(),
+        isMenuOpen(page, "score"),
       );
       await waitForDialog(page, "score");
     });
