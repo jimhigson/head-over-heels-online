@@ -1,8 +1,7 @@
 import { monsterMovements } from "../../../model/json/MonsterJsonConfig";
 import { type JsonMovement } from "../../../model/json/utilityJsonConfigTypes";
-import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
-import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
+import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import {
   selectCurrentCommittedRoomJson,
   selectCursorRoomSelectedJsonItemIds,
@@ -13,12 +12,11 @@ const movementLabel = (movement: JsonMovement): string =>
   movement.replaceAll("-", " ");
 
 /**
- * Movement options for a selection of monsters. Offers the movements valid for
- * every selected monster (the intersection), excluding the one they are all
- * already on. Hidden unless the selection is entirely monsters.
+ * Movement switch for a selection of monsters, between the movements valid for
+ * every selected monster (the intersection). Hidden unless the selection is
+ * entirely monsters with a choice of movement.
  */
 export const MonsterMovementMenuItems = () => {
-  const dispatch = useAppDispatch();
   const selectedJsonItemIds = useEditorAppSelector(
     selectCursorRoomSelectedJsonItemIds,
   );
@@ -48,27 +46,25 @@ export const MonsterMovementMenuItems = () => {
     acc.filter((movement) => supported.includes(movement)),
   );
 
-  // don't offer the movement they are all already on:
-  const uniformCurrent = currents.size === 1 ? [...currents][0] : undefined;
-  const options = intersection.filter(
-    (movement) => movement !== uniformCurrent,
-  );
+  // a mixed selection shows the first of their movements:
+  const shownMovement =
+    intersection.find((movement) => currents.has(movement)) ?? intersection[0];
+
+  if (intersection.length < 2) {
+    return null;
+  }
 
   return (
-    <>
-      {options.map((movement) => (
-        <ContextMenuItem
-          key={movement}
-          value={movement}
-          onSelect={() =>
-            dispatch(
-              setSelectedMonstersMovement({ movement, timestamp: Date.now() }),
-            )
-          }
-        >
-          {movementLabel(movement)}
-        </ContextMenuItem>
-      ))}
-    </>
+    <CommandContextMenuItem
+      command={{
+        type: "setting",
+        label: "Movement",
+        values: intersection,
+        valueLabels: intersection.map(movementLabel),
+        value: shownMovement,
+        action: (movement) =>
+          setSelectedMonstersMovement({ movement, timestamp: Date.now() }),
+      }}
+    />
   );
 };

@@ -2,9 +2,8 @@ import {
   type MirrorOrientation,
   mirrorOrientations,
 } from "../../../model/MirrorOrientation";
-import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
-import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
+import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import {
   selectCurrentCommittedRoomJson,
   selectCursorRoomSelectedJsonItemIds,
@@ -19,13 +18,11 @@ const orientationGlyph = {
 } as const satisfies Record<MirrorOrientation, string>;
 
 /**
- * Flip the orientation of the selected mirror(s). A mirror has two pane
- * orientations, so this offers the one(s) the selection isn't already in - for
- * a single mirror, the other orientation (a flip). Shows the pane's projection
- * with - and |. Hidden unless every selected item is a mirror.
+ * Orientation switch for the selected mirror(s), between the two pane
+ * orientations, shown as the pane's projection with - and |. Hidden unless
+ * every selected item is a mirror.
  */
 export const MirrorOrientationMenuItems = () => {
-  const dispatch = useAppDispatch();
   const selectedJsonItemIds = useEditorAppSelector(
     selectCursorRoomSelectedJsonItemIds,
   );
@@ -48,30 +45,27 @@ export const MirrorOrientationMenuItems = () => {
     return null;
   }
 
-  // don't offer the orientation they are all already in:
-  const uniformCurrent = currents.size === 1 ? [...currents][0] : undefined;
-  const options = mirrorOrientations.filter(
-    (orientation) => orientation !== uniformCurrent,
-  );
+  // a mixed selection shows the first of their orientations:
+  const shownOrientation =
+    mirrorOrientations.find((orientation) => currents.has(orientation)) ??
+    mirrorOrientations[0];
 
   return (
-    <>
-      {options.map((orientation) => (
-        <ContextMenuItem
-          key={orientation}
-          value={orientation}
-          onSelect={() =>
-            dispatch(
-              setSelectedItemsMirrorOrientation({
-                orientation,
-                timestamp: Date.now(),
-              }),
-            )
-          }
-        >
-          {`flip ${orientationGlyph[orientation]}`}
-        </ContextMenuItem>
-      ))}
-    </>
+    <CommandContextMenuItem
+      command={{
+        type: "setting",
+        label: "Orientation",
+        values: mirrorOrientations,
+        valueLabels: mirrorOrientations.map(
+          (orientation) => orientationGlyph[orientation],
+        ),
+        value: shownOrientation,
+        action: (orientation) =>
+          setSelectedItemsMirrorOrientation({
+            orientation,
+            timestamp: Date.now(),
+          }),
+      }}
+    />
   );
 };

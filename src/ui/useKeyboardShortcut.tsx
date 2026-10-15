@@ -46,6 +46,76 @@ const hasDuplicateModifiers = (modifiers: string): boolean => {
   }
   return false;
 };
+/**
+ * whether the event comes from inside a `.no-keyboard-shortcuts` element,
+ * looking no further up than the element being listened to
+ */
+export const isInNoKeyboardShortcutsArea = (
+  event: KeyboardEvent,
+  /** the element (or window) the event is being listened to on */
+  listenedTo: EventTarget,
+): boolean => {
+  let currentElement: HTMLElement | null = event.target as HTMLElement;
+  while (currentElement && currentElement !== listenedTo) {
+    if (currentElement.classList.contains("no-keyboard-shortcuts")) {
+      return true;
+    }
+    currentElement = currentElement.parentElement;
+  }
+  return false;
+};
+
+/** whether a key press is one of the given shortcuts */
+export const keyboardEventMatchesShortcutKeys = (
+  event: KeyboardEvent,
+  shortcutKeys: ShortcutKeys,
+): boolean => {
+  for (const shortcut of shortcutKeys) {
+    const match = shortcut.match(shortcutKeyRegex);
+    if (!match || !match.groups) {
+      continue;
+    }
+
+    const { modifiers, key } = match.groups;
+
+    // Skip shortcuts with duplicate modifiers
+    if (hasDuplicateModifiers(modifiers)) {
+      console.warn(`Invalid shortcut "${shortcut}": duplicate modifiers`);
+      continue;
+    }
+
+    // Parse which modifiers are required
+    const requiredCtrl = modifiers.includes("^");
+    const requiredCmd = modifiers.includes("⌘");
+    const requiredShift = modifiers.includes("⇧");
+    const requiredAlt = modifiers.includes("⌥");
+    const hasAnyModifier =
+      requiredCtrl || requiredCmd || requiredShift || requiredAlt;
+
+    // Check if current key state matches requirements
+    const modifierMatches =
+      requiredCtrl === event.ctrlKey &&
+      requiredCmd === event.metaKey &&
+      requiredShift === event.shiftKey &&
+      requiredAlt === event.altKey &&
+      // If no modifiers are required, ensure none are pressed
+      (hasAnyModifier ||
+        (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey));
+
+    // When Alt is pressed on macOS, the key character can be modified
+    // so we need to check the code instead
+    const keyToCheck =
+      requiredAlt && event.altKey ?
+        event.code.replace(/^Key/, "").toLowerCase()
+      : event.key.toLowerCase();
+
+    if (keyToCheck === key.toLowerCase() && modifierMatches) {
+      return true;
+    }
+  }
+  return false;
+};
+
 export const useKeyboardShortcut = (
   shortcutKeys: ShortcutKeys | undefined,
   disabled: boolean,
@@ -74,71 +144,18 @@ export const useKeyboardShortcut = (
     const target = element ?? window;
 
     const handleKeydown = (event: KeyboardEvent) => {
-      // Check if the event is coming from an area where shortcuts are disabled
-      const eventTarget = event.target as HTMLElement;
-
-      // Walk up the DOM tree looking for .no-keyboard-shortcuts
-      // Stop when we reach the element we're listening to (or window)
-      let currentElement: HTMLElement | null = eventTarget;
-      while (currentElement && currentElement !== target) {
-        if (currentElement.classList.contains("no-keyboard-shortcuts")) {
-          return;
-        }
-        currentElement = currentElement.parentElement;
+      if (
+        isInNoKeyboardShortcutsArea(event, target) ||
+        !keyboardEventMatchesShortcutKeys(event, shortcutKeys)
+      ) {
+        return;
       }
-
-      for (const shortcut of shortcutKeys) {
-        const match = shortcut.match(shortcutKeyRegex);
-        if (!match || !match.groups) {
-          continue;
-        }
-
-        const { modifiers, key } = match.groups;
-
-        // Skip shortcuts with duplicate modifiers
-        if (hasDuplicateModifiers(modifiers)) {
-          console.warn(`Invalid shortcut "${shortcut}": duplicate modifiers`);
-          continue;
-        }
-
-        // Parse which modifiers are required
-        const requiredCtrl = modifiers.includes("^");
-        const requiredCmd = modifiers.includes("⌘");
-        const requiredShift = modifiers.includes("⇧");
-        const requiredAlt = modifiers.includes("⌥");
-        const hasAnyModifier =
-          requiredCtrl || requiredCmd || requiredShift || requiredAlt;
-
-        // Check if current key state matches requirements
-        const modifierMatches =
-          requiredCtrl === event.ctrlKey &&
-          requiredCmd === event.metaKey &&
-          requiredShift === event.shiftKey &&
-          requiredAlt === event.altKey &&
-          // If no modifiers are required, ensure none are pressed
-          (hasAnyModifier ||
-            (!event.ctrlKey &&
-              !event.metaKey &&
-              !event.shiftKey &&
-              !event.altKey));
-
-        // When Alt is pressed on macOS, the key character can be modified
-        // so we need to check the code instead
-        const keyToCheck =
-          requiredAlt && event.altKey ?
-            event.code.replace(/^Key/, "").toLowerCase()
-          : event.key.toLowerCase();
-
-        if (keyToCheck === key.toLowerCase() && modifierMatches) {
-          if (!disabled) {
-            run?.();
-          }
-          // still prevent the default if we are disabled (eg, don't allow the browser
-          // to show a 'save as' dialog, or use other default behaviour for shortcuts)
-          event.preventDefault();
-          break;
-        }
+      if (!disabled) {
+        run?.();
       }
+      // still prevent the default if we are disabled (eg, don't allow the browser
+      // to show a 'save as' dialog, or use other default behaviour for shortcuts)
+      event.preventDefault();
     };
 
     target.addEventListener("keydown", handleKeydown as EventListener);

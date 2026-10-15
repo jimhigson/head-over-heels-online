@@ -1,10 +1,9 @@
 import { useMemo } from "preact/hooks";
 
 import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
-import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
-import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
 import { keys } from "../../../utils/entries";
+import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import { type EditorRoomJsonItems } from "../../editorTypes";
 import {
   coalesceSelectedItems,
@@ -19,7 +18,6 @@ import {
  * cuboid adjacency rules.
  */
 export const CoalesceMenuItem = () => {
-  const dispatch = useAppDispatch();
   const selectedJsonItemIds = useEditorAppSelector(
     selectCursorRoomSelectedJsonItemIds,
   );
@@ -42,13 +40,12 @@ export const CoalesceMenuItem = () => {
   }
 
   return (
-    <ContextMenuItem
-      value="coalesce"
-      onSelect={() =>
-        dispatch(coalesceSelectedItems({ timestamp: Date.now() }))
-      }
-    >
-      Coalesce
-    </ContextMenuItem>
+    <CommandContextMenuItem
+      command={{
+        type: "action",
+        label: "Coalesce",
+        action: () => coalesceSelectedItems({ timestamp: Date.now() }),
+      }}
+    />
   );
 };

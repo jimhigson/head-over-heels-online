@@ -15,6 +15,12 @@ import {
 } from "../editorTypes";
 import { type LevelEditorState } from "./levelEditorSlice";
 
+/** whether the campaign being edited differs from as last saved (or loaded) */
+export const selectCampaignHasUnsavedChangesFromLevelEditorState = ({
+  remoteCampaign,
+  campaignInProgress,
+}: LevelEditorState) => !nanoEqual(remoteCampaign, campaignInProgress);
+
 export const selectCursorRoomFromLevelEditorState = (state: LevelEditorState) =>
   state.cursorRoom;
 

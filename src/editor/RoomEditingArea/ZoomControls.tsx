@@ -1,8 +1,6 @@
-import { editorStore } from "../../store/store";
-import { ToolbarButton } from "../toolbar/buttons/ToolbarButton";
+import { actionCommandDefinitions } from "../commands/actionCommandDefinitions";
+import { CommandToolbarButton } from "../commands/CommandToolbarButton";
 import { buttonSmallHeightClassNames } from "../toolbar/buttonSizeClassNames";
-import { fitCursorRoomInViewThunk } from "./viewport/fitCursorRoomInViewThunk";
-import { stepCursorRoomZoomThunk } from "./viewport/stepCursorRoomZoomThunk";
 import { useEditorViewportZoom } from "./viewport/useEditorViewportZoom";
 
 /**
@@ -17,45 +15,17 @@ export const ZoomControls = () => {
 
   return (
     <div class="flex gap-0 leading-none">
-      <ToolbarButton
-        small
-        ariaLabel="Zoom out"
-        tooltipContent={`## zoom ⬇\n\nmakes things look *smaller*`}
-        onClick={() => {
-          editorStore.dispatch(stepCursorRoomZoomThunk("out"));
-        }}
-        shortcutKeys={["-"]}
-      >
-        <span class="text-single-line">-</span>
-      </ToolbarButton>
+      <CommandToolbarButton small command={actionCommandDefinitions.zoomOut} />
       <span
         class={`px-1 bg-shadow items-center flex text-single-line pt-oneScaledPix whitespace-pre ${buttonSmallHeightClassNames}`}
       >
         {`${percentageZoom}%`}
       </span>
-      <ToolbarButton
+      <CommandToolbarButton small command={actionCommandDefinitions.zoomIn} />
+      <CommandToolbarButton
         small
-        ariaLabel="Zoom in"
-        tooltipContent={`## zoom ⬆\n\nmakes things look *bigger*`}
-        onClick={() => {
-          editorStore.dispatch(stepCursorRoomZoomThunk("in"));
-        }}
-        shortcutKeys={["⇧+", "="]}
-      >
-        <span class="text-single-line">+</span>
-      </ToolbarButton>
-      <ToolbarButton
-        small
-        class="bg-moss px-2"
-        ariaLabel="Fit room in view"
-        tooltipContent={`## fit\n\nzoom and pan the room to exactly fit the pane`}
-        onClick={() => {
-          editorStore.dispatch(fitCursorRoomInViewThunk());
-        }}
-        shortcutKeys={["0"]}
-      >
-        <span class="text-single-line">Fit</span>
-      </ToolbarButton>
+        command={actionCommandDefinitions.fitRoomInView}
+      />
     </div>
   );
 };

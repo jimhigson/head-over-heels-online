@@ -1,58 +1,17 @@
-import { type TypedURLSearchParams } from "../../../options/queryParams";
-import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import { useEditorAppSelector } from "../../../store/store";
-import { cn } from "../../../ui/cn";
-import { useRemoteIsInSync } from "../saving/useRemoteIsInSync";
+import { actionCommandDefinitions } from "../../commands/actionCommandDefinitions";
+import { CommandToolbarButton } from "../../commands/CommandToolbarButton";
 import { useShortTimeDisplay } from "../useShortTimeDisplay";
 import { ToolbarButton } from "./ToolbarButton";
 
-const tooltipMarkdown = `
-## Share
-
-**Save first!**
-
-Copies a link to the clipboard
-
-Give anyone the link to your game
-`;
-
 export const ShareCampaignButton = () => {
-  const remoteIsInSync = useRemoteIsInSync();
   const { doneNow, justDone } = useShortTimeDisplay();
-  const { userId, campaignName } = useEditorAppSelector(
-    (state) => state.levelEditor.campaignInProgress.locator,
-  );
-  const disabled = !remoteIsInSync || campaignName === undefined;
 
   return justDone > 0 ?
       <ToolbarButton ariaLabel="Campaign link copied" class="bg-moss">
         <span class="relative text-single-line">OK!</span>
       </ToolbarButton>
-    : <ToolbarButton
-        ariaLabel="Share campaign"
-        disabled={disabled}
-        onClick={async () => {
-          const url = new URL(import.meta.env.VITE_GAME_URL);
-          const searchParams = url.searchParams as TypedURLSearchParams;
-
-          if (userId === undefined) {
-            throw new Error("no user id on supabase session");
-          }
-
-          searchParams.set("campaignName", campaignName!);
-          searchParams.set("campaignAuthorUserId", userId);
-
-          navigator.clipboard.writeText(url.toString()).then(doneNow);
-        }}
-        tooltipContent={tooltipMarkdown}
-      >
-        <span
-          class={cn(
-            `sprite ${"texture-editor_tool_share" satisfies TextureTailwindClass} relative`,
-            {
-              "sprite-revert-to-two-tone-dim": !remoteIsInSync,
-            },
-          )}
-        />
-      </ToolbarButton>;
+    : <CommandToolbarButton
+        command={actionCommandDefinitions.copyShareLink}
+        onClick={doneNow}
+      />;
 };

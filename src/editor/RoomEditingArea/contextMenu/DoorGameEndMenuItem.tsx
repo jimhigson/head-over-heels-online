@@ -1,7 +1,6 @@
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
-import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
-import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
+import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import {
   selectCurrentCommittedRoomJson,
   selectCursorRoomSelectedJsonItemIds,
@@ -13,7 +12,6 @@ import {
  * doors, at least one of which doesn't end the game already
  */
 export const DoorGameEndMenuItem = () => {
-  const dispatch = useAppDispatch();
   const selectedJsonItemIds = useEditorAppSelector(
     selectCursorRoomSelectedJsonItemIds,
   );
@@ -29,13 +27,12 @@ export const DoorGameEndMenuItem = () => {
   }
 
   return (
-    <ContextMenuItem
-      value="Make game end"
-      onSelect={() =>
-        dispatch(setSelectedDoorsToGameEnd({ timestamp: Date.now() }))
-      }
-    >
-      Make game end
-    </ContextMenuItem>
+    <CommandContextMenuItem
+      command={{
+        type: "action",
+        label: "Make game end",
+        action: () => setSelectedDoorsToGameEnd({ timestamp: Date.now() }),
+      }}
+    />
   );
 };

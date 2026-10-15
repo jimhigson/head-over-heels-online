@@ -1,6 +1,6 @@
 import { type BaseQueryFn, type EndpointBuilder } from "@reduxjs/toolkit/query";
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { type Provider } from "@supabase/supabase-js";
+import { type Provider, type User } from "@supabase/supabase-js";
 
 import {
   getLatestCampaignVersion,
@@ -9,6 +9,7 @@ import {
 } from "../../../db/campaign";
 import { importCampaignDbClient } from "../../../db/campaignDbClient.import";
 import { importGetEnabledAuthProviders } from "../../../db/getEnabledAuthProviders.import";
+import { importGetSupabaseUser } from "../../../db/getSupabaseUser.import";
 import { getUsername } from "../../../db/getUsername";
 import { type EditorCampaign } from "../../../editor/editorTypes";
 import { type Campaign, type CampaignLocator } from "../../../model/modelTypes";
@@ -91,6 +92,29 @@ const editorCampaignEndpoints = (
       }
     },
   }),
+  /** the logged-in user (null if none), kept current as they log in or out */
+  getSupabaseUser: builder.query<null | User, void>({
+    async queryFn() {
+      try {
+        const { getSupabaseUser } = await importGetSupabaseUser();
+        return { data: await getSupabaseUser() };
+      } catch (e) {
+        return {
+          error: createSerialisableErrors(
+            new Error(`getSupabaseUser queryFn failed`, { cause: e }),
+          ),
+        };
+      }
+    },
+    async onCacheEntryAdded(_arg, { updateCachedData, cacheEntryRemoved }) {
+      const { subscribeToSupabaseUser } = await importGetSupabaseUser();
+      const unsubscribe = subscribeToSupabaseUser((user) =>
+        updateCachedData(() => user),
+      );
+      await cacheEntryRemoved;
+      unsubscribe();
+    },
+  }),
   getAuthProviders: builder.query<Array<Provider>, void>({
     async queryFn() {
       try {
@@ -118,6 +142,7 @@ export const {
   useGetAllUsersLatestCampaignsQuery,
   useGetAuthProvidersQuery,
   useGetLatestCampaignVersionQuery,
+  useGetSupabaseUserQuery,
   useGetUsernameQuery,
 } = editorCampaignsApiSlice;
 

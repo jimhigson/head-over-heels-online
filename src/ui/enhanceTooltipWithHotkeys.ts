@@ -1,6 +1,6 @@
 import { type ShortcutKeys } from "./useKeyboardShortcut";
 
-const formatShortcutKey = (key: string): string =>
+export const formatShortcutKey = (key: string): string =>
   key
     .replace(/ArrowLeft/g, "⬅")
     .replace(/ArrowRight/g, "➡")

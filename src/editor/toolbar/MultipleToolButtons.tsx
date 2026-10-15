@@ -2,11 +2,11 @@ import { cloneElement, type VNode } from "preact";
 import { useRef, useState } from "preact/hooks";
 
 import { useMouseWheelOptions } from "../../ui/useMouseWheel";
+import { type CommandToolbarButtonProps } from "../commands/CommandToolbarButton";
 import { MenuButton } from "./buttons/MenuButton";
-import { type ToolbarButtonProps } from "./buttons/ToolbarButton";
 
 export interface MultipleToolButtonsProps {
-  children: VNode<ToolbarButtonProps>[];
+  children: VNode<Pick<CommandToolbarButtonProps, "onClick">>[];
 }
 
 export const MultipleToolButtons = ({ children }: MultipleToolButtonsProps) => {

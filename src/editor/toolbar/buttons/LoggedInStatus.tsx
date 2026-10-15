@@ -1,84 +1,56 @@
 import { skipToken } from "@reduxjs/toolkit/query/react";
 import { type Provider } from "@supabase/supabase-js";
 
-import { importSupabaseDb } from "../../../db/supabaseDb.import";
-import {
-  nerdFontAppleChar,
-  nerdFontDiscordChar,
-  nerdFontGithubChar,
-  nerdFontGoogleChar,
-  nerdFontTwitchChar,
-} from "../../../sprites/spritesheet/spritesheetData/hudChars";
+import { BlockyMarkdown } from "../../../game/components/BlockyMarkdown";
 import {
   useGetAuthProvidersQuery,
   useGetUsernameQuery,
 } from "../../../store/slices/campaigns/editorCampaignsApiSlice";
 import { Button } from "../../../ui/Button";
 import { cn } from "../../../ui/cn";
+import { SpinnerHead } from "../../../ui/Spinner";
 import { useTip } from "../../../ui/tip/useTip";
-import { useSupabaseUser } from "../useSupabaseUser";
-
-const providerIcons: Partial<Record<Provider, string>> = {
-  apple: nerdFontAppleChar,
-  discord: nerdFontDiscordChar,
-  github: nerdFontGithubChar,
-  google: nerdFontGoogleChar,
-  twitch: nerdFontTwitchChar,
-};
-
-export type ProviderIconProps = {
-  provider: Provider;
-  class?: string;
-};
-
-const ProviderIcon = ({ provider, class: className }: ProviderIconProps) => {
-  const icon = providerIcons[provider];
-  if (icon === undefined) {
-    return <span class="w-1" />;
-  }
-  return <span class={className}>{icon}</span>;
-};
+import { logInWithProvider } from "../../auth/logInWithProvider";
+import { logOut } from "../../auth/logOut";
+import { ProviderIcon } from "../../auth/ProviderIcon";
+import {
+  useIsAuthServerUnreachable,
+  useSupabaseUser,
+} from "../useSupabaseUser";
 
 export const LoggedInStatus = ({ class: className }: { class?: string }) => {
   const user = useSupabaseUser();
   // the session only carries the email; look up the display name to show instead
   const { data: username } = useGetUsernameQuery(user ? user.id : skipToken);
-  const { data: authProviders = [] } = useGetAuthProvidersQuery();
+  const { data: authProviders = [], isError: authProvidersFailed } =
+    useGetAuthProvidersQuery();
   const { interestfor, tip } = useTip(user?.email);
+  const isAuthServerUnreachable = useIsAuthServerUnreachable();
+
+  if (isAuthServerUnreachable) {
+    return (
+      <div class={cn("px-1 pb-1 bg-midRed", className)}>
+        <BlockyMarkdown class="text-highlightBeige [&_h2]:text-white">{`## Can’t log in
+
+![](texture-dalek_1) Can’t reach the login server.
+
+You can’t save now, but edit and can save when the network comes back`}</BlockyMarkdown>
+      </div>
+    );
+  }
 
   if (user === undefined) {
     // no data yet - don't know if logged in. Render a space-holder to stop the
     // ui jumping around as much:
-    return <div class="bg-shadow h-4" />;
+    return (
+      <div class={cn("flex flex-col items-center", className)}>
+        <div class="h-4">
+          <SpinnerHead />
+        </div>
+        <span class="text-single-line">Logging in</span>
+      </div>
+    );
   }
-
-  const handleLogin = (provider: Provider) => async () => {
-    // Remove everything after, and including, #.
-    // the # was causing issues since the redirect adds another # with the auth
-    // token to the url when coming back to our site, then leaves one which
-    // can still be there if we log out and in again
-    const redirectToUrl = new URL(window.location.href);
-    redirectToUrl.hash = "";
-    const redirectTo = redirectToUrl.toString();
-
-    const { supabaseDb } = await importSupabaseDb();
-    const { error } = await supabaseDb.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo,
-      },
-    });
-    if (error) {
-      console.error("Login error:", error);
-    }
-  };
-  const handleLogout = async () => {
-    const { supabaseDb } = await importSupabaseDb();
-    const { error } = await supabaseDb.auth.signOut();
-    if (error) {
-      console.error("Logout error:", error);
-    }
-  };
 
   return (
     <div class={cn(className)}>
@@ -96,11 +68,7 @@ export const LoggedInStatus = ({ class: className }: { class?: string }) => {
             <span>{username ?? user.email}</span>
           </button>
           {tip}
-          <Button
-            aria-label="Log out"
-            class="px-1 w-full"
-            onClick={handleLogout}
-          >
+          <Button aria-label="Log out" class="px-1 w-full" onClick={logOut}>
             <span class="text-single-line">LOGOUT</span>
           </Button>
         </div>
@@ -112,13 +80,17 @@ export const LoggedInStatus = ({ class: className }: { class?: string }) => {
             You will not be able to save
           </span>
           <div class="pt-1 flex flex-col gap-half">
-            <span class="text-single-line">Log in with:</span>
+            <span class="text-single-line">
+              {authProvidersFailed ?
+                "Can’t reach the login server"
+              : "Log in with:"}
+            </span>
             {authProviders.map((authProvider) => {
               return (
                 <Button
                   key={authProvider}
                   class="px-1 w-full max-w-16 flex-row justify-between bg-redShadow"
-                  onClick={handleLogin(authProvider)}
+                  onClick={() => logInWithProvider(authProvider)}
                 >
                   <ProviderIcon
                     provider={authProvider}

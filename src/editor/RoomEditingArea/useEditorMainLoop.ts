@@ -85,7 +85,7 @@ export const useEditorMainLoop = (
 
   useEffect(() => {
     // a solid backdrop bounding the room's projected rect - the room reads as
-    // sitting on this, with the pane's checkerboard void around it:
+    // sitting on this, with the pane's background void around it:
     const backdrop = new Graphics({ label: "editorRoomBackdrop" });
     backdrop
       .rect(

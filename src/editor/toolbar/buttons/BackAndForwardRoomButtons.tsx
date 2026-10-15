@@ -1,6 +1,8 @@
 import { useAppDispatch } from "../../../store/hooks";
 import { useIsUncolourised } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { useEditorAppSelector } from "../../../store/store";
+import { actionCommandDefinitions } from "../../commands/actionCommandDefinitions";
+import { CommandToolbarButton } from "../../commands/CommandToolbarButton";
 import {
   roomBack,
   roomForward,
@@ -10,19 +12,6 @@ import {
 } from "../../slice/levelEditorSlice";
 import { MenuButton, MenuItemButton } from "./MenuButton";
 import { cssForRoomColour } from "./RoomColourSelect";
-import { ToolbarButton } from "./ToolbarButton";
-
-const backTooltipMarkdown = `
-## Back
-
-Go back to the previous room
-`;
-
-const forwardTooltipMarkdown = `
-## Forward
-
-The opposite of back
-`;
 
 const maxHistoryItems = 8;
 
@@ -37,21 +26,9 @@ export const BackAndForwardRoomButtons = () => {
     <>
       <MenuButton
         main={
-          <ToolbarButton
-            ariaLabel="Previous room"
-            class="bg-highlightBeige"
-            disabled={backRooms.length === 0}
-            onClick={() => {
-              dispatch(roomBack());
-            }}
-            // this is bit weird - need to give shift on OSX since the <
-            // is on the , key, and can only be types using shift.
-            // I think windows is the same, so this should be ok
-            shortcutKeys={["⇧<"]}
-            tooltipContent={backTooltipMarkdown}
-          >
-            <span class="text-single-line">{"<"}</span>
-          </ToolbarButton>
+          <CommandToolbarButton
+            command={actionCommandDefinitions.previousRoom}
+          />
         }
       >
         {backRooms
@@ -73,18 +50,7 @@ export const BackAndForwardRoomButtons = () => {
       </MenuButton>
       <MenuButton
         main={
-          <ToolbarButton
-            ariaLabel="Next room"
-            class="bg-highlightBeige"
-            disabled={forwardRooms.length === 0}
-            onClick={() => {
-              dispatch(roomForward());
-            }}
-            shortcutKeys={["⇧>"]}
-            tooltipContent={forwardTooltipMarkdown}
-          >
-            <span class="text-single-line">{">"}</span>
-          </ToolbarButton>
+          <CommandToolbarButton command={actionCommandDefinitions.nextRoom} />
         }
       >
         {forwardRooms

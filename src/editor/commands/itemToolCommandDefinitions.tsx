@@ -1,25 +1,30 @@
 import { playableTailwindSpriteClassname } from "../../game/components/tailwindSprites/playableTailwindSpriteClassname";
 import { rotatingSceneryTiles } from "../../model/inPlaceMutators/rotatingSceneryTiles";
-import { type JsonItemType } from "../../model/json/JsonItem";
 import {
   type AnimatedTextureTailwindClass,
   type TextureTailwindClass,
 } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import { type EditorRootState } from "../../store/store";
 import { emptyArray, emptyObject } from "../../utils/empty";
 import { twClass } from "../../utils/twClass" with { type: "macro" };
+import { doorItemTool } from "../RoomEditingArea/interactivity/doorItemTool";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../slice/levelEditorSelectors";
-import { type LevelEditorState } from "../slice/levelEditorSlice";
 import {
   DissapearingItemToolbarIcon,
   LabelledToolbarIcon,
   StackedToolbarIcons,
-} from "./buttons/ToolbarButtonContentPatterns";
-import { buttonSpriteRevertColourClasses } from "./buttonSizeClassNames";
-import { type ItemToolButtonProps } from "./ItemToolButton";
+} from "../toolbar/buttons/ToolbarButtonContentPatterns";
+import { buttonSpriteRevertColourClasses } from "../toolbar/buttonSizeClassNames";
+import {
+  type EditorCommandDefinition,
+  type ItemToolCommand,
+} from "./EditorCommand";
 
-export const buttonDefinitions = {
+/** the items the editor can place, each as a command that picks its item tool */
+export const itemToolCommandDefinitions = {
   "block.organic": {
-    ariaLabel: "Organic block",
+    label: "Organic block",
+    type: "itemTool",
     itemTool: {
       type: "block",
       config: { style: "organic" },
@@ -27,14 +32,15 @@ export const buttonDefinitions = {
     shortcutKeys: ["B"],
     tooltipContent: `## Block
 The basic block`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-block_organic" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "block.organic.disappearing": {
-    ariaLabel: "Disappearing organic block",
+    label: "Disappearing organic block",
+    type: "itemTool",
     itemTool: {
       type: "block",
       config: { style: "organic", disappearing: { on: "stand" } },
@@ -42,7 +48,7 @@ The basic block`,
     shortcutKeys: ["⇧B"],
     tooltipContent: `## Block
 Disappearing basic block`,
-    children: (
+    icon: (
       <DissapearingItemToolbarIcon
         iconClassName={twClass<TextureTailwindClass>(
           "texture-block_organic_disappearing",
@@ -51,19 +57,21 @@ Disappearing basic block`,
     ),
   },
   "block.artificial": {
-    ariaLabel: "Artificial block",
+    label: "Artificial block",
+    type: "itemTool",
     itemTool: { type: "block", config: { style: "artificial" } },
     shortcutKeys: ["⌥B"],
     tooltipContent: `## Block
 Basic block with a metallic look`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-block_artificial" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "block.artificial.disappearing": {
-    ariaLabel: "Disappearing artificial block",
+    label: "Disappearing artificial block",
+    type: "itemTool",
     itemTool: {
       type: "block",
       config: { style: "artificial", disappearing: { on: "stand" } },
@@ -71,7 +79,7 @@ Basic block with a metallic look`,
     shortcutKeys: ["⌥⇧B"],
     tooltipContent: `## Block
 Disappearing metallic look block`,
-    children: (
+    icon: (
       <DissapearingItemToolbarIcon
         iconClassName={twClass<TextureTailwindClass>(
           "texture-block_artificial_disappearing",
@@ -80,70 +88,77 @@ Disappearing metallic look block`,
     ),
   },
   "block.tower": {
-    ariaLabel: "Tower",
+    label: "Tower",
+    type: "itemTool",
     itemTool: { type: "block", config: { style: "tower" } },
     shortcutKeys: ["T"],
     tooltipContent: `## Tower
 Very high block`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-tower" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "block.book": {
-    ariaLabel: "Book block",
+    label: "Book block",
+    type: "itemTool",
     itemTool: { type: "block", config: { style: "book" } },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-book_d0" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "barrier.x": {
-    ariaLabel: "Barrier on x axis",
+    label: "Barrier on x axis",
+    type: "itemTool",
     itemTool: { type: "barrier", config: { axis: "x" } },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-barrier_d0" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "barrier.y": {
-    ariaLabel: "Barrier on y axis",
+    label: "Barrier on y axis",
+    type: "itemTool",
     itemTool: { type: "barrier", config: { axis: "y" } },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-barrier_d2" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "barrier.x.disappearing": {
-    ariaLabel: "Disappearing barrier on x axis",
+    label: "Disappearing barrier on x axis",
+    type: "itemTool",
     itemTool: {
       type: "barrier",
       config: { axis: "x", disappearing: { on: "touch" } },
     },
-    children: (
+    icon: (
       <DissapearingItemToolbarIcon
         iconClassName={twClass<TextureTailwindClass>("texture-barrier_d0")}
       />
     ),
   },
   "barrier.y.disappearing": {
-    ariaLabel: "Disappearing barrier on y axis",
+    label: "Disappearing barrier on y axis",
+    type: "itemTool",
     itemTool: {
       type: "barrier",
       config: { axis: "y", disappearing: { on: "touch" } },
     },
-    children: (
+    icon: (
       <DissapearingItemToolbarIcon
         iconClassName={twClass<TextureTailwindClass>("texture-barrier_d2")}
       />
     ),
   },
   "monster.dalek": {
-    ariaLabel: "Mojo (dalek)",
+    label: "Mojo (dalek)",
+    type: "itemTool",
     itemTool: {
       type: "monster",
       config: {
@@ -156,14 +171,15 @@ Very high block`,
 the emperor's worker bots
 
 patrols randomly in a diagonal pattern`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-dalek_1" satisfies TextureTailwindClass} ${"activated:texture-animated-dalek" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "monster.cyberman": {
-    ariaLabel: "Guard (cyberman)",
+    label: "Guard (cyberman)",
+    type: "itemTool",
     itemTool: {
       type: "monster",
       config: {
@@ -179,7 +195,7 @@ hovers towards the player on the shortest axis
 heels can outrun, but not head
 
 place on a toaster to make a charging guard`,
-    children: (
+    icon: (
       <StackedToolbarIcons
         topClasses={`${"texture-cyberman_d6" satisfies TextureTailwindClass} ${"activated:texture-cyberman_d4" satisfies TextureTailwindClass}`}
         bottomClasses={`${"texture-bubbles_cold_2" satisfies TextureTailwindClass} ${"activated:texture-animated-bubbles_cold" satisfies AnimatedTextureTailwindClass}`}
@@ -187,7 +203,8 @@ place on a toaster to make a charging guard`,
     ),
   },
   "monster.skiHead": {
-    ariaLabel: "Ski-head monster",
+    label: "Ski-head monster",
+    type: "itemTool",
     itemTool: {
       type: "monster",
       config: {
@@ -202,14 +219,15 @@ place on a toaster to make a charging guard`,
 moves *back and forth* by default
 
 or can be set to *patrol clockwise*`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-skiHead_greenAndPink_d6" satisfies TextureTailwindClass} ${"activated:texture-skiHead_greenAndPink_d4" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "monster.helicopterBug": {
-    ariaLabel: "Helicopter bug",
+    label: "Helicopter bug",
+    type: "itemTool",
     itemTool: {
       type: "monster",
       config: {
@@ -218,14 +236,15 @@ or can be set to *patrol clockwise*`,
         movement: "patrol-randomly-xy8",
       },
     },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-helicopterBug_1" satisfies TextureTailwindClass} ${"activated:texture-animated-helicopterBug" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "monster.turtle": {
-    ariaLabel: "Turtle",
+    label: "Turtle",
+    type: "itemTool",
     itemTool: {
       type: "monster",
       config: {
@@ -237,14 +256,15 @@ or can be set to *patrol clockwise*`,
     },
     tooltipContent: `## turtle
 plods along in a clockwise pattern`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-turtle_d6_1" satisfies TextureTailwindClass} ${"activated:texture-animated-turtle_d4" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "monster.homingBot": {
-    ariaLabel: "Homing bot",
+    label: "Homing bot",
+    type: "itemTool",
     itemTool: {
       type: "monster",
       config: {
@@ -255,14 +275,15 @@ plods along in a clockwise pattern`,
     },
     tooltipContent: `## homing bot
 detects a player in a straight line on an axis and rushes towards them`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-headlessBase" satisfies TextureTailwindClass} ${"activated:texture-animated-headlessBase_scan" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "monster.computerBot": {
-    ariaLabel: "Computer bot",
+    label: "Computer bot",
+    type: "itemTool",
     itemTool: {
       type: "monster",
       config: {
@@ -274,14 +295,15 @@ detects a player in a straight line on an axis and rushes towards them`,
     },
     tooltipContent: `## Computer bot
 usually patrols randomly, but can be programmed to move towards the player`,
-    children: (
+    icon: (
       <StackedToolbarIcons
         topClasses={`${"texture-computerBot_d6" satisfies TextureTailwindClass} ${"activated:texture-computerBot_d4" satisfies TextureTailwindClass}`}
       />
     ),
   },
   "monster.bubbleRobot": {
-    ariaLabel: "Bubble bot",
+    label: "Bubble bot",
+    type: "itemTool",
     itemTool: {
       type: "monster",
       config: {
@@ -294,7 +316,7 @@ usually patrols randomly, but can be programmed to move towards the player`,
 patrols randomly in 8 directions
 
 fast and dangerous`,
-    children: (
+    icon: (
       <StackedToolbarIcons
         topClasses={`${twClass<TextureTailwindClass>("texture-bubbles_cold_2")} ${twClass<AnimatedTextureTailwindClass>("activated:texture-animated-bubbles_cold")}`}
         bottomClasses={twClass<TextureTailwindClass>("texture-headlessBase")}
@@ -302,7 +324,8 @@ fast and dangerous`,
     ),
   },
   "monster.monkey": {
-    ariaLabel: "Monkey",
+    label: "Monkey",
+    type: "itemTool",
     itemTool: {
       type: "monster",
       config: {
@@ -312,14 +335,15 @@ fast and dangerous`,
         movement: "patrol-randomly-xy4",
       },
     },
-    children: (
+    icon: (
       <StackedToolbarIcons
         topClasses={`${"texture-monkey_d6" satisfies TextureTailwindClass} ${"activated:texture-monkey_d4" satisfies TextureTailwindClass}`}
       />
     ),
   },
   "monster.elephant": {
-    ariaLabel: "Elephant",
+    label: "Elephant",
+    type: "itemTool",
     itemTool: {
       type: "monster",
       config: {
@@ -328,14 +352,15 @@ fast and dangerous`,
         movement: "patrol-randomly-xy4",
       },
     },
-    children: (
+    icon: (
       <StackedToolbarIcons
         topClasses={`${"texture-elephant_d6" satisfies TextureTailwindClass} ${"activated:texture-elephant_d4" satisfies TextureTailwindClass}`}
       />
     ),
   },
   "monster.elephantHead": {
-    ariaLabel: "Elephant head",
+    label: "Elephant head",
+    type: "itemTool",
     itemTool: {
       type: "monster",
       config: {
@@ -349,14 +374,15 @@ fast and dangerous`,
 Things have gone weird
 
 Stationary, but deadly`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-elephant_d6" satisfies TextureTailwindClass} ${"activated:texture-elephant_d4" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "monster.emperorsGuardian": {
-    ariaLabel: "Emperor's guardian",
+    label: "Emperor's guardian",
+    type: "itemTool",
     itemTool: {
       type: "monster",
       config: {
@@ -365,7 +391,7 @@ Stationary, but deadly`,
         movement: "towards-analogue-unless-planet-crowns",
       },
     },
-    class: "inline relative",
+    toolbarClass: "inline relative",
     tooltipContent: `## Emperor's Guardian
 
 very dangerous
@@ -374,7 +400,7 @@ moves towards the player, unless they have all four planet crowns
 
 does not *like doughnuts*
 `,
-    children: (
+    icon: (
       <StackedToolbarIcons
         topClasses={"texture-ball" satisfies TextureTailwindClass}
         bottomClasses={`${"texture-bubbles_cold_2" satisfies TextureTailwindClass} ${"activated:texture-animated-bubbles_cold" satisfies AnimatedTextureTailwindClass}`}
@@ -382,7 +408,8 @@ does not *like doughnuts*
     ),
   },
   "monster.emperor": {
-    ariaLabel: "Emperor",
+    label: "Emperor",
+    type: "itemTool",
     itemTool: {
       type: "monster",
       config: {
@@ -393,16 +420,17 @@ does not *like doughnuts*
     },
     tooltipContent: `## Emperor
 The end boss, usually found guarding his Blacktooth crown`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-bubbles_cold_2" satisfies TextureTailwindClass} ${"activated:texture-animated-bubbles_cold" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "pickup.extraLife": {
-    ariaLabel: "Extra life pickup",
+    label: "Extra life pickup",
+    type: "itemTool",
     itemTool: { type: "pickup", config: { gives: "extra-life" } },
-    children: (
+    icon: (
       <LabelledToolbarIcon
         iconClasses={
           "texture-whiteRabbit_extra-life" satisfies TextureTailwindClass
@@ -412,9 +440,10 @@ The end boss, usually found guarding his Blacktooth crown`,
     ),
   },
   "pickup.shield": {
-    ariaLabel: "Shield pickup",
+    label: "Shield pickup",
+    type: "itemTool",
     itemTool: { type: "pickup", config: { gives: "shield" } },
-    children: (
+    icon: (
       <LabelledToolbarIcon
         iconClasses={
           "texture-whiteRabbit_shield" satisfies TextureTailwindClass
@@ -424,9 +453,10 @@ The end boss, usually found guarding his Blacktooth crown`,
     ),
   },
   "pickup.jumps": {
-    ariaLabel: "Extra jumps pickup",
+    label: "Extra jumps pickup",
+    type: "itemTool",
     itemTool: { type: "pickup", config: { gives: "jumps" } },
-    children: (
+    icon: (
       <LabelledToolbarIcon
         iconClasses={"texture-whiteRabbit_jumps" satisfies TextureTailwindClass}
         text="♨"
@@ -434,9 +464,10 @@ The end boss, usually found guarding his Blacktooth crown`,
     ),
   },
   "pickup.fast": {
-    ariaLabel: "Speed pickup",
+    label: "Speed pickup",
+    type: "itemTool",
     itemTool: { type: "pickup", config: { gives: "fast" } },
-    children: (
+    icon: (
       <LabelledToolbarIcon
         iconClasses={"texture-whiteRabbit_fast" satisfies TextureTailwindClass}
         text="⚡"
@@ -444,16 +475,18 @@ The end boss, usually found guarding his Blacktooth crown`,
     ),
   },
   "pickup.bag": {
-    ariaLabel: "Bag pickup",
+    label: "Bag pickup",
+    type: "itemTool",
     itemTool: { type: "pickup", config: { gives: "bag" } },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-bag" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "pickup.hooter": {
-    ariaLabel: "Hooter pickup",
+    label: "Hooter pickup",
+    type: "itemTool",
     itemTool: {
       type: "pickup",
       config: { gives: "hooter" },
@@ -461,44 +494,48 @@ The end boss, usually found guarding his Blacktooth crown`,
     tooltipContent: `## hooter
 
 head's doughnut firing hooter`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-hooter" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "pickup.doughnuts": {
-    ariaLabel: "Doughnuts pickup",
+    label: "Doughnuts pickup",
+    type: "itemTool",
     itemTool: { type: "pickup", config: { gives: "doughnuts" } },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-doughnuts" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "pickup.reincarnation": {
-    ariaLabel: "Reincarnation pickup",
+    label: "Reincarnation pickup",
+    type: "itemTool",
     itemTool: { type: "pickup", config: { gives: "reincarnation" } },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-fish_1" satisfies TextureTailwindClass} ${"activated:texture-animated-fish" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "pickup.crown": {
-    ariaLabel: "Crown pickup",
+    label: "Crown pickup",
+    type: "itemTool",
     itemTool: {
       type: "pickup",
       config: { gives: "crown", planet: "blacktooth" },
     },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-crown_blacktooth" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "pickup.scroll": {
-    ariaLabel: "Scroll",
+    label: "Scroll",
+    type: "itemTool",
     itemTool: {
       type: "pickup",
       config: {
@@ -507,35 +544,38 @@ head's doughnut firing hooter`,
         markdown: "#Write me\n\nTODO: Put content here",
       },
     },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-scroll" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "deadlyBlock.volcano": {
-    ariaLabel: "Volcano",
+    label: "Volcano",
+    type: "itemTool",
     itemTool: { type: "deadlyBlock", config: { style: "volcano" } },
     tooltipContent: `## Volcano`,
     shortcutKeys: ["V"],
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-volcano_1" satisfies TextureTailwindClass} ${"activated:texture-animated-volcano" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "deadlyBlock.toaster": {
-    ariaLabel: "Toaster",
+    label: "Toaster",
+    type: "itemTool",
     itemTool: { type: "deadlyBlock", config: { style: "toaster" } },
     tooltipContent: `## Toaster\n\ncharging stations for the Emperor's Guardians`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-toaster_1" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "slidingDeadly.spikyBall": {
-    ariaLabel: "Spiky ball",
+    label: "Spiky ball",
+    type: "itemTool",
     itemTool: {
       type: "slidingDeadly",
       config: { style: "spikyBall", startingPhase: 1 },
@@ -544,14 +584,15 @@ head's doughnut firing hooter`,
 rolls fast if pushed
 
 deadly to touch`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-spikyBall_1" satisfies TextureTailwindClass} ${"activated:texture-spikyBall_2" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   lamp: {
-    ariaLabel: "Lamp",
+    label: "Lamp",
+    type: "itemTool",
     itemTool: {
       type: "lamp",
       config: { direction: "towards", activated: true },
@@ -563,14 +604,15 @@ shines a beam of light along an axis
 monsters will not walk into the light
 
 can be turned on/off by switches and buttons`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-lamp_on_d6" satisfies TextureTailwindClass} ${"activated:texture-lamp_on_d4" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   mirror: {
-    ariaLabel: "Mirror",
+    label: "Mirror",
+    type: "itemTool",
     itemTool: {
       type: "mirror",
       config: { orientation: "awayRight" },
@@ -582,28 +624,30 @@ sits diagonally to the axes and reflects light beams
 reflective on both sides
 
 rotates to the other diagonal when collided with`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-mirror_d3" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   spikes: {
-    ariaLabel: "Spikes",
+    label: "Spikes",
+    type: "itemTool",
     itemTool: { type: "spikes", config: emptyObject },
     tooltipContent: `## spikes
 
 deadly to touch on top
 
 safe to run into the sides`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-spikes" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "moveableDeadly.deadFish": {
-    ariaLabel: "Dead fish",
+    label: "Dead fish",
+    type: "itemTool",
     itemTool: { type: "moveableDeadly", config: { style: "deadFish" } },
     tooltipContent: `## dead fish
 
@@ -611,23 +655,25 @@ safe to run into the sides`,
 
 dead fish decompose very quickly and it rapidly
 turns so poisonous that a single lick can kill`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-fish_dead" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   charles: {
-    ariaLabel: "Charles bot",
+    label: "Charles bot",
+    type: "itemTool",
     itemTool: { type: "charles", config: emptyObject },
-    children: (
+    icon: (
       <StackedToolbarIcons
         topClasses={`${"texture-charles_d6" satisfies TextureTailwindClass} ${"activated:texture-charles_d4" satisfies TextureTailwindClass}`}
       />
     ),
   },
   joystick: {
-    ariaLabel: "Joystick",
+    label: "Joystick",
+    type: "itemTool",
     itemTool: {
       type: "joystick",
       config: {
@@ -638,14 +684,15 @@ turns so poisonous that a single lick can kill`,
 Controls one or more Charles bots
 
 Change *which* Charles in the json`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-joystick_whole" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   switch: {
-    ariaLabel: "Switch",
+    label: "Switch",
+    type: "itemTool",
     itemTool: {
       type: "switch",
       config: {
@@ -664,14 +711,15 @@ edit the json to choose:
 * flip other switches
 * change where teleporters go
 * ... other things!`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-switch_left" satisfies TextureTailwindClass} ${"activated:texture-switch_right" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   button: {
-    ariaLabel: "Button",
+    label: "Button",
+    type: "itemTool",
     itemTool: {
       type: "button",
       config: {
@@ -679,14 +727,15 @@ edit the json to choose:
       },
     },
     tooltipContent: `## button`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-buttonInGame" satisfies TextureTailwindClass} ${"activated:texture-buttonInGame_pressed" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   emitter: {
-    ariaLabel: "Emitter",
+    label: "Emitter",
+    type: "itemTool",
     itemTool: {
       type: "emitter",
       config: {
@@ -696,10 +745,11 @@ edit the json to choose:
       },
     },
     tooltipContent: `## Emitter\nCreates items at regular intervals\n\nEdit the json to configure what it emits`,
-    children: <span class="text-single-line">E</span>,
+    icon: <span class="text-single-line">E</span>,
   },
   timer: {
-    ariaLabel: "Timer",
+    label: "Timer",
+    type: "itemTool",
     itemTool: {
       type: "timer",
       config: {
@@ -709,67 +759,74 @@ edit the json to choose:
       },
     },
     tooltipContent: `## Timer\nPeriodically toggles switch-style modifications\n\nEdit the json to configure targets`,
-    children: <span class="text-single-line">T</span>,
+    icon: <span class="text-single-line">T</span>,
   },
   spring: {
-    ariaLabel: "Spring",
+    label: "Spring",
+    type: "itemTool",
     itemTool: {
       type: "spring",
       config: {},
     },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-spring_released" satisfies TextureTailwindClass} ${"activated:texture-spring_compressed" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "portableBlock.cube": {
-    ariaLabel: "Portable cube",
+    label: "Portable cube",
+    type: "itemTool",
     itemTool: { type: "portableBlock", config: { style: "cube" } },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-cube" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "portableBlock.drum": {
-    ariaLabel: "Portable drum",
+    label: "Portable drum",
+    type: "itemTool",
     itemTool: { type: "portableBlock", config: { style: "drum" } },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-drum" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "portableBlock.sticks": {
-    ariaLabel: "Portable sticks",
+    label: "Portable sticks",
+    type: "itemTool",
     itemTool: { type: "portableBlock", config: { style: "sticks" } },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-sticks" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   pushableBlock: {
-    ariaLabel: "Pushable step stool",
+    label: "Pushable step stool",
+    type: "itemTool",
     itemTool: { type: "pushableBlock", config: {} },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-stepStool" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   ball: {
-    ariaLabel: "Ball",
+    label: "Ball",
+    type: "itemTool",
     itemTool: { type: "ball", config: emptyObject },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-ball" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "slidingBlock.puck": {
-    ariaLabel: "Sliding puck",
+    label: "Sliding puck",
+    type: "itemTool",
     itemTool: {
       type: "slidingBlock",
       config: { style: "puck" },
@@ -777,14 +834,15 @@ edit the json to choose:
     tooltipContent: `## Sliding puck
 
 Small item that can be stood on and slides when touched`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-puck" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "slidingBlock.book": {
-    ariaLabel: "Sliding book",
+    label: "Sliding book",
+    type: "itemTool",
     itemTool: {
       type: "slidingBlock",
       config: { style: "book" },
@@ -792,17 +850,18 @@ Small item that can be stood on and slides when touched`,
     tooltipContent: `## Sliding book
 
 Why are the books slippery?`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-book_d2" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   lift: {
-    ariaLabel: "Lift",
+    label: "Lift",
+    type: "itemTool",
     itemTool: { type: "lift", config: { top: 11, bottom: 0 } },
-    class: "inline relative",
-    children: (
+    toolbarClass: "inline relative",
+    icon: (
       <>
         <span
           class={`sprite inline-block absolute top-0 left-0 ${"texture-lift_static" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses} [button:active_&]:top-oneScaledPix`}
@@ -814,9 +873,10 @@ Why are the books slippery?`,
     ),
   },
   "conveyor.away": {
-    ariaLabel: "Conveyor moving away",
+    label: "Conveyor moving away",
+    type: "itemTool",
     itemTool: { type: "conveyor", config: { direction: "away" } },
-    children: (
+    icon: (
       <LabelledToolbarIcon
         iconClasses={`${"texture-conveyor_d2_1" satisfies TextureTailwindClass} ${"activated:texture-animated-conveyor_d2" satisfies AnimatedTextureTailwindClass}`}
         text="↗"
@@ -824,9 +884,10 @@ Why are the books slippery?`,
     ),
   },
   "conveyor.towards": {
-    ariaLabel: "Conveyor moving towards",
+    label: "Conveyor moving towards",
+    type: "itemTool",
     itemTool: { type: "conveyor", config: { direction: "towards" } },
-    children: (
+    icon: (
       <LabelledToolbarIcon
         iconClasses={`${"texture-conveyor_d2_1" satisfies TextureTailwindClass} ${"activated:texture-animated-reversed-conveyor_d2" satisfies AnimatedTextureTailwindClass}`}
         text="↙"
@@ -834,9 +895,10 @@ Why are the books slippery?`,
     ),
   },
   "conveyor.left": {
-    ariaLabel: "Conveyor moving left",
+    label: "Conveyor moving left",
+    type: "itemTool",
     itemTool: { type: "conveyor", config: { direction: "left" } },
-    children: (
+    icon: (
       <LabelledToolbarIcon
         iconClasses={`${"texture-conveyor_d0_1" satisfies TextureTailwindClass} ${"activated:texture-animated-conveyor_d0" satisfies AnimatedTextureTailwindClass}`}
         text="↖"
@@ -844,9 +906,10 @@ Why are the books slippery?`,
     ),
   },
   "conveyor.right": {
-    ariaLabel: "Conveyor moving right",
+    label: "Conveyor moving right",
+    type: "itemTool",
     itemTool: { type: "conveyor", config: { direction: "right" } },
-    children: (
+    icon: (
       <LabelledToolbarIcon
         iconClasses={`${"texture-conveyor_d0_1" satisfies TextureTailwindClass} ${"activated:texture-animated-reversed-conveyor_d0" satisfies AnimatedTextureTailwindClass}`}
         text="↘"
@@ -854,31 +917,34 @@ Why are the books slippery?`,
     ),
   },
   teleporter: {
-    ariaLabel: "Teleporter",
+    label: "Teleporter",
+    type: "itemTool",
     itemTool: {
       type: "teleporter",
       config: {},
     },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-teleporter" satisfies TextureTailwindClass} ${"activated:texture-animated-teleporter_flashing" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   portableTeleporter: {
-    ariaLabel: "Portable teleporter",
+    label: "Portable teleporter",
+    type: "itemTool",
     itemTool: {
       type: "portableTeleporter",
       config: {},
     },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-portableTeleporter" satisfies TextureTailwindClass} ${"activated:texture-animated-portableTeleporter_flashing" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   movingPlatform: {
-    ariaLabel: "Moving platform",
+    label: "Moving platform",
+    type: "itemTool",
     itemTool: {
       type: "movingPlatform",
       config: {
@@ -893,26 +959,28 @@ Clockwise or back-and-forth
 Can be (de)activated by a switch, or touch
 
 Why a sandwich?`,
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-sandwich" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   hushPuppy: {
-    ariaLabel: "Hush puppy",
+    label: "Hush puppy",
+    type: "itemTool",
     itemTool: {
       type: "hushPuppy",
       config: {},
     },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-hushPuppy" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   floor: {
-    ariaLabel: "Floor",
+    label: "Floor",
+    type: "itemTool",
     itemTool: {
       type: "floor",
       config: {
@@ -921,14 +989,15 @@ Why a sandwich?`,
         times: { x: 1, y: 1 },
       },
     },
-    children: (
+    icon: (
       <span
         class={`sprite ${"texture-blacktooth_floor" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "player.head": {
-    ariaLabel: "Head start position",
+    label: "Head start position",
+    type: "itemTool",
     itemTool: {
       type: "player",
       config: { which: "head" },
@@ -938,14 +1007,15 @@ Why a sandwich?`,
 Place on of these into one room
 
 This is where head will start the game`,
-    children: (
+    icon: (
       <span
         class={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "walking", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "player.heels": {
-    ariaLabel: "Heels start position",
+    label: "Heels start position",
+    type: "itemTool",
     itemTool: {
       type: "player",
       config: { which: "heels" },
@@ -955,14 +1025,15 @@ This is where head will start the game`,
 Place on of these into one room
 
 This is where head will start the game`,
-    children: (
+    icon: (
       <span
         class={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "walking", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "sceneryPlayer.head": {
-    ariaLabel: "NPC head",
+    label: "NPC head",
+    type: "itemTool",
     itemTool: {
       type: "sceneryPlayer",
       config: { which: "head", startDirection: "towards" },
@@ -971,14 +1042,15 @@ This is where head will start the game`,
 Citizens of Freedom
 
 stand around not doing much`,
-    children: (
+    icon: (
       <span
         class={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "sceneryPlayer.heels": {
-    ariaLabel: "NPC heels",
+    label: "NPC heels",
+    type: "itemTool",
     itemTool: {
       type: "sceneryPlayer",
       config: { which: "heels", startDirection: "towards" },
@@ -987,14 +1059,15 @@ stand around not doing much`,
 Citizens of Freedom
 
 stand around not doing much`,
-    children: (
+    icon: (
       <span
         class={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   "sceneryPlayer.headOverHeels": {
-    ariaLabel: "NPC head over heels",
+    label: "NPC head over heels",
+    type: "itemTool",
     itemTool: {
       type: "sceneryPlayer",
       config: { which: "headOverHeels", startDirection: "towards" },
@@ -1003,16 +1076,17 @@ stand around not doing much`,
 Citizens of Freedom
 
 stand around not doing much`,
-    children: (
+    icon: (
       <StackedToolbarIcons
         topClasses={`${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "right" })}`}
         bottomClasses={`${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "right" })}`}
       />
     ),
   },
-  wall(state: LevelEditorState) {
-    const scenery =
-      selectCurrentCommittedRoomJsonFromLevelEditorState(state).planet;
+  wall(state: EditorRootState): ItemToolCommand {
+    const scenery = selectCurrentCommittedRoomJsonFromLevelEditorState(
+      state.levelEditor,
+    ).planet;
 
     const textureClassname =
       scenery === "blacktooth" ?
@@ -1032,7 +1106,8 @@ stand around not doing much`,
       : twClass<TextureTailwindClass>("texture-safari_wall_wall_d2");
 
     return {
-      ariaLabel: "Wall",
+      label: "Wall",
+      type: "itemTool",
       itemTool: {
         type: "wall" as "wall",
         config: {
@@ -1040,18 +1115,37 @@ stand around not doing much`,
           tiles: Array.from(rotatingSceneryTiles(scenery, 1)),
         },
       },
-      children: (
+      icon: (
         <span
           class={`sprite ${textureClassname} ${buttonSpriteRevertColourClasses}`}
         />
       ),
     };
   },
-} as const satisfies {
-  [s in string]: ButtonDefinition;
-};
+  door(state: EditorRootState): ItemToolCommand {
+    const { doorAutoAddsRoom } = state.levelEditor;
+    const scenery = selectCurrentCommittedRoomJsonFromLevelEditorState(
+      state.levelEditor,
+    ).planet;
 
-/** a toolbar item button, or one that depends on the editor's state */
-export type ButtonDefinition =
-  | ((state: LevelEditorState) => ItemToolButtonProps<JsonItemType>)
-  | ItemToolButtonProps<JsonItemType>;
+    const textureClassname =
+      scenery === "moonbase" ?
+        twClass<TextureTailwindClass>("texture-door_frame_moonbase_d0_whole")
+      : twClass<TextureTailwindClass>("texture-door_frame_generic_d0_whole");
+
+    return {
+      label: doorAutoAddsRoom ? "Door (adds adjacent room)" : "Door",
+      type: "itemTool",
+      itemTool: doorItemTool(doorAutoAddsRoom),
+      shortcutKeys: ["D"],
+      icon: (
+        <LabelledToolbarIcon
+          iconClasses={`sprite top-[calc(-17px*var(--scale))] left-[calc(-2px*var(--scale))] ${textureClassname} ${buttonSpriteRevertColourClasses}`}
+          text={doorAutoAddsRoom ? "+" : ""}
+        />
+      ),
+    };
+  },
+} as const satisfies {
+  [s in string]: EditorCommandDefinition<ItemToolCommand>;
+};

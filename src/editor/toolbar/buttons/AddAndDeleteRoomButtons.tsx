@@ -1,13 +1,11 @@
 import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import { useAppDispatch } from "../../../store/hooks";
-import { useEditorAppSelector } from "../../../store/store";
 import { useDispatchActionCallback } from "../../../store/useDispatchActionCallback";
 import { twClass } from "../../../utils/twClass";
 import { type Xy } from "../../../utils/vectors/vectors";
+import { actionCommandDefinitions } from "../../commands/actionCommandDefinitions";
+import { CommandToolbarButton } from "../../commands/CommandToolbarButton";
 import { addRoom } from "../../slice/levelEditorSlice";
-import { confirmDeleteRoomThunk } from "../confirmThunk";
 import { MenuButton, MenuItemButton } from "./MenuButton";
-import { ToolbarButton } from "./ToolbarButton";
 
 // Extracted component for room creation menu items
 const AddRoomMenuItem = ({
@@ -34,39 +32,12 @@ const AddRoomMenuItem = ({
   );
 };
 
-const addTooltipMarkdown = `
-## Add room
-
-Add a **new room** to this campaign
-
-Nothing will link to the room so add *doors* and *teleporters* to get into it
-`;
-
-const deleteTooltipMarkdown = `
-## Delete room
-
-Delete this room
-`;
-
 export const AddAndDeleteRoomButtons = () => {
-  const dispatch = useAppDispatch();
-  const hasOtherRooms = useEditorAppSelector(
-    (state) =>
-      Object.keys(state.levelEditor.campaignInProgress.rooms).length > 1,
-  );
-
   return (
     <>
       <MenuButton
         main={
-          <ToolbarButton
-            ariaLabel="Add room"
-            class="bg-moss"
-            onClick={useDispatchActionCallback(addRoom, {})}
-            tooltipContent={addTooltipMarkdown}
-          >
-            <span class="text-single-line">+</span>
-          </ToolbarButton>
+          <CommandToolbarButton command={actionCommandDefinitions.addRoom} />
         }
       >
         {[
@@ -447,15 +418,7 @@ export const AddAndDeleteRoomButtons = () => {
           />,
         ]}
       </MenuButton>
-      <ToolbarButton
-        ariaLabel="Delete room"
-        class="bg-midRed"
-        onClick={() => dispatch(confirmDeleteRoomThunk())}
-        disabled={!hasOtherRooms}
-        tooltipContent={deleteTooltipMarkdown}
-      >
-        <span class="text-single-line">X</span>
-      </ToolbarButton>
+      <CommandToolbarButton command={actionCommandDefinitions.deleteRoom} />
     </>
   );
 };

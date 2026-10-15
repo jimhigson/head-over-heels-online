@@ -1,6 +1,5 @@
-import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
-import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
+import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import {
   activationForItem,
   activationLabel,
@@ -21,13 +20,12 @@ const activationStates = [
 ] as const satisfies ActivationState[];
 
 /**
- * Enable/disable actions for the selection. Renders one item per activation
- * state supported by every selected item (eg "Enable on player near" only when
- * all selected items are cybermen), so returns several items - or none, when no
- * selected item has an enable/disable concept.
+ * Enable/disable switch for the selection, between the activation states
+ * supported by every selected item (eg "Enable on player near" only when all
+ * selected items are cybermen). Hidden when any selected item has no
+ * enable/disable concept.
  */
 export const ActivationMenuItems = () => {
-  const dispatch = useAppDispatch();
   const selectedJsonItemIds = useEditorAppSelector(
     selectCursorRoomSelectedJsonItemIds,
   );
@@ -46,32 +44,32 @@ export const ActivationMenuItems = () => {
     return null;
   }
 
-  const options = activationStates.filter(
-    (activation) =>
-      // supported by every selected item...
-      activations.every((a) => a.supported.includes(activation)) &&
-      // ...and not the state every selected item is already in:
-      !activations.every((a) => a.current === activation),
+  // supported by every selected item:
+  const options = activationStates.filter((activation) =>
+    activations.every((a) => a.supported.includes(activation)),
   );
 
+  if (options.length < 2) {
+    return null;
+  }
+
+  // a mixed selection shows the first of their states:
+  const shownActivation =
+    options.find((activation) =>
+      activations.some((a) => a.current === activation),
+    ) ?? options[0];
+
   return (
-    <>
-      {options.map((activation) => (
-        <ContextMenuItem
-          key={activation}
-          value={activation}
-          onSelect={() =>
-            dispatch(
-              setSelectedItemsActivation({
-                activation,
-                timestamp: Date.now(),
-              }),
-            )
-          }
-        >
-          {activationLabel[activation]}
-        </ContextMenuItem>
-      ))}
-    </>
+    <CommandContextMenuItem
+      command={{
+        type: "setting",
+        label: "Activation",
+        values: options,
+        valueLabels: options.map((activation) => activationLabel[activation]),
+        value: shownActivation,
+        action: (activation) =>
+          setSelectedItemsActivation({ activation, timestamp: Date.now() }),
+      }}
+    />
   );
 };

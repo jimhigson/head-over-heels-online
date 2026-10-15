@@ -3,6 +3,7 @@ import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 import { type TeleporterLandingConfig } from "../../../model/json/resolveTeleporterLanding";
 import { type EditorRoomId } from "../../editorTypes";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
 
 export const teleporterDestinationReducers = {
@@ -29,5 +30,6 @@ export const teleporterDestinationReducers = {
         }
       },
     );
+    clearContextMenuXyInPlace(state);
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

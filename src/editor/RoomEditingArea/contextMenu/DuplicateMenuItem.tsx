@@ -1,10 +1,9 @@
-import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
-import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
+import { MenuItemGlyphIcon } from "../../../ui/menuBar/MenuItemGlyphIcon";
+import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import {
   selectCurrentCommittedRoomJson,
   selectCursorRoomSelectedJsonItemIds,
-  setTool,
 } from "../../slice/levelEditorSlice";
 
 /**
@@ -12,7 +11,6 @@ import {
  * it), so copies can be stamped down. Shown only when a single item is selected.
  */
 export const DuplicateMenuItem = () => {
-  const dispatch = useAppDispatch();
   const selectedJsonItemIds = useEditorAppSelector(
     selectCursorRoomSelectedJsonItemIds,
   );
@@ -30,18 +28,13 @@ export const DuplicateMenuItem = () => {
   }
 
   return (
-    <ContextMenuItem
-      value="duplicate"
-      onSelect={() =>
-        dispatch(
-          setTool({
-            type: "item",
-            item: { type: jsonItem.type, config: jsonItem.config },
-          }),
-        )
-      }
-    >
-      Duplicate
-    </ContextMenuItem>
+    <CommandContextMenuItem
+      command={{
+        type: "itemTool",
+        label: "Duplicate",
+        menuIcon: <MenuItemGlyphIcon glyph="*2" />,
+        itemTool: { type: jsonItem.type, config: jsonItem.config },
+      }}
+    />
   );
 };

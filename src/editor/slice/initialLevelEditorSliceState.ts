@@ -69,6 +69,11 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   wallsFloorsLocked: true,
   doorAutoAddsRoom: true,
   roomPaneSize: { x: 0, y: 0 },
+  playtestOptions: {
+    baseUrl: import.meta.env.VITE_GAME_URL,
+    fromStart: false,
+    playAsHeels: false,
+  },
   dragInProgress: undefined,
   hoveredUndoIndex: 0,
   history: {},

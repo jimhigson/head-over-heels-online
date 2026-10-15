@@ -219,7 +219,7 @@ const EditorMap = () => {
     // preview, not just help text
     <div class="relative h-full scale-editor" style={{ "--tipDelay": "50ms" }}>
       <div
-        class={`h-full overflow-y-auto bg-editor-checkerboard scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue outline-none`}
+        class={`h-full overflow-y-auto bg-shadowHalfbrite scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue outline-none`}
         ref={mapContainerRef}
         tabIndex={0}
         onKeyDown={(e: KeyboardEvent) => {

@@ -1,6 +1,6 @@
 import { useState } from "preact/hooks";
 
-import { type JsonItemType } from "../../model/json/JsonItem";
+import { cn } from "../../ui/cn";
 import { Command, type CommandProps } from "../../ui/command/Command";
 import { CommandEmpty } from "../../ui/command/CommandEmpty";
 import { CommandGroup } from "../../ui/command/CommandGroup";
@@ -8,22 +8,24 @@ import { CommandInput } from "../../ui/command/CommandInput";
 import { CommandItem } from "../../ui/command/CommandItem";
 import { CommandList } from "../../ui/command/CommandList";
 import { CommandMatch } from "../../ui/command/CommandMatch";
-import { keys } from "../../utils/entries";
-import { type ItemTool } from "../RoomEditingArea/interactivity/Tool";
-import { type ButtonDefinition, buttonDefinitions } from "./buttonDefinitions";
+import { entries } from "../../utils/entries";
+import {
+  type EditorCommand,
+  type EditorCommandDefinition,
+} from "../commands/EditorCommand";
 import { buttonSizeClassNames } from "./buttonSizeClassNames";
-import { type ItemToolButtonProps } from "./ItemToolButton";
 
-const buttonKeys = keys(buttonDefinitions).sort();
-
-export type CmdKContentsProps = {
+export type CmdKContentsProps<TCommand extends EditorCommand> = {
+  /** what can be listed, by key */
+  commandDefinitions: Record<string, EditorCommandDefinition<TCommand>>;
   /**
    * evaluates an entry into what to list for it; undefined means do not list it
    */
   resolveEntry: (
-    buttonDefinition: ButtonDefinition,
-  ) => ItemToolButtonProps<JsonItemType> | undefined;
-  onSelect: (itemTool: ItemTool) => void;
+    commandDefinition: EditorCommandDefinition<TCommand>,
+  ) => TCommand | undefined;
+  onSelect: (command: TCommand) => void;
+  placeholder: string;
   /** called on escape; omit where something else handles escape */
   onClose?: () => void;
   /** controlled filter text (omit to let the contents manage their own) */
@@ -33,23 +35,25 @@ export type CmdKContentsProps = {
   onKeyDown?: CommandProps["onKeyDown"];
 };
 
-/** a searchable list of the items the editor can place */
-export const CmdKContents = ({
+/** a searchable list of commands, eg the items the editor can place */
+export const CmdKContents = <TCommand extends EditorCommand>({
+  commandDefinitions,
   resolveEntry,
   onSelect,
+  placeholder,
   onClose,
   search,
   onSearchChange,
   onKeyDown,
-}: CmdKContentsProps) => {
+}: CmdKContentsProps<TCommand>) => {
   // entries can't change while the contents are shown, so resolve once
   const [listedEntries] = useState(() =>
-    buttonKeys.flatMap((key) => {
-      const itemToolButtonProps = resolveEntry(buttonDefinitions[key]);
-      return itemToolButtonProps === undefined ?
-          []
-        : [{ key, itemToolButtonProps }];
-    }),
+    entries(commandDefinitions)
+      .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+      .flatMap(([key, commandDefinition]) => {
+        const command = resolveEntry(commandDefinition);
+        return command === undefined ? [] : [{ key, command }];
+      }),
   );
 
   return (
@@ -60,28 +64,32 @@ export const CmdKContents = ({
       onSearchChange={onSearchChange}
       onKeyDown={onKeyDown}
     >
-      <CommandInput autoFocus placeholder="Search items..." />
+      <CommandInput autoFocus placeholder={placeholder} />
       <CommandList class="max-h-none scrollbar scrollbar-w-1 scrollbar-thumb-lightGrey">
         <CommandEmpty>
           <span class="text-single-line">Nothing found</span>
         </CommandEmpty>
         <CommandGroup>
-          {listedEntries.map(({ key, itemToolButtonProps }) => (
+          {listedEntries.map(({ key, command }) => (
             <CommandItem
               key={key}
               // search both the human label and the dotted key, so category
               // terms like "monster" still match while the label is what shows
-              value={`${itemToolButtonProps.ariaLabel} ${key}`}
-              onSelect={() => onSelect(itemToolButtonProps.itemTool)}
+              value={`${command.label} ${key}`}
+              onSelect={() => onSelect(command)}
               class="px-1"
             >
               {/* div copies the form of the <button> in ToolbarButton without actually being a button: */}
               <div
-                class={`${buttonSizeClassNames} active:pt-oneScaledPix gap-0 inline-flex overflow-hidden`}
+                class={cn(
+                  `${buttonSizeClassNames} active:pt-oneScaledPix gap-0 inline-flex items-center justify-center overflow-hidden`,
+                  // as on the toolbar, eg its colour, or how its icon is positioned:
+                  command.toolbarClass,
+                )}
               >
-                {itemToolButtonProps.children}
+                {command.icon}
               </div>
-              <CommandMatch class="ml-1" text={itemToolButtonProps.ariaLabel} />
+              <CommandMatch class="ml-1" text={command.label} />
             </CommandItem>
           ))}
         </CommandGroup>

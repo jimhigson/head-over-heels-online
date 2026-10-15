@@ -1,17 +1,7 @@
-import { useAppDispatch } from "../../../store/hooks";
-import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
-import { deleteSelected } from "../../slice/levelEditorSlice";
+import { actionCommandDefinitions } from "../../commands/actionCommandDefinitions";
+import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 
 /** Deletes the selected items. Always available. */
-export const DeleteMenuItem = () => {
-  const dispatch = useAppDispatch();
-
-  return (
-    <ContextMenuItem
-      value="delete"
-      onSelect={() => dispatch(deleteSelected({ timestamp: Date.now() }))}
-    >
-      Delete
-    </ContextMenuItem>
-  );
-};
+export const DeleteMenuItem = () => (
+  <CommandContextMenuItem command={actionCommandDefinitions.delete} />
+);
