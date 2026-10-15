@@ -1,5 +1,6 @@
 import { expect, type Page } from "@playwright/test";
 
+import { isMenuOpen } from "./testUtils/advanceGameTime";
 import {
   dispatchKeyPress,
   holdKeysUntil,
@@ -64,12 +65,11 @@ const walkOntoStartingScroll = async (
 
   // walk until the scroll is reached, rather than for a guessed duration - and
   // in game time, so it walks the same distance on every machine:
-  const scroll = page.locator(
-    '[data-dialog-id="markdown/cuddlyStuffedWhiteRabbits"]',
-  );
   await holdKeysUntil(page, [{ key: towardsKey, code: towardsCode }], () =>
-    scroll.isVisible(),
+    isMenuOpen(page, "markdown/cuddlyStuffedWhiteRabbits"),
   );
+  // the scroll's dialog is lazy, so it can render some wall-clock time later
+  await waitForDialog(page, "markdown/cuddlyStuffedWhiteRabbits");
 
   // scrolls have no focusable menu items — exit with Escape
   await dispatchKeyPress(page, "Escape", "Escape");

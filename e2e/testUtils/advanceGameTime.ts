@@ -78,6 +78,21 @@ export const isGameMenuOpen = (page: Page): Promise<boolean> =>
   );
 
 /**
+ * has the game opened this menu? Read from the store, so it answers in game
+ * time: a lazily-loaded dialog can be open here while its chunk is still
+ * downloading, which takes wall-clock time no test controls
+ */
+export const isMenuOpen = (page: Page, menuId: string): Promise<boolean> =>
+  page.evaluate(
+    (menuId) =>
+      window._e2e_store
+        ?.getState()
+        .gameMenus.openMenus.some((openMenu) => openMenu.menuId === menuId) ??
+      false,
+    menuId,
+  );
+
+/**
  * step *game* time on until something has happened, or the budget runs out.
  *
  * Nothing moves on its own in an e2e build, so waiting in wall-clock waits for
