@@ -29,6 +29,7 @@ jobs:
       - uses: supabase/setup-cli@v2
         with:
           version: latest
+          github-token: ${{ github.token }}
       - run: supabase link --project-ref "$SUPABASE_PROJECT_ID"
       - run: sudo apt-get update -q && sudo apt-get install -y -q brotli
       - name: Dump

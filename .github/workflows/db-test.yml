@@ -24,6 +24,7 @@ jobs:
       - uses: supabase/setup-cli@v2
         with:
           version: latest
+          github-token: ${{ github.token }}
       # boots the local stack in Docker and applies supabase/migrations (no
       # seed.sql in CI - the pgTAP tests seed their own data in a rolled-back txn)
       - name: Start local Supabase
