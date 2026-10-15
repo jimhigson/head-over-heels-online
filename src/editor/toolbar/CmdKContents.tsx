@@ -14,6 +14,7 @@ import {
   type EditorCommandDefinition,
 } from "../commands/EditorCommand";
 import { buttonSizeClassNames } from "./buttonSizeClassNames";
+import { cmdKSearchText } from "./cmdKSearchText";
 
 export type CmdKContentsProps<TCommand extends EditorCommand> = {
   /** what can be listed, by key */
@@ -73,9 +74,7 @@ export const CmdKContents = <TCommand extends EditorCommand>({
           {listedEntries.map(({ key, command }) => (
             <CommandItem
               key={key}
-              // search both the human label and the dotted key, so category
-              // terms like "monster" still match while the label is what shows
-              value={`${command.label} ${key}`}
+              value={cmdKSearchText(key, command)}
               onSelect={() => onSelect(command)}
               class="px-1"
             >

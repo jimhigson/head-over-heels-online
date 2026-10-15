@@ -15,6 +15,8 @@ export type EditorCommandDispatchable =
 type EditorCommandPresentation = {
   /** names the command in menus, and its toolbar button for assistive tech */
   label: string;
+  /** other words cmd-k finds the command by, beyond its label */
+  synonyms?: string[];
   /** the toolbar button's content */
   icon?: ComponentChildren;
   /** shown before the label in menus */
