@@ -1,7 +1,7 @@
 import { produce } from "immer";
 
 import { entries } from "../../../../utils/entries";
-import { iterateRoomJsonItemsWithIds } from "../../../RoomJson";
+import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import { exitGameRoomId } from "../../ItemConfigMap";
 import { type CampaignVerifier } from "../CampaignVerification";
 import {

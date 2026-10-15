@@ -1,7 +1,5 @@
-import {
-  iterateRoomJsonItemsWithIds,
-  roomVerticalLinkHolders,
-} from "../../../model/RoomJson";
+import { roomVerticalLinkHolders } from "../../../model/RoomJson";
+import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJsonItemIterators";
 import { valuesIter } from "../../../utils/entries";
 import {
   type EditorRoomId,

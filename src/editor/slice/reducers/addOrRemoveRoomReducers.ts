@@ -1,7 +1,7 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
-import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
+import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJsonItemIterators";
 import { keysIter } from "../../../utils/entries";
 import { first } from "../../../utils/iterators/first";
 import { type DirectionXy4, type Xy } from "../../../utils/vectors/vectors";

@@ -1,7 +1,7 @@
 import { type RefObject } from "preact";
 
 import { type EditorRootState } from "../../../../store/store";
-import { type Xyz } from "../../../../utils/vectors/vectors";
+import { type Xy, type Xyz } from "../../../../utils/vectors/vectors";
 import { type EditorRoomState } from "../../../editorTypes";
 import { type MaybePointingAtSomething } from "../../cursor/PointingAt";
 import { type EditorViewport } from "../../viewport/EditorViewport";
@@ -35,6 +35,8 @@ type BasePointingParams<T extends Tool> = BaseMouseParams<T> & {
 
 export type MouseMoveParams<T extends Tool> = BasePointingParams<T> & {
   pointingAtChanged: boolean;
+  /** the pointer's movement since the last move the pane saw, in client px */
+  clientMovement: Xy;
   mouseDownPointingAtRef: RefObject<MaybePointingAtSomething | undefined>;
   dragAccVec: RefObject<undefined | Xyz>;
 };

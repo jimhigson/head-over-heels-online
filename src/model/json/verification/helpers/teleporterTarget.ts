@@ -1,5 +1,8 @@
 import { entries } from "../../../../utils/entries";
-import { iterateRoomJsonItemsWithIds } from "../../../RoomJson";
+import {
+  iterateRoomJsonItemIds,
+  iterateRoomJsonItemsWithIds,
+} from "../../../RoomJsonItemIterators";
 import { type ExitGameRoomId, exitGameRoomId } from "../../ItemConfigMap";
 import {
   resolveTeleporterLanding,
@@ -31,7 +34,7 @@ export function* allTeleporters(
     )) {
       yield {
         roomId,
-        teleporterId: teleporterId as VerificationRoomItemId,
+        teleporterId,
         teleporter,
       };
     }
@@ -57,13 +60,11 @@ export const teleportersInRoom = (
   if (roomId === exitGameRoomId || !(roomId in campaign.rooms)) {
     return [];
   }
-  return iterateRoomJsonItemsWithIds(
+  return iterateRoomJsonItemIds(
     campaign.rooms[roomId].items,
     "teleporter",
     "portableTeleporter",
-  )
-    .map(([id]) => id as VerificationRoomItemId)
-    .toArray();
+  ).toArray();
 };
 
 /**

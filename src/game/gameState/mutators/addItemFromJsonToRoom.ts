@@ -4,7 +4,7 @@ import {
   type JsonItemType,
   type JsonItemUnion,
 } from "../../../model/json/JsonItem";
-import { roomJsonItemsIterable } from "../../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { type RoomState } from "../../../model/RoomState";
 import { emptyObject } from "../../../utils/empty";
 import { originXyz, type Xyz } from "../../../utils/vectors/vectors";

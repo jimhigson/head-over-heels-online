@@ -3,7 +3,8 @@ import {
   isSoundId,
 } from "../../../_generated/sfxdex/sfx";
 import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
-import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
+import { type RoomJson } from "../../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { type SceneryName } from "../../../sprites/planets";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
 import {

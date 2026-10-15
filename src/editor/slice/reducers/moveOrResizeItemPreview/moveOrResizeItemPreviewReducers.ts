@@ -6,7 +6,7 @@ import {
 
 import { getConsolidatableVector } from "../../../../consolidateItems/ConsolidatableJsonItem";
 import { generateHoleInWallsForDoor } from "../../../../model/inPlaceMutators/generateHoleInWallsForDoor";
-import { iterateRoomJsonItemsWithIds } from "../../../../model/RoomJson";
+import { iterateRoomJsonItemsWithIds } from "../../../../model/RoomJsonItemIterators";
 import {
   getJsonItemTimes,
   optimiseTimesXyz,
@@ -607,7 +607,6 @@ export const moveOrResizeItemPreviewReducers = {
       description: { kind: "itemAction", verb, items },
       timestamp,
     };
-    state.dragInProgress = true;
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
 

@@ -1,7 +1,7 @@
 import { entries } from "../../../../utils/entries";
 import { reachableNodes } from "../../../../utils/graph/reachableNodes";
 import { type RoomGraph } from "../../../map/roomGridPositions";
-import { iterateRoomJsonItemsWithIds } from "../../../RoomJson";
+import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import {
   type VerificationCampaign,
   type VerificationRoomId,

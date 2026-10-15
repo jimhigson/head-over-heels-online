@@ -6,7 +6,7 @@ import { useAppDispatch } from "../../../store/hooks";
 import { editorStore, store } from "../../../store/store";
 import { useMouseWheel } from "../../../ui/useMouseWheel";
 import { catchErrors } from "../../../utils/errors/errors";
-import { type Xyz } from "../../../utils/vectors/vectors";
+import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { useGetEditorRoomState } from "../../EditorRoomStateProvider";
 import { type EditorRoomRenderer } from "../../editorTypes";
 import {
@@ -77,6 +77,12 @@ export const useRoomEditorInteractivity = (
   const dragAccVec = useRef<undefined | Xyz>(undefined);
   /* while a pan gesture is possible/happening, otherwise undefined */
   const panSessionRef = useRef<PanSession | undefined>(undefined);
+  /**
+   * where (in client px) an item drag left the pane, which released pointer
+   * capture so the map (or anything else) sees the pointer under normal hit
+   * testing. Undefined while the pane has the drag
+   */
+  const itemDragLeftPaneAtRef = useRef<undefined | Xy>(undefined);
 
   useEditorE2eApi({ renderArea, viewport, getRoomState, pointingAtRef });
 
@@ -102,7 +108,7 @@ export const useRoomEditorInteractivity = (
 
     const endPanSession = () => {
       if (panSessionRef.current?.active) {
-        store.dispatch(changeDragInProgress(false));
+        store.dispatch(changeDragInProgress(undefined));
       }
       panSessionRef.current = undefined;
     };
@@ -115,13 +121,63 @@ export const useRoomEditorInteractivity = (
     const abandonToolDrag = () => {
       if (dragAccVec.current !== undefined) {
         store.dispatch(resetPreviewedEdits());
-        store.dispatch(changeDragInProgress(false));
+        store.dispatch(changeDragInProgress(undefined));
       }
       dragAccVec.current = undefined;
       mouseDownPointingAtRef.current = undefined;
+      itemDragLeftPaneAtRef.current = undefined;
     };
 
-    const handleMouseMove = (mouseEvent: MouseEvent) => {
+    const isInsidePane = ({ clientX, clientY }: MouseEvent) => {
+      const paneRect = renderArea.getBoundingClientRect();
+      return (
+        clientX >= paneRect.left &&
+        clientX < paneRect.right &&
+        clientY >= paneRect.top &&
+        clientY < paneRect.bottom
+      );
+    };
+
+    /**
+     * an item drag leaving the pane gives up pointer capture, so whatever is
+     * under the pointer (eg a map room to drop on) gets its events; coming
+     * back takes capture again. Returns this move's movement in client px, or
+     * undefined if the drag was abandoned
+     */
+    const trackItemDragAcrossPaneEdge = (
+      mouseEvent: PointerEvent,
+    ): undefined | Xy => {
+      const leftPaneAt = itemDragLeftPaneAtRef.current;
+      if (leftPaneAt !== undefined) {
+        // only seen again once back over the pane:
+        if (mouseEvent.buttons === 0) {
+          // released somewhere its pointerup never reached us:
+          abandonToolDrag();
+          return undefined;
+        }
+        pixiApplication.canvas.setPointerCapture(mouseEvent.pointerId);
+        itemDragLeftPaneAtRef.current = undefined;
+        // the moves made outside were never seen - catch up in one jump, so
+        // the items come back under the pointer:
+        return {
+          x: mouseEvent.clientX - leftPaneAt.x,
+          y: mouseEvent.clientY - leftPaneAt.y,
+        };
+      }
+      if (
+        editorStore.getState().levelEditor.dragInProgress === "moveItems" &&
+        !isInsidePane(mouseEvent)
+      ) {
+        pixiApplication.canvas.releasePointerCapture(mouseEvent.pointerId);
+        itemDragLeftPaneAtRef.current = {
+          x: mouseEvent.clientX,
+          y: mouseEvent.clientY,
+        };
+      }
+      return { x: mouseEvent.movementX, y: mouseEvent.movementY };
+    };
+
+    const handleMouseMove = (mouseEvent: PointerEvent) => {
       const panSession = panSessionRef.current;
       if (panSession !== undefined) {
         if (!panSession.active) {
@@ -132,7 +188,7 @@ export const useRoomEditorInteractivity = (
           if (movedPx > panMinimumDistancePx) {
             panSession.active = true;
             // reuse the drag-in-progress state for the grabbing cursor:
-            store.dispatch(changeDragInProgress(true));
+            store.dispatch(changeDragInProgress("pan"));
           }
         }
         if (panSession.active) {
@@ -142,6 +198,11 @@ export const useRoomEditorInteractivity = (
           });
           return;
         }
+      }
+
+      const clientMovement = trackItemDragAcrossPaneEdge(mouseEvent);
+      if (clientMovement === undefined) {
+        return;
       }
 
       // no point in re-running this effect when it changes so select it 'live':
@@ -177,6 +238,7 @@ export const useRoomEditorInteractivity = (
         storeState,
         mouseDownPointingAtRef,
         mouseEvent,
+        clientMovement,
         viewport,
         dragAccVec,
       });
@@ -198,13 +260,7 @@ export const useRoomEditorInteractivity = (
       // the pane holds pointer capture during drags, so release can happen
       // anywhere on (or off) the screen - releasing outside the pane abandons
       // the drag instead of committing it:
-      const paneRect = renderArea.getBoundingClientRect();
-      const releasedInsidePane =
-        mouseEvent.clientX >= paneRect.left &&
-        mouseEvent.clientX < paneRect.right &&
-        mouseEvent.clientY >= paneRect.top &&
-        mouseEvent.clientY < paneRect.bottom;
-      if (!releasedInsidePane) {
+      if (!isInsidePane(mouseEvent)) {
         abandonToolDrag();
         return;
       }
@@ -255,7 +311,7 @@ export const useRoomEditorInteractivity = (
       dragAccVec.current = undefined;
       mouseDownPointingAtRef.current = undefined;
 
-      store.dispatch(changeDragInProgress(false));
+      store.dispatch(changeDragInProgress(undefined));
 
       if (!isClick && !isDragEnd) {
         console.log("mouseUp - not a click or drag end - skipping");
@@ -281,8 +337,8 @@ export const useRoomEditorInteractivity = (
         dragAccVec.current !== undefined ||
         panSessionRef.current !== undefined
       ) {
-        // mid-drag/pan the pane holds pointer capture so leave shouldn't fire,
-        // but if it somehow does, the gesture continues outside the pane:
+        // the gesture continues outside the pane (an item drag leaving
+        // releases capture, which fires this):
         return;
       }
 
@@ -303,7 +359,8 @@ export const useRoomEditorInteractivity = (
       if (mouseEvent.button === 0 || mouseEvent.button === 1) {
         // capture so drags/pans keep receiving pointer events after the
         // cursor leaves the pane - dragging out and back in continues the
-        // gesture, and the release is seen wherever it happens. Captured on
+        // gesture, and the release is seen wherever it happens (except item
+        // drags, which give capture up outside the pane). Captured on
         // pixi's canvas so pixi still sees the release as on its canvas, and
         // fires clicks on its own objects (eg annotations):
         pixiApplication.canvas.setPointerCapture(mouseEvent.pointerId);
@@ -317,7 +374,7 @@ export const useRoomEditorInteractivity = (
           startClientX: mouseEvent.clientX,
           startClientY: mouseEvent.clientY,
         };
-        store.dispatch(changeDragInProgress(true));
+        store.dispatch(changeDragInProgress("pan"));
         return;
       }
 
@@ -388,6 +445,14 @@ export const useRoomEditorInteractivity = (
       abandonToolDrag();
     };
 
+    // an item drag released outside the pane, after giving up capture - by
+    // now (bubbling to window) any drop target under the pointer has had it:
+    const handleWindowPointerUp = () => {
+      if (itemDragLeftPaneAtRef.current !== undefined) {
+        abandonToolDrag();
+      }
+    };
+
     const handleMouseMoveCatch = catchErrors(handleMouseMove);
 
     renderArea.addEventListener("pointermove", handleMouseMoveCatch);
@@ -398,8 +463,10 @@ export const useRoomEditorInteractivity = (
     renderArea.addEventListener("contextmenu", handleContextMenu);
     // on window so cancelling doesn't depend on the pane having focus:
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("pointerup", handleWindowPointerUp);
 
     return () => {
+      window.removeEventListener("pointerup", handleWindowPointerUp);
       renderArea.removeEventListener("pointermove", handleMouseMoveCatch);
       renderArea.removeEventListener("pointerup", handleMouseUp);
       renderArea.removeEventListener("pointerdown", handleMouseDown);

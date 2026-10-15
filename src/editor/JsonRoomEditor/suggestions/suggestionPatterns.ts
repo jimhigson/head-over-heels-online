@@ -1,7 +1,10 @@
 import { type Node } from "jsonc-parser";
 
 import { type JsonItemType } from "../../../model/json/JsonItem";
-import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
+import {
+  iterateRoomJsonItemIds,
+  iterateRoomJsonItemsWithIds,
+} from "../../../model/RoomJsonItemIterators";
 import { type EditorRootState } from "../../../store/store";
 import { emptyArray, emptySet } from "../../../utils/empty";
 import {
@@ -84,8 +87,7 @@ const getJoystickControllableItemIds = (
     (emptySet as Set<string>);
 
   return (
-    iterateRoomJsonItemsWithIds(currentRoomJson.items, "charles")
-      .map(([id]) => id)
+    iterateRoomJsonItemIds(currentRoomJson.items, "charles")
       // only suggest the ids that aren't already in the array (in existingTargets)
       .filter((id) => !existingTargets.has(id))
       .toArray()
@@ -113,14 +115,12 @@ const getTeleporterDestinationItemIds: SuggestionGenerator = (
   }
 
   // any type is valid, but only suggest the common ones - user can type for the others:
-  return iterateRoomJsonItemsWithIds(
+  return iterateRoomJsonItemIds(
     otherRoom.items,
     "teleporter",
     "portableTeleporter",
     "block",
-  )
-    .map(([id]) => id)
-    .toArray();
+  ).toArray();
 };
 
 /**
@@ -168,11 +168,7 @@ export const suggestionPatterns: SuggestionPatterns = {
       (emptySet as Set<string>);
 
     return (
-      iterateRoomJsonItemsWithIds(
-        currentRoomJson.items,
-        expectType as JsonItemType,
-      )
-        .map(([id]) => id)
+      iterateRoomJsonItemIds(currentRoomJson.items, expectType as JsonItemType)
         // only suggest the ids that aren't already in the array (in existingTargets)
         .filter((id) => !existingTargets.has(id))
         .toArray()

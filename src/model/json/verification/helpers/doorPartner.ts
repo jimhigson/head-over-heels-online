@@ -1,6 +1,6 @@
 import { entries } from "../../../../utils/entries";
 import { type DirectionXy4 } from "../../../../utils/vectors/vectors";
-import { iterateRoomJsonItemsWithIds } from "../../../RoomJson";
+import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import {
   candidatePartnerDoors,
   type DoorRef as PartnerDoorRef,

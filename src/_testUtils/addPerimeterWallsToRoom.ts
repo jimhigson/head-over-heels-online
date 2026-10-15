@@ -1,10 +1,7 @@
 import { consolidateItemsMap } from "../consolidateItems/consolidateItems";
 import { type JsonItem } from "../model/json/JsonItem";
-import {
-  type RoomJson,
-  type RoomJsonItems,
-  roomJsonItemsIterable,
-} from "../model/RoomJson";
+import { type RoomJson, type RoomJsonItems } from "../model/RoomJson";
+import { roomJsonItemsIterable } from "../model/RoomJsonItemIterators";
 import { type SceneryName, type Wall, wallTiles } from "../sprites/planets";
 import { keyItems } from "../utils/keyItems";
 import {

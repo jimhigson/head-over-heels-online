@@ -3,7 +3,7 @@ import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEdit
 import { type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import { type UndoItemEntry } from "./undoDescription";
-import { pushUndoInPlace } from "./undoReducers";
+import { pushUndoToCursorRoomInPlace } from "./undoReducers";
 
 /**
  * Apply an in-place change to every selected item: snapshots the selected items
@@ -21,7 +21,11 @@ export const mutateSelectedItemsInPlace = (
     id,
     roomJson.items[id],
   ]);
-  pushUndoInPlace(state, { kind: "itemAction", verb, items }, timestamp);
+  pushUndoToCursorRoomInPlace(
+    state,
+    { kind: "itemAction", verb, items },
+    timestamp,
+  );
 
   for (const id of state.selectedJsonItemIds) {
     const item = roomJson.items[id];

@@ -4,7 +4,7 @@ import {
   type IndividualCharacterName,
   individualCharacterNames,
 } from "../../../modelTypes";
-import { iterateRoomJsonItemsWithIds } from "../../../RoomJson";
+import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 
 type MissingPlayerStart = {

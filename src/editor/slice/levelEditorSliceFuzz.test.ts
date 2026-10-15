@@ -4,7 +4,7 @@ import { expect, test } from "vitest";
 import { roomJsonMatchers } from "../../model/json/__test__/roomJsonMatchers";
 import { roomGridPositions } from "../../model/map/roomGridPositions";
 import { sortRoomGridPositions } from "../../model/map/sortRoomGridPositions";
-import { roomJsonItemsIterable } from "../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../model/RoomJsonItemIterators";
 import { keys } from "../../utils/entries";
 import { type DirectionXy4 } from "../../utils/vectors/vectors";
 import { areRoomsCoalesceable } from "../EditorMap/areRoomsCoalesceable";

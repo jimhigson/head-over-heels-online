@@ -22,11 +22,11 @@ export const viewportMousePosition = (
   event: MouseEvent,
 ): Xy => viewport.toWorld(mouseEventPaneXy(event));
 
-/** the mouse movement since the last event, in engine coordinates */
+/** a pointer movement in client px, in engine coordinates */
 export const viewportMouseMovement = (
   viewport: EditorViewport,
-  event: MouseEvent,
+  clientMovement: Xy,
 ): Xy => ({
-  x: event.movementX / viewport.zoom,
-  y: event.movementY / viewport.zoom,
+  x: clientMovement.x / viewport.zoom,
+  y: clientMovement.y / viewport.zoom,
 });

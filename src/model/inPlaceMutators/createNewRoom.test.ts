@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { roomJsonMatchers } from "../json/__test__/roomJsonMatchers";
-import { roomJsonItemsIterable } from "../RoomJson";
+import { roomJsonItemsIterable } from "../RoomJsonItemIterators";
 import { createNewRoom } from "./createNewRoom";
 
 expect.extend(roomJsonMatchers);

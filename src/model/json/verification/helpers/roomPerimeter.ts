@@ -4,7 +4,8 @@ import {
   tangentAxis,
   type Xy,
 } from "../../../../utils/vectors/vectors";
-import { type RoomJson, roomJsonItemsIterable } from "../../../RoomJson";
+import { type RoomJson } from "../../../RoomJson";
+import { roomJsonItemsIterable } from "../../../RoomJsonItemIterators";
 import { wallTimes } from "../../../times";
 import { type VerificationRoomId } from "../verificationTypes";
 

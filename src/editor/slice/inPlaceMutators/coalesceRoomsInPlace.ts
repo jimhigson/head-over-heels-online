@@ -3,13 +3,15 @@ import { nextItemIdSet } from "../../../model/inPlaceMutators/nextItemId";
 import { roomGridPositions } from "../../../model/map/roomGridPositions";
 import {
   isWholeRoomSubRooms,
-  roomJsonItemsEntriesIterable,
-  roomJsonItemsIterable,
   roomNonContiguousRelationship,
   roomVerticalLinkHolders,
   type SubRoom,
   writeRoomNonContiguousRelationship,
 } from "../../../model/RoomJson";
+import {
+  roomJsonItemsEntriesIterable,
+  roomJsonItemsIterable,
+} from "../../../model/RoomJsonItemIterators";
 import { wallTimes } from "../../../model/times";
 import { keys, objectEntriesIter, valuesIter } from "../../../utils/entries";
 import {

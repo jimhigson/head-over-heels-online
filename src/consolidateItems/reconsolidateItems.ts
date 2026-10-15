@@ -1,9 +1,7 @@
 import { nextItemIdSet } from "../model/inPlaceMutators/nextItemId";
 import { type JsonItemUnion } from "../model/json/JsonItem";
-import {
-  type RoomJsonItems,
-  roomJsonItemsEntriesIterable,
-} from "../model/RoomJson";
+import { type RoomJsonItems } from "../model/RoomJson";
+import { roomJsonItemsEntriesIterable } from "../model/RoomJsonItemIterators";
 import { getJsonItemTimes } from "../model/times";
 import { keys } from "../utils/entries";
 import { omit } from "../utils/pick";

@@ -2,11 +2,11 @@ import { produce } from "immer";
 import { describe, expect, test } from "vitest";
 
 import { type WallJsonConfig } from "../../../model/json/WallJsonConfig";
+import { type AnyRoomJson } from "../../../model/RoomJson";
 import {
-  type AnyRoomJson,
-  iterateRoomJsonItemsWithIds,
+  iterateRoomJsonItemIds,
   roomJsonItemsIterable,
-} from "../../../model/RoomJson";
+} from "../../../model/RoomJsonItemIterators";
 import { zxSpectrumRoomHue, zxSpectrumShades } from "../../../originalGame";
 import { originXyz } from "../../../utils/vectors/vectors";
 import {
@@ -535,7 +535,7 @@ describe("applying tools", () => {
       expect(toastersAfterCyberman).toHaveLength(2);
 
       // 3. remove the cyberman — toasters should re-consolidate
-      const [[cybermanId]] = iterateRoomJsonItemsWithIds(
+      const [cybermanId] = iterateRoomJsonItemIds(
         currentRoom(stateWithCyberman).items,
         "monster",
       );

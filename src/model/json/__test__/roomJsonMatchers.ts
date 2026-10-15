@@ -5,11 +5,8 @@ import {
   tangentAxis,
   type Xy,
 } from "../../../utils/vectors/vectors";
-import {
-  isWholeRoomSubRooms,
-  type RoomJson,
-  roomJsonItemsIterable,
-} from "../../RoomJson";
+import { isWholeRoomSubRooms, type RoomJson } from "../../RoomJson";
+import { roomJsonItemsIterable } from "../../RoomJsonItemIterators";
 import { wallTimes } from "../../times";
 import { type WallJsonConfig } from "../WallJsonConfig";
 

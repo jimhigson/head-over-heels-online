@@ -1,7 +1,5 @@
-import {
-  type AnyRoomJson,
-  roomJsonItemsIterable,
-} from "../../../model/RoomJson";
+import { type AnyRoomJson } from "../../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";

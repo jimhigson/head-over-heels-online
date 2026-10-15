@@ -3,7 +3,7 @@ import {
   oppositeDirection,
 } from "../../utils/vectors/vectors";
 import { type Campaign } from "../modelTypes";
-import { iterateRoomJsonItemsWithIds } from "../RoomJson";
+import { iterateRoomJsonItemsWithIds } from "../RoomJsonItemIterators";
 import { type JsonItem } from "./JsonItem";
 
 /** a door, together with the room and id it lives under */

@@ -43,7 +43,10 @@ import {
 } from "./reducers/contextMenuReducers";
 import { disappearingReducers } from "./reducers/disappearingReducers";
 import { doorGameEndReducers } from "./reducers/doorGameEndReducers";
-import { dragToMoveReducers } from "./reducers/dragToMoveReducers";
+import {
+  type DragInProgress,
+  dragToMoveReducers,
+} from "./reducers/dragToMoveReducers";
 import { editorSettingsReducers } from "./reducers/editorSettingsReducers";
 import { editRoomReducers } from "./reducers/editRoomReducers";
 import { explodeItemsReducers } from "./reducers/explodeItemsReducers";
@@ -51,6 +54,7 @@ import { itemActivationReducers } from "./reducers/itemActivationReducers";
 import { itemPreviewReducers } from "./reducers/itemPreviewReducers";
 import { mirrorOrientationReducers } from "./reducers/mirrorOrientationReducers";
 import { monsterMovementReducers } from "./reducers/monsterMovementReducers";
+import { moveItemsToRoomReducers } from "./reducers/moveItemsToRoomReducers";
 import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
 import { roomSelectionReducers } from "./reducers/roomSelectionReducers";
 import { rotateItemReducers } from "./reducers/rotateItemReducers";
@@ -114,7 +118,8 @@ export type LevelEditorState = {
   cameraAngle: Xy;
   autoCoalesce: boolean;
   wallsFloorsLocked: boolean;
-  dragInProgress?: boolean;
+  /** what the pointer is dragging in the room editing pane, if anything */
+  dragInProgress: DragInProgress | undefined;
   /**
    * Index into the undo/redo history for hover preview.
    * Positive = undo stack index (1-based), negative = redo stack index (-1-based), 0 = none.
@@ -201,6 +206,7 @@ export const levelEditorSlice = createSlice({
     ...itemActivationReducers,
     ...disappearingReducers,
     ...monsterMovementReducers,
+    ...moveItemsToRoomReducers,
     ...teleporterDestinationReducers,
     ...doorGameEndReducers,
     ...startDirectionReducers,
@@ -264,6 +270,7 @@ export const {
   explodeSelectedItems,
   insertRoom,
   loadCampaign,
+  moveItemsToRoom,
   moveOrResizeItemAsPreview,
   newCampaign,
   openItemContextMenu,

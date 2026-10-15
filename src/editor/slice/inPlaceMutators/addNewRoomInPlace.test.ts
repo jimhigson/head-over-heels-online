@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { createNewRoom } from "../../../model/inPlaceMutators/createNewRoom";
 import { roomJsonMatchers } from "../../../model/json/__test__/roomJsonMatchers";
-import { roomJsonItemsIterable } from "../../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { type EditorRoomId } from "../../editorTypes";
 
 expect.extend(roomJsonMatchers);
