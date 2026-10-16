@@ -2,7 +2,8 @@ import { Container, Graphics, type Sprite, TilingSprite } from "pixi.js";
 
 import { type ItemInPlay } from "../../../../model/ItemInPlay";
 import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
-import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
+import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
+import { type RoomState } from "../../../../model/RoomState";
 import { zxSpectrumColors } from "../../../../originalGame";
 import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
 import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";

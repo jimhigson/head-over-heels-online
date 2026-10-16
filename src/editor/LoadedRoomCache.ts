@@ -2,11 +2,11 @@ import { buildRoomJsonDirectionalIndex } from "../game/gameState/loadRoom/buildR
 import { loadItemFromJson } from "../game/gameState/loadRoom/loadItemFromJson";
 import { addItemToRoom } from "../game/gameState/mutators/addItemToRoom";
 import { deleteItemFromRoom } from "../game/gameState/mutators/deleteItemFromRoom";
+import { roomItemsIterable } from "../model/roomItemsInPlayIterators";
 import {
   roomJsonItemsEntriesIterable,
   roomJsonItemsIterable,
 } from "../model/RoomJsonItemIterators";
-import { roomItemsIterable } from "../model/RoomState";
 import { type EditorRootState } from "../store/store";
 import {
   type EditorJsonItemUnion,

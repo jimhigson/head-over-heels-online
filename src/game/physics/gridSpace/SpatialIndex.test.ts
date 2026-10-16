@@ -1,5 +1,6 @@
 import { expect, test } from "vitest";
 
+import { emptyArray } from "../../../utils/empty";
 import { boxWithSize, type Xyz } from "../../../utils/vectors/vectors";
 import { type Indexable, SpatialIndex } from "./SpatialIndex";
 
@@ -169,4 +170,132 @@ test("getOccupiedCuboidCellExtent spans negative and large cells", () => {
     minCellY: -7,
     maxCellY: 511,
   });
+});
+
+test("findInBox passes the box and context to the predicate", () => {
+  const idx = new SpatialIndex<string, string, Indexable>([
+    itemInCell("a", 0, 0),
+  ]);
+  const box = boxWithSize(
+    { x: 0, y: 0, z: 0 } as Xyz,
+    {
+      x: 8,
+      y: 8,
+      z: 8,
+    } as Xyz,
+  );
+  const context = { contextFor: "test" };
+  const seen: Array<[Readonly<typeof box>, typeof context]> = [];
+
+  idx.findInBox(
+    box,
+    (_item, predicateBox, predicateContext) => {
+      seen.push([predicateBox, predicateContext]);
+      return false;
+    },
+    context,
+  );
+
+  expect(seen).toEqual([[box, context]]);
+});
+
+test("findInBox returns the first item the predicate accepts", () => {
+  const rejected = itemInCell("rejected", 0, 0);
+  const accepted = itemInCell("accepted", 1, 0);
+  const idx = new SpatialIndex<string, string, Indexable>([rejected, accepted]);
+
+  expect(
+    idx.findInBox(
+      boxWithSize({ x: 0, y: 0, z: 0 } as Xyz, { x: 64, y: 8, z: 8 } as Xyz),
+      (item) => item.id === "accepted",
+      undefined,
+    ),
+  ).toBe(accepted);
+});
+
+test("findInBox never offers excludeItem", () => {
+  const excluded = itemInCell("excluded", 0, 0);
+  const idx = new SpatialIndex<string, string, Indexable>([excluded]);
+
+  expect(
+    idx.findInBox(
+      boxWithSize({ x: 0, y: 0, z: 0 } as Xyz, { x: 32, y: 32, z: 8 } as Xyz),
+      () => true,
+      undefined,
+      excluded,
+    ),
+  ).toBeUndefined();
+});
+
+test("findInBox only offers items in the box's cells", () => {
+  const farAway = itemInCell("farAway", 5, 5);
+  const idx = new SpatialIndex<string, string, Indexable>([farAway]);
+
+  expect(
+    idx.findInBox(
+      boxWithSize({ x: 0, y: 0, z: 0 } as Xyz, { x: 32, y: 32, z: 8 } as Xyz),
+      () => true,
+      undefined,
+    ),
+  ).toBeUndefined();
+});
+
+test("filterInBox returns each accepted item once, even when it spans several cells", () => {
+  const wide = makeItem(
+    "wide",
+    { x: 10, y: 10, z: 0 } as Xyz,
+    { x: 80, y: 80, z: 12 } as Xyz,
+  );
+  const inOneCell = itemInCell("inOneCell", 1, 1);
+  const idx = new SpatialIndex<string, string, Indexable>([wide, inOneCell]);
+
+  expect(
+    idx
+      .filterInBox(
+        boxWithSize(
+          { x: 0, y: 0, z: 0 } as Xyz,
+          { x: 96, y: 96, z: 12 } as Xyz,
+        ),
+        () => true,
+        undefined,
+      )
+      .map((item) => item.id)
+      .toSorted(),
+  ).toEqual<string[]>(["inOneCell", "wide"]);
+});
+
+test("filterInBox leaves out items the predicate rejects, and excludeItem", () => {
+  const excluded = itemInCell("excluded", 0, 0);
+  const rejected = itemInCell("rejected", 0, 0);
+  const accepted = itemInCell("accepted", 0, 0);
+  const idx = new SpatialIndex<string, string, Indexable>([
+    excluded,
+    rejected,
+    accepted,
+  ]);
+
+  expect(
+    idx
+      .filterInBox(
+        boxWithSize({ x: 0, y: 0, z: 0 } as Xyz, { x: 32, y: 32, z: 8 } as Xyz),
+        (item) => item.id !== "rejected",
+        undefined,
+        excluded,
+      )
+      .map((item) => item.id),
+  ).toEqual<string[]>(["accepted"]);
+});
+
+test("filterInBox returns the shared empty array when nothing is accepted", () => {
+  const idx = new SpatialIndex<string, string, Indexable>([
+    itemInCell("a", 0, 0),
+  ]);
+
+  expect(
+    idx.filterInBox(
+      boxWithSize({ x: 0, y: 0, z: 0 } as Xyz, { x: 32, y: 32, z: 8 } as Xyz),
+      () => false,
+      undefined,
+    ),
+  ).toBe(emptyArray);
 });

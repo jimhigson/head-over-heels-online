@@ -1,4 +1,5 @@
-import { roomItemsIterable, type RoomState } from "../model/RoomState";
+import { roomItemsIterable } from "../model/roomItemsInPlayIterators";
+import { type RoomState } from "../model/RoomState";
 import { loadSound } from "./soundsLoader";
 
 /**

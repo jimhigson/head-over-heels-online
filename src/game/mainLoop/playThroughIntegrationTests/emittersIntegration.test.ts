@@ -8,7 +8,7 @@ import { item } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { type FrameRateSpec } from "../../../_testUtils/testFrameRates";
-import { roomItemsIterable } from "../../../model/RoomState";
+import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { collision2Items } from "../../collision/aabbCollision";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 

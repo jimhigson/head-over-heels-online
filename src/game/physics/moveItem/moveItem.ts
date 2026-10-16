@@ -78,9 +78,13 @@ export type MoveItemOptions<
 
   /**
    * the nodes we previously visited on the path down the tree to get to here.
-   * Set is a little faster than array since we need to look up if strings are present.
    *
-   * The size of the path is also checked for maximum recursion depth
+   * only required if this is a non-top-level call, recursive calls will always be passed this
+   * down from the parent call
+   *
+   * undefined for an empty path (a top-level call), so moves that push nothing allocate no Set
+   *
+   * The size of the path is also checked for maximum recursion depth.
    */
   visited?: Set<RoomItemId>;
 
@@ -135,9 +139,11 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   room,
   deltaMS,
   handleTouches,
-  visited = new Set(),
-  forceful = subjectItem[itemBehaviourKey].pushesForcefully &&
-    visited.size === 0,
+  visited,
+  // forceful must be explicitly given if recursive (not a top-level moveItem call), otherwise
+  // an item which is mid-chain will make further calls forceful even though it is only the
+  // receiver of an upstream push
+  forceful = subjectItem[itemBehaviourKey].pushesForcefully,
   isHelpful,
   processZeroMovement = false,
 }: MoveItemOptions<RoomId, RoomItemId>): boolean => {
@@ -153,15 +159,20 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
    */
   let causedHelpful = false;
 
+  // recursive calls add to and then delete from the path, so its size is the same whenever read here:
+  const pathDepth = visited?.size ?? 0;
+  // the path to pass to recursive calls - only created if this call recurses:
+  let pathToHere = visited;
+
   const {
     state: { box: originalBox },
   } = subjectItem;
 
   if (log) {
     console.group(
-      `[${visited.size === 0 ? `first cause` : `pushed ${visited.size} deep`}]`,
+      `[${pathDepth === 0 ? `first cause` : `pushed ${pathDepth} deep`}]`,
       "on path",
-      [...visited.values()],
+      visited === undefined ? [] : [...visited.values()],
       `💨 moving ${subjectItem.id} @`,
       subjectItem.state.box,
       `\n By:`,
@@ -173,7 +184,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   // strategy is to move to the target position, then back off as needed
   updateItemPosition(room, subjectItem, addXyz(originalBox, posDelta));
 
-  if (visited.size === 0) {
+  if (pathDepth === 0) {
     // record 'first cause' acting on, directly from the mechanics.
     // (n>1)-cause are recorded in the collision loop
     recordActedOnBy(
@@ -187,7 +198,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
   const sortedCollisions = sortObstaclesAboutPriorityAndVector(
     posDelta,
-    collisionItemWithIndex(subjectItem, room[roomSpatialIndexKey]).toArray(),
+    collisionItemWithIndex(subjectItem, room[roomSpatialIndexKey]),
   );
 
   if (log) {
@@ -212,7 +223,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     //      -push-> C          ^ here there's no need to handle C pushing A, since A is up
     //                           the tree and will be handled for us when A pushes C directly
     //                           when it is done pushing B
-    if (visited.has(collidedWithItem.id)) {
+    if (visited?.has(collidedWithItem.id)) {
       if (log) {
         console.log(
           `🦺🦺🦺 skipping collision handling for ${subjectItem.id} with ${collidedWithItem.id} since ${subjectItem.id} was already visited to get here`,
@@ -391,10 +402,11 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         );
       }
 
-      if (visited.size < maxPushRecursionDepth) {
+      if (pathDepth < maxPushRecursionDepth) {
         const pushedZBefore = collidedWithItem.state.box.z;
         // recursively apply push to pushed item
         // (but only if we didn't already recurse down to the maximum depth)
+        pathToHere ??= new Set<RoomItemId>();
         causedHelpful ||= moveItem({
           subjectItem: collidedWithItem,
           posDelta: forwardPushVector,
@@ -402,11 +414,11 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
           room,
           deltaMS,
           forceful,
-          visited: visited.add(subjectItem.id),
+          visited: pathToHere.add(subjectItem.id),
           handleTouches,
         });
         // that recursive call is done now, and path is edited in-place to reduce gc
-        visited.delete(subjectItem.id);
+        pathToHere.delete(subjectItem.id);
 
         if (
           isFreeItem(collidedWithItem) &&
@@ -561,9 +573,9 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         // cases like in #moonbase20/#moonbase23 (arrow rooms) where
         // the sliding blocks get piled up next to a door, and the sliding
         // vector b2 being pushed by b1 comes back to impact b1
-        visited: visited.add(subjectItem.id),
+        visited: (pathToHere ??= new Set<RoomItemId>()).add(subjectItem.id),
       });
-      visited.delete(subjectItem.id);
+      pathToHere.delete(subjectItem.id);
 
       causedHelpful = true;
     }
@@ -576,7 +588,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     !isHelpful &&
     // rising riders are pushed, so only riding down is handled here
     movedZ < 0 &&
-    visited.size < maxPushRecursionDepth
+    pathDepth < maxPushRecursionDepth
   ) {
     moveRidersDown(
       subjectItem,
@@ -585,7 +597,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       room,
       deltaMS,
       handleTouches,
-      visited,
+      pathToHere,
     );
   }
 
@@ -611,8 +623,10 @@ const moveRidersDown = <RoomId extends string, RoomItemId extends string>(
   room: RoomState<RoomId, RoomItemId>,
   deltaMS: number,
   handleTouches: MoveItemOptions<RoomId, RoomItemId>["handleTouches"],
-  visited: Set<RoomItemId>,
+  /** undefined for an empty path, as in {@link MoveItemOptions} */
+  visited: Set<RoomItemId> | undefined,
 ) => {
+  let pathToHere = visited;
   for (const rider of iterateStoodOnByItems(movedItem.state.stoodOnBy, room)) {
     const riderTerminalFallVelocity =
       -rider[itemBehaviourKey].terminalFallVelocity(rider) * deltaMS;
@@ -631,10 +645,10 @@ const moveRidersDown = <RoomId extends string, RoomItemId extends string>(
       room,
       deltaMS,
       forceful: false,
-      visited: visited.add(movedItem.id),
+      visited: (pathToHere ??= new Set<RoomItemId>()).add(movedItem.id),
       handleTouches,
     });
-    visited.delete(movedItem.id);
+    pathToHere.delete(movedItem.id);
     recordLiftVel(rider, rider.state.box.z - riderZBefore, room, deltaMS);
   }
 };

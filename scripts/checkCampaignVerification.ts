@@ -26,15 +26,24 @@ import { verifyCampaign } from "../src/model/json/verification/verifyCampaign";
 
 const db = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
+console.log(
+  `loading ${chalk.magenta(sequelCampaignLocator.campaignName)} by user ${sequelCampaignLocator.userId}, ${
+    sequelCampaignLocator.version === -1 ?
+      "latest version"
+    : `version ${sequelCampaignLocator.version}`
+  }, from ${supabaseUrl}`,
+);
+const sequelCampaign = await loadCampaignFromDb(db, sequelCampaignLocator);
+console.log(
+  `loaded ${chalk.magenta(sequelCampaign.locator.campaignName)} version ${chalk.cyan(sequelCampaign.locator.version)} (${sequelCampaign.meta?.published ? "published" : "unpublished"})`,
+);
+
 const campaignsToCheck: Array<[name: string, campaign: VerificationCampaign]> =
   [
     ["original", originalCampaign as VerificationCampaign],
     [
-      `${sequelCampaignLocator.campaignName} (latest in db)`,
-      (await loadCampaignFromDb(
-        db,
-        sequelCampaignLocator,
-      )) as VerificationCampaign,
+      `${sequelCampaign.locator.campaignName} v${sequelCampaign.locator.version} (latest in db)`,
+      sequelCampaign as VerificationCampaign,
     ],
   ];
 
@@ -44,7 +53,7 @@ for (const [campaignName, campaign] of campaignsToCheck) {
   issueCount += issues.length;
   const countColour = issues.length === 0 ? chalk.green : chalk.red;
   console.log(
-    `${chalk.magenta(campaignName)}: ${countColour(`${issues.length} verification issue(s)`)}`,
+    `${chalk.magenta(campaignName)}, ${Object.keys(campaign.rooms).length} rooms: ${countColour(`${issues.length} verification issue(s)`)}`,
   );
   for (const { severity, verifier, msg } of issues) {
     const severityColour = severity === "error" ? chalk.red : chalk.yellow;

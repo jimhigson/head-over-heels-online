@@ -1,9 +1,9 @@
 import { isPlayableItem } from "../../model/ItemInPlayNarrowedUnions";
 import {
-  iterateRoomItemEntries,
+  forEachRoomItem,
   roomItemsArray,
-  roomItemsIterable,
-} from "../../model/RoomState";
+} from "../../model/roomItemsInPlayIterators";
+import { type Xyz } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
@@ -22,6 +22,9 @@ import { tickItem } from "./tickItem";
 
 // set to 1 to check for inconsistencies in the model for every subtick
 const extraDebugChecks = 0;
+
+// item id -> box at the start of the tick; reused so ticks don't allocate it
+const startingPositions = new Map<string, Xyz>();
 
 export type ProgressGameState<RoomId extends string> = (
   gameState: GameState<RoomId>,
@@ -54,14 +57,12 @@ export const progressGameState = <
   // take a snapshot of item positions before any physics ticks so latent
   // movement can compute per-tick deltas. Done per physics tick, not
   // render-tick, because otherwise latent movement is double-applied
-  const startingPositions = Object.fromEntries(
-    iterateRoomItemEntries(room.items).map(([id, item]) => [
-      id,
-      item.state.box,
-    ]),
-  );
+  startingPositions.clear();
+  forEachRoomItem(room.items, (item) => {
+    startingPositions.set(item.id, item.state.box);
+  });
 
-  for (const item of roomItemsIterable(room.items)) {
+  forEachRoomItem(room.items, (item) => {
     if (itemHasExpired(item, room)) {
       deleteItemFromRoom({ room, item });
       if (isPlayableItem(item)) {
@@ -71,7 +72,7 @@ export const progressGameState = <
         // now we let the room play through normally on the assumption it isn't harmful to do so
       }
     }
-  }
+  });
 
   const sortedItems = roomItemsArray(room.items).sort(itemTickOrderComparator);
 

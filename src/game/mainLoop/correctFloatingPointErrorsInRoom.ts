@@ -1,4 +1,5 @@
-import { roomItemsIterable, type RoomState } from "../../model/RoomState";
+import { forEachRoomItem } from "../../model/roomItemsInPlayIterators";
+import { type RoomState } from "../../model/RoomState";
 import { xyzSnapIfCloseToIntegers } from "../../utils/vectors/vectors";
 import { updateItemPosition } from "../gameState/mutators/updateItemBox";
 
@@ -13,11 +14,11 @@ export const correctFloatingPointErrorsInRoom = <
 >(
   room: RoomState<RoomId, RoomItemId>,
 ) => {
-  for (const item of roomItemsIterable(room.items)) {
+  forEachRoomItem(room.items, (item) => {
     const originalPosition = item.state.box;
     const maybeSnapped = xyzSnapIfCloseToIntegers(originalPosition);
     if (maybeSnapped !== originalPosition) {
       updateItemPosition(room, item, maybeSnapped);
     }
-  }
+  });
 };

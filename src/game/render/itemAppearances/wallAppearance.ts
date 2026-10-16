@@ -4,7 +4,6 @@ import { type WritableDeep } from "type-fest";
 import { roomSpatialIndexKey } from "../../../model/RoomState";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
 import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
-import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { phaseForSubItem } from "../../../utils/maths/hashing";
 import { renderContainerToSprite } from "../../../utils/pixi/bakeContainerToSprite";
 import {
@@ -30,7 +29,7 @@ import {
 } from "../../../utils/vectors/vectors";
 import {
   type CollideableItem,
-  collisionItemWithIndex,
+  hasCollisionItemWithIndex,
 } from "../../collision/aabbCollision";
 import { blockSizePx, veryHighZ } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
@@ -205,12 +204,10 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
           sampleBuffer.state.box.x = endBlockX + cornerDiagonal.x;
           sampleBuffer.state.box.y = endBlockY + cornerDiagonal.y;
 
-          const wallCornerAtEndOfWall = !isEmpty(
-            collisionItemWithIndex(
-              sampleBuffer,
-              spatialIndex,
-              (consideredItem) => consideredItem.type === "wall",
-            ),
+          const wallCornerAtEndOfWall = hasCollisionItemWithIndex(
+            sampleBuffer,
+            spatialIndex,
+            (consideredItem) => consideredItem.type === "wall",
           );
 
           if (!wallCornerAtEndOfWall) {

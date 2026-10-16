@@ -4,11 +4,8 @@ import {
   isFreeItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlayNarrowedUnions";
-import {
-  roomItemsIterable,
-  roomSpatialIndexKey,
-  type RoomState,
-} from "../../model/RoomState";
+import { forEachRoomItem } from "../../model/roomItemsInPlayIterators";
+import { roomSpatialIndexKey, type RoomState } from "../../model/RoomState";
 import { boxAt, type Xyz } from "../../utils/vectors/vectors";
 import {
   collisionItemWithIndex,
@@ -64,13 +61,13 @@ export const snapInactiveItemsToPixelGrid = <
 >(
   room: RoomState<RoomId, RoomItemId>,
 ) => {
-  for (const item of roomItemsIterable(room.items)) {
+  forEachRoomItem(room.items, (item) => {
     if (!isFreeItem(item)) {
-      continue;
+      return;
     }
     const snappedPosition = snapFreeItemToPixelGrid(item, room.roomTime);
     if (snappedPosition === undefined) {
-      continue;
+      return;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -102,14 +99,12 @@ export const snapInactiveItemsToPixelGrid = <
             snappedCollideable,
             room[roomSpatialIndexKey],
             collisionPredicate,
-          )
-            .map((i) => i.id)
-            .toArray(),
+          ).map((i) => i.id),
         );
-      continue;
+      return;
     }
 
     // stamps the item as moved via the position-update funnel:
     updateItemPosition(room, item, snappedPosition);
-  }
+  });
 };

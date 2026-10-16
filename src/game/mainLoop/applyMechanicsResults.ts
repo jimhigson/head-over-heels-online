@@ -1,6 +1,5 @@
 import { type ItemInPlayType } from "../../model/ItemInPlay";
 import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
-import { objectEntriesIter } from "../../utils/entries";
 import {
   addXyzInPlace,
   resetXyzInPlace,
@@ -25,9 +24,7 @@ export const applyMechanicsResults = <
 
     // update item.state.vels
     if (mechanicResult.movementType === "vel" && "vels" in item.state) {
-      for (const [velType, vel] of objectEntriesIter(mechanicResult.vels)) {
-        (item.state.vels as Record<string, Xyz>)[velType as string] = vel;
-      }
+      Object.assign(item.state.vels, mechanicResult.vels);
     }
 
     // update item.state.* (anything in stateDelta of the MR)

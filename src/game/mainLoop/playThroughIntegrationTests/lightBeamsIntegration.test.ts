@@ -8,7 +8,7 @@ import {
 import { heelsState, itemState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import { roomItemsIterable } from "../../../model/RoomState";
+import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { type Xyz } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";

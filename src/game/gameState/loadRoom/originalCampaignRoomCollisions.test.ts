@@ -2,11 +2,8 @@ import { expect, test } from "vitest";
 
 import { campaign } from "../../../_generated/originalCampaign/campaign";
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import {
-  roomItemsIterable,
-  roomSpatialIndexKey,
-  type RoomState,
-} from "../../../model/RoomState";
+import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
+import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { entries } from "../../../utils/entries";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { loadRoom } from "./loadRoom";

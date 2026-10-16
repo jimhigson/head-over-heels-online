@@ -1,7 +1,7 @@
 import { blockSizePx } from "../../../game/physics/mechanicsConstants";
 import { unprojectScreenXyToWorldXyzOnFace } from "../../../game/render/projections";
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import { roomItemsIterable } from "../../../model/RoomState";
+import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { orthoPlaneForNormal } from "../../../utils/vectors/orthoPlane";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import {

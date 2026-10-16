@@ -5,7 +5,8 @@ import {
 } from "../../../model/ItemInPlay";
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { type SwitchItemModificationUnion } from "../../../model/json/SwitchConfig";
-import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
+import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
+import { type RoomState } from "../../../model/RoomState";
 import { getNewStateForControlledItem } from "./getNewStateForControlledItem";
 
 export const applyModifiesList = <

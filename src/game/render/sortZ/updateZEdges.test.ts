@@ -474,7 +474,7 @@ describe("cyclic dependencies", () => {
     // verify that the items aren't illegally colliding (which would make this test maybe invalid)
     for (const i of set) {
       const index = new SpatialIndex(set.values());
-      expect(collisionItemWithIndex(i, index).toArray()).toEqual([]);
+      expect(collisionItemWithIndex(i, index)).toEqual([]);
     }
 
     const broadPhase = populatedBroadPhase(set);

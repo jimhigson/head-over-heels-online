@@ -115,6 +115,39 @@ const saveResultAsJson = (saveResult: SaveResult) =>
     })
   : jsonResult({ saveFailed: saveResult.failure });
 
+const playtestInputSchema = {
+  type: "object",
+  properties: {
+    fromStart: {
+      type: "boolean",
+      description:
+        "start at the campaign's start; default the editor's playtest option",
+    },
+    playAsHeels: {
+      type: "boolean",
+      description: "play as heels; default the editor's playtest option",
+    },
+  },
+};
+
+/** the playtest url, with the editor's playtest options unless overridden */
+const playtestUrlForInput = async ({
+  fromStart,
+  playAsHeels,
+}: Record<string, unknown>): Promise<string> => {
+  const state = editorStore.getState();
+  const playtestOptions = selectPlaytestOptions(state);
+  return playtestUrl(state, {
+    ...playtestOptions,
+    fromStart:
+      typeof fromStart === "boolean" ? fromStart : playtestOptions.fromStart,
+    playAsHeels:
+      typeof playAsHeels === "boolean" ? playAsHeels : (
+        playtestOptions.playAsHeels
+      ),
+  });
+};
+
 /**
  * the user ids going by a username, from the same directory the Open dialog
  * lists; users without a username all show as `anon`
@@ -566,38 +599,21 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
   {
     name: "playtest",
     description:
-      "play the open campaign, unsaved, as the toolbar's play button does: opens the game in a new tab, with the editor's playtest options (game, start point, character) unless overridden here. Returns the game's url, for opening it yourself if the browser blocks the tab",
-    inputSchema: {
-      type: "object",
-      properties: {
-        fromStart: {
-          type: "boolean",
-          description:
-            "start at the campaign's start; default the editor's playtest option",
-        },
-        playAsHeels: {
-          type: "boolean",
-          description: "play as heels; default the editor's playtest option",
-        },
-      },
-    },
-    async execute({ fromStart, playAsHeels }) {
-      const state = editorStore.getState();
-      const playtestOptions = selectPlaytestOptions(state);
-      const url = await playtestUrl(state, {
-        ...playtestOptions,
-        fromStart:
-          typeof fromStart === "boolean" ? fromStart : (
-            playtestOptions.fromStart
-          ),
-        playAsHeels:
-          typeof playAsHeels === "boolean" ? playAsHeels : (
-            playtestOptions.playAsHeels
-          ),
-      });
+      "play the open campaign, unsaved, as the toolbar's play button does: opens the game in a new tab, with the editor's playtest options (game, start point, character) unless overridden here. Returns the game's url, for opening it yourself if the browser blocks the tab. Opens a tab on every call - use getPlaytestUrl for only the url",
+    inputSchema: playtestInputSchema,
+    async execute(playtestInput) {
+      const url = await playtestUrlForInput(playtestInput);
       openPlaytest(url);
       return jsonResult({ url });
     },
+  },
+  {
+    name: "getPlaytestUrl",
+    description:
+      "the game url that playtest would open, without opening anything - for opening the game yourself, eg in a tab you control",
+    inputSchema: playtestInputSchema,
+    execute: async (playtestInput) =>
+      jsonResult({ url: await playtestUrlForInput(playtestInput) }),
   },
   {
     name: "getVerificationIssues",

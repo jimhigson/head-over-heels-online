@@ -1,4 +1,5 @@
-import { playablesInRoom, type RoomState } from "../../../model/RoomState";
+import { playablesInRoom } from "../../../model/roomItemsInPlayIterators";
+import { type RoomState } from "../../../model/RoomState";
 import { distanceSquaredXy, type Xyz } from "../../../utils/vectors/vectors";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
 

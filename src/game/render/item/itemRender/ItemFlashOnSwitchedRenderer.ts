@@ -2,7 +2,7 @@ import { Container, type Filter } from "pixi.js";
 
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { isInRoomModifierItem } from "../../../../model/ItemInPlayNarrowedUnions";
-import { roomItemsIterable } from "../../../../model/RoomState";
+import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import { zxSpectrumColor, zxSpectrumColors } from "../../../../originalGame";
 import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
 import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";

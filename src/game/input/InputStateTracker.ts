@@ -294,18 +294,22 @@ export class InputStateTracker {
   };
 
   /**
-   * get XY(z) vectors for binary inputs
+   * get XY(z) vectors for binary inputs - the shared empty array when
+   * nothing is pressed, so idle ticks allocate nothing
    */
-  *#pressVectors<D extends BooleanAction>(
+  #pressVectors<D extends BooleanAction>(
     input: FrameInput,
     directions: readonly D[],
     directionVectors: Record<D, Xyz>,
-  ): Generator<Xyz> {
-    for (const d of directions) {
-      if (isActionPressed(input, d, false)) {
-        yield directionVectors[d];
+  ): ReadonlyArray<Xyz> {
+    let pressVectors: undefined | Xyz[];
+    for (let i = 0; i < directions.length; i++) {
+      const direction = directions[i];
+      if (isActionPressed(input, direction, false)) {
+        (pressVectors ??= []).push(directionVectors[direction]);
       }
     }
+    return pressVectors ?? emptyArray;
   }
 
   /**
@@ -369,9 +373,11 @@ export class InputStateTracker {
       return originXyz;
     }
 
-    let pressVs = [
-      ...this.#pressVectors(currentFrameInput, directionsXy4, unitVectors),
-    ];
+    let pressVs = this.#pressVectors(
+      currentFrameInput,
+      directionsXy4,
+      unitVectors,
+    );
     let recentlyReleasedPress: undefined | Xyz = undefined;
 
     if (pressVs.length === 1) {
@@ -380,9 +386,9 @@ export class InputStateTracker {
       const previousFramePressVectors = [
         ...Iterator.from(this.#frameInputBuffer)
           .drop(1)
-          .map((buffer) => [
-            ...this.#pressVectors(buffer, directionsXy4, unitVectors),
-          ]),
+          .map((buffer) =>
+            this.#pressVectors(buffer, directionsXy4, unitVectors),
+          ),
       ];
 
       // if only one input is pressed, check the buffer if another, orthogonal input was only just released,

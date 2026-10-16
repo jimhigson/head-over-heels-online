@@ -1,4 +1,8 @@
-import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
+import {
+  forEachRoomItem,
+  roomItemsIterable,
+} from "../../../../model/roomItemsInPlayIterators";
+import { type RoomState } from "../../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../../model/stoodOnItemsLookup";
 import {
   findStandingOnWithHighestPriorityAndMostOverlap,
@@ -24,7 +28,7 @@ export const updateStandingOn = <
 >(
   room: RoomState<RoomId, RoomItemId>,
 ) => {
-  for (const bottom of roomItemsIterable(room.items)) {
+  forEachRoomItem(room.items, (bottom) => {
     try {
       // check what is standing on this item. Since the standing relationship is linked two-way,
       // also implies checking what the items are stood on.
@@ -57,5 +61,5 @@ export const updateStandingOn = <
         cause: e,
       });
     }
-  }
+  });
 };

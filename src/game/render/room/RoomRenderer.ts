@@ -6,7 +6,7 @@ import {
   type ItemInPlayType,
 } from "../../../model/ItemInPlay";
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
-import { roomItemsIterable } from "../../../model/RoomState";
+import { forEachRoomItem } from "../../../model/roomItemsInPlayIterators";
 import { zxSpectrumColor } from "../../../originalGame";
 import { audioCtx } from "../../../sound/audioCtx";
 import { soundsFadeDurationSec } from "../../../sound/soundUtils/stopWithFade";
@@ -330,6 +330,8 @@ export class RoomRenderer<
 
   /** the items ticked so far this tick - cleared at the start of each */
   #tickedItems = new Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>();
+  /** the room's positioned items, in room-item order; refilled each tick */
+  #spatialItems = new Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>();
 
   /**
    * tick one item, but only after recursing into the fronts of its broken
@@ -370,9 +372,9 @@ export class RoomRenderer<
     };
 
     this.#tickedItems.clear();
-    for (const item of roomItemsIterable(room.items)) {
+    forEachRoomItem(room.items, (item) => {
       this.#tickBrokenFirst(item, itemTickContext);
-    }
+    });
 
     // remove any renderers for items that no longer exist in the room:
     let destroyedItemRenderers = false;
@@ -474,11 +476,13 @@ export class RoomRenderer<
       renderContext: { room },
     } = this;
 
-    const spatialItems = new Set(
-      roomItemsIterable(room.items).filter(
-        (item) => !item[itemBehaviourKey].isPositionless(item),
-      ),
-    );
+    const spatialItems = this.#spatialItems;
+    spatialItems.clear();
+    forEachRoomItem(room.items, (item) => {
+      if (!item[itemBehaviourKey].isPositionless(item)) {
+        spatialItems.add(item);
+      }
+    });
 
     const { timingRecord } = givenTickContext;
     let subPhaseStartMs = timingRecord === undefined ? 0 : performance.now();

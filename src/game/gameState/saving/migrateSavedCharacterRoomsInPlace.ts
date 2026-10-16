@@ -14,7 +14,8 @@ import {
 import { type ItemState } from "../../../model/ItemState";
 import { type HeelsAbilities } from "../../../model/ItemStateMap";
 import { type CharacterName } from "../../../model/modelTypes";
-import { type Progression, roomItemsIterable } from "../../../model/RoomState";
+import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
+import { type Progression } from "../../../model/RoomState";
 import { valuesIter } from "../../../utils/entries";
 import { neverTime } from "../../../utils/neverTime";
 import { unitVectors } from "../../../utils/vectors/unitVectors";

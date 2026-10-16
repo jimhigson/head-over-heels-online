@@ -1,7 +1,8 @@
 import { blockStackSpritesheetMeta } from "../../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
 import { itemBehaviourKey } from "../../../../model/ItemInPlay";
+import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import { type RoomJson } from "../../../../model/RoomJson";
-import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
+import { type RoomState } from "../../../../model/RoomState";
 import { Graph } from "../../../../utils/graph/Graph";
 import { type Xy } from "../../../../utils/vectors/vectors";
 import { loadRoom } from "../../../gameState/loadRoom/loadRoom";

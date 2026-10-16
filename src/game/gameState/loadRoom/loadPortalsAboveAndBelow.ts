@@ -1,9 +1,7 @@
 import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
+import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { isWholeRoomSubRooms, type RoomJson } from "../../../model/RoomJson";
-import {
-  roomItemsIterable,
-  type RoomStateItems,
-} from "../../../model/RoomState";
+import { type RoomStateItems } from "../../../model/RoomState";
 import { objectEntriesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { addXyz, boxWithSize } from "../../../utils/vectors/vectors";

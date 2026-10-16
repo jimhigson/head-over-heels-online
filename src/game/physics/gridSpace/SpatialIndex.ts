@@ -1,4 +1,5 @@
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import { emptyArray } from "../../../utils/empty";
 import { type XyzBox } from "../../../utils/vectors/vectors";
 import { blockSizePx } from "../mechanicsConstants";
 
@@ -36,6 +37,29 @@ export type Indexable = {
 // given cell remains very small
 const cellDepth = blockSizePx.x * 2;
 const cellWidth = blockSizePx.x * 2;
+
+/**
+ * whether the cell keys are exactly the cells of the given (inclusive) range
+ */
+const cellRangeIsExactly = (
+  cellKeys: ReadonlySet<XyCellKey>,
+  minCellX: number,
+  minCellY: number,
+  maxCellX: number,
+  maxCellY: number,
+): boolean => {
+  if (cellKeys.size !== (maxCellX - minCellX + 1) * (maxCellY - minCellY + 1)) {
+    return false;
+  }
+  for (let x = minCellX; x <= maxCellX; x++) {
+    for (let y = minCellY; y <= maxCellY; y++) {
+      if (!cellKeys.has(makeCellKey(x, y))) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
 
 type CuboidCellExtent = {
   minCellX: number;
@@ -94,20 +118,6 @@ export class SpatialIndex<
     }
   }
 
-  *#iterateCuboidCellKeys(box: Readonly<XyzBox>): Generator<XyCellKey> {
-    // Calculate which cells this cuboid occupies (only x,y)
-    const minCellX = Math.floor(box.x / cellWidth);
-    const minCellY = Math.floor(box.y / cellDepth);
-    const maxCellX = Math.floor((box.x + box.xd) / cellWidth);
-    const maxCellY = Math.floor((box.y + box.yd) / cellDepth);
-
-    for (let x = minCellX; x <= maxCellX; x++) {
-      for (let y = minCellY; y <= maxCellY; y++) {
-        yield makeCellKey(x, y);
-      }
-    }
-  }
-
   #ensureCell(cellKey: XyCellKey): Set<Item> {
     let cell = this.#cells.get(cellKey);
     if (!cell) {
@@ -117,12 +127,20 @@ export class SpatialIndex<
     return cell;
   }
 
-  /** put an item into all the given cells */
-  #addToCells(item: Item, cellKeys: Iterable<XyCellKey>): void {
+  /** put an item into all the cells its box occupies */
+  #addToCells(item: Item): void {
+    const { box } = item.state;
     const occupiedCells = new Set<XyCellKey>();
-    for (const cellKey of cellKeys) {
-      this.#ensureCell(cellKey).add(item);
-      occupiedCells.add(cellKey);
+    const minCellX = this.worldXToCellX(box.x);
+    const minCellY = this.worldYToCellY(box.y);
+    const maxCellX = this.worldXToCellX(box.x + box.xd);
+    const maxCellY = this.worldYToCellY(box.y + box.yd);
+    for (let x = minCellX; x <= maxCellX; x++) {
+      for (let y = minCellY; y <= maxCellY; y++) {
+        const cellKey = makeCellKey(x, y);
+        this.#ensureCell(cellKey).add(item);
+        occupiedCells.add(cellKey);
+      }
     }
     this.#itemToCellKeys.set(item, occupiedCells);
   }
@@ -148,16 +166,35 @@ export class SpatialIndex<
   }
 
   /**
-   * move an item to a new set of cells, touching only the cells that actually
-   * changed. The item must already be in the index.
+   * move an item to the cells its box now occupies, touching only the cells
+   * that actually changed. The item must already be in the index.
    */
-  #moveToCells(item: Item, cellKeys: Iterable<XyCellKey>): void {
+  #moveToCells(item: Item): void {
     const oldCellKeys = this.#itemToCellKeys.get(item);
     if (!oldCellKeys) {
       throw new Error(`Item not in index`);
     }
 
-    const newCellKeys = new Set<XyCellKey>(cellKeys);
+    const { box } = item.state;
+    const minCellX = this.worldXToCellX(box.x);
+    const minCellY = this.worldYToCellY(box.y);
+    const maxCellX = this.worldXToCellX(box.x + box.xd);
+    const maxCellY = this.worldYToCellY(box.y + box.yd);
+
+    if (
+      cellRangeIsExactly(oldCellKeys, minCellX, minCellY, maxCellX, maxCellY)
+    ) {
+      // still in the same cells - the usual case for an item that didn't move
+      // very much - skip it and continue
+      return;
+    }
+
+    const newCellKeys = new Set<XyCellKey>();
+    for (let x = minCellX; x <= maxCellX; x++) {
+      for (let y = minCellY; y <= maxCellY; y++) {
+        newCellKeys.add(makeCellKey(x, y));
+      }
+    }
     let deleted = false;
     let added = false;
 
@@ -203,7 +240,7 @@ export class SpatialIndex<
     if (this.#itemToCellKeys.has(item)) {
       throw new Error(`Item ${item.id} is already in the spatial index`);
     }
-    this.#addToCells(item, this.#iterateCuboidCellKeys(item.state.box));
+    this.#addToCells(item);
     this.#cuboidCellExtentDirty = true;
   }
 
@@ -221,15 +258,15 @@ export class SpatialIndex<
    * detection should work.
    */
   updateItemSpatialIndex(item: Item): void {
-    this.#moveToCells(item, this.#iterateCuboidCellKeys(item.state.box));
+    this.#moveToCells(item);
     this.#cuboidCellExtentDirty = true;
   }
 
-  /** world x → cuboid cell x (same flooring as the cell-key generator) */
+  /** world x → cuboid cell x; the one flooring every cell lookup uses */
   worldXToCellX(worldX: number): number {
     return Math.floor(worldX / cellWidth);
   }
-  /** world y → cuboid cell y (same flooring as the cell-key generator) */
+  /** world y → cuboid cell y; the one flooring every cell lookup uses */
   worldYToCellY(worldY: number): number {
     return Math.floor(worldY / cellDepth);
   }
@@ -238,8 +275,7 @@ export class SpatialIndex<
    * The live Set of items occupying one cuboid cell, by integer cell coords.
    * Returns the stored Set itself (no copy) — the caller must NOT mutate it, and
    * should not retain it across index mutations. undefined when the cell is empty.
-   * Cheaper than getCuboidNeighbourhood, which allocates a fresh Set; intended for
-   * hot per-cell walks.
+   * Intended for hot per-cell walks.
    */
   getCellByCellCoords(
     cellX: number,
@@ -276,37 +312,81 @@ export class SpatialIndex<
   }
 
   /**
-   * Get all items that occupy cells within the given cuboid region. Each item
-   * appears only once in the returned set.
+   * The first item occupying the box's cells that `predicate` accepts, or
+   * undefined if none. `context` is passed through to `predicate`, so callers
+   * can use a once-declared predicate rather than a new closure per query.
+   * Holds no state between calls, so `predicate` may itself query the index.
    */
-  getCuboidNeighbourhood(
+  findInBox<Context>(
     /** The cuboid region (position + dimensions) to check */
     box: Readonly<XyzBox>,
-    /** Optional item to exclude from results (usually the querying item) */
+    predicate: (item: Item, box: Readonly<XyzBox>, context: Context) => boolean,
+    context: Context,
+    /** Optional item to never offer (usually the querying item) */
     excludeItem?: Indexable,
-  ): Set<Item> {
-    const neighbours = new Set<Item>();
+  ): Item | undefined {
+    const minCellX = this.worldXToCellX(box.x);
+    const minCellY = this.worldYToCellY(box.y);
+    const maxCellX = this.worldXToCellX(box.x + box.xd);
+    const maxCellY = this.worldYToCellY(box.y + box.yd);
 
-    for (const cellKey of this.#iterateCuboidCellKeys(box)) {
-      const cell = this.#cells.get(cellKey);
-      if (cell) {
-        for (const neighbour of cell) {
-          if (neighbour !== excludeItem) {
-            neighbours.add(neighbour);
+    for (let x = minCellX; x <= maxCellX; x++) {
+      for (let y = minCellY; y <= maxCellY; y++) {
+        const cell = this.#cells.get(makeCellKey(x, y));
+        if (cell === undefined) {
+          continue;
+        }
+        for (const item of cell) {
+          if (item !== excludeItem && predicate(item, box, context)) {
+            return item;
           }
         }
       }
     }
-
-    return neighbours;
+    return undefined;
   }
 
   /**
-   * Get all items that share at least one cuboid cell with the given item. There
-   * is no requirement for this item to actually be in the index itself.
+   * Every item occupying the box's cells that `predicate` accepts, each once
+   * (even if it spans several of the cells). `context` is passed through to
+   * `predicate`, as for {@link findInBox}. Allocates only when >0 items are
+   * accepted.
    */
-  getItemCuboidNeighbourhood(item: Indexable): Set<Item> {
-    return this.getCuboidNeighbourhood(item.state.box, item);
+  filterInBox<Context>(
+    /** The cuboid region (position + dimensions) to check */
+    box: Readonly<XyzBox>,
+    predicate: (item: Item, box: Readonly<XyzBox>, context: Context) => boolean,
+    context: Context,
+    /** Optional item to never offer (usually the querying item) */
+    excludeItem?: Indexable,
+  ): ReadonlyArray<Item> {
+    let accepted: Item[] | undefined = undefined;
+    const minCellX = this.worldXToCellX(box.x);
+    const minCellY = this.worldYToCellY(box.y);
+    const maxCellX = this.worldXToCellX(box.x + box.xd);
+    const maxCellY = this.worldYToCellY(box.y + box.yd);
+
+    for (let x = minCellX; x <= maxCellX; x++) {
+      for (let y = minCellY; y <= maxCellY; y++) {
+        const cell = this.#cells.get(makeCellKey(x, y));
+        if (cell === undefined) {
+          continue;
+        }
+        for (const item of cell) {
+          if (item === excludeItem || !predicate(item, box, context)) {
+            continue;
+          }
+          // dedup against the (usually few) accepted so far - only items
+          // spanning several of the box's cells are met twice:
+          if (accepted === undefined) {
+            accepted = [item];
+          } else if (!accepted.includes(item)) {
+            accepted.push(item);
+          }
+        }
+      }
+    }
+    return accepted ?? emptyArray;
   }
 
   /**

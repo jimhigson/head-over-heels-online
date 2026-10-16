@@ -1,6 +1,6 @@
 import { type ItemInPlay } from "../../model/ItemInPlay";
 import { type FreeItem } from "../../model/ItemInPlayNarrowedUnions";
-import { roomItemsIterable } from "../../model/RoomState";
+import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
 import {
   scaleXyz,
   unitVectorInPlace,
