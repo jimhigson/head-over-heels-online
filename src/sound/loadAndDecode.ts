@@ -2,7 +2,11 @@ import { audioCtx } from "./audioCtx";
 
 const cache = new Map<string, Promise<AudioBuffer>>();
 
-export const loadAndDecode = (url: string): Promise<AudioBuffer> => {
+export const loadAndDecode = (
+  url: string,
+  /** "low" for speculative preloads, so they don't compete with needed loads */
+  priority: RequestPriority,
+): Promise<AudioBuffer> => {
   const cached = cache.get(url);
   if (cached) {
     return cached;
@@ -11,7 +15,7 @@ export const loadAndDecode = (url: string): Promise<AudioBuffer> => {
   // a failed load is forgotten so a later call can try again - the promise is
   // cached before it settles, so it would otherwise be handed back rejected
   // for the life of the page
-  const promise = fetchAndDecode(url).catch((error: unknown) => {
+  const promise = fetchAndDecode(url, priority).catch((error: unknown) => {
     cache.delete(url);
     throw error;
   });
@@ -19,7 +23,10 @@ export const loadAndDecode = (url: string): Promise<AudioBuffer> => {
   return promise;
 };
 
-const fetchAndDecode = async (url: string): Promise<AudioBuffer> => {
+const fetchAndDecode = async (
+  url: string,
+  priority: RequestPriority,
+): Promise<AudioBuffer> => {
   if (import.meta.env.MODE === "visual-regression") {
     // silent stub - snapshots never need audible sound, and decoding depends
     // on codecs that automated browsers may not have (webkit's decodeAudioData
@@ -35,5 +42,7 @@ const fetchAndDecode = async (url: string): Promise<AudioBuffer> => {
       );
     }
   }
-  return audioCtx.decodeAudioData(await (await fetch(url)).arrayBuffer());
+  return audioCtx.decodeAudioData(
+    await (await fetch(url, { priority })).arrayBuffer(),
+  );
 };

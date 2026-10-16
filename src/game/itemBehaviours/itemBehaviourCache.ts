@@ -75,6 +75,7 @@ import { PushableBlockBehaviour } from "./PushableBlockBehaviour";
 import { SceneryPlayerBehaviour } from "./SceneryPlayerBehaviour";
 import { SlidingBlockBehaviour } from "./SlidingBlockBehaviour";
 import { SlidingItemBehaviour } from "./SlidingItemBehaviour";
+import { SoundEffectBehaviour } from "./SoundEffectBehaviour";
 import { SpikesBehaviour } from "./SpikesBehaviour";
 import { SpringBehaviour } from "./SpringBehaviour";
 import { TeleporterBehaviour } from "./TeleporterBehaviour";
@@ -205,10 +206,7 @@ const behaviours = new Map<ItemBehaviourCacheKey, ItemBehaviour>(
       shadowCastTexture: shadowSmallRound,
       castsShadowWhileStoodOn: true,
     }),
-    // a sound that plays from a point in a room:
-    soundEffect: new NonSolidBehaviour({
-      fixedZIndex: nonRenderingItemFixedZIndex,
-    }),
+    soundEffect: new SoundEffectBehaviour(),
     spikes: new SpikesBehaviour(),
     spring: new SpringBehaviour(),
     stopAutowalk: new NonSolidBehaviour({

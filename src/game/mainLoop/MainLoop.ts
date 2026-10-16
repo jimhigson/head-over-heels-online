@@ -5,6 +5,7 @@ import { ensureRoomSoundsLoaded } from "../../sound/ensureRoomSoundsLoaded";
 import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import {
+  selectCurrentCampaign,
   selectInputDirectionMode,
   selectIsPaused,
   selectIsPointerOnTube,
@@ -529,10 +530,13 @@ export class MainLoop<RoomId extends string> {
       tickEndRoom !== undefined &&
       this.#roomSoundsLoadPromise === undefined
     ) {
-      // the room entry tunes are excluded from the initial sound load - if
-      // this room names one that isn't loaded yet, hold off rendering until
-      // it is, like a spritesheet variant load
-      const roomSoundsPromise = ensureRoomSoundsLoaded(tickEndRoom);
+      // sounds excluded from the initial sound load (eg, room entry tunes) - if
+      // this room's items need one that isn't loaded yet, hold off rendering
+      // until it is, like a spritesheet variant load
+      const roomSoundsPromise = ensureRoomSoundsLoaded(
+        tickEndRoom,
+        selectCurrentCampaign<RoomId>(tickState),
+      );
       if (roomSoundsPromise !== undefined) {
         this.#roomSoundsLoadPromise = roomSoundsPromise
           .then(() => {

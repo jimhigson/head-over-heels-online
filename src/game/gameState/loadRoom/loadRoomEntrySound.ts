@@ -1,7 +1,4 @@
-import {
-  type ExportedSoundId,
-  isSoundId,
-} from "../../../_generated/sfxdex/sfx";
+import { type ExportedSoundId } from "../../../_generated/sfxdex/sfx";
 import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
 import { type RoomJson } from "../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
@@ -18,6 +15,7 @@ import {
 } from "../../../utils/vectors/vectors";
 import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
 import { blockXyzToFineXyz } from "../../render/projections";
+import { entryTuneForPlanet } from "./entryTuneForPlanet";
 import { defaultBaseState } from "./itemDefaultStates";
 
 const roomEntrySoundPos: Xyz = blockXyzToFineXyz({ x: -2, y: -2, z: -2 });
@@ -60,8 +58,7 @@ const resolveSoundId = (
     return undefined;
   }
 
-  const roomEntrySoundId = roomJson.planet;
-  return isSoundId(roomEntrySoundId) ? roomEntrySoundId : undefined;
+  return entryTuneForPlanet(roomJson.planet);
 };
 
 export const loadRoomEntrySound = <

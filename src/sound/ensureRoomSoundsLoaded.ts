@@ -1,22 +1,32 @@
+import { itemBehaviourKey } from "../model/ItemInPlay";
+import { type Campaign } from "../model/modelTypes";
 import { roomItemsIterable } from "../model/roomItemsInPlayIterators";
 import { type RoomState } from "../model/RoomState";
 import { loadSound } from "./soundsLoader";
 
 /**
- * ensures all sounds in a room's soundEffect items are loaded
+ * starts loading every sound the room's items require or ask to preload. The
+ * returned promise waits only for the required sounds; undefined if they are
+ * all already loaded
  */
-export const ensureRoomSoundsLoaded = (
-  room: RoomState<string, string>,
+export const ensureRoomSoundsLoaded = <RoomId extends string>(
+  room: RoomState<RoomId, string>,
+  campaign: Campaign<RoomId>,
 ): Promise<void> | undefined => {
   const pending: Promise<void>[] = [];
 
-  for (const soundEffectItem of roomItemsIterable(room.items).filter(
-    (item) => item.type === "soundEffect",
-  )) {
-    const loading = loadSound(soundEffectItem.config.soundOptions.soundId);
-    if (loading !== undefined) {
-      // if not undefined, will be a promise we need to wait on:
-      pending.push(loading);
+  for (const item of roomItemsIterable(room.items)) {
+    const behaviour = item[itemBehaviourKey];
+    for (const soundId of behaviour.soundsRequired(item)) {
+      const loading = loadSound(soundId);
+      if (loading !== undefined) {
+        // if not undefined, will be a promise we need to wait on:
+        pending.push(loading);
+      }
+    }
+    for (const soundId of behaviour.soundsToPreload(item, campaign)) {
+      // not waited on - whatever plays it loads it again if not ready by then
+      loadSound(soundId, "low");
     }
   }
 

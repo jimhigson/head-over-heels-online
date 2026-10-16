@@ -1,3 +1,4 @@
+import { type ExportedSoundId } from "../../_generated/sfxdex/sfx";
 import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import { type ItemInPlay } from "../../model/ItemInPlay";
 import {
@@ -5,7 +6,10 @@ import {
   type UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlayNarrowedUnions";
 import { exitGameRoomId } from "../../model/json/ItemConfigMap";
-import { otherIndividualCharacterName } from "../../model/modelTypes";
+import {
+  type Campaign,
+  otherIndividualCharacterName,
+} from "../../model/modelTypes";
 import {
   characterReachesFreedom,
   gameOver,
@@ -19,6 +23,7 @@ import {
   movingItemIsPlayable,
 } from "../physics/handleTouch/ItemTouchEvent";
 import { nonRenderingItemFixedZIndex } from "../render/sortZ/fixedZIndexes";
+import { entryTuneSoundsForRoom } from "./entryTuneSoundsForRoom";
 import { ItemBehaviour } from "./ItemBehaviour";
 
 /**
@@ -56,6 +61,13 @@ export class PortalBehaviour extends ItemBehaviour {
    */
   override isStandable(): boolean {
     return false;
+  }
+
+  override soundsToPreload<RoomId extends string, RoomItemId extends string>(
+    portal: ItemTypeUnion<"portal", RoomId, RoomItemId>,
+    campaign: Campaign<RoomId>,
+  ): readonly ExportedSoundId[] {
+    return entryTuneSoundsForRoom(portal.config.toRoom, campaign);
   }
 
   /**

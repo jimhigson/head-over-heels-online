@@ -34,6 +34,7 @@ import {
   xyzEqual,
 } from "../../../utils/vectors/vectors";
 import { findCollisionBoxWithIndex } from "../../collision/aabbCollision";
+import { isTeleporter } from "../../physics/mechanics/teleporterIsActive";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { moveItemInSteps } from "../../physics/moveItem/moveItemInSteps";
 import { blockXyzToFineXyz } from "../../render/projections";
@@ -201,7 +202,7 @@ const findTeleporterDestinationPosition = <
   const landing = resolveTeleporterLanding<RoomItemId>(
     s,
     roomItemsIterable(toRoom.items)
-      .filter((item) => item[itemBehaviourKey].isTeleporter(item))
+      .filter(isTeleporter)
       .map(({ id }) => id),
     (itemId): itemId is RoomItemId => itemId in toRoom.items,
     toRoom.items[sourceItem.id] === sourceItem ? sourceItem.id : undefined,

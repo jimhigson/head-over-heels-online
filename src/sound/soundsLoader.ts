@@ -118,11 +118,13 @@ const loadedSounds: Partial<Record<ExportedSoundId, AudioBuffer>> = {};
  */
 export const loadSound = (
   soundId: ExportedSoundId,
+  /** "low" for speculative preloads, so they don't compete with needed loads */
+  priority: RequestPriority = "auto",
 ): Promise<void> | undefined => {
   if (loadedSounds[soundId] !== undefined) {
     return undefined;
   }
-  return loadAndDecode(exportedSfxUrls[soundId]).then((buffer) => {
+  return loadAndDecode(exportedSfxUrls[soundId], priority).then((buffer) => {
     loadedSounds[soundId] = buffer;
   });
 };
@@ -148,7 +150,9 @@ export const loadSoundCategory = (
   if (missing.length === 0) {
     return undefined;
   }
-  return Promise.all(missing.map(loadSound)).then(() => undefined);
+  return Promise.all(missing.map((soundId) => loadSound(soundId))).then(
+    () => undefined,
+  );
 };
 
 /** whether a sound is loaded and can be played right now */
