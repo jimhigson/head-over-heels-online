@@ -5,8 +5,8 @@ import { buildRoomJsonDirectionalIndex } from "../../../game/gameState/loadRoom/
 import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { type JsonItemType } from "../../../model/json/JsonItem";
+import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
-import { roomItemsIterable } from "../../../model/RoomState";
 import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import {

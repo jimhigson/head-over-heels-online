@@ -15,12 +15,9 @@ import {
   type IndividualCharacterName,
   otherIndividualCharacterName,
 } from "../../../model/modelTypes";
+import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { type RoomJson } from "../../../model/RoomJson";
-import {
-  roomItemsIterable,
-  roomSpatialIndexKey,
-  type RoomState,
-} from "../../../model/RoomState";
+import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import {
   characterRoomChange,
   roomExplored,
@@ -36,7 +33,7 @@ import {
   type Xyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
-import { collisionItemWithIndex } from "../../collision/aabbCollision";
+import { findCollisionBoxWithIndex } from "../../collision/aabbCollision";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { moveItemInSteps } from "../../physics/moveItem/moveItemInSteps";
 import { blockXyzToFineXyz } from "../../render/projections";
@@ -602,11 +599,12 @@ export function changeCharacterRoom<
   }
 
   if (log) {
-    const [collisionInDestinationRoom] = collisionItemWithIndex(
-      playableItem,
+    const collisionInDestinationRoom = findCollisionBoxWithIndex(
+      playableItem.state.box,
       toRoom[roomSpatialIndexKey],
       (item) =>
         item.type !== "portal" && !item[itemBehaviourKey].isNonSolid(item),
+      playableItem,
     );
     if (collisionInDestinationRoom !== undefined) {
       console.warn(

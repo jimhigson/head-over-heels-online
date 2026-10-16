@@ -3,11 +3,11 @@ import {
   isFreeItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
+import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { type RoomJson } from "../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import {
   type Progression,
-  roomItemsIterable,
   roomSpatialIndexKey,
   type RoomState,
   type RoomStateItems,

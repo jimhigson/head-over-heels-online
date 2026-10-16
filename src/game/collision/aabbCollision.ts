@@ -63,12 +63,25 @@ const alwaysUseForCollision = <C extends CollideableItem, G extends C = C>(
 ): item is G => true;
 
 /**
- * Check for collisions between a box and items in the spatial index
+ * the spatial index predicate for every collision query - declared once (with
+ * the caller's considerItem passed as the query context) so queries create no
+ * closures
+ */
+const isConsideredAndColliding = <C extends CollideableItem>(
+  candidateItem: C,
+  box: Readonly<XyzBox>,
+  considerItem: (item: C) => boolean,
+): boolean =>
+  considerItem(candidateItem) && collisionBoxes(box, candidateItem.state.box);
+
+/**
+ * Check for collisions between a box and items in the spatial index. Each
+ * colliding item appears once, even if it occupies several of the cells searched
  */
 export function collisionBoxWithIndex<C extends CollideableItem>(
   box: Readonly<XyzBox>,
   index: SpatialIndex<string, string, C>,
-): Generator<C>;
+): ReadonlyArray<C>;
 export function collisionBoxWithIndex<
   C extends CollideableItem,
   GuardedType extends C,
@@ -78,32 +91,26 @@ export function collisionBoxWithIndex<
   considerItem: (item: C) => item is GuardedType,
   /** an item to leave out of the results, usually the one querying */
   excludeItem?: CollideableItem,
-): Generator<GuardedType>;
+): ReadonlyArray<GuardedType>;
 export function collisionBoxWithIndex<C extends CollideableItem>(
   box: Readonly<XyzBox>,
   index: SpatialIndex<string, string, C>,
   considerItem: (item: C) => boolean,
   /** an item to leave out of the results, usually the one querying */
   excludeItem?: CollideableItem,
-): Generator<C>;
-export function* collisionBoxWithIndex<
-  C extends CollideableItem,
-  GuardedType extends C = C,
->(
+): ReadonlyArray<C>;
+export function collisionBoxWithIndex<C extends CollideableItem>(
   box: Readonly<XyzBox>,
   index: SpatialIndex<string, string, C>,
   considerItem: (item: C) => boolean = alwaysUseForCollision,
   excludeItem?: CollideableItem,
-): Generator<C | GuardedType> {
-  const neighbours = index.getCuboidNeighbourhood(box, excludeItem);
-  for (const candidateItem of neighbours) {
-    if (
-      considerItem(candidateItem) &&
-      collisionBoxes(box, candidateItem.state.box)
-    ) {
-      yield candidateItem as GuardedType & C;
-    }
-  }
+): ReadonlyArray<C> {
+  return index.filterInBox(
+    box,
+    isConsideredAndColliding,
+    considerItem,
+    excludeItem,
+  );
 }
 
 /**
@@ -113,7 +120,7 @@ export function* collisionBoxWithIndex<
 export function collisionItemWithIndex<C extends CollideableItem>(
   subject: CollideableItem,
   index: SpatialIndex<string, string, C>,
-): Generator<C>;
+): ReadonlyArray<C>;
 export function collisionItemWithIndex<
   C extends CollideableItem,
   GuardedType extends C,
@@ -121,18 +128,57 @@ export function collisionItemWithIndex<
   subject: CollideableItem,
   index: SpatialIndex<string, string, C>,
   considerItem: (item: C) => item is GuardedType,
-): Generator<GuardedType>;
+): ReadonlyArray<GuardedType>;
 export function collisionItemWithIndex<C extends CollideableItem>(
   subject: CollideableItem,
   index: SpatialIndex<string, string, C>,
   considerItem: (item: C) => boolean,
-): Generator<C>;
-export function* collisionItemWithIndex<C extends CollideableItem>(
+): ReadonlyArray<C>;
+export function collisionItemWithIndex<C extends CollideableItem>(
   subject: CollideableItem,
   index: SpatialIndex<string, string, C>,
   considerItem: (item: C) => boolean = alwaysUseForCollision,
-): Generator<C> {
-  yield* collisionBoxWithIndex(subject.state.box, index, considerItem, subject);
+): ReadonlyArray<C> {
+  return collisionBoxWithIndex(subject.state.box, index, considerItem, subject);
+}
+
+/**
+ * The first item found colliding with a box, or undefined if there are none -
+ * for callers that need only one collision, not all of them
+ */
+export function findCollisionBoxWithIndex<C extends CollideableItem>(
+  box: Readonly<XyzBox>,
+  index: SpatialIndex<string, string, C>,
+): C | undefined;
+export function findCollisionBoxWithIndex<
+  C extends CollideableItem,
+  GuardedType extends C,
+>(
+  box: Readonly<XyzBox>,
+  index: SpatialIndex<string, string, C>,
+  considerItem: (item: C) => item is GuardedType,
+  /** an item to leave out of the results, usually the one querying */
+  excludeItem?: CollideableItem,
+): GuardedType | undefined;
+export function findCollisionBoxWithIndex<C extends CollideableItem>(
+  box: Readonly<XyzBox>,
+  index: SpatialIndex<string, string, C>,
+  considerItem: (item: C) => boolean,
+  /** an item to leave out of the results, usually the one querying */
+  excludeItem?: CollideableItem,
+): C | undefined;
+export function findCollisionBoxWithIndex<C extends CollideableItem>(
+  box: Readonly<XyzBox>,
+  index: SpatialIndex<string, string, C>,
+  considerItem: (item: C) => boolean = alwaysUseForCollision,
+  excludeItem?: CollideableItem,
+): C | undefined {
+  return index.findInBox(
+    box,
+    isConsideredAndColliding,
+    considerItem,
+    excludeItem,
+  );
 }
 
 /**
@@ -146,18 +192,9 @@ export const hasCollisionBoxWithIndex = <C extends CollideableItem>(
   considerItem: (item: C) => boolean = alwaysUseForCollision,
   /** an item to leave out of the results, usually the one querying */
   excludeItem?: CollideableItem,
-): boolean => {
-  const neighbours = index.getCuboidNeighbourhood(box, excludeItem);
-  for (const candidateItem of neighbours) {
-    if (
-      considerItem(candidateItem) &&
-      collisionBoxes(box, candidateItem.state.box)
-    ) {
-      return true;
-    }
-  }
-  return false;
-};
+): boolean =>
+  findCollisionBoxWithIndex(box, index, considerItem, excludeItem) !==
+  undefined;
 
 /**
  * Check for collisions between a single item and multiple others - similar to
@@ -167,7 +204,7 @@ export const hasCollisionBoxWithIndex = <C extends CollideableItem>(
  * equivalent to, but more efficient than:
  *
  * ```ts
- *    isEmpty(collisionItemWithIndex(...))
+ *    collisionItemWithIndex(...).length > 0
  * ```
  */
 export const hasCollisionItemWithIndex = <C extends CollideableItem>(

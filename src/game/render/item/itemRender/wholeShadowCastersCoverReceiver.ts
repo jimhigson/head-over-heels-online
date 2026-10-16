@@ -159,12 +159,13 @@ const unionOfFootprintsCoversTarget = (
  * Non-whole-shadow casters are ignored.
  */
 export const wholeShadowCastersCoverReceiver = (
-  castersAbove: Iterable<UnionOfAllItemInPlayTypes>,
+  castersAbove: ReadonlyArray<UnionOfAllItemInPlayTypes>,
   receiver: CollideableItem,
   cameraAngle: Xy,
 ): boolean => {
   let count = 0;
-  for (const caster of castersAbove) {
+  for (let i = 0; i < castersAbove.length; i++) {
+    const caster = castersAbove[i];
     const casterBehaviour = caster[itemBehaviourKey];
     if (casterBehaviour.castsWholeShadows(caster, cameraAngle)) {
       const shadowOffset = casterBehaviour.shadowOffset(caster);

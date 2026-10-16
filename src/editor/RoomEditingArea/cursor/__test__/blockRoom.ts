@@ -4,7 +4,7 @@ import {
   type RenderBox,
   type RenderBoxes,
 } from "../../../../game/render/renderBox/makeItemRenderBoxAtCameraAngle";
-import { roomItemsIterable } from "../../../../model/RoomState";
+import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import { spritesheetMetas } from "../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { addXyz, type Xy, type Xyz } from "../../../../utils/vectors/vectors";
 import {

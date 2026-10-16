@@ -133,7 +133,7 @@ regenerate `webkit-desktop` baselines with `--update-snapshots`.
 `roomSnapshots` uses the burnt-in original campaign and needs no network, but
 some visual specs load a community campaign from supabase and **cannot run in
 the sandbox as-is**: `cameraRotationSweep` loads the `rotate-camera-test`
-campaign (`userId 2924c962-99f1-4dd2-9b9c-fef832dc991b`) and fails at
+campaign (`userId 2924c962-99f1-4dd2-9b9c-fef832dc991b`, referenced in the codebase as `jimAtBlockstackingUserId`) and fails at
 `loadCampaignFromDb` with "could not get campaign".
 
 Why: the egress proxy re-terminates TLS (MITM). CLI tools trust its CA bundle,

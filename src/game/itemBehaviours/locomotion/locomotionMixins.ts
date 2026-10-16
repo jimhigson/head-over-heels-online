@@ -1,4 +1,5 @@
-import { playablesInRoom, type RoomState } from "../../../model/RoomState";
+import { playablesInRoom } from "../../../model/roomItemsInPlayIterators";
+import { type RoomState } from "../../../model/RoomState";
 import { selectHasAllPlanetCrowns } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";

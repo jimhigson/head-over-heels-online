@@ -4,11 +4,13 @@ import {
   type CharacterName,
   type IndividualCharacterName,
 } from "../../model/modelTypes";
+import {
+  iterateRoomItemEntries,
+  roomItemsIterable,
+} from "../../model/roomItemsInPlayIterators";
 import { type RoomJson } from "../../model/RoomJson";
 import {
   getRoomItem,
-  iterateRoomItemEntries,
-  roomItemsIterable,
   roomSpatialIndexKey,
   type RoomState,
 } from "../../model/RoomState";

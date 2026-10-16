@@ -24,7 +24,7 @@ import { type GameStateWithMockInput } from "../../../_testUtils/MockInputStateT
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { isFreeItem } from "../../../model/ItemInPlayNarrowedUnions";
 import { type JsonItemUnion } from "../../../model/json/JsonItem";
-import { roomItemsIterable } from "../../../model/RoomState";
+import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { store } from "../../../store/store";
 import { keysIter } from "../../../utils/entries";
 import { lengthXy, originXyz, subXy } from "../../../utils/vectors/vectors";

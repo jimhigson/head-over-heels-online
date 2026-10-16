@@ -6,11 +6,8 @@ import blacktooth33v25 from "../../../e2e/fixtures/saves/v25/blacktooth33.json";
 import bookworld21v25 from "../../../e2e/fixtures/saves/v25/bookworld21.json";
 import finalroomV25 from "../../../e2e/fixtures/saves/v25/finalroom.json";
 import { isFreeItem } from "../../model/ItemInPlayNarrowedUnions";
-import {
-  type Progression,
-  roomItemsIterable,
-  roomSpatialIndexKey,
-} from "../../model/RoomState";
+import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
+import { type Progression, roomSpatialIndexKey } from "../../model/RoomState";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { badJsonClone } from "../../utils/badJsonClone";
 import { valuesIter } from "../../utils/entries";

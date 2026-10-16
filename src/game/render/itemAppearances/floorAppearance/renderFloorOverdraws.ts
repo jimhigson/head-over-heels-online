@@ -1,7 +1,8 @@
 import { Container } from "pixi.js";
 
 import { type ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
-import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
+import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
+import { type RoomState } from "../../../../model/RoomState";
 import { wallInPlayTimes } from "../../../../model/times";
 import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";

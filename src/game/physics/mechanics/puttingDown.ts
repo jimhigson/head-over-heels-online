@@ -17,7 +17,10 @@ import {
   type Xyz,
   type XyzBox,
 } from "../../../utils/vectors/vectors";
-import { collisionBoxWithIndex } from "../../collision/aabbCollision";
+import {
+  collisionBoxWithIndex,
+  findCollisionBoxWithIndex,
+} from "../../collision/aabbCollision";
 import { type GameState } from "../../gameState/GameState";
 import { selectHeelsAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
@@ -257,7 +260,7 @@ const putDownItemLocation = <RoomId extends string, RoomItemId extends string>(
 
   for (let i = 0; i < maxFitIterations; i++) {
     // re-queried every time, since the box has moved since the last query:
-    const [collidedWithItem] = collisionBoxWithIndex(
+    const collidedWithItem = findCollisionBoxWithIndex(
       droppedItemBox,
       roomSpatialIndex,
       (otherItem) =>

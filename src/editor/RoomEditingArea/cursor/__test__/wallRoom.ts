@@ -1,4 +1,4 @@
-import { roomItemsIterable } from "../../../../model/RoomState";
+import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import { entries } from "../../../../utils/entries";
 import {
   type EditorRoomId,

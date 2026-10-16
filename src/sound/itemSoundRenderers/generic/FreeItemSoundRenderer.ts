@@ -3,8 +3,7 @@ import {
   type ItemTickContext,
 } from "../../../game/render/ItemRenderContexts";
 import { type FreeItemTypes } from "../../../model/ItemInPlayNarrowedUnions";
-import { keysIter } from "../../../utils/entries";
-import { isEmpty } from "../../../utils/iterators/isEmpty";
+import { isEmptyObject } from "../../../utils/empty";
 import { audioCtx } from "../../audioCtx";
 import { type ItemSoundRenderContext } from "../../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../../ItemSoundRenderer";
@@ -173,7 +172,7 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
 
     if (this.#collisionBracketedSound !== undefined) {
       const collidedWithSomething =
-        collidedSinceLastTick && !isEmpty(keysIter(collidedWith));
+        collidedSinceLastTick && !isEmptyObject(collidedWith);
 
       this.#collisionBracketedSound.tick(collidedWithSomething);
     }

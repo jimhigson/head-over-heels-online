@@ -6,7 +6,8 @@ import {
 } from "../../model/ItemInPlay";
 import { itemInPlayCentre } from "../../model/itemInPlayCentre";
 import { type PlayableItem } from "../../model/ItemInPlayNarrowedUnions";
-import { playablesInRoom, type RoomState } from "../../model/RoomState";
+import { playablesInRoom } from "../../model/roomItemsInPlayIterators";
+import { type RoomState } from "../../model/RoomState";
 import { epsilon } from "../../utils/epsilon";
 import {
   hashNumberToNumber0to1,

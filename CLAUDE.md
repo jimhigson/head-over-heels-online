@@ -165,7 +165,7 @@ and we trust that to pre-load in the service worker for us, so the actual game e
  * there is a level editor also built for creating new rooms for the game
  * this is for creating new non-original levels which are specific to the remake
  *	A level editor supports door placement which removes or splits walls where the door appears.
- * editor-authored campaigns can be loaded directly using a URL such as http://localhost:5200/?campaignName=(campaignName)&campaignAuthorUserId=2924c962-99f1-4dd2-9b9c-fef832dc991b - or downloaded using the `/fetch-campaign` skill
+ * editor-authored campaigns can be loaded directly using a URL such as http://localhost:5200/?campaignName=(campaignName)&campaignAuthorUserId=(userid) - or downloaded using the `/fetch-campaign` skill. One userid to consider is referenced in the codebase as `jimAtBlockstackingUserId`
 
 ### Schema
  * the editor's json editor is monaco and there is a json schema generated from typescript types by running `pnpm gen:roomSchema`

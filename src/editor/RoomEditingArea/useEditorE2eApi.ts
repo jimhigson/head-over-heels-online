@@ -2,7 +2,7 @@ import { type RefObject } from "preact";
 import { useEffect } from "preact/hooks";
 
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
-import { roomItemsIterable } from "../../model/RoomState";
+import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
 import { editorStore } from "../../store/store";
 import { type Xy, type Xyz, type XyzBox } from "../../utils/vectors/vectors";
 import { editorLoadedRoom } from "../editorLoadedRoom";

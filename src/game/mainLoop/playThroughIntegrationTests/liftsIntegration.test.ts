@@ -27,7 +27,7 @@ import { type LiftState } from "../../../model/ItemStateMap";
 import {
   iterateRoomItemEntries,
   roomItemsIterable,
-} from "../../../model/RoomState";
+} from "../../../model/roomItemsInPlayIterators";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 import {
   blockSizePx,

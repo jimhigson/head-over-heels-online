@@ -1,5 +1,6 @@
 import { type UnindexedRoomState } from "../game/gameState/saving/SavedGameState";
 import { coyoteTime } from "../game/physics/mechanicsConstants";
+import { emptyIterator, isEmptyObject } from "../utils/empty";
 import { keysIter } from "../utils/entries";
 import {
   type FreeItem,
@@ -32,7 +33,11 @@ export const iterateStoodOnByItems = <
 >(
   stoodOnBy: StoodOnBy<RoomItemId>,
   room: UnindexedRoomState<RoomId, RoomItemId>,
-) => {
+): IteratorObject<FreeItem<RoomId, RoomItemId>, undefined, unknown> => {
+  // for items that stand on by nothing we can skip allocating an iterator:
+  if (isEmptyObject(stoodOnBy)) {
+    return emptyIterator;
+  }
   return keysIter(stoodOnBy).map((stoodOnByItemId) => {
     const standingItem = room.items[stoodOnByItemId];
     if (standingItem === undefined) {

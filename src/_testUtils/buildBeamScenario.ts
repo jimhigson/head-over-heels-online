@@ -3,7 +3,8 @@ import {
   tickLampLightBeams,
 } from "../game/itemBehaviours/LampBehaviour";
 import { type ItemInPlay } from "../model/ItemInPlay";
-import { roomItemsIterable, type RoomState } from "../model/RoomState";
+import { roomItemsIterable } from "../model/roomItemsInPlayIterators";
+import { type RoomState } from "../model/RoomState";
 import {
   type ItemsInTestRoomJson,
   setUpBasicGame,

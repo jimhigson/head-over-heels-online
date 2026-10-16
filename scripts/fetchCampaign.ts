@@ -2,6 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import { gunzipSync } from "node:zlib";
 
 import { columnarDecode, isColumnarEncoded } from "../src/columnar/decoder";
+import { jimAtBlockstackingUserId } from "../src/gameInfo";
 
 const [, , campaignName] = process.argv;
 if (!campaignName) {
@@ -9,7 +10,7 @@ if (!campaignName) {
   process.exit(1);
 }
 
-const defaultUserId = "2924c962-99f1-4dd2-9b9c-fef832dc991b";
+const defaultUserId = jimAtBlockstackingUserId;
 const [, , , userId = defaultUserId] = process.argv;
 
 const supabase = createClient(

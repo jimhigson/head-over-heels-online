@@ -7,7 +7,7 @@ import { setUpBasicGame } from "../../../_testUtils/basicRoom";
 import { heelsState, item } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import { roomItemsIterable } from "../../../model/RoomState";
+import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { size } from "../../../utils/iterators/size";
 
 beforeEach(() => {

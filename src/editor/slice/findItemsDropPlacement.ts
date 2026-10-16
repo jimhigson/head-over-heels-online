@@ -1,6 +1,6 @@
 import { blockSizePx } from "../../model/blockSizePx";
 import { nextItemIdSet } from "../../model/inPlaceMutators/nextItemId";
-import { roomItemsIterable } from "../../model/RoomState";
+import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
 import { keys } from "../../utils/entries";
 import { addXyz, type Xyz } from "../../utils/vectors/vectors";
 import {

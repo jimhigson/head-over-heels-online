@@ -168,7 +168,7 @@ export const collisionsPriorityComparator = <I extends SortableObstacle>(
 
 export const sortObstaclesAboutPriorityAndVector = <I extends SortableObstacle>(
   vector: Xyz,
-  obstacles: Array<I>,
+  obstacles: ReadonlyArray<I>,
 ): Array<I> => {
   return obstacles.toSorted((obsA, obsB) => {
     /*

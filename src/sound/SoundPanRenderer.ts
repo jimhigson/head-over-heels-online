@@ -5,7 +5,7 @@ import {
 import { type ItemTickContext } from "../game/render/ItemRenderContexts";
 import { projectWorldXyzToScreenX } from "../game/render/projections";
 import { type ItemInPlayType } from "../model/ItemInPlay";
-import { roomItemsIterable } from "../model/RoomState";
+import { roomItemsIterable } from "../model/roomItemsInPlayIterators";
 import { rotateXyz } from "../utils/vectors/rotateXy";
 import { audioCtx } from "./audioCtx";
 import { type ItemSoundRenderContext } from "./ItemSoundRenderContext";

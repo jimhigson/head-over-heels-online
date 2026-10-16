@@ -1,10 +1,7 @@
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 
-import {
-  roomItemsIterable,
-  roomSpatialIndexKey,
-  type RoomState,
-} from "../../../model/RoomState";
+import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
+import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import {
   type DirectionXy4,
   type Xy,

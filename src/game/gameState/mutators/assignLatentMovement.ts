@@ -3,7 +3,8 @@ import {
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
 import { type LatentMovementFrame } from "../../../model/ItemStateMap";
-import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
+import { forEachRoomItem } from "../../../model/roomItemsInPlayIterators";
+import { type RoomState } from "../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import {
   originXy,
@@ -52,7 +53,8 @@ export const assignLatentMovementFromStandingOn = <
   RoomItemId extends string,
 >(
   room: RoomState<RoomId, RoomItemId>,
-  startingPositions: Record<string, Xyz>,
+  /** item id -> box when this tick started */
+  startingPositions: ReadonlyMap<string, Xyz>,
   deltaMS: number,
   /**
    * the room's progression count when this tick started - items stamped
@@ -65,20 +67,20 @@ export const assignLatentMovementFromStandingOn = <
    * if the check is done inside the lift's tick, the player is then not on the lift and has no
    * ability to walk (the walk mechanic will return a null result) while the lift descends
    */
-  for (const moverItem of roomItemsIterable(room.items)) {
+  forEachRoomItem(room.items, (moverItem) => {
     if (moverItem.state.movedOrResizedOnProgression <= progressionAtTickStart) {
       // did not move during this tick:
-      continue;
+      return;
     }
-    const previousPosition: undefined | Xyz = startingPositions[moverItem.id];
+    const previousPosition = startingPositions.get(moverItem.id);
 
     if (previousPosition === undefined) {
       // item was introduced to the world during this tick, can't have latent movement:
-      continue;
+      return;
     }
     if (!isStoodOnByAnything(moverItem)) {
       // if nothing is stood on this item, no latent movement to assign:
-      continue;
+      return;
     }
 
     // work out how much we moved in this frame
@@ -95,5 +97,5 @@ export const assignLatentMovementFromStandingOn = <
         assignLatentMovement(standerItem, room, latentMovement, deltaMS);
       }
     }
-  }
+  });
 };

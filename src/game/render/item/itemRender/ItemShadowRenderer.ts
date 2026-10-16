@@ -123,6 +123,12 @@ const spaceAboveSurfaceBuffer: WritableDeep<CollideableItem> = {
   },
 };
 
+type ShadowEntry = {
+  shadowSprite: Sprite;
+  /** the tick this caster was last seen casting, for mark-and-sweep */
+  lastSeenTick: number;
+};
+
 class ItemShadowRenderer<
   T extends ItemInPlayType,
 > implements ItemChainPixiRenderer<T> {
@@ -138,7 +144,12 @@ class ItemShadowRenderer<
    * record all the shadows currently being cast, to maintain some state between frames so we ca
    * cut out unnecessary extra work
    */
-  #shadowSprites = new Map<UnionOfAllItemInPlayTypes, Sprite>();
+  #shadowSprites = new Map<UnionOfAllItemInPlayTypes, ShadowEntry>();
+  /**
+   * a monotonic per-tick counter; each entry is stamped with it when seen, so
+   * the post-pass can drop entries not seen this tick (mark-and-sweep)
+   */
+  #tickCount = 0;
 
   readonly renderContext: ItemRenderContext<T>;
   #appearance: "no-mask" | ItemShadowAppearanceOutsideView<T>;
@@ -268,7 +279,7 @@ class ItemShadowRenderer<
     // texture); usually already covered by the output subtree destroy above,
     // but this owns the map so it does not rely on the sprites being parented
     // there (pixi guards against double destroy):
-    for (const shadowSprite of this.#shadowSprites.values()) {
+    for (const { shadowSprite } of this.#shadowSprites.values()) {
       shadowSprite.destroy();
     }
   }
@@ -295,7 +306,7 @@ class ItemShadowRenderer<
       // the renderer's discrete angle changed mid-life: every cached shadow
       // sprite baked the old angle (texture choice, flips, multiplied tiling),
       // so drop them all - they recreate below from the same reconcile pass:
-      for (const [caster, shadowSprite] of this.#shadowSprites) {
+      for (const [caster, { shadowSprite }] of this.#shadowSprites) {
         this.#shadowsContainer.removeChild(shadowSprite);
         shadowSprite.destroy();
         this.#shadowSprites.delete(caster);
@@ -325,24 +336,20 @@ class ItemShadowRenderer<
     spaceAboveSurfaceBuffer.state.box.yd = item.state.box.yd;
     // zd remains veryHighZ as set in the buffer initialization
 
-    const castersAbove = new Set(
-      collisionItemWithIndex(
-        spaceAboveSurfaceBuffer,
-        room[roomSpatialIndexKey],
-        (maybeCaster) => {
-          const casterBehaviour = maybeCaster[itemBehaviourKey];
-          return (
-            maybeCaster !== item &&
-            casterBehaviour.shadowCastTexture(
-              maybeCaster,
-              cameraQuarterAngle,
-            ) !== undefined &&
-            !casterBehaviour
-              .noShadowCastOn(maybeCaster, cameraQuarterAngle)
-              ?.includes(item.type)
-          );
-        },
-      ),
+    const castersAbove = collisionItemWithIndex(
+      spaceAboveSurfaceBuffer,
+      room[roomSpatialIndexKey],
+      (maybeCaster) => {
+        const casterBehaviour = maybeCaster[itemBehaviourKey];
+        return (
+          maybeCaster !== item &&
+          casterBehaviour.shadowCastTexture(maybeCaster, cameraQuarterAngle) !==
+            undefined &&
+          !casterBehaviour
+            .noShadowCastOn(maybeCaster, cameraQuarterAngle)
+            ?.includes(item.type)
+        );
+      },
     );
 
     // if the whole-shadow casters above this item together cover it, darken the whole item
@@ -357,35 +364,30 @@ class ItemShadowRenderer<
     this.#wholeShadowTintContainer.tint =
       wholeShadowed ? wholeShadowTint : noTint;
 
-    // casters that cast a shaped shadow on this item's surface - excludes ones resting
-    // directly on top, whose shadow would be hidden under themselves (the stood-on
-    // optimisation, which does not apply to the whole-item tint handled above)
-    const shapedCasters = new Set(
-      castersAbove
-        .values()
-        .filter((caster) =>
-          castsShapedShadowOnTop(caster, item, cameraQuarterAngle),
-        ),
-    );
-
     let hasAnyShadows = false;
 
-    for (const [previousCaster, shadowSprite] of this.#shadowSprites) {
-      if (!shapedCasters.has(previousCaster)) {
-        // no longer casting a shadow on this item - remove the shadow sprite:
-        this.#shadowsContainer.removeChild(shadowSprite);
-        shadowSprite.destroy();
-        this.#shadowSprites.delete(previousCaster);
-      }
-    }
+    // stamp every entry seen this tick with this count, so the sweep below can
+    // drop entries not seen this tick (mark-and-sweep, no parallel set):
+    const thisTick = ++this.#tickCount;
 
-    for (const caster of shapedCasters) {
+    for (let i = 0; i < castersAbove.length; i++) {
+      const caster = castersAbove[i];
+      // only casters that cast a shaped shadow on this item's surface - excludes ones resting
+      // directly on top, whose shadow would be hidden under themselves (the stood-on
+      // optimisation, which does not apply to the whole-item tint handled above)
+      if (!castsShapedShadowOnTop(caster, item, cameraQuarterAngle)) {
+        continue;
+      }
       hasAnyShadows = true;
 
-      let shadowSprite = this.#shadowSprites.get(caster);
+      const existingEntry = this.#shadowSprites.get(caster);
+      let shadowSprite: Sprite;
       let isNew = false;
 
-      if (!shadowSprite) {
+      if (existingEntry !== undefined) {
+        existingEntry.lastSeenTick = thisTick;
+        ({ shadowSprite } = existingEntry);
+      } else {
         // wasn't casting a shadow before - create a new one. Walls don't carry
         // a times config (their length comes from their tiles array), so
         // derive it - their cast shadow must repeat along the wall's length:
@@ -435,7 +437,10 @@ class ItemShadowRenderer<
 
         shadowSprite.label = caster.id;
         this.#shadowsContainer.addChild(shadowSprite);
-        this.#shadowSprites.set(caster, shadowSprite);
+        this.#shadowSprites.set(caster, {
+          shadowSprite,
+          lastSeenTick: thisTick,
+        });
         isNew = true;
       }
 
@@ -494,6 +499,16 @@ class ItemShadowRenderer<
         // this fails for composite sprites, since they get their x,y set in the sprite they are rendered to
         // shadowSprite.x = screenXy.x;
         // shadowSprite.y = screenXy.y;
+      }
+    }
+
+    for (const [previousCaster, { shadowSprite, lastSeenTick }] of this
+      .#shadowSprites) {
+      if (lastSeenTick !== thisTick) {
+        // no longer casting a shadow on this item - remove the shadow sprite:
+        this.#shadowsContainer.removeChild(shadowSprite);
+        shadowSprite.destroy();
+        this.#shadowSprites.delete(previousCaster);
       }
     }
 

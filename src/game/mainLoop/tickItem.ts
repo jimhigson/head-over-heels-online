@@ -1,3 +1,5 @@
+import { type KeysOfUnion } from "type-fest";
+
 import { itemBehaviourKey, type ItemInPlayType } from "../../model/ItemInPlay";
 import {
   isFreeItem,
@@ -8,10 +10,8 @@ import {
   itemIsStandingOnSomething,
   stoodOnItem,
 } from "../../model/stoodOnItemsLookup";
-import { valuesIter } from "../../utils/entries";
 import {
   addXyzInPlace,
-  originXyz,
   scaleXyzWriteInto,
   type Xyz,
 } from "../../utils/vectors/vectors";
@@ -153,10 +153,13 @@ export const tickItem = <RoomId extends string, RoomItemId extends string>(
   // velocities for this item have now been updated - get the aggregate movement, including vels
   // that stood from previous frames (did not change)
   if ("vels" in item.state) {
-    for (const vel of valuesIter(item.state.vels)) {
+    type VelType = KeysOfUnion<typeof item.state.vels>;
+    const vels: Partial<Record<VelType, Xyz>> = item.state.vels;
+    for (const velType in vels) {
+      const vel = vels[velType as VelType]!;
       addXyzInPlace(
         tickItemPosDeltaAccumulationBuffer,
-        scaleXyzWriteInto(scaleVelBuffer, { ...originXyz, ...vel }, deltaMS),
+        scaleXyzWriteInto(scaleVelBuffer, vel, deltaMS),
       );
     }
   }
@@ -186,7 +189,11 @@ export const tickItem = <RoomId extends string, RoomItemId extends string>(
     handleTouches: true,
   });
 
-  if (isFreeItem(item)) {
+  if (
+    isFreeItem(item) &&
+    // most items have no latent movement queued, so can safely skip the work
+    item.state.latentMovement.length > 0
+  ) {
     // now, apply latent movement. this isn't a normal mechanic because
     // it also has a movedBy property, which is used to record who the actor
     // on the moved item is

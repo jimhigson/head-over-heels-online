@@ -12,8 +12,9 @@ export const supabaseUrl =
     new URL(
       import.meta.env.VITE_SUPABASE_URL,
       // making relative to the current page allows vite config to set
-      // VITE_SUPABASE_URL to "/" to proxy through vite to the local supabase dev server
-      window.location.href,
+      // VITE_SUPABASE_URL to "/" to proxy through vite to the local supabase dev server.
+      // vitest runs in node, with no page - its .env url is absolute anyway:
+      typeof window === "undefined" ? undefined : window.location.href,
     ).href
     // no import.meta.env = not running under Vite, ie playwright spec or node - use
     // real server:

@@ -1,4 +1,5 @@
-import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
+import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
+import { type RoomState } from "../../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../../model/stoodOnItemsLookup";
 
 /** debug code - checks standingOn two-way linking for every item in a room */

@@ -1,6 +1,20 @@
 import { type ItemInPlayType } from "../../model/ItemInPlay";
 import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
 
+const scores: Partial<Record<ItemInPlayType, number>> = {
+  // lower number = processed first
+  lift: -4, // <- highest priority - can push anything without slowing down
+  head: -3,
+  heels: -3,
+  monster: -2,
+
+  // everything else goes here
+  block: 1, // <- lowest priority
+  deadlyBlock: 1, // <- lowest priority
+  wall: 1, // <- lowest priority
+  floor: 1, // <- lowest priority
+};
+
 /**
  * it matters what order items are processed in - for example, lifts move but nothing can move a lift, so
  * lifts should be processed first so they can push everything else before they can also move and fail
@@ -10,20 +24,6 @@ export const itemTickOrderComparator = (
   a: UnionOfAllItemInPlayTypes,
   b: UnionOfAllItemInPlayTypes,
 ) => {
-  const scores: Partial<Record<ItemInPlayType, number>> = {
-    // lower number = processed first
-    lift: -4, // <- highest priority - can push anything without slowing down
-    head: -3,
-    heels: -3,
-    monster: -2,
-
-    // everything else goes here
-    block: 1, // <- lowest priority
-    deadlyBlock: 1, // <- lowest priority
-    wall: 1, // <- lowest priority
-    floor: 1, // <- lowest priority
-  };
-
   const aScore = scores[a.type] ?? 0;
   const bScore = scores[b.type] ?? 0;
 
