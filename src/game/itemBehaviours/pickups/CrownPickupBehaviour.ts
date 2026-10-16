@@ -1,3 +1,4 @@
+import { type ExportedSoundId } from "../../../_generated/sfxdex/sfx";
 import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import { type CharacterName } from "../../../model/modelTypes";
 import { type RoomState } from "../../../model/RoomState";
@@ -8,6 +9,11 @@ import { addParticlesAroundCrown } from "../../mainLoop/addParticlesToRoom";
 import { PickupBehaviour, type PickupThatGives } from "./PickupBehaviour";
 
 export class CrownPickupBehaviour extends PickupBehaviour {
+  override soundsToPreload(): readonly ExportedSoundId[] {
+    // fanfare played after the crown is collected
+    return ["fanfare"];
+  }
+
   override afterMechanicsApplied<
     RoomId extends string,
     RoomItemId extends string,

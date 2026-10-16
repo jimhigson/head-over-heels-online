@@ -1,4 +1,4 @@
-import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
+import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import { type CharacterName } from "../../../model/modelTypes";
 import { type RoomState } from "../../../model/RoomState";
@@ -11,7 +11,7 @@ import {
   type MechanicResult,
   unitMechanicalResult,
 } from "../MechanicResult";
-import { teleporterIsActive } from "./teleporterIsActive";
+import { isTeleporter, teleporterIsActive } from "./teleporterIsActive";
 
 export const teleporting: Mechanic<CharacterName> = <
   RoomId extends string,
@@ -42,7 +42,7 @@ export const teleporting: Mechanic<CharacterName> = <
 
   const standingOnActivatedTeleporter =
     standingOn !== null &&
-    standingOn[itemBehaviourKey].isTeleporter(standingOn) &&
+    isTeleporter(standingOn) &&
     teleporterIsActive(standingOn);
 
   if (teleporting === null) {

@@ -154,6 +154,8 @@ jobs:
           compression: br
           compression-level: 11
           ignore-url-patterns: '["supabase\\.co"]'
+          # speculative preloads (fetched with priority "low") aren't needed to get ready
+          ignore-low-priority: "true"
           minimum-change-threshold: 50
           mark-timeout-ms: "20000"
           # each ref now builds both apps in one go, so allow longer than the
@@ -176,6 +178,8 @@ jobs:
           compression: br
           compression-level: 11
           ignore-url-patterns: '["supabase\\.co"]'
+          # speculative preloads (fetched with priority "low") aren't needed to get ready
+          ignore-low-priority: "true"
           minimum-change-threshold: 50
           mark-timeout-ms: "20000"
           # each ref now builds both apps in one go, so allow longer than the

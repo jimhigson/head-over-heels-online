@@ -1,4 +1,4 @@
-import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import { type ExportedSoundId } from "../../_generated/sfxdex/sfx";
 import { itemBehaviourKey, type ItemInPlayType } from "../../model/ItemInPlay";
 import {
   type FreeItem,
@@ -6,7 +6,9 @@ import {
   type UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlayNarrowedUnions";
 import { type SwitchItemModificationUnion } from "../../model/json/SwitchConfig";
+import { type Campaign } from "../../model/modelTypes";
 import { type RoomState } from "../../model/RoomState";
+import { emptyArray } from "../../utils/empty";
 import { type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
 import { type ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";
@@ -42,10 +44,6 @@ export type ItemBehaviourOptions = {
    * @see ItemBehaviour.collisionDoesNotStopAutowalk
    */
   collisionDoesNotStopAutowalk?: boolean;
-  /**
-   * @see ItemBehaviour.isTeleporter
-   */
-  isTeleporter?: boolean;
   /**
    * @see ItemBehaviour.isPortable
    */
@@ -93,7 +91,6 @@ export type ItemBehaviourOptions = {
 export class ItemBehaviour {
   readonly #isNonSolid: boolean;
   readonly #isDeadly: boolean;
-  readonly #isTeleporter: boolean;
   readonly #isPortable: boolean;
   readonly #isCuboidWarped: boolean;
   readonly #castsShadowWhileStoodOn: boolean;
@@ -106,7 +103,6 @@ export class ItemBehaviour {
     isExemptFromNearCornerOffset = false,
     isNonSolid = false,
     isDeadly = false,
-    isTeleporter = false,
     isPortable = false,
     isCuboidWarped = false,
     castsShadowWhileStoodOn = false,
@@ -118,7 +114,6 @@ export class ItemBehaviour {
     this.isExemptFromNearCornerOffset = isExemptFromNearCornerOffset;
     this.#isNonSolid = isNonSolid;
     this.#isDeadly = isDeadly;
-    this.#isTeleporter = isTeleporter;
     this.#isPortable = isPortable;
     this.#isCuboidWarped = isCuboidWarped;
     this.#castsShadowWhileStoodOn = castsShadowWhileStoodOn;
@@ -262,19 +257,6 @@ export class ItemBehaviour {
     _item: FreeItem<RoomId, RoomItemId>,
   ): number {
     return 0;
-  }
-
-  /**
-   * whether this item teleports playables standing on it
-   */
-  isTeleporter<RoomId extends string, RoomItemId extends string>(
-    _item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-  ): _item is ItemTypeUnion<
-    "portableTeleporter" | "teleporter",
-    RoomId,
-    RoomItemId
-  > {
-    return this.#isTeleporter;
   }
 
   // ---- ticking ----
@@ -428,6 +410,27 @@ export class ItemBehaviour {
     _item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   ): boolean {
     return this.#isCuboidWarped;
+  }
+
+  /**
+   * sounds that must be loaded before the room holding this item is shown
+   */
+  soundsRequired<RoomId extends string, RoomItemId extends string>(
+    _item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  ): readonly ExportedSoundId[] {
+    return emptyArray;
+  }
+
+  /**
+   * sounds to start loading, without waiting for them, when the room holding
+   * this item is entered - so they are likely ready before the item needs them
+   */
+  soundsToPreload<RoomId extends string, RoomItemId extends string>(
+    _item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+    /** the campaign being played, for items whose sounds depend on other rooms */
+    _campaign: Campaign<RoomId>,
+  ): readonly ExportedSoundId[] {
+    return emptyArray;
   }
 
   /** the shadow this item casts on other items */
