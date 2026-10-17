@@ -1,2 +1,7 @@
 e2e/**/*-snapshots/** linguist-generated=true
 **/_generated/** linguist-generated=true
+
+# pnpm 12's patch parser rejects the trailing CR in a filename line, so a patch
+# checked out with CRLF fails the install with ERR_PNPM_INVALID_PATCH. Windows
+# checkouts default to core.autocrlf=true, so pin these to LF everywhere.
+patches/*.patch text eol=lf
