@@ -3,25 +3,47 @@ import { expect, test } from "vitest";
 import { setupGameForCampaign } from "../../../_testUtils/basicRoom";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import { roomSpatialIndexKey } from "../../../model/RoomState";
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import { iterateRoomItemEntries } from "../../../model/roomItemsInPlayIterators";
+import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { omit } from "../../../utils/pick";
-import { type UnindexedRoomState } from "../../gameState/saving/SavedGameState";
 import { laboratoryCampaign } from "./laboratoryCampaign";
 
-// don't log ItemsBehaviours when logging in-play items, these are stateless
-expect.addSnapshotSerializer({
-  test: (value: unknown) =>
-    typeof value === "object" &&
-    value !== null &&
-    Object.hasOwn(value, itemBehaviourKey),
-  serialize: (value: object, config, indentation, depth, refs, printer) =>
-    printer(
-      omit(value as { [itemBehaviourKey]: unknown }, itemBehaviourKey),
-      config,
-      indentation,
-      depth,
-      refs,
-    ),
+/**
+ * the item reduced to its outcome: what is fixed from loading, and bookkeeping
+ * (which can change without anything that matters in the room changing, so
+ * would give false positives), are dropped
+ */
+const sanitiseItem = <RoomId extends string, RoomItemId extends string>(
+  item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+) => ({
+  // fixed from loading, or (the behaviour) stateless:
+  ...omit(item, "hash", itemBehaviourKey),
+  state: omit(
+    item.state,
+    "movedOrResizedOnProgression",
+    "stoodOnUntilRoomTime",
+    "standingOnUntilRoomTime",
+    "previousStandingOnItemId",
+    "liftVel",
+    "latentMovement",
+    "timeOfLastDirectionChange",
+    "durationOfTouch",
+  ),
+});
+
+/** the room reduced to its outcome, as a plain object for a snapshot */
+const sanitiseRoomState = <RoomId extends string, RoomItemId extends string>(
+  room: RoomState<RoomId, RoomItemId>,
+) => ({
+  // the spatial index needn't be identical before/after:
+  ...omit(room, "progression", "items", roomSpatialIndexKey),
+  items: Object.fromEntries(
+    iterateRoomItemEntries(room.items).map(([id, item]) => [
+      id,
+      sanitiseItem(item),
+    ]),
+  ),
 });
 
 test(
@@ -38,9 +60,6 @@ test(
     // to the mechanics etc, but should not change after pure refactoring
     const heelsRoomFinalState = gameState.characterRooms.heels!;
 
-    expect<UnindexedRoomState<string, string>>(
-      // the spatial index doesn't have to be identical before/after
-      omit(heelsRoomFinalState, roomSpatialIndexKey),
-    ).toMatchSnapshot();
+    expect(sanitiseRoomState(heelsRoomFinalState)).toMatchSnapshot();
   },
 );

@@ -11,7 +11,10 @@ import {
   collisionItemWithIndex,
   hasCollisionItemWithIndex,
 } from "../collision/aabbCollision";
-import { updateItemPosition } from "../gameState/mutators/updateItemBox";
+import {
+  stampWithMovedProgression,
+  updateItemPosition,
+} from "../gameState/mutators/updateItemBox";
 
 const logSnapping = 0;
 
@@ -104,7 +107,7 @@ export const snapInactiveItemsToPixelGrid = <
       return;
     }
 
-    // stamps the item as moved via the position-update funnel:
     updateItemPosition(room, item, snappedPosition);
+    stampWithMovedProgression(room, item);
   });
 };

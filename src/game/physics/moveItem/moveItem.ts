@@ -21,6 +21,7 @@ import {
   type Xyz,
   type XyzBox,
   xyzEqual,
+  xyzVeryClose,
 } from "../../../utils/vectors/vectors";
 import { visualiseVectorForLogs } from "../../../utils/vectors/visualiseVectorForLogs";
 import {
@@ -30,7 +31,10 @@ import {
 import { type GameState } from "../../gameState/GameState";
 import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
 import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
-import { updateItemPosition } from "../../gameState/mutators/updateItemBox";
+import {
+  stampWithMovedProgression,
+  updateItemPosition,
+} from "../../gameState/mutators/updateItemBox";
 import { sortObstaclesAboutPriorityAndVector } from "../collisionsOrder";
 import { handleDisappearingOnTouch } from "../handleTouch/handleDisappearingOnTouch";
 import { maxPushRecursionDepth } from "../mechanicsConstants";
@@ -599,6 +603,11 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       handleTouches,
       pathToHere,
     );
+  }
+
+  // update progression only if actually moved, by more than floating point error:
+  if (!xyzVeryClose(subjectItem.state.box, originalBox)) {
+    stampWithMovedProgression(room, subjectItem);
   }
 
   if (log) {

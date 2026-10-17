@@ -15,7 +15,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "x": 14,
         },
       },
-      "hash": 0.6501981660258025,
       "id": "b",
       "jsonItemId": "b",
       "position": {
@@ -42,11 +41,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "m3": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -58,7 +55,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 6,
         },
       },
-      "hash": 0.7214251703117043,
       "id": "b1",
       "jsonItemId": "b1",
       "position": {
@@ -83,12 +79,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "sb": true,
           "sb1": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -100,7 +94,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 10,
         },
       },
-      "hash": 0.23599830432794988,
       "id": "b10",
       "jsonItemId": "b10",
       "position": {
@@ -127,11 +120,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "mp1": true,
         },
-        "stoodOnUntilRoomTime": 8158.333333333216,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -143,7 +134,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 2,
         },
       },
-      "hash": 0.25841827574186027,
       "id": "b11",
       "jsonItemId": "b11",
       "position": {
@@ -168,9 +158,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -179,7 +167,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "book",
       },
-      "hash": 0.2957033521961421,
       "id": "b12",
       "jsonItemId": "b12",
       "position": {
@@ -204,9 +191,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -215,7 +200,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "organic",
       },
-      "hash": 0.8773137673269957,
       "id": "b13",
       "jsonItemId": "b13",
       "position": {
@@ -242,9 +226,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 1849.9999999999943,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -256,7 +238,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 14,
         },
       },
-      "hash": 0.4236322515644133,
       "id": "b2",
       "jsonItemId": "b2",
       "position": {
@@ -283,9 +264,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 15158.333333333721,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -297,7 +276,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "x": 13,
         },
       },
-      "hash": 0.6357766739092767,
       "id": "b3",
       "jsonItemId": "b3",
       "position": {
@@ -322,11 +300,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "m2": true,
         },
-        "stoodOnUntilRoomTime": 17875.000000000262,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -338,7 +314,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 4,
         },
       },
-      "hash": 0.07847324409522116,
       "id": "b4",
       "jsonItemId": "b4",
       "position": {
@@ -365,11 +340,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "pr": true,
         },
-        "stoodOnUntilRoomTime": 14091.666666666977,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -381,7 +354,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 5,
         },
       },
-      "hash": 0.019742172677069902,
       "id": "b5",
       "jsonItemId": "b5",
       "position": {
@@ -408,9 +380,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 6874.999999999929,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -422,7 +392,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 5,
         },
       },
-      "hash": 0.132796450285241,
       "id": "b6",
       "jsonItemId": "b6",
       "position": {
@@ -447,9 +416,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 13133.333333333574,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -462,7 +429,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 2,
         },
       },
-      "hash": 0.6806695272680372,
       "id": "b7",
       "jsonItemId": "b7",
       "position": {
@@ -487,9 +453,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -501,7 +465,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 7,
         },
       },
-      "hash": 0.44609148264862597,
       "id": "b8",
       "jsonItemId": "b8",
       "position": {
@@ -526,9 +489,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 14733.33333333369,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -540,7 +501,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 2,
         },
       },
-      "hash": 0.8043430307880044,
       "id": "b9",
       "jsonItemId": "b9",
       "position": {
@@ -565,18 +525,15 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "m5": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
     },
     "ball@10,4,0": {
       "config": {},
-      "hash": 0.32787712989374995,
       "id": "ball@10,4,0",
       "jsonItemId": "ball@10,4,0",
       "position": {
@@ -610,17 +567,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 167367,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -644,7 +592,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "ball@7,2,0": {
       "config": {},
-      "hash": 0.25805394258350134,
       "id": "ball@7,2,0",
       "jsonItemId": "ball@7,2,0",
       "position": {
@@ -674,17 +621,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -708,7 +646,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "ball@7,4,0": {
       "config": {},
-      "hash": 0.25461299205198884,
       "id": "ball@7,4,0",
       "jsonItemId": "ball@7,4,0",
       "position": {
@@ -742,17 +679,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 167444,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -776,7 +704,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "ball@9,4,0": {
       "config": {},
-      "hash": 0.23360748146660626,
       "id": "ball@9,4,0",
       "jsonItemId": "ball@9,4,0",
       "position": {
@@ -810,17 +737,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 167368,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -846,7 +764,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "axis": "x",
       },
-      "hash": 0.9252075797412544,
       "id": "barrier@10,6,0",
       "jsonItemId": "barrier@10,6,0",
       "position": {
@@ -871,9 +788,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "barrier",
@@ -885,7 +800,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "touch",
         },
       },
-      "hash": 0.5502051133662462,
       "id": "barrier@10,6,1",
       "jsonItemId": "barrier@10,6,1",
       "position": {
@@ -912,9 +826,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "touch",
         },
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "barrier",
@@ -923,7 +835,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "axis": "x",
       },
-      "hash": 0.05319086811505258,
       "id": "barrier@10,8,0",
       "jsonItemId": "barrier@10,8,0",
       "position": {
@@ -948,9 +859,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "barrier",
@@ -962,7 +871,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "touch",
         },
       },
-      "hash": 0.42819711775518954,
       "id": "barrier@10,8,1",
       "jsonItemId": "barrier@10,8,1",
       "position": {
@@ -989,9 +897,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "touch",
         },
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "barrier",
@@ -1003,7 +909,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 2,
         },
       },
-      "hash": 0.6174617556389421,
       "id": "block@13,3,3",
       "jsonItemId": "block@13,3,3",
       "position": {
@@ -1028,11 +933,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "portableBlock@13,3,4": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1044,7 +947,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 2,
         },
       },
-      "hash": 0.2332875228021294,
       "id": "block@13,4,2",
       "jsonItemId": "block@13,4,2",
       "position": {
@@ -1069,9 +971,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1083,7 +983,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 2,
         },
       },
-      "hash": 0.5766018726862967,
       "id": "block@13,5,0",
       "jsonItemId": "block@13,5,0",
       "position": {
@@ -1108,9 +1007,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1119,7 +1016,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "tower",
       },
-      "hash": 0.6190358337480575,
       "id": "block@13,7,0",
       "jsonItemId": "block@13,7,0",
       "position": {
@@ -1144,9 +1040,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1158,7 +1052,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 2,
         },
       },
-      "hash": 0.4441108477767557,
       "id": "block@14,3,0",
       "jsonItemId": "block@14,3,0",
       "position": {
@@ -1183,9 +1076,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1194,7 +1085,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "artificial",
       },
-      "hash": 0.6006694303359836,
       "id": "block@15.5,8,0",
       "jsonItemId": "block@15.5,8,0",
       "position": {
@@ -1221,9 +1111,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1232,7 +1120,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "artificial",
       },
-      "hash": 0.20217636227607727,
       "id": "block@16,8.5,1",
       "jsonItemId": "block@16,8.5,1",
       "position": {
@@ -1257,9 +1144,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1268,7 +1153,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "organic",
       },
-      "hash": 0.8172186552546918,
       "id": "block@3,3,8",
       "jsonItemId": "block@3,3,8",
       "position": {
@@ -1295,9 +1179,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 20233.333333333252,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1306,7 +1188,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "organic",
       },
-      "hash": 0.11708829831331968,
       "id": "block@3,5,8",
       "jsonItemId": "block@3,5,8",
       "position": {
@@ -1333,11 +1214,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "ch2": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1346,7 +1225,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "artificial",
       },
-      "hash": 0.44192298664711416,
       "id": "block@4,3,0",
       "jsonItemId": "block@4,3,0",
       "position": {
@@ -1373,9 +1251,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1384,7 +1260,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "organic",
       },
-      "hash": 0.8872380359098315,
       "id": "block@5,0,0",
       "jsonItemId": "block@5,0,0",
       "position": {
@@ -1411,9 +1286,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1422,7 +1295,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "organic",
       },
-      "hash": 0.41925560659728944,
       "id": "block@6,6,2",
       "jsonItemId": "block@6,6,2",
       "position": {
@@ -1449,11 +1321,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "pickup@4,6,13": true,
         },
-        "stoodOnUntilRoomTime": 524.9999999999995,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1462,7 +1332,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "organic",
       },
-      "hash": 0.9093668411951512,
       "id": "block@8,0,0",
       "jsonItemId": "block@8,0,0",
       "position": {
@@ -1487,9 +1356,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1506,7 +1373,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 1,
         },
       },
-      "hash": 0.7952170139178634,
       "id": "block@9,0,0_0_0_0",
       "jsonItemId": "block@9,0,0",
       "position": {
@@ -1533,9 +1399,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "stand",
         },
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1552,7 +1416,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 1,
         },
       },
-      "hash": 0.4846860005054623,
       "id": "block@9,0,0_1_0_0",
       "jsonItemId": "block@9,0,0",
       "position": {
@@ -1579,9 +1442,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "stand",
         },
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1598,7 +1459,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 1,
         },
       },
-      "hash": 0.5673028796445578,
       "id": "block@9,0,0_2_0_0",
       "jsonItemId": "block@9,0,0",
       "position": {
@@ -1625,9 +1485,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "stand",
         },
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1639,7 +1497,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "style": "organic",
       },
-      "hash": 0.17021185136400163,
       "id": "block@9,0,1",
       "jsonItemId": "block@9,0,1",
       "position": {
@@ -1666,9 +1523,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "stand",
         },
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1680,7 +1535,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "style": "organic",
       },
-      "hash": 0.9202471487224102,
       "id": "block@9,0,3",
       "jsonItemId": "block@9,0,3",
       "position": {
@@ -1707,9 +1561,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "stand",
         },
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "block",
@@ -1721,7 +1573,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 2,
         },
       },
-      "hash": 0.12962540797889233,
       "id": "br",
       "jsonItemId": "br",
       "position": {
@@ -1748,9 +1599,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "barrier",
@@ -1762,7 +1611,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 2,
         },
       },
-      "hash": 0.1448029624298215,
       "id": "br1",
       "jsonItemId": "br1",
       "position": {
@@ -1789,9 +1637,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "barrier",
@@ -1803,7 +1649,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "x": 13,
         },
       },
-      "hash": 0.7143856526818126,
       "id": "br2",
       "jsonItemId": "br2",
       "position": {
@@ -1828,11 +1673,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "m12": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "barrier",
@@ -1846,7 +1689,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
         ],
       },
-      "hash": 0.2884260364808142,
       "id": "bu",
       "jsonItemId": "bu",
       "position": {
@@ -1874,17 +1716,14 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disabled": false,
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "pressed": false,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 17675.00000000029,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "button",
     },
     "ch1": {
       "config": {},
-      "hash": 0.12881403043866158,
       "id": "ch1",
       "jsonItemId": "ch1",
       "position": {
@@ -1924,128 +1763,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
-        "latentMovement": [
-          {
-            "endAtRoomTime": 30021.666666665173,
-            "fromStandingOn": "pickup@4,6,10",
-            "startAtRoomTime": 30013.33333333184,
-            "velocity": {
-              "x": 0.02499999999999943,
-              "y": 0,
-              "z": 0,
-            },
-          },
-          {
-            "endAtRoomTime": 30029.999999998505,
-            "fromStandingOn": "pickup@4,6,10",
-            "startAtRoomTime": 30021.666666665173,
-            "velocity": {
-              "x": 0.02499999999999943,
-              "y": 0,
-              "z": 0,
-            },
-          },
-          {
-            "endAtRoomTime": 30038.333333331837,
-            "fromStandingOn": "pickup@4,6,10",
-            "startAtRoomTime": 30029.999999998505,
-            "velocity": {
-              "x": 0.02499999999999943,
-              "y": 0,
-              "z": 0,
-            },
-          },
-          {
-            "endAtRoomTime": 30046.66666666517,
-            "fromStandingOn": "pickup@4,6,10",
-            "startAtRoomTime": 30038.333333331837,
-            "velocity": {
-              "x": 0.02499999999999943,
-              "y": 0,
-              "z": 0,
-            },
-          },
-          {
-            "endAtRoomTime": 30054.9999999985,
-            "fromStandingOn": "pickup@4,6,10",
-            "startAtRoomTime": 30046.66666666517,
-            "velocity": {
-              "x": 0.02499999999999943,
-              "y": 0,
-              "z": 0,
-            },
-          },
-          {
-            "endAtRoomTime": 30063.333333331833,
-            "fromStandingOn": "pickup@4,6,10",
-            "startAtRoomTime": 30054.9999999985,
-            "velocity": {
-              "x": 0.02499999999999943,
-              "y": 0,
-              "z": 0,
-            },
-          },
-          {
-            "endAtRoomTime": 30071.666666665165,
-            "fromStandingOn": "pickup@4,6,10",
-            "startAtRoomTime": 30063.333333331833,
-            "velocity": {
-              "x": 0.02499999999999943,
-              "y": 0,
-              "z": 0,
-            },
-          },
-          {
-            "endAtRoomTime": 30079.999999998498,
-            "fromStandingOn": "pickup@4,6,10",
-            "startAtRoomTime": 30071.666666665165,
-            "velocity": {
-              "x": 0.02499999999999943,
-              "y": 0,
-              "z": 0,
-            },
-          },
-          {
-            "endAtRoomTime": 30088.33333333183,
-            "fromStandingOn": "pickup@4,6,10",
-            "startAtRoomTime": 30079.999999998498,
-            "velocity": {
-              "x": 0.02499999999999943,
-              "y": 0,
-              "z": 0,
-            },
-          },
-          {
-            "endAtRoomTime": 30096.66666666516,
-            "fromStandingOn": "pickup@4,6,10",
-            "startAtRoomTime": 30088.33333333183,
-            "velocity": {
-              "x": 0.02499999999999943,
-              "y": 0,
-              "z": 0,
-            },
-          },
-          {
-            "endAtRoomTime": 30104.999999998494,
-            "fromStandingOn": "pickup@4,6,10",
-            "startAtRoomTime": 30096.66666666516,
-            "velocity": {
-              "x": 0.02499999999999943,
-              "y": 0,
-              "z": 0,
-            },
-          },
-        ],
-        "liftVel": {
-          "atRoomTime": 22691.666666666228,
-          "z": -0.0003093735079130511,
-        },
-        "movedOrResizedOnProgression": 196936,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "pickup@4,6,10",
-        "standingOnUntilRoomTime": 27183.33333333224,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -2064,7 +1783,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "ch2": {
       "config": {},
-      "hash": 0.21787650347687304,
       "id": "ch2",
       "jsonItemId": "ch2",
       "position": {
@@ -2104,19 +1822,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 160513,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "block@3,5,8",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {
           "pickup@3,5,11": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -2144,7 +1853,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "x": 9,
         },
       },
-      "hash": 0.9251412430312485,
       "id": "co",
       "jsonItemId": "co",
       "position": {
@@ -2174,9 +1882,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 26549.999999999,
         "switchedAtRoomTime": -9007199254740991,
         "times": {
           "x": 9,
@@ -2195,7 +1901,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "x": 12,
         },
       },
-      "hash": 0.8985932020004839,
       "id": "co1",
       "jsonItemId": "co1",
       "position": {
@@ -2227,11 +1932,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "m13": true,
         },
-        "stoodOnUntilRoomTime": 3483.333333333352,
         "switchedAtRoomTime": -9007199254740991,
         "times": {
           "x": 12,
@@ -2250,7 +1953,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 2,
         },
       },
-      "hash": 0.5215357562992722,
       "id": "conveyor@0,0,0",
       "jsonItemId": "conveyor@0,0,0",
       "position": {
@@ -2282,9 +1984,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 1558.3333333333303,
         "switchedAtRoomTime": -9007199254740991,
         "times": {
           "y": 2,
@@ -2303,7 +2003,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 3,
         },
       },
-      "hash": 0.7976109758019447,
       "id": "conveyor@3,6,0",
       "jsonItemId": "conveyor@3,6,0",
       "position": {
@@ -2335,9 +2034,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 29383.33333333192,
         "switchedAtRoomTime": -9007199254740991,
         "times": {
           "y": 3,
@@ -2356,7 +2053,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "x": 3,
         },
       },
-      "hash": 0.8890813875477761,
       "id": "conveyor@3,9,0",
       "jsonItemId": "conveyor@3,9,0",
       "position": {
@@ -2388,11 +2084,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "pickup@4,6,10": true,
         },
-        "stoodOnUntilRoomTime": 28741.666666665347,
         "switchedAtRoomTime": -9007199254740991,
         "times": {
           "x": 3,
@@ -2411,7 +2105,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "x": 3,
         },
       },
-      "hash": 0.49067835486494005,
       "id": "conveyor@4,6,0",
       "jsonItemId": "conveyor@4,6,0",
       "position": {
@@ -2443,12 +2136,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "pickup@4,6,1": true,
           "portableBlock@4,6,2": true,
         },
-        "stoodOnUntilRoomTime": 27616.66666666551,
         "switchedAtRoomTime": -9007199254740991,
         "times": {
           "x": 3,
@@ -2464,7 +2155,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
       },
-      "hash": 0.6157101895660162,
       "id": "conveyor@4,6,5",
       "jsonItemId": "conveyor@4,6,5",
       "position": {
@@ -2496,9 +2186,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 27183.33333333224,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "conveyor",
@@ -2514,7 +2202,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 3,
         },
       },
-      "hash": 0.6749787845183164,
       "id": "conveyor@6,7,0",
       "jsonItemId": "conveyor@6,7,0",
       "position": {
@@ -2546,12 +2233,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "pickup@4,6,9": true,
           "portableBlock@5,6,10": true,
         },
-        "stoodOnUntilRoomTime": 29549.999999998563,
         "switchedAtRoomTime": -9007199254740991,
         "times": {
           "y": 3,
@@ -2563,7 +2248,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "toaster",
       },
-      "hash": 0.4001610779669136,
       "id": "db",
       "jsonItemId": "db",
       "position": {
@@ -2591,11 +2275,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disabled": false,
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "m8": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "deadlyBlock",
@@ -2604,7 +2286,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "volcano",
       },
-      "hash": 0.4068233072757721,
       "id": "db1",
       "jsonItemId": "db1",
       "position": {
@@ -2632,11 +2313,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disabled": false,
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "m10": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "deadlyBlock",
@@ -2645,7 +2324,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "toaster",
       },
-      "hash": 0.3741350600030273,
       "id": "db2",
       "jsonItemId": "db2",
       "position": {
@@ -2673,11 +2351,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disabled": false,
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "m9": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "deadlyBlock",
@@ -2689,7 +2365,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 4,
         },
       },
-      "hash": 0.3284658545162529,
       "id": "deadlyBlock@17,2,0",
       "jsonItemId": "deadlyBlock@17,2,0",
       "position": {
@@ -2715,9 +2390,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disabled": false,
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "deadlyBlock",
@@ -2729,7 +2402,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 3,
         },
       },
-      "hash": 0.6999698013532907,
       "id": "deadlyBlock@17,3,1",
       "jsonItemId": "deadlyBlock@17,3,1",
       "position": {
@@ -2755,9 +2427,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disabled": false,
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "deadlyBlock",
@@ -2769,7 +2439,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 2,
         },
       },
-      "hash": 0.9512561149895191,
       "id": "deadlyBlock@17,4,2",
       "jsonItemId": "deadlyBlock@17,4,2",
       "position": {
@@ -2795,9 +2464,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disabled": false,
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "deadlyBlock",
@@ -2806,7 +2473,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "volcano",
       },
-      "hash": 0.3918890147469938,
       "id": "deadlyBlock@17,5,3",
       "jsonItemId": "deadlyBlock@17,5,3",
       "position": {
@@ -2832,16 +2498,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disabled": false,
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "deadlyBlock",
     },
     "door@5,0,2/blockerAbove": {
       "config": {},
-      "hash": 0,
       "id": "door@5,0,2/blockerAbove",
       "jsonItemId": "door@5,0,2",
       "position": {
@@ -2867,9 +2530,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "blocker",
@@ -2885,7 +2546,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "part": "far",
         "toRoom": "nowhere",
       },
-      "hash": 0,
       "id": "door@5,0,2/frameFar",
       "jsonItemId": "door@5,0,2",
       "position": {
@@ -2910,9 +2570,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "doorFrame",
@@ -2928,7 +2586,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "part": "near",
         "toRoom": "nowhere",
       },
-      "hash": 0,
       "id": "door@5,0,2/frameNear",
       "jsonItemId": "door@5,0,2",
       "position": {
@@ -2953,9 +2610,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "doorFrame",
@@ -2971,7 +2626,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "part": "top",
         "toRoom": "nowhere",
       },
-      "hash": 0,
       "id": "door@5,0,2/frameTop",
       "jsonItemId": "door@5,0,2",
       "position": {
@@ -2996,9 +2650,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "doorFrame",
@@ -3016,7 +2668,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "none",
         "toRoom": "nowhere",
       },
-      "hash": 0,
       "id": "door@5,0,2/legs",
       "jsonItemId": "door@5,0,2",
       "position": {
@@ -3042,9 +2693,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "doorLegs",
@@ -3064,7 +2713,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "toDoor": undefined,
         "toRoom": "nowhere",
       },
-      "hash": 0,
       "id": "door@5,0,2/portal",
       "jsonItemId": "door@5,0,2",
       "position": {
@@ -3089,16 +2737,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "portal",
     },
     "door@5,0,2/stopAutowalk": {
       "config": {},
-      "hash": 0,
       "id": "door@5,0,2/stopAutowalk",
       "jsonItemId": "door@5,0,2",
       "state": {
@@ -3118,9 +2763,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "stopAutowalk",
@@ -3136,7 +2779,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "maximum": 40,
         "period": 20000,
       },
-      "hash": 0.75894187646918,
       "id": "e",
       "jsonItemId": "e",
       "position": {
@@ -3171,11 +2813,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "expires": null,
         "lastEmittedAtRoomTime": 20008.333333333285,
         "maximum": 40,
-        "movedOrResizedOnProgression": 0,
         "period": 20000,
         "quantityEmitted": 1,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "emitter",
@@ -3194,7 +2834,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "maximum": 5,
         "period": 1000,
       },
-      "hash": 0.8542767576873302,
       "id": "emitter@17,0,7",
       "jsonItemId": "emitter@17,0,7",
       "position": {
@@ -3232,11 +2871,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "expires": null,
         "lastEmittedAtRoomTime": 5016.666666666663,
         "maximum": 5,
-        "movedOrResizedOnProgression": 0,
         "period": 1000,
         "quantityEmitted": 5,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "emitter",
@@ -3252,7 +2889,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "which": "cyberman",
       },
-      "hash": 0.383322955109179,
       "id": "emitter@17,0,7-0-1000",
       "jsonItemId": "emitter@17,0,7-0-1000",
       "position": {
@@ -3286,7 +2922,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "createdByEmitter": "emitter@17,0,7",
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -3294,19 +2929,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196908,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": 17608.333333333634,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 6991.6666666665915,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": 18800.000000000127,
         "vels": {
           "gravity": {
             "x": 0,
@@ -3338,7 +2963,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "which": "cyberman",
       },
-      "hash": 0.8880175321828574,
       "id": "emitter@17,0,7-1-2008",
       "jsonItemId": "emitter@17,0,7-1-2008",
       "position": {
@@ -3375,7 +2999,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "createdByEmitter": "emitter@17,0,7",
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -3383,19 +3006,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196928,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": 3358.33333333335,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 8841.666666666595,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": 18341.66666666686,
         "vels": {
           "gravity": {
             "x": 0,
@@ -3427,7 +3040,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "which": "cyberman",
       },
-      "hash": 0.13879246008582413,
       "id": "emitter@17,0,7-2-3008",
       "jsonItemId": "emitter@17,0,7-2-3008",
       "position": {
@@ -3463,7 +3075,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "createdByEmitter": "emitter@17,0,7",
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -3471,19 +3082,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196933,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": 4841.66666666667,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": 15350.000000000402,
         "vels": {
           "gravity": {
             "x": 0,
@@ -3515,7 +3116,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "which": "cyberman",
       },
-      "hash": 0.38948706933297217,
       "id": "emitter@17,0,7-3-4008",
       "jsonItemId": "emitter@17,0,7-3-4008",
       "position": {
@@ -3551,7 +3151,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "createdByEmitter": "emitter@17,0,7",
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -3559,19 +3158,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196929,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": 6991.6666666665915,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 8174.999999999882,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": 20841.666666666497,
         "vels": {
           "gravity": {
             "x": 0,
@@ -3603,7 +3192,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "which": "cyberman",
       },
-      "hash": 0.8606636084150523,
       "id": "emitter@17,0,7-4-5016",
       "jsonItemId": "emitter@17,0,7-4-5016",
       "position": {
@@ -3639,7 +3227,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "createdByEmitter": "emitter@17,0,7",
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -3647,19 +3234,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": 7124.99999999992,
-          "z": -0.023999999999998634,
-        },
-        "movedOrResizedOnProgression": 196934,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": 9858.333333333336,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": 15350.000000000402,
         "vels": {
           "gravity": {
             "x": 0,
@@ -3708,7 +3285,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 14,
         },
       },
-      "hash": 0,
       "id": "floor@0,0,0",
       "jsonItemId": "floor@0,0,0",
       "state": {
@@ -3730,7 +3306,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {
           "ball@10,4,0": true,
           "ball@7,2,0": true,
@@ -3774,14 +3349,12 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "t1": true,
           "t2": true,
         },
-        "stoodOnUntilRoomTime": 28941.66666666532,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "floor",
     },
     "heels": {
       "config": {},
-      "hash": 0,
       "id": "heels",
       "jsonItemId": "heels",
       "state": {
@@ -3825,19 +3398,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "jumpStartZ": 0,
         "jumped": false,
         "lastDiedAt": -9007199254740991,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": 15508.333333333747,
-          "z": -0.0050000000000022735,
-        },
         "lives": 8,
-        "movedOrResizedOnProgression": 87486,
-        "previousStandingOnItemId": null,
         "shieldCollectedAt": 1966.66666666666,
         "standingOnItemId": "pr",
-        "standingOnUntilRoomTime": 1849.9999999999943,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "switchedToAt": -9007199254740991,
         "teleporting": null,
@@ -3879,7 +3443,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "ch1",
         ],
       },
-      "hash": 0.7496657024603337,
       "id": "joystick@4,1,0",
       "jsonItemId": "joystick@4,1,0",
       "position": {
@@ -3914,9 +3477,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "joystick",
@@ -3927,7 +3488,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "ch2",
         ],
       },
-      "hash": 0.12199204275384545,
       "id": "joystick@5,3,0",
       "jsonItemId": "joystick@5,3,0",
       "position": {
@@ -3956,9 +3516,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "lastPushDirection": undefined,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "joystick",
@@ -3972,7 +3530,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
       },
-      "hash": 0.7034758303780109,
       "id": "la",
       "jsonItemId": "la",
       "position": {
@@ -3999,9 +3556,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "firstBeam": "lb2",
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": 17833.3333333336,
         "switchedSetting": "right",
       },
@@ -4019,7 +3574,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 2,
         },
       },
-      "hash": 0.19419111567549407,
       "id": "la1",
       "jsonItemId": "la1",
       "position": {
@@ -4048,9 +3602,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "firstBeam": "lb",
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 9858.333333333336,
         "switchedAtRoomTime": 17833.3333333336,
         "switchedSetting": "right",
       },
@@ -4065,7 +3617,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
       },
-      "hash": 0.45357639342546463,
       "id": "la2",
       "jsonItemId": "la2",
       "position": {
@@ -4092,9 +3643,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "firstBeam": "lb3",
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": 17833.3333333336,
         "switchedSetting": "right",
       },
@@ -4109,7 +3658,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "sourceItemId": "la1",
       },
-      "hash": 0,
       "id": "lb",
       "state": {
         "actedOnAt": {
@@ -4129,10 +3677,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "end": "terminus",
         "expires": null,
-        "movedOrResizedOnProgression": 101851,
         "next": "lb1",
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "lightBeam",
@@ -4146,7 +3692,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "sourceItemId": "la1",
       },
-      "hash": 0,
       "id": "lb1",
       "state": {
         "actedOnAt": {
@@ -4166,10 +3711,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "end": "terminus",
         "expires": null,
-        "movedOrResizedOnProgression": 101010,
         "next": undefined,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "lightBeam",
@@ -4183,7 +3726,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "sourceItemId": "la",
       },
-      "hash": 0,
       "id": "lb2",
       "state": {
         "actedOnAt": {
@@ -4203,10 +3745,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "end": "reflect-left",
         "expires": null,
-        "movedOrResizedOnProgression": 100594,
         "next": undefined,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "lightBeam",
@@ -4220,7 +3760,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "sourceItemId": "la2",
       },
-      "hash": 0,
       "id": "lb3",
       "state": {
         "actedOnAt": {
@@ -4240,10 +3779,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "end": "terminus",
         "expires": null,
-        "movedOrResizedOnProgression": 100595,
         "next": undefined,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "lightBeam",
@@ -4253,7 +3790,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "bottom": 0,
         "top": 11,
       },
-      "hash": 0.11738318717107177,
       "id": "lift@0,4,3",
       "jsonItemId": "lift@0,4,3",
       "position": {
@@ -4280,9 +3816,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "direction": "down",
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 196875,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "top": 11,
         "vels": {
@@ -4300,7 +3834,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "bottom": 0,
         "top": 11,
       },
-      "hash": 0.052145883440971375,
       "id": "lift@1,4,2",
       "jsonItemId": "lift@1,4,2",
       "position": {
@@ -4327,11 +3860,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "direction": "up",
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 196876,
         "stoodOnBy": {
           "pickup@1,4,9": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "top": 11,
         "vels": {
@@ -4349,7 +3880,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "bottom": 1,
         "top": 2,
       },
-      "hash": 0.735681080725044,
       "id": "lift@13,6,1",
       "jsonItemId": "lift@13,6,1",
       "position": {
@@ -4376,9 +3906,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "direction": "down",
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 196878,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "top": 2,
         "vels": {
@@ -4396,7 +3924,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "bottom": 0,
         "top": 11,
       },
-      "hash": 0.7428775797598064,
       "id": "lift@2,4,1",
       "jsonItemId": "lift@2,4,1",
       "position": {
@@ -4423,9 +3950,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "direction": "up",
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 196879,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "top": 11,
         "vels": {
@@ -4443,7 +3968,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "bottom": 0,
         "top": 11,
       },
-      "hash": 0.10710457968525589,
       "id": "lift@3,4,0",
       "jsonItemId": "lift@3,4,0",
       "position": {
@@ -4470,9 +3994,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "direction": "up",
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 196880,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 22691.666666666228,
         "switchedAtRoomTime": -9007199254740991,
         "top": 11,
         "vels": {
@@ -4491,7 +4013,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "movement": "towards-tripped-on-axis-xy4",
         "which": "homingBot",
       },
-      "hash": 0.8574454423505813,
       "id": "m",
       "jsonItemId": "m",
       "position": {
@@ -4524,7 +4045,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -4532,20 +4052,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 54985,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": 8158.333333333216,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": 22008.333333332994,
         "switchedSetting": "right",
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -4572,7 +4082,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "movement": "towards-tripped-on-axis-xy4",
         "which": "homingBot",
       },
-      "hash": 0.5715251830406487,
       "id": "m1",
       "jsonItemId": "m1",
       "position": {
@@ -4605,7 +4114,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -4613,20 +4121,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 87938,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": 283.33333333333337,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": 22008.333333332994,
         "switchedSetting": "right",
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -4658,7 +4156,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "which": "cyberman",
       },
-      "hash": 0.2622783810365945,
       "id": "m10",
       "jsonItemId": "m10",
       "position": {
@@ -4689,7 +4186,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": false,
         "expires": null,
         "facing": {
@@ -4697,19 +4193,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 0,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "db1",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -4741,7 +4227,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "which": "monkey",
       },
-      "hash": 0.023695925483480096,
       "id": "m11",
       "jsonItemId": "m11",
       "position": {
@@ -4774,7 +4259,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -4782,19 +4266,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 0,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196881,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": 3483.333333333352,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -4821,7 +4295,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "movement": "towards-tripped-on-axis-xy4",
         "which": "homingBot",
       },
-      "hash": 0.9223806438967586,
       "id": "m12",
       "jsonItemId": "m12",
       "position": {
@@ -4852,7 +4325,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -4860,19 +4332,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 96747,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "br2",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -4905,7 +4367,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "greenAndPink",
         "which": "skiHead",
       },
-      "hash": 0.491030506324023,
       "id": "m13",
       "jsonItemId": "m13",
       "position": {
@@ -4940,7 +4401,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -4948,20 +4408,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 0,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196943,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "co1",
-        "standingOnUntilRoomTime": 26549.999999999,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": 27283.333333332226,
         "switchedSetting": "right",
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -4988,7 +4438,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "movement": "towards-tripped-on-axis-xy4",
         "which": "homingBot",
       },
-      "hash": 0.8683794760145247,
       "id": "m2",
       "jsonItemId": "m2",
       "position": {
@@ -5021,7 +4470,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -5029,20 +4477,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 98019,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "b3",
-        "standingOnUntilRoomTime": 14091.666666666977,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": 22008.333333332994,
         "switchedSetting": "right",
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -5069,7 +4507,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "movement": "towards-tripped-on-axis-xy4",
         "which": "homingBot",
       },
-      "hash": 0.04057434620335698,
       "id": "m3",
       "jsonItemId": "m3",
       "position": {
@@ -5102,7 +4539,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -5110,20 +4546,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 128677,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "b",
-        "standingOnUntilRoomTime": 14733.33333333369,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": 22008.333333332994,
         "switchedSetting": "right",
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -5150,7 +4576,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "movement": "towards-tripped-on-axis-xy4",
         "which": "homingBot",
       },
-      "hash": 0.5842548736836761,
       "id": "m4",
       "jsonItemId": "m4",
       "position": {
@@ -5185,7 +4610,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -5193,19 +4617,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 85091,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": 3141.6666666666792,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -5237,7 +4651,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "which": "elephantHead",
       },
-      "hash": 0.44594476162455976,
       "id": "m5",
       "jsonItemId": "m5",
       "position": {
@@ -5268,7 +4681,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -5276,19 +4688,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 0,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "b9",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -5320,7 +4722,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "which": "elephantHead",
       },
-      "hash": 0.501169033581391,
       "id": "m6",
       "jsonItemId": "m6",
       "position": {
@@ -5351,7 +4752,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -5359,19 +4759,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "portableBlock@13,1,2",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -5398,7 +4788,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "movement": "patrol-randomly-diagonal",
         "which": "dalek",
       },
-      "hash": 0.213281114352867,
       "id": "m7",
       "jsonItemId": "m7",
       "position": {
@@ -5431,7 +4820,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -5439,19 +4827,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 0.7071067811865475,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196882,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": 28941.66666666532,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -5483,7 +4861,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "which": "cyberman",
       },
-      "hash": 0.25142085435800254,
       "id": "m8",
       "jsonItemId": "m8",
       "position": {
@@ -5514,7 +4891,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": false,
         "expires": null,
         "facing": {
@@ -5522,19 +4898,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 0,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "db",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -5566,7 +4932,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "which": "cyberman",
       },
-      "hash": 0.6848553535528481,
       "id": "m9",
       "jsonItemId": "m9",
       "position": {
@@ -5597,7 +4962,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": false,
         "expires": null,
         "facing": {
@@ -5605,19 +4969,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 0,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "db2",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -5650,7 +5004,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "starsAndStripes",
         "which": "skiHead",
       },
-      "hash": 0.36740653635933995,
       "id": "monster@0,4,1",
       "jsonItemId": "monster@0,4,1",
       "position": {
@@ -5683,7 +5036,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -5691,19 +5043,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 0,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196883,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": 8.333333333333334,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -5736,7 +5078,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "starsAndStripes",
         "which": "skiHead",
       },
-      "hash": 0.7958171188365668,
       "id": "monster@1,7,0",
       "jsonItemId": "monster@1,7,0",
       "position": {
@@ -5771,7 +5112,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -5779,19 +5119,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 0,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196884,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -5824,7 +5154,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "starsAndStripes",
         "which": "skiHead",
       },
-      "hash": 0.8090494212228805,
       "id": "monster@1,8,0",
       "jsonItemId": "monster@1,8,0",
       "position": {
@@ -5857,7 +5186,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -5865,19 +5193,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196885,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -5910,7 +5228,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "greenAndPink",
         "which": "skiHead",
       },
-      "hash": 0.3638540799729526,
       "id": "monster@2,8,0",
       "jsonItemId": "monster@2,8,0",
       "position": {
@@ -5943,7 +5260,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 8.333333333333334,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -5951,19 +5267,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 0,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196886,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -5996,7 +5302,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "greenAndPink",
         "which": "skiHead",
       },
-      "hash": 0.01029481366276741,
       "id": "monster@4,0,0",
       "jsonItemId": "monster@4,0,0",
       "position": {
@@ -6029,7 +5334,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -6037,19 +5341,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196887,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -6082,7 +5376,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "greenAndPink",
         "which": "skiHead",
       },
-      "hash": 0.037700027925893664,
       "id": "monster@4,2,0",
       "jsonItemId": "monster@4,2,0",
       "position": {
@@ -6115,7 +5408,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -6123,19 +5415,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196889,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -6167,7 +5449,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "which": "cyberman",
       },
-      "hash": 0.5525308228097856,
       "id": "monster@4,8,5",
       "jsonItemId": "monster@4,8,5",
       "position": {
@@ -6200,7 +5481,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -6208,19 +5488,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196891,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": 11591.666666666795,
         "vels": {
           "gravity": {
             "x": 0,
@@ -6251,7 +5521,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
       },
-      "hash": 0.6236452816519886,
       "id": "mp",
       "jsonItemId": "mp",
       "position": {
@@ -6283,7 +5552,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -6291,19 +5559,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 0,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196937,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": 17675.00000000029,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 15508.333333333747,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -6334,7 +5592,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
       },
-      "hash": 0.6992425313219428,
       "id": "mp1",
       "jsonItemId": "mp1",
       "position": {
@@ -6364,7 +5621,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 0,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -6372,19 +5628,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "b10",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -6412,7 +5658,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 2,
         },
       },
-      "hash": 0.2697162888944149,
       "id": "mr",
       "jsonItemId": "mr",
       "position": {
@@ -6442,10 +5687,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "flipDirection": "clockwise",
         "flippedAtRoomTime": 5024.999999999996,
         "lastFlippedAtRoomTime": 5024.999999999996,
-        "movedOrResizedOnProgression": 0,
         "orientation": "awayRight",
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 17608.333333333634,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "mirror",
@@ -6454,7 +5697,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "orientation": "awayRight",
       },
-      "hash": 0.7622978133149445,
       "id": "mr1",
       "jsonItemId": "mr1",
       "position": {
@@ -6480,17 +5722,14 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "lastFlippedAtRoomTime": -9007199254740991,
-        "movedOrResizedOnProgression": 0,
         "orientation": "awayRight",
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "mirror",
     },
     "outOfBounds": {
       "config": {},
-      "hash": 0,
       "id": "outOfBounds",
       "state": {
         "actedOnAt": {
@@ -6509,9 +5748,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "outOfBounds",
@@ -6520,7 +5757,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "gives": "doughnuts",
       },
-      "hash": 0.6261633445974439,
       "id": "pickup@0,4,9",
       "jsonItemId": "pickup@0,4,9",
       "position": {
@@ -6560,17 +5796,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "touch",
         },
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 181735,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -6591,7 +5818,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "gives": "hooter",
       },
-      "hash": 0.6772056766785681,
       "id": "pickup@1,4,9",
       "jsonItemId": "pickup@1,4,9",
       "position": {
@@ -6631,17 +5857,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "touch",
         },
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": 30016.66666666516,
-          "z": 0.027501827983381872,
-        },
-        "movedOrResizedOnProgression": 196877,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "lift@1,4,2",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -6662,7 +5879,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "gives": "bag",
       },
-      "hash": 0.18925608834251761,
       "id": "pickup@12,0,0",
       "jsonItemId": "pickup@12,0,0",
       "position": {
@@ -6698,17 +5914,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "touch",
         },
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -6729,7 +5936,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "gives": "shield",
       },
-      "hash": 0.22444839519448578,
       "id": "pickup@17,1,0",
       "jsonItemId": "pickup@17,1,0",
       "position": {
@@ -6766,17 +5972,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "touch",
         },
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -6797,7 +5994,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "gives": "reincarnation",
       },
-      "hash": 0.9677810312714428,
       "id": "pickup@3,5,11",
       "jsonItemId": "pickup@3,5,11",
       "position": {
@@ -6838,17 +6034,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "touch",
         },
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 160523,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "ch2",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 25916.66666666576,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -6869,7 +6056,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "gives": "reincarnation",
       },
-      "hash": 0.1201913480181247,
       "id": "pickup@4,6,1",
       "jsonItemId": "pickup@4,6,1",
       "position": {
@@ -6910,17 +6096,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "touch",
         },
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196938,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "conveyor@4,6,0",
-        "standingOnUntilRoomTime": 28866.66666666533,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 5949.999999999963,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -6941,7 +6118,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "gives": "bag",
       },
-      "hash": 0.7452467712573707,
       "id": "pickup@4,6,10",
       "jsonItemId": "pickup@4,6,10",
       "position": {
@@ -6981,19 +6157,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "touch",
         },
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": 2266.6666666666633,
-          "z": -0.007333333333322968,
-        },
-        "movedOrResizedOnProgression": 196939,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "conveyor@3,9,0",
-        "standingOnUntilRoomTime": 29383.33333333192,
         "stoodOnBy": {
           "ch1": true,
         },
-        "stoodOnUntilRoomTime": 8916.6666666666,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7014,7 +6181,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "gives": "reincarnation",
       },
-      "hash": 0.6200705335941166,
       "id": "pickup@4,6,13",
       "jsonItemId": "pickup@4,6,13",
       "position": {
@@ -7055,17 +6221,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "touch",
         },
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": 8916.6666666666,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 47911,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "block@6,6,2",
-        "standingOnUntilRoomTime": 8916.6666666666,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7086,7 +6243,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "gives": "extra-life",
       },
-      "hash": 0.12026448152028024,
       "id": "pickup@4,6,9",
       "jsonItemId": "pickup@4,6,9",
       "position": {
@@ -7127,17 +6283,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "touch",
         },
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196940,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "conveyor@6,7,0",
-        "standingOnUntilRoomTime": 28741.666666665347,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 8099.9999999998845,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7158,7 +6305,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "cube",
       },
-      "hash": 0.9495447324588895,
       "id": "portableBlock@0,0,2",
       "jsonItemId": "portableBlock@0,0,2",
       "position": {
@@ -7192,19 +6338,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 194853,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": 1558.3333333333303,
         "stoodOnBy": {
           "portableBlock@0,0,7": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7225,7 +6362,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "cube",
       },
-      "hash": 0.8245136719197035,
       "id": "portableBlock@0,0,7",
       "jsonItemId": "portableBlock@0,0,7",
       "position": {
@@ -7259,17 +6395,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": 1908.3333333333271,
-          "z": -0.0050000000000001415,
-        },
-        "movedOrResizedOnProgression": 195711,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "portableBlock@0,0,2",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7290,7 +6417,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "cube",
       },
-      "hash": 0.6261824076063931,
       "id": "portableBlock@13,1,0",
       "jsonItemId": "portableBlock@13,1,0",
       "position": {
@@ -7320,19 +6446,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {
           "portableBlock@13,1,1": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7353,7 +6470,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "cube",
       },
-      "hash": 0.7511892248876393,
       "id": "portableBlock@13,1,1",
       "jsonItemId": "portableBlock@13,1,1",
       "position": {
@@ -7383,19 +6499,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "portableBlock@13,1,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {
           "portableBlock@13,1,2": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7416,7 +6523,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "cube",
       },
-      "hash": 0.37614588742144406,
       "id": "portableBlock@13,1,2",
       "jsonItemId": "portableBlock@13,1,2",
       "position": {
@@ -7446,19 +6552,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "portableBlock@13,1,1",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {
           "m6": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7479,7 +6576,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "sticks",
       },
-      "hash": 0.585401710588485,
       "id": "portableBlock@13,2,0",
       "jsonItemId": "portableBlock@13,2,0",
       "position": {
@@ -7509,17 +6605,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7540,7 +6627,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "drum",
       },
-      "hash": 0.610785260098055,
       "id": "portableBlock@13,3,0",
       "jsonItemId": "portableBlock@13,3,0",
       "position": {
@@ -7570,17 +6656,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7601,7 +6678,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "cube",
       },
-      "hash": 0.11075977655127645,
       "id": "portableBlock@13,3,4",
       "jsonItemId": "portableBlock@13,3,4",
       "position": {
@@ -7631,17 +6707,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "block@13,3,3",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7662,7 +6729,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "cube",
       },
-      "hash": 0.6137188209686428,
       "id": "portableBlock@13,4,0",
       "jsonItemId": "portableBlock@13,4,0",
       "position": {
@@ -7696,17 +6762,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 167291,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7727,7 +6784,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "cube",
       },
-      "hash": 0.3010079013183713,
       "id": "portableBlock@3,13,0",
       "jsonItemId": "portableBlock@3,13,0",
       "position": {
@@ -7761,17 +6817,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 108061,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7792,7 +6839,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "cube",
       },
-      "hash": 0.8933157736901194,
       "id": "portableBlock@4,13,0",
       "jsonItemId": "portableBlock@4,13,0",
       "position": {
@@ -7822,17 +6868,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7853,7 +6890,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "drum",
       },
-      "hash": 0.745196764357388,
       "id": "portableBlock@4,6,2",
       "jsonItemId": "portableBlock@4,6,2",
       "position": {
@@ -7887,17 +6923,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196941,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "conveyor@4,6,0",
-        "standingOnUntilRoomTime": 29549.999999998563,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7918,7 +6945,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "cube",
       },
-      "hash": 0.37572423624806106,
       "id": "portableBlock@5,13,0",
       "jsonItemId": "portableBlock@5,13,0",
       "position": {
@@ -7950,17 +6976,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 134876,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7981,7 +6998,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "cube",
       },
-      "hash": 0.07565269782207906,
       "id": "portableBlock@5,6,10",
       "jsonItemId": "portableBlock@5,6,10",
       "position": {
@@ -8015,17 +7031,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196942,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "conveyor@6,7,0",
-        "standingOnUntilRoomTime": 27333.33333333222,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 8908.333333333267,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -8046,7 +7053,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "drum",
       },
-      "hash": 0.46568502159789205,
       "id": "pr",
       "jsonItemId": "pr",
       "position": {
@@ -8080,19 +7086,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": 15508.333333333747,
-          "z": -0.0050000000000022735,
-        },
-        "movedOrResizedOnProgression": 87485,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "b4",
-        "standingOnUntilRoomTime": 15508.333333333747,
         "stoodOnBy": {
           "heels": true,
         },
-        "stoodOnUntilRoomTime": 1966.66666666666,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -8111,7 +7108,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "pushableBlock@1,6,0": {
       "config": {},
-      "hash": 0.39497728389687836,
       "id": "pushableBlock@1,6,0",
       "jsonItemId": "pushableBlock@1,6,0",
       "position": {
@@ -8145,19 +7141,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 183696,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {
           "pushableBlock@1,6,1": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -8176,7 +7163,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "pushableBlock@1,6,1": {
       "config": {},
-      "hash": 0.019978751428425312,
       "id": "pushableBlock@1,6,1",
       "jsonItemId": "pushableBlock@1,6,1",
       "position": {
@@ -8210,19 +7196,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 177787,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "pushableBlock@1,6,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {
           "pushableBlock@1,6,2": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -8241,7 +7218,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "pushableBlock@1,6,2": {
       "config": {},
-      "hash": 0.6450061765499413,
       "id": "pushableBlock@1,6,2",
       "jsonItemId": "pushableBlock@1,6,2",
       "position": {
@@ -8275,17 +7251,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 178548,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "pushableBlock@1,6,1",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -8304,7 +7271,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "pushableBlock@10,7,0": {
       "config": {},
-      "hash": 0.47549967700615525,
       "id": "pushableBlock@10,7,0",
       "jsonItemId": "pushableBlock@10,7,0",
       "position": {
@@ -8334,19 +7300,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {
           "pushableBlock@10,7,1": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -8365,7 +7322,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "pushableBlock@10,7,1": {
       "config": {},
-      "hash": 0.6005237945355475,
       "id": "pushableBlock@10,7,1",
       "jsonItemId": "pushableBlock@10,7,1",
       "position": {
@@ -8395,19 +7351,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "pushableBlock@10,7,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {
           "pushableBlock@10,7,2": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -8426,7 +7373,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "pushableBlock@10,7,2": {
       "config": {},
-      "hash": 0.22549757617525756,
       "id": "pushableBlock@10,7,2",
       "jsonItemId": "pushableBlock@10,7,2",
       "position": {
@@ -8456,19 +7402,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "pushableBlock@10,7,1",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {
           "pushableBlock@10,7,3": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -8487,7 +7424,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "pushableBlock@10,7,3": {
       "config": {},
-      "hash": 0.3505362959112972,
       "id": "pushableBlock@10,7,3",
       "jsonItemId": "pushableBlock@10,7,3",
       "position": {
@@ -8517,19 +7453,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "pushableBlock@10,7,2",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {
           "pushableBlock@10,7,4": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -8548,7 +7475,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "pushableBlock@10,7,4": {
       "config": {},
-      "hash": 0.9755023887846619,
       "id": "pushableBlock@10,7,4",
       "jsonItemId": "pushableBlock@10,7,4",
       "position": {
@@ -8578,19 +7504,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "pushableBlock@10,7,3",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {
           "pushableBlock@10,7,5": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -8609,7 +7526,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "pushableBlock@10,7,5": {
       "config": {},
-      "hash": 0.10051851905882359,
       "id": "pushableBlock@10,7,5",
       "jsonItemId": "pushableBlock@10,7,5",
       "position": {
@@ -8639,17 +7555,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "pushableBlock@10,7,4",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 3141.6666666666792,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -8668,7 +7575,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "pushableBlock@2,6,0": {
       "config": {},
-      "hash": 0.821687065763399,
       "id": "pushableBlock@2,6,0",
       "jsonItemId": "pushableBlock@2,6,0",
       "position": {
@@ -8702,19 +7608,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 194155,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {
           "pushableBlock@2,6,1": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -8733,7 +7630,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "pushableBlock@2,6,1": {
       "config": {},
-      "hash": 0.6966874455101788,
       "id": "pushableBlock@2,6,1",
       "jsonItemId": "pushableBlock@2,6,1",
       "position": {
@@ -8767,19 +7663,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 194461,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "pushableBlock@2,6,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {
           "pushableBlock@2,6,2": true,
         },
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -8798,7 +7685,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "pushableBlock@2,6,2": {
       "config": {},
-      "hash": 0.07171929907053709,
       "id": "pushableBlock@2,6,2",
       "jsonItemId": "pushableBlock@2,6,2",
       "position": {
@@ -8832,17 +7718,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 186040,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "pushableBlock@2,6,1",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -8861,7 +7738,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "pushableBlock@2,9,0": {
       "config": {},
-      "hash": 0.8221408659592271,
       "id": "pushableBlock@2,9,0",
       "jsonItemId": "pushableBlock@2,9,0",
       "position": {
@@ -8895,17 +7771,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 132290,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 25241.666666665857,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -8926,7 +7793,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "book",
       },
-      "hash": 0.5351779127959162,
       "id": "sb",
       "jsonItemId": "sb",
       "position": {
@@ -8956,17 +7822,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "b1",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": 283.33333333333337,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -8992,7 +7849,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "book",
       },
-      "hash": 0.9531972873955965,
       "id": "sb1",
       "jsonItemId": "sb1",
       "position": {
@@ -9024,17 +7880,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 100768,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "b1",
-        "standingOnUntilRoomTime": 17875.000000000262,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -9058,7 +7905,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "spring@13,0,0": {
       "config": {},
-      "hash": 0.617827543290332,
       "id": "spring@13,0,0",
       "jsonItemId": "spring@13,0,0",
       "position": {
@@ -9088,17 +7934,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -9117,7 +7954,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "spring@14,0,0": {
       "config": {},
-      "hash": 0.4529438193421811,
       "id": "spring@14,0,0",
       "jsonItemId": "spring@14,0,0",
       "position": {
@@ -9147,17 +7983,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 0,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -9190,7 +8017,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
         ],
       },
-      "hash": 0.13192165014334023,
       "id": "sw",
       "jsonItemId": "sw",
       "position": {
@@ -9219,10 +8045,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "lastToggledAtRoomTime": 22008.333333332994,
-        "movedOrResizedOnProgression": 0,
         "setting": "right",
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "switch",
@@ -9237,7 +8061,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
         ],
       },
-      "hash": 0.11223100265488029,
       "id": "sw1",
       "jsonItemId": "sw1",
       "position": {
@@ -9264,10 +8087,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "lastToggledAtRoomTime": -9007199254740991,
-        "movedOrResizedOnProgression": 0,
         "setting": "left",
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "switch",
@@ -9285,7 +8106,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
         ],
       },
-      "hash": 0.41199503373354673,
       "id": "sw2",
       "jsonItemId": "sw2",
       "position": {
@@ -9314,10 +8134,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "lastToggledAtRoomTime": 23349.999999999465,
-        "movedOrResizedOnProgression": 0,
         "setting": "right",
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "switch",
@@ -9335,7 +8153,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
         ],
       },
-      "hash": 0.8787065502256155,
       "id": "sw3",
       "jsonItemId": "sw3",
       "position": {
@@ -9364,10 +8181,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "lastToggledAtRoomTime": 27416.66666666554,
-        "movedOrResizedOnProgression": 0,
         "setting": "right",
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "switch",
@@ -9392,7 +8207,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         ],
         "type": "in-room",
       },
-      "hash": 0.28706859704107046,
       "id": "switch@17,12,0",
       "jsonItemId": "switch@17,12,0",
       "position": {
@@ -9422,10 +8236,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "lastToggledAtRoomTime": 7833.3333333332275,
-        "movedOrResizedOnProgression": 0,
         "setting": "right",
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "switch",
@@ -9441,7 +8253,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "which": "turtle",
       },
-      "hash": 0.6619484375696629,
       "id": "t1",
       "jsonItemId": "t1",
       "position": {
@@ -9474,7 +8285,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 108.33333333333331,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -9482,20 +8292,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 0,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196892,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": 7691.666666666566,
         "switchedSetting": "right",
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -9527,7 +8327,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "which": "turtle",
       },
-      "hash": 0.24768296210095286,
       "id": "t2",
       "jsonItemId": "t2",
       "position": {
@@ -9560,7 +8359,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
-        "durationOfTouch": 124.99999999999997,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -9568,19 +8366,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 1,
           "z": 0,
         },
-        "latentMovement": [],
-        "liftVel": {
-          "atRoomTime": -9007199254740991,
-          "z": 0,
-        },
-        "movedOrResizedOnProgression": 196893,
-        "previousStandingOnItemId": null,
         "standingOnItemId": "floor@0,0,0",
-        "standingOnUntilRoomTime": -9007199254740991,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
-        "timeOfLastDirectionChange": -Infinity,
         "vels": {
           "gravity": {
             "x": 0,
@@ -9610,7 +8398,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "toRoom": "nowhere",
       },
-      "hash": 0.18161327973939478,
       "id": "teleporter@1,0,0",
       "jsonItemId": "teleporter@1,0,0",
       "position": {
@@ -9637,9 +8424,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
         "toPosition": {
           "x": 1,
@@ -9676,7 +8461,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "whenPlayerInside": true,
       },
-      "hash": 0.05661270604468882,
       "id": "teleporter@1,0,0-help",
       "jsonItemId": "teleporter@1,0,0-help",
       "position": {
@@ -9714,11 +8498,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "expires": null,
         "lastEmittedAtRoomTime": -6000,
         "maximum": null,
-        "movedOrResizedOnProgression": 0,
         "period": 8000,
         "quantityEmitted": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "emitter",
@@ -9747,7 +8529,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "sarcophagus",
         ],
       },
-      "hash": 0.089895851444453,
       "id": "wall(right)@0,0,0",
       "jsonItemId": "wall(right)@0,0,0",
       "state": {
@@ -9769,9 +8550,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "wall",
@@ -9791,7 +8570,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "sarcophagus",
         ],
       },
-      "hash": 0.5196832646615803,
       "id": "wall(towards)@0,0,0",
       "jsonItemId": "wall(towards)@0,0,0",
       "state": {
@@ -9813,9 +8591,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "wall",
@@ -9848,7 +8624,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "hieroglyphics",
         ],
       },
-      "hash": 0.34447973500937223,
       "id": "wall@0,14,0",
       "jsonItemId": "wall@0,14,0",
       "state": {
@@ -9870,9 +8645,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "wall",
@@ -9901,7 +8674,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "hieroglyphics",
         ],
       },
-      "hash": 0.18779043410904706,
       "id": "wall@18,0,0",
       "jsonItemId": "wall@18,0,0",
       "state": {
@@ -9923,9 +8695,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "wall",
@@ -9951,7 +8721,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "hieroglyphics",
         ],
       },
-      "hash": 0.5971216307953,
       "id": "wall@7,0,0",
       "jsonItemId": "wall@7,0,0",
       "state": {
@@ -9973,16 +8742,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "movedOrResizedOnProgression": 0,
         "stoodOnBy": {},
-        "stoodOnUntilRoomTime": -9007199254740991,
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "wall",
     },
   },
   "planet": "egyptus",
-  "progression": 196943,
   "roomJson": {
     "color": {
       "hue": "yellow",

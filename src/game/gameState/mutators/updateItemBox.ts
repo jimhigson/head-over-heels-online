@@ -13,20 +13,12 @@ import {
 
 /**
  * THE way an in-play item's box changes (moves and/or resizes): keeps the
- * spatial index in step and stamps the item as moved on the room's
- * progression count.
+ * spatial index in step.
  *
- * Deliberately does NOT test the given box against the current one first. Such
- * a test costs six comparisons on every call - this is the physics hot path,
- * called hundreds of thousands of times in half a minute of play - and buys
- * nothing here: {@link updateItemPosition} has already rejected a standstill
- * before it builds a box, and a caller that re-derives a box from scratch each
- * tick can compare far more cheaply on its own terms than every mover pays for
- * it. So the contract is that the box given really is a new one.
+ * Deliberately does NOT test the given box against the current one first, replaces
+ * even if identical
  *
- * Note that a movement blocked by an obstacle is NOT a standstill: a mover
- * that applies its whole delta and then backs off out of the obstacle passes
- * two boxes, each genuinely different from the one before it.
+ * After calling this, you probably want to also call @see {@link stampWithMovedProgression}
  */
 export const updateItemBox = <RoomId extends string, RoomItemId extends string>(
   room: RoomState<RoomId, RoomItemId>,
@@ -34,7 +26,6 @@ export const updateItemBox = <RoomId extends string, RoomItemId extends string>(
   newBox: Readonly<XyzBox>,
 ) => {
   item.state.box = newBox;
-  item.state.movedOrResizedOnProgression = ++room.progression as Progression;
   room[roomSpatialIndexKey].updateItemSpatialIndex(item);
 };
 
@@ -60,4 +51,17 @@ export const updateItemPosition = <
   }
 
   updateItemBox(room, item, boxAt(newPosition, item.state.box));
+};
+
+/**
+ * stamp an item as moved (or resized) on the room's progression count
+ */
+export const stampWithMovedProgression = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  room: RoomState<RoomId, RoomItemId>,
+  item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+) => {
+  item.state.movedOrResizedOnProgression = ++room.progression as Progression;
 };

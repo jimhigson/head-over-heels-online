@@ -17,7 +17,10 @@ import { playableLosesLife } from "../game/gameState/mutators/playableLosesLife"
 import { removeStandingOn } from "../game/gameState/mutators/standingOn/removeStandingOn";
 import { setStandingOnWithoutRemovingOldFirst } from "../game/gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { swopPlayables } from "../game/gameState/mutators/swopPlayables";
-import { updateItemPosition } from "../game/gameState/mutators/updateItemBox";
+import {
+  stampWithMovedProgression,
+  updateItemPosition,
+} from "../game/gameState/mutators/updateItemBox";
 import { blockSizePx } from "../game/physics/mechanicsConstants";
 import { type ItemInPlay } from "../model/ItemInPlay";
 import { type PlayableActionState } from "../model/ItemStateMap";
@@ -222,6 +225,7 @@ export const mutatorsTestHarness = () => {
         playableItem,
         addXyz(sourcePortal.state.box, sourcePortal.config.relativePoint),
       );
+      stampWithMovedProgression(room, playableItem);
 
       changeCharacterRoom({
         playableItem,
@@ -251,6 +255,7 @@ export const mutatorsTestHarness = () => {
           z: blockSizePx.z,
         }),
       );
+      stampWithMovedProgression(headRoom!, headPlayable);
       removeStandingOn(headPlayable, headRoom!);
       setStandingOnWithoutRemovingOldFirst({
         above: headPlayable,

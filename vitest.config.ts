@@ -16,6 +16,8 @@ export default defineConfig({
       ".claude/worktrees",
     ],
     setupFiles: [
+      // must precede any setup file that (transitively) imports the sound modules:
+      "src/_testUtils/sounds/stubWebAudio.ts",
       "src/_testUtils/stubLocalStorage.ts",
       "src/_testUtils/installAppTickerForTests.ts",
       "src/game/itemBehaviours/itemBehaviourCache.ts",

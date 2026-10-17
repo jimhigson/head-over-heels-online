@@ -64,6 +64,10 @@ export const createAudioNode = (
   const startTime =
     randomDelayMaxMs > 0 ?
       audioCtx.currentTime + (Math.random() * randomDelayMaxMs) / 1_000
+      /* start time of zero means start right away:
+       * https://developer.mozilla.org/en-US/docs/Web/API/AudioScheduledSourceNode/start
+       * "If when is less than (AudioContext.currentTime, or if it's 0, the sound begins to play at once."
+       */
     : 0;
 
   if (loop && randomiseStartPoint) {

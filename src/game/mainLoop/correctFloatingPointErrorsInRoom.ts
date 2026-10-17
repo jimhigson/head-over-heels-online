@@ -18,6 +18,7 @@ export const correctFloatingPointErrorsInRoom = <
     const originalPosition = item.state.box;
     const maybeSnapped = xyzSnapIfCloseToIntegers(originalPosition);
     if (maybeSnapped !== originalPosition) {
+      // not stamped as moved - the correction is far too small to matter to anything:
       updateItemPosition(room, item, maybeSnapped);
     }
   });

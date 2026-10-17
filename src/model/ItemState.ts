@@ -10,11 +10,8 @@ export type BaseItemState<RoomItemId extends string = string> = {
   /**
    * the item's box in world space: position (near corner, x/y/z - assignable
    * anywhere an {@link Xyz} position is expected) plus its collision
-   * dimensions (xd/yd/zd). Replaced wholesale (never mutated in place) via
-   * the updateItemBox/updateItemPosition funnels, which also stamp
-   * {@link movedOrResizedOnProgression} - nothing else should write it, and
-   * nothing should keep a reference to it since it can be replaced at any
-   * time
+   * dimensions (xd/yd/zd). Replaced wholesale (never mutated in place),
+   * so holding a reference is not a safe way to be able to read future state
    */
   box: Readonly<XyzBox>;
 
@@ -23,7 +20,9 @@ export type BaseItemState<RoomItemId extends string = string> = {
    * resized, or entered the room - consumers (rendering, sound) compare it
    * against the progression they last handled to see whether the item has
    * changed since. Backfilled to 0 for items loaded from saves that predate
-   * it
+   * it.
+   *
+   * Should be updated only when we know a genuine, non-zero change has happened
    */
   movedOrResizedOnProgression: Progression;
 
