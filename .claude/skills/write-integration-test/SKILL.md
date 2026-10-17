@@ -27,17 +27,19 @@ Worked examples are in `src/game/mainLoop/playThroughIntegrationTests/`.
 - Prefer one test that tells a story in phases over several tests repeating the same setup.
 
 ### Play through in phases with `until`
-- Each play-through runs `until` something happens in the room, then `expect` checks what should have followed. Don't `until` and `expect` the same thing - the `until` already proved it.
+- Prefer each play-through to run `until` something happens in the room, then `expect` what should have followed. A fixed time (`forTime`) is fine where nothing in the room marks the moment to stop. Don't `until` and `expect` the same thing - the `until` already proved it.
+- An `until` that may never hold (eg the behaviour under test is broken) needs `failAfter`, or a failing test loops forever. With it, the `until` holding is the assertion.
 - Detect events from the room's own state (eg an item's recorded collisions, standing-on, a switch's setting), not by reverse-engineering where things will end up (eg computing a resting coordinate from block sizes).
 - Use the ready-made `until` conditions in `src/_testUtils/playThroughUntilHelpers.ts`, and add new general ones there rather than writing them inline.
 - Consecutive play-throughs carry on from where the last one finished - the game state holds everything physical.
 
 ### Read state through the typed helpers
 - Read items, item state, and the playable characters' state with the typed helpers in `src/_testUtils/characterState.ts` (generic over the item type, plus shortcuts per character), not by digging into rooms by hand.
+- Always give `itemState` (and `item`) the item type generic, eg `itemState<"pushableBlock">(gameState, "block")`.
 - Read through a helper every time - never keep an item (or its state) in a variable to read later. Items can be replaced or leave the room during play.
 
 ### Frame rates
-- When the behaviour could depend on frame rate (anything timing- or physics-sensitive), run the test across `testFrameRates` with `test.for`, passing the frame rate to every play-through. Otherwise the default frame rate is fine.
+- The default frame rate is usually fine. Run across `testFrameRates` with `test.for` (passing the frame rate to every play-through) only when the behaviour is suspected to depend on frame rate - eg jump heights, or anything accumulated per tick.
 
 ### Rendering alongside the physics
 - To tick renderers, use `playGameThrough`'s rendering form with a test render state - never tick renderers by hand in frame callbacks.
