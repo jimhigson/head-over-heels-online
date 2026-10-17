@@ -27,11 +27,14 @@ import { pickingUp } from "../../physics/mechanics/pickingUp";
 import { puttingDown } from "../../physics/mechanics/puttingDown";
 import { teleporting } from "../../physics/mechanics/teleporting";
 import { walking } from "../../physics/mechanics/walking";
-import { terminalVelocityPixPerMs } from "../../physics/mechanicsConstants";
+import {
+  defaultItemMass,
+  terminalVelocityPixPerMs,
+} from "../../physics/mechanicsConstants";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 import { shadowPlayable } from "../../render/shadows/shadowCastTextures";
 import { FreeItemBehaviour } from "../freeItem/FreeItemBehaviour";
-import { type ItemBehaviourOptions } from "../ItemBehaviour";
+import { type ItemBehaviourConstructorOptions } from "../ItemBehaviour";
 import { firing } from "./firing";
 
 const playableTurnVisualAngularVelocityRadiansPerMs = 0.009;
@@ -67,7 +70,12 @@ const gatherLivesInfo = <RoomId extends string>(
  * head, heels, and both together in symbiosis
  */
 export class PlayableBehaviour extends FreeItemBehaviour {
-  constructor(options: ItemBehaviourOptions = {}) {
+  constructor(
+    options: Omit<
+      ItemBehaviourConstructorOptions,
+      "castsShadowWhileStoodOn" | "shadowCastTexture"
+    > = {},
+  ) {
     super({
       shadowCastTexture: shadowPlayable,
       castsShadowWhileStoodOn: true,
@@ -84,7 +92,10 @@ export class PlayableBehaviour extends FreeItemBehaviour {
       super.isPushableBy(playable, pusher, forceful) &&
       // can't push a player while they're autowalking - lets players walk into a room while invincible if
       // an enemy is near the door.
-      (forceful || !playable.state.autoWalk)
+      (forceful ||
+        !playable.state.autoWalk ||
+        // lifts still carry autowalking players:
+        pusher.type === "lift")
     );
   }
 
@@ -154,7 +165,7 @@ export class PlayableBehaviour extends FreeItemBehaviour {
       // put down a spring and then jump off of it:
       puttingDown(playable, room, gameState, deltaMS);
 
-      into.push(jumping(playable, room, gameState, deltaMS));
+      jumping(playable, room, gameState, into);
 
       // picking up after jumping means have time to jump off a spring while
       // instantly (same tick) picking it up:
@@ -279,5 +290,11 @@ export class PlayableBehaviour extends FreeItemBehaviour {
       }),
     );
     store.dispatch(saveGameThunk(gameState));
+  }
+
+  override mass<RoomId extends string, RoomItemId extends string>(
+    item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  ): number {
+    return defaultItemMass * (item.type === "headOverHeels" ? 2 : 1);
   }
 }

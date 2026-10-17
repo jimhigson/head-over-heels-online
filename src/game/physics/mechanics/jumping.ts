@@ -1,4 +1,8 @@
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import {
+  itemBehaviourKey,
+  type ItemInPlayType,
+} from "../../../model/ItemInPlay";
 import {
   type PlayableItem,
   type UnionOfAllItemInPlayTypes,
@@ -14,12 +18,7 @@ import {
 import { smallItemAabb } from "../../collision/boundingBoxes";
 import { type GameState } from "../../gameState/GameState";
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
-import { liftVelZ } from "../liftVelZ";
-import {
-  type Mechanic,
-  type MechanicResult,
-  unitMechanicalResult,
-} from "../MechanicResult";
+import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
 import {
   fallG,
   jumpFudge,
@@ -122,15 +121,16 @@ const canRefreshJump = <RoomId extends string, RoomItemId extends string>(
   return hasSomethingToJumpOff;
 };
 
-export const jumping: Mechanic<CharacterName> = <
-  RoomId extends string,
-  RoomItemId extends string,
->(
+/**
+ * pushes the playable's jumping result into `into`, and on jumping off a
+ * lift, the lift's recoil
+ */
+export const jumping = <RoomId extends string, RoomItemId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
-  deltaMS: number,
-): MechanicResult<CharacterName, RoomId, RoomItemId> => {
+  into: Array<MechanicResult<ItemInPlayType, RoomId, RoomItemId>>,
+): void => {
   const {
     state: { standingOnItemId },
   } = playableItem;
@@ -159,12 +159,13 @@ export const jumping: Mechanic<CharacterName> = <
       0,
       playableItem.type === "heels" && playableItem.state.isBigJump,
     );
-    return {
+    into.push({
       movementType: "vel",
       // restore the initial vertical velocity:
       vels: { gravity: { x: 0, y: 0, z: velZ } },
       stateDelta: {},
-    };
+    });
+    return;
   }
 
   const startingAJump =
@@ -178,37 +179,40 @@ export const jumping: Mechanic<CharacterName> = <
   }
 
   if (!startingAJump) {
-    if (standingOnItemId !== null) {
-      return {
-        movementType: "steady",
-        stateDelta: {
-          // clear our jumped flag(s) - heels has two, one of which is just
-          // for the particles:
-          jumped: false,
-          ...(playableItem.type === "heels" ? { isBigJump: false } : {}),
-        },
-      };
-    }
-    return unitMechanicalResult;
+    into.push(
+      standingOnItemId !== null ?
+        {
+          movementType: "steady",
+          stateDelta: {
+            // clear our jumped flag(s) - heels has two, one of which is just
+            // for the particles:
+            jumped: false,
+            ...(playableItem.type === "heels" ? { isBigJump: false } : {}),
+          },
+        }
+      : unitMechanicalResult,
+    );
+    return;
   }
 
   const isBigJump =
     playableItem.type === "heels" && playableItem.state.bigJumps > 0;
 
-  const velZ =
-    getJumpInitialVelocity(
-      playableItem,
-      effectivelyStandingOn[itemBehaviourKey].jumpBoostPx,
-      isBigJump,
-    ) +
-    // jumping off something rising goes faster, but is never weakened by
-    // jumping off something descending:
-    Math.max(liftVelZ(playableItem, room, deltaMS), 0);
+  // the same speed as jumping off anything stationary:
+  const velZ = getJumpInitialVelocity(
+    playableItem,
+    effectivelyStandingOn[itemBehaviourKey].jumpBoostPx,
+    isBigJump,
+  );
+
+  if (effectivelyStandingOn.type === "lift") {
+    into.push(liftRecoil(playableItem, effectivelyStandingOn, velZ));
+  }
 
   // handled this input but don't set jump input off - it is
   // ok to keep jump pressed to keep jumping
 
-  return {
+  into.push({
     movementType: "vel",
     vels: { gravity: { x: 0, y: 0, z: velZ } },
     stateDelta: {
@@ -222,6 +226,31 @@ export const jumping: Mechanic<CharacterName> = <
         : { isBigJump: false }
       : {}),
       jumpStartZ: playableItem.state.box.z,
+    },
+  });
+};
+
+/**
+ * jumping pushes the lift down, conserving momentum: the jumper's change in
+ * speed from moving with the lift, scaled by the ratio of their masses
+ */
+const liftRecoil = <RoomId extends string, RoomItemId extends string>(
+  playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
+  lift: ItemTypeUnion<"lift", RoomId, RoomItemId>,
+  /** the jumper's vertical speed on leaving the lift */
+  jumpVelZ: number,
+): MechanicResult<"lift", RoomId, RoomItemId> => {
+  const jumperMass = playableItem[itemBehaviourKey].mass(playableItem);
+  const liftMass = lift[itemBehaviourKey].mass(lift);
+  return {
+    movementType: "velDelta",
+    targetItemId: lift.id,
+    vels: {
+      lift: {
+        x: 0,
+        y: 0,
+        z: (-(jumpVelZ - lift.state.vels.lift.z) * jumperMass) / liftMass,
+      },
     },
   };
 };

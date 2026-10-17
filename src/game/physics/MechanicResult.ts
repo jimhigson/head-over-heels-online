@@ -28,21 +28,40 @@ export type MechanicResult<
   RoomItemId extends string,
 > =
   | {
-      // a position delta
+      // an impulse - added to the current velocity
+      movementType: "velDelta";
+      vels: { [mechanic in VelocitiesForItem<T>]?: Xyz };
+      stateDelta?: Partial<ItemState<T, RoomId, RoomItemId>>;
+      /**
+       * the item this result applies to - absent for the item being ticked
+       */
+      targetItemId?: RoomItemId;
+    }
+  | {
+      // a position delta - only ever for the item being ticked
       movementType: "position";
       posDelta: Partial<Xyz>;
       stateDelta?: Partial<ItemState<T, RoomId, RoomItemId>>;
+      targetItemId?: never;
     }
   | {
       // velocity has changed
       movementType: "vel";
       vels: { [mechanic in VelocitiesForItem<T>]?: Xyz };
       stateDelta?: Partial<ItemState<T, RoomId, RoomItemId>>;
+      /**
+       * the item this result applies to - absent for the item being ticked
+       */
+      targetItemId?: RoomItemId;
     }
   | {
       // velocity is unchanged by this result - keep moving as you were
       movementType: "steady";
       stateDelta?: Partial<ItemState<T, RoomId, RoomItemId>>;
+      /**
+       * the item this result applies to - absent for the item being ticked
+       */
+      targetItemId?: RoomItemId;
     };
 
 export const unitMechanicalResult = {

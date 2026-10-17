@@ -5,13 +5,14 @@ import { type GameState } from "../../gameState/GameState";
 import { type MechanicResult } from "../../physics/MechanicResult";
 import { periodicItemShouldAct } from "../../physics/mechanics/periodicItemShouldAct";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
-import { NonSolidBehaviour } from "../NonSolidBehaviour";
+import { ItemBehaviour } from "../ItemBehaviour";
 import { applyModifiesList } from "./applyModifiesList";
 
-export class TimerBehaviour extends NonSolidBehaviour {
+export class TimerBehaviour extends ItemBehaviour {
   constructor() {
     super({
       fixedZIndex: nonRenderingItemFixedZIndex,
+      isNonSolid: true,
     });
   }
 

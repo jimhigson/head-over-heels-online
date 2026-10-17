@@ -7,6 +7,7 @@ import { type GameState } from "../gameState/GameState";
 import { type MechanicResult } from "../physics/MechanicResult";
 import {
   blockSizePx,
+  liftMass,
   maxLiftAcc,
   maxLiftSpeed,
 } from "../physics/mechanicsConstants";
@@ -23,58 +24,41 @@ const liftStationary = {
   vels: { lift: originXyz },
 } as const satisfies MechanicResult<"lift", string, string>;
 
-const calculateVelocity = ({
-  z,
-  lowestZ,
-  highestZ,
-  direction,
-  currentVelocity,
-  deltaMS,
-}: {
-  z: number;
-  lowestZ: number;
-  highestZ: number;
-  direction: "down" | "up";
-  currentVelocity: number;
-  deltaMS: number;
-}): number => {
-  // Distance needed to decelerate from max speed to zero
-  const dAccel = maxLiftSpeed ** 2 / (2 * maxLiftAcc);
+/**
+ * the fastest speed the lift can go and still stop at the end it is heading to,
+ * capped at its cruising speed
+ */
+const targetSpeedFor = (
+  z: number,
+  lowestZ: number,
+  highestZ: number,
+  direction: "down" | "up",
+): number => {
+  const distanceToTarget = Math.max(
+    0,
+    direction === "up" ? highestZ - z : z - lowestZ,
+  );
+  return Math.max(
+    epsilonVelocity,
+    Math.min(maxLiftSpeed, Math.sqrt(2 * maxLiftAcc * distanceToTarget)),
+  );
+};
 
-  if (direction === "up") {
-    // Target is the top
-    const distanceToTarget = highestZ - z;
-
-    // Close to target - deceleration phase (based on distance only)
-    if (distanceToTarget <= dAccel) {
-      const dRemaining = Math.max(0, distanceToTarget);
-      return Math.max(epsilonVelocity, Math.sqrt(2 * maxLiftAcc * dRemaining));
-    }
-
-    // Not close to target - acceleration/cruising based on current velocity
-    if (currentVelocity < maxLiftSpeed) {
-      // Accelerate
-      return Math.min(maxLiftSpeed, currentVelocity + maxLiftAcc * deltaMS);
-    }
-    // Cruise
-    return maxLiftSpeed;
-  }
-  // Target is the bottom
-  const distanceToTarget = z - lowestZ;
-
-  // Close to target - deceleration phase (based on distance only)
-  if (distanceToTarget <= dAccel) {
-    const dRemaining = Math.max(0, distanceToTarget);
-    return Math.min(-epsilonVelocity, -Math.sqrt(2 * maxLiftAcc * dRemaining));
-  }
-
-  // Not close to target - acceleration/cruising based on current velocity
-  if (currentVelocity > -maxLiftSpeed) {
-    // Accelerate (in negative direction)
-    return Math.max(-maxLiftSpeed, currentVelocity - maxLiftAcc * deltaMS);
-  }
-  // Cruise
-  return -maxLiftSpeed;
+/**
+ * eases towards the target speed. Below the target (eg, after recoil from a
+ * jump), it recovers at the lift's acceleration; above it, it snaps down so
+ * never overshoots the end
+ */
+const easedVelocity = (
+  targetSpeed: number,
+  direction: "down" | "up",
+  currentVelocity: number,
+  deltaMS: number,
+): number => {
+  const sign = direction === "up" ? 1 : -1;
+  return (
+    sign * Math.min(targetSpeed, currentVelocity * sign + maxLiftAcc * deltaMS)
+  );
 };
 
 export class LiftBehaviour extends ItemBehaviour {
@@ -85,10 +69,9 @@ export class LiftBehaviour extends ItemBehaviour {
     });
   }
 
-  // lifts don't slow down when things are on them:
-  override readonly pushesForcefully = true;
-
-  override readonly stoppedByHeavyItems = true;
+  override mass(): number {
+    return liftMass;
+  }
 
   /**
    * moves up and down between its bottom and top, easing at each end
@@ -118,14 +101,13 @@ export class LiftBehaviour extends ItemBehaviour {
       return;
     }
 
-    const velocity = calculateVelocity({
-      z,
-      lowestZ,
-      highestZ,
+    const targetSpeed = targetSpeedFor(z, lowestZ, highestZ, direction);
+    const velocity = easedVelocity(
+      targetSpeed,
       direction,
-      currentVelocity: vels.lift.z,
+      vels.lift.z,
       deltaMS,
-    });
+    );
 
     if (Number.isNaN(velocity)) {
       throw new Error("velocity is NaN");

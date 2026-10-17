@@ -33,13 +33,12 @@ const fallTerminalFallVelocity = terminalVelocityPixPerMs.fall;
  */
 export class FreeItemBehaviour extends ItemBehaviour {
   override isPushableBy<RoomId extends string, RoomItemId extends string>(
-    item: FreeItem<RoomId, RoomItemId>,
-    pusher: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+    _item: FreeItem<RoomId, RoomItemId>,
+    _pusher: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
     _forceful: boolean,
-  ): item is FreeItem<RoomId, RoomItemId> {
-    return !(
-      this.isHeavy(item) && pusher[itemBehaviourKey].stoppedByHeavyItems
-    );
+  ): _item is FreeItem<RoomId, RoomItemId> {
+    // by default, anything can push anything - override to special case this
+    return true;
   }
 
   override terminalFallVelocity<

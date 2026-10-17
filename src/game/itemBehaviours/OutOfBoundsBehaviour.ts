@@ -4,16 +4,17 @@ import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
 import { playableResetAfterOutOfBounds } from "../gameState/mutators/playableLosesLife";
 import { type ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";
 import { nonRenderingItemFixedZIndex } from "../render/sortZ/fixedZIndexes";
-import { NonSolidBehaviour } from "./NonSolidBehaviour";
+import { ItemBehaviour } from "./ItemBehaviour";
 
 /**
  * if touched, the toucher is deleted out of the universe - it is detected as
  * out of bounds, eg falling below a room with no floor
  */
-export class OutOfBoundsBehaviour extends NonSolidBehaviour {
+export class OutOfBoundsBehaviour extends ItemBehaviour {
   constructor() {
     super({
       fixedZIndex: nonRenderingItemFixedZIndex,
+      isNonSolid: true,
     });
   }
 

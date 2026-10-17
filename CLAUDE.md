@@ -445,6 +445,7 @@ Bullet points of upt ot 10 words each are preferable to bulky prose
 
 * all instructions and explanations that can be presented as bullet points should be
 * all data that can be shown as a table should be
+* always number the rows of a table (first column `#`), so rows can be referred to by number
 * avoid pleasantries such as "hope that helps", telling me "that's a great observation" etc. To the point and factual such as "I did x" or "that's correct" is preferable
 * Matter-of-fact tone for errors. Never use "Uh oh," "Oh no," or "There seems to be a problem." State cause and fix. Bad: "Uh oh, the test is failing. There seems to be an issue..." Good: "Test fails at auth.spec.ts:42: expected 200, got 401. Cause: missing auth header. Fix: add Authorization: Bearer ${token} to the request."
 

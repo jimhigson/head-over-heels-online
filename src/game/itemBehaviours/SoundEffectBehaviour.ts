@@ -1,15 +1,16 @@
 import { type ExportedSoundId } from "../../_generated/sfxdex/sfx";
 import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import { nonRenderingItemFixedZIndex } from "../render/sortZ/fixedZIndexes";
-import { NonSolidBehaviour } from "./NonSolidBehaviour";
+import { ItemBehaviour } from "./ItemBehaviour";
 
 /**
  * a sound that plays from a point in a room
  */
-export class SoundEffectBehaviour extends NonSolidBehaviour {
+export class SoundEffectBehaviour extends ItemBehaviour {
   constructor() {
     super({
       fixedZIndex: nonRenderingItemFixedZIndex,
+      isNonSolid: true,
     });
   }
 

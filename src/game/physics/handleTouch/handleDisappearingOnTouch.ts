@@ -1,9 +1,13 @@
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import {
+  itemBehaviourKey,
+  type ItemInPlayType,
+} from "../../../model/ItemInPlay";
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { makeItemFadeOut } from "../../gameState/mutators/makeItemFadeOut";
 import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
 import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { applyMechanicsResults } from "../../mainLoop/applyMechanicsResults";
+import { type MechanicResult } from "../MechanicResult";
 import { jumping } from "../mechanics/jumping";
 import { walking } from "../mechanics/walking";
 import { type ItemTouchEvent, movingItemIsPlayable } from "./ItemTouchEvent";
@@ -91,15 +95,19 @@ const handleItemTouchingDissapearing = <
         above: e.movingItem,
         below: e.touchedItem as UnionOfAllItemInPlayTypes<RoomId>,
       });
-      const controlMechanicalResults = [
-        jumping(e.movingItem, e.room, e.gameState, e.deltaMS),
-        // jumping is no use without also walking - eg, heels needs to be able to head forward at the
-        // start of a jump or she will come to a stop after a few jumps:
+      const controlMechanicalResults: Array<
+        MechanicResult<ItemInPlayType, RoomId, RoomItemId>
+      > = [];
+      jumping(e.movingItem, e.room, e.gameState, controlMechanicalResults);
+      // jumping is no use without also walking - eg, heels needs to be able to head forward at the
+      // start of a jump or she will come to a stop after a few jumps:
+      controlMechanicalResults.push(
         walking(e.movingItem, e.room, e.gameState, e.deltaMS),
-      ];
+      );
       applyMechanicsResults(
         unusedBuffer,
         e.movingItem,
+        e.room,
         controlMechanicalResults,
       );
     }
