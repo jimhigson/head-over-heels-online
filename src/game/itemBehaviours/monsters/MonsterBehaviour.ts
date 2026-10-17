@@ -2,7 +2,7 @@ import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { handleFiredDoughnutTouchingMonster } from "../../physics/handleTouch/handleFiredDoughnutTouchingMonster";
 import { type ItemTouchEvent } from "../../physics/handleTouch/ItemTouchEvent";
 import { shadowSmallRound } from "../../render/shadows/shadowCastTextures";
-import { type ItemBehaviourOptions } from "../ItemBehaviour";
+import { type ItemBehaviourConstructorOptions } from "../ItemBehaviour";
 import { LocomotiveBehaviour } from "../locomotion/LocomotiveBehaviour";
 
 /**
@@ -10,7 +10,7 @@ import { LocomotiveBehaviour } from "../locomotion/LocomotiveBehaviour";
  * individual monsters (by the config's `which`) where it differs
  */
 export class MonsterBehaviour extends LocomotiveBehaviour {
-  constructor(options: ItemBehaviourOptions = {}) {
+  constructor(options: ItemBehaviourConstructorOptions = {}) {
     super({
       shadowCastTexture: shadowSmallRound,
       ...options,

@@ -51,8 +51,14 @@ export const terminalVelocityPixPerMs = {
 // more to let player on or off at the top or bottom of its movement. This makes
 // the game play though faster, while also not making it harder to get on or off
 // the lift
-export const maxLiftAcc = fallG * 0.13;
+export const maxLiftAcc = fallG * 0.1;
 export const maxLiftSpeed = terminalVelocityPixPerMs.fall * 0.85;
+
+/** relative masses, for pushing and for recoil when jumping */
+export const defaultItemMass = 1;
+export const heavyItemMass = 4;
+// slows to ~70% when pushing a default-mass item up
+export const liftMass = 3;
 
 /**
  * when heels jumps forwards, instantly gets this fraction of her max speed forward,

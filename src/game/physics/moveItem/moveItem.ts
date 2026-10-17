@@ -64,12 +64,10 @@ export type MoveItemOptions<
   /**
    * if true, anything this movement tries to push will get moved the total amount.
    *
-   * Otherwise, if false/undefined, recursive pushing will split the movement 50/50 between mover and pushee.
+   * Otherwise, if false/undefined, the push is split between mover and pushee
+   * by their masses.
    *
    * Heels putting a carried item down should be forceful - everything has to move the full amount!
-   *
-   * Lifts are always forceful - they don't slow down then things are on them. But they can be stopped
-   * as a special case if something gets stuck under them.
    */
   forceful?: boolean;
 
@@ -106,15 +104,65 @@ export type MoveItemOptions<
 };
 
 // from an mtv, multiplying by these vectors gives the push vector to apply to the pushed item
-// - they are negative since the push is in the opposite direction to the mtv. They are smaller
-// in z (unless forceful) since a upward push should be harder than pushing in x,y plane
+// - they are negative since the push is in the opposite direction to the mtv.
+const pushVectorMultiplierForceful = { x: -1, y: -1, z: -1 };
+
+// pushing an item of equal mass gives these multipliers. They are smaller
+// in z since a upward push should be harder than pushing in x,y plane
 // and if downwards pushing, the item is probably already falling anyway so probably doesn't need
 // a push.
 // the z can't be less than about 0.4 or #safari19triple from original campaign is not possible
 // to stack the spring on the drum to get the rabbit
-const pushVectorMultiplierForceful = { x: -1, y: -1, z: -1 };
-const pushVectorMultiplierNormal = { x: -0.6, y: -0.6, z: -0.4 };
-const pushVectorMultiplierWithSliding = { x: -1, y: -1, z: -0.4 };
+const equalMassPushMultiplierXy = 0.6;
+const equalMassPushMultiplierZ = 0.4;
+
+/**
+ * the quadratic through (0, 0), (0.5, equalMassMultiplier) and (1, 1) - plain
+ * arithmetic, so deterministic across js engines
+ */
+const pushMultiplierForMassShare = (
+  /** the pusher's share of the two items' total mass, 0…1 */
+  pusherMassShare: number,
+  /** the multiplier when both items have the same mass */
+  equalMassMultiplier: number,
+): number => {
+  const linearCoefficient = 4 * equalMassMultiplier - 1;
+  return (
+    pusherMassShare *
+    (linearCoefficient + (1 - linearCoefficient) * pusherMassShare)
+  );
+};
+
+const pushMultiplierBuffer: Xyz = { x: 0, y: 0, z: 0 };
+
+/**
+ * the push multiplier for a non-forceful push, from the pusher's share of the
+ * two items' total mass: 0 for no push, 1 for the whole movement. Writes into a
+ * reused buffer
+ */
+const pushVectorMultiplierByMass = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  pusher: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  pushed: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+): Xyz => {
+  const pusherMass = pusher[itemBehaviourKey].mass(pusher);
+  const pusherMassShare =
+    pusherMass / (pusherMass + pushed[itemBehaviourKey].mass(pushed));
+  const multiplierXy =
+    // sliding items move the whole way in xy:
+    isSlidingItem(pushed) ? 1 : (
+      pushMultiplierForMassShare(pusherMassShare, equalMassPushMultiplierXy)
+    );
+  pushMultiplierBuffer.x = -multiplierXy;
+  pushMultiplierBuffer.y = -multiplierXy;
+  pushMultiplierBuffer.z = -pushMultiplierForMassShare(
+    pusherMassShare,
+    equalMassPushMultiplierZ,
+  );
+  return pushMultiplierBuffer;
+};
 
 /**
  * the subject's movement, as given to the items it touches. A subject given no
@@ -144,10 +192,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   deltaMS,
   handleTouches,
   visited,
-  // forceful must be explicitly given if recursive (not a top-level moveItem call), otherwise
-  // an item which is mid-chain will make further calls forceful even though it is only the
-  // receiver of an upstream push
-  forceful = subjectItem[itemBehaviourKey].pushesForcefully,
+  forceful = false,
   isHelpful,
   processZeroMovement = false,
 }: MoveItemOptions<RoomId, RoomItemId>): boolean => {
@@ -375,9 +420,9 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     // push any pushable items that we intersect:
     if (collidedWithIsPushable) {
       const pushMultiplier =
-        forceful ? pushVectorMultiplierForceful
-        : isSlidingItem(collidedWithItem) ? pushVectorMultiplierWithSliding
-        : pushVectorMultiplierNormal;
+        forceful ?
+          pushVectorMultiplierForceful
+        : pushVectorMultiplierByMass(subjectItem, collidedWithItem);
 
       // the vector in the direction of the push (opposite direction to the mtv)
       const forwardPushVector = elementWiseProductXyz(

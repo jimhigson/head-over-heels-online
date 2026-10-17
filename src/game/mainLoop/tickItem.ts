@@ -147,6 +147,7 @@ export const tickItem = <RoomId extends string, RoomItemId extends string>(
     // writeInto:
     tickItemPosDeltaAccumulationBuffer,
     item,
+    room,
     mechanicsResults,
   );
 

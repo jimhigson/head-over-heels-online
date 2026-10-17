@@ -31,7 +31,10 @@ import { EmitterBehaviour } from "./emitter/EmitterBehaviour";
 import { FiredDoughnutBehaviour } from "./FiredDoughnutBehaviour";
 import { FloorBehaviour } from "./FloorBehaviour";
 import { FreeItemBehaviour } from "./freeItem/FreeItemBehaviour";
-import { ItemBehaviour, type ItemBehaviourOptions } from "./ItemBehaviour";
+import {
+  ItemBehaviour,
+  type ItemBehaviourConstructorOptions,
+} from "./ItemBehaviour";
 import { JoystickBehaviour } from "./JoystickBehaviour";
 import { LampBehaviour } from "./LampBehaviour";
 import { LiftBehaviour } from "./LiftBehaviour";
@@ -51,7 +54,6 @@ import { TimerBehaviour } from "./modifiers/TimerBehaviour";
 import { CybermanBehaviour } from "./monsters/CybermanBehaviour";
 import { MonsterBehaviour } from "./monsters/MonsterBehaviour";
 import { MovingPlatformBehaviour } from "./MovingPlatformBehaviour";
-import { NonSolidBehaviour } from "./NonSolidBehaviour";
 import { OutOfBoundsBehaviour } from "./OutOfBoundsBehaviour";
 import { BagPickupBehaviour } from "./pickups/BagPickupBehaviour";
 import { BigJumpsPickupBehaviour } from "./pickups/BigJumpsPickupBehaviour";
@@ -107,7 +109,10 @@ const portableMonsterOptions = { isPortable: true };
 
 // the class and options each monster's behaviour is made from, by which monster it is:
 const monsterBehaviourRecipes: {
-  [W in MonsterWhich]: [typeof MonsterBehaviour, ItemBehaviourOptions];
+  [W in MonsterWhich]: [
+    typeof MonsterBehaviour,
+    ItemBehaviourConstructorOptions,
+  ];
 } = {
   bubbleRobot: [MonsterBehaviour, emptyObject],
   computerBot: [MonsterBehaviour, emptyObject],
@@ -159,10 +164,11 @@ const behaviours = new Map<ItemBehaviourCacheKey, ItemBehaviour>(
     barrier: new BarrierBehaviour(),
     block: new BlockBehaviour(),
     blocker: new BlockerBehaviour(),
-    bubbles: new NonSolidBehaviour({}),
+    bubbles: new ItemBehaviour({ isNonSolid: true }),
     button: new ButtonBehaviour(),
     charles: new FreeItemBehaviour({
       shadowCastTexture: shadowSmallRound,
+      mass: 3,
     }),
     conveyor: new ConveyorBehaviour(),
     deadlyBlock: new DeadlyBlockBehaviour(),
@@ -170,10 +176,11 @@ const behaviours = new Map<ItemBehaviourCacheKey, ItemBehaviour>(
     doorLegs: new DoorLegsBehaviour(),
     emitter: new EmitterBehaviour(),
     firedDoughnut: new FiredDoughnutBehaviour(),
-    floatingText: new NonSolidBehaviour({
+    floatingText: new ItemBehaviour({
       fixedZIndex: floatingTextFixedZIndex,
       // floating text is centred, not anchored at its camera-nearest corner:
       isExemptFromNearCornerOffset: true,
+      isNonSolid: true,
     }),
     floor: new FloorBehaviour(),
     hushPuppy: new ItemBehaviour({
@@ -190,7 +197,7 @@ const behaviours = new Map<ItemBehaviourCacheKey, ItemBehaviour>(
       isDeadly: true,
     }),
     outOfBounds: new OutOfBoundsBehaviour(),
-    particle: new NonSolidBehaviour({}),
+    particle: new ItemBehaviour({ isNonSolid: true }),
     portableBlock: new PortableBlockBehaviour({ isPortable: true }),
     portableTeleporter: new PortableTeleporterBehaviour(),
     portal: new PortalBehaviour(),
@@ -209,8 +216,9 @@ const behaviours = new Map<ItemBehaviourCacheKey, ItemBehaviour>(
     soundEffect: new SoundEffectBehaviour(),
     spikes: new SpikesBehaviour(),
     spring: new SpringBehaviour(),
-    stopAutowalk: new NonSolidBehaviour({
+    stopAutowalk: new ItemBehaviour({
       fixedZIndex: nonRenderingItemFixedZIndex,
+      isNonSolid: true,
     }),
     switch: new SwitchBehaviour(),
     teleporter: new TeleporterBehaviour(),

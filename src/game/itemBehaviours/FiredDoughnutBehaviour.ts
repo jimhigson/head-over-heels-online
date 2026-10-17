@@ -2,15 +2,16 @@ import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import { handleFiredDoughnutTouchingMonster } from "../physics/handleTouch/handleFiredDoughnutTouchingMonster";
 import { type ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";
 import { shadowSmallRound } from "../render/shadows/shadowCastTextures";
-import { NonSolidBehaviour } from "./NonSolidBehaviour";
+import { ItemBehaviour } from "./ItemBehaviour";
 
 /**
  * doughnuts that Head has fired
  */
-export class FiredDoughnutBehaviour extends NonSolidBehaviour {
+export class FiredDoughnutBehaviour extends ItemBehaviour {
   constructor() {
     super({
       shadowCastTexture: shadowSmallRound,
+      isNonSolid: true,
     });
   }
 

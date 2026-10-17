@@ -231,7 +231,7 @@ describe("lifts", () => {
     // although this needs some slack due to acceleration at the end of the lift's journey
     // making it take more time
     expect(fractionOnLanding).toBeLessThan(0.65);
-    expect(fractionOnLanding).toBeGreaterThan(0.35);
+    expect(fractionOnLanding).toBeGreaterThan(0.3);
   });
 
   test("player squashed between rising lift and higher block stays in place standing on lift", () => {
@@ -723,7 +723,7 @@ describe("riding lifts", () => {
           hasLeftLift = true;
         }
       },
-      until: 500,
+      until: 2_000,
     });
 
     expect(headFallingSpeeds).not.toHaveLength(0);
@@ -781,7 +781,7 @@ describe("riding lifts", () => {
     );
   });
 
-  test("jumping off a rising lift goes higher than a normal jump", () => {
+  test("jumping off a rising lift goes no higher than a normal jump", () => {
     const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
@@ -813,8 +813,9 @@ describe("riding lifts", () => {
       until: 2_000,
     });
 
-    expect(maxZWhileJumping - heelsState(gameState).jumpStartZ).toBeGreaterThan(
-      playerJumpHeightPx.heels + 8,
+    expect(maxZWhileJumping - heelsState(gameState).jumpStartZ).toBeLessThan(
+      // allowing the same error as jumps off stationary items:
+      playerJumpHeightPx.heels + 1,
     );
   });
 

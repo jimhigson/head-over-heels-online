@@ -13,6 +13,7 @@ import { type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
 import { type ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";
 import { type MechanicResult } from "../physics/MechanicResult";
+import { defaultItemMass } from "../physics/mechanicsConstants";
 import { type ShadowCastSpriteOptions } from "../render/ShadowCastSpriteOptions";
 import { type DrawOrderComparable } from "../render/sortZ/DrawOrderComparable";
 
@@ -20,7 +21,7 @@ import { type DrawOrderComparable } from "../render/sortZ/DrawOrderComparable";
  * the constants a behaviour is made with - each sets the field, or the
  * result of the method, of the same name. All default to false/absent
  */
-export type ItemBehaviourOptions = {
+export type ItemBehaviourConstructorOptions = {
   //  ____________________________________________________
   //  physics: collision, movement and pushing
   //  ____________________________________________________
@@ -72,6 +73,11 @@ export type ItemBehaviourOptions = {
    * @see ItemBehaviour.shadowCastTexture
    */
   shadowCastTexture?: ShadowCastSpriteOptions;
+
+  /**
+   * @see ItemBehaviour.mass
+   */
+  mass?: number;
 };
 
 /**
@@ -89,11 +95,12 @@ export type ItemBehaviourOptions = {
  * subclass narrowing the item parameters to the item types it serves.
  */
 export class ItemBehaviour {
-  readonly #isNonSolid: boolean;
-  readonly #isDeadly: boolean;
-  readonly #isPortable: boolean;
-  readonly #isCuboidWarped: boolean;
   readonly #castsShadowWhileStoodOn: boolean;
+  readonly #isCuboidWarped: boolean;
+  readonly #isDeadly: boolean;
+  readonly #isNonSolid: boolean;
+  readonly #isPortable: boolean;
+  readonly #mass: number;
   readonly #shadowCastTexture: ShadowCastSpriteOptions | undefined;
 
   constructor({
@@ -104,42 +111,33 @@ export class ItemBehaviour {
     isNonSolid = false,
     isDeadly = false,
     isPortable = false,
+    mass = defaultItemMass,
     isCuboidWarped = false,
     castsShadowWhileStoodOn = false,
     shadowCastTexture,
-  }: ItemBehaviourOptions = {}) {
-    this.snagsHelpfulMovement = snagsHelpfulMovement;
+  }: ItemBehaviourConstructorOptions = {}) {
+    this.#castsShadowWhileStoodOn = castsShadowWhileStoodOn;
+    this.#isCuboidWarped = isCuboidWarped;
+    this.#isDeadly = isDeadly;
+    this.#isNonSolid = isNonSolid;
+    this.#isPortable = isPortable;
+    this.#mass = mass;
+    this.#shadowCastTexture = shadowCastTexture;
     this.collisionDoesNotStopAutowalk = collisionDoesNotStopAutowalk;
     this.fixedZIndex = fixedZIndex;
     this.isExemptFromNearCornerOffset = isExemptFromNearCornerOffset;
-    this.#isNonSolid = isNonSolid;
-    this.#isDeadly = isDeadly;
-    this.#isPortable = isPortable;
-    this.#isCuboidWarped = isCuboidWarped;
-    this.#castsShadowWhileStoodOn = castsShadowWhileStoodOn;
-    this.#shadowCastTexture = shadowCastTexture;
+    this.snagsHelpfulMovement = snagsHelpfulMovement;
   }
   // ---- capabilities ----
 
   /**
-   * heavy items stop lifts from rising (see #blacktooth78)
+   * relative mass - how hard this item pushes, and is pushed by, others
    */
-  isHeavy<RoomId extends string, RoomItemId extends string>(
+  mass<RoomId extends string, RoomItemId extends string>(
     _item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-  ): boolean {
-    return false;
+  ): number {
+    return this.#mass;
   }
-
-  /**
-   * whether this item is stopped by heavy items it pushes
-   */
-  readonly stoppedByHeavyItems: boolean = false;
-
-  /**
-   * if true, the item pushes other items without slowing down because they are there,
-   * ie lifts don't go slower if something is on them
-   */
-  readonly pushesForcefully: boolean = false;
 
   /**
    * items partially colliding don't slide past this item; this helps to interact with the

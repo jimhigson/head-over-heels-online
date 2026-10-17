@@ -4,13 +4,14 @@ import { type RoomState } from "../../../model/RoomState";
 import { type GameState } from "../../gameState/GameState";
 import { type MechanicResult } from "../../physics/MechanicResult";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
-import { NonSolidBehaviour } from "../NonSolidBehaviour";
+import { ItemBehaviour } from "../ItemBehaviour";
 import { emitting } from "./emitting";
 
-export class EmitterBehaviour extends NonSolidBehaviour {
+export class EmitterBehaviour extends ItemBehaviour {
   constructor() {
     super({
       fixedZIndex: nonRenderingItemFixedZIndex,
+      isNonSolid: true,
     });
   }
 
