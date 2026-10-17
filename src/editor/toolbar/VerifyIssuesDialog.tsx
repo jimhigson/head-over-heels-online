@@ -3,6 +3,7 @@ import { useCallback, useState } from "preact/hooks";
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { type JsonItemType } from "../../model/json/JsonItem";
 import { type CampaignVerificationIssue } from "../../model/json/verification/CampaignVerification";
+import { fixAllVerificationIssues } from "../../model/json/verification/fixAllVerificationIssues";
 import {
   type VerificationCampaign,
   type VerificationRoomJson,
@@ -87,14 +88,7 @@ export const VerifyIssuesDialog = ({ onClose }: VerifyIssuesDialogProps) => {
   };
 
   const fixAll = () => {
-    const fixed = issues.reduce(
-      (campaign, issue) =>
-        issue.fixable ?
-          issue.verifier.fix(campaign, issue.issueData)
-        : campaign,
-      openCampaign(),
-    );
-    loadFixedCampaign(fixed);
+    loadFixedCampaign(fixAllVerificationIssues(openCampaign()).campaign);
   };
 
   const goToRoom = (roomId: string, itemId: string | undefined) => {

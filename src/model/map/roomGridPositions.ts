@@ -14,7 +14,7 @@ import {
   xyEqual,
   type Xyz,
 } from "../../utils/vectors/vectors";
-import { exitGameRoomId } from "../json/ItemConfigMap";
+import { exitGameRoomId, nowhereRoomId } from "../json/ItemConfigMap";
 import { type JsonItem } from "../json/JsonItem";
 import { resolveTeleporterLanding } from "../json/resolveTeleporterLanding";
 import { type Campaign } from "../modelTypes";
@@ -40,8 +40,8 @@ type RoomGridPositionsOptions<RoomId extends string> = {
   totalGraph?: boolean;
   /**
    * when true, a link to a room that isn't in the campaign is skipped rather than
-   * throwing. Used by verification, which deliberately runs over broken campaigns;
-   * the map leaves it false so a dangling link surfaces as a map error.
+   * throwing. For campaigns that may legitimately be broken mid-edit (the editor,
+   * verification), where a dangling link is a fixable verification issue
    */
   skipMissingRooms?: boolean;
 };
@@ -195,9 +195,7 @@ const visit = <RoomId extends string>(
   previousRoomGridPosition: Xyz,
   subgraph: number,
 ): void => {
-  if (roomIdIn === "nowhere") {
-    // nowhere is a special value in the editor that means the door hasn't had
-    // anywhere for it to go wired up yet
+  if (roomIdIn === nowhereRoomId) {
     return;
   }
   const { campaign } = state;

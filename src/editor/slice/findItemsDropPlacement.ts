@@ -1,6 +1,7 @@
 import { blockSizePx } from "../../model/blockSizePx";
 import { nextItemIdSet } from "../../model/inPlaceMutators/nextItemId";
 import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
+import { roomWallBounds } from "../../model/roomWallBounds";
 import { keys } from "../../utils/entries";
 import { addXyz, type Xyz } from "../../utils/vectors/vectors";
 import {
@@ -16,7 +17,6 @@ import {
 } from "./levelEditorSelectors";
 import { type LevelEditorState } from "./levelEditorSlice";
 import { loadEditorRoom } from "./loadEditorRoom";
-import { roomWallBounds } from "./roomWallBounds";
 
 /**
  * weight for moving up - moving up a block is as costly as moving this many

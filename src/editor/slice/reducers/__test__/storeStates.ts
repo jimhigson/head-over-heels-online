@@ -1,6 +1,7 @@
 import { produce } from "immer";
 
 import { rotatingSceneryTiles } from "../../../../model/inPlaceMutators/rotatingSceneryTiles";
+import { nowhereRoomId } from "../../../../model/json/ItemConfigMap";
 import { type EditorThunk } from "../../../../store/store";
 import { type EditorRoomId, type EditorRoomItemId } from "../../../editorTypes";
 import { type Tool } from "../../../RoomEditingArea/interactivity/Tool";
@@ -22,7 +23,7 @@ export const doorItemToolWithoutAutoAddRooms: Tool = {
   type: "item",
   item: {
     type: "door",
-    config: { toRoom: "nowhere", direction: "towards" },
+    config: { toRoom: nowhereRoomId, direction: "towards" },
   },
 };
 

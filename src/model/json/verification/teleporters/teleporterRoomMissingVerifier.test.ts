@@ -1,6 +1,8 @@
 import { expect, test } from "vitest";
 
-import { exitGameRoomId } from "../../ItemConfigMap";
+import { keys } from "../../../../utils/entries";
+import { roomJsonItemsIterable } from "../../../RoomJsonItemIterators";
+import { exitGameRoomId, nowhereRoomId } from "../../ItemConfigMap";
 import { addItem, campaignOf, newRoom, runCheck } from "../testUtils";
 import { type VerificationRoomId } from "../verificationTypes";
 import { teleporterRoomMissingVerifier } from "./teleporterRoomMissingVerifier";
@@ -68,9 +70,7 @@ const fixedCampaign = (
 };
 
 const newRoomTeleporters = (campaign: ReturnType<typeof fixedCampaign>) =>
-  Object.values(campaign.rooms["to?"].items).filter(
-    (item) => item.type === "teleporter",
-  );
+  roomJsonItemsIterable(campaign.rooms["to?"], "teleporter").toArray();
 
 test("the fix clears the issue", () => {
   expect(runCheck(teleporterRoomMissingVerifier, fixedCampaign())).toEqual([]);
@@ -116,4 +116,16 @@ test("fixing every issue at once creates a shared missing room only once", () =>
   expect(createdRoom.items["teleporter"]).toMatchObject({
     config: { toRoom: "roomA" },
   });
+});
+
+test("the fix gives a teleporter to nowhere a new room of its own", () => {
+  const roomA = newRoom("roomA");
+  addItem(roomA, "tp", teleporter(nowhereRoomId));
+  const campaign = campaignOf({ roomA });
+  const [issue] = runCheck(teleporterRoomMissingVerifier, campaign);
+
+  expect(keys(issue.verifier.fix(campaign, issue.issueData).rooms)).toEqual([
+    "roomA",
+    "room_0",
+  ]);
 });

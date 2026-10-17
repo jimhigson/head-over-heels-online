@@ -4,6 +4,7 @@ import { type SaveResult } from "../../db/campaign";
 import { sequelCampaignLocator } from "../../gameInfo";
 import { allVerifiers } from "../../model/json/verification/allVerifiers";
 import { type CampaignVerificationIssue } from "../../model/json/verification/CampaignVerification";
+import { fixAllVerificationIssues } from "../../model/json/verification/fixAllVerificationIssues";
 import { verificationGraph } from "../../model/json/verification/helpers/verificationGraph";
 import { type VerificationCampaign } from "../../model/json/verification/verificationTypes";
 import { type CampaignLocator } from "../../model/modelTypes";
@@ -11,6 +12,7 @@ import { editorCampaignsApiSlice } from "../../store/slices/campaigns/editorCamp
 import { editorStore } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
 import { queryJsonPattern } from "../../utils/jsonPattern/queryJsonPattern";
+import { setJsonPattern } from "../../utils/jsonPattern/setJsonPattern";
 import {
   directionsXyz4,
   type DirectionXyz4,
@@ -597,6 +599,45 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
     },
   },
   {
+    name: "setRoomItemValues",
+    description:
+      'set one value everywhere a pattern picks out in the current room\'s items, as one undoable edit - the same patterns as getRoomItems. A last part naming one key (eg `config.toRoom`) inserts it if absent; any other last part replaces only existing values. Eg pattern `[config.toRoom=nowhere].config.toRoom`, value `"$$nowhere"`. Returns the paths set. Check getVerificationIssues afterwards',
+    inputSchema: {
+      type: "object",
+      properties: {
+        pattern: {
+          type: "string",
+          description:
+            "eg `door1.config.toRoom`, `[type=door].config.toDoor`, `*.position.z`",
+        },
+        value: { description: "the json value to put at every match" },
+      },
+      required: ["pattern", "value"],
+    },
+    async execute({ pattern, value }) {
+      if (typeof pattern !== "string") {
+        return jsonResult("pattern must be a string");
+      }
+      const roomJson = selectCurrentCommittedRoomJson(editorStore.getState());
+      const { root: newItems, paths } = setJsonPattern(
+        roomJson.items,
+        pattern,
+        value,
+      );
+      if (paths.length === 0) {
+        return jsonResult({ notApplied: `nothing matches ${pattern}` });
+      }
+      const newRoomJson: unknown = { ...roomJson, items: newItems };
+      if (!validateRoomJson(newRoomJson)) {
+        return jsonResult({ notApplied: validateRoomJson.errors });
+      }
+      editorStore.dispatch(
+        roomJsonEdited({ roomJson: newRoomJson, timestamp: Date.now() }),
+      );
+      return jsonResult({ roomId: newRoomJson.id, paths });
+    },
+  },
+  {
     name: "playtest",
     description:
       "play the open campaign, unsaved, as the toolbar's play button does: opens the game in a new tab, with the editor's playtest options (game, start point, character) unless overridden here. Returns the game's url, for opening it yourself if the browser blocks the tab. Opens a tab on every call - use getPlaytestUrl for only the url",
@@ -666,15 +707,10 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
       "auto-fix every fixable issue, as the verify dialog's 'Fix all' button does. Returns the issues remaining",
     inputSchema: { type: "object", properties: {} },
     async execute() {
-      const fixableIssues = currentIssues().filter(({ fixable }) => fixable);
-      loadFixedCampaign(
-        fixableIssues.reduce(
-          (campaign, issue) => issue.verifier.fix(campaign, issue.issueData),
-          openCampaign(),
-        ),
-      );
+      const { campaign, fixed } = fixAllVerificationIssues(openCampaign());
+      loadFixedCampaign(campaign);
       return jsonResult({
-        fixed: fixableIssues.map(({ fixText }) => fixText),
+        fixed,
         remainingIssues: currentIssues().map(verificationIssueAsJson),
       });
     },

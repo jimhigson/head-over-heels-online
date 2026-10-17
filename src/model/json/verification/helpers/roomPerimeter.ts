@@ -15,7 +15,8 @@ type RoomWithItems<RoomItemId extends string> = Pick<
   "items"
 >;
 
-const doorWidth = 2;
+/** how many blocks wide a door is, along its wall */
+export const doorWidth = 2;
 
 /** the set of "x,y" floor squares in a room (expanding floor `times`) */
 export const floorSquares = <RoomItemId extends string>(

@@ -1,5 +1,8 @@
+import { produce } from "immer";
+
+import { addReturnDoorInPlace } from "../../../inPlaceMutators/addReturnDoorInPlace";
 import { exitGameRoomId } from "../../ItemConfigMap";
-import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
+import { type CampaignVerifier } from "../CampaignVerification";
 import { allDoors, doorsBackTo } from "../helpers/doorPartner";
 import {
   type VerificationRoomId,
@@ -12,7 +15,10 @@ type DoorNoReturn = {
   toRoom: VerificationRoomId;
 };
 
-/** A3: a door leading to a real room that has no door leading back */
+/**
+ * A3: a door leading to a real room that has no door leading back. Fixed by
+ * adding a door back, on the facing wall
+ */
 export const doorNoReturnVerifier: CampaignVerifier<DoorNoReturn> = {
   name: "Door with no return",
   *check(campaign) {
@@ -29,14 +35,27 @@ export const doorNoReturnVerifier: CampaignVerifier<DoorNoReturn> = {
         roomId,
         itemId: doorId,
         msg: `Door ‘${doorId}’ in ‘${roomId}’ leads to ‘${toRoom}’, which has no door back to ‘${roomId}’`,
-        fixable: false,
-        fixText: `Add a door from ‘${toRoom}’ back to ‘${roomId}’ by hand`,
+        fixable: true,
+        fixText: `Add a door in ‘${toRoom}’ back to ‘${roomId}’`,
         issueData: { roomId, doorId, toRoom },
         verifier: doorNoReturnVerifier,
       };
     }
   },
-  fix() {
-    return notAutoFixable();
+  fix(campaign, { roomId, doorId, toRoom }) {
+    return produce(campaign, (draft) => {
+      const draftDoor = draft.rooms[roomId].items[doorId];
+      if (draftDoor.type !== "door") {
+        throw new Error(
+          `cannot auto-fix: ‘${doorId}’ in ‘${roomId}’ is not a door`,
+        );
+      }
+      addReturnDoorInPlace({
+        rooms: draft.rooms,
+        fromRoomJson: draft.rooms[roomId],
+        toRoomJson: draft.rooms[toRoom],
+        outgoingDoorEntry: [doorId, draftDoor],
+      });
+    });
   },
 };

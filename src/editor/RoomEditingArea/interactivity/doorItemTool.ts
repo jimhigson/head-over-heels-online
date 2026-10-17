@@ -1,3 +1,4 @@
+import { nowhereRoomId } from "../../../model/json/ItemConfigMap";
 import { type JsonItemConfig } from "../../../model/json/JsonItem";
 import { type EditorRoomItemId } from "../../editorTypes";
 import { type EditorToolRoomId, type ItemTool } from "./Tool";
@@ -10,6 +11,6 @@ export const doorItemTool = (
   type: "door",
   config: {
     direction: "away", // arbitrary, to be corrected on placement
-    toRoom: autoAddsRoom ? "+" : "nowhere",
+    toRoom: autoAddsRoom ? "+" : nowhereRoomId,
   } satisfies JsonItemConfig<"door", EditorToolRoomId, EditorRoomItemId>,
 });

@@ -1,3 +1,4 @@
+import { firstUntakenRoomId } from "../../../model/firstUntakenRoomId";
 import { createNewRoom } from "../../../model/inPlaceMutators/createNewRoom";
 import {
   type ZxSpectrumRoomColour,
@@ -6,7 +7,7 @@ import {
 import { type SceneryName } from "../../../sprites/planets";
 import { randomFromArray } from "../../../utils/random/randomFromArray";
 import { type Xy } from "../../../utils/vectors/vectors";
-import { type EditorRoomId, type EditorRoomJson } from "../../editorTypes";
+import { type EditorRoomJson } from "../../editorTypes";
 import { type LevelEditorState } from "../levelEditorSlice";
 
 const defaultRoomSize: Xy = { x: 8, y: 8 };
@@ -34,16 +35,7 @@ export const addNewRoomInPlace = ({
   roomSize = defaultRoomSize,
   gridPositions = [{ x: 0, y: 0 }],
 }: AddNewRoomInPlaceOptions): EditorRoomJson => {
-  let firstUntakenRoomNumber = 0;
-  while (
-    state.campaignInProgress.rooms[
-      `room_${firstUntakenRoomNumber}` as EditorRoomId
-    ] !== undefined
-  ) {
-    firstUntakenRoomNumber++;
-  }
-
-  const newRoomId = `room_${firstUntakenRoomNumber}` as EditorRoomId;
+  const newRoomId = firstUntakenRoomId(state.campaignInProgress.rooms);
 
   const colour: ZxSpectrumRoomColour = maybeColour ?? {
     hue: randomFromArray(zxSpectrumRoomHue),

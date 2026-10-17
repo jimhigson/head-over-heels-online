@@ -1,7 +1,8 @@
 import { produce } from "immer";
 
+import { firstUntakenRoomId } from "../../../firstUntakenRoomId";
 import { createNewRoom } from "../../../inPlaceMutators/createNewRoom";
-import { exitGameRoomId } from "../../ItemConfigMap";
+import { exitGameRoomId, nowhereRoomId } from "../../ItemConfigMap";
 import { type TeleporterLandingConfig } from "../../resolveTeleporterLanding";
 import { type CampaignVerifier } from "../CampaignVerification";
 import { allTeleporters, teleportersInRoom } from "../helpers/teleporterTarget";
@@ -45,13 +46,19 @@ export const teleporterRoomMissingVerifier: CampaignVerifier<TeleporterRoomMissi
           itemId: teleporterId,
           msg: `Teleporter ‘${teleporterId}’ in ‘${roomId}’ leads to ‘${toRoom}’, which isn't a room in this campaign`,
           fixable: true,
-          fixText: `Create new room "${toRoom}" to teleport to`,
+          fixText:
+            toRoom === nowhereRoomId ?
+              "Create a new room to teleport to"
+            : `Create new room "${toRoom}" to teleport to`,
           issueData: { roomId, teleporterId, toRoom },
           verifier: teleporterRoomMissingVerifier,
         };
       }
     },
-    fix(campaign, { roomId, teleporterId, toRoom: newRoomId }) {
+    fix(campaign, { roomId, teleporterId, toRoom }) {
+      // a teleporter to nowhere gets a room of its own:
+      const newRoomId =
+        toRoom === nowhereRoomId ? firstUntakenRoomId(campaign.rooms) : toRoom;
       if (newRoomId in campaign.rooms) {
         // made by an earlier fix in the same batch, for another teleporter
         return campaign;

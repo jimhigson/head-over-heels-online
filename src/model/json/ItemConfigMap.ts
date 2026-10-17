@@ -100,6 +100,11 @@ export const exitGameRoomId = "$$final";
 /** "$$final" is a special value - the door exits the game, ie, at the end of the game */
 export type ExitGameRoomId = typeof exitGameRoomId;
 
+/** "$$nowhere" is a special value - the door or teleporter isn't wired up to a room yet */
+export const nowhereRoomId = "$$nowhere";
+/** "$$nowhere" is a special value - the door or teleporter isn't wired up to a room yet */
+export type NowhereRoomId = typeof nowhereRoomId;
+
 export type DoorConfig<RoomId extends string> = {
   toRoom: ExitGameRoomId | RoomId;
   /**

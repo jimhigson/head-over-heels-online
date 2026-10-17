@@ -1,10 +1,11 @@
+import { type NowhereRoomId } from "../../../model/json/ItemConfigMap";
 import {
   type JsonItemConfig,
   type JsonItemType,
 } from "../../../model/json/JsonItem";
 import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
 
-export type EditorToolRoomId = "+" | "nowhere" | EditorRoomId;
+export type EditorToolRoomId = "+" | EditorRoomId | NowhereRoomId;
 
 /**
  * If using the tool with type: 'item', describes the item to be placed
