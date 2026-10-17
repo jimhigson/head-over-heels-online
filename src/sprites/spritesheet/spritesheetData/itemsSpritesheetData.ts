@@ -1005,8 +1005,8 @@ const frames = {
   // with three frames so the light animates along its direction of travel:
   ...seriesOfNumberedTextures(
     "lightBeam",
-    3,
-    { x: 148, y: 868 },
+    5,
+    { x: 114, y: 885 },
     { w: 16, h: 16 },
   ),
 
@@ -1018,28 +1018,6 @@ const frames = {
     { x: 114, y: 868 },
     { w: 16, h: 16 },
   ),
-
-  // the bend where a beam reflects at a mirror: drawn in the reflecting
-  // mirror's whole block cell, one shape per pair of directions connected.
-  // Each shape also serves the opposite flow, played in reverse:
-  // ...seriesOfNumberedTextures(
-  //   "lightBeam.corner.leftToAway",
-  //   3,
-  //   largeItemGridLocation({ x: 11, y: -4 }),
-  //   largeItemTextureSize,
-  // ),
-  // ...seriesOfNumberedTextures(
-  //   "lightBeam.corner.leftToTowards",
-  //   3,
-  //   largeItemGridLocation({ x: 17, y: -4 }),
-  //   largeItemTextureSize,
-  // ),
-  // ...seriesOfNumberedTextures(
-  //   "lightBeam.corner.towardsToLeft",
-  //   3,
-  //   largeItemGridLocation({ x: 20, y: -4 }),
-  //   largeItemTextureSize,
-  // ),
 
   ...seriesOfNumberedTextures(
     "particle.head",
@@ -1167,25 +1145,13 @@ export const itemsSpritesheetData = {
       0.5,
     ),
     [`lightBeam.d${octantIndexOfDirection("left")}` as const]: withSpeed(
-      seriesOfAnimationFrameTextureIds("lightBeam", 3),
-      0.5,
+      seriesOfAnimationFrameTextureIds("lightBeam", 5),
+      1,
     ),
     "lightBeam.terminus": withSpeed(
       seriesOfAnimationFrameTextureIds("lightBeam.terminus", 2),
       0.5,
     ),
-    // "lightBeam.corner.leftToAway": withSpeed(
-    //   seriesOfAnimationFrameTextureIds("lightBeam.corner.leftToAway", 3),
-    //   0.25,
-    // ),
-    // "lightBeam.corner.leftToTowards": withSpeed(
-    //   seriesOfAnimationFrameTextureIds("lightBeam.corner.leftToTowards", 3),
-    //   0.25,
-    // ),
-    // "lightBeam.corner.towardsToLeft": withSpeed(
-    //   seriesOfAnimationFrameTextureIds("lightBeam.corner.towardsToLeft", 3),
-    //   0.25,
-    // ),
     volcano: withSpeed(seriesOfAnimationFrameTextureIds("volcano", 2), 3 / 16),
     toaster: withSpeed(seriesOfAnimationFrameTextureIds("toaster", 2), 3 / 16),
     "spring.bounce": withSpeed(
