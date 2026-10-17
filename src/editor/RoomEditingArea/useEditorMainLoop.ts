@@ -84,8 +84,8 @@ export const useEditorMainLoop = (
   const roomRenderSize = useEditorRoomRenderDimensions();
 
   useEffect(() => {
-    // a solid backdrop bounding the room's projected rect - the room reads as
-    // sitting on this, with the pane's background void around it:
+    // a rectangular backdrop around the room's projected rect - the room renders
+    // on top of this so the rect shows through
     const backdrop = new Graphics({ label: "editorRoomBackdrop" });
     backdrop
       .rect(
@@ -95,11 +95,20 @@ export const useEditorMainLoop = (
         roomRenderSize.h + 2 * roomEditingAreaMarginPx,
       )
       .fill(paletteBlockstack.pureBlack);
+    // always behind the room:
+    viewport.container.addChildAt(backdrop, 0);
 
+    return () => {
+      viewport.container.removeChild(backdrop);
+      backdrop.destroy();
+    };
+  }, [roomRenderSize, viewport]);
+
+  useEffect(() => {
     // the room renders at its natural projected coordinates - panning/zooming
     // is entirely the viewport's transform:
     const roomContainer = new Container({ label: "editorRoom" });
-    viewport.container.addChild(backdrop, roomContainer);
+    viewport.container.addChild(roomContainer);
 
     let roomRenderer: EditorRoomRenderer | undefined;
     let lastPlanet = currentEditingRoomState.planet;
@@ -190,8 +199,7 @@ export const useEditorMainLoop = (
       appTicker.remove(tick);
       roomRenderer?.destroy();
       roomRendererRef.current = undefined;
-      viewport.container.removeChild(backdrop, roomContainer);
-      backdrop.destroy();
+      viewport.container.removeChild(roomContainer);
       roomContainer.destroy();
     };
   }, [
@@ -199,7 +207,6 @@ export const useEditorMainLoop = (
     pixiRenderer,
     pixiApp,
     spritesheets,
-    roomRenderSize,
     viewport,
     roomRendererRef,
   ]);
