@@ -230,6 +230,16 @@ export class ItemBehaviour {
   }
 
   /**
+   * whether items standing on this are carried along with its horizontal movement
+   */
+  createsLatentMovementForStander<
+    RoomId extends string,
+    RoomItemId extends string,
+  >(_item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>): boolean {
+    return true;
+  }
+
+  /**
    * whether this item's position is irrelevant, so it takes no space in its
    * room and is not spatially indexed
    */

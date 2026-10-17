@@ -18,7 +18,7 @@ type FrameCallback = (
 
 export type UntilFunction = (gameState: GameStateWithMockInput) => boolean;
 
-type PlayGameThroughCommonOptions = {
+type PlayGameThroughBaseOptions = {
   frameRate?: FrameRateSpec;
   /**
    * allows us to change the gamestate after certain frames, for example to change the
@@ -27,14 +27,22 @@ type PlayGameThroughCommonOptions = {
   frameCallbacks?: Array<FrameCallback> | FrameCallback;
 
   setupInitialInput?: (mockInputStateTracker: MockInputStateTracker) => void;
-} & (
-  | {
-      forTime: number;
-    }
-  | {
-      until?: number | UntilFunction;
-    }
-);
+};
+
+type PlayGameThroughForTimeOptions = PlayGameThroughBaseOptions & {
+  forTime: number;
+};
+
+type PlayGameThroughUntilOptions = PlayGameThroughBaseOptions & {
+  until?: number | UntilFunction;
+  /**
+   * backstop to give up if until isn't matched after this time
+   */
+  failAfter?: number;
+};
+
+type PlayGameThroughCommonOptions =
+  PlayGameThroughForTimeOptions | PlayGameThroughUntilOptions;
 
 type PlayGameThroughOptions = PlayGameThroughCommonOptions & {
   /** only when playing through with a {@link TestRenderState} */
@@ -116,8 +124,19 @@ export function playGameThrough(
       (gameStateNow) => gameStateNow.gameTime >= until
     : until;
 
+  const failAfter = "failAfter" in options ? options.failAfter : undefined;
+  const failAtGameTime =
+    failAfter === undefined ?
+      Number.POSITIVE_INFINITY
+    : startGameTime + failAfter;
+
   let frameNumber = 0;
   while (!isFinished(gameState)) {
+    if (gameState.gameTime >= failAtGameTime) {
+      throw new Error(
+        `play-through's until did not hold within ${failAfter}ms`,
+      );
+    }
     const fpsThisFrame = frameRateIter.next().value;
     const deltaMS = 1_000 / fpsThisFrame;
 

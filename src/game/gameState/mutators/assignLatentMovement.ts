@@ -1,3 +1,4 @@
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import {
   type FreeItem,
   type UnionOfAllItemInPlayTypes,
@@ -72,14 +73,19 @@ export const assignLatentMovementFromStandingOn = <
       // did not move during this tick:
       return;
     }
+    if (
+      // if nothing is stood on this item, no latent movement to assign:
+      !isStoodOnByAnything(moverItem) ||
+      // behaviours can turn off latent movement for items
+      !moverItem[itemBehaviourKey].createsLatentMovementForStander(moverItem)
+    ) {
+      return;
+    }
+
     const previousPosition = startingPositions.get(moverItem.id);
 
     if (previousPosition === undefined) {
       // item was introduced to the world during this tick, can't have latent movement:
-      return;
-    }
-    if (!isStoodOnByAnything(moverItem)) {
-      // if nothing is stood on this item, no latent movement to assign:
       return;
     }
 

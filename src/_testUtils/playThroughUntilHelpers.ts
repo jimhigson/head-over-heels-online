@@ -49,6 +49,27 @@ export const isActedOnBy =
     );
   };
 
+/**
+ * for playGameThrough's `until`: whether the given free item, in the current
+ * room, is standing on the other item
+ */
+export const isStandingOn =
+  (
+    /** the free item standing */
+    standerId: string,
+    /** the item stood on */
+    standingOnId: string,
+  ): UntilFunction =>
+  (gameState) => {
+    const stander = selectCurrentRoomState(gameState)?.items[standerId];
+    if (stander === undefined || !isFreeItem(stander)) {
+      throw new Error(
+        `"${standerId}" is not a free item in the current room, so can't stand`,
+      );
+    }
+    return stander.state.standingOnItemId === standingOnId;
+  };
+
 /** for playGameThrough's `until`: whether the given condition does not hold */
 export const not =
   (untilFunction: UntilFunction): UntilFunction =>

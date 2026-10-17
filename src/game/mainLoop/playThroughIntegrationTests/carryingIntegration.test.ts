@@ -1,9 +1,5 @@
-import { beforeEach, describe, expect, test, vi } from "vitest";
-vi.mock("../../sprites/samplePalette", () => ({
-  spritesheetPalette: vi.fn().mockReturnValue({}),
-}));
-
 import { type DistributedOmit } from "type-fest";
+import { beforeEach, describe, expect, test } from "vitest";
 
 import {
   basicCampaign,

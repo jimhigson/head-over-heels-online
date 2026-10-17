@@ -1,7 +1,4 @@
-import { beforeEach, describe, expect, test, vi } from "vitest";
-vi.mock("../../sprites/samplePalette", () => ({
-  spritesheetPalette: vi.fn().mockReturnValue({}),
-}));
+import { beforeEach, describe, expect, test } from "vitest";
 
 import {
   firstRoomId,

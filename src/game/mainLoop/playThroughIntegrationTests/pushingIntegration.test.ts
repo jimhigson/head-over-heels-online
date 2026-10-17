@@ -1,7 +1,4 @@
-import { beforeEach, expect, test, vi } from "vitest";
-vi.mock("../../sprites/samplePalette", () => ({
-  spritesheetPalette: vi.fn().mockReturnValue({}),
-}));
+import { beforeEach, expect, test } from "vitest";
 
 import {
   type BasicGameStateOptions,

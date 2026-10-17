@@ -97,6 +97,14 @@ export class PlayableBehaviour extends FreeItemBehaviour {
     return playable.state.standingOnItemId !== null;
   }
 
+  override createsLatentMovementForStander<
+    RoomId extends string,
+    RoomItemId extends string,
+  >(playable: PlayableItem<CharacterName, RoomId, RoomItemId>): boolean {
+    // while falling, items on top aren't carried, so the playable can get out from under them
+    return playable.state.action !== "falling";
+  }
+
   override terminalFallVelocity<
     RoomId extends string,
     RoomItemId extends string,

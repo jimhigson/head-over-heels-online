@@ -172,6 +172,8 @@ judge if the comments are fair, categorise and summarise then, discounting any t
 If no valid comments exist, continue to phase 7, otherwise propose a fix to the user and continue
 with the other PRs until the user replies
 
+- if copilot is not available or comments that quota is used up, make an adversarial review by a context-free Opus agent looking at the PR, and use their review instead
+
 ## Phase 7 — Merge on green
 
 As each PR reaches all-checks-passed **and `mergeStateStatus` is `CLEAN`** (not `BEHIND`), merge it autonomously (unless the user asked to be asked): `gh pr merge -sd` (squash + delete branch). Because of the strict up-to-date ruleset (see "Merge policy for THIS repo"), only one PR is `CLEAN` at a time; `--admin` will not force a `BEHIND` one through. After a merge, the next PR is `BEHIND` → `gh pr update-branch <n>`, wait for its 4 gates to re-run, then merge. This is the serial cascade of Phase 8.
