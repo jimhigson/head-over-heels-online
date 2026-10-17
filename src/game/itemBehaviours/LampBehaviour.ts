@@ -26,7 +26,10 @@ import { type GameState } from "../gameState/GameState";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../gameState/mutators/addItemToRoom";
 import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
-import { updateItemBox } from "../gameState/mutators/updateItemBox";
+import {
+  stampWithMovedProgression,
+  updateItemBox,
+} from "../gameState/mutators/updateItemBox";
 import { type MechanicResult } from "../physics/MechanicResult";
 import {
   blockSizePx,
@@ -359,6 +362,7 @@ export const tickLampLightBeams = <
       // on every tick and never let the room's render gates go quiet:
       if (!xyzBoxEqual(existing.state.box, segment.box)) {
         updateItemBox(room, existing, segment.box);
+        stampWithMovedProgression(room, existing);
       }
       beam = existing;
     } else {

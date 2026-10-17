@@ -1,3 +1,5 @@
+import { type DistributedOmit, type KeysOfUnion } from "type-fest";
+
 export const pick = <O extends object, KS extends keyof O>(
   o: O,
   ...ks: KS[]
@@ -22,11 +24,21 @@ export const pick = <O extends object, KS extends keyof O>(
  *
  * omit(o, "a", "b", "c")
  */
-export const omit = <O extends object, KS extends keyof O>(
+export const omit = <
+  O extends object,
+  const KS extends ReadonlyArray<KeysOfUnion<O>>,
+>(
   o: O,
-  ...ks: KS[]
-): Omit<O, KS> => {
-  return omitArray(o, ks) as Omit<O, KS>;
+  ...ks: KS
+): DistributedOmit<O, KS[number]> => {
+  // keyed by every union member's keys, so any of them can be deleted:
+  const res: { [K in KeysOfUnion<O>]?: unknown } = { ...o };
+
+  for (const k of ks) {
+    delete res[k];
+  }
+
+  return res as DistributedOmit<O, KS[number]>;
 };
 
 /**

@@ -105,8 +105,6 @@ export const progressGameState = <
   }
   updateStandingOn(room);
 
-  // corrections route through the position-update funnel, so items they
-  // adjust are stamped as moved like any other movement:
   correctFloatingPointErrorsInRoom(room);
 
   assignLatentMovementFromStandingOn(

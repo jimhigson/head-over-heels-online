@@ -5,6 +5,10 @@ import { type RoomState } from "../model/RoomState";
 
 export type ItemSoundRenderContext<T extends ItemInPlayType> = {
   item: ItemTypeUnion<T, string, string>;
-  general: GeneralRenderContext<string>;
+  /** only the parts of the general render context that sound needs */
+  general: Pick<
+    GeneralRenderContext<string>,
+    "cameraAngle" | "gameState" | "soundSettings"
+  >;
   room: RoomState<string, string>;
 };

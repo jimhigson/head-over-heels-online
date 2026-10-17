@@ -1,0 +1,26 @@
+diff --git a/lib/AudioBufferSourceNode.js b/lib/AudioBufferSourceNode.js
+index 31eab9d94bdcf581f4222e4652a5cf609a04474d..fef358d44887060ae5071c81e5d556f3561b08da 100644
+--- a/lib/AudioBufferSourceNode.js
++++ b/lib/AudioBufferSourceNode.js
+@@ -112,7 +112,10 @@ var AudioBufferSourceNode = (_dec = props.typed(validators.isNullOrInstanceOf(_A
+       var offset = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+       var duration = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
+ 
+-      this._.startTime = when;
++      // per the web audio spec, a time already passed means now. Both go through
++      // toSeconds (which floors to whole microseconds), as $stateAtTime does, so
++      // starting at currentTime is not seen as still in the future:
++      this._.startTime = Math.max((0, _toSeconds2.default)(when), (0, _toSeconds2.default)(this.context.currentTime));
+       this._.offset = offset;
+       this._.duration = duration;
+     }
+@@ -121,7 +124,8 @@ var AudioBufferSourceNode = (_dec = props.typed(validators.isNullOrInstanceOf(_A
+     value: function stop() {
+       var when = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
+ 
+-      this._.stopTime = when;
++      // as for start:
++      this._.stopTime = Math.max((0, _toSeconds2.default)(when), (0, _toSeconds2.default)(this.context.currentTime));
+     }
+   }, {
+     key: "$stateAtTime",

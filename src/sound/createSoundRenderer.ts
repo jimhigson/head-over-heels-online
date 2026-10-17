@@ -19,6 +19,7 @@ import { MonsterSoundRenderer } from "./itemSoundRenderers/MonsterSoundRenderer"
 import { MovingPlatformSoundRenderer } from "./itemSoundRenderers/MovingPlatformSoundRenderer";
 import { ParticleSoundRenderer } from "./itemSoundRenderers/ParticleSoundRenderer";
 import { PlayableSoundRenderer } from "./itemSoundRenderers/PlayableSoundRenderer";
+import { PortableBlockSoundRenderer } from "./itemSoundRenderers/PortableBlockSoundRenderer";
 import { PushableBlockSoundRenderer } from "./itemSoundRenderers/PushableBlockSoundRenderer";
 import { SlidingBlockSoundRenderer } from "./itemSoundRenderers/SlidingBlockSoundRenderer";
 import { SlidingDeadlySoundRenderer } from "./itemSoundRenderers/SlidingDeadlySoundRenderer";
@@ -48,7 +49,7 @@ const rendererClasses: {
   movingPlatform: MovingPlatformSoundRenderer,
   particle: ParticleSoundRenderer,
   pickup: FreeItemSoundRenderer,
-  portableBlock: FreeItemSoundRenderer,
+  portableBlock: PortableBlockSoundRenderer,
   portableTeleporter:
     TeleporterSoundRenderer as ItemSoundRendererConstructableClass<"portableTeleporter">,
   pushableBlock: PushableBlockSoundRenderer,

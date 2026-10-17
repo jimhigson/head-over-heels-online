@@ -6,6 +6,7 @@ settings:
 
 patchedDependencies:
   pixi.js: f826773b254612b58c4a67990b588c16a8ce5a37a265617833cc955eda633028
+  web-audio-test-api@0.5.2: 6c6d74924638170f83809b194c9d52e593b861e19c8530520078fc00094fc8c8
 
 importers:
 
@@ -165,6 +166,9 @@ importers:
       git-format-staged:
         specifier: ^3.1.1
         version: 3.1.1
+      happy-dom:
+        specifier: ^21.0.3
+        version: 21.0.3
       image-size:
         specifier: ^1.2.0
         version: 1.2.0
@@ -251,10 +255,13 @@ importers:
         version: 1.3.0(supports-color@10.2.2)(vite@8.0.13(@types/node@26.1.1)(esbuild@0.27.3)(jiti@2.7.0)(terser@5.48.0)(tsx@4.19.3)(yaml@2.9.0))(workbox-build@7.4.1(supports-color@10.2.2))(workbox-window@7.4.1)
       vitest:
         specifier: ^4.1.6
-        version: 4.1.7(@types/node@26.1.1)(vite@8.0.13(@types/node@26.1.1)(esbuild@0.27.3)(jiti@2.7.0)(terser@5.48.0)(tsx@4.19.3)(yaml@2.9.0))
+        version: 4.1.7(@types/node@26.1.1)(happy-dom@21.0.3)(vite@8.0.13(@types/node@26.1.1)(esbuild@0.27.3)(jiti@2.7.0)(terser@5.48.0)(tsx@4.19.3)(yaml@2.9.0))
       wawoff2:
         specifier: ^2.0.1
         version: 2.0.1
+      web-audio-test-api:
+        specifier: 0.5.2
+        version: 0.5.2(patch_hash=6c6d74924638170f83809b194c9d52e593b861e19c8530520078fc00094fc8c8)
       webmcp-types:
         specifier: ^0.1.9
         version: 0.1.9
@@ -2837,9 +2844,6 @@ packages:
   '@types/nano-equal@2.0.2':
     resolution: {integrity: sha512-5p/cTMHlBb3Rka1DtMn46lgpb4BMmhjObGnzbv2gwlL8k/T9260ImQQcW3Ucz/apxO26AP+o59S8kNWTwOM+zw==}
 
-  '@types/node@25.3.0':
-    resolution: {integrity: sha512-4K3bqJpXpqfg2XKGK9bpDTc6xO/xoUP/RBWS7AtRMug6zZFaRekiLzjVtAoZMquxoAbzBvy5nxQ7veS5eYzf8A==}
-
   '@types/node@26.1.1':
     resolution: {integrity: sha512-nxAkRSVkN1Y0JC1W8ky/fTfkGsMmcrRsbx+3XoZE+rMOX71kLYTV7fLXpqud1GpbpP5TuffXFqfX7fH2GgZREw==}
 
@@ -2871,6 +2875,9 @@ packages:
 
   '@types/use-sync-external-store@0.0.6':
     resolution: {integrity: sha512-zFDAD+tlpf2r4asuHEj0XH6pY6i0g5NeAHPn+15wk3BV6JA69eERFXC1gyGThDkVa1zCyKr5jox1+2LbV/AMLg==}
+
+  '@types/whatwg-mimetype@3.0.2':
+    resolution: {integrity: sha512-c2AKvDT8ToxLIOUlN51gTiHXflsfIFisS4pO7pDPoKouJCESkhZnEy623gwP9laCy5lnLDAw1vAzu2vM2YLOrA==}
 
   '@types/ws@8.18.1':
     resolution: {integrity: sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==}
@@ -3187,6 +3194,10 @@ packages:
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
 
+  buffer-image-size@0.6.4:
+    resolution: {integrity: sha512-nEh+kZOPY1w+gcCMobZ6ETUp9WfibndnosbpwB1iJk/8Gt5ZF2bhS6+B6bPYz424KtwsR6Rflc3tCz1/ghX2dQ==}
+    engines: {node: '>=4.0'}
+
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
 
@@ -3495,6 +3506,10 @@ packages:
 
   entities@4.5.0:
     resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
+    engines: {node: '>=0.12'}
+
+  entities@7.0.1:
+    resolution: {integrity: sha512-TWrgLOFUQTH994YUyl1yT4uyavY5nNB5muff+RtWaqNVCAK408b5ZnnbNAUEWLTCpum9w6arT70i1XdQ4UeOPA==}
     engines: {node: '>=0.12'}
 
   environment@1.1.0:
@@ -3838,6 +3853,10 @@ packages:
 
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
+
+  happy-dom@21.0.3:
+    resolution: {integrity: sha512-PesNgu5BnIEmAwzKGewB3K1ORFeznFZJ4JrRz89ea1wkHnxskdpzX9sN/+zb4KO6k8oSMhyJSj/cwXAFrYBBNA==}
+    engines: {node: '>=20.0.0'}
 
   has-bigints@1.1.0:
     resolution: {integrity: sha512-R3pbpkcIqv2Pm3dUwgjclDRVmWpTJW2DcMzcIhEXEx1oh/CEMObMm3KLmRJOdvhM7o4uQBnwr8pzRK2sJWIqfg==}
@@ -5290,9 +5309,6 @@ packages:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}
     engines: {node: '>= 0.4'}
 
-  undici-types@7.18.2:
-    resolution: {integrity: sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w==}
-
   undici-types@8.3.0:
     resolution: {integrity: sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ==}
 
@@ -5526,6 +5542,9 @@ packages:
   wcwidth@1.0.1:
     resolution: {integrity: sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==}
 
+  web-audio-test-api@0.5.2:
+    resolution: {integrity: sha512-RevLfVjp+wwe/dBPe361IpmNpeXXW6JVmlp8dk0YIxLwAh7evn6JpEQQalVgX4PH/jA8tpLpjD/8tFNUYTf88w==}
+
   webidl-conversions@4.0.2:
     resolution: {integrity: sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==}
 
@@ -5534,6 +5553,10 @@ packages:
 
   webpack-virtual-modules@0.6.2:
     resolution: {integrity: sha512-66/V2i5hQanC51vBQKPH4aI8NMAcBW59FVBs+rC7eGHupMyfn34q7rZIE+ETlJ+XTevqfUhVVBgSUNSW2flEUQ==}
+
+  whatwg-mimetype@3.0.0:
+    resolution: {integrity: sha512-nt+N2dzIutVRxARx1nghPKGv1xHikU7HKdfafKkLNLindmPU/ch3U31NOCGGA/dmPcmb1VlofO0vnKAcsm0o/Q==}
+    engines: {node: '>=12'}
 
   whatwg-url@7.1.0:
     resolution: {integrity: sha512-WUu7Rg1DroM7oQvGWfOiAK21n74Gg+T4elXEQYkOhtyLeWiJFoOGLXPKI/9gzIie9CtwVLm8wtw6YJdKyxSjeg==}
@@ -5665,6 +5688,18 @@ packages:
 
   ws@8.20.1:
     resolution: {integrity: sha512-It4dO0K5v//JtTXuPkfEOaI3uUN87iYPnqo/ZzqCoG3g8uhA66QUMs/SrM0YK7/NAu+r4LMh/9dq2A7k+rHs+w==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
+  ws@8.22.0:
+    resolution: {integrity: sha512-Ydggc987+RO0AnWtZ/7Wq9FtNvcrL1b/RO0ud9mWjUPgDrsAAwQSF51sm2hm1XofbU/4jkpGEsLFsZZxU+1DOg==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -8047,10 +8082,6 @@ snapshots:
 
   '@types/nano-equal@2.0.2': {}
 
-  '@types/node@25.3.0':
-    dependencies:
-      undici-types: 7.18.2
-
   '@types/node@26.1.1':
     dependencies:
       undici-types: 8.3.0
@@ -8077,9 +8108,11 @@ snapshots:
 
   '@types/use-sync-external-store@0.0.6': {}
 
+  '@types/whatwg-mimetype@3.0.2': {}
+
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 25.3.0
+      '@types/node': 26.1.1
 
   '@typescript-eslint/eslint-plugin@8.41.0(@typescript-eslint/parser@8.41.0(@typescript/typescript6@6.0.2)(eslint@9.22.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(@typescript/typescript6@6.0.2)(eslint@9.22.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)':
     dependencies:
@@ -8421,6 +8454,10 @@ snapshots:
 
   buffer-from@1.1.2: {}
 
+  buffer-image-size@0.6.4:
+    dependencies:
+      '@types/node': 26.1.1
+
   buffer@5.7.1:
     dependencies:
       base64-js: 1.5.1
@@ -8723,6 +8760,8 @@ snapshots:
   emojilib@2.4.0: {}
 
   entities@4.5.0: {}
+
+  entities@7.0.1: {}
 
   environment@1.1.0: {}
 
@@ -9210,6 +9249,19 @@ snapshots:
 
   graphemer@1.4.0:
     optional: true
+
+  happy-dom@21.0.3:
+    dependencies:
+      '@types/node': 26.1.1
+      '@types/whatwg-mimetype': 3.0.2
+      '@types/ws': 8.18.1
+      buffer-image-size: 0.6.4
+      entities: 7.0.1
+      whatwg-mimetype: 3.0.0
+      ws: 8.22.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   has-bigints@1.1.0: {}
 
@@ -10780,8 +10832,6 @@ snapshots:
       has-symbols: 1.1.0
       which-boxed-primitive: 1.1.1
 
-  undici-types@7.18.2: {}
-
   undici-types@8.3.0: {}
 
   undici@7.24.8: {}
@@ -10938,7 +10988,7 @@ snapshots:
       tsx: 4.19.3
       yaml: 2.9.0
 
-  vitest@4.1.7(@types/node@26.1.1)(vite@8.0.13(@types/node@26.1.1)(esbuild@0.27.3)(jiti@2.7.0)(terser@5.48.0)(tsx@4.19.3)(yaml@2.9.0)):
+  vitest@4.1.7(@types/node@26.1.1)(happy-dom@21.0.3)(vite@8.0.13(@types/node@26.1.1)(esbuild@0.27.3)(jiti@2.7.0)(terser@5.48.0)(tsx@4.19.3)(yaml@2.9.0)):
     dependencies:
       '@vitest/expect': 4.1.7
       '@vitest/mocker': 4.1.7(vite@8.0.13(@types/node@26.1.1)(esbuild@0.27.3)(jiti@2.7.0)(terser@5.48.0)(tsx@4.19.3)(yaml@2.9.0))
@@ -10962,6 +11012,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 26.1.1
+      happy-dom: 21.0.3
     transitivePeerDependencies:
       - msw
 
@@ -10975,11 +11026,15 @@ snapshots:
     dependencies:
       defaults: 1.0.4
 
+  web-audio-test-api@0.5.2(patch_hash=6c6d74924638170f83809b194c9d52e593b861e19c8530520078fc00094fc8c8): {}
+
   webidl-conversions@4.0.2: {}
 
   webmcp-types@0.1.9: {}
 
   webpack-virtual-modules@0.6.2: {}
+
+  whatwg-mimetype@3.0.0: {}
 
   whatwg-url@7.1.0:
     dependencies:
@@ -11205,6 +11260,8 @@ snapshots:
   ws@8.19.0: {}
 
   ws@8.20.1: {}
+
+  ws@8.22.0: {}
 
   wsl-utils@0.3.1:
     dependencies:

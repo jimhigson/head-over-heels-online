@@ -279,6 +279,13 @@ export const xyzEqual = (
 export const xyEqual = ({ x: ax, y: ay }: Xy, { x: bx, y: by }: Xy) => {
   return ax === bx && ay === by;
 };
+/** equal on every axis to within floating point error ({@link epsilon}) */
+export const xyzVeryClose = (
+  { x: ax, y: ay, z: az }: Xyz,
+  { x: bx, y: by, z: bz }: Xyz,
+) => {
+  return veryClose(ax, bx) && veryClose(ay, by) && veryClose(az, bz);
+};
 
 /**
  * for floating point error where numbers should be integers but aren't quite

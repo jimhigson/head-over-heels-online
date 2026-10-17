@@ -5,8 +5,8 @@ import { type ItemState } from "../model/ItemState";
 import { getRoomItem } from "../model/RoomState";
 import { type TestRoomId } from "./basicRoom";
 
+/** head's state, in whichever room head is in */
 export const headState = (gameState: GameState<TestRoomId>) => {
-  // TODO: cast should be unnecessary with known item ids
   return gameState.characterRooms.head!.items["head"]!.state as ItemState<
     "head",
     string,
@@ -14,8 +14,8 @@ export const headState = (gameState: GameState<TestRoomId>) => {
   >;
 };
 
+/** heels' state, in whichever room heels is in */
 export const heelsState = (gameState: GameState<TestRoomId>) => {
-  // TODO: cast should be unnecessary with known item ids
   return gameState.characterRooms.heels!.items["heels"]!.state as ItemState<
     "heels",
     string,
@@ -23,12 +23,13 @@ export const heelsState = (gameState: GameState<TestRoomId>) => {
   >;
 };
 
+/** the joined headOverHeels' state, in whichever room they are in */
 export const headOverHeelsState = (gameState: GameState<TestRoomId>) => {
-  // TODO: cast should be unnecessary with known item ids
   return gameState.characterRooms.headOverHeels!.items["headOverHeels"]!
     .state as ItemState<"headOverHeels", string, string>;
 };
 
+/** the state of whichever character is currently being played */
 export const currentPlayableState = (gameState: GameState<TestRoomId>) => {
   const currentPlayable = gameState.currentCharacterName;
   return getRoomItem(
@@ -37,6 +38,7 @@ export const currentPlayableState = (gameState: GameState<TestRoomId>) => {
   )!.state;
 };
 
+/** an item of the given type T, by id, from the current room */
 export const item = <T extends ItemInPlayType>(
   gameState: GameState<TestRoomId>,
   itemId: string,
@@ -45,6 +47,7 @@ export const item = <T extends ItemInPlayType>(
     ItemInPlay<T, TestRoomId, string> | undefined;
 };
 
+/** the state of an item of the given type, by id, from the current room */
 export const itemState = <T extends ItemInPlayType>(
   gameState: GameState<TestRoomId>,
   itemId: string,
