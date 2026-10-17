@@ -26,10 +26,8 @@ import sharp from "sharp";
 import { debugSpritesheetMeta } from "../gfx/spritesheetMeta/debugSpritesheetMeta";
 import { monsterMovements } from "../src/model/json/MonsterJsonConfig";
 import { zxSpectrumColors, zxSpectrumColorsDimmed } from "../src/originalGame";
-import {
-  makeSpritesheetData,
-  type TextureId,
-} from "../src/sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { makeBaseSpritesheetData } from "../src/sprites/spritesheet/spritesheetData/makeBaseSpritesheetData";
+import { type TextureId } from "../src/sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { entries } from "../src/utils/entries";
 import {
   debugFontGlyphHeight,
@@ -219,7 +217,8 @@ const run = async () => {
     out[i + 3] = data[i + 3];
   };
 
-  const spritesheetData = makeSpritesheetData(debugSpritesheetMeta);
+  // base ids only: variant ids alias their base's rect, so would paint over it
+  const spritesheetData = makeBaseSpritesheetData(debugSpritesheetMeta);
 
   for (const [textureId, { frame }] of Object.entries(spritesheetData.frames)) {
     const { x, y, w, h } = frame;

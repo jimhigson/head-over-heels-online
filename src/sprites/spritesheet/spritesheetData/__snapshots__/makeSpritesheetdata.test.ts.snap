@@ -8614,24 +8614,40 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     "frame": {
       "h": 16,
       "w": 16,
-      "x": 148,
-      "y": 868,
+      "x": 114,
+      "y": 885,
     },
   },
   "lightBeam.2": {
     "frame": {
       "h": 16,
       "w": 16,
-      "x": 165,
-      "y": 868,
+      "x": 131,
+      "y": 885,
     },
   },
   "lightBeam.3": {
     "frame": {
       "h": 16,
       "w": 16,
+      "x": 148,
+      "y": 885,
+    },
+  },
+  "lightBeam.4": {
+    "frame": {
+      "h": 16,
+      "w": 16,
+      "x": 165,
+      "y": 885,
+    },
+  },
+  "lightBeam.5": {
+    "frame": {
+      "h": 16,
+      "w": 16,
       "x": 182,
-      "y": 868,
+      "y": 885,
     },
   },
   "lightBeam.terminus.1": {
@@ -12347,6 +12363,8 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "lightBeam.1",
     "lightBeam.2",
     "lightBeam.3",
+    "lightBeam.4",
+    "lightBeam.5",
   ],
   "lightBeam.terminus": [
     "lightBeam.terminus.1",
