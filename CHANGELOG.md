@@ -1,5 +1,69 @@
 # Changelog
 
+## [28.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v27.0.0...v28.0.0) (2026-10-17)
+
+
+### Features
+
+* editor checks for oversized rooms that are not split into subrooms ([#1131](https://github.com/jimhigson/head-over-heels-online/issues/1131)) ([3b0ed38](https://github.com/jimhigson/head-over-heels-online/commit/3b0ed38658d373804d5e5d6d9709b01f71753722))
+* heels can put items down mid-air ([#1110](https://github.com/jimhigson/head-over-heels-online/issues/1110)) ([811a0d7](https://github.com/jimhigson/head-over-heels-online/commit/811a0d78fa2c0447eab802d4be54452f456258f5))
+* jumping off a lift pushes it down, and lifts slow under load ([#1147](https://github.com/jimhigson/head-over-heels-online/issues/1147)) ([0285152](https://github.com/jimhigson/head-over-heels-online/commit/0285152a57a7d878373e2950127f98cf09a7b155))
+* minor font improvements ([#1104](https://github.com/jimhigson/head-over-heels-online/issues/1104)) ([c17b62a](https://github.com/jimhigson/head-over-heels-online/commit/c17b62a1f5390c486f7a92ef09e7a60bff8741f2))
+* sound when trying and failing to use an item ([#1102](https://github.com/jimhigson/head-over-heels-online/issues/1102)) ([48ab4ac](https://github.com/jimhigson/head-over-heels-online/commit/48ab4ac5a6238b65a9c74746a111d2003d750956))
+* switches/buttons/timers can enable/disable each other ([#1125](https://github.com/jimhigson/head-over-heels-online/issues/1125)) ([3e3f016](https://github.com/jimhigson/head-over-heels-online/commit/3e3f0168f884acf3f4f69ee388cba6bf3e4bf48b))
+* Update CRT filter to latest ([#1072](https://github.com/jimhigson/head-over-heels-online/issues/1072)) ([9ef3c53](https://github.com/jimhigson/head-over-heels-online/commit/9ef3c53a61d49bc86a1c7bb9ebd54336775bb283))
+* upscaled smooth sprites ([#1097](https://github.com/jimhigson/head-over-heels-online/issues/1097)) ([a5c0a84](https://github.com/jimhigson/head-over-heels-online/commit/a5c0a843547c8b51b74fe9e90e423bcf1ea5c7be))
+
+
+### Bug Fixes
+
+* bug where items continue to play scrape sound after colliding, and some collisions were missing the bump sound ([#1151](https://github.com/jimhigson/head-over-heels-online/issues/1151)) ([1a1c5c4](https://github.com/jimhigson/head-over-heels-online/commit/1a1c5c471860d8310e17a300c40b8dab9da6e76f))
+* bug where jumping and walking with an item on top of the player failed to get them out from under it ([#1152](https://github.com/jimhigson/head-over-heels-online/issues/1152)) ([c6a1707](https://github.com/jimhigson/head-over-heels-online/commit/c6a17079272da288b4053d274e1d006d9c1c0992))
+* crash on collecting crown if sound not loaded ([#1149](https://github.com/jimhigson/head-over-heels-online/issues/1149)) ([1bb4769](https://github.com/jimhigson/head-over-heels-online/commit/1bb47696f54c8608648a4f0992c0712f727bab19))
+* guided-review poll freeze, spurious autosave, remaining colours ([#1090](https://github.com/jimhigson/head-over-heels-online/issues/1090)) ([cc57c28](https://github.com/jimhigson/head-over-heels-online/commit/cc57c288982899c2e1d5e1b1d7d80ccc20717418))
+* guided-review syncs closed panels too ([#1088](https://github.com/jimhigson/head-over-heels-online/issues/1088)) ([f71bbc8](https://github.com/jimhigson/head-over-heels-online/commit/f71bbc888ecb0a178a390771ecb224ba4fca7510))
+* initialise all required item state fields ([#1115](https://github.com/jimhigson/head-over-heels-online/issues/1115)) ([45b409a](https://github.com/jimhigson/head-over-heels-online/commit/45b409a3f528a2dc1724efea9bde3f4ab189b8fc))
+* items ride descending lifts without skipping or falling off ([#1134](https://github.com/jimhigson/head-over-heels-online/issues/1134)) ([9f1686d](https://github.com/jimhigson/head-over-heels-online/commit/9f1686dbc95778b4ab5d5468bf0c7d734e7df714))
+* leaving a moving lift keeps its vertical speed ([#1135](https://github.com/jimhigson/head-over-heels-online/issues/1135)) ([958c9c8](https://github.com/jimhigson/head-over-heels-online/commit/958c9c896d4ce6a44cdfe46237244c86339079f1))
+* scenery players glide and fall like playable characters ([#1136](https://github.com/jimhigson/head-over-heels-online/issues/1136)) ([fbff1cc](https://github.com/jimhigson/head-over-heels-online/commit/fbff1ccde9a5589b4e911fb210a3fb2f4b016c26))
+* upscaled css sprites keep the sheet's display-p3 colours ([#1103](https://github.com/jimhigson/head-over-heels-online/issues/1103)) ([2436998](https://github.com/jimhigson/head-over-heels-online/commit/24369982604916d8da2398dc047a13cd683e22da))
+
+
+### Sprite Changes
+
+* new sprites for light beams ([#1154](https://github.com/jimhigson/head-over-heels-online/issues/1154)) ([9ca7a17](https://github.com/jimhigson/head-over-heels-online/commit/9ca7a17ad9ebc301b466ae2be524d34592e1f0aa))
+
+
+### Level Editor
+
+* auto-fix several campaign issues with doors to rooms that don't exist, formalise doors and teleporters to nowhere as placeholder values ([#1153](https://github.com/jimhigson/head-over-heels-online/issues/1153)) ([143c6fb](https://github.com/jimhigson/head-over-heels-online/commit/143c6fb03b87552a57f7ae071d35d18ce22d4504))
+* cmd-k finds commands by their synonyms ([#1144](https://github.com/jimhigson/head-over-heels-online/issues/1144)) ([b875f32](https://github.com/jimhigson/head-over-heels-online/commit/b875f32d7b5ffb23ecc579bd5291e105f7b29edc))
+* door tool in the editor flickering when it changes the size of the room rendering ([#1150](https://github.com/jimhigson/head-over-heels-online/issues/1150)) ([eebfcf1](https://github.com/jimhigson/head-over-heels-online/commit/eebfcf13a1788897902460ebabe16859703f7e82))
+* drag items onto another room on the map to move them there ([#1120](https://github.com/jimhigson/head-over-heels-online/issues/1120)) ([c97abdd](https://github.com/jimhigson/head-over-heels-online/commit/c97abddabcae360025ed65649b60a71992995614))
+* editor webmcp server and bugfixes ([#1106](https://github.com/jimhigson/head-over-heels-online/issues/1106)) ([0f21dfd](https://github.com/jimhigson/head-over-heels-online/commit/0f21dfde98103c237df65255e182e00b310f41d5))
+* fix bug where inserting a room sometimes made an impossible door outside of the room bounds ([#1119](https://github.com/jimhigson/head-over-heels-online/issues/1119)) ([29f9f67](https://github.com/jimhigson/head-over-heels-online/commit/29f9f67fbd562a6ee0ce8fe77f086d9952637692))
+* fix bug where map sometimes got door geometry wrong; warn on redundant properties on door ([#1118](https://github.com/jimhigson/head-over-heels-online/issues/1118)) ([4c99d16](https://github.com/jimhigson/head-over-heels-online/commit/4c99d166749ac0c79ba453ef006e1060e4bb4a6e))
+* getRoomItems webmcp tool with item patterns ([#1127](https://github.com/jimhigson/head-over-heels-online/issues/1127)) ([e744bfe](https://github.com/jimhigson/head-over-heels-online/commit/e744bfe248997c0ea754b63a0bd595f05a88859e))
+* open play tests without an opener, in their own process ([#1129](https://github.com/jimhigson/head-over-heels-online/issues/1129)) ([83f37d4](https://github.com/jimhigson/head-over-heels-online/commit/83f37d454b0c46427a28122d92630d1762e02c5f))
+* open rooms in tabs, each keeping its own selection ([#1126](https://github.com/jimhigson/head-over-heels-online/issues/1126)) ([ffc6a26](https://github.com/jimhigson/head-over-heels-online/commit/ffc6a26aa3446820a11cd5fd97db69d49efc343b))
+* per-tab zoom and pan, and the door option, kept in the store ([#1143](https://github.com/jimhigson/head-over-heels-online/issues/1143)) ([f91a1dd](https://github.com/jimhigson/head-over-heels-online/commit/f91a1dd8a5170ac36be6ce83d6da2ff8ee15d2a9))
+* rename a room by clicking its front tab ([#1142](https://github.com/jimhigson/head-over-heels-online/issues/1142)) ([af44157](https://github.com/jimhigson/head-over-heels-online/commit/af441572bab8d3804ef9fe0daa1b54b66159212e))
+* show the build's version and branch in the menu bar ([#1130](https://github.com/jimhigson/head-over-heels-online/issues/1130)) ([6905b3b](https://github.com/jimhigson/head-over-heels-online/commit/6905b3bdc48c068d2f4c36e78ee4835a58c53137))
+* whole-window menu bar, and feedback when the login server can't be reached ([#1128](https://github.com/jimhigson/head-over-heels-online/issues/1128)) ([c4e4e5a](https://github.com/jimhigson/head-over-heels-online/commit/c4e4e5a3b29c1f951cd53f1d9bf920de34c4c3dd))
+
+
+### Miscellaneous
+
+* brotli db backups with dedicated r2 key ([#1123](https://github.com/jimhigson/head-over-heels-online/issues/1123)) ([d552221](https://github.com/jimhigson/head-over-heels-online/commit/d552221dd27e07cc58f3cb191394a4be677a29e0))
+* db backups as single flat tar.br ([#1124](https://github.com/jimhigson/head-over-heels-online/issues/1124)) ([bb53841](https://github.com/jimhigson/head-over-heels-online/commit/bb5384139d8c9b9bf65c2814035ff3b55183a50c))
+* guided-review icon controls, vscode link, copy path ([#1093](https://github.com/jimhigson/head-over-heels-online/issues/1093)) ([71f906f](https://github.com/jimhigson/head-over-heels-online/commit/71f906fd8f0f5dceeb16184b22d1384c1b0b507d))
+* guided-review vscode palette, generic font, sticky sidebar ([#1091](https://github.com/jimhigson/head-over-heels-online/issues/1091)) ([7488677](https://github.com/jimhigson/head-over-heels-online/commit/7488677d9a9eb5485e5933cae5704ad32fe7df5a))
+* make dougmencken data an optional dependency ([#1114](https://github.com/jimhigson/head-over-heels-online/issues/1114)) ([ed82279](https://github.com/jimhigson/head-over-heels-online/commit/ed822792236c1b3f1c4b613495aced566dfb3ce6))
+* nightly db backups to r2 ([#1122](https://github.com/jimhigson/head-over-heels-online/issues/1122)) ([cf86dfb](https://github.com/jimhigson/head-over-heels-online/commit/cf86dfb78b7cd3b5d7b3a3385f02b42d59594679))
+* remove guided-review skill, now its own repo ([#1094](https://github.com/jimhigson/head-over-heels-online/issues/1094)) ([0155784](https://github.com/jimhigson/head-over-heels-online/commit/01557845efb039ac2960ba24431f4876f08fc45f))
+* use typescript 7.1 nightly in vs code (6 was getting too slow) ([#1112](https://github.com/jimhigson/head-over-heels-online/issues/1112)) ([86b997f](https://github.com/jimhigson/head-over-heels-online/commit/86b997f6453d8014cf26f7cefbf91a555ced295b))
+* write-e2e skill, with debug-e2e pointing at it ([#1095](https://github.com/jimhigson/head-over-heels-online/issues/1095)) ([c7cb1f7](https://github.com/jimhigson/head-over-heels-online/commit/c7cb1f77bbc553e45acb82018227fb5c3b2fad71))
+
 ## [27.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v26.0.0...v27.0.0) (2026-08-23)
 
 
