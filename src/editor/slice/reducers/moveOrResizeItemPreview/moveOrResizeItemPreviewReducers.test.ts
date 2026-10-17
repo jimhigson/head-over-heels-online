@@ -6,6 +6,7 @@ import {
   reduceLevelEditorActions,
   testRoomId,
 } from "../__test__/storeStates";
+import { nowhereRoomId } from "../../../../model/json/ItemConfigMap";
 import { type WallJsonConfig } from "../../../../model/json/WallJsonConfig";
 import { wallTimes } from "../../../../model/times";
 import { type SceneryName } from "../../../../sprites/planets";
@@ -1234,7 +1235,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 8, y: 3, z: 0 },
             config: {
               direction: "left",
-              toRoom: "nowhere" as EditorRoomId,
+              toRoom: nowhereRoomId as EditorRoomId,
             },
           };
           room.items[awayWallAfterDoorId] = {
@@ -1329,7 +1330,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 8, y: 3, z: 0 },
             config: {
               direction: "left",
-              toRoom: "nowhere" as EditorRoomId,
+              toRoom: nowhereRoomId as EditorRoomId,
             },
           };
           room.items[wallBetweenId] = {
@@ -1345,7 +1346,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 8, y: 6, z: 0 },
             config: {
               direction: "left",
-              toRoom: "nowhere" as EditorRoomId,
+              toRoom: nowhereRoomId as EditorRoomId,
             },
           };
           room.items[wallAfterId] = {

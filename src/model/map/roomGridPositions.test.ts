@@ -2,6 +2,7 @@ import { expect, test } from "vitest";
 
 import { campaign } from "../../_generated/originalCampaign/campaign";
 import { exitGameRoomId } from "../json/ItemConfigMap";
+import { addDoor, campaignOf, newRoom } from "../json/verification/testUtils";
 import { type AnyRoomJson } from "../RoomJson";
 import { roomGridPositions } from "./roomGridPositions";
 import { sortRoomGridPositions } from "./sortRoomGridPositions";
@@ -4667,4 +4668,20 @@ test("a mutual teleporter pair yields a link in each direction", () => {
       to: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
     },
   ]);
+});
+
+test("a room named nowhere is placed beyond the door leading to it", () => {
+  const start = newRoom("start");
+  const nowhere = newRoom("nowhere");
+  addDoor(start, "towards", { toRoom: "nowhere" }, { x: 3, y: 0, z: 0 });
+  addDoor(nowhere, "away", { toRoom: "start" }, { x: 3, y: 8, z: 0 });
+
+  expect(
+    roomGridPositions({
+      campaign: campaignOf({ start, nowhere }),
+      roomId: "start",
+    })
+      .nodes.filter(({ roomId }) => roomId === "nowhere")
+      .map(({ gridPosition }) => gridPosition),
+  ).toEqual([{ x: 0, y: -1, z: 0 }]);
 });

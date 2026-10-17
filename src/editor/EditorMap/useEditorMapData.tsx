@@ -47,6 +47,7 @@ export const editorMapAreas = (
       campaign,
       roomId: seedRoomId,
       totalGraph: true,
+      skipMissingRooms: true,
     });
 
     const nodesBySubgraph = Map.groupBy(

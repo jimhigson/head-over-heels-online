@@ -425,14 +425,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "book",
         "times": {
-          "x": 4,
           "y": 2,
         },
       },
       "id": "b7",
       "jsonItemId": "b7",
       "position": {
-        "x": 1,
+        "x": 4,
         "y": 11,
         "z": 10,
       },
@@ -444,8 +443,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "roomTime": -9007199254740991,
         },
         "box": {
-          "x": 16,
-          "xd": 64,
+          "x": 64,
+          "xd": 16,
           "y": 176,
           "yd": 32,
           "z": 120,
@@ -546,12 +545,12 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "actedInXY": true,
           "actedInZ": false,
           "by": {
-            "ball@9,4,0": true,
+            "monster@0,4,1": true,
           },
-          "roomTime": 26666.66666666565,
+          "roomTime": 27424.999999998872,
         },
         "box": {
-          "x": 206,
+          "x": 205,
           "xd": 12,
           "y": 66,
           "yd": 12,
@@ -560,9 +559,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "collidedWith": {
           "by": {
-            "ball@9,4,0": true,
+            "monster@0,4,1": true,
           },
-          "roomTime": 9441.666666666639,
+          "roomTime": 27341.66666666555,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -657,24 +656,22 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "actedOnAt": {
           "actedInXY": true,
           "actedInZ": false,
-          "by": {
-            "monster@0,4,1": true,
-          },
-          "roomTime": 26666.66666666565,
+          "by": {},
+          "roomTime": 28116.66666666544,
         },
         "box": {
-          "x": 182,
+          "x": 179,
           "xd": 12,
-          "y": 66,
+          "y": 212,
           "yd": 12,
           "z": 0,
           "zd": 12,
         },
         "collidedWith": {
           "by": {
-            "monster@0,4,1": true,
+            "wall@0,14,0": true,
           },
-          "roomTime": 16133.333333333792,
+          "roomTime": 28116.66666666544,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -715,24 +712,22 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "actedOnAt": {
           "actedInXY": true,
           "actedInZ": false,
-          "by": {
-            "ball@7,4,0": true,
-          },
-          "roomTime": 26666.66666666565,
+          "by": {},
+          "roomTime": 28116.66666666544,
         },
         "box": {
-          "x": 194,
+          "x": 191,
           "xd": 12,
-          "y": 66,
+          "y": 212,
           "yd": 12,
           "z": 0,
           "zd": 12,
         },
         "collidedWith": {
           "by": {
-            "ball@7,4,0": true,
+            "wall@0,14,0": true,
           },
-          "roomTime": 9516.666666666644,
+          "roomTime": 28116.66666666544,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -1468,10 +1463,12 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "state": {
         "actedOnAt": {
-          "actedInXY": false,
+          "actedInXY": true,
           "actedInZ": false,
-          "by": {},
-          "roomTime": -9007199254740991,
+          "by": {
+            "m11": true,
+          },
+          "roomTime": 24458.333333332637,
         },
         "box": {
           "x": 176,
@@ -1585,9 +1582,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "actedInXY": true,
           "actedInZ": false,
           "by": {
-            "portableBlock@5,6,10": true,
+            "pickup@4,6,1": true,
           },
-          "roomTime": 29949.999999998505,
+          "roomTime": 28349.999999998738,
         },
         "box": {
           "x": 112,
@@ -1625,7 +1622,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "m7": true,
           },
-          "roomTime": 27249.999999998898,
+          "roomTime": 29033.33333333197,
         },
         "box": {
           "x": 48,
@@ -1701,9 +1698,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "actedInXY": true,
           "actedInZ": false,
           "by": {
-            "t1": true,
+            "mp": true,
           },
-          "roomTime": 29308.33333333193,
+          "roomTime": 29416.66666666525,
         },
         "box": {
           "x": 240,
@@ -1742,9 +1739,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "activated": true,
         "box": {
-          "x": 65.6249999999999,
+          "x": 70.2083333333333,
           "xd": 12,
-          "y": 148.45833333333317,
+          "y": 143.87099999999992,
           "yd": 12,
           "z": 24,
           "zd": 24,
@@ -1967,7 +1964,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "portableBlock@0,0,2": true,
           },
-          "roomTime": 29774.99999999853,
+          "roomTime": 21958.333333333,
         },
         "box": {
           "x": 0,
@@ -2015,9 +2012,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "actedInXY": true,
           "actedInZ": false,
           "by": {
-            "monster@1,7,0": true,
+            "pushableBlock@2,6,0": true,
           },
-          "roomTime": 29108.33333333196,
+          "roomTime": 29974.9999999985,
         },
         "box": {
           "x": 48,
@@ -2235,7 +2232,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "expires": null,
         "stoodOnBy": {
           "pickup@4,6,9": true,
-          "portableBlock@5,6,10": true,
         },
         "switchedAtRoomTime": -9007199254740991,
         "times": {
@@ -2260,9 +2256,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "actedInXY": true,
           "actedInZ": false,
           "by": {
-            "t1": true,
+            "t2": true,
           },
-          "roomTime": 20933.33333333315,
+          "roomTime": 27308.333333332223,
         },
         "box": {
           "x": 0,
@@ -2298,9 +2294,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "actedInXY": true,
           "actedInZ": false,
           "by": {
-            "t1": true,
+            "t2": true,
           },
-          "roomTime": 21633.33333333305,
+          "roomTime": 27958.333333332128,
         },
         "box": {
           "x": 0,
@@ -2338,7 +2334,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "monster@1,8,0": true,
           },
-          "roomTime": 28658.333333332026,
+          "roomTime": 27341.66666666555,
         },
         "box": {
           "x": 16,
@@ -2544,7 +2540,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "onFloorEdge": true,
         "part": "far",
-        "toRoom": "nowhere",
+        "toRoom": "room_0",
       },
       "id": "door@5,0,2/frameFar",
       "jsonItemId": "door@5,0,2",
@@ -2584,7 +2580,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "onFloorEdge": true,
         "part": "near",
-        "toRoom": "nowhere",
+        "toRoom": "room_0",
       },
       "id": "door@5,0,2/frameNear",
       "jsonItemId": "door@5,0,2",
@@ -2624,7 +2620,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "onFloorEdge": true,
         "part": "top",
-        "toRoom": "nowhere",
+        "toRoom": "room_0",
       },
       "id": "door@5,0,2/frameTop",
       "jsonItemId": "door@5,0,2",
@@ -2666,7 +2662,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "onFloorEdge": true,
         "side": "away",
         "style": "none",
-        "toRoom": "nowhere",
+        "toRoom": "room_0",
       },
       "id": "door@5,0,2/legs",
       "jsonItemId": "door@5,0,2",
@@ -2711,7 +2707,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "toDoor": undefined,
-        "toRoom": "nowhere",
+        "toRoom": "room_0",
       },
       "id": "door@5,0,2/portal",
       "jsonItemId": "door@5,0,2",
@@ -2917,7 +2913,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "emitter@17,0,7-3-4008": true,
           },
-          "roomTime": 20799.999999999836,
+          "roomTime": 20791.666666666504,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "createdByEmitter": "emitter@17,0,7",
@@ -2994,7 +2990,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             "emitter@17,0,7-3-4008": true,
             "emitter@17,0,7-4-5016": true,
           },
-          "roomTime": 20633.333333333194,
+          "roomTime": 20624.99999999986,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "createdByEmitter": "emitter@17,0,7",
@@ -3058,7 +3054,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "activated": true,
         "box": {
-          "x": 244.75,
+          "x": 244.9375,
           "xd": 12,
           "y": 116,
           "yd": 12,
@@ -3068,9 +3064,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "busyLickingDoughnutsOffFace": false,
         "collidedWith": {
           "by": {
-            "m4": true,
+            "block@15.5,8,0": true,
           },
-          "roomTime": 11500.000000000122,
+          "roomTime": 12016.666666666826,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "createdByEmitter": "emitter@17,0,7",
@@ -3146,7 +3142,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "emitter@17,0,7-0-1000": true,
           },
-          "roomTime": 20799.999999999836,
+          "roomTime": 20791.666666666504,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "createdByEmitter": "emitter@17,0,7",
@@ -3222,7 +3218,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "emitter@17,0,7-1-2008": true,
           },
-          "roomTime": 20633.333333333194,
+          "roomTime": 20624.99999999986,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "createdByEmitter": "emitter@17,0,7",
@@ -3292,9 +3288,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "actedInXY": false,
           "actedInZ": true,
           "by": {
-            "m7": true,
+            "lift@2,4,1": true,
           },
-          "roomTime": 28949.99999999865,
+          "roomTime": 27991.666666665456,
         },
         "box": {
           "x": 0,
@@ -3555,7 +3551,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "firstBeam": "lb2",
+        "firstBeam": "lb",
         "stoodOnBy": {},
         "switchedAtRoomTime": 17833.3333333336,
         "switchedSetting": "right",
@@ -3601,7 +3597,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
-        "firstBeam": "lb",
+        "firstBeam": "lb1",
         "stoodOnBy": {},
         "switchedAtRoomTime": 17833.3333333336,
         "switchedSetting": "right",
@@ -3656,7 +3652,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
-        "sourceItemId": "la1",
+        "sourceItemId": "la",
       },
       "id": "lb",
       "state": {
@@ -3667,17 +3663,17 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "roomTime": -9007199254740991,
         },
         "box": {
-          "x": 260,
+          "x": 276,
           "xd": 8,
-          "y": 0,
-          "yd": 32,
-          "z": 26,
+          "y": 16,
+          "yd": 16,
+          "z": 14,
           "zd": 8,
         },
         "disappearing": null,
-        "end": "terminus",
+        "end": "reflect-left",
         "expires": null,
-        "next": "lb1",
+        "next": undefined,
         "stoodOnBy": {},
         "switchedAtRoomTime": -9007199254740991,
       },
@@ -3705,13 +3701,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "xd": 8,
           "y": 0,
           "yd": 32,
-          "z": 38,
+          "z": 26,
           "zd": 8,
         },
         "disappearing": null,
         "end": "terminus",
         "expires": null,
-        "next": undefined,
+        "next": "lb2",
         "stoodOnBy": {},
         "switchedAtRoomTime": -9007199254740991,
       },
@@ -3724,7 +3720,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
-        "sourceItemId": "la",
+        "sourceItemId": "la1",
       },
       "id": "lb2",
       "state": {
@@ -3735,15 +3731,15 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "roomTime": -9007199254740991,
         },
         "box": {
-          "x": 276,
+          "x": 260,
           "xd": 8,
-          "y": 16,
-          "yd": 16,
-          "z": 14,
+          "y": 0,
+          "yd": 32,
+          "z": 38,
           "zd": 8,
         },
         "disappearing": null,
-        "end": "reflect-left",
+        "end": "terminus",
         "expires": null,
         "next": undefined,
         "stoodOnBy": {},
@@ -4093,14 +4089,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "actedOnAt": {
           "actedInXY": true,
           "actedInZ": false,
-          "by": {},
-          "roomTime": 15600.00000000042,
+          "by": {
+            "t2": true,
+          },
+          "roomTime": 19083.33333333342,
         },
         "activated": false,
         "box": {
           "x": 112,
           "xd": 12,
-          "y": 146,
+          "y": 156,
           "yd": 12,
           "z": 0,
           "zd": 12,
@@ -4230,9 +4228,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "id": "m11",
       "jsonItemId": "m11",
       "position": {
-        "x": 1,
-        "y": 12.875,
-        "z": 18,
+        "x": 12.375,
+        "y": 7.125,
+        "z": 12,
       },
       "state": {
         "actedOnAt": {
@@ -4243,9 +4241,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "activated": true,
         "box": {
-          "x": 228.16215006972575,
+          "x": 180.40000000000003,
           "xd": 12,
-          "y": 173.08000000000015,
+          "y": 122.53062445840519,
           "yd": 12,
           "z": 0,
           "zd": 24,
@@ -4253,17 +4251,17 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "busyLickingDoughnutsOffFace": false,
         "collidedWith": {
           "by": {
-            "t1": true,
+            "block@9,0,0_2_0_0": true,
           },
-          "roomTime": 23574.999999999432,
+          "roomTime": 23849.999999999392,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "everActivated": true,
         "expires": null,
         "facing": {
-          "x": 1,
-          "y": 0,
+          "x": 0,
+          "y": -1,
           "z": 0,
         },
         "standingOnItemId": "floor@0,0,0",
@@ -4281,8 +4279,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             "z": 0,
           },
           "walking": {
-            "x": 0.030000000000000006,
-            "y": 0,
+            "x": 0,
+            "y": -0.030000000000000006,
             "z": 0,
           },
         },
@@ -4587,16 +4585,14 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "actedOnAt": {
           "actedInXY": true,
           "actedInZ": false,
-          "by": {
-            "emitter@17,0,7-2-3008": true,
-          },
-          "roomTime": 15075.000000000382,
+          "by": {},
+          "roomTime": 16491.66666666713,
         },
         "activated": true,
         "box": {
-          "x": 257,
+          "x": 117,
           "xd": 12,
-          "y": 116,
+          "y": 182,
           "yd": 12,
           "z": 0,
           "zd": 12,
@@ -4604,9 +4600,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "busyLickingDoughnutsOffFace": false,
         "collidedWith": {
           "by": {
-            "emitter@17,0,7-2-3008": true,
+            "t1": true,
           },
-          "roomTime": 11500.000000000122,
+          "roomTime": 16491.66666666713,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -4731,10 +4727,12 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "state": {
         "actedOnAt": {
-          "actedInXY": false,
+          "actedInXY": true,
           "actedInZ": false,
-          "by": {},
-          "roomTime": -9007199254740991,
+          "by": {
+            "portableBlock@13,1,2": true,
+          },
+          "roomTime": 23541.666666666104,
         },
         "activated": true,
         "box": {
@@ -4804,9 +4802,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "activated": true,
         "box": {
-          "x": 2.4815145494210027,
+          "x": 84.35067940014284,
           "xd": 12,
-          "y": 50.54217472120084,
+          "y": 70.76776695296638,
           "yd": 12,
           "z": 0,
           "zd": 12,
@@ -4814,9 +4812,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "busyLickingDoughnutsOffFace": false,
         "collidedWith": {
           "by": {
-            "wall(right)@0,0,0": true,
+            "block@4,3,0": true,
           },
-          "roomTime": 29783.333333331862,
+          "roomTime": 29624.999999998552,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -5020,9 +5018,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "activated": true,
         "box": {
-          "x": 69.2000000000001,
+          "x": 114.84000000000009,
           "xd": 12,
-          "y": 66.30104076400862,
+          "y": 66.28062445840517,
           "yd": 12,
           "z": 0,
           "zd": 21,
@@ -5030,9 +5028,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "busyLickingDoughnutsOffFace": false,
         "collidedWith": {
           "by": {
-            "lift@0,4,3": true,
+            "ball@10,4,0": true,
           },
-          "roomTime": 21383.333333333085,
+          "roomTime": 27341.66666666555,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -5094,9 +5092,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "activated": true,
         "box": {
-          "x": 8.75,
+          "x": 18.75,
           "xd": 12,
-          "y": 115.95028563648741,
+          "y": 113.34996259864414,
           "yd": 12,
           "z": 0,
           "zd": 21,
@@ -5104,11 +5102,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "busyLickingDoughnutsOffFace": false,
         "collidedWith": {
           "by": {
-            "monster@2,8,0": true,
-            "pushableBlock@2,6,0": true,
-            "pushableBlock@2,6,1": true,
+            "monster@1,8,0": true,
           },
-          "roomTime": 28616.666666665365,
+          "roomTime": 29683.333333331877,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -5116,7 +5112,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "expires": null,
         "facing": {
           "x": -1,
-          "y": 0,
+          "y": -0,
           "z": 0,
         },
         "standingOnItemId": "floor@0,0,0",
@@ -5135,7 +5131,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
           "walking": {
             "x": -0.030000000000000006,
-            "y": 0,
+            "y": -0,
             "z": 0,
           },
         },
@@ -5170,9 +5166,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "activated": true,
         "box": {
-          "x": 20,
+          "x": 21.279999999999966,
           "xd": 12,
-          "y": 155.25,
+          "y": 129.02247755918648,
           "yd": 12,
           "z": 0,
           "zd": 21,
@@ -5180,9 +5176,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "busyLickingDoughnutsOffFace": false,
         "collidedWith": {
           "by": {
-            "db2": true,
+            "pushableBlock@2,9,0": true,
           },
-          "roomTime": 28516.66666666538,
+          "roomTime": 30016.66666666516,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -5190,7 +5186,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "expires": null,
         "facing": {
           "x": -0,
-          "y": -1,
+          "y": 1,
           "z": 0,
         },
         "standingOnItemId": "floor@0,0,0",
@@ -5209,7 +5205,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
           "walking": {
             "x": -0,
-            "y": -0.030000000000000006,
+            "y": 0.030000000000000006,
             "z": 0,
           },
         },
@@ -5244,9 +5240,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "activated": true,
         "box": {
-          "x": 4.5,
+          "x": 0.5299999999999674,
           "xd": 12,
-          "y": 127.95028563648741,
+          "y": 129.01162103786916,
           "yd": 12,
           "z": 0,
           "zd": 21,
@@ -5254,17 +5250,17 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "busyLickingDoughnutsOffFace": false,
         "collidedWith": {
           "by": {
-            "wall(right)@0,0,0": true,
+            "monster@1,8,0": true,
           },
-          "roomTime": 29866.666666665184,
+          "roomTime": 29583.33333333189,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "everActivated": true,
         "expires": null,
         "facing": {
-          "x": 1,
-          "y": 0,
+          "x": -1,
+          "y": -0,
           "z": 0,
         },
         "standingOnItemId": "floor@0,0,0",
@@ -5282,8 +5278,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             "z": 0,
           },
           "walking": {
-            "x": 0.030000000000000006,
-            "y": 0,
+            "x": -0.030000000000000006,
+            "y": -0,
             "z": 0,
           },
         },
@@ -5465,7 +5461,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "activated": true,
         "box": {
-          "x": 83.96212795866019,
+          "x": 84,
           "xd": 12,
           "y": 132,
           "yd": 12,
@@ -5475,9 +5471,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "busyLickingDoughnutsOffFace": false,
         "collidedWith": {
           "by": {
-            "conveyor@3,9,0": true,
+            "portableBlock@4,6,2": true,
           },
-          "roomTime": 27674.999999998836,
+          "roomTime": 19200.00000000007,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -5537,26 +5533,26 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "activated": true,
         "box": {
-          "x": 271.0999999999999,
+          "x": 255,
           "xd": 16,
-          "y": 160,
+          "y": 190,
           "yd": 16,
           "z": 0,
           "zd": 12,
         },
         "collidedWith": {
           "by": {
-            "floor@0,0,0": true,
+            "bu": true,
           },
-          "roomTime": 17816.666666666937,
+          "roomTime": 27216.66666666557,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "everActivated": true,
         "expires": null,
         "facing": {
-          "x": 1,
-          "y": 0,
+          "x": 0,
+          "y": -1,
           "z": 0,
         },
         "standingOnItemId": "floor@0,0,0",
@@ -5574,8 +5570,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             "z": 0,
           },
           "walking": {
-            "x": 0.030000000000000006,
-            "y": 0,
+            "x": 0,
+            "y": -0.030000000000000006,
             "z": 0,
           },
         },
@@ -5596,7 +5592,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "jsonItemId": "mp1",
       "position": {
         "x": 12.375,
-        "y": 7.5,
+        "y": 7.125,
         "z": 11,
       },
       "state": {
@@ -5610,7 +5606,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "box": {
           "x": 198,
           "xd": 16,
-          "y": 120,
+          "y": 114,
           "yd": 16,
           "z": 132,
           "zd": 12,
@@ -5771,12 +5767,12 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "m7": true,
           },
-          "roomTime": 28299.999999998745,
+          "roomTime": 20991.666666666475,
         },
         "box": {
           "x": 0,
           "xd": 12,
-          "y": 77,
+          "y": 78,
           "yd": 12,
           "z": 0,
           "zd": 12,
@@ -5785,7 +5781,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "m7": true,
           },
-          "roomTime": 28233.333333332088,
+          "roomTime": 20983.333333333143,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": {
@@ -5888,15 +5884,17 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "state": {
         "actedOnAt": {
-          "actedInXY": false,
+          "actedInXY": true,
           "actedInZ": false,
-          "by": {},
-          "roomTime": -9007199254740991,
+          "by": {
+            "m11": true,
+          },
+          "roomTime": 23633.333333332757,
         },
         "box": {
           "x": 194,
           "xd": 12,
-          "y": 2,
+          "y": 1,
           "yd": 12,
           "z": 0,
           "zd": 12,
@@ -6073,9 +6071,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "roomTime": 30016.66666666516,
         },
         "box": {
-          "x": 71.20586762629752,
+          "x": 69.15001948062482,
           "xd": 12,
-          "y": 91.19096794491831,
+          "y": 96.26195505442116,
           "yd": 12,
           "z": 12,
           "zd": 12,
@@ -6084,7 +6082,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "portableBlock@4,6,2": true,
           },
-          "roomTime": 28949.99999999865,
+          "roomTime": 29016.666666665307,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": {
@@ -6135,18 +6133,18 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "roomTime": 30016.66666666516,
         },
         "box": {
-          "x": 67.73333333333336,
+          "x": 72.39166666666658,
           "xd": 12,
-          "y": 144.1101156288794,
+          "y": 144.00599999999983,
           "yd": 12,
           "z": 12,
           "zd": 12,
         },
         "collidedWith": {
           "by": {
-            "ch1": true,
+            "portableBlock@5,6,10": true,
           },
-          "roomTime": 28033.333333332117,
+          "roomTime": 29199.999999998614,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": {
@@ -6260,18 +6258,18 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "roomTime": 30016.66666666516,
         },
         "box": {
-          "x": 96.2072509254837,
+          "x": 96.01392135659599,
           "xd": 12,
-          "y": 117.95000000000002,
+          "y": 108.95007040952271,
           "yd": 12,
           "z": 12,
           "zd": 12,
         },
         "collidedWith": {
           "by": {
-            "portableBlock@5,6,10": true,
+            "portableBlock@4,6,2": true,
           },
-          "roomTime": 29941.666666665173,
+          "roomTime": 29824.999999998523,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": {
@@ -6319,10 +6317,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "m7": true,
           },
-          "roomTime": 29774.99999999853,
+          "roomTime": 21958.333333333,
         },
         "box": {
-          "x": 3,
+          "x": 4,
           "xd": 12,
           "y": 32,
           "yd": 12,
@@ -6333,7 +6331,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "m7": true,
           },
-          "roomTime": 29733.33333333187,
+          "roomTime": 21816.666666666355,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -6376,10 +6374,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "portableBlock@0,0,2": true,
           },
-          "roomTime": 29866.666666665184,
+          "roomTime": 22049.999999999654,
         },
         "box": {
-          "x": 3,
+          "x": 4,
           "xd": 12,
           "y": 24,
           "yd": 12,
@@ -6426,10 +6424,12 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "state": {
         "actedOnAt": {
-          "actedInXY": false,
+          "actedInXY": true,
           "actedInZ": false,
-          "by": {},
-          "roomTime": -9007199254740991,
+          "by": {
+            "m11": true,
+          },
+          "roomTime": 23266.666666666144,
         },
         "box": {
           "x": 210,
@@ -6440,8 +6440,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "zd": 12,
         },
         "collidedWith": {
-          "by": {},
-          "roomTime": -9007199254740991,
+          "by": {
+            "m11": true,
+          },
+          "roomTime": 23266.666666666144,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -6479,13 +6481,15 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "state": {
         "actedOnAt": {
-          "actedInXY": false,
+          "actedInXY": true,
           "actedInZ": false,
-          "by": {},
-          "roomTime": -9007199254740991,
+          "by": {
+            "portableBlock@13,1,0": true,
+          },
+          "roomTime": 23358.333333332797,
         },
         "box": {
-          "x": 210,
+          "x": 211,
           "xd": 12,
           "y": 18,
           "yd": 12,
@@ -6493,8 +6497,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "zd": 12,
         },
         "collidedWith": {
-          "by": {},
-          "roomTime": -9007199254740991,
+          "by": {
+            "m11": true,
+          },
+          "roomTime": 23266.666666666144,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -6532,10 +6538,12 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "state": {
         "actedOnAt": {
-          "actedInXY": false,
+          "actedInXY": true,
           "actedInZ": false,
-          "by": {},
-          "roomTime": -9007199254740991,
+          "by": {
+            "portableBlock@13,1,1": true,
+          },
+          "roomTime": 23449.99999999945,
         },
         "box": {
           "x": 210,
@@ -6585,13 +6593,15 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "state": {
         "actedOnAt": {
-          "actedInXY": false,
+          "actedInXY": true,
           "actedInZ": false,
-          "by": {},
-          "roomTime": -9007199254740991,
+          "by": {
+            "m11": true,
+          },
+          "roomTime": 23266.666666666144,
         },
         "box": {
-          "x": 210,
+          "x": 211,
           "xd": 12,
           "y": 34,
           "yd": 12,
@@ -6599,8 +6609,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "zd": 12,
         },
         "collidedWith": {
-          "by": {},
-          "roomTime": -9007199254740991,
+          "by": {
+            "m11": true,
+          },
+          "roomTime": 23258.333333332812,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -6743,10 +6755,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "ball@10,4,0": true,
           },
-          "roomTime": 26666.66666666565,
+          "roomTime": 27424.999999998872,
         },
         "box": {
-          "x": 218,
+          "x": 217,
           "xd": 12,
           "y": 66,
           "yd": 12,
@@ -6793,26 +6805,22 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "state": {
         "actedOnAt": {
-          "actedInXY": true,
+          "actedInXY": false,
           "actedInZ": false,
-          "by": {
-            "t2": true,
-          },
-          "roomTime": 19183.333333333405,
+          "by": {},
+          "roomTime": -9007199254740991,
         },
         "box": {
-          "x": 53,
+          "x": 50,
           "xd": 12,
-          "y": 212,
+          "y": 210,
           "yd": 12,
           "z": 0,
           "zd": 12,
         },
         "collidedWith": {
-          "by": {
-            "wall@0,14,0": true,
-          },
-          "roomTime": 18300.0000000002,
+          "by": {},
+          "roomTime": -9007199254740991,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -6903,22 +6911,23 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "actedInZ": false,
           "by": {
             "conveyor@4,6,0": true,
+            "pickup@4,6,9": true,
           },
           "roomTime": 30016.66666666516,
         },
         "box": {
-          "x": 86.16385771296719,
+          "x": 89.27501948062464,
           "xd": 12,
-          "y": 95.82499999999997,
+          "y": 96.95007040952271,
           "yd": 12,
           "z": 12,
           "zd": 12,
         },
         "collidedWith": {
           "by": {
-            "portableBlock@5,6,10": true,
+            "pickup@4,6,9": true,
           },
-          "roomTime": 29416.66666666525,
+          "roomTime": 29824.999999998523,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -7010,28 +7019,28 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "actedInXY": true,
           "actedInZ": false,
           "by": {
-            "conveyor@6,7,0": true,
+            "pickup@4,6,10": true,
           },
-          "roomTime": 30016.66666666516,
+          "roomTime": 29199.999999998614,
         },
         "box": {
-          "x": 100,
+          "x": 44,
           "xd": 12,
-          "y": 105.74166666666669,
+          "y": 156,
           "yd": 12,
           "z": 12,
           "zd": 12,
         },
         "collidedWith": {
           "by": {
-            "br": true,
+            "pickup@4,6,10": true,
           },
-          "roomTime": 29949.999999998505,
+          "roomTime": 29199.999999998614,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
-        "standingOnItemId": "conveyor@6,7,0",
+        "standingOnItemId": "pushableBlock@2,9,0",
         "stoodOnBy": {},
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
@@ -7042,7 +7051,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
           "movingFloor": {
             "x": 0,
-            "y": -0.025,
+            "y": 0,
             "z": 0,
           },
         },
@@ -7120,23 +7129,23 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "actedInXY": true,
           "actedInZ": false,
           "by": {
-            "t2": true,
+            "m7": true,
           },
-          "roomTime": 27749.999999998825,
+          "roomTime": 27708.333333332164,
         },
         "box": {
-          "x": 14,
+          "x": 11,
           "xd": 16,
-          "y": 96,
+          "y": 93,
           "yd": 16,
           "z": 0,
           "zd": 12,
         },
         "collidedWith": {
           "by": {
-            "pushableBlock@2,6,0": true,
+            "m7": true,
           },
-          "roomTime": 27724.99999999883,
+          "roomTime": 27566.66666666552,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -7177,12 +7186,12 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "pushableBlock@1,6,0": true,
           },
-          "roomTime": 27841.66666666548,
+          "roomTime": 27799.999999998818,
         },
         "box": {
-          "x": 12,
+          "x": 9,
           "xd": 16,
-          "y": 95,
+          "y": 92,
           "yd": 16,
           "z": 12,
           "zd": 12,
@@ -7191,7 +7200,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "monster@1,8,0": true,
           },
-          "roomTime": 9516.666666666644,
+          "roomTime": 24366.666666665984,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -7232,12 +7241,12 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "pushableBlock@1,6,1": true,
           },
-          "roomTime": 27933.33333333213,
+          "roomTime": 27891.66666666547,
         },
         "box": {
-          "x": 12,
+          "x": 9,
           "xd": 16,
-          "y": 95,
+          "y": 92,
           "yd": 16,
           "z": 24,
           "zd": 12,
@@ -7589,10 +7598,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "monster@1,7,0": true,
           },
-          "roomTime": 28616.666666665365,
+          "roomTime": 29974.9999999985,
         },
         "box": {
-          "x": 30,
+          "x": 32,
           "xd": 16,
           "y": 100,
           "yd": 16,
@@ -7601,9 +7610,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "collidedWith": {
           "by": {
-            "monster@1,7,0": true,
+            "conveyor@3,6,0": true,
           },
-          "roomTime": 28616.666666665365,
+          "roomTime": 29883.333333331848,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -7644,10 +7653,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "pushableBlock@2,6,0": true,
           },
-          "roomTime": 28708.33333333202,
+          "roomTime": 29974.9999999985,
         },
         "box": {
-          "x": 29,
+          "x": 33,
           "xd": 16,
           "y": 100,
           "yd": 16,
@@ -7658,7 +7667,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "monster@1,7,0": true,
           },
-          "roomTime": 28616.666666665365,
+          "roomTime": 28416.666666665395,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -7699,10 +7708,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "pushableBlock@2,6,1": true,
           },
-          "roomTime": 28799.999999998672,
+          "roomTime": 30016.66666666516,
         },
         "box": {
-          "x": 29,
+          "x": 32.2699999999995,
           "xd": 16,
           "y": 100,
           "yd": 16,
@@ -7750,29 +7759,31 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "actedInXY": true,
           "actedInZ": false,
           "by": {
-            "monster@2,8,0": true,
+            "monster@1,8,0": true,
           },
-          "roomTime": 22424.9999999996,
+          "roomTime": 30016.66666666516,
         },
         "box": {
           "x": 32,
           "xd": 16,
-          "y": 141,
+          "y": 141.02247755918648,
           "yd": 16,
           "z": 0,
           "zd": 12,
         },
         "collidedWith": {
           "by": {
-            "m11": true,
+            "monster@1,8,0": true,
           },
-          "roomTime": 21441.66666666641,
+          "roomTime": 30016.66666666516,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "expires": null,
         "standingOnItemId": "floor@0,0,0",
-        "stoodOnBy": {},
+        "stoodOnBy": {
+          "portableBlock@5,6,10": true,
+        },
         "switchedAtRoomTime": -9007199254740991,
         "vels": {
           "gravity": {
@@ -7914,22 +7925,26 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "state": {
         "actedOnAt": {
-          "actedInXY": false,
+          "actedInXY": true,
           "actedInZ": false,
-          "by": {},
-          "roomTime": -9007199254740991,
+          "by": {
+            "m11": true,
+          },
+          "roomTime": 23633.333333332757,
         },
         "box": {
           "x": 210,
           "xd": 12,
-          "y": 2,
+          "y": 1,
           "yd": 12,
           "z": 0,
           "zd": 12,
         },
         "collidedWith": {
-          "by": {},
-          "roomTime": -9007199254740991,
+          "by": {
+            "m11": true,
+          },
+          "roomTime": 23633.333333332757,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -8219,10 +8234,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "actedInXY": true,
           "actedInZ": false,
           "by": {
-            "t1": true,
-            "t2": true,
+            "mp": true,
           },
-          "roomTime": 7833.3333333332275,
+          "roomTime": 28483.33333333205,
         },
         "box": {
           "x": 274,
@@ -8235,7 +8249,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disabled": false,
         "disappearing": null,
         "expires": null,
-        "lastToggledAtRoomTime": 7833.3333333332275,
+        "lastToggledAtRoomTime": 28483.33333333205,
         "setting": "right",
         "stoodOnBy": {},
         "switchedAtRoomTime": -9007199254740991,
@@ -8269,9 +8283,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "activated": true,
         "box": {
-          "x": 249.5,
+          "x": 65.9,
           "xd": 12,
-          "y": 196,
+          "y": 178.5,
           "yd": 12,
           "z": 0,
           "zd": 12,
@@ -8279,22 +8293,22 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "busyLickingDoughnutsOffFace": false,
         "collidedWith": {
           "by": {
-            "m11": true,
+            "m4": true,
           },
-          "roomTime": 23574.999999999432,
+          "roomTime": 16491.66666666713,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
         "everActivated": true,
         "expires": null,
         "facing": {
-          "x": 1,
-          "y": 0,
+          "x": 0,
+          "y": -1,
           "z": 0,
         },
         "standingOnItemId": "floor@0,0,0",
         "stoodOnBy": {},
-        "switchedAtRoomTime": 7691.666666666566,
+        "switchedAtRoomTime": 28449.999999998723,
         "switchedSetting": "right",
         "vels": {
           "gravity": {
@@ -8308,8 +8322,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             "z": 0,
           },
           "walking": {
-            "x": 0.030000000000000006,
-            "y": 0,
+            "x": 0,
+            "y": -0.030000000000000006,
             "z": 0,
           },
         },
@@ -8343,9 +8357,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "activated": true,
         "box": {
-          "x": 0.17354029105936,
+          "x": 53.9,
           "xd": 12,
-          "y": 156.66729471308525,
+          "y": 195.5,
           "yd": 12,
           "z": 0,
           "zd": 12,
@@ -8353,9 +8367,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "busyLickingDoughnutsOffFace": false,
         "collidedWith": {
           "by": {
-            "monster@2,8,0": true,
+            "wall(right)@0,0,0": true,
           },
-          "roomTime": 29341.66666666526,
+          "roomTime": 27533.33333333219,
         },
         "controlledWithJoystickAtRoomTime": -9007199254740991,
         "disappearing": null,
@@ -8391,12 +8405,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "teleporter@1,0,0": {
       "config": {
-        "toPosition": {
-          "x": 1,
-          "y": 0,
-          "z": 0,
-        },
-        "toRoom": "nowhere",
+        "toRoom": "room_1",
       },
       "id": "teleporter@1,0,0",
       "jsonItemId": "teleporter@1,0,0",
@@ -8426,12 +8435,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "expires": null,
         "stoodOnBy": {},
         "switchedAtRoomTime": -9007199254740991,
-        "toPosition": {
-          "x": 1,
-          "y": 0,
-          "z": 0,
-        },
-        "toRoom": "nowhere",
+        "toRoom": "room_1",
       },
       "type": "teleporter",
     },
@@ -8536,9 +8540,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "actedInXY": true,
           "actedInZ": false,
           "by": {
-            "m7": true,
+            "monster@2,8,0": true,
           },
-          "roomTime": 29924.99999999851,
+          "roomTime": 29358.333333331924,
         },
         "box": {
           "x": -16,
@@ -8631,9 +8635,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "actedInXY": true,
           "actedInZ": false,
           "by": {
-            "t2": true,
+            "mp": true,
           },
-          "roomTime": 19416.666666666704,
+          "roomTime": 29166.666666665285,
         },
         "box": {
           "x": 0,
@@ -8746,6 +8750,74 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "switchedAtRoomTime": -9007199254740991,
       },
       "type": "wall",
+    },
+  },
+  "meta": {
+    "subRooms": {
+      "0": {
+        "gridPosition": {
+          "x": 0,
+          "y": 0,
+        },
+        "physicalPosition": {
+          "from": {
+            "x": 0,
+            "y": 0,
+          },
+          "to": {
+            "x": 9,
+            "y": 7,
+          },
+        },
+      },
+      "1": {
+        "gridPosition": {
+          "x": 1,
+          "y": 0,
+        },
+        "physicalPosition": {
+          "from": {
+            "x": 9,
+            "y": 0,
+          },
+          "to": {
+            "x": 18,
+            "y": 7,
+          },
+        },
+      },
+      "2": {
+        "gridPosition": {
+          "x": 0,
+          "y": 1,
+        },
+        "physicalPosition": {
+          "from": {
+            "x": 0,
+            "y": 7,
+          },
+          "to": {
+            "x": 9,
+            "y": 14,
+          },
+        },
+      },
+      "3": {
+        "gridPosition": {
+          "x": 1,
+          "y": 1,
+        },
+        "physicalPosition": {
+          "from": {
+            "x": 9,
+            "y": 7,
+          },
+          "to": {
+            "x": 18,
+            "y": 14,
+          },
+        },
+      },
     },
   },
   "planet": "egyptus",
@@ -8908,12 +8980,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "config": {
           "style": "book",
           "times": {
-            "x": 4,
             "y": 2,
           },
         },
         "position": {
-          "x": 1,
+          "x": 4,
           "y": 11,
           "z": 10,
         },
@@ -9521,7 +9592,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "door@5,0,2": {
         "config": {
           "direction": "towards",
-          "toRoom": "nowhere",
+          "toRoom": "room_0",
         },
         "position": {
           "x": 5,
@@ -9769,9 +9840,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "which": "monkey",
         },
         "position": {
-          "x": 1,
-          "y": 12.875,
-          "z": 18,
+          "x": 12.375,
+          "y": 7.125,
+          "z": 12,
         },
         "type": "monster",
       },
@@ -10036,7 +10107,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "position": {
           "x": 12.375,
-          "y": 7.5,
+          "y": 7.125,
           "z": 11,
         },
         "type": "movingPlatform",
@@ -10646,12 +10717,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "teleporter@1,0,0": {
         "config": {
-          "toPosition": {
-            "x": 1,
-            "y": 0,
-            "z": 0,
-          },
-          "toRoom": "nowhere",
+          "toRoom": "room_1",
         },
         "position": {
           "x": 1,
@@ -10786,6 +10852,74 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "type": "wall",
+      },
+    },
+    "meta": {
+      "subRooms": {
+        "0": {
+          "gridPosition": {
+            "x": 0,
+            "y": 0,
+          },
+          "physicalPosition": {
+            "from": {
+              "x": 0,
+              "y": 0,
+            },
+            "to": {
+              "x": 9,
+              "y": 7,
+            },
+          },
+        },
+        "1": {
+          "gridPosition": {
+            "x": 1,
+            "y": 0,
+          },
+          "physicalPosition": {
+            "from": {
+              "x": 9,
+              "y": 0,
+            },
+            "to": {
+              "x": 18,
+              "y": 7,
+            },
+          },
+        },
+        "2": {
+          "gridPosition": {
+            "x": 0,
+            "y": 1,
+          },
+          "physicalPosition": {
+            "from": {
+              "x": 0,
+              "y": 7,
+            },
+            "to": {
+              "x": 9,
+              "y": 14,
+            },
+          },
+        },
+        "3": {
+          "gridPosition": {
+            "x": 1,
+            "y": 1,
+          },
+          "physicalPosition": {
+            "from": {
+              "x": 9,
+              "y": 7,
+            },
+            "to": {
+              "x": 18,
+              "y": 14,
+            },
+          },
+        },
       },
     },
     "planet": "egyptus",

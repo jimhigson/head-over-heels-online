@@ -1,10 +1,10 @@
 import { expect, test } from "vitest";
 
-import { type AnyRoomJson } from "../../../model/RoomJson";
+import { type AnyRoomJson } from "./RoomJson";
 import {
   type RoomJsonFloorsExtent,
   roomJsonFloorsExtent,
-} from "./roomRenderExtent";
+} from "./roomJsonFloorsExtent";
 
 test("returns undefined for room with no floors", () => {
   const roomJson: AnyRoomJson = {

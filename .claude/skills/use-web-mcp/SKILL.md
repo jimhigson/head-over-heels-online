@@ -74,8 +74,8 @@ async () => {
     await new Promise((r) => setTimeout(r, 500));
   }
   const call = async (name, args = {}) => {
-    // Chrome wants the args as a JSON *string*, despite webmcp-types saying object:
-    const result = JSON.parse(await mc.executeTool(tools.find((t) => t.name === name), JSON.stringify(args)));
+    // the args go as an object:
+    const result = JSON.parse(await mc.executeTool(tools.find((t) => t.name === name), args));
     const text = result.content[0].text;
     return text === "undefined" ? undefined : JSON.parse(text);
   };
@@ -84,7 +84,7 @@ async () => {
 ```
 
 - `executeTool` returns a JSON string `{content:[{type:"text",text}]}`; `text` is JSON, or the literal `"undefined"`.
-- "Failed to parse input arguments" = you passed an object instead of a JSON string.
+- "invalid input object: value is not an object" = you passed a JSON string instead of an object.
 - "not of type 'RegisteredTool'" = the tools weren't registered yet (page still loading) - poll as above.
 
 ## Gotchas

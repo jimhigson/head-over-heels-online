@@ -13,6 +13,7 @@ import {
   isWholeRoomSubRooms,
   type RoomJson,
 } from "../../../../../../model/RoomJson";
+import { roomJsonFloorsExtent } from "../../../../../../model/roomJsonFloorsExtent";
 import { emptyObject } from "../../../../../../utils/empty";
 import { entries } from "../../../../../../utils/entries";
 import { normalise } from "../../../../../../utils/maths/normalise";
@@ -24,7 +25,6 @@ import {
   type Xy,
 } from "../../../../../../utils/vectors/vectors";
 import { blockSizePx } from "../../../../../physics/mechanicsConstants";
-import { roomJsonFloorsExtent } from "../../../../../render/room/roomRenderExtent";
 import { roomGridSizeXY } from "./mapConstants";
 import {
   type NotableItem,

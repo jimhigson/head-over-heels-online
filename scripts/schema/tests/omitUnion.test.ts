@@ -7,8 +7,6 @@ describe("omitUnion", { timeout }, () => {
   it("should handle Omit on union types", async () => {
     const result = await flattenFixture("omitUnion", "TestOmitUnion");
 
-    console.log("Full result:", result);
-
     // NOTE: TypeScript's type system resolves Omit<Union> by the time our flattener
     // sees it. The distributed behavior only works when we have special handling
     // (like we do for emitter.emits property).

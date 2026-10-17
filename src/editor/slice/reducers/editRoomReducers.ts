@@ -1,5 +1,6 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
+import { addReturnDoorInPlace } from "../../../model/inPlaceMutators/addReturnDoorInPlace";
 import { changeRoomSceneryInPlace } from "../../../model/inPlaceMutators/changeRoomSceneryInPlace";
 import { doorLinkNeedsToDoor } from "../../../model/json/candidatePartnerDoors";
 import {
@@ -33,7 +34,6 @@ import {
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../../editorTypes";
-import { addReturnDoorInPlace } from "../inPlaceMutators/addDoorInPlace";
 import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
 import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
@@ -143,6 +143,7 @@ const roomAtVerticalNeighbour = (
     campaign: state.campaignInProgress,
     roomId: room.id,
     subRoomId,
+    skipMissingRooms: true,
   }).nodes.find(({ gridPosition }) => xyzEqual(gridPosition, neighbourVector));
 
   if (
@@ -300,7 +301,7 @@ export const editRoomReducers = {
           case 0:
             // No matching doors found; add one
             addReturnDoorInPlace({
-              state,
+              rooms: state.campaignInProgress.rooms,
               outgoingDoorEntry: [doorItemId, doorItem],
               fromRoomJson: newRoomJson,
               toRoomJson: otherRoom,

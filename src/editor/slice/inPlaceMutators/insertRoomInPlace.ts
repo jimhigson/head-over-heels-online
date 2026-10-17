@@ -1,8 +1,13 @@
+import { addReturnDoorInPlace } from "../../../model/inPlaceMutators/addReturnDoorInPlace";
 import { nextItemId } from "../../../model/inPlaceMutators/nextItemId";
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
 import { typePrefix } from "../../../model/json/typePrefix";
 import { findSubRoomForItem } from "../../../model/map/itemIsInSubRoom";
 import { roomGridPositions } from "../../../model/map/roomGridPositions";
+import {
+  type FloorBounds,
+  roomFloorBounds,
+} from "../../../model/roomFloorBounds";
 import { subRoomById } from "../../../model/RoomJson";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJsonItemIterators";
 import { keys, valuesIter } from "../../../utils/entries";
@@ -25,36 +30,15 @@ import {
   selectCursorSubRoomIdFromLevelEditorState,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
-import {
-  roomFloorMaxX,
-  roomFloorMaxY,
-  roomFloorMinX,
-  roomFloorMinY,
-} from "../roomJsonSelectors";
-import { addReturnDoorInPlace } from "./addDoorInPlace";
 import { addNewRoomInPlace } from "./addNewRoomInPlace";
 import { changeCurrentRoomInPlace } from "./changeCurrentRoomInPlace";
 import { cutHoleInWallsForDoorsInPlace } from "./cutHoleInWallsForDoorsInPlace";
-
-type FloorBounds = {
-  minX: number;
-  maxX: number;
-  minY: number;
-  maxY: number;
-};
-
-const getRoomFloorBounds = (room: EditorRoomJson): FloorBounds => ({
-  minX: roomFloorMinX(room),
-  maxX: roomFloorMaxX(room),
-  minY: roomFloorMinY(room),
-  maxY: roomFloorMaxY(room),
-});
 
 const getSubRoomFloorBounds = (
   room: EditorRoomJson,
   subRoomId: string,
 ): FloorBounds => {
-  const roomBounds = getRoomFloorBounds(room);
+  const roomBounds = roomFloorBounds(room);
 
   if (subRoomId !== "*") {
     const subRoom = subRoomById(room, subRoomId);
@@ -149,6 +133,7 @@ export const insertRoomInPlace = (
     campaign: state.campaignInProgress,
     roomId: currentRoom.id,
     subRoomId: selectCursorSubRoomIdFromLevelEditorState(state),
+    skipMissingRooms: true,
   }).nodes;
   const targetSpec = gridPositions.find(({ gridPosition }) =>
     xyzEqual(gridPosition, unitVectors[direction]),
@@ -270,7 +255,7 @@ export const insertRoomInPlace = (
       );
 
       addReturnDoorInPlace({
-        state,
+        rooms: state.campaignInProgress.rooms,
         fromRoomJson: currentRoom,
         toRoomJson: existingRoomAtTarget,
         outgoingDoorEntry: [outDoorId, outDoor],
@@ -292,7 +277,7 @@ export const insertRoomInPlace = (
       const oldToRoom = outDoor.config.toRoom;
 
       addReturnDoorInPlace({
-        state,
+        rooms: state.campaignInProgress.rooms,
         fromRoomJson: currentRoom,
         toRoomJson: newRoom,
         outgoingDoorEntry: [
@@ -310,7 +295,7 @@ export const insertRoomInPlace = (
       ) {
         const fwdDoorId = nextItemId(keys(newRoom.items), typePrefix.door);
         const fwdDoorPosition = doorPositionOnWall(
-          getRoomFloorBounds(newRoom),
+          roomFloorBounds(newRoom),
           direction,
           outDoor.position,
         );
@@ -341,7 +326,7 @@ export const insertRoomInPlace = (
       room: inRoom,
     } of inboundDoorsFromOppositeDirection) {
       addReturnDoorInPlace({
-        state,
+        rooms: state.campaignInProgress.rooms,
         fromRoomJson: inRoom,
         toRoomJson: newRoom,
         outgoingDoorEntry: [inDoorId, inDoor],
@@ -377,7 +362,7 @@ export const insertRoomInPlace = (
     );
 
     addReturnDoorInPlace({
-      state,
+      rooms: state.campaignInProgress.rooms,
       fromRoomJson: currentRoom,
       toRoomJson: newRoom,
       outgoingDoorEntry: [outDoorId, outDoor],

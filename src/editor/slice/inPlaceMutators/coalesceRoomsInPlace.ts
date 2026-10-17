@@ -2,6 +2,10 @@ import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems"
 import { nextItemIdSet } from "../../../model/inPlaceMutators/nextItemId";
 import { roomGridPositions } from "../../../model/map/roomGridPositions";
 import {
+  type FloorBounds,
+  roomFloorBounds,
+} from "../../../model/roomFloorBounds";
+import {
   isWholeRoomSubRooms,
   roomNonContiguousRelationship,
   roomVerticalLinkHolders,
@@ -28,28 +32,8 @@ import {
 } from "../../editorTypes";
 import { selectCursorRoomFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
-import {
-  roomFloorMaxX,
-  roomFloorMaxY,
-  roomFloorMinX,
-  roomFloorMinY,
-} from "../roomJsonSelectors";
 import { changeCurrentRoomInPlace } from "./changeCurrentRoomInPlace";
 import { deleteRoomsInPlace } from "./deleteRoomsInPlace";
-
-type FloorBounds = {
-  minX: number;
-  maxX: number;
-  minY: number;
-  maxY: number;
-};
-
-const getRoomFloorBounds = (room: EditorRoomJson): FloorBounds => ({
-  minX: roomFloorMinX(room),
-  maxX: roomFloorMaxX(room),
-  minY: roomFloorMinY(room),
-  maxY: roomFloorMaxY(room),
-});
 
 /**
  * the real sub-room cells of a room (the divided form), or undefined when the
@@ -90,7 +74,7 @@ const computeLayout = (
   return state.selectedRoomIds.map((roomId) => {
     const room = state.campaignInProgress.rooms[roomId] as EditorRoomJson;
     const gridPos = gridPositionLookup.get(roomId)!;
-    const bounds = getRoomFloorBounds(room);
+    const bounds = roomFloorBounds(room);
     const roomWidth = bounds.maxX - bounds.minX;
     const roomHeight = bounds.maxY - bounds.minY;
 
@@ -575,6 +559,7 @@ const computeGridPositionLookup = (
     campaign: state.campaignInProgress,
     roomId,
     subRoomId,
+    skipMissingRooms: true,
   }).nodes;
 
   const selectedSet = new Set(state.selectedRoomIds);

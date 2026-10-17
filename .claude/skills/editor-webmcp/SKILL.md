@@ -15,6 +15,8 @@ The level editor registers webmcp tools in every build, dev and production. This
 | `getCurrentRoomJson` | - | the json of the room the editor is showing |
 | `getRoomItems` | `pattern?`, `roomId?` | a room's items (default the current room). Without `pattern`, `{itemId: item}`; with one, `{path: value}` for just what it picks out - see [Item patterns](#item-patterns). Prefer this to `getCurrentRoomJson` |
 | `getSelectedItems` | - | the selected items in the current room, id -> item json |
+| `setRoomItems` | `items` | adds, replaces (whole item json) or removes (`null`) items in the current room by id, as one undoable edit |
+| `setRoomItemValues` | `pattern`, `value` | sets `value` everywhere the [pattern](#item-patterns) picks out in the current room's items, as one undoable edit. A last part naming one key (`config.toRoom`) inserts it if absent; any other last part replaces only existing values. Returns the paths set |
 | `listRooms` | - | every room in the campaign, as `{id, planet}` |
 | `getOpenCampaign` | - | the open campaign's `locator` and `meta` |
 | `getEditorView` | - | camera angle, tool, current sub-room, grid resolution, and `openRoomTabs` (in order, each `{roomId, isPreview}` - a preview tab is replaced by the next room browsed to) |
@@ -22,7 +24,7 @@ The level editor registers webmcp tools in every build, dev and production. This
 | `getActionLog` | `typePrefix?` | last 50 actions - **dev builds only** (empty in production) |
 | `getVerificationIssues` | - | the same errors/warnings as the toolbar's verify button, each with `fixable`, `fixText` and `issueData` |
 | `fixVerificationIssue` | `verifier`, `issueData` (both unchanged from `getVerificationIssues`) | auto-fixes that one issue, as the verify dialog's Fix button does; re-checks first, so stale or non-fixable issues are refused. Returns the issues remaining |
-| `fixAllVerificationIssues` | - | auto-fixes every fixable issue, as "Fix all" does. Returns the issues remaining |
+| `fixAllVerificationIssues` | - | auto-fixes every fixable issue, as "Fix all" does. Returns the issues remaining - any a fix caused show here, to fix in turn |
 | `loadCampaign` | `username?`, `campaignName?`, `version?` | loads a campaign like the Open dialog (discards unsaved changes). No username/name = the sequel campaign |
 | `closeRoomTab` | `roomId` | closes a room's tab like its x (the last tab can't be closed; closing the current room's moves to the next tab); returns `openRoomTabs` |
 | `closeOtherRoomTabs` | `roomId` | closes every tab but that room's, which becomes current; returns `openRoomTabs` |
@@ -74,6 +76,7 @@ Edits (including auto-fixes) are not saved to the database until saved - say so.
 
 - **Current room**: `getCurrentRoomId`, or `getCurrentRoomJson` for its whole json.
 - **Change room** (also selects it): `dispatchAction` `levelEditor/changeToRoom` payload `{roomId, subRoomId: "*"}`.
+- **Change part of an item**: `setRoomItemValues`, eg pattern `[type=door].config.toRoom` value `"room_3"` - rather than rewriting the whole room json.
 - **Edit a room's json**: read it with `getCurrentRoomJson`, edit a copy, dispatch `levelEditor/roomJsonEdited` `{roomJson, timestamp: Date.now()}`. It replaces the **current** room - `changeToRoom` first. Changing `roomJson.id` renames the room (and repoints references). Setting a `nonContiguousRelationship` on one room mirrors it onto the partner automatically.
 - **Scenery / colour**: `levelEditor/changeRoomScenery` `{sceneryName, timestamp}` and `levelEditor/changeRoomColour` `{colour, timestamp}` act on the **selected** rooms.
 - **Tool**: `levelEditor/setTool` eg `{type: "pointer"}` or `{type: "item", item: {type: "door", config: {direction: "away", toRoom: "+"}}}`.

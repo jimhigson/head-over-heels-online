@@ -1,6 +1,7 @@
 import { produce } from "immer";
 import { describe, expect, test } from "vitest";
 
+import { nowhereRoomId } from "../../../model/json/ItemConfigMap";
 import {
   roomNonContiguousRelationship,
   roomVerticalLink,
@@ -357,7 +358,7 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
         position: { x: 0, y: 0, z: 0 },
         config: {
           direction: "towards",
-          toRoom: "nowhere" as EditorRoomId,
+          toRoom: nowhereRoomId as EditorRoomId,
         },
       };
       // add a second empty room:
@@ -471,7 +472,7 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
           position: { x: 3, y: 0, z: 0 },
           config: {
             direction: "away",
-            toRoom: "nowhere" as EditorRoomId,
+            toRoom: nowhereRoomId as EditorRoomId,
           },
         };
       },
@@ -522,7 +523,7 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
           position: { x: 3, y: 0, z: 0 },
           config: {
             direction: "towards",
-            toRoom: "nowhere" as EditorRoomId,
+            toRoom: nowhereRoomId as EditorRoomId,
           },
         };
       },
@@ -553,7 +554,7 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
       sameDirDoorId
     ] as EditorJsonItem<"door">;
 
-    expect(sameDirDoor.config.toRoom).toBe("nowhere");
+    expect(sameDirDoor.config.toRoom).toBe(nowhereRoomId);
   });
 
   test("does not overwrite a return door that already correctly points back", () => {
