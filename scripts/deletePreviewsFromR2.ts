@@ -1,5 +1,5 @@
 import { DeleteObjectsCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
-import { parseArgs } from "node:util";
+import { Command } from "@commander-js/extra-typings";
 
 import { makeR2Client } from "./r2/makeR2Client";
 import { previewsBucket } from "./r2/previewsBucket";
@@ -72,20 +72,19 @@ export const deletePreviewsFromR2 = async (
   }
 };
 
-const {
-  values: { pr, keepSha },
-} = parseArgs({
-  options: { pr: { type: "string" }, keepSha: { type: "string" } },
-});
+const program = new Command()
+  .name("deletePreviewsFromR2")
+  .description("Remove a pr's deploy previews from the previews bucket")
+  .requiredOption("--pr <number>", "the pr whose previews to delete")
+  .option(
+    "--keepSha <sha>",
+    "spare this commit's previews, so a fresh push can drop only the ones it supersedes",
+  )
+  .action(async ({ pr, keepSha }) => {
+    await deletePreviewsFromR2(pr, keepSha);
+  });
 
-if (pr === undefined) {
-  console.error(
-    "usage: tsx scripts/deletePreviewsFromR2.ts --pr <number> [--keepSha <sha>]",
-  );
-  process.exit(1);
-}
-
-deletePreviewsFromR2(pr, keepSha).catch((error: unknown) => {
+program.parseAsync().catch((error: unknown) => {
   console.error(error);
   process.exit(1);
 });

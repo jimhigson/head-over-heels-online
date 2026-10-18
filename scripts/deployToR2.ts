@@ -3,11 +3,12 @@ import {
   ListObjectsV2Command,
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
+import { Argument, Command } from "@commander-js/extra-typings";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { extname, join, sep } from "node:path";
-import { parseArgs } from "node:util";
 import { brotliCompressSync, constants as zlibConstants } from "node:zlib";
 
+import { keys } from "../src/utils/entries";
 import { makeR2Client } from "./r2/makeR2Client";
 import { previewsBucket } from "./r2/previewsBucket";
 
@@ -214,57 +215,56 @@ const dirByApp = {
   editor: "dist-editor",
 } as const satisfies Record<string, string>;
 
-const isApp = (value: string | undefined): value is keyof typeof dirByApp =>
-  value !== undefined && value in dirByApp;
+const program = new Command()
+  .name("deployToR2")
+  .description("Upload a built app to its R2 bucket")
+  .addArgument(
+    new Argument("<app>", "which app's build to upload").choices(
+      keys(dirByApp),
+    ),
+  )
+  .addArgument(
+    new Argument("<environment>", "where to deploy it").choices([
+      "main",
+      "preview",
+      "production",
+    ] as const),
+  )
+  .option(
+    "--prefix <hostLabel>",
+    "key prefix within the previews bucket; required for, and only valid for, the preview environment",
+  )
+  .action(async (app, environment, { prefix }) => {
+    if ((environment === "preview") !== (prefix !== undefined)) {
+      program.error(
+        "--prefix is required for the preview environment, and invalid for any other",
+      );
+    }
 
-const isEnvironment = (
-  value: string | undefined,
-): value is "main" | "preview" | "production" =>
-  value === "main" || value === "preview" || value === "production";
+    // pick up this environment's R2 credentials from its gitignored local env
+    // file for local runs; CI sets them as real env vars instead (which win,
+    // since loadEnvFile does not overwrite existing process.env entries)
+    const credentialsFile = `.env.r2-${environment}.local`;
+    if (existsSync(credentialsFile)) {
+      process.loadEnvFile(credentialsFile);
+    }
 
-const {
-  positionals,
-  values: { prefix },
-} = parseArgs({
-  allowPositionals: true,
-  options: { prefix: { type: "string" } },
-});
-const [app, environment] = positionals;
+    const target =
+      environment === "preview" ?
+        // previews share one bucket, told apart by a key prefix named after the
+        // host serving them, and are stored uncompressed - the edge compresses
+        // them on the fly, which is the right trade for a throwaway
+        { bucket: previewsBucket, keyPrefix: `${prefix}/`, compress: false }
+        // the other buckets follow the hoh-<app>-<environment> convention, one
+        // build per bucket, so they need no prefix
+      : { bucket: `hoh-${app}-${environment}`, keyPrefix: "", compress: true };
 
-const usage =
-  "usage: tsx scripts/deployToR2.ts <game|editor> <main|production> | <game|editor> preview --prefix <hostLabel>";
+    const { bucket, ...options } = target;
 
-if (!isApp(app) || !isEnvironment(environment)) {
-  console.error(usage);
-  process.exit(1);
-}
+    await deployToR2(dirByApp[app], bucket, options);
+  });
 
-// previews all share one bucket, told apart by a key prefix named after the
-// host serving them, and are stored uncompressed - the edge compresses them on
-// the fly, which is the right trade for a throwaway
-if (environment === "preview" && prefix === undefined) {
-  console.error(usage);
-  process.exit(1);
-}
-
-// pick up this environment's R2 credentials from its gitignored local env file
-// for local runs; CI sets them as real env vars instead (which win, since
-// loadEnvFile does not overwrite existing process.env entries)
-const credentialsFile = `.env.r2-${environment}.local`;
-if (existsSync(credentialsFile)) {
-  process.loadEnvFile(credentialsFile);
-}
-
-const target =
-  environment === "preview" ?
-    { bucket: previewsBucket, keyPrefix: `${prefix}/`, compress: false }
-    // the other buckets follow the hoh-<app>-<environment> convention, one
-    // build per bucket, so they need no prefix
-  : { bucket: `hoh-${app}-${environment}`, keyPrefix: "", compress: true };
-
-const { bucket, ...options } = target;
-
-deployToR2(dirByApp[app], bucket, options).catch((error: unknown) => {
+program.parseAsync().catch((error: unknown) => {
   console.error(error);
   process.exit(1);
 });
