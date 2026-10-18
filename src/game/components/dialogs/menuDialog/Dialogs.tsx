@@ -110,7 +110,7 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
     case "emulatedResolution":
       return <LazyEmulatedResolutionDialog />;
     case "errorCaught":
-      return <ErrorCaughtDialog errors={topOpenMenu.menuParam} />;
+      return <ErrorCaughtDialog />;
     case "hold":
       return <HoldDialog />;
     case "inputPreset":

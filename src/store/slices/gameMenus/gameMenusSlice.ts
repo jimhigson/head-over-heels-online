@@ -6,8 +6,8 @@ import { type PokeableNumber } from "../../../model/ItemStateMap";
 import { type ScrollConfig } from "../../../model/json/ItemConfigMap";
 import { type CharacterName } from "../../../model/modelTypes";
 import { emptyObject } from "../../../utils/empty";
-import { type SerialisableError } from "../../../utils/redux/createSerialisableErrors";
 import { clearAllData } from "../clearAllData";
+import { errorCaught, errorDismissed } from "../errors/errorsSlice";
 import { savedGameLoadedOnAppLoad } from "../savedGames/savedGamesSlice";
 
 type BaseOpenMenu = {
@@ -29,10 +29,6 @@ export type OpenMenu =
   | (BaseOpenMenu & {
       menuId: "death";
       menuParam: DeathMenuParam;
-    })
-  | (BaseOpenMenu & {
-      menuId: "errorCaught";
-      menuParam: Array<SerialisableError>;
     })
   | (BaseOpenMenu & {
       menuId: "mainMenu";
@@ -59,7 +55,7 @@ export type OpenMenu =
   | (BaseOpenMenu & {
       menuId: Exclude<
         DialogId,
-        "crowns" | "death" | "errorCaught" | "mainMenu" | "markdown/inline"
+        "crowns" | "death" | "mainMenu" | "markdown/inline"
       >;
       menuParam: EmptyObject;
     });
@@ -127,9 +123,11 @@ export const gameMenusSlice = createSlice({
         const [top] = state.openMenus;
 
         const topIsUnclosable =
-          state.openMenus.length === 1 &&
-          top.menuId === "mainMenu" &&
-          !top.menuParam.isClosable;
+          // closes only by choosing one of its options, which dismiss the error:
+          top.menuId === "errorCaught" ||
+          (state.openMenus.length === 1 &&
+            top.menuId === "mainMenu" &&
+            !top.menuParam.isClosable);
 
         if (!topIsUnclosable) {
           const [, ...tail] = state.openMenus;
@@ -244,27 +242,6 @@ export const gameMenusSlice = createSlice({
           ...state.openMenus,
         ];
       }
-    },
-    errorCaught(
-      state,
-      { payload: error }: PayloadAction<Array<SerialisableError>>,
-    ) {
-      // blat out all open menus - the menu may have caused the error!
-      state.openMenus = [
-        {
-          menuId: "errorCaught",
-          scrollableSelection: false,
-          menuParam: error,
-        },
-      ];
-    },
-    /**
-     * Dismiss the error dialog by clearing all open menus. The "clear all
-     * data" recovery strategy is a separate top-level action (`clearAllData`)
-     * that all slices reset on via `extraReducers`.
-     */
-    errorDismissed(state) {
-      state.openMenus = [];
     },
     // --- Listener-driven menu transitions -----------------------------------
     //
@@ -446,6 +423,20 @@ export const gameMenusSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(clearAllData, () => initialGameMenuSliceState);
+    builder.addCase(errorCaught, (state) => {
+      // when the error slice receives an error, react by showing our error dialog
+      // overwrite to blat out all open menus - the menu may have caused the error!
+      state.openMenus = [
+        {
+          menuId: "errorCaught",
+          scrollableSelection: false,
+          menuParam: emptyObject,
+        },
+      ];
+    });
+    builder.addCase(errorDismissed, (state) => {
+      state.openMenus = [];
+    });
     // After loading a save on app start, show the hold (paused) menu so the
     // player resumes on their own time rather than dropping straight into
     // gameplay — they may have just opened the tab, may need to re-orient,
@@ -460,11 +451,6 @@ export const gameMenusSlice = createSlice({
       ];
     });
   },
-  selectors: {
-    selectHasError(state: GameMenusState) {
-      return state.openMenus.some((menu) => menu.menuId === "errorCaught");
-    },
-  },
 });
 
 export const {
@@ -473,8 +459,6 @@ export const {
   cmdKPressed,
   crownsMenuShown,
   deathDialogShown,
-  errorCaught,
-  errorDismissed,
   gameEndedMenusOpened,
   gameStartedMenusOpened,
   goToSubmenu,
@@ -486,5 +470,3 @@ export const {
   scrollContentMenuShown,
   setFocussedMenuItemId,
 } = gameMenusSlice.actions;
-
-export const { selectHasError } = gameMenusSlice.selectors;

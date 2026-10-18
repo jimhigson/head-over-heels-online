@@ -1,12 +1,14 @@
 import { useState } from "preact/hooks";
+import { type EmptyObject } from "type-fest";
 
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import { clearAllData } from "../../../../../../store/slices/clearAllData";
+import {
+  errorDismissed,
+  selectCaughtErrors,
+} from "../../../../../../store/slices/errors/errorsSlice";
 import { reincarnationAccepted } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
-import { errorDismissed } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
-import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { ErrorDialog } from "../../../../../../ui/ErrorDialog";
-import { type SerialisableError } from "../../../../../../utils/redux/createSerialisableErrors";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
@@ -19,21 +21,16 @@ You could:
 * Rant on the [Discord server](https://discord.gg/XmV9QNWY)
 * Play [the MSX remake](https://www.file-hunter.com/Homebrew/?id=headoverheels) instead`;
 
-export const ErrorCaughtDialog = ({
-  errors,
-}: {
-  errors: Array<SerialisableError>;
-}) => {
+export const ErrorCaughtDialog = (_emptyProps: EmptyObject) => {
   const hasReincarnationPoint = useAppSelector(
     (state) => state.gameInPlay.gameInPlay.reincarnationPoint !== undefined,
   );
   const [showCopied, setShowCopied] = useState<boolean>(false);
-  const reincarnateCallback = useDispatchActionCallback(reincarnationAccepted);
   const dispatch = useAppDispatch();
 
   return (
     <ErrorDialog
-      errors={errors}
+      errors={useAppSelector(selectCaughtErrors)}
       intro={<BlockyMarkdown markdown={markdownIntro} />}
     >
       {(errorsReportText) => (
@@ -49,7 +46,10 @@ export const ErrorCaughtDialog = ({
               doubleHeightWhenFocussed
               id="reincarnate"
               label="Try reincarnating"
-              onSelect={reincarnateCallback}
+              onSelect={() => {
+                dispatch(errorDismissed());
+                dispatch(reincarnationAccepted());
+              }}
             />
           )}
           <MenuItem
@@ -67,10 +67,16 @@ export const ErrorCaughtDialog = ({
               id="copyClipboard"
               label="Copy error to clipboard"
               onSelect={() =>
-                navigator.clipboard.writeText(errorsReportText).then(() => {
-                  setShowCopied(true);
-                  window.setTimeout(() => setShowCopied(false), 2_000);
-                })
+                navigator.clipboard
+                  .writeText(errorsReportText)
+                  .then(() => {
+                    setShowCopied(true);
+                    window.setTimeout(() => setShowCopied(false), 2_000);
+                  })
+                  // not left uncaught, which would replace the errors being shown:
+                  .catch((e: unknown) =>
+                    console.error("could not copy the error report", e),
+                  )
               }
             />
           }

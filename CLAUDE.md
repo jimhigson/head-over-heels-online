@@ -373,6 +373,15 @@ const someFunc = (obj: Pick<ComplexObject, 'properties' | 'we' | 'use') => {}
 * Do NOT make run-time code edits merely to keep typescript from erroring, in ways that do not actually enhance the type safety of the program. The type system forcing us to write less efficient code is an issue, it is a very clear sign that we got the typings wrong; discuss with the user in this case.
 
 ### Comments 
+ * no single-line tsdoc comments - always put the text on its own line(s):
+ ```ts
+ // good
+ /**
+  * the json of the room that last failed to load
+  */
+ // bad
+ /** the json of the room that last failed to load */
+ ```
  * do not add comments that only explain things that are obvious from the line they are documenting. For example, do not do this - these comments are redundant - I would rather no docs than this useless docs:
  ```ts
  // load the file

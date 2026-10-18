@@ -2,7 +2,7 @@ import { Component, type ErrorInfo } from "preact";
 import { type PropsWithChildren } from "preact/compat";
 import { type EmptyObject } from "type-fest";
 
-import { errorCaught } from "../../store/slices/gameMenus/gameMenusSlice";
+import { errorCaught } from "../../store/slices/errors/errorsSlice";
 import { store } from "../../store/store";
 import { createSerialisableErrors } from "../redux/createSerialisableErrors";
 

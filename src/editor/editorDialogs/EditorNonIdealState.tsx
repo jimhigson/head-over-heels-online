@@ -45,7 +45,11 @@ export const EditorNonIdealState = ({
             onClick={() => {
               navigator.clipboard
                 .writeText(errorsReportText)
-                .then(() => setCopied(true));
+                .then(() => setCopied(true))
+                // not left uncaught, which would replace the errors being shown:
+                .catch((e: unknown) =>
+                  console.error("could not copy the error report", e),
+                );
             }}
             class="px-1 py-half"
           >

@@ -5,6 +5,10 @@ import { ensureRoomSoundsLoaded } from "../../sound/ensureRoomSoundsLoaded";
 import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import {
+  errorCaught,
+  selectHasError,
+} from "../../store/slices/errors/errorsSlice";
+import {
   selectCurrentCampaign,
   selectInputDirectionMode,
   selectIsPaused,
@@ -13,10 +17,6 @@ import {
   selectShowFps,
   selectSpritesOption,
 } from "../../store/slices/gameMenus/gameMenusSelectors";
-import {
-  errorCaught,
-  selectHasError,
-} from "../../store/slices/gameMenus/gameMenusSlice";
 import { type Upscale } from "../../store/slices/upscale/Upscale";
 import { selectGameEngineUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { spriteOptionEquals } from "../../store/slices/userSettings/spriteOptionEquals";
