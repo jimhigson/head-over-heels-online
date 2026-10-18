@@ -4,6 +4,7 @@ import { useEffect, useRef } from "preact/hooks";
 import { useMaybeGameApi } from "../game/components/GameApiContext";
 import { typedURLSearchParams } from "../options/queryParams";
 import { startAppListening } from "../store/listenerMiddleware";
+import { errorCaught } from "../store/slices/errors/errorsSlice";
 import {
   crownCollected,
   gameOver,
@@ -13,7 +14,6 @@ import {
   reincarnationAccepted,
   roomExplored,
 } from "../store/slices/gameInPlay/gameInPlaySlice";
-import { errorCaught } from "../store/slices/gameMenus/gameMenusSlice";
 import { entries } from "../utils/entries";
 import { type Xyz } from "../utils/vectors/vectors";
 import { isLocalNetwork } from "./isLocalNetwork";

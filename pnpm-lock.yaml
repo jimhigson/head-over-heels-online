@@ -26,7 +26,7 @@ importers:
         version: 27.0.0
       '@preact/preset-vite':
         specifier: ^2.10.5
-        version: 2.10.5(@babel/core@7.29.0(supports-color@10.2.2))(preact@11.0.0-beta.1)(rollup@4.62.2)(supports-color@10.2.2)(vite@8.0.13(@types/node@26.1.1)(esbuild@0.27.3)(jiti@2.7.0)(terser@5.48.0)(tsx@4.19.3)(yaml@2.9.0))
+        version: 2.10.5(@babel/core@7.29.0(supports-color@10.2.2))(preact@11.0.1)(rollup@4.62.2)(supports-color@10.2.2)(vite@8.0.13(@types/node@26.1.1)(esbuild@0.27.3)(jiti@2.7.0)(terser@5.48.0)(tsx@4.19.3)(yaml@2.9.0))
       '@reduxjs/toolkit':
         specifier: ^2.12.0
         version: 2.12.0(react-redux@9.3.0(@types/react@19.0.10)(react@19.2.3)(redux@5.0.1))(react@19.2.3)
@@ -61,8 +61,8 @@ importers:
         specifier: 8.16.0
         version: 8.16.0(patch_hash=f826773b254612b58c4a67990b588c16a8ce5a37a265617833cc955eda633028)
       preact:
-        specifier: 11.0.0-beta.1
-        version: 11.0.0-beta.1
+        specifier: 11.0.1
+        version: 11.0.1
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -4701,8 +4701,13 @@ packages:
     resolution: {integrity: sha512-dM0jVuXJPsDN6DvRpea484tCUaMiXWjuCn++HGTqUWzGDjv5tZkEZldAJ/UMlqRYGFrD/etByo4/xOuC/snX2A==}
     engines: {node: '>=20'}
 
-  preact@11.0.0-beta.1:
-    resolution: {integrity: sha512-HEG7hlrCoGpESpCgvuOwt9v7nfqd3/FQCMY8OTrohIN/k6JGcVTWMUOm7+WtWkHd6uQrEYNyQUNgBG4JsDmhRQ==}
+  preact@11.0.1:
+    resolution: {integrity: sha512-TNNwEq++jYNHy747LziCjPRVgEwnLSOIOAw/oYcjI3Tdnubx2EXtt76I0an8PATvUWtx/DX1kFIg1eFN+O/fkw==}
+    peerDependencies:
+      preact-render-to-string: '>=6.7.0'
+    peerDependenciesMeta:
+      preact-render-to-string:
+        optional: true
 
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -7564,12 +7569,12 @@ snapshots:
 
   '@poppinss/exception@1.2.3': {}
 
-  '@preact/preset-vite@2.10.5(@babel/core@7.29.0(supports-color@10.2.2))(preact@11.0.0-beta.1)(rollup@4.62.2)(supports-color@10.2.2)(vite@8.0.13(@types/node@26.1.1)(esbuild@0.27.3)(jiti@2.7.0)(terser@5.48.0)(tsx@4.19.3)(yaml@2.9.0))':
+  '@preact/preset-vite@2.10.5(@babel/core@7.29.0(supports-color@10.2.2))(preact@11.0.1)(rollup@4.62.2)(supports-color@10.2.2)(vite@8.0.13(@types/node@26.1.1)(esbuild@0.27.3)(jiti@2.7.0)(terser@5.48.0)(tsx@4.19.3)(yaml@2.9.0))':
     dependencies:
       '@babel/core': 7.29.0(supports-color@10.2.2)
       '@babel/plugin-transform-react-jsx': 7.28.6(@babel/core@7.29.0(supports-color@10.2.2))(supports-color@10.2.2)
       '@babel/plugin-transform-react-jsx-development': 7.27.1(@babel/core@7.29.0(supports-color@10.2.2))(supports-color@10.2.2)
-      '@prefresh/vite': 2.4.12(preact@11.0.0-beta.1)(supports-color@10.2.2)(vite@8.0.13(@types/node@26.1.1)(esbuild@0.27.3)(jiti@2.7.0)(terser@5.48.0)(tsx@4.19.3)(yaml@2.9.0))
+      '@prefresh/vite': 2.4.12(preact@11.0.1)(supports-color@10.2.2)(vite@8.0.13(@types/node@26.1.1)(esbuild@0.27.3)(jiti@2.7.0)(terser@5.48.0)(tsx@4.19.3)(yaml@2.9.0))
       '@rollup/pluginutils': 5.3.0(rollup@4.62.2)
       babel-plugin-transform-hook-names: 1.0.2(@babel/core@7.29.0(supports-color@10.2.2))
       debug: 4.4.3(supports-color@10.2.2)
@@ -7585,20 +7590,20 @@ snapshots:
 
   '@prefresh/babel-plugin@0.5.3': {}
 
-  '@prefresh/core@1.5.9(preact@11.0.0-beta.1)':
+  '@prefresh/core@1.5.9(preact@11.0.1)':
     dependencies:
-      preact: 11.0.0-beta.1
+      preact: 11.0.1
 
   '@prefresh/utils@1.2.1': {}
 
-  '@prefresh/vite@2.4.12(preact@11.0.0-beta.1)(supports-color@10.2.2)(vite@8.0.13(@types/node@26.1.1)(esbuild@0.27.3)(jiti@2.7.0)(terser@5.48.0)(tsx@4.19.3)(yaml@2.9.0))':
+  '@prefresh/vite@2.4.12(preact@11.0.1)(supports-color@10.2.2)(vite@8.0.13(@types/node@26.1.1)(esbuild@0.27.3)(jiti@2.7.0)(terser@5.48.0)(tsx@4.19.3)(yaml@2.9.0))':
     dependencies:
       '@babel/core': 7.29.0(supports-color@10.2.2)
       '@prefresh/babel-plugin': 0.5.3
-      '@prefresh/core': 1.5.9(preact@11.0.0-beta.1)
+      '@prefresh/core': 1.5.9(preact@11.0.1)
       '@prefresh/utils': 1.2.1
       '@rollup/pluginutils': 4.2.1
-      preact: 11.0.0-beta.1
+      preact: 11.0.1
       vite: 8.0.13(@types/node@26.1.1)(esbuild@0.27.3)(jiti@2.7.0)(terser@5.48.0)(tsx@4.19.3)(yaml@2.9.0)
     transitivePeerDependencies:
       - supports-color
@@ -10068,7 +10073,7 @@ snapshots:
 
   powershell-utils@0.1.0: {}
 
-  preact@11.0.0-beta.1: {}
+  preact@11.0.1: {}
 
   prelude-ls@1.2.1: {}
 

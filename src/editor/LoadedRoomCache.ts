@@ -7,7 +7,9 @@ import {
   roomJsonItemsEntriesIterable,
   roomJsonItemsIterable,
 } from "../model/RoomJsonItemIterators";
-import { type EditorRootState } from "../store/store";
+import { errorCaught } from "../store/slices/errors/errorsSlice";
+import { type EditorAppStore } from "../store/store";
+import { createSerialisableErrors } from "../utils/redux/createSerialisableErrors";
 import {
   type EditorJsonItemUnion,
   type EditorRoomId,
@@ -20,6 +22,22 @@ import { selectCurrentEditingRoomJsonWithPreviews } from "./slice/levelEditorSel
 import { selectCurrentCommittedRoomJson } from "./slice/levelEditorSlice";
 import { loadEditorRoom } from "./slice/loadEditorRoom";
 
+type LoadedRoom = {
+  /**
+   * 'in play' room state, patched in-place for most changes, replaced only if necessary such as
+   * on a full reload
+   */
+  roomState: EditorRoomState;
+  /**
+   * the json (with previews) that the loaded room matches
+   */
+  roomJsonWithPreviews: EditorRoomJson;
+  /**
+   * the committed json when the loaded room was last brought up to date
+   */
+  committedRoomJson: EditorRoomJson;
+};
+
 /**
  * a loaded room that follows the store: the authoritative record of the room
  * as it is currently rendered, previews included, in the same in-play format
@@ -31,32 +49,34 @@ import { loadEditorRoom } from "./slice/loadEditorRoom";
  * It follows the store from its creation: patched in place for edits and
  * previews (much cheaper than reloading), and reloaded when the room changes or
  * edits are committed. Redux tells its subscribers before a dispatch returns,
- * so it is up to date for any code that reads it after a dispatch
+ * so it is up to date for any code that reads it after a dispatch.
+ *
+ * A room that fails to load (eg from stale persisted state) is reported to the
+ * store as a caught error, and loading is retried once the room's json changes
  */
 export class LoadedRoomCache {
-  /** the loaded room; replaced only on a full reload, patched in place otherwise */
-  #roomState: EditorRoomState;
-  /** the json (with previews) that the loaded room matches */
-  #roomJsonWithPreviews: EditorRoomJson;
-  /** the committed json when the loaded room was last brought up to date */
-  #committedRoomJson: EditorRoomJson;
+  /**
+   * undefined while the store's current room has failed to load
+   */
+  #loaded: LoadedRoom | undefined;
+  /**
+   * the json of the room that last failed to load
+   */
+  #failedRoomJsonWithPreviews: EditorRoomJson | undefined = undefined;
   #revision = 0;
-  readonly #getState: () => EditorRootState;
+  readonly #store: EditorAppStore;
   readonly #listeners = new Set<() => void>();
 
   constructor(
     /** the store to follow */
-    store: {
-      getState: () => EditorRootState;
-      subscribe: (listener: () => void) => () => void;
-    },
+    store: EditorAppStore,
   ) {
-    this.#getState = store.getState;
-    const state = this.#getState();
-    this.#roomJsonWithPreviews =
-      selectCurrentEditingRoomJsonWithPreviews(state);
-    this.#committedRoomJson = selectCurrentCommittedRoomJson(state);
-    this.#roomState = loadEditorRoom(this.#roomJsonWithPreviews);
+    this.#store = store;
+    const state = store.getState();
+    this.#loaded = this.#tryLoad(
+      selectCurrentEditingRoomJsonWithPreviews(state),
+      selectCurrentCommittedRoomJson(state),
+    );
     // the cache lives as long as the store, so never unsubscribes:
     store.subscribe(() => this.#bringUpToDate());
   }
@@ -65,7 +85,13 @@ export class LoadedRoomCache {
    * the loaded room. Its identity only changes on a full reload, since edits
    * patch it in place
    */
-  getRoomState = (): EditorRoomState => this.#roomState;
+  getRoomState = (): EditorRoomState => {
+    const maybeLoaded = this.#loaded;
+    if (import.meta.env.DEV && maybeLoaded === undefined) {
+      throw new Error("the editor's room was read but had failed to load");
+    }
+    return maybeLoaded!.roomState;
+  };
 
   /** counts the changes to the room's contents */
   get revision(): number {
@@ -86,18 +112,29 @@ export class LoadedRoomCache {
    * either by patching or full reload, or leave it be if nothing has changed
    */
   #bringUpToDate() {
-    const state = this.#getState();
+    const state = this.#store.getState();
     const roomJsonWithPreviews =
       selectCurrentEditingRoomJsonWithPreviews(state);
     const committedRoomJson = selectCurrentCommittedRoomJson(state);
-    const prevRoomJsonWithPreviews = this.#roomJsonWithPreviews;
-    const loadedRoomState = this.#roomState;
+    const loaded = this.#loaded;
+
+    if (loaded === undefined) {
+      // retrying the same json would fail again, and report the error again:
+      if (roomJsonWithPreviews !== this.#failedRoomJsonWithPreviews) {
+        this.#loaded = this.#tryLoad(roomJsonWithPreviews, committedRoomJson);
+        this.#changed();
+      }
+      return;
+    }
+
+    const prevRoomJsonWithPreviews = loaded.roomJsonWithPreviews;
+    const loadedRoomState = loaded.roomState;
 
     // both come from caching selectors, so are referentially unequal to the
     // previous values only if something has changed:
     if (
       prevRoomJsonWithPreviews === roomJsonWithPreviews &&
-      this.#committedRoomJson === committedRoomJson
+      loaded.committedRoomJson === committedRoomJson
     ) {
       return;
     }
@@ -106,13 +143,13 @@ export class LoadedRoomCache {
       // patching in place over committed edits is generally fine, but some
       // items like lightBeams from lamps benefit from a full reload of the
       // room, so committing takes the slower but more thorough path:
-      this.#committedRoomJson !== committedRoomJson ||
+      loaded.committedRoomJson !== committedRoomJson ||
       loadedRoomState.id !== roomJsonWithPreviews.id ||
       prevRoomJsonWithPreviews.planet !== roomJsonWithPreviews.planet ||
       prevRoomJsonWithPreviews.color !== roomJsonWithPreviews.color;
 
     if (needsFullReload) {
-      this.#roomState = loadEditorRoom(roomJsonWithPreviews);
+      this.#loaded = this.#tryLoad(roomJsonWithPreviews, committedRoomJson);
     } else {
       patchLoadedRoomInPlace(
         loadedRoomState,
@@ -120,11 +157,37 @@ export class LoadedRoomCache {
         roomJsonWithPreviews,
         committedRoomJson,
       );
+      loaded.roomJsonWithPreviews = roomJsonWithPreviews;
+      loaded.committedRoomJson = committedRoomJson;
     }
 
+    this.#changed();
+  }
+
+  /**
+   * loads a room, or reports to the store why it couldn't
+   */
+  #tryLoad(
+    roomJsonWithPreviews: EditorRoomJson,
+    committedRoomJson: EditorRoomJson,
+  ): LoadedRoom | undefined {
+    try {
+      return {
+        roomState: loadEditorRoom(roomJsonWithPreviews),
+        roomJsonWithPreviews,
+        committedRoomJson,
+      };
+    } catch (e) {
+      // marked failed before dispatching, since the dispatch re-enters #bringUpToDate:
+      this.#loaded = undefined;
+      this.#failedRoomJsonWithPreviews = roomJsonWithPreviews;
+      this.#store.dispatch(errorCaught(createSerialisableErrors(e)));
+      return undefined;
+    }
+  }
+
+  #changed() {
     this.#revision++;
-    this.#roomJsonWithPreviews = roomJsonWithPreviews;
-    this.#committedRoomJson = committedRoomJson;
     for (const listener of this.#listeners) {
       listener();
     }

@@ -38,19 +38,11 @@ const errorCaughtReport = async (page: Page): Promise<string | undefined> => {
     return text ?? "(the error report was empty)";
   }
   return page.evaluate(() => {
-    const errorMenu = window._e2e_store
-      ?.getState()
-      .gameMenus.openMenus.find(
-        (openMenu) => openMenu.menuId === "errorCaught",
-      );
-    if (errorMenu === undefined) {
+    const caughtErrors = window._e2e_store?.getState().errors.caughtErrors;
+    if (caughtErrors === undefined || caughtErrors.length === 0) {
       return undefined;
     }
-    const errors = errorMenu.menuParam as Array<{
-      message: string;
-      stack?: string;
-    }>;
-    return `(from the store - the dialog did not render)\n${errors
+    return `(from the store - the dialog did not render)\n${caughtErrors
       .map((error) => `${error.message}\n${error.stack ?? ""}`)
       .join("\ncaused by: ")}`;
   });
@@ -76,12 +68,7 @@ export const waitForGameState = async (page: Page) => {
     () =>
       window._e2e_gamePageGameAi?.gameState !== undefined ||
       document.querySelector('[data-dialog-id="errorCaught"]') !== null ||
-      (window._e2e_store
-        ?.getState()
-        .gameMenus.openMenus.some(
-          (openMenu) => openMenu.menuId === "errorCaught",
-        ) ??
-        false),
+      (window._e2e_store?.getState().errors.caughtErrors.length ?? 0) > 0,
     undefined,
     { timeout: longTimeout },
   );
@@ -137,12 +124,7 @@ export const waitForGameReady = async (page: Page) => {
         (window._e2e_gamePageGameAi?.gameState !== undefined &&
           window._e2e_pixiApplication !== undefined) ||
         document.querySelector('[data-dialog-id="errorCaught"]') !== null ||
-        (window._e2e_store
-          ?.getState()
-          .gameMenus.openMenus.some(
-            (openMenu) => openMenu.menuId === "errorCaught",
-          ) ??
-          false),
+        (window._e2e_store?.getState().errors.caughtErrors.length ?? 0) > 0,
       undefined,
       { timeout: longTimeout },
     );
@@ -221,12 +203,7 @@ export const waitForRoomToRender = async (
     (wantRoomId) =>
       window._e2e_gamePageGameAi?.currentRoom?.id === wantRoomId ||
       document.querySelector('[data-dialog-id="errorCaught"]') !== null ||
-      (window._e2e_store
-        ?.getState()
-        .gameMenus.openMenus.some(
-          (openMenu) => openMenu.menuId === "errorCaught",
-        ) ??
-        false),
+      (window._e2e_store?.getState().errors.caughtErrors.length ?? 0) > 0,
     expectedRoomId,
     { timeout: longTimeout },
   );

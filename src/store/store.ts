@@ -46,10 +46,12 @@ import {
   userSettingsPersistedReducer,
 } from "./persist/persist";
 import { recentActionsMiddleware } from "./recentActions";
+import { reportUncaughtErrorsToStore } from "./reportUncaughtErrorsToStore";
 import { assetsLoadingSlice } from "./slices/assetsLoading/assetsLoadingSlice";
 import { editorCampaignsApiSlice } from "./slices/campaigns/editorCampaignsApiSlice";
 import { gameCampaignsApiSlice } from "./slices/campaigns/gameCampaignsApiSlice";
 import { debugSlice } from "./slices/debug/debugSlice";
+import { errorsSlice } from "./slices/errors/errorsSlice";
 import { gameInPlaySlice } from "./slices/gameInPlay/gameInPlaySlice";
 import { registerGameMenusListeners } from "./slices/gameMenus/gameMenusListeners";
 import { gameMenusSlice } from "./slices/gameMenus/gameMenusSlice";
@@ -72,6 +74,8 @@ const appReducer = combineSlices({
   [upscaleSlice.reducerPath]: upscaleSlice.reducer,
 
   [assetsLoadingSlice.reducerPath]: assetsLoadingSlice.reducer,
+
+  [errorsSlice.reducerPath]: errorsSlice.reducer,
 
   ...(import.meta.env.VITE_APP === "editor" ?
     {
@@ -137,6 +141,9 @@ if (import.meta.env.VITE_APP !== "editor") {
   registerGameMenusListeners();
 }
 registerRtkQueryClearAllDataListeners();
+if (typeof window !== "undefined") {
+  reportUncaughtErrorsToStore(store);
+}
 
 export const persistor = persistStore(store);
 
@@ -182,5 +189,7 @@ export const editorStore = store as EnhancedStore<
   EditorSaveSliceAction | LevelEditorSliceAction | StoreActionOf<typeof store>,
   StoreEnhancersOf<typeof store>
 >;
+
+export type EditorAppStore = typeof editorStore;
 
 export const useEditorAppSelector = useSelector.withTypes<EditorRootState>();

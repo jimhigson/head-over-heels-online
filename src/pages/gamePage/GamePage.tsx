@@ -17,11 +17,11 @@ import {
 } from "../../game/input/InputStateProvider.tsx";
 import { useAppSelector } from "../../store/hooks.ts";
 import { withLoadingCaptured } from "../../store/slices/assetsLoading/assetsLoadingSlice.ts";
+import { errorCaught } from "../../store/slices/errors/errorsSlice.ts";
 import {
   useCheatsOn,
   useIsGameRunning,
 } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
-import { errorCaught } from "../../store/slices/gameMenus/gameMenusSlice.ts";
 import {
   selectCanvasSize,
   selectRot90,
