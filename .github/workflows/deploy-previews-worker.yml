@@ -1,0 +1,36 @@
+name: Deploy previews worker
+
+# the hoh-previews worker maps a preview host to its key prefix in the
+# hoh-previews bucket. It changes rarely, so it deploys only when changes to its
+# own source are pushed to main - previews are just objects and need no redeploy
+
+on:
+  push:
+    branches: ["main"]
+    paths: ["workers/previews/**"]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-previews-worker
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install pnpm
+        uses: pnpm/action-setup@v5
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".node-version"
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
+
+      - name: Deploy the worker
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: pnpm deploy:previews:worker

@@ -39,6 +39,7 @@
     "check:type:e2e": "tsc --noEmit --project ./e2e/tsconfig.json",
     "check:type:scripts": "tsc --noEmit --project ./scripts/tsconfig.json",
     "check:type:fontEditor": "tsc --noEmit --project ./scripts/font/editor/tsconfig.json",
+    "check:type:workers": "tsc --noEmit --project ./workers/previews/tsconfig.json",
     "check:lint": "oxlint",
     "check": "COLOR=1 pnpm run \"/^check:.*/\"",
     "fix": "COLOR=1 pnpm run \"/^fix:.*/\"",
@@ -52,6 +53,8 @@
     "gen:rooms": "tsx scripts/campaignXml2Json/scripts/genRooms.ts && (oxlint --fix --no-ignore src/_generated/originalCampaign || true) && prettier src/_generated/originalCampaign --write && oxlint --no-ignore src/_generated/originalCampaign",
     "gen:roomsPatch": "tsx scripts/campaignXml2Json/scripts/genRoomsPatch.ts && prettier src/_generated/originalCampaign/patches/*.json --write",
     "deploy:r2": "tsx scripts/deployToR2.ts",
+    "deploy:previews:worker": "wrangler deploy --config workers/previews/wrangler.jsonc",
+    "delete:previews": "tsx scripts/deletePreviewsFromR2.ts",
     "toppySpritesheet": "tsx scripts/toppySpritesheet.ts",
     "gen:debugSpritesheet": "tsx scripts/debugSpritesheet.ts",
     "skills:install": "pnpm dlx skills@1.7.0 add jimhigson/guided-review --agent claude-code --yes",
@@ -104,6 +107,7 @@
   },
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.1073.0",
+    "@cloudflare/workers-types": "^5.20261018.1",
     "@commander-js/extra-typings": "^14.0.0",
     "@playwright/test": "^1.61.1",
     "@supabase/postgrest-js": "2.93.1",
@@ -162,7 +166,7 @@
     "web-audio-test-api": "0.5.2",
     "webmcp-types": "^0.1.9",
     "workbox-window": "^7.4.1",
-    "wrangler": "^4.100.0",
+    "wrangler": "^4.151.1",
     "xml-js": "^1.6.11"
   },
   "optionalDependencies": {
@@ -171,5 +175,5 @@
   "engines": {
     "node": ">=26.5.0"
   },
-  "packageManager": "pnpm@11.21.0"
+  "packageManager": "pnpm@12.14.0"
 }

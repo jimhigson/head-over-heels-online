@@ -11,6 +11,7 @@ minimumReleaseAgeExclude:
   - '@oxlint/*'
   - typescript
   - '@typescript/*'
+  - '@cloudflare/workers-types'
 patchedDependencies:
   pixi.js: patches/pixi.js.patch
   web-audio-test-api@0.5.2: patches/web-audio-test-api@0.5.2.patch

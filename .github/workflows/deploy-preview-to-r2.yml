@@ -1,0 +1,136 @@
+name: Deploy preview to R2
+
+# builds game + editor for a pr and serves them from their own hosts:
+#   pr<number>-<sha>.blockstack.dev       game
+#   ed-pr<number>-<sha>.blockstack.dev    editor
+# both come out of the one hoh-previews bucket, under a key prefix named after
+# the host; the hoh-previews worker maps host to prefix. Previews are stored
+# uncompressed and the edge compresses them on the fly - see DEPLOY.md
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+concurrency:
+  group: deploy-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+  R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+  R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+
+jobs:
+  deploy:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      # the default ref on a pull_request event is the merge commit, which is
+      # what a preview should show: the pr as it would land
+      - uses: actions/checkout@v6
+      - name: Install pnpm
+        uses: pnpm/action-setup@v5
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".node-version"
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
+
+      - name: Name this preview's hosts
+        id: hosts
+        # github.sha is the merge commit on a pull_request event, so it names
+        # exactly what was built. Sliced rather than git rev-parse'd so it does
+        # not depend on what the shallow checkout contains
+        env:
+          mergeSha: ${{ github.sha }}
+          prNumber: ${{ github.event.pull_request.number }}
+        run: |
+          sha="${mergeSha:0:7}"
+          label="pr$prNumber-$sha"
+          {
+            echo "label=$label"
+            echo "editorLabel=ed-$label"
+            echo "sha=$sha"
+            echo "gameUrl=https://$label.blockstack.dev/"
+            echo "editorUrl=https://ed-$label.blockstack.dev/"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Build game
+        env:
+          VITE_EDITOR_URL: ${{ steps.hosts.outputs.editorUrl }}
+          PREVIEW_PR_NUMBER: ${{ github.event.pull_request.number }}
+          PREVIEW_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: pnpm build:game --mode r2-preview
+
+      - name: Build editor
+        env:
+          VITE_GAME_URL: ${{ steps.hosts.outputs.gameUrl }}
+          PREVIEW_PR_NUMBER: ${{ github.event.pull_request.number }}
+          PREVIEW_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: pnpm build:editor --mode r2-preview
+
+      - name: Upload game
+        run: pnpm deploy:r2 game preview --prefix "${{ steps.hosts.outputs.label }}"
+
+      - name: Upload editor
+        run: pnpm deploy:r2 editor preview --prefix "${{ steps.hosts.outputs.editorLabel }}"
+
+      - name: Drop the previews this push supersedes
+        run: pnpm delete:previews --pr "${{ github.event.pull_request.number }}" --keepSha "${{ steps.hosts.outputs.sha }}"
+
+      - name: Comment the preview links
+        uses: actions/github-script@v8
+        env:
+          sha: ${{ steps.hosts.outputs.sha }}
+          baseRef: ${{ github.event.pull_request.base.ref }}
+          gameUrl: ${{ steps.hosts.outputs.gameUrl }}
+          editorUrl: ${{ steps.hosts.outputs.editorUrl }}
+        with:
+          script: |
+            const { sha, baseRef, gameUrl, editorUrl } = process.env;
+            const body = [
+              `<!-- deploy-preview -->`,
+              `### 🚀 Deploy preview for \`${sha}\` (merge result into ${baseRef})`,
+              ``,
+              `| | |`,
+              `|:-:|---|`,
+              `| 🎮 game | ${gameUrl} |`,
+              `| 🛠️ editor | ${editorUrl} |`,
+            ].join("\n");
+            await require("./.github/scripts/upsertPreviewComment.cjs")({ github, context, body });
+
+  delete:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install pnpm
+        uses: pnpm/action-setup@v5
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".node-version"
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
+
+      - name: Delete every preview for this pr
+        run: pnpm delete:previews --pr "${{ github.event.pull_request.number }}"
+
+      - name: Say the previews are gone
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const body = [
+              `<!-- deploy-preview -->`,
+              `### 🚀 Deploy preview`,
+              ``,
+              `Deleted, now this pr is closed.`,
+            ].join("\n");
+            await require("./.github/scripts/upsertPreviewComment.cjs")({ github, context, body });

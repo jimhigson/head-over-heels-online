@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hoh-previews",
+  "main": "previewsWorker.ts",
+  "compatibility_date": "2026-10-18",
+  // catches every preview host. It also matches ed.blockstack.dev, which a
+  // more specific route with no worker on it negates, so the live editor keeps
+  // going straight to its own R2 custom domain - see DEPLOY.md
+  "routes": [
+    { "pattern": "*.blockstack.dev/*", "zone_name": "blockstack.dev" },
+  ],
+  "r2_buckets": [{ "binding": "PREVIEWS", "bucket_name": "hoh-previews" }],
+  "observability": { "enabled": true },
+}

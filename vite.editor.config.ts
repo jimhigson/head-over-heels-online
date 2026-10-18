@@ -26,12 +26,16 @@ type Mode =
   // .env.<mode>); the editor is served as its own origin with precompressed assets
   | "r2-main"
   | "r2-production"
+  // a pr deploy preview, whose domains vary per pr so the workflow passes them
+  // in rather than .env.r2-preview fixing them
+  | "r2-preview"
   // points the editor at the local Supabase stack (`supabase start`); see DEVELOPING.md
   | "local-db";
 
-// modes that serve the editor as its own origin (ed.<domain>) rather than the
-// /editor/ subpath it occupies when it shares the game's origin (all other builds)
-const ownOriginModes: Array<Mode> = ["r2-main", "r2-production"];
+// modes that serve the editor as its own origin (ed.<domain>, ed-<preview> for
+// previews) rather than the /editor/ subpath it occupies when it shares the
+// game's origin (all other builds)
+const ownOriginModes: Array<Mode> = ["r2-main", "r2-production", "r2-preview"];
 
 const targetPort = 5_210;
 

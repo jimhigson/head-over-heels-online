@@ -2,12 +2,15 @@ import {
   DeleteObjectsCommand,
   ListObjectsV2Command,
   PutObjectCommand,
-  S3Client,
 } from "@aws-sdk/client-s3";
+import { Argument, Command } from "@commander-js/extra-typings";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { extname, join, sep } from "node:path";
-import { parseArgs } from "node:util";
 import { brotliCompressSync, constants as zlibConstants } from "node:zlib";
+
+import { keys } from "../src/utils/entries";
+import { makeR2Client } from "./r2/makeR2Client";
+import { previewsBucket } from "./r2/previewsBucket";
 
 type AssetKind = {
   contentType: string;
@@ -82,54 +85,61 @@ const brotli = (input: Buffer): Buffer =>
     },
   });
 
+export type DeployToR2Options = {
+  /**
+   * prepended to every key, so several deploys can share one bucket. Pruning is
+   * scoped to it, leaving the rest of the bucket alone
+   */
+  keyPrefix: string;
+  /** brotli the compressible text assets before storing them */
+  compress: boolean;
+};
+
 export const deployToR2 = async (
   /** local directory whose contents become the bucket's objects */
   dir: string,
   /** target R2 bucket name */
   bucket: string,
+  { keyPrefix, compress }: DeployToR2Options,
 ) => {
-  const accountId = process.env.R2_ACCOUNT_ID;
-  const accessKeyId = process.env.R2_ACCESS_KEY_ID;
-  const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
-  if (!accountId || !accessKeyId || !secretAccessKey) {
-    console.error(
-      "missing env: R2_ACCOUNT_ID, R2_ACCESS_KEY_ID and R2_SECRET_ACCESS_KEY are all required",
-    );
-    process.exit(1);
-  }
-
-  const client = new S3Client({
-    region: "auto",
-    endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
-    credentials: { accessKeyId, secretAccessKey },
-    // R2's S3 API rejects the flexible (CRC32) request checksums the aws-sdk
-    // now sends by default, so only send a checksum where the operation
-    // genuinely requires one
-    // https://developers.cloudflare.com/r2/examples/aws/aws-sdk-js-v3/
-    requestChecksumCalculation: "WHEN_REQUIRED",
-    responseChecksumValidation: "WHEN_REQUIRED",
-  });
+  const client = makeR2Client();
 
   const files = readdirSync(dir, { recursive: true, encoding: "utf8" })
     .filter((rel) => statSync(join(dir, rel)).isFile())
-    .map((rel) => ({ rel, key: rel.split(sep).join("/") }));
+    .map((rel) => {
+      // path is the build-relative path, which decides content type and cache
+      // headers; key is where it lands in the bucket
+      const path = rel.split(sep).join("/");
+      return { rel, path, key: `${keyPrefix}${path}` };
+    });
 
-  console.log(`uploading ${files.length} objects to ${bucket}…`);
+  console.log(
+    `uploading ${files.length} objects to ${bucket}/${keyPrefix}${compress ? "" : " uncompressed"}…`,
+  );
 
-  const uploadFile = async ({ rel, key }: { rel: string; key: string }) => {
-    const kind = assetKindFor(key);
+  const uploadFile = async ({
+    rel,
+    path,
+    key,
+  }: {
+    rel: string;
+    path: string;
+    key: string;
+  }) => {
+    const kind = assetKindFor(path);
     const raw = readFileSync(join(dir, rel));
-    const brotliBody = kind.compress ? brotli(raw) : raw;
+    const compressible = compress && kind.compress;
+    const brotliBody = compressible ? brotli(raw) : raw;
     // keep the brotli only when it actually shrank the file; a tiny or
     // incompressible payload can come out larger than the original
-    const useBrotli = kind.compress && brotliBody.length < raw.length;
+    const useBrotli = compressible && brotliBody.length < raw.length;
     const body = useBrotli ? brotliBody : raw;
     // no-transform stops Cloudflare re-encoding our brotli: without it the edge
     // decompresses and recompresses small responses at a lower quality
     const cacheControl =
       useBrotli ?
-        `${cacheControlFor(key)}, no-transform`
-      : cacheControlFor(key);
+        `${cacheControlFor(path)}, no-transform`
+      : cacheControlFor(path);
     await client.send(
       new PutObjectCommand({
         Bucket: bucket,
@@ -156,8 +166,8 @@ export const deployToR2 = async (
   };
   await Promise.all(Array.from({ length: concurrency }, worker));
 
-  // mirror + prune: delete any object the new build no longer contains, so the
-  // bucket always matches the build exactly. Pruning runs after every upload
+  // mirror + prune: delete any object under this prefix the new build no longer
+  // contains, so the prefix always matches the build exactly. Pruning runs after every upload
   // has landed, so a client loading the previous build's chunks mid-deploy
   // still finds them until the moment they are superseded
   const uploaded = new Set(files.map(({ key }) => key));
@@ -167,6 +177,7 @@ export const deployToR2 = async (
     const listed = await client.send(
       new ListObjectsV2Command({
         Bucket: bucket,
+        Prefix: keyPrefix,
         ContinuationToken: continuationToken,
       }),
     );
@@ -196,7 +207,7 @@ export const deployToR2 = async (
     }
   }
 
-  console.log(`done: ${bucket} now mirrors ${dir}`);
+  console.log(`done: ${bucket}/${keyPrefix} now mirrors ${dir}`);
 };
 
 const dirByApp = {
@@ -204,35 +215,56 @@ const dirByApp = {
   editor: "dist-editor",
 } as const satisfies Record<string, string>;
 
-const isApp = (value: string | undefined): value is keyof typeof dirByApp =>
-  value !== undefined && value in dirByApp;
+const program = new Command()
+  .name("deployToR2")
+  .description("Upload a built app to its R2 bucket")
+  .addArgument(
+    new Argument("<app>", "which app's build to upload").choices(
+      keys(dirByApp),
+    ),
+  )
+  .addArgument(
+    new Argument("<environment>", "where to deploy it").choices([
+      "main",
+      "preview",
+      "production",
+    ] as const),
+  )
+  .option(
+    "--prefix <hostLabel>",
+    "key prefix within the previews bucket; required for, and only valid for, the preview environment",
+  )
+  .action(async (app, environment, { prefix }) => {
+    if ((environment === "preview") !== (prefix !== undefined)) {
+      program.error(
+        "--prefix is required for the preview environment, and invalid for any other",
+      );
+    }
 
-const isEnvironment = (
-  value: string | undefined,
-): value is "main" | "production" => value === "main" || value === "production";
+    // pick up this environment's R2 credentials from its gitignored local env
+    // file for local runs; CI sets them as real env vars instead (which win,
+    // since loadEnvFile does not overwrite existing process.env entries)
+    const credentialsFile = `.env.r2-${environment}.local`;
+    if (existsSync(credentialsFile)) {
+      process.loadEnvFile(credentialsFile);
+    }
 
-const { positionals } = parseArgs({ allowPositionals: true });
-const [app, environment] = positionals;
+    const target =
+      environment === "preview" ?
+        // previews share one bucket, told apart by a key prefix named after the
+        // host serving them, and are stored uncompressed - the edge compresses
+        // them on the fly, which is the right trade for a throwaway
+        { bucket: previewsBucket, keyPrefix: `${prefix}/`, compress: false }
+        // the other buckets follow the hoh-<app>-<environment> convention, one
+        // build per bucket, so they need no prefix
+      : { bucket: `hoh-${app}-${environment}`, keyPrefix: "", compress: true };
 
-if (!isApp(app) || !isEnvironment(environment)) {
-  console.error(
-    "usage: tsx scripts/deployToR2.ts <game|editor> <main|production>",
-  );
+    const { bucket, ...options } = target;
+
+    await deployToR2(dirByApp[app], bucket, options);
+  });
+
+program.parseAsync().catch((error: unknown) => {
+  console.error(error);
   process.exit(1);
-}
-
-// pick up this environment's R2 credentials from its gitignored local env file
-// for local runs; CI sets them as real env vars instead (which win, since
-// loadEnvFile does not overwrite existing process.env entries)
-const credentialsFile = `.env.r2-${environment}.local`;
-if (existsSync(credentialsFile)) {
-  process.loadEnvFile(credentialsFile);
-}
-
-// buckets follow the hoh-<app>-<environment> convention
-deployToR2(dirByApp[app], `hoh-${app}-${environment}`).catch(
-  (error: unknown) => {
-    console.error(error);
-    process.exit(1);
-  },
-);
+});

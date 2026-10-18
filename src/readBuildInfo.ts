@@ -5,14 +5,12 @@ import { repository, version } from "../package.json";
 import { parseMajorVersion } from "./parseMajorVersion";
 
 const readGitBranch = (): string | undefined => {
-  // netlify builds from a detached HEAD so asking git for the branch doesn't
-  // work there; it provides the branch name in the build env instead. HEAD is
-  // the pr's source branch name, whereas BRANCH can be a fetched ref like
-  // pull/123/head:
-  // https://docs.netlify.com/configure-builds/environment-variables/#git-metadata
-  const netlifyBranch = env.HEAD || env.BRANCH;
-  if (netlifyBranch) {
-    return netlifyBranch;
+  // deploy previews build from a detached HEAD so asking git for the branch
+  // doesn't work there; the workflow passes the pr's source branch instead
+  // https://docs.github.com/en/actions/reference/workflows-and-actions/variables
+  const previewBranch = env.PREVIEW_BRANCH;
+  if (previewBranch) {
+    return previewBranch;
   }
   try {
     return execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
@@ -22,9 +20,8 @@ const readGitBranch = (): string | undefined => {
 };
 
 const readGitPrNumber = (): string | undefined =>
-  // netlify deploy previews give the pr number as REVIEW_ID:
-  // https://docs.netlify.com/configure-builds/environment-variables/#git-metadata
-  env.REVIEW_ID || undefined;
+  // the deploy preview workflow passes the pr it is building
+  env.PREVIEW_PR_NUMBER || undefined;
 
 /**
  * what is being built, read at build time - for use as a macro, never at

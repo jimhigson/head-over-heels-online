@@ -18,7 +18,7 @@ Consequences you must plan around:
 - **Every merge invalidates every other open PR's up-to-date status.** So N independent green PRs cannot all merge at once — each must be `gh pr update-branch`'d onto the new `main` and have its 4 gates **re-run** (~10–15 min each) before it can merge. A batch of N PRs therefore costs ≈ N sequential gate cycles. Set that expectation with the user in Phase 0/2 (a 5-PR batch is an hour-plus of wall-clock, mostly waiting).
 - **`gh pr merge --admin` does NOT bypass this** — the checks are ruleset-required and you are (normally) not a bypass actor, so admin merge is refused with "N of N required status checks are expected" even when the rollup shows them all green (they're green on a now-stale head). Don't fight it; update-branch and wait.
 - **A PR can show all 4 gates SUCCESS in `statusCheckRollup` yet still be unmergeable** — because those successes are against an out-of-date head. `mergeStateStatus` = `BEHIND` is the tell; `CLEAN` means actually mergeable now.
-- **`netlify/blockstack/deploy-preview` is NOT one of the required checks** — it's informational and often sits pending/`null` forever. Never gate merges or pollers on it (see Phase 6).
+- **`Deploy preview to R2` is NOT one of the required checks** — it's informational. Never gate merges or pollers on it (see Phase 6).
 
 Efficient cascade: keep only the *next* PR to merge updated+running; updating the others early just wastes a cycle since the merge re-stales them. Merge the one that's `CLEAN`, then update-branch the next, repeat.
 
@@ -113,12 +113,12 @@ Poll each PR's checks (`gh pr checks <n>`, `gh run list`, `gh run view`). CI her
 
 ### Pollers must not get stuck (learned the hard way)
 
-Some status checks **never reach a terminal state**. The `netlify/blockstack/deploy-preview` status in particular can sit at `null`/pending indefinitely (Netlify sometimes reports the deploy result out-of-band and never flips the commit status). A monitor that waits for *all* checks to be `COMPLETED` therefore hangs forever, even though the PR is actually mergeable — silence that looks identical to "still running".
+Some status checks **never reach a terminal state**: a check can sit at `null`/pending indefinitely when the service behind it reports out-of-band and never flips the commit status. A monitor that waits for *all* checks to be `COMPLETED` therefore hangs forever, even though the PR is actually mergeable — silence that looks identical to "still running".
 
 Rules for any CI poller:
 - **Fail fast — react to the *first* failing check the instant it flips, never wait for the rest of the run.** This is the most important rule. Do **not** write a loop that counts "how many of the N required checks have reached a terminal state" and only reports once that count hits N — that design hides a failure for the entire ~15-min run (the other gates are still churning), so you lose all the time you could have spent fixing it, and a fix-push then races a run that's already doomed. The moment **any single** required check has `conclusion` ∈ {FAILURE, CANCELLED, TIMED_OUT}, the loop must emit and exit immediately so you can diagnose — regardless of what the other checks are doing.
 - **Two exit conditions, checked every cycle, independently:** (a) *any* required check failed → exit now, report the failure; (b) *all* required checks are SUCCESS → exit, proceed to merge. Never make (b) the only way out.
-- **Gate on the *real* checks only.** Exclude non-blocking/never-completing statuses by name — filter out `netlify/blockstack/deploy-preview` before counting anything. Only the four required gates (`check`, `checkGenUpToDate`, `Visual Regression Gate`, `E2E Gate`) decide green/red.
+- **Gate on the *real* checks only.** Exclude non-blocking/never-completing statuses by name — filter out `Deploy preview to R2` before counting anything. Only the four required gates (`check`, `checkGenUpToDate`, `Visual Regression Gate`, `E2E Gate`) decide green/red.
 - **Always bound the loop** with a self-timeout (e.g. `deadline=$((SECONDS+2400))`) and print a timestamped line each cycle, so a genuinely stuck run surfaces as `TIMEOUT` rather than eternal quiet.
 - **Don't front-run CI.** Wait for one PR's first *green* cycle before propagating the same assumption (e.g. a snapshot fix) into a stacked/dependent PR. If the assumption was wrong, you find out on one PR, not two.
 
@@ -141,7 +141,7 @@ The `break` on `$failed` is the whole point: it fires the moment the *first* gat
 
 ### Restarting a stuck / never-reported check
 
-If a non-blocking check (netlify preview, or a job that silently never started) needs re-triggering, push a **tiny no-op commit** to the PR branch to kick a fresh CI round: `git commit --amend --no-edit --date=now` + `git push --force-with-lease` (rewrites the tip → new head SHA → checks re-fire), or an empty `git commit --allow-empty -m "chore: re-run ci"`. Prefer amend-with-new-date on an already-clean branch so no junk commit lands; use `--allow-empty` only when you must preserve the existing commit exactly. `gh pr update-branch <n>` also re-fires CI (and is needed anyway to satisfy the up-to-date-with-base merge requirement).
+If a non-blocking check (the deploy preview, or a job that silently never started) needs re-triggering, push a **tiny no-op commit** to the PR branch to kick a fresh CI round: `git commit --amend --no-edit --date=now` + `git push --force-with-lease` (rewrites the tip → new head SHA → checks re-fire), or an empty `git commit --allow-empty -m "chore: re-run ci"`. Prefer amend-with-new-date on an already-clean branch so no junk commit lands; use `--allow-empty` only when you must preserve the existing commit exactly. `gh pr update-branch <n>` also re-fires CI (and is needed anyway to satisfy the up-to-date-with-base merge requirement).
 
 - **e2e / visual-regression failure that's flaky or infra** → re-run the failed job: `gh run rerun <run-id> --failed`.
 - **Legitimate snapshot diff from the branch's own feature** (e.g. a "add buttons" branch whose screenshots now show buttons) → regenerate + commit the baselines (`--update-snapshots`), then `git commit --amend` (or a new baseline commit) and force-with-lease. This is *not* new logic, it's expected baseline refresh.
