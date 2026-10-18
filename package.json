@@ -107,7 +107,7 @@
   },
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.1073.0",
-    "@cloudflare/workers-types": "4.20260702.1",
+    "@cloudflare/workers-types": "^5.20261018.1",
     "@commander-js/extra-typings": "^14.0.0",
     "@playwright/test": "^1.61.1",
     "@supabase/postgrest-js": "2.93.1",
@@ -166,7 +166,7 @@
     "web-audio-test-api": "0.5.2",
     "webmcp-types": "^0.1.9",
     "workbox-window": "^7.4.1",
-    "wrangler": "^4.100.0",
+    "wrangler": "^4.151.1",
     "xml-js": "^1.6.11"
   },
   "optionalDependencies": {

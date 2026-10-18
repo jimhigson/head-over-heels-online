@@ -1,8 +1,8 @@
 name: Deploy previews worker
 
 # the hoh-previews worker maps a preview host to its key prefix in the
-# hoh-previews bucket. It changes rarely, so it deploys only when its own source
-# does - previews themselves are just objects and need no redeploy
+# hoh-previews bucket. It changes rarely, so it deploys only when changes to its
+# own source are pushed to main - previews are just objects and need no redeploy
 
 on:
   push:

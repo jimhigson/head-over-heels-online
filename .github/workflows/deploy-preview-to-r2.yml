@@ -30,6 +30,8 @@ jobs:
     runs-on: ubuntu-24.04-arm
 
     steps:
+      # the default ref on a pull_request event is the merge commit, which is
+      # what a preview should show: the pr as it would land
       - uses: actions/checkout@v6
       - name: Install pnpm
         uses: pnpm/action-setup@v5
@@ -42,15 +44,14 @@ jobs:
 
       - name: Name this preview's hosts
         id: hosts
-        # the pr's own head commit, not github.sha, which on a pull_request
-        # event is the merge commit and so matches nothing in git log. Sliced
-        # rather than git rev-parse'd because the checkout is shallow and need
-        # not contain the head commit
+        # github.sha is the merge commit on a pull_request event, so it names
+        # exactly what was built. Sliced rather than git rev-parse'd so it does
+        # not depend on what the shallow checkout contains
         env:
-          headSha: ${{ github.event.pull_request.head.sha }}
+          mergeSha: ${{ github.sha }}
           prNumber: ${{ github.event.pull_request.number }}
         run: |
-          sha="${headSha:0:7}"
+          sha="${mergeSha:0:7}"
           label="pr$prNumber-$sha"
           {
             echo "label=$label"
@@ -100,8 +101,6 @@ jobs:
               `|:-:|---|`,
               `| 🎮 game | ${gameUrl} |`,
               `| 🛠️ editor | ${editorUrl} |`,
-              ``,
-              `<sub>uncompressed at rest, compressed by the edge; deleted when this pr closes</sub>`,
             ].join("\n");
             await require("./.github/scripts/upsertPreviewComment.cjs")({ github, context, body });
 

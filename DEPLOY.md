@@ -157,7 +157,7 @@ All of these are GitHub Actions repository secrets:
 | Secret                                                      | Used for                                                 |
 | ----------------------------------------------------------- | -------------------------------------------------------- |
 | `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` | uploads to R2; one token covers every bucket, previews included |
-| `CLOUDFLARE_API_TOKEN`                                      | `wrangler deploy` of the previews worker (Workers Scripts: Edit) |
+| `CLOUDFLARE_API_TOKEN`                                      | `wrangler deploy` of the previews worker. Account: Workers Admin (Editor cannot create a worker), Workers R2 Storage Read; zone `blockstack.dev`: Workers Routes Write. `wrangler` also needs `CLOUDFLARE_ACCOUNT_ID`, which is the same value as `R2_ACCOUNT_ID`, so the workflow passes that rather than storing it twice |
 | `RELEASE_PLEASE_PAT`                                        | release-please                                           |
 | `RELEASES_DISCORD_WEBHOOK`                                  | Discord posts on release and on `feat:` merges to `main` |
 | `SUPABASE_ACCESS_TOKEN`, `SUPABASE_DB_PASSWORD`             | db migrations                                            |
@@ -170,7 +170,7 @@ All of these are GitHub Actions repository secrets:
 
 PR previews provide an easy, temporary way to test and share work in progress before merging to main
 
-Every push to a PR gets its own pair of hosts, named after the PR and its head commit:
+Every push to a PR gets its own pair of hosts. What is built, and what the hosts are named after, is the **merge commit** — the PR's branch merged into `main`, ie what would land:
 
 | Host                                   | Serves | Bucket key prefix        |
 | -------------------------------------- | ------ | ------------------------ |
@@ -178,10 +178,9 @@ Every push to a PR gets its own pair of hosts, named after the PR and its head c
 | `ed-pr1234-abc1234.blockstack.dev`     | editor | `ed-pr1234-abc1234/`     |
 
 - One label deep, because Cloudflare's Universal SSL covers the apex and first-level subdomains only; `ed.pr1234-….blockstack.dev` would need paid Advanced Certificate Manager
-- The short sha comes from `github.event.pull_request.head.sha`, not `github.sha`, which on a `pull_request` event is the merge commit and matches nothing in `git log`
-- The editor is its own origin, as on the live sites, rather than the `/editor/` subpath
+- The short sha is `github.sha`, which on a `pull_request` event is the merge commit GitHub builds for the PR. So it names what was deployed, but will not appear in a local `git log` — it is a commit only GitHub holds, as `refs/pull/<number>/merge`
 - Previews show the branch and PR number in the game, from `PREVIEW_BRANCH` and `PREVIEW_PR_NUMBER` which [`deploy-preview-to-r2.yml`](.github/workflows/deploy-preview-to-r2.yml) passes to the build (see `src/readBuildInfo.ts`); the checkout is a detached HEAD, so git can't tell us the branch
-- `VITE_EDITOR_URL`/`VITE_GAME_URL` are per-PR, so the workflow passes them as env vars rather than `.env.r2-preview` fixing them; Vite prefers an inline `VITE_*` over the env file
+- `VITE_EDITOR_URL`/`VITE_GAME_URL` are dynamic per-PR, so the workflow passes them as env vars rather than the config file `.env.r2-preview`. Vite gives `VITE_*` variables from the environment precedence over the config files.
 
 ### One bucket, a prefix per preview
 
@@ -189,13 +188,13 @@ All previews live in `hoh-previews`, under a key prefix that is exactly the host
 
 Its route is `*.blockstack.dev/*`, which also matches `ed.blockstack.dev`. A more specific route on `ed.blockstack.dev/*` **with no worker attached** negates it, so the live editor keeps going straight to its own R2 custom domain. Cloudflare's docs: "A route can be specified without being associated with a Worker. This will act to negate any less specific patterns."
 
-The worker deploys only when its own source changes, via [`deploy-previews-worker.yml`](.github/workflows/deploy-previews-worker.yml).
+The worker deploys only when changes to its own source are pushed to `main`, via [`deploy-previews-worker.yml`](.github/workflows/deploy-previews-worker.yml).
 
 ### Not compressed
 
 Unlike the live sites, previews are stored **uncompressed** and Cloudflare compresses them on the fly. They are fast throwaways, so the brotli-11 pass isn't worth the upload time, and uncompressed objects also sidestep the double-compression that keeps the live sites off Workers.
 
-A preview is therefore not a place to eyeball wire size — `true-site-size` measures that on its own builds.
+`true-site-size` measures its own highly compressed builds, not Cloudflare's on-the-fly asset compression
 
 ### Cleanup
 
