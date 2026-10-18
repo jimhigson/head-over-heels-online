@@ -10,8 +10,8 @@ blockstack.ing is the main domain where most play should happen, blockstack.dev 
 | https://ed.blockstack.ing                                          | editor | latest release tag (`v*`)              | CF r2 bucket `hoh-editor-production` | `r2-production`                     | release-please PR merged      |
 | https://blockstack.dev                                             | game   | `main`                                 | CF r2 bucket `hoh-game-main`         | `r2-main`                           | Any merge to `main`           |
 | https://ed.blockstack.dev                                          | editor | `main`                                 | CF r2 bucket `hoh-editor-main`       | `r2-main`                           | Any merge to `main`           |
-| https://deploy-preview-(pr_number)--blockstack.netlify.app         | game   | PR branches                            | Netlify                              | `production` (`vite build` default) | PR branch opened or pushed to |
-| https://deploy-preview-(pr_number)--blockstack.netlify.app/editor/ | editor | PR branches                            | Netlify                              | `production` (`vite build` default) | PR branch opened or pushed to |
+| https://pr(pr_number)-(short_sha).blockstack.dev                   | game   | PR branches                            | CF r2 bucket `hoh-previews`          | `r2-preview`                        | PR branch opened or pushed to |
+| https://ed-pr(pr_number)-(short_sha).blockstack.dev                | editor | PR branches                            | CF r2 bucket `hoh-previews`          | `r2-preview`                        | PR branch opened or pushed to |
 | http://localhost:5200                                              | game   | local working tree (`pnpm dev:game`)   | n/a                                  | `development`(`vite dev` default)   | `pnpm dev`                    |
 | http://localhost:5210/editor/                                      | editor | local working tree (`pnpm dev:editor`) | n/a                                  | `development`(`vite dev` default)   | `pnpm dev`                    |
 
@@ -148,13 +148,16 @@ What is live on blockstack.ing is the latest GitHub release.
 
 Adding or renaming an environment would require changing all three, plus the `DEPLOY_ENV` mapping in `deploy-to-r2.yml`.
 
+`preview` is the exception: it is a Vite mode and env-file suffix like the others, but all previews share the one `hoh-previews` bucket rather than getting a `hoh-<app>-preview` of their own, because there is one per PR per commit rather than one per environment.
+
 ## Secrets
 
 All of these are GitHub Actions repository secrets:
 
 | Secret                                                      | Used for                                                 |
 | ----------------------------------------------------------- | -------------------------------------------------------- |
-| `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` | uploads to R2; one token covers all four buckets         |
+| `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` | uploads to R2; one token covers every bucket, previews included |
+| `CLOUDFLARE_API_TOKEN`                                      | `wrangler deploy` of the previews worker (Workers Scripts: Edit) |
 | `RELEASE_PLEASE_PAT`                                        | release-please                                           |
 | `RELEASES_DISCORD_WEBHOOK`                                  | Discord posts on release and on `feat:` merges to `main` |
 | `SUPABASE_ACCESS_TOKEN`, `SUPABASE_DB_PASSWORD`             | db migrations                                            |
@@ -163,15 +166,51 @@ All of these are GitHub Actions repository secrets:
 
 `.dev` and production share one Supabase database, so migrations must be backwards-compatible. See the Database section of [DEVELOPING.md](DEVELOPING.md).
 
-## Netlify PR previews
+## PR previews
 
 PR previews provide an easy, temporary way to test and share work in progress before merging to main
 
-- Netlify builds from a detached HEAD, so `vite.game.config.ts` reads the branch from `HEAD`/`BRANCH` and the PR number from `REVIEW_ID`
-- Previews show the branch and PR number in the game
-- They are default production-mode builds (`.env.production`)
-- Editor is at `/editor/`
-- The Netlify site config lives in the Netlify dashboard; there is no `netlify.toml`
+Every push to a PR gets its own pair of hosts, named after the PR and its head commit:
+
+| Host                                   | Serves | Bucket key prefix        |
+| -------------------------------------- | ------ | ------------------------ |
+| `pr1234-abc1234.blockstack.dev`        | game   | `pr1234-abc1234/`        |
+| `ed-pr1234-abc1234.blockstack.dev`     | editor | `ed-pr1234-abc1234/`     |
+
+- One label deep, because Cloudflare's Universal SSL covers the apex and first-level subdomains only; `ed.pr1234-….blockstack.dev` would need paid Advanced Certificate Manager
+- The short sha comes from `github.event.pull_request.head.sha`, not `github.sha`, which on a `pull_request` event is the merge commit and matches nothing in `git log`
+- The editor is its own origin, as on the live sites, rather than the `/editor/` subpath
+- Previews show the branch and PR number in the game, from `PREVIEW_BRANCH` and `PREVIEW_PR_NUMBER` which [`deploy-preview-to-r2.yml`](.github/workflows/deploy-preview-to-r2.yml) passes to the build (see `src/readBuildInfo.ts`); the checkout is a detached HEAD, so git can't tell us the branch
+- `VITE_EDITOR_URL`/`VITE_GAME_URL` are per-PR, so the workflow passes them as env vars rather than `.env.r2-preview` fixing them; Vite prefers an inline `VITE_*` over the env file
+
+### One bucket, a prefix per preview
+
+All previews live in `hoh-previews`, under a key prefix that is exactly the host's first label. R2 custom domains bind a host to a bucket's *root*, so they can't give a host per PR; the [`hoh-previews` worker](workers/previews/previewsWorker.ts) does that mapping instead, and also serves the `index.html` fallback that the live sites get from a rewrite rule.
+
+Its route is `*.blockstack.dev/*`, which also matches `ed.blockstack.dev`. A more specific route on `ed.blockstack.dev/*` **with no worker attached** negates it, so the live editor keeps going straight to its own R2 custom domain. Cloudflare's docs: "A route can be specified without being associated with a Worker. This will act to negate any less specific patterns."
+
+The worker deploys only when its own source changes, via [`deploy-previews-worker.yml`](.github/workflows/deploy-previews-worker.yml).
+
+### Not compressed
+
+Unlike the live sites, previews are stored **uncompressed** and Cloudflare compresses them on the fly. They are fast throwaways, so the brotli-11 pass isn't worth the upload time, and uncompressed objects also sidestep the double-compression that keeps the live sites off Workers.
+
+A preview is therefore not a place to eyeball wire size — `true-site-size` measures that on its own builds.
+
+### Cleanup
+
+| When                    | What goes                                                    |
+| ----------------------- | ------------------------------------------------------------ |
+| a new push to the PR    | every `pr<number>-*` prefix except the new commit's          |
+| the PR merges or closes | every `pr<number>-*` prefix                                  |
+
+Both run [`scripts/deletePreviewsFromR2.ts`](scripts/deletePreviewsFromR2.ts) (`pnpm delete:previews`). So old preview links die on each push, and nothing accumulates except for a PR left open forever.
+
+`pull_request: closed` fires for both merged and closed, so one job covers both.
+
+### Fork PRs
+
+Fork PRs get no repository secrets, so they get no preview.
 
 ## Configured elsewhere
 
@@ -184,7 +223,8 @@ These are configured on the service by ape hand and eyeball or via mcp (this rep
 | R2 custom-domain bindings (`blockstack.*`, `ed.blockstack.*` → buckets)           | [Cloudflare: R2](https://dash.cloudflare.com/?to=/:account/r2/overview) → bucket → Settings              |
 | DNS for `blockstack.dev` and `blockstack.ing`, including ProtonMail email records | [Cloudflare: DNS → Records](https://dash.cloudflare.com/?to=/:account/:zone/dns/records)                 |
 | R2 API token scope (all four buckets)                                             | [Cloudflare: R2](https://dash.cloudflare.com/?to=/:account/r2/overview) → API tokens                     |
-| PR preview build settings                                                         | [Netlify: blockstack project](https://app.netlify.com/projects/blockstack)                               |
+| `*` DNS record on `blockstack.dev`, proxied, so preview hosts resolve             | [Cloudflare: DNS → Records](https://dash.cloudflare.com/?to=/:account/:zone/dns/records)                 |
+| `ed.blockstack.dev/*` route with no worker, negating the previews worker's wildcard | [Cloudflare: Workers Routes](https://dash.cloudflare.com/?to=/:account/workers)                        |
 
 ### DNS
 

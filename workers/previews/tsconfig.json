@@ -1,0 +1,23 @@
+{
+  /*
+   * standalone rather than extending the app config: the worker imports nothing
+   * from src/, and runs on workerd, whose globals come from
+   * @cloudflare/workers-types instead of lib.dom
+   */
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "lib": ["esnext"],
+    "types": ["@cloudflare/workers-types"],
+    "strict": true,
+    "noUncheckedIndexedAccess": false,
+    "noEmit": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "skipLibCheck": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
+}

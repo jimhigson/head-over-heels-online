@@ -22,6 +22,9 @@ type Mode =
   // .env.<mode> (domains differ; build settings are production-like)
   | "r2-main"
   | "r2-production"
+  // a pr deploy preview, whose domains vary per pr so the workflow passes them
+  // in rather than .env.r2-preview fixing them
+  | "r2-preview"
   // points the game at the local Supabase stack (`supabase start`); see DEVELOPING.md
   | "local-db";
 
