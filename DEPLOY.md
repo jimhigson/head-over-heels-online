@@ -181,6 +181,7 @@ Every push to a PR gets its own pair of hosts. What is built, and what the hosts
 - The short sha is `github.sha`, which on a `pull_request` event is the merge commit GitHub builds for the PR. So it names what was deployed, but will not appear in a local `git log` — it is a commit only GitHub holds, as `refs/pull/<number>/merge`
 - Previews show the branch and PR number in the game, from `PREVIEW_BRANCH` and `PREVIEW_PR_NUMBER` which [`deploy-preview-to-r2.yml`](.github/workflows/deploy-preview-to-r2.yml) passes to the build (see `src/readBuildInfo.ts`); the checkout is a detached HEAD, so git can't tell us the branch
 - `VITE_EDITOR_URL`/`VITE_GAME_URL` are dynamic per-PR, so the workflow passes them as env vars rather than the config file `.env.r2-preview`. Vite gives `VITE_*` variables from the environment precedence over the config files.
+- The comment carries a QR code for the game URL, rendered by goqr.me from the url in the image's query string, so a preview can be opened on a phone by scanning it. The editor has no mobile layout and gets none.
 
 ### One bucket, a prefix per preview
 
