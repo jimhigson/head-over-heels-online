@@ -1,12 +1,24 @@
 import { type Color } from "pixi.js";
 
 import { type PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
+import { type HexColour } from "../colour/HexColour";
 import { objectEntriesIter } from "../entries";
 
-export type NamedColours<ColourName extends string> = Record<ColourName, Color>;
+export type NamedPixiColours<ColourName extends string> = Record<
+  ColourName,
+  Color
+>;
+
+/**
+ * a palette as it is stored: hex strings, so holding one needs no renderer
+ */
+export type NamedHexColours<ColourName extends string> = Record<
+  ColourName,
+  HexColour
+>;
 
 export type PartialNamedColours<ColourName extends string> = Partial<
-  NamedColours<ColourName>
+  NamedPixiColours<ColourName>
 >;
 
 export type NamedSwops<ColourName extends string> = {
@@ -21,7 +33,7 @@ export type NamedSwops<ColourName extends string> = {
  * keys, so typos in swop literals are caught as compile errors.
  */
 export const resolveSwops = <Names extends string>(
-  palette: NamedColours<Names>,
+  palette: NamedPixiColours<Names>,
   paletteSwaps: PartialNamedColours<NoInfer<Names>>,
 ): Map<Color, Color> => {
   const result = new Map<Color, Color>();
@@ -41,7 +53,7 @@ export const resolveSwops = <Names extends string>(
  * // NOTE: also doesn't support texture-specific swops
  */
 export const getAmbientSwoppedColour = <ColourName extends string>(
-  palette: NamedColours<ColourName>,
+  palette: NamedPixiColours<ColourName>,
   colourName: ColourName,
   ambient: PaletteSwopSpec[] | undefined,
 ): Color => {

@@ -1,5 +1,6 @@
 import { Color } from "pixi.js";
 
+import { type HexColour } from "./HexColour";
 import { parseHex } from "./parseHex";
 
 /**
@@ -30,7 +31,7 @@ export const halfbrite = (c: Color, dimFactor = amigaHalfBriteBrightness) => {
   });
   return hb;
 };
-export const halfbriteHex = (hex: string) => {
+export const halfbriteHex = (hex: HexColour): HexColour => {
   const { r, g, b } = parseHex(hex)!;
 
   const toHex = (val: number) =>

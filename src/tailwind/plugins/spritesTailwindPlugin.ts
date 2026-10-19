@@ -2,10 +2,12 @@ import { imageSize } from "image-size";
 import plugin from "tailwindcss/plugin";
 import { type CSSRuleObject } from "tailwindcss/types/config";
 
-import spritesheetPalette from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
-import toppyPalette from "../../_generated/palette/spritesheetToppyPalette.json" with { type: "json" };
 import { editorUiScale } from "../../editor/editorUiScale";
-import { zxSpectrumColors } from "../../originalGame";
+import { zxSpectrumHexColours } from "../../originalGame";
+import {
+  paletteBlockstackHex,
+  paletteToppyHex,
+} from "../../sprites/palette/spritesheetPalette";
 import { halfbriteHex } from "../../utils/colour/halfbrite";
 
 const spritesheetSize = imageSize("gfx/sprites.webp");
@@ -199,7 +201,7 @@ export const spritesTailwindPlugin = plugin(
         lineHeight: "10px",
       },
       ".bg-editor-checkerboard": {
-        background: `repeating-conic-gradient(${spritesheetPalette.pureBlack} 0 25%, ${halfbriteHex(spritesheetPalette.shadow)} 0 50%) 50% / calc(4*var(--block)) calc(4*var(--block))`,
+        background: `repeating-conic-gradient(${paletteBlockstackHex.pureBlack} 0 25%, ${halfbriteHex(paletteBlockstackHex.shadow)} 0 50%) 50% / calc(4*var(--block)) calc(4*var(--block))`,
         backgroundAttachment: "fixed",
       },
       ".bg-checkerboard-stifled-alphas": {
@@ -237,8 +239,8 @@ export const spritesTailwindPlugin = plugin(
       `calc((${base} + ${s(offset)}) * var(--patternLength))`;
 
     utilities[".loading-border"] = {
-      "--c1": halfbriteHex(spritesheetPalette.metallicBlue),
-      "--c2": halfbriteHex(spritesheetPalette.pastelBlue),
+      "--c1": halfbriteHex(paletteBlockstackHex.metallicBlue),
+      "--c2": halfbriteHex(paletteBlockstackHex.pastelBlue),
       "--patternLength": "15vh",
       "--t": "0",
       background: `repeating-linear-gradient(
@@ -288,52 +290,52 @@ export const spritesTailwindPlugin = plugin(
     };
     base["@keyframes zx-loading-bars-colour-cycle"] = {
       "0%": {
-        "--c1": zxSpectrumColors.red.toHex(),
-        "--c2": zxSpectrumColors.cyan.toHex(),
+        "--c1": zxSpectrumHexColours.red,
+        "--c2": zxSpectrumHexColours.cyan,
       },
       "50%": {
-        "--c1": zxSpectrumColors.yellow.toHex(),
-        "--c2": zxSpectrumColors.blue.toHex(),
+        "--c1": zxSpectrumHexColours.yellow,
+        "--c2": zxSpectrumHexColours.blue,
       },
       "100%": {
-        "--c1": zxSpectrumColors.yellow.toHex(),
-        "--c2": zxSpectrumColors.blue.toHex(),
+        "--c1": zxSpectrumHexColours.yellow,
+        "--c2": zxSpectrumHexColours.blue,
       },
     };
     base["@keyframes loading-bars-colour-cycle"] = {
       "0%": {
-        "--c1": halfbriteHex(spritesheetPalette.metallicBlue),
-        "--c2": halfbriteHex(spritesheetPalette.pastelBlue),
+        "--c1": halfbriteHex(paletteBlockstackHex.metallicBlue),
+        "--c2": halfbriteHex(paletteBlockstackHex.pastelBlue),
       },
       "25%": {
-        "--c1": halfbriteHex(spritesheetPalette.midRed),
-        "--c2": halfbriteHex(spritesheetPalette.highlightBeige),
+        "--c1": halfbriteHex(paletteBlockstackHex.midRed),
+        "--c2": halfbriteHex(paletteBlockstackHex.highlightBeige),
       },
       "50%": {
-        "--c1": halfbriteHex(spritesheetPalette.moss),
-        "--c2": halfbriteHex(spritesheetPalette.swop_cyan),
+        "--c1": halfbriteHex(paletteBlockstackHex.moss),
+        "--c2": halfbriteHex(paletteBlockstackHex.swop_cyan),
       },
       "75%": {
-        "--c1": halfbriteHex(spritesheetPalette.pink),
-        "--c2": halfbriteHex(spritesheetPalette.white),
+        "--c1": halfbriteHex(paletteBlockstackHex.pink),
+        "--c2": halfbriteHex(paletteBlockstackHex.white),
       },
     };
     base["@keyframes toppy-loading-bars-colour-cycle"] = {
       "0%": {
-        "--c1": halfbriteHex(toppyPalette.cool3),
-        "--c2": halfbriteHex(toppyPalette.cool1),
+        "--c1": halfbriteHex(paletteToppyHex.cool3),
+        "--c2": halfbriteHex(paletteToppyHex.cool1),
       },
       "25%": {
-        "--c1": halfbriteHex(toppyPalette.pink2),
-        "--c2": halfbriteHex(toppyPalette.warm3),
+        "--c1": halfbriteHex(paletteToppyHex.pink2),
+        "--c2": halfbriteHex(paletteToppyHex.warm3),
       },
       "50%": {
-        "--c1": halfbriteHex(toppyPalette.cool2),
-        "--c2": halfbriteHex(toppyPalette.warm1),
+        "--c1": halfbriteHex(paletteToppyHex.cool2),
+        "--c2": halfbriteHex(paletteToppyHex.warm1),
       },
       "75%": {
-        "--c1": halfbriteHex(toppyPalette.pink1),
-        "--c2": halfbriteHex(toppyPalette.warm2),
+        "--c1": halfbriteHex(paletteToppyHex.pink1),
+        "--c2": halfbriteHex(paletteToppyHex.warm2),
       },
     };
 

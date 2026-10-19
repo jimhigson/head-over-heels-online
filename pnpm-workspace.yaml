@@ -12,6 +12,12 @@ minimumReleaseAgeExclude:
   - typescript
   - '@typescript/*'
   - '@cloudflare/workers-types'
+  - postcss@8.5.31
+overrides:
+  # vite and tailwind resolve different patches of postcss, and two copies make
+  # their plugin types mutually unassignable, which fails the font editor's
+  # typecheck
+  postcss: 8.5.31
 patchedDependencies:
   pixi.js: patches/pixi.js.patch
   web-audio-test-api@0.5.2: patches/web-audio-test-api@0.5.2.patch

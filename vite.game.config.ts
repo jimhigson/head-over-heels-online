@@ -12,6 +12,21 @@ import { postcssPruneUnused } from "./postcssPruneUnused";
 
 const oneWeekInSeconds = 60 * 60 * 24 * 7;
 
+const pixiDirectory = "/node_modules/pixi.js/";
+
+// pixi's leaf utilities the menus use
+const pixiDirectoriesForMenus = ["ticker", "color"];
+
+const isPixiModule = (moduleId: string) => moduleId.includes(pixiDirectory);
+
+const isPixiModuleForMenus = (moduleId: string) =>
+  pixiDirectoriesForMenus.some((directory) =>
+    moduleId.includes(`${pixiDirectory}lib/${directory}/`),
+  );
+
+const isVitePreloadHelper = (moduleId: string) =>
+  moduleId.includes("vite/preload-helper");
+
 type Mode =
   | "development"
   | "production"
@@ -167,6 +182,36 @@ export default defineConfig(({ mode: _mode }) => {
                     propertyReadSideEffects: false,
                   },
                 },
+              },
+              advancedChunks: {
+                groups: [
+                  // vite compiles every dynamic import() into a call to this
+                  // small helper, so every lazy-loading module depends on it.
+                  // Left ungrouped, rolldown can place it inside a big chunk
+                  // (it chose pixi's), and then any lazy load downloads that
+                  // whole chunk just to get the helper
+                  {
+                    name: "preloadHelper",
+                    test: isVitePreloadHelper,
+                    priority: 100,
+                  },
+                  // the menu needs only a couple of leaf utilities from pixi;
+                  // they are carved out first so wanting them never drags in
+                  // the renderer
+                  {
+                    name: "pixiForMenus",
+                    test: isPixiModuleForMenus,
+                    priority: 10,
+                  },
+                  // the rest of pixi in one chunk: it is the most self-similar
+                  // code in the bundle, so brotli finds far more cross-module
+                  // matches in one file than in several
+                  {
+                    name: "pixi",
+                    test: isPixiModule,
+                    priority: 1,
+                  },
+                ],
               },
             },
       },

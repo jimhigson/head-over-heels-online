@@ -15,7 +15,7 @@ import { binariseAlphaFilter } from "../../game/render/filters/shadows/binariseA
 import { hardenChannelsFilter } from "../../game/render/filters/shadows/hardenChannelsFilter";
 import { objectEntriesIter } from "../../utils/entries";
 import { resolveSwops } from "../../utils/palette/palette";
-import { paletteBlockstack } from "../palette/spritesheetPalette";
+import { pixiPaletteBlockstack } from "../palette/pixiPalette";
 import { applySpritesheetFlips } from "./applySpritesheetFlips";
 import {
   type AppSpritesheet,
@@ -62,7 +62,7 @@ const baseKeyPrefix = "base:";
  */
 const uncolourisedAmbient = {
   lutType: "voronoi" as const,
-  swops: resolveSwops(paletteBlockstack, {
+  swops: resolveSwops(pixiPaletteBlockstack, {
     pureBlack: new Color(0x00_00_00),
     shadow: new Color(0xff_ff_ff),
     redShadow: new Color(0xff_ff_ff),
@@ -92,8 +92,8 @@ export const buildRoomSheet = (
   const { pixiRenderer, spriteOption, spritesheetMetaData } = context;
   const { name: spriteOptionName, uncolourised } = spriteOption;
 
-  const meta = spritesheetMetas[spriteOptionName];
-  const rawData = makeSpritesheetData(meta);
+  const spritesheetMetaForName = spritesheetMetas[spriteOptionName];
+  const rawData = makeSpritesheetData(spritesheetMetaForName);
   const data: AppSpritesheetDataWithVariants =
     repackedFrameRects === undefined ? rawData : (
       {
@@ -112,7 +112,7 @@ export const buildRoomSheet = (
       );
 
   // arcade buttons are HUD (never reached by the render-time tint), so in
-  // uncolourised mode they bake at the ZX hues on the speccy meta
+  // uncolourised mode they bake at the ZX hues on the speccy spritesheet meta
   const variantContext: VariantBuildContext =
     uncolourised ?
       { ...context, spritesheetMetaData: speccySpritesheetMeta }
@@ -305,7 +305,7 @@ export const buildRoomSheet = (
   sheet.textureSource.scaleMode = "nearest";
   sheet.spriteOptionName = spriteOptionName;
   sheet.ambient = ambient;
-  sheet.spritesheetMeta = meta;
+  sheet.spritesheetMeta = spritesheetMetaForName;
   applySpritesheetFlips(sheet);
 
   return { sheet: withVariantsBaked(sheet), target };

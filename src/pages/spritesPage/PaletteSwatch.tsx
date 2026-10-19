@@ -1,8 +1,11 @@
-import jsonPalette from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
-import jsonToppyPalette from "../../_generated/palette/spritesheetToppyPalette.json" with { type: "json" };
-import { zxSpectrumColors } from "../../originalGame";
+import { zxSpectrumHexColours } from "../../originalGame";
+import {
+  paletteBlockstackHex,
+  paletteToppyHex,
+} from "../../sprites/palette/spritesheetPalette";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { useTip } from "../../ui/tip/useTip";
+import { type HexColour } from "../../utils/colour/HexColour";
 import { srgbHexToP3 } from "../../utils/colour/srgbHexToP3";
 import { objectEntriesIter } from "../../utils/entries";
 
@@ -13,12 +16,12 @@ const paletteUtilityColours = new Set([
   "ss_background",
 ]);
 
-type ColourEntry = readonly [string, string];
+type ColourEntry = readonly [string, HexColour];
 
 const isSecondary = ([name]: ColourEntry) =>
   name.startsWith("swop_") || name.startsWith("shadow_");
 
-const displayEntries = (palette: Record<string, string>) =>
+const displayEntries = (palette: Record<string, HexColour>) =>
   objectEntriesIter(palette)
     .filter(([name]) => !paletteUtilityColours.has(name))
     .toArray();
@@ -30,15 +33,11 @@ const partitionSwops = (
   swops: entries.filter(isSecondary),
 });
 
-const blockstackEntries = partitionSwops(displayEntries(jsonPalette));
-const toppyEntries = partitionSwops(displayEntries(jsonToppyPalette));
-const zxEntries = partitionSwops(
-  objectEntriesIter(zxSpectrumColors)
-    .map(([name, colour]) => [name, colour.toHex()] as const)
-    .toArray(),
-);
+const blockstackEntries = partitionSwops(displayEntries(paletteBlockstackHex));
+const toppyEntries = partitionSwops(displayEntries(paletteToppyHex));
+const zxEntries = partitionSwops(displayEntries(zxSpectrumHexColours));
 
-type SwatchProps = { name: string; hex: string };
+type SwatchProps = { name: string; hex: HexColour };
 
 const Swatch = ({ name, hex }: SwatchProps) => {
   const { interestfor, tip } = useTip(

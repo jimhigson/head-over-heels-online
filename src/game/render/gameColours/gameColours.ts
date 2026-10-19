@@ -1,24 +1,24 @@
 import { type Color } from "pixi.js";
 
 import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
+import { type ZxSpectrumRoomHue } from "../../../originalGame";
 import {
-  zxSpectrumColors,
-  type ZxSpectrumRoomHue,
-} from "../../../originalGame";
+  maybeDimPixiPalette,
+  pixiPaletteToppy,
+} from "../../../sprites/palette/pixiPalette";
 import {
   type BlockstackPaletteColourName,
-  maybeDimPalette,
-  paletteToppy,
   type ToppyPaletteColourName,
 } from "../../../sprites/palette/spritesheetPalette";
 import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
-import { type NamedColours } from "../../../utils/palette/palette";
+import { type NamedPixiColours } from "../../../utils/palette/palette";
+import { zxSpectrumPixiColors } from "../palette/zxSpectrumPixiColours";
 
 export const gameColour = (
   colourName: BlockstackPaletteColourName,
   inDimmedPalette: boolean = false,
 ): Color => {
-  return maybeDimPalette(blockStackSpritesheetMeta, inDimmedPalette)[
+  return maybeDimPixiPalette(blockStackSpritesheetMeta, inDimmedPalette)[
     colourName
   ];
 };
@@ -40,9 +40,9 @@ const toppyHueMapping: Record<ZxSpectrumRoomHue, ToppyPaletteColourName> = {
 };
 
 export const toppyReplacementColour = (hue: ZxSpectrumRoomHue): Color =>
-  paletteToppy[toppyHueMapping[hue]];
+  pixiPaletteToppy[toppyHueMapping[hue]];
 
-type PaletteSwapsForPlaceholderColours = NamedColours<
+type PaletteSwapsForPlaceholderColours = NamedPixiColours<
   "replaceDark" | "replaceLight"
 >;
 
@@ -53,7 +53,10 @@ export const replacementColours = (
   inDimmedPalette: boolean = false,
   trend: Trend = "light-dark",
 ): PaletteSwapsForPlaceholderColours => {
-  const palette = maybeDimPalette(blockStackSpritesheetMeta, inDimmedPalette);
+  const palette = maybeDimPixiPalette(
+    blockStackSpritesheetMeta,
+    inDimmedPalette,
+  );
 
   const requestedMid = trend === "light-mid" || trend === "mid-dark";
 
@@ -85,4 +88,6 @@ export const getWhite = (
   spriteOption: SpriteOption,
   dim: boolean = false,
 ): Color =>
-  spriteOption.uncolourised ? zxSpectrumColors.white : gameColour("white", dim);
+  spriteOption.uncolourised ?
+    zxSpectrumPixiColors.white
+  : gameColour("white", dim);

@@ -4,7 +4,7 @@ import { useEffect } from "preact/hooks";
 
 import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
 import { RoomRenderer } from "../../game/render/room/RoomRenderer";
-import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
+import { pixiPaletteBlockstack } from "../../sprites/palette/pixiPalette";
 import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import { type Upscale } from "../../store/slices/upscale/Upscale";
@@ -94,7 +94,7 @@ export const useEditorMainLoop = (
         roomRenderSize.w + 2 * roomEditingAreaMarginPx,
         roomRenderSize.h + 2 * roomEditingAreaMarginPx,
       )
-      .fill(paletteBlockstack.pureBlack);
+      .fill(pixiPaletteBlockstack.pureBlack);
     // always behind the room:
     viewport.container.addChildAt(backdrop, 0);
 

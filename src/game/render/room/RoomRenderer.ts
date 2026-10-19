@@ -7,7 +7,6 @@ import {
 } from "../../../model/ItemInPlay";
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { forEachRoomItem } from "../../../model/roomItemsInPlayIterators";
-import { zxSpectrumColor } from "../../../originalGame";
 import { audioCtx } from "../../../sound/audioCtx";
 import { soundsFadeDurationSec } from "../../../sound/soundUtils/stopWithFade";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
@@ -26,6 +25,7 @@ import {
 } from "../item/itemRender/createItemRenderer";
 import { type DecorateItemMaybeRenderer } from "../item/itemRender/DecorateItemRenderer";
 import { type ItemTickContext, type ItemZGraph } from "../ItemRenderContexts";
+import { zxSpectrumPixiColor } from "../palette/zxSpectrumPixiColours";
 import {
   makeItemRenderBoxAtCameraAngle,
   type RenderBox,
@@ -183,7 +183,7 @@ export class RoomRenderer<
     this.output.graphics.addChild(this.#frontLayer);
 
     if (spriteOption.uncolourised) {
-      this.#itemsContainer.tint = zxSpectrumColor(room.color);
+      this.#itemsContainer.tint = zxSpectrumPixiColor(room.color);
     }
   }
 

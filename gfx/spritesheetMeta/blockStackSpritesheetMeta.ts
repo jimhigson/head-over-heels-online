@@ -1,7 +1,7 @@
 import {
   type BlockstackPaletteColourName,
-  paletteBlockstack,
-  paletteBlockstackDim,
+  paletteBlockstackDimHex,
+  paletteBlockstackHex,
 } from "../../src/sprites/palette/spritesheetPalette";
 import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { octantIndexOfDirection } from "../../src/utils/vectors/octantIndexOfDirection" with { type: "macro" };
@@ -13,8 +13,9 @@ export const blockStackSpritesheetMeta: SpritesheetMetadata<
   true
 > = {
   name: "BlockStack",
-  palette: paletteBlockstack,
-  paletteDim: paletteBlockstackDim,
+  paletteName: "blockstack",
+  palette: paletteBlockstackHex,
+  paletteDim: paletteBlockstackDimHex,
   itemRenderExtents,
   playable: {
     head: {

@@ -1,9 +1,7 @@
 import { type Color } from "pixi.js";
 
-import {
-  type BlockstackPaletteColourName,
-  paletteBlockstack,
-} from "../../../../../sprites/palette/spritesheetPalette";
+import { pixiPaletteBlockstack } from "../../../../../sprites/palette/pixiPalette";
+import { type BlockstackPaletteColourName } from "../../../../../sprites/palette/spritesheetPalette";
 import { entries } from "../../../../../utils/entries";
 import { voronoiLut } from "../voronoiLut";
 
@@ -24,7 +22,7 @@ const normalColours: BlockstackPaletteColourName[] = [
 ];
 
 function* paletteColors(): Generator<[Color, Color]> {
-  for (const [name, color] of entries(paletteBlockstack)) {
+  for (const [name, color] of entries(pixiPaletteBlockstack)) {
     if (normalColours.includes(name)) {
       yield [color, color];
     }

@@ -10,7 +10,7 @@ import editorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
 import jsonWorker from "monaco-editor/esm/vs/language/json/json.worker?worker";
 import { jsonDefaults } from "monaco-editor/esm/vs/language/json/monaco.contribution";
 
-import paletteJson from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
+import { paletteBlockstackHex } from "../../sprites/palette/spritesheetPalette";
 import { halfbriteHex } from "../../utils/colour/halfbrite";
 import { importOnce } from "../../utils/importOnce";
 
@@ -57,49 +57,67 @@ const monacoLoader = async (): Promise<typeof Monaco> => {
     base: "vs-dark",
     inherit: true,
     rules: [
-      { token: "string.key.json", foreground: paletteJson.pastelBlue },
-      { token: "string.value.json", foreground: paletteJson.lightBeige },
-      { token: "number.json", foreground: paletteJson.lightBeige },
+      { token: "string.key.json", foreground: paletteBlockstackHex.pastelBlue },
+      {
+        token: "string.value.json",
+        foreground: paletteBlockstackHex.lightBeige,
+      },
+      { token: "number.json", foreground: paletteBlockstackHex.lightBeige },
       {
         token: "keyword.json",
-        foreground: paletteJson.midRed,
+        foreground: paletteBlockstackHex.midRed,
         fontStyle: "bold",
       },
       {
         token: "punctuation.separator.key-value.json",
-        foreground: paletteJson.pink,
+        foreground: paletteBlockstackHex.pink,
       },
       {
         token: "punctuation.separator.array.json",
-        foreground: paletteJson.midGrey,
+        foreground: paletteBlockstackHex.midGrey,
       },
-      { token: "delimiter.bracket.json", foreground: paletteJson.redShadow },
-      { token: "delimiter.array.json", foreground: paletteJson.moss },
-      { token: "delimiter.comma.json", foreground: paletteJson.midGrey },
-      { token: "delimiter.colon.json", foreground: paletteJson.midGrey },
+      {
+        token: "delimiter.bracket.json",
+        foreground: paletteBlockstackHex.redShadow,
+      },
+      { token: "delimiter.array.json", foreground: paletteBlockstackHex.moss },
+      {
+        token: "delimiter.comma.json",
+        foreground: paletteBlockstackHex.midGrey,
+      },
+      {
+        token: "delimiter.colon.json",
+        foreground: paletteBlockstackHex.midGrey,
+      },
     ],
     // list of colours at https://github.com/microsoft/monaco-editor/issues/1631
     colors: {
-      "editor.foreground": paletteJson.midGrey,
-      "editor.background": paletteJson.pureBlack,
-      "editorLineNumber.foreground": paletteJson.shadow,
-      "editorLineNumber.activeForeground": paletteJson.midRed,
-      "editor.selectionBackground": paletteJson.shadow,
-      "editorIndentGuide.background1": paletteJson.shadow,
-      "editorIndentGuide.activeBackground1": paletteJson.midRed,
-      "editor.lineHighlightBackground": halfbriteHex(paletteJson.redShadow),
+      "editor.foreground": paletteBlockstackHex.midGrey,
+      "editor.background": paletteBlockstackHex.pureBlack,
+      "editorLineNumber.foreground": paletteBlockstackHex.shadow,
+      "editorLineNumber.activeForeground": paletteBlockstackHex.midRed,
+      "editor.selectionBackground": paletteBlockstackHex.shadow,
+      "editorIndentGuide.background1": paletteBlockstackHex.shadow,
+      "editorIndentGuide.activeBackground1": paletteBlockstackHex.midRed,
+      "editor.lineHighlightBackground": halfbriteHex(
+        paletteBlockstackHex.redShadow,
+      ),
       "editor.lineHighlightBorder": "#00000000", // transparent
-      "editor.foldPlaceholderForeground": paletteJson.pink,
+      "editor.foldPlaceholderForeground": paletteBlockstackHex.pink,
       // suggest (autocomplete) widget, matched to the app's Command/ContextMenu
       // dropdown: metallicBlue body, white text, selected row inverts to white
-      "editorSuggestWidget.background": paletteJson.metallicBlue,
-      "editorSuggestWidget.border": paletteJson.shadow,
-      "editorSuggestWidget.foreground": paletteJson.white,
-      "editorSuggestWidget.selectedBackground": paletteJson.white,
-      "editorSuggestWidget.selectedForeground": paletteJson.metallicBlue,
-      "editorSuggestWidget.selectedIconForeground": paletteJson.metallicBlue,
-      "editorSuggestWidget.highlightForeground": paletteJson.highlightBeige,
-      "editorSuggestWidget.focusHighlightForeground": paletteJson.midRed,
+      "editorSuggestWidget.background": paletteBlockstackHex.metallicBlue,
+      "editorSuggestWidget.border": paletteBlockstackHex.shadow,
+      "editorSuggestWidget.foreground": paletteBlockstackHex.white,
+      "editorSuggestWidget.selectedBackground": paletteBlockstackHex.white,
+      "editorSuggestWidget.selectedForeground":
+        paletteBlockstackHex.metallicBlue,
+      "editorSuggestWidget.selectedIconForeground":
+        paletteBlockstackHex.metallicBlue,
+      "editorSuggestWidget.highlightForeground":
+        paletteBlockstackHex.highlightBeige,
+      "editorSuggestWidget.focusHighlightForeground":
+        paletteBlockstackHex.midRed,
     },
   });
 
