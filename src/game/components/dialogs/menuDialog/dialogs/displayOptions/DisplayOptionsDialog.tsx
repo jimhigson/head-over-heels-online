@@ -20,7 +20,7 @@ import { MenuItems } from "../../MenuItems";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
 import { DialogTitleBar } from "../DialogTitleBar";
 import { FullscreenMenuItem } from "./FullscreenMenuItem";
-import { SpritesOptionMenuItem } from "./SpritesOptionMenuItem";
+import { SpritesheetMenuItem } from "./SpritesheetMenuItem";
 
 const crtEffectMarkdown = `Your fancy new screen like 1987 again.`;
 
@@ -41,7 +41,7 @@ export const DisplayOptionsDialog = () => {
               Artwork
             </h2>
           </div>
-          <SpritesOptionMenuItem />
+          <SpritesheetMenuItem />
           <div class="col-span-3">
             <h2 class="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
               Filters

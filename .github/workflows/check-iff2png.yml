@@ -46,7 +46,7 @@ jobs:
       - run: pnpm install
       - name: Save original image files before regeneration
         run: |
-          IMAGE_FILES=(gfx/sprites.webp gfx/sprites.borders.png)
+          IMAGE_FILES=(gfx/spritesBlockstack.webp gfx/spritesBlockstack.borders.png)
           for img in "${IMAGE_FILES[@]}"; do
             cp "$img" "/tmp/$(basename $img).original"
           done
@@ -54,14 +54,14 @@ jobs:
       - name: Check image processing scripts are a no-op
         run: |
           NON_IMAGE_FILES="
-            src/_generated/palette/spritesheetPalette.json
-            src/_generated/palette/spritesheetPaletteDim.json
+            src/_generated/palette/spritesheetBlockstackPalette.json
+            src/_generated/palette/spritesheetBlockstackPaletteDim.json
             src/_generated/palette/spritesheetToppyPalette.json
           "
           git diff --exit-code -- $NON_IMAGE_FILES || (echo "Files were modified by 'pnpm iff2png'. Please run 'pnpm iff2png' locally and commit the changes." && exit 1)
 
           # For image files, compare pixels only (ignore metadata)
-          IMAGE_FILES=(gfx/sprites.webp gfx/sprites.borders.png)
+          IMAGE_FILES=(gfx/spritesBlockstack.webp gfx/spritesBlockstack.borders.png)
           for img in "${IMAGE_FILES[@]}"; do
             diff_pixels=$(magick compare -metric AE "$img" "/tmp/$(basename $img).original" null: 2>&1 || true)
             # magick compare outputs format "N (normalized)" where N is pixel count

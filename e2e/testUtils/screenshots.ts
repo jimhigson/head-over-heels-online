@@ -6,50 +6,44 @@ import {
 } from "@playwright/test";
 import chalk from "chalk";
 
-import spritesheetColours from "../../src/_generated/palette/spritesheetPalette.json" with { type: "json" };
+import blockstackPaletteColours from "../../src/_generated/palette/spritesheetBlockstackPalette.json" with { type: "json" };
 import { type DialogId } from "../../src/game/components/dialogs/menuDialog/DialogId";
 import {
   menuItemDataAttributeDisabled,
   menuItemDataAttributeHidden,
   menuItemDataAttributeId,
 } from "../../src/game/components/dialogs/menuDialog/dialogs/menus/menuItemDataAttributes";
-import { type SpriteOption } from "../../src/store/slices/userSettings/userSettingsSlice";
+import { type SpritesheetName } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { elapsed, formatDuration } from "./logging";
 import { osSlowness } from "./osSlowness";
 
 export const testTimeout = (process.env.CI ? 600_000 : 120_000) * osSlowness;
 
-/** short label for a sprite option: "uncolourised", "toppy", "debug", or "" for default BlockStack */
-export const spriteOptionName = (spriteOption: SpriteOption): string =>
-  spriteOption.uncolourised ? "uncolourised"
-  : spriteOption.name === "Toppy" ? "toppy"
-  : spriteOption.name === "Debug" ? "debug"
-    // no name otherwise - because it was the first variant, and I don't want to rename all the old files,
-    // Blockstack colourised gets no suffix/name added to files
-  : "";
+/**
+ * short label for a spritesheet in snapshot filenames: its name, or "" for blockstack
+ */
+export const spritesheetFileLabel = (
+  spritesheetName: SpritesheetName,
+): string =>
+  // no name for blockstack - because it was the first variant, and I don't want to rename all the old files,
+  // Blockstack colourised gets no suffix/name added to files
+  spritesheetName === "blockstack" ? "" : spritesheetName;
 
-/** dash-prefixed suffix for filenames: "-uncolourised", "-toppy", or "" for default */
-export const spriteOptionSuffix = (spriteOption: SpriteOption): string => {
-  const name = spriteOptionName(spriteOption);
+/** dash-prefixed suffix for filenames: "-speccy", "-toppy", or "" for default */
+export const spritesheetSuffix = (spritesheetName: SpritesheetName): string => {
+  const name = spritesheetFileLabel(spritesheetName);
   return name === "" ? "" : `-${name}`;
 };
 
-export const enabledSpriteModes: SpriteOption[] = [
-  ...(process.env.NO_BLOCKSTACK ?
-    []
-  : [{ name: "BlockStack", uncolourised: false } as const]),
-  ...(process.env.NO_UNCOLOURISED ?
-    []
-  : [
-      {
-        name: "BlockStack",
-        uncolourised: true,
-      } as const,
-    ]),
-  ...(process.env.NO_TOPPY ?
-    []
-  : [{ name: "Toppy", uncolourised: false } as const]),
-];
+export const enabledSpritesheets: SpritesheetName[] = (
+  [
+    ["blockstack", process.env.NO_BLOCKSTACK],
+    ["speccy", process.env.NO_UNCOLOURISED],
+    ["toppy", process.env.NO_TOPPY],
+  ] as const
+)
+  .filter(([, skip]) => !skip)
+  .map(([spritesheetName]) => spritesheetName);
 
 // Track visited dialogs to avoid infinite loops and duplicates
 export type VisitedDialogs = Set<DialogId>;
@@ -284,7 +278,7 @@ export const takeDialogScreenshot = async (
   dialogId: DialogId,
   logHeader: string,
   filenameSuffix: (null | string)[] | string,
-  spriteOption: SpriteOption,
+  spritesheetName: SpritesheetName,
   projectName: string,
 ) => {
   const resolvedSuffix =
@@ -312,7 +306,7 @@ export const takeDialogScreenshot = async (
       page,
       `${dialogId}${resolvedSuffix}`,
       logHeader,
-      spriteOption,
+      spritesheetName,
       projectName,
     );
   });
@@ -326,7 +320,7 @@ export const takeScreenshot = async (
   page: Page,
   screenshotName: string,
   logHeader: string,
-  spriteOption: SpriteOption,
+  spritesheetName: SpritesheetName,
   projectName: string,
 ) => {
   // any spec that screenshots gets the text-layout evidence, without having to
@@ -356,7 +350,7 @@ export const takeScreenshot = async (
     .soft(page)
     .toHaveScreenshot(
       `${screenshotName}.png`,
-      menuScreenshotOptions(page, spriteOption, projectName),
+      menuScreenshotOptions(page, spritesheetName, projectName),
     );
 
   console.log(
@@ -424,7 +418,7 @@ export const roomScreenshotOptions = (
  */
 export const menuScreenshotOptions = (
   page: Page,
-  spriteOption: SpriteOption,
+  spritesheetName: SpritesheetName,
   projectName: string,
 ): PageAssertionsToHaveScreenshotOptions => ({
   fullPage: false,
@@ -442,5 +436,6 @@ export const menuScreenshotOptions = (
   maxDiffPixelRatio: 0.03,
   timeout: 10_000 * osSlowness,
   mask: [page.locator(".screenshot-mask")],
-  maskColor: spriteOption.uncolourised ? "#ff00ff" : spritesheetColours.pink,
+  maskColor:
+    spritesheetName === "speccy" ? "#ff00ff" : blockstackPaletteColours.pink,
 });

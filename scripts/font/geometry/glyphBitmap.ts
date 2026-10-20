@@ -8,9 +8,9 @@ export type DecodedImage = {
 };
 
 /**
- * the shipped gfx/sprites.webp has every non-frame area (including the HUD
+ * the shipped gfx/spritesBlockstack.webp has every non-frame area (including the HUD
  * char rows) masked to transparent, so the font is generated from the
- * unmasked full sheet iff2png keeps for reference: gfx/sprites.borders.png.
+ * unmasked full sheet iff2png keeps for reference: gfx/spritesBlockstack.borders.png.
  * There the char ink is pure white on a coloured background and the png
  * carries no useful alpha, so ink is keyed on white
  */

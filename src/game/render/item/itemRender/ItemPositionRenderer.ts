@@ -55,13 +55,14 @@ export class ItemPositionRenderer<
     const {
       general: {
         upscale: { gameEngineUpscale },
-        spriteOption: { uncolourised },
+        spritesheetMeta,
         cameraAngle,
       },
       item,
     } = this.renderContext;
 
-    const roundTo = uncolourised ? 1 : gameEngineUpscale;
+    const roundTo =
+      spritesheetMeta.isUncolourisedOf !== undefined ? 1 : gameEngineUpscale;
 
     const screenX = projectWorldXyzToScreenX(item.state.box, cameraAngle);
     const screenY = projectWorldXyzToScreenY(item.state.box, cameraAngle);

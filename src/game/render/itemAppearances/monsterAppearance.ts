@@ -114,15 +114,11 @@ export const monsterAppearance: ItemAppearance<
     isReflection,
     item,
     room,
-    general: {
-      paused,
-      spritesheets,
-      spriteOption: { uncolourised },
-      cameraAngle,
-    },
+    general: { paused, spritesheets, spritesheetMeta, cameraAngle },
   },
   currentRendering,
 }) => {
+  const uncolourised = spritesheetMeta.isUncolourisedOf !== undefined;
   const { config, state, hash } = item;
   const currentlyRenderedProps = currentRendering?.renderProps;
 

@@ -3,11 +3,8 @@ import chalk from "chalk";
 
 import { campaign } from "../src/_generated/originalCampaign/campaign";
 import { type OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
-import { spriteOptionEquals } from "../src/store/slices/userSettings/spriteOptionEquals";
-import {
-  type SpriteOption,
-  type toggleUserSetting,
-} from "../src/store/slices/userSettings/userSettingsSlice";
+import { type SpritesheetName } from "../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { type toggleUserSetting } from "../src/store/slices/userSettings/userSettingsSlice";
 import { keys } from "../src/utils/entries";
 import { resolveRoomIds } from "./resolveRoomIds";
 import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
@@ -34,11 +31,11 @@ import {
 import { osSlowness } from "./testUtils/osSlowness";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import {
-  enabledSpriteModes,
+  enabledSpritesheets,
   roomScreenshotOptions,
-  spriteOptionSuffix,
+  spritesheetSuffix,
 } from "./testUtils/screenshots";
-import { setSpriteOption } from "./testUtils/setSpriteOption";
+import { setSpritesheet } from "./testUtils/setSpritesheet";
 import { test } from "./testUtils/test";
 
 /**
@@ -244,13 +241,13 @@ test.describe("Room Visual Snapshots", () => {
         return;
       }
 
-      // enabledSpriteModes is already filtered by the NO_UNCOLOURISED env var,
+      // enabledSpritesheets is already filtered by the NO_UNCOLOURISED env var,
       // but noUncolourised here is a per-project flag from the Playwright config
       // (eg, mobile-safari can disable uncolourised independently of the env var)
       const effectiveModes =
         noUncolourised ?
-          enabledSpriteModes.filter((m) => !m.uncolourised)
-        : enabledSpriteModes;
+          enabledSpritesheets.filter((m) => m !== "speccy")
+        : enabledSpritesheets;
 
       test.setTimeout(includedTestRooms.length * timeoutPerRoom + 20_000);
 
@@ -342,7 +339,7 @@ test.describe("Room Visual Snapshots", () => {
         charactersCurrentRoomId = targetRoomId;
       };
 
-      let currentSpriteOption: SpriteOption | undefined;
+      let currentSpritesheetName: SpritesheetName | undefined;
 
       for (const [roomIndex, roomId] of includedTestRooms.entries()) {
         await test.step(`room: ${roomId}`, async () => {
@@ -361,20 +358,20 @@ test.describe("Room Visual Snapshots", () => {
 
           await navigateToRoom(logHeader, roomId);
 
-          for (const spriteOption of effectiveModes) {
+          for (const spritesheetName of effectiveModes) {
             if (
-              currentSpriteOption === undefined ||
-              !spriteOptionEquals(currentSpriteOption, spriteOption)
+              currentSpritesheetName === undefined ||
+              currentSpritesheetName !== spritesheetName
             ) {
-              await setSpriteOption(page, formattedName, spriteOption);
+              await setSpritesheet(page, formattedName, spritesheetName);
             }
-            currentSpriteOption = spriteOption;
+            currentSpritesheetName = spritesheetName;
 
-            const suffix = spriteOptionSuffix(spriteOption);
+            const suffix = spritesheetSuffix(spritesheetName);
             const screenshotName = `${roomId}${suffix}.png`;
 
             console.log(
-              `${logHeader} ${elapsed()} Taking screenshot for room: ${chalk.cyan(roomId)} ${JSON.stringify(spriteOption)} at ${chalk.cyan(screenshotName)}`,
+              `${logHeader} ${elapsed()} Taking screenshot for room: ${chalk.cyan(roomId)} ${JSON.stringify(spritesheetName)} at ${chalk.cyan(screenshotName)}`,
             );
             const screenshotStart = performance.now();
 

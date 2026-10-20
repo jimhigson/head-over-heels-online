@@ -1,7 +1,7 @@
 /* eslint-disable no-console -- the point of this file is to log to the console */
 import { type Renderer, Texture, type TextureSource } from "pixi.js";
 
-import spritesheetPalette from "../_generated/palette/spritesheetPalette.json" with { type: "json" };
+import blockstackPalette from "../_generated/palette/spritesheetBlockstackPalette.json" with { type: "json" };
 import {
   getApp,
   getTrackingStartTime,
@@ -66,7 +66,7 @@ const textureToConsoleArgs = async (
     `padding: ${Math.min(height / 2, maxSize)}px ${Math.min(width / 2, maxSize)}px;
      background: url(${base64}) no-repeat center;
      background-size: contain;
-     border: 1px solid ${spritesheetPalette.pink};`,
+     border: 1px solid ${blockstackPalette.pink};`,
   ];
 };
 

@@ -11,7 +11,7 @@ export const room = inferRoomJson({
       type: "block",
     },
     bu: {
-      config: { action: "nextSpritesOption", type: "in-store" },
+      config: { action: "nextSpritesheetName", type: "in-store" },
       position: { x: 3, y: 2, z: 1 },
       type: "button",
     },

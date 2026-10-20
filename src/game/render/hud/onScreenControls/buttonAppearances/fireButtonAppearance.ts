@@ -73,7 +73,7 @@ export const fireButtonAppearance: ButtonAppearance<
   renderContext: {
     button,
     inputStateTracker,
-    general: { spriteOption, spritesheets, pixiRenderer },
+    general: { spritesheetMeta, spritesheets, pixiRenderer },
   },
   currentRendering,
   tickContext: { currentPlayable, room },
@@ -150,7 +150,7 @@ export const fireButtonAppearance: ButtonAppearance<
       spritesheet.textures[
         variantTextureId("doughnuts", false, false, disabled, false)
       ];
-    text.colour = getWhite(spriteOption, room.color.shade === "dimmed");
+    text.colour = getWhite(spritesheetMeta, room.color.shade === "dimmed");
   }
 
   if (doughnutsCount !== previouslyRenderedProps?.doughnutsCount) {

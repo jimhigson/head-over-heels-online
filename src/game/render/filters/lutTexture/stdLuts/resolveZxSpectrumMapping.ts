@@ -1,7 +1,7 @@
 import { type Color } from "pixi.js";
 
 import { type ZxSpectrumPaletteColour } from "../../../../../originalGame";
-import { pixiPalette } from "../../../../../sprites/palette/pixiPalette";
+import { spritesheetPixiPalettes } from "../../../../../sprites/palette/spritesheetPixiPalettes";
 import { type SpritesheetMetadata } from "../../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { objectEntriesIter } from "../../../../../utils/entries";
 import { resolveSwops } from "../../../../../utils/palette/palette";
@@ -21,5 +21,8 @@ export const resolveZxSpectrumMapping = (
     targetColours[name] =
       zxSpectrumPaletteColours[spectrumName as ZxSpectrumPaletteColour];
   }
-  return resolveSwops(pixiPalette(spritesheetMeta), targetColours);
+  return resolveSwops<string>(
+    spritesheetPixiPalettes[spritesheetMeta.name].basic,
+    targetColours,
+  );
 };

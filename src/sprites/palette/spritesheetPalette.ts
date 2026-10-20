@@ -1,5 +1,5 @@
-import jsonPalette from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
-import jsonPaletteDim from "../../_generated/palette/spritesheetPaletteDim.json" with { type: "json" };
+import jsonBlockstackPalette from "../../_generated/palette/spritesheetBlockstackPalette.json" with { type: "json" };
+import jsonBlockstackPaletteDim from "../../_generated/palette/spritesheetBlockstackPaletteDim.json" with { type: "json" };
 import jsonToppyPalette from "../../_generated/palette/spritesheetToppyPalette.json" with { type: "json" };
 import { type HexColour } from "../../utils/colour/HexColour";
 import { type NamedHexColours } from "../../utils/palette/palette";
@@ -10,10 +10,12 @@ import {
 
 // the generator writes only hex codes, but json imports type them as string
 export const paletteBlockstackHex = Object.freeze(
-  jsonPalette as NamedHexColours<keyof typeof jsonPalette>,
+  jsonBlockstackPalette as NamedHexColours<keyof typeof jsonBlockstackPalette>,
 );
 export const paletteBlockstackDimHex = Object.freeze(
-  jsonPaletteDim as NamedHexColours<keyof typeof jsonPaletteDim>,
+  jsonBlockstackPaletteDim as NamedHexColours<
+    keyof typeof jsonBlockstackPaletteDim
+  >,
 );
 export type BlockstackPaletteColourName = keyof typeof paletteBlockstackHex;
 
@@ -23,12 +25,10 @@ export const paletteToppyHex = Object.freeze(
 export type ToppyPaletteColourName = keyof typeof paletteToppyHex;
 
 export const maybeDimPalette = <PaletteColourName extends string>(
-  spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
+  { palettes: { basic, dim } }: SpritesheetMetadata<PaletteColourName>,
   wantDimmedPalette: boolean,
 ): NamedHexColours<PaletteColourName> =>
-  wantDimmedPalette && spritesheetMeta.paletteDim !== undefined ?
-    spritesheetMeta.paletteDim
-  : spritesheetMeta.palette;
+  wantDimmedPalette && dim !== undefined ? dim : basic;
 
 export const effectColour = <PaletteColourName extends string>(
   spritesheetMeta: SpritesheetMetadata<PaletteColourName>,

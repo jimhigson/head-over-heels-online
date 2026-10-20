@@ -38,7 +38,7 @@ import {
   debugFontGlyphWidth,
 } from "./debugFontGlyphs";
 
-const sourcePath = "gfx/sprites.webp";
+const sourcePath = "gfx/spritesBlockstack.webp";
 const outPath = "gfx/spritesDebug.webp";
 
 type Rgb = [number, number, number];

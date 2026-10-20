@@ -7,7 +7,7 @@ import { smoothGlyphContours } from "./smoothGlyphContours";
 const bitmapOf = (rows: string[]) =>
   rows.map((row) => [...row].map((cell) => cell === "#"));
 
-// glyphs exactly as they appear in gfx/sprites.borders.png. The 'R' bite at
+// glyphs exactly as they appear in gfx/spritesBlockstack.borders.png. The 'R' bite at
 // (3,7) is the gap between its straight stem and its kicked-out leg; the '1'
 // step at (0,0) is the shoulder above its flag; the 'Y' steps at (0,4) and
 // (6,4) are where its arms meet its stem

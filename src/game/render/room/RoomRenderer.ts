@@ -153,7 +153,7 @@ export class RoomRenderer<
       UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
     >(this.#appliedQuarterAngle);
     const {
-      general: { spriteOption, soundSettings },
+      general: { spritesheetMeta, soundSettings },
       room,
     } = renderContext;
 
@@ -170,7 +170,7 @@ export class RoomRenderer<
     };
 
     this.output.graphics.addChild(this.#itemsContainer);
-    if (spriteOption.uncolourised) {
+    if (spritesheetMeta.isUncolourisedOf !== undefined) {
       this.#colourClashLayer = Object.assign(
         new RenderLayer({
           sortableChildren: false,
@@ -182,7 +182,7 @@ export class RoomRenderer<
     // layer in front of all else - for floating text, etc
     this.output.graphics.addChild(this.#frontLayer);
 
-    if (spriteOption.uncolourised) {
+    if (spritesheetMeta.isUncolourisedOf !== undefined) {
       this.#itemsContainer.tint = zxSpectrumPixiColor(room.color);
     }
   }

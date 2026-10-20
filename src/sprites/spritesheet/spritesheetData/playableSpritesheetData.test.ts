@@ -5,10 +5,12 @@ import { playableSpritesheetData } from "./playableSpritesheetData";
 import { spritesheetMetas } from "./spritesheetMetaData";
 
 describe.for(
-  // debug sheets copy their frame data from the sheet they were drawn over,
-  // so add nothing to snapshot:
+  // debug and uncolourised sheets share another sheet's frame data, so add
+  // nothing to snapshot:
   entries(spritesheetMetas).filter(
-    ([, spritesheetMeta]) => spritesheetMeta.debug !== true,
+    ([, spritesheetMeta]) =>
+      spritesheetMeta.debug !== true &&
+      spritesheetMeta.isUncolourisedOf === undefined,
   ),
 )("%s", ([, spritesheetMeta]) => {
   test("frame names", () => {

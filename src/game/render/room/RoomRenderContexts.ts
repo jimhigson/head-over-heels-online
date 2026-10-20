@@ -8,7 +8,6 @@ import { type Upscale } from "../../../store/slices/upscale/Upscale";
 import {
   type DisplaySettings,
   type SoundSettings,
-  type SpriteOption,
 } from "../../../store/slices/userSettings/userSettingsSlice";
 import { type Xy } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
@@ -34,7 +33,6 @@ export type GeneralRenderContext<RoomId extends string> = {
    */
   gameState?: Omit<GameState<RoomId>, "pickupsCollected">;
   paused: boolean;
-  spriteOption: SpriteOption;
   spritesheetMeta: SpritesheetMetadata;
   upscale: Upscale;
   /**

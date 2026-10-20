@@ -5,7 +5,7 @@ import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarr
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import { type RoomState } from "../../../../model/RoomState";
 import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
-import { pixiPalette } from "../../../../sprites/palette/pixiPalette";
+import { spritesheetPixiPalettes } from "../../../../sprites/palette/spritesheetPixiPalettes";
 import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
 import { frac } from "../../../../utils/maths/maths";
 import { rangesOverlap } from "../../../../utils/maths/numberPairs";
@@ -379,13 +379,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
       renderContext: {
         room,
         item: floorItem,
-        general: {
-          spriteOption,
-          spritesheets,
-          spritesheetMeta,
-          pixiRenderer,
-          cameraAngle,
-        },
+        general: { spritesheets, spritesheetMeta, pixiRenderer, cameraAngle },
         colourClashLayer,
         renderBoxes,
         filterCache,
@@ -470,10 +464,10 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
       const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
 
       const outlineColour =
-        spriteOption.uncolourised ?
+        spritesheetMeta.isUncolourisedOf !== undefined ?
           zxSpectrumPixiColors.black
-        : getAmbientSwoppedColour(
-            pixiPalette(spritesheetMeta),
+        : getAmbientSwoppedColour<string>(
+            spritesheetPixiPalettes[spritesheetMeta.name].basic,
             spritesheetMeta.effectColours.outline,
             spritesheet.ambient,
           );
@@ -828,7 +822,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
           children: true,
         });
 
-        if (spriteOption.uncolourised) {
+        if (spritesheetMeta.isUncolourisedOf !== undefined) {
           const colourClashContainer = createColourClash({
             room,
             floorAabb: physicalSize,

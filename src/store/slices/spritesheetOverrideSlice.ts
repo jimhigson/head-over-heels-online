@@ -1,10 +1,10 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import { type SpriteOptionName } from "../../sprites/spritesheet/Spritesheets";
+import { type SpritesheetName } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { clearAllData } from "./clearAllData";
 
 type SpritesheetOverrideState = {
-  overrides: Partial<Record<SpriteOptionName, string>>;
+  overrides: Partial<Record<SpritesheetName, string>>;
 };
 
 const initialState: SpritesheetOverrideState = {
@@ -18,16 +18,19 @@ export const spritesheetOverrideSlice = createSlice({
     setSpritesheetOverride(
       state,
       {
-        payload: { spriteOptionName, dataUrl },
-      }: PayloadAction<{ spriteOptionName: SpriteOptionName; dataUrl: string }>,
+        payload: { spritesheetArtName, dataUrl },
+      }: PayloadAction<{
+        spritesheetArtName: SpritesheetName;
+        dataUrl: string;
+      }>,
     ) {
-      state.overrides[spriteOptionName] = dataUrl;
+      state.overrides[spritesheetArtName] = dataUrl;
     },
     clearSpritesheetOverride(
       state,
-      { payload: spriteOptionName }: PayloadAction<SpriteOptionName>,
+      { payload: spritesheetArtName }: PayloadAction<SpritesheetName>,
     ) {
-      delete state.overrides[spriteOptionName];
+      delete state.overrides[spritesheetArtName];
     },
   },
   extraReducers(builder) {
@@ -36,12 +39,12 @@ export const spritesheetOverrideSlice = createSlice({
   selectors: {
     selectSpritesheetOverrideDataUrl: (
       state,
-      spriteOptionName: SpriteOptionName,
-    ): string | undefined => state.overrides[spriteOptionName],
+      spritesheetArtName: SpritesheetName,
+    ): string | undefined => state.overrides[spritesheetArtName],
     selectIsSpritesheetOverridden: (
       state,
-      spriteOptionName: SpriteOptionName,
-    ): boolean => spriteOptionName in state.overrides,
+      spritesheetArtName: SpritesheetName,
+    ): boolean => spritesheetArtName in state.overrides,
   },
 });
 

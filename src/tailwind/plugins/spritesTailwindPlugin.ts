@@ -10,7 +10,7 @@ import {
 } from "../../sprites/palette/spritesheetPalette";
 import { halfbriteHex } from "../../utils/colour/halfbrite";
 
-const spritesheetSize = imageSize("gfx/sprites.webp");
+const spritesheetSize = imageSize("gfx/spritesBlockstack.webp");
 
 // https://tailwindcss.com/docs/plugins
 export const spritesTailwindPlugin = plugin(
@@ -30,7 +30,7 @@ export const spritesTailwindPlugin = plugin(
     };
 
     const spriteStyles = (type: "background" | "mask") => ({
-      [`${type}Image`]: `var(--spritesheetUrl)`,
+      [`${type}Image`]: `var(--spritesheetArtUrl)`,
       [`${type}Position`]: `calc(-1 * var(--x) * var(--totalScale) * 1px) calc(-1 * var(--y) * var(--totalScale) * var(--doubleHeight, 1) * 1px)`,
       [`${type}Size`]: `calc(var(--spritesheetW) * var(--totalScale) * 1px) calc(var(--spritesheetH) * var(--totalScale) * var(--doubleHeight, 1) * 1px)`,
     });
@@ -98,10 +98,10 @@ export const spritesTailwindPlugin = plugin(
       // geometry is in logical sheet units, so the higher-resolution image is
       // a drop-in
       ".blockstack-spritesheet": {
-        "--spritesheetUrl": `var(--upscaled-spritesheet-blockstack, url('gfx/sprites.webp'))`,
+        "--spritesheetArtUrl": `var(--upscaled-spritesheet-art-blockstack, url('gfx/spritesBlockstack.webp'))`,
       },
       ".toppy-spritesheet": {
-        "--spritesheetUrl": `var(--upscaled-spritesheet-toppy, url('gfx/spritesToppy.webp'))`,
+        "--spritesheetArtUrl": `var(--upscaled-spritesheet-art-toppy, url('gfx/spritesToppy.webp'))`,
       },
       ".sprite-scale-2": {
         "--sprite-scale": "2",

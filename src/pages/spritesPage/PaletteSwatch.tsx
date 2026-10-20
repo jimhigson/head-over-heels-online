@@ -3,7 +3,7 @@ import {
   paletteBlockstackHex,
   paletteToppyHex,
 } from "../../sprites/palette/spritesheetPalette";
-import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
+import { useSpritesheetName } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { useTip } from "../../ui/tip/useTip";
 import { type HexColour } from "../../utils/colour/HexColour";
 import { srgbHexToP3 } from "../../utils/colour/srgbHexToP3";
@@ -62,11 +62,11 @@ const Swatch = ({ name, hex }: SwatchProps) => {
 };
 
 export const PaletteSwatch = () => {
-  const spritesOption = useSpritesOption();
+  const spritesheetName = useSpritesheetName();
 
   const { main, swops } =
-    spritesOption.uncolourised ? zxEntries
-    : spritesOption.name === "Toppy" ? toppyEntries
+    spritesheetName === "speccy" ? zxEntries
+    : spritesheetName === "toppy" ? toppyEntries
     : blockstackEntries;
 
   const renderRow = (entries: ColourEntry[]) =>

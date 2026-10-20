@@ -2,7 +2,6 @@ import { type AnimatedSprite, Container, type Renderer } from "pixi.js";
 
 import { type RoomState } from "../../../../../model/RoomState";
 import { type Spritesheets } from "../../../../../sprites/spritesheet/Spritesheets";
-import { type SpriteOption } from "../../../../../store/slices/userSettings/userSettingsSlice";
 import { teleporterIsActive } from "../../../../physics/mechanics/teleporterIsActive";
 import {
   createSprite,
@@ -24,7 +23,6 @@ export type JumpButtonSurfaceContainer = Container<
 type SurfaceContentChildren = [text: TextContainer, teleporter: AnimatedSprite];
 
 const createSurface = (
-  spriteOption: SpriteOption,
   pixiRenderer: Renderer,
   spritesheets: Spritesheets,
 ): JumpButtonSurfaceContainer => {
@@ -67,7 +65,7 @@ export const jumpButtonAppearance: ButtonAppearance<
   renderContext: {
     button,
     inputStateTracker,
-    general: { spriteOption, spritesheets, pixiRenderer, paused },
+    general: { spritesheetMeta, spritesheets, pixiRenderer, paused },
   },
   tickContext: { room, currentPlayable },
   currentRendering,
@@ -92,7 +90,7 @@ export const jumpButtonAppearance: ButtonAppearance<
     new ArcadeStyleButtonContainer<JumpButtonSurfaceContainer>(
       button.which,
       spritesheets.originalSpritesheet,
-      createSurface(spriteOption, pixiRenderer, spritesheets),
+      createSurface(pixiRenderer, spritesheets),
     );
 
   const pressedChanged = previouslyRenderedProps?.pressed !== pressed;
@@ -144,7 +142,7 @@ export const jumpButtonAppearance: ButtonAppearance<
       teleporter.gotoAndPlay(0);
     }
 
-    text.colour = getWhite(spriteOption, room?.color.shade === "dimmed");
+    text.colour = getWhite(spritesheetMeta, room?.color.shade === "dimmed");
 
     buttonContainer.setSpritesheet(spritesheets.spritesheetForCurrentRoom);
   }

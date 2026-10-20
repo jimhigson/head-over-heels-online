@@ -1,14 +1,14 @@
 import { useState } from "preact/hooks";
 
-import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
+import { useSpritesheetName } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { Button } from "../../ui/Button";
 import { DownloadSpritesheetButton } from "./DownloadSpritesheetButton";
 import { ScaleSelect } from "./ScaleSelect";
 import { SpriteFilterInput } from "./SpriteFilterInput";
-import { SpriteOptionSelect } from "./SpriteOptionSelect";
+import { SpritesheetArtUrlDisplay } from "./SpritesheetArtUrlDisplay";
 import { SpritesheetOverrideButtons } from "./SpritesheetOverrideButtons";
+import { SpritesheetSelect } from "./SpritesheetSelect";
 import { SpritesheetStats } from "./SpritesheetStats";
-import { SpritesheetUrlDisplay } from "./SpritesheetUrlDisplay";
 import { UpscaledSpritesSwitch } from "./UpscaledSpritesSwitch";
 
 export type SpritesPageToolbarProps = {
@@ -24,7 +24,7 @@ export const SpritesPageToolbar = ({
   spriteFilter,
   onSpriteFilterChange,
 }: SpritesPageToolbarProps) => {
-  const spriteOption = useSpritesOption();
+  const spritesheetName = useSpritesheetName();
   const [shown, setShown] = useState(true);
 
   return (
@@ -32,7 +32,7 @@ export const SpritesPageToolbar = ({
       {shown ?
         <div class="bg-metallicBlueHalfbrite zx:bg-zxWhiteDimmed toppy:bg-toppyCool4 gap-y-oneScaledPix flex flex-col">
           <div class="flex flex-row gap-x-1">
-            <SpriteOptionSelect />
+            <SpritesheetSelect />
             <Button class="px-1" onClick={() => setShown(false)}>
               <span class="text-single-line">hide</span>
             </Button>
@@ -49,9 +49,9 @@ export const SpritesPageToolbar = ({
             />
           </div>
           <div class="flex flex-row gap-x-1">
-            <SpritesheetUrlDisplay />
+            <SpritesheetArtUrlDisplay />
             <DownloadSpritesheetButton />
-            {spriteOption.name === "Toppy" && <SpritesheetOverrideButtons />}
+            {spritesheetName === "toppy" && <SpritesheetOverrideButtons />}
           </div>
 
           <Button class="px-1" onClick={() => window.scrollTo({ top: 0 })}>

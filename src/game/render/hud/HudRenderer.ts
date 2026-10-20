@@ -18,10 +18,7 @@ import {
   type BaseTextureId,
   type BaseTextureIdWithPrefix,
 } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import {
-  type SpritesheetMetadata,
-  spritesheetMetas,
-} from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import {
   hudCharTextureSize,
   smallItemTextureSize,
@@ -29,7 +26,6 @@ import {
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { startAppListening } from "../../../store/listenerMiddleware";
 import { selectShowFps } from "../../../store/slices/gameMenus/gameMenusSelectors";
-import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../store/store";
 import { IdleTracker } from "../../../utils/idle/IdleTracker";
 import {
@@ -50,7 +46,7 @@ import {
   selectCurrentPlayableItem,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { destroyFilterCache, type FilterCache } from "../filters/FilterCache";
-import { outlineFilters } from "../filters/OutlineFilter";
+import { blackOutlineFilter } from "../filters/OutlineFilter";
 import { getRoomColorScheme } from "../gameColours/colourScheme";
 import { createItemLeafPixiRenderer } from "../item/itemRender/createItemLeafPixiRenderer";
 import { type ItemLeafPixiRenderer } from "../item/itemRender/ItemPixiRenderer";
@@ -515,7 +511,7 @@ export class HudRenderer<
     container.addChild(text);
 
     if (outline === true) {
-      container.filters = outlineFilters.pureBlack;
+      container.filters = blackOutlineFilter;
     }
 
     return {
@@ -528,16 +524,16 @@ export class HudRenderer<
   #resolveCharacterTextureId(
     characterName: IndividualCharacterName,
   ): HudCharacterTextureId {
-    const { spriteOption } = this.renderContext.general;
+    const { spritesheetMeta } = this.renderContext.general;
     const directionIndex = hudCharacterDirection[characterName];
     // the per-direction meta stays keyed by the art's direction name:
     const standing =
-      spritesheetMetas[spriteOption.name].playable[characterName][
+      spritesheetMeta.playable[characterName][
         directionsXy8Octants[directionIndex]
       ]?.standing;
     if (!standing) {
       throw new Error(
-        `no standing defined for ${characterName}.d${directionIndex} in ${spriteOption.name}`,
+        `no standing defined for ${characterName}.d${directionIndex} in ${spritesheetMeta.name}`,
       );
     }
 
@@ -590,7 +586,7 @@ export class HudRenderer<
   }: HudRendererTickContextWithRoom<RoomId, RoomItemId>) {
     const {
       renderContext: {
-        general: { gameState, spriteOption },
+        general: { gameState, spritesheetMeta },
       },
     } = this;
 
@@ -635,7 +631,7 @@ export class HudRenderer<
       carryingContainer.addChild(this.#carriedRenderer.output);
 
       carryingContainer.tint = tintForHudIfUncolourised(
-        spriteOption,
+        spritesheetMeta,
         room.color,
         // carried item is always activated
         true,
@@ -655,7 +651,7 @@ export class HudRenderer<
       ];
 
     bagSprite.tint = tintForHudIfUncolourised(
-      spriteOption,
+      spritesheetMeta,
       room.color,
       hasBag ?? false,
     );
@@ -666,7 +662,7 @@ export class HudRenderer<
   }: HudRendererTickContextWithRoom<RoomId, RoomItemId>) {
     const {
       renderContext: {
-        general: { gameState, spriteOption, spritesheetMeta },
+        general: { gameState, spritesheetMeta },
       },
     } = this;
     const headAbilities = selectAbilities(gameState, "head");
@@ -692,26 +688,16 @@ export class HudRenderer<
 
     this.#hudElements.head.doughnuts.textContainer.text =
       doughnutCount === "infinite" ? "∞" : doughnutCount;
-    doughnutsText.colour = tintForHud(
-      spriteOption,
-      room.color,
-      false,
-      spritesheetMeta,
-    );
-    doughnutsText.flashColour = tintForHud(
-      spriteOption,
-      room.color,
-      true,
-      spritesheetMeta,
-    );
+    doughnutsText.colour = tintForHud(spritesheetMeta, room.color, false);
+    doughnutsText.flashColour = tintForHud(spritesheetMeta, room.color, true);
 
     hooterSprite.tint = tintForHudIfUncolourised(
-      spriteOption,
+      spritesheetMeta,
       room.color,
       hasHooter ?? false,
     );
     doughnutsSprite.tint = tintForHudIfUncolourised(
-      spriteOption,
+      spritesheetMeta,
       room.color,
       hasDoughnuts,
     );
@@ -723,7 +709,7 @@ export class HudRenderer<
   ) {
     const {
       renderContext: {
-        general: { gameState, spriteOption, spritesheetMeta, onScreenControls },
+        general: { gameState, spritesheetMeta, onScreenControls },
       },
     } = this;
     const abilities = selectAbilities(gameState, characterName);
@@ -773,32 +759,12 @@ export class HudRenderer<
         screenSize.y - extraSkillFromBottom(onScreenControls);
     }
 
-    skillText.colour = tintForHud(
-      spriteOption,
-      room.color,
-      false,
-      spritesheetMeta,
-    );
-    skillText.flashColour = tintForHud(
-      spriteOption,
-      room.color,
-      true,
-      spritesheetMeta,
-    );
-    shieldText.colour = tintForHud(
-      spriteOption,
-      room.color,
-      false,
-      spritesheetMeta,
-    );
-    shieldText.flashColour = tintForHud(
-      spriteOption,
-      room.color,
-      true,
-      spritesheetMeta,
-    );
-    shieldIcon.tint = tintForIcon(spriteOption, room.color);
-    extraSkillIcon.tint = tintForIcon(spriteOption, room.color);
+    skillText.colour = tintForHud(spritesheetMeta, room.color, false);
+    skillText.flashColour = tintForHud(spritesheetMeta, room.color, true);
+    shieldText.colour = tintForHud(spritesheetMeta, room.color, false);
+    shieldText.flashColour = tintForHud(spritesheetMeta, room.color, true);
+    shieldIcon.tint = tintForIcon(spritesheetMeta, room.color);
+    extraSkillIcon.tint = tintForIcon(spritesheetMeta, room.color);
   }
 
   #characterIsActive(
@@ -818,7 +784,7 @@ export class HudRenderer<
   ) {
     const {
       renderContext: {
-        general: { gameState, spriteOption, onScreenControls },
+        general: { gameState, spritesheetMeta, onScreenControls },
       },
     } = this;
 
@@ -859,7 +825,7 @@ export class HudRenderer<
       : screenSize.y - smallItemTextureSize.h;
 
     characterSprite.tint = tintForHudIfUncolourised(
-      spriteOption,
+      spritesheetMeta,
       room.color,
       isActive,
     );
@@ -867,12 +833,11 @@ export class HudRenderer<
 
   #characterTextColour<PaletteColourName extends string>(
     spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
-    spriteOption: SpriteOption,
     characterName: IndividualCharacterName,
     isActive: boolean,
     roomColour: ZxSpectrumRoomColour,
   ): Color {
-    if (spriteOption.uncolourised) {
+    if (spritesheetMeta.isUncolourisedOf !== undefined) {
       return zxSpectrumPixiColor(getRoomColorScheme(roomColour).hud.brightHue);
     }
 
@@ -894,7 +859,7 @@ export class HudRenderer<
   ) {
     const {
       renderContext: {
-        general: { gameState, spriteOption, spritesheetMeta, onScreenControls },
+        general: { gameState, spritesheetMeta, onScreenControls },
       },
     } = this;
 
@@ -915,7 +880,6 @@ export class HudRenderer<
 
     livesTextContainer.colour = this.#characterTextColour(
       spritesheetMeta,
-      spriteOption,
       characterName,
       this.#characterIsActive(gameState, characterName),
       room.color,

@@ -1,8 +1,8 @@
 import { Container } from "pixi.js";
 
-import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
 import { maybeDimPixiPalette } from "../../../sprites/palette/pixiPalette";
 import { type BlockstackPaletteColourName } from "../../../sprites/palette/spritesheetPalette";
+import { blockstackPixiPalettes } from "../../../sprites/palette/spritesheetPixiPalettes";
 import { hudCharTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { type FrameTimingStatsEvent } from "../../mainLoop/frameTiming/FrameTimingStats";
 import {
@@ -76,10 +76,7 @@ export class FpsRenderer implements Renderer<
       fpsValue === undefined ? "..." : `${Math.round(fpsValue)} FPS`;
     const colourName =
       fpsValue === undefined ? "white" : this.#colourNameForFps(fpsValue, 60);
-    const palette = maybeDimPixiPalette(
-      blockStackSpritesheetMeta,
-      this.#isDark,
-    );
+    const palette = maybeDimPixiPalette(blockstackPixiPalettes, this.#isDark);
     this.#fpsText.colour = palette[colourName];
   }
 

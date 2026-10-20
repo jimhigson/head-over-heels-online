@@ -5,7 +5,7 @@ import { paintFrame } from "./testUtils/advanceGameTime";
 import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { roomScreenshotOptions } from "./testUtils/screenshots";
-import { setSpriteOption } from "./testUtils/setSpriteOption";
+import { setSpritesheet } from "./testUtils/setSpritesheet";
 import { test } from "./testUtils/test";
 
 /**
@@ -60,10 +60,7 @@ test("doughnutted monsters render with the doughnutted palette", async ({
 
   // Toppy bakes its own doughnutted variant from its own palette - guard that
   // sheet's doughnutted swops too:
-  await setSpriteOption(page, logHeader, {
-    name: "Toppy",
-    uncolourised: false,
-  });
+  await setSpritesheet(page, logHeader, "toppy");
 
   await expect(page).toHaveScreenshot(
     "allItemsTestRoom-doughnutted-toppy.png",
@@ -73,13 +70,10 @@ test("doughnutted monsters render with the doughnutted palette", async ({
   // in uncolourised (ZX) mode the doughnutted state deliberately has no
   // visual effect - doughnutted monsters render identically to their normal
   // sprites. This shot pins that non-effect:
-  await setSpriteOption(page, logHeader, {
-    name: "BlockStack",
-    uncolourised: true,
-  });
+  await setSpritesheet(page, logHeader, "speccy");
 
   await expect(page).toHaveScreenshot(
-    "allItemsTestRoom-doughnutted-uncolourised.png",
+    "allItemsTestRoom-doughnutted-speccy.png",
     roomScreenshotOptions(testInfo.project.name),
   );
 });

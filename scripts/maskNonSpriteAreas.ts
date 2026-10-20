@@ -5,7 +5,7 @@ import { makeSpritesheetData } from "../src/sprites/spritesheet/spritesheetData/
 
 /**
  * Clears (to transparent) every pixel of a sprite-png that is not inside any
- * declared sprite frame, keyed on the BlockStack variant's frame set (sprites.webp
+ * declared sprite frame, keyed on the BlockStack variant's frame set (spritesBlockstack.webp
  * is the BlockStack sheet). Removes the palette-swatch strip, inter-cell gutters
  * and any stray off-frame art that the game never samples. Called by iff2png on
  * the mid-pipeline png, before the cwebp encode.

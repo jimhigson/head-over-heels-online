@@ -9,7 +9,7 @@ import {
 } from "pixi.js";
 
 import { type PokeableNumber } from "../../../model/ItemStateMap";
-import { pixiPaletteBlockstack } from "../../../sprites/palette/pixiPalette";
+import { blockstackPixiPalettes } from "../../../sprites/palette/spritesheetPixiPalettes";
 import {
   hudCharTextureSize,
   hudLowercaseCharTextureSize,
@@ -215,7 +215,7 @@ export class TextContainer extends Container {
     // edges, and binarising throws exactly that away
     const outlineFilter = () =>
       new OutlineFilter({
-        color: pixiPaletteBlockstack.pureBlack,
+        color: blockstackPixiPalettes.basic.pureBlack,
         width: 1,
         // text is baked off-screen into a cache texture, so the outline
         // must not be clipped to the screen viewport:

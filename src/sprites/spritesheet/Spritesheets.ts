@@ -10,15 +10,14 @@ import {
   Texture,
 } from "pixi.js";
 
-import blockStackSpritesheetUrl from "../../../gfx/sprites.webp";
-import debugSpritesheetUrl from "../../../gfx/spritesDebug.webp";
-import toppySpritesheetUrl from "../../../gfx/spritesToppy.webp";
+import blockstackSpritesheetArtUrl from "../../../gfx/spritesBlockstack.webp";
+import debugSpritesheetArtUrl from "../../../gfx/spritesDebug.webp";
+import toppySpritesheetArtUrl from "../../../gfx/spritesToppy.webp";
 import { invertRedToAlphaFilter } from "../../game/render/filters/shadows/invertRedToAlphaFilter";
 import { type bakeUpscaledSpritesheetTexture } from "../../game/render/filters/upscale/bakeUpscaledSpritesheetTexture";
 import { importBakeUpscaledSpritesheetTextureOnce } from "../../game/render/filters/upscale/bakeUpscaledSpritesheetTexture.import";
 import { type ZxSpectrumRoomColour } from "../../originalGame";
 import { selectSpritesheetOverrideBlobUrl } from "../../store/slices/spritesheetOverrideSlice";
-import { type SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../store/store";
 import { detectDeviceType } from "../../utils/detectEnv/detectDeviceType";
 import { objectEntriesIter } from "../../utils/entries";
@@ -39,13 +38,12 @@ import {
 } from "./composeSpritesheetForUpscale";
 import { makeSpritesheetData } from "./spritesheetData/makeSpritesheetData";
 import {
+  spritesheetArtName,
   type SpritesheetMetadata,
-  spritesheetMetaForOption,
   spritesheetMetas,
+  type SpritesheetName,
 } from "./spritesheetData/spritesheetMetaData";
 import { withRepackedRects } from "./withRepackedRects";
-
-export type SpriteOptionName = SpriteOption["name"];
 
 const destroySpritesheet = (
   sheet: AppSpritesheet | AppSpritesheetWithVariants | undefined,
@@ -58,12 +56,15 @@ const destroySpritesheet = (
 
 export class Spritesheets {
   #loadImageAbortController: AbortController | undefined;
-  #spriteOptionName: SpriteOptionName | undefined;
+  /**
+   * the spritesheet whose image is loaded
+   */
+  #spritesheetArtName: SpritesheetName | undefined;
   /**
    * Original decoded source image (cpu-side only, not on gpu)
    * - repeated upscaling will come from this original
    */
-  #sourceImage: HTMLImageElement | undefined;
+  #spritesheetArt: HTMLImageElement | undefined;
   /**
    * how much this spritesheet has been upscaled above the source image
    */
@@ -96,8 +97,8 @@ export class Spritesheets {
    */
   #repackedFrameRects: ReadonlyMap<string, FrameRect> | undefined;
 
-  isTextureLoaded(spriteOptionName: SpriteOptionName): boolean {
-    return this.#spriteOptionName === spriteOptionName;
+  isTextureLoaded(spritesheetArtName: SpritesheetName): boolean {
+    return this.#spritesheetArtName === spritesheetArtName;
   }
 
   get spritesheetUpscale(): number {
@@ -134,7 +135,7 @@ export class Spritesheets {
     pixiRenderer: Renderer,
     spritesheetUpscale: number,
   ): void {
-    if (import.meta.env.DEV && this.#sourceImage === undefined) {
+    if (import.meta.env.DEV && this.#spritesheetArt === undefined) {
       throw new Error("cannot re-bake the original sheet before image load");
     }
     if (
@@ -147,7 +148,7 @@ export class Spritesheets {
       );
     }
     const rawTexture = new Texture({
-      source: new ImageSource({ resource: this.#sourceImage! }),
+      source: new ImageSource({ resource: this.#spritesheetArt! }),
     });
     // the composition only matters to the upscale, which is what reads across
     // a frame's edges - the plain sheet is already right at 1x
@@ -156,7 +157,8 @@ export class Spritesheets {
         composeSpritesheetForUpscale(
           pixiRenderer,
           rawTexture,
-          makeSpritesheetData(spritesheetMetas[this.#spriteOptionName!]).frames,
+          makeSpritesheetData(spritesheetMetas[this.#spritesheetArtName!])
+            .frames,
         )
       );
     const spritesheetToUpscale = repacked?.texture ?? rawTexture;
@@ -171,7 +173,7 @@ export class Spritesheets {
     destroySpritesheet(this.#originalSpritesheet);
     this.#originalSpritesheet = this.#buildOriginal(
       pixiRenderer,
-      this.#spriteOptionName!,
+      this.#spritesheetArtName!,
       baseTexture,
       repacked?.repackedFrameRects,
     );
@@ -188,7 +190,7 @@ export class Spritesheets {
     pixiRenderer: Renderer,
     roomScenery: SceneryName,
     roomColor: ZxSpectrumRoomColour,
-    spriteOption: SpriteOption,
+    spritesheetMeta: SpritesheetMetadata,
     /**
      * baked upscale factor to bake into the original sheet (and so the
      * room sheet); 1 = no upscaling
@@ -200,14 +202,17 @@ export class Spritesheets {
      * when it was
      */
   ): boolean {
-    if (this.#originalSpritesheet?.spriteOptionName !== spriteOption.name) {
+    if (
+      this.#originalSpritesheet?.spritesheetArtName !==
+      spritesheetArtName(spritesheetMeta)
+    ) {
       throw new Error(
-        `rebuild() requires loadImage() to have built the original sheet for "${spriteOption.name}" first`,
+        `rebuild() requires loadImage() to have built the original sheet for "${spritesheetArtName(spritesheetMeta)}" first`,
       );
     }
 
     const originalRebuilt =
-      this.#sourceImage !== undefined &&
+      this.#spritesheetArt !== undefined &&
       spritesheetUpscale !== this.#spritesheetUpscale;
     if (originalRebuilt) {
       this.#rebakeOriginalAtUpscale(pixiRenderer, spritesheetUpscale);
@@ -229,10 +234,7 @@ export class Spritesheets {
         pixiRenderer,
         roomScenery,
         roomColor,
-        spriteOption,
-        spritesheetMetaData: spritesheetMetaForOption(
-          spriteOption,
-        ) as SpritesheetMetadata,
+        spritesheetMetaData: spritesheetMeta,
       },
       bt,
       this.#currentSheetTarget,
@@ -277,9 +279,9 @@ export class Spritesheets {
 
   async loadImage(
     pixiRenderer: Renderer,
-    spriteOptionName: SpriteOptionName,
+    spritesheetArtName: SpritesheetName,
   ): Promise<void> {
-    if (this.#spriteOptionName === spriteOptionName) {
+    if (this.#spritesheetArtName === spritesheetArtName) {
       return;
     }
 
@@ -291,12 +293,12 @@ export class Spritesheets {
     const overrideBlobUrl =
       import.meta.env.VITE_APP === "editor" ?
         undefined
-      : selectSpritesheetOverrideBlobUrl(store.getState(), spriteOptionName);
+      : selectSpritesheetOverrideBlobUrl(store.getState(), spritesheetArtName);
     const url =
       overrideBlobUrl ??
-      (spriteOptionName === "BlockStack" ? blockStackSpritesheetUrl
-      : spriteOptionName === "Debug" ? debugSpritesheetUrl
-      : toppySpritesheetUrl);
+      (spritesheetArtName === "blockstack" ? blockstackSpritesheetArtUrl
+      : spritesheetArtName === "debug" ? debugSpritesheetArtUrl
+      : toppySpritesheetArtUrl);
     let strippedImageObjectUrl: string | undefined = undefined;
 
     try {
@@ -331,14 +333,14 @@ export class Spritesheets {
       destroySpritesheet(this.#originalSpritesheet);
       this.#originalSpritesheet = this.#buildOriginal(
         pixiRenderer,
-        spriteOptionName,
+        spritesheetArtName,
         decodedTexture,
       );
       decodedTexture.destroy(true);
-      this.#sourceImage = img;
+      this.#spritesheetArt = img;
       this.#spritesheetUpscale = 1;
       this.#repackedFrameRects = undefined;
-      this.#spriteOptionName = spriteOptionName;
+      this.#spritesheetArtName = spritesheetArtName;
       this.#loadImageAbortController = undefined;
     } catch (e) {
       if (signal.aborted) {
@@ -351,13 +353,13 @@ export class Spritesheets {
         destroySpritesheet(this.#originalSpritesheet);
         this.#originalSpritesheet = this.#buildOriginal(
           pixiRenderer,
-          spriteOptionName,
+          spritesheetArtName,
           Texture.EMPTY,
         );
-        this.#sourceImage = undefined;
+        this.#spritesheetArt = undefined;
         this.#spritesheetUpscale = 1;
         this.#repackedFrameRects = undefined;
-        this.#spriteOptionName = spriteOptionName;
+        this.#spritesheetArtName = spritesheetArtName;
         this.#loadImageAbortController = undefined;
       } else {
         throw new Error(`failed to load spritesheet from ${url}`, {
@@ -373,7 +375,7 @@ export class Spritesheets {
 
   #buildOriginal(
     pixiRenderer: Renderer,
-    spriteOptionName: SpriteOptionName,
+    spritesheetArtName: SpritesheetName,
     decodedTexture: Texture,
     /**
      * where each frame's art lives, when the sheet being built has been
@@ -382,7 +384,7 @@ export class Spritesheets {
      */
     repackedFrameRects?: ReadonlyMap<string, FrameRect>,
   ): AppSpritesheetWithVariants {
-    const spritesheetMeta = spritesheetMetas[spriteOptionName];
+    const spritesheetMeta = spritesheetMetas[spritesheetArtName];
     const rawSheetData = makeSpritesheetData(spritesheetMeta);
     const spriteSheetData: AppSpritesheetDataWithVariants =
       repackedFrameRects === undefined ? rawSheetData : (
@@ -399,7 +401,7 @@ export class Spritesheets {
         decodedTexture,
         spriteSheetData,
       ) as AppSpritesheet;
-      emptySheet.spriteOptionName = spriteOptionName;
+      emptySheet.spritesheetArtName = spritesheetArtName;
       emptySheet.spritesheetMeta = spritesheetMeta;
       return withVariantsBaked(emptySheet);
     }
@@ -470,7 +472,7 @@ export class Spritesheets {
     spriteSheet.textureSource.resolution = decodedTexture.source.resolution;
     spriteSheet.parseSync();
     spriteSheet.textureSource.scaleMode = "nearest";
-    spriteSheet.spriteOptionName = spriteOptionName;
+    spriteSheet.spritesheetArtName = spritesheetArtName;
     spriteSheet.spritesheetMeta = spritesheetMeta;
     applySpritesheetFlips(spriteSheet);
 
@@ -494,8 +496,8 @@ export class Spritesheets {
   invalidateUpscaledTextures() {
     destroySpritesheet(this.#originalSpritesheet);
     this.#originalSpritesheet = undefined;
-    this.#spriteOptionName = undefined;
-    this.#sourceImage = undefined;
+    this.#spritesheetArtName = undefined;
+    this.#spritesheetArt = undefined;
     this.#spritesheetUpscale = 1;
     this.#repackedFrameRects = undefined;
     this.#destroyCurrentSheet();
@@ -512,8 +514,8 @@ export class Spritesheets {
   destroy() {
     this.#loadImageAbortController?.abort();
     this.#loadImageAbortController = undefined;
-    this.#spriteOptionName = undefined;
-    this.#sourceImage = undefined;
+    this.#spritesheetArtName = undefined;
+    this.#spritesheetArt = undefined;
     this.#spritesheetUpscale = 1;
     this.#repackedFrameRects = undefined;
     destroySpritesheet(this.#originalSpritesheet);

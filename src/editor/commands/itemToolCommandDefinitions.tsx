@@ -1038,7 +1038,7 @@ Place on of these into one room
 This is where head will start the game`,
     icon: (
       <span
-        class={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "walking", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "blockstack" as "blockstack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "blockstack" as "blockstack", character: "head", action: "walking", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -1057,7 +1057,7 @@ Place on of these into one room
 This is where head will start the game`,
     icon: (
       <span
-        class={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "walking", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "blockstack" as "blockstack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "blockstack" as "blockstack", character: "heels", action: "walking", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -1074,7 +1074,7 @@ Citizens of Freedom
 stand around not doing much`,
     icon: (
       <span
-        class={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "blockstack" as "blockstack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "blockstack" as "blockstack", character: "head", action: "idle", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -1091,7 +1091,7 @@ Citizens of Freedom
 stand around not doing much`,
     icon: (
       <span
-        class={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "blockstack" as "blockstack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "blockstack" as "blockstack", character: "heels", action: "idle", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -1108,8 +1108,8 @@ Citizens of Freedom
 stand around not doing much`,
     icon: (
       <StackedToolbarIcons
-        topClasses={`${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "right" })}`}
-        bottomClasses={`${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "right" })}`}
+        topClasses={`${playableTailwindSpriteClassname({ spritesheetName: "blockstack" as "blockstack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "blockstack" as "blockstack", character: "head", action: "idle", facingXy8: "right" })}`}
+        bottomClasses={`${playableTailwindSpriteClassname({ spritesheetName: "blockstack" as "blockstack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "blockstack" as "blockstack", character: "heels", action: "idle", facingXy8: "right" })}`}
       />
     ),
   },

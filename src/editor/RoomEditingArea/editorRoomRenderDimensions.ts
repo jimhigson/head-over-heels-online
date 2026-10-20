@@ -26,7 +26,7 @@ export const editorRoomRenderDimensions = (
   const {
     floors: { edgeLeftX: l, edgeRightX: r, bottomEdgeY: b },
     allItems: { topEdgeY: t },
-  } = roomRenderExtent(roomState, spritesheetMetas.BlockStack, cameraAngle);
+  } = roomRenderExtent(roomState, spritesheetMetas.blockstack, cameraAngle);
 
   // simplify to the x/y/w/h rectangle to inform the editor where the rendering is:
   return {

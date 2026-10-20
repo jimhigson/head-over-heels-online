@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 
-import spritesheetUrl from "../../../gfx/sprites.borders.png?url";
+import spritesheetArtBordersUrl from "../../../gfx/spritesBlockstack.borders.png?url";
 import { type DecodedImage } from "../geometry/glyphBitmap";
 
 /**
@@ -15,7 +15,7 @@ export const useSpritesheet = (): DecodedImage | undefined => {
     let live = true;
     const load = async () => {
       const bitmap = await createImageBitmap(
-        await (await fetch(spritesheetUrl)).blob(),
+        await (await fetch(spritesheetArtBordersUrl)).blob(),
       );
       const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
       const context = canvas.getContext("2d");

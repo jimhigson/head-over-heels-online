@@ -2,10 +2,10 @@ import { imageSize } from "image-size";
 
 /** every sheet the game draws from - all square, all the same size */
 const sheetPaths = [
-  "gfx/sprites.webp",
+  "gfx/spritesBlockstack.webp",
   "gfx/spritesToppy.webp",
   "gfx/spritesDebug.webp",
-  "gfx/sprites.borders.png",
+  "gfx/spritesBlockstack.borders.png",
 ];
 
 /**

@@ -10,7 +10,7 @@ import {
   mapPressed,
   menuOpenOrExitPressed,
 } from "../slices/gameMenus/gameMenusSlice";
-import { cycleSpritesOptionThunk } from "../slices/userSettings/cycleSpritesOptionThunk";
+import { cycleSpritesheetNameThunk } from "../slices/userSettings/cycleSpritesheetNameThunk";
 import {
   setEmulatedResolution,
   toggleUserSetting,
@@ -78,7 +78,7 @@ export const useUniversalKeys = () => {
 
   useActionTap({
     action: "cycleSprites",
-    handler: useDispatchActionCallback(cycleSpritesOptionThunk),
+    handler: useDispatchActionCallback(cycleSpritesheetNameThunk),
     disabled: assigningKeys,
   });
 

@@ -108,7 +108,7 @@
       "type": "button",
       "config": {
         "type": "in-store",
-        "action": "nextSpritesOption"
+        "action": "nextSpritesheetName"
       },
       "position": {
         "x": 3,
