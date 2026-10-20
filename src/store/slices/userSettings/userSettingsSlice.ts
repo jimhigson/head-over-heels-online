@@ -49,7 +49,7 @@ export type SpriteOptionFor<
 /**
  * every sprite option, derived from the spritesheet metas: each sheet in
  * colourised form, plus uncolourised where the sheet supports it. Debug is
- * included (cheats-only) since it has a meta
+ * included (cheats-only) since it has a spritesheet meta
  */
 export type SpriteOption = {
   [Name in keyof typeof spritesheetMetas]: SpriteOptionFor<

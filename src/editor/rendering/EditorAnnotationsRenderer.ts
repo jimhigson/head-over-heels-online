@@ -16,7 +16,7 @@ import { type ItemInPlayType } from "../../model/ItemInPlay";
 import { getControlTargetJsonItemsInRoom } from "../../model/json/getControlTargetJsonItemsInRoom";
 import { exitGameRoomId } from "../../model/json/ItemConfigMap";
 import { type JsonMovement } from "../../model/json/utilityJsonConfigTypes";
-import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
+import { pixiPaletteBlockstack } from "../../sprites/palette/pixiPalette";
 import { editorStore, store } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
 import { isNegativeSideXy, type Xy } from "../../utils/vectors/vectors";
@@ -35,8 +35,8 @@ import {
   setClickableAnnotationHovered,
 } from "../slice/levelEditorSlice";
 
-const selectionColour = paletteBlockstack.pastelBlue;
-const monsterWakesColour = paletteBlockstack.lightBeige;
+const selectionColour = pixiPaletteBlockstack.pastelBlue;
+const monsterWakesColour = pixiPaletteBlockstack.lightBeige;
 const selectedFilter = new RevertColouriseFilter(selectionColour);
 
 /**
@@ -60,7 +60,7 @@ const makeEditorOutlineFilters = (
   // nearest-upscales back to the screen blocky:
   const filters: EditorOutlineFilters = {
     pointerHover: new OutlineFilter({
-      color: paletteBlockstack.highlightBeige,
+      color: pixiPaletteBlockstack.highlightBeige,
       width: 1,
     }),
     monsterWakes: new OutlineFilter({
@@ -68,11 +68,11 @@ const makeEditorOutlineFilters = (
       width: 1,
     }),
     eyeDropperHover: new OutlineFilter({
-      color: paletteBlockstack.midRed,
+      color: pixiPaletteBlockstack.midRed,
       width: 1,
     }),
     controlHighlight: new OutlineFilter({
-      color: paletteBlockstack.white,
+      color: pixiPaletteBlockstack.white,
       width: 1,
     }),
   };
@@ -92,9 +92,9 @@ const makeEditorOutlineFilters = (
 
   return filters;
 };
-const textAnnotationNormalColour = paletteBlockstack.white;
-const textAnnotationErrorColour = paletteBlockstack.midRed;
-const textClickableAnnotationHoverColour = paletteBlockstack.pastelBlue;
+const textAnnotationNormalColour = pixiPaletteBlockstack.white;
+const textAnnotationErrorColour = pixiPaletteBlockstack.midRed;
+const textClickableAnnotationHoverColour = pixiPaletteBlockstack.pastelBlue;
 
 /** the isometric arrow glyph pointing along a cardinal direction vector */
 const directionArrow = ({ x, y }: Xy): string =>

@@ -1,5 +1,5 @@
 import {
-  paletteToppy,
+  paletteToppyHex,
   type ToppyPaletteColourName,
 } from "../../src/sprites/palette/spritesheetPalette";
 import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
@@ -12,7 +12,8 @@ export const toppySpritesheetMeta: SpritesheetMetadata<
   false
 > = {
   name: "Toppy",
-  palette: paletteToppy,
+  paletteName: "toppy",
+  palette: paletteToppyHex,
   itemRenderExtents,
   playable: {
     head: {

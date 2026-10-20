@@ -30,9 +30,14 @@ export const teleportingLutForSpriteOption = (
   throw new Error("not available");
 };
 
-const deathLutFromMeta = (meta: SpritesheetMetadata): Texture =>
+const deathLutFromSpritesheetMeta = (
+  spritesheetMeta: SpritesheetMetadata,
+): Texture =>
   voronoiLut(
-    resolveZxSpectrumMapping(meta, "mapToZxSpectrumForDeathEffectPalette"),
+    resolveZxSpectrumMapping(
+      spritesheetMeta,
+      "mapToZxSpectrumForDeathEffectPalette",
+    ),
   );
 
 let cachedDeathBlockstack: Texture | undefined;
@@ -43,17 +48,17 @@ export const deathLutForSpriteOption = (
   spriteOption: SpriteOption,
 ): Texture => {
   if (spriteOption.uncolourised) {
-    return (cachedDeathSpeccy ??= deathLutFromMeta(
+    return (cachedDeathSpeccy ??= deathLutFromSpritesheetMeta(
       spritesheetMetaForOption(spriteOption),
     ));
   }
   switch (spriteOption.name) {
     case "BlockStack":
-      return (cachedDeathBlockstack ??= deathLutFromMeta(
+      return (cachedDeathBlockstack ??= deathLutFromSpritesheetMeta(
         spritesheetMetaForOption(spriteOption),
       ));
     case "Toppy":
-      return (cachedDeathToppy ??= deathLutFromMeta(
+      return (cachedDeathToppy ??= deathLutFromSpritesheetMeta(
         spritesheetMetaForOption(spriteOption),
       ));
   }

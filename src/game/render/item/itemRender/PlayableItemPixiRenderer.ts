@@ -6,15 +6,12 @@ import {
   type CharacterName,
   type IndividualCharacterName,
 } from "../../../../model/modelTypes";
-import {
-  zxSpectrumColor,
-  type ZxSpectrumRoomColour,
-} from "../../../../originalGame";
+import { type ZxSpectrumRoomColour } from "../../../../originalGame";
 import {
   isAnimationId,
   isTextureId,
 } from "../../../../sprites/assertIsTextureId";
-import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
+import { effectPixiColour } from "../../../../sprites/palette/pixiPalette";
 import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
 import { type SpritesheetMetadata } from "../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { variantTextureId } from "../../../../sprites/spritesheet/variantTextureId";
@@ -42,6 +39,7 @@ import { stackSprites } from "../../itemAppearances/createStackedSprites";
 import { characterAction } from "../../itemAppearances/playable/characterAction";
 import { isHighlightedPlayableItem } from "../../itemAppearances/playable/isHighlightedPlayableItem";
 import { type ItemLeafRenderContext } from "../../ItemRenderContexts";
+import { zxSpectrumPixiColor } from "../../palette/zxSpectrumPixiColours";
 import { type ItemLeafPixiRenderer } from "./ItemPixiRenderer";
 
 /** the character's current state that a body sprite is picked from */
@@ -332,12 +330,12 @@ class IndividualPlayableRendering {
     const isDim = roomColour.shade === "dimmed";
     const accentColour =
       spriteOption.uncolourised ?
-        zxSpectrumColor(roomColour)
-      : effectColour(spritesheetMeta, isDim, name);
+        zxSpectrumPixiColor(roomColour)
+      : effectPixiColour(spritesheetMeta, isDim, name);
     const invulnerableColour =
       spriteOption.uncolourised ?
-        zxSpectrumColor(roomColour)
-      : effectColour(spritesheetMeta, isDim, "invulnerable");
+        zxSpectrumPixiColor(roomColour)
+      : effectPixiColour(spritesheetMeta, isDim, "invulnerable");
 
     this.#shineSprite = createSprite({
       animationId: variantTextureId(

@@ -3,8 +3,10 @@ import { Container, type Filter } from "pixi.js";
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { isInRoomModifierItem } from "../../../../model/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
-import { zxSpectrumColor, zxSpectrumColors } from "../../../../originalGame";
-import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
+import {
+  effectPixiColour,
+  pixiPalette,
+} from "../../../../sprites/palette/pixiPalette";
 import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
 import { OneColourFilter } from "../../filters/OneColourFilter";
 import { OutlineFilter } from "../../filters/OutlineFilter";
@@ -12,6 +14,10 @@ import {
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
+import {
+  zxSpectrumPixiColor,
+  zxSpectrumPixiColors,
+} from "../../palette/zxSpectrumPixiColours";
 import { type DecorateItemRenderer } from "./DecorateItemRenderer";
 import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
@@ -49,11 +55,11 @@ class ItemFlashOnSwitchedRenderer<
     let rightColour;
     if (spriteOption.uncolourised) {
       // Speccy is two-tone - either room colour or black:
-      leftColour = zxSpectrumColor(roomColor);
-      rightColour = zxSpectrumColors.black;
+      leftColour = zxSpectrumPixiColor(roomColor);
+      rightColour = zxSpectrumPixiColors.black;
     } else {
-      leftColour = effectColour(spritesheetMeta, useDim, "left");
-      rightColour = effectColour(spritesheetMeta, useDim, "right");
+      leftColour = effectPixiColour(spritesheetMeta, useDim, "left");
+      rightColour = effectPixiColour(spritesheetMeta, useDim, "right");
     }
 
     // shared via the room renderer's filter cache (one of each per colour
@@ -71,9 +77,9 @@ class ItemFlashOnSwitchedRenderer<
 
     const outlineColour =
       spriteOption.uncolourised ?
-        zxSpectrumColors.black
+        zxSpectrumPixiColors.black
       : getAmbientSwoppedColour(
-          spritesheetMeta.palette,
+          pixiPalette(spritesheetMeta),
           spritesheetMeta.effectColours.outline,
           spritesheets.spritesheetForCurrentRoom.ambient,
         );

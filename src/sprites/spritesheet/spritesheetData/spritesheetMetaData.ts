@@ -11,7 +11,7 @@ import { type ZxSpectrumPaletteColour } from "../../../originalGame";
 import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { entries } from "../../../utils/entries";
 import {
-  type NamedColours,
+  type NamedHexColours,
   type NamedSwops,
 } from "../../../utils/palette/palette";
 import { type DirectionXy8 } from "../../../utils/vectors/vectors";
@@ -110,11 +110,18 @@ export type ItemRenderExtents = Partial<
   Record<ItemRenderExtentKey, ItemRenderExtent>
 >;
 
-/** the name of every spritesheet that has a meta, taken from the metas themselves */
+/** the name of every spritesheet that has a spritesheet meta, taken from the spritesheet metas themselves */
 export type SpritesheetName =
   | typeof blockStackSpritesheetMeta.name
   | typeof debugSpritesheetMeta.name
   | typeof toppySpritesheetMeta.name;
+
+/**
+ * which palette a spritesheet meta carries - unlike `name`, unique to each
+ * spritesheet meta, since one spritesheet can appear with different palettes
+ */
+export type SpritesheetMetaPaletteName =
+  "blockstack" | "debug" | "speccy" | "toppy";
 
 export type SpritesheetMetadata<
   /** if not given, the spritesheet has no specified named colours - colours can have any name */
@@ -123,9 +130,10 @@ export type SpritesheetMetadata<
   SupportsUncolourised extends boolean = boolean,
 > = {
   name: Name;
-  palette: NamedColours<PaletteColourName>;
+  paletteName: SpritesheetMetaPaletteName;
+  palette: NamedHexColours<PaletteColourName>;
   /** if given, an alternative palette to use in dimmed rooms */
-  paletteDim?: NamedColours<PaletteColourName>;
+  paletteDim?: NamedHexColours<PaletteColourName>;
   playable: PlayableSpritesheetMetaData;
   itemRenderExtents: ItemRenderExtents;
   overrides?: SpriteOverrides;
@@ -218,12 +226,14 @@ export type PlayableSpritesheetFrames = {
   [D in DirectionXy8]?: PlayableDirectionFrames;
 };
 
-// the satisfies constrains each meta to sit under a key equal to its own name
+// the satisfies constrains each spritesheet meta to sit under a key equal to its own name
 export const spritesheetMetas = {
   BlockStack: blockStackSpritesheetMeta,
   Toppy: toppySpritesheetMeta,
   Debug: debugSpritesheetMeta,
 } satisfies { [Name in SpritesheetName]: SpritesheetMetadata<string, Name> };
+
+export type SpritesheetMetas = typeof spritesheetMetas;
 
 export const spritesheetMetaForOption = (
   spriteOption: SpriteOption,
@@ -237,9 +247,9 @@ export const spritesheetMetaForOption = (
  * sheet, in both colourised and (where supported) uncolourised forms
  */
 export const spriteOptionValues = entries(spritesheetMetas)
-  .filter(([, meta]) => meta.debug !== true)
-  .flatMap(([name, meta]) =>
-    meta.supportsUncolourised ?
+  .filter(([, spritesheetMeta]) => spritesheetMeta.debug !== true)
+  .flatMap(([name, spritesheetMeta]) =>
+    spritesheetMeta.supportsUncolourised ?
       [
         { name, uncolourised: false as const },
         { name, uncolourised: true as const },

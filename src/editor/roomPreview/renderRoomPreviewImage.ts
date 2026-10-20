@@ -4,7 +4,7 @@ import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
 import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
 import { RoomRenderer } from "../../game/render/room/RoomRenderer";
 import { roomRenderExtent } from "../../game/render/room/roomRenderExtent";
-import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
+import { pixiPaletteBlockstack } from "../../sprites/palette/pixiPalette";
 import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
@@ -43,7 +43,7 @@ const getRenderer = (): Promise<Renderer> => {
         preference: "webgl",
         width: previewWidthPx,
         height: previewHeightPx,
-        background: paletteBlockstack.pureBlack,
+        background: pixiPaletteBlockstack.pureBlack,
         useBackBuffer: true,
         antialias: false,
       });
@@ -125,7 +125,7 @@ export const renderRoomPreviewImage = async (
     const canvas = renderer.extract.canvas({
       target: roomRenderer.output.graphics,
       frame,
-      clearColor: paletteBlockstack.pureBlack,
+      clearColor: pixiPaletteBlockstack.pureBlack,
     });
 
     return (canvas as HTMLCanvasElement).toDataURL("image/webp", 0.5);

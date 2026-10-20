@@ -1,6 +1,6 @@
 import {
+  zxSpectrumHexPaletteColours,
   type ZxSpectrumPaletteColour,
-  zxSpectrumPaletteColours,
 } from "../../src/originalGame";
 import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { blockStackSpritesheetMeta } from "./blockStackSpritesheetMeta";
@@ -10,7 +10,8 @@ export const speccySpritesheetMeta: SpritesheetMetadata<
   "BlockStack"
 > = {
   name: "BlockStack",
-  palette: zxSpectrumPaletteColours,
+  paletteName: "speccy",
+  palette: zxSpectrumHexPaletteColours,
   playable: blockStackSpritesheetMeta.playable,
   itemRenderExtents: blockStackSpritesheetMeta.itemRenderExtents,
   overrides: blockStackSpritesheetMeta.overrides,

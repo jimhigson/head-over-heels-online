@@ -2,11 +2,11 @@ import { type Color } from "pixi.js";
 
 import { type UnknownRoomState } from "../../../model/RoomState";
 import {
-  zxSpectrumColor,
   type ZxSpectrumRoomColour,
   type ZxSpectrumRoomHue,
   type ZxSpectrumShade,
 } from "../../../originalGame";
+import { zxSpectrumPixiColor } from "../palette/zxSpectrumPixiColours";
 
 export type RoomColorScheme = {
   main: ZxSpectrumRoomHue;
@@ -189,5 +189,5 @@ export const edgeOriginalGameColour = (
 ): Color => {
   const edge = getRoomColorScheme(room.color).edges[side];
 
-  return zxSpectrumColor(edge.hue, edge.dimInOriginal ? "dimmed" : "basic");
+  return zxSpectrumPixiColor(edge.hue, edge.dimInOriginal ? "dimmed" : "basic");
 };

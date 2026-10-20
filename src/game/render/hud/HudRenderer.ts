@@ -12,11 +12,8 @@ import {
   individualCharacterNames,
 } from "../../../model/modelTypes";
 import { type RoomState } from "../../../model/RoomState";
-import {
-  zxSpectrumColor,
-  type ZxSpectrumRoomColour,
-} from "../../../originalGame";
-import { effectColour } from "../../../sprites/palette/spritesheetPalette";
+import { type ZxSpectrumRoomColour } from "../../../originalGame";
+import { effectPixiColour } from "../../../sprites/palette/pixiPalette";
 import {
   type BaseTextureId,
   type BaseTextureIdWithPrefix,
@@ -57,6 +54,7 @@ import { outlineFilters } from "../filters/OutlineFilter";
 import { getRoomColorScheme } from "../gameColours/colourScheme";
 import { createItemLeafPixiRenderer } from "../item/itemRender/createItemLeafPixiRenderer";
 import { type ItemLeafPixiRenderer } from "../item/itemRender/ItemPixiRenderer";
+import { zxSpectrumPixiColor } from "../palette/zxSpectrumPixiColours";
 import { type Renderer } from "../Renderer";
 import { TextContainer } from "../text/TextContainer";
 import { FpsRenderer } from "./FpsRenderer";
@@ -875,11 +873,11 @@ export class HudRenderer<
     roomColour: ZxSpectrumRoomColour,
   ): Color {
     if (spriteOption.uncolourised) {
-      return zxSpectrumColor(getRoomColorScheme(roomColour).hud.brightHue);
+      return zxSpectrumPixiColor(getRoomColorScheme(roomColour).hud.brightHue);
     }
 
     const isDim = roomColour.shade === "dimmed";
-    return effectColour(
+    return effectPixiColour(
       spritesheetMeta,
       isDim,
       isActive ? characterName : "dimText",

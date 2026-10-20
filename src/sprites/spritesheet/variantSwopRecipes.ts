@@ -13,10 +13,11 @@ import {
 } from "../../utils/palette/palette";
 import { omitArray } from "../../utils/pick";
 import {
-  maybeDimPalette,
-  paletteBlockstack,
-  paletteBlockstackDim,
-} from "../palette/spritesheetPalette";
+  maybeDimPixiPalette,
+  pixiPalette,
+  pixiPaletteBlockstack,
+  pixiPaletteBlockstackDim,
+} from "../palette/pixiPalette";
 import {
   blockstackAmbienceNamedSwops,
   blockstackAmbienceSwops,
@@ -112,24 +113,31 @@ export const stripGroupPasses = (
     "roomColor" | "roomScenery" | "spritesheetMetaData"
   >,
 ): PaletteSwopSpec[] | undefined => {
-  const { palette, paletteDim, swops } = spritesheetMetaData;
+  const { paletteDim, swops } = spritesheetMetaData;
+  const palette = pixiPalette(spritesheetMetaData);
 
   const dimmed = roomColor.shade === "dimmed";
   const dimPass: PaletteSwopSpec | undefined =
     dimmed && paletteDim !== undefined ?
-      { swops: resolveSwops(palette, paletteDim), lutType: "sparse" }
+      {
+        swops: resolveSwops(
+          palette,
+          maybeDimPixiPalette(spritesheetMetaData, true),
+        ),
+        lutType: "sparse",
+      }
     : undefined;
 
   if (isArcadeButtonSuffix(group)) {
     // recolour the placeholder button art to this action's colour, dimmed per room:
-    const buttonPalette = maybeDimPalette(spritesheetMetaData, dimmed);
+    const buttonPalette = maybeDimPixiPalette(spritesheetMetaData, dimmed);
     const colour =
       buttonPalette[
         spritesheetMetaData.buttonColours[arcadeButtonActionOfSuffix(group)]
       ];
     return [
       {
-        swops: resolveSwops(paletteBlockstack, {
+        swops: resolveSwops(pixiPaletteBlockstack, {
           replaceLight: colour,
           replaceDark: halfbrite(colour, 0.66),
           pureBlack: buttonPalette[spritesheetMetaData.effectColours.outline],
@@ -149,9 +157,9 @@ export const stripGroupPasses = (
     const trend = roomScenery === "moonbase" ? "light-mid" : "light-dark";
     return [
       {
-        swops: resolveSwops(paletteBlockstack, {
+        swops: resolveSwops(pixiPaletteBlockstack, {
           ...(spritesheetMetaData.name === "BlockStack" ?
-            dimmed ? paletteBlockstackDim
+            dimmed ? pixiPaletteBlockstackDim
             : blockstackAmbienceNamedSwops(roomScenery, roomColor)
           : emptyObject),
           ...replacementColours(

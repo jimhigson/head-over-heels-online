@@ -1,9 +1,6 @@
 import { Color } from "pixi.js";
 
-import {
-  zxSpectrumColor,
-  type ZxSpectrumRoomColour,
-} from "../../../originalGame";
+import { type ZxSpectrumRoomColour } from "../../../originalGame";
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { getRoomColorScheme } from "../gameColours/colourScheme";
@@ -11,6 +8,7 @@ import {
   replacementColour,
   toppyReplacementColour,
 } from "../gameColours/gameColours";
+import { zxSpectrumPixiColor } from "../palette/zxSpectrumPixiColours";
 
 const noTint = new Color(0xff_ff_ff);
 
@@ -20,7 +18,7 @@ export const tintForHudIfUncolourised = (
   active: boolean,
 ): Color =>
   spriteOption.uncolourised ?
-    zxSpectrumColor(
+    zxSpectrumPixiColor(
       getRoomColorScheme(roomColor).hud[active ? "brightHue" : "dimmedHue"],
     )
   : noTint;
@@ -35,7 +33,7 @@ export const tintForHud = (
   const hudHue = colorScheme.hud[active ? "brightHue" : "dimmedHue"];
 
   if (spriteOption.uncolourised) {
-    return zxSpectrumColor(hudHue);
+    return zxSpectrumPixiColor(hudHue);
   }
   if (spriteOption.name === "Toppy") {
     return toppyReplacementColour(hudHue);
@@ -59,7 +57,7 @@ export const tintForIcon = (
   const iconHue = colorScheme.hud.icons;
 
   if (spriteOption.uncolourised) {
-    return zxSpectrumColor(iconHue);
+    return zxSpectrumPixiColor(iconHue);
   }
   if (spriteOption.name === "Toppy") {
     return toppyReplacementColour(iconHue);
