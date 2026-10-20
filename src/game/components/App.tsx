@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { GamePage } from "../../pages/gamePage/GamePage.tsx";
 import { importLutPage } from "../../pages/LutPage.import.ts";
 import { importSpritesPage } from "../../pages/spritesPage/SpritesPage.import.ts";
-import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
+import { useIsUncolourised } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
 import { store } from "../../store/store.ts";
 import { SpinnerHead } from "../../ui/Spinner.tsx";
 import { handleGameBoot } from "../handleGameBoot.ts";
@@ -23,13 +23,13 @@ const LazySpritesPage = lazy(importSpritesPage);
 handleGameBoot();
 
 const AppInner = () => {
-  const spritesOption = useSpritesOption();
+  const uncolourised = useIsUncolourised();
   useUpscaledSpritesAndSmoothFontInCss();
   useEffect(() => {
     // note that this isn't done before the first load, since we don't have the store then!
-    document.body.classList.toggle("zx", spritesOption.uncolourised);
-    document.body.classList.toggle("colourised", !spritesOption.uncolourised);
-  }, [spritesOption]);
+    document.body.classList.toggle("zx", uncolourised);
+    document.body.classList.toggle("colourised", !uncolourised);
+  }, [uncolourised]);
 
   return (
     // css variables needs the store so has to be in AppInner, not App

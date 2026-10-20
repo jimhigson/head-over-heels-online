@@ -1,13 +1,13 @@
 import { useCallback, useRef } from "preact/hooks";
 
 import { Button } from "../../ui/Button";
-import { spritesheetUrlFromCssVar } from "./spritesheetUrlFromCssVar";
+import { spritesheetArtUrlFromCssVar } from "./spritesheetArtUrlFromCssVar";
 
 export const DownloadSpritesheetButton = () => {
   const ref = useRef<HTMLSpanElement>(null);
 
   const handleClick = useCallback(() => {
-    const rawUrl = spritesheetUrlFromCssVar(ref.current!);
+    const rawUrl = spritesheetArtUrlFromCssVar(ref.current!);
     const { pathname } = new URL(rawUrl, location.href);
     const filename = pathname
       .split("/")

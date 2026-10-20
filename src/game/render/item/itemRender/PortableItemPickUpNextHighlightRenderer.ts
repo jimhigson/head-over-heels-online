@@ -37,12 +37,12 @@ class PortableItemPickUpNextHighlightRenderer<
     this.output.addChild(childRenderer.output);
 
     const {
-      general: { spriteOption, spritesheetMeta },
+      general: { spritesheetMeta },
       room,
     } = renderContext;
 
     const outlineColour =
-      spriteOption.uncolourised ?
+      spritesheetMeta.isUncolourisedOf !== undefined ?
         zxSpectrumPixiColor(room.color)
       : effectPixiColour(
           spritesheetMeta,

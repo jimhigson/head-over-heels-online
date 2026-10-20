@@ -1,12 +1,11 @@
 import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
 
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import fragment from "./colourClashCircleEffect.frag";
 import {
-  deathLutForSpriteOption,
-  teleportingLutForSpriteOption,
-} from "./lutTexture/stdLuts/lutForSpriteOption";
+  deathLutForSpritesheet,
+  teleportingLutForSpritesheet,
+} from "./lutTexture/stdLuts/lutForSpritesheet";
 
 type ColourClashCircleEffectOptions = {
   /**
@@ -14,7 +13,6 @@ type ColourClashCircleEffectOptions = {
    */
   blockSize: number;
 
-  spriteOption: SpriteOption;
   spritesheetMeta: SpritesheetMetadata;
 
   /** true = death effect (uses deactivated palette LUT), false = teleporting effect (uses spectrum LUT) */
@@ -52,7 +50,6 @@ export class ColourClashCircleEffectFilter extends Filter {
 
   constructor({
     blockSize,
-    spriteOption,
     spritesheetMeta,
     isDeath,
     zxCircleSpeed = 1.5,
@@ -134,8 +131,8 @@ export class ColourClashCircleEffectFilter extends Filter {
           },
         },
         uLut: (isDeath ?
-          deathLutForSpriteOption(spriteOption)
-        : teleportingLutForSpriteOption(spriteOption)
+          deathLutForSpritesheet(spritesheetMeta)
+        : teleportingLutForSpritesheet(spritesheetMeta)
         ).source,
       },
     });

@@ -4,7 +4,7 @@
  * put them also on Toppy, to serve until he has had time to redraw them
  *
  * splices the frames whose names match a given regex from the BlockStack-
- * bordered sheet (gfx/sprites.borders.png) onto the Toppy sheet
+ * bordered sheet (gfx/spritesBlockstack.borders.png) onto the Toppy sheet
  * (gfx/spritesToppy.webp), keeping each frame at exactly the same location and
  * surrounding it with a 1px transparent border. The frame rectangles come
  * directly from makeSpritesheetData, so they stay in sync with whatever it
@@ -21,10 +21,10 @@ import { makeSpritesheetData } from "../src/sprites/spritesheet/spritesheetData/
 
 const repoRoot = fileURLToPath(new URL("../", import.meta.url));
 
-const palettePath = "src/_generated/palette/spritesheetPalette.json";
+const palettePath = "src/_generated/palette/spritesheetBlockstackPalette.json";
 
 /** the sheet the frames are copied from */
-const sourceSheet = "gfx/sprites.borders.png";
+const sourceSheet = "gfx/spritesBlockstack.borders.png";
 /** the sheet the frames are copied onto (overwritten in place) */
 const targetSheet = "gfx/spritesToppy.webp";
 

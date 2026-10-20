@@ -15,7 +15,6 @@ import { effectPixiColour } from "../../../../sprites/palette/pixiPalette";
 import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
 import { type SpritesheetMetadata } from "../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { variantTextureId } from "../../../../sprites/spritesheet/variantTextureId";
-import { type SpriteOption } from "../../../../store/slices/userSettings/userSettingsSlice";
 import { isEmptyObject } from "../../../../utils/empty";
 import {
   resolveSpriteDirectionIndexXy8,
@@ -310,7 +309,6 @@ class IndividualPlayableRendering {
     name: IndividualCharacterName,
     isInSymbiosis: boolean,
     paused: boolean,
-    spriteOption: SpriteOption,
     spritesheetMeta: SpritesheetMetadata,
     roomColour: ZxSpectrumRoomColour,
     shineSpritesheet: AppSpritesheetWithVariants,
@@ -329,11 +327,11 @@ class IndividualPlayableRendering {
 
     const isDim = roomColour.shade === "dimmed";
     const accentColour =
-      spriteOption.uncolourised ?
+      spritesheetMeta.isUncolourisedOf !== undefined ?
         zxSpectrumPixiColor(roomColour)
       : effectPixiColour(spritesheetMeta, isDim, name);
     const invulnerableColour =
-      spriteOption.uncolourised ?
+      spritesheetMeta.isUncolourisedOf !== undefined ?
         zxSpectrumPixiColor(roomColour)
       : effectPixiColour(spritesheetMeta, isDim, "invulnerable");
 
@@ -447,7 +445,7 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<PlayableRe
   constructor(renderContext: ItemLeafRenderContext<PlayableRenderedType>) {
     this.renderContext = renderContext;
     const {
-      general: { paused, spriteOption, spritesheetMeta, spritesheets },
+      general: { paused, spritesheetMeta, spritesheets },
       room: { color: roomColour },
       filterCache,
       isReflection,
@@ -469,7 +467,6 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<PlayableRe
         name,
         isInSymbiosis,
         paused,
-        spriteOption,
         spritesheetMeta,
         roomColour,
         spritesheets.spritesheetForCurrentRoom,

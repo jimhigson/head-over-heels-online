@@ -1,12 +1,10 @@
-import { Container, type Filter } from "pixi.js";
+import { type Color, Container, type Filter } from "pixi.js";
 
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { isInRoomModifierItem } from "../../../../model/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
-import {
-  effectPixiColour,
-  pixiPalette,
-} from "../../../../sprites/palette/pixiPalette";
+import { effectPixiColour } from "../../../../sprites/palette/pixiPalette";
+import { spritesheetPixiPalettes } from "../../../../sprites/palette/spritesheetPixiPalettes";
 import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
 import { OneColourFilter } from "../../filters/OneColourFilter";
 import { OutlineFilter } from "../../filters/OutlineFilter";
@@ -45,15 +43,14 @@ class ItemFlashOnSwitchedRenderer<
     this.#childRenderer = childRenderer;
     this.output.addChild(childRenderer.output);
 
-    const { spriteOption, spritesheets, spritesheetMeta } =
-      renderContext.general;
+    const { spritesheets, spritesheetMeta } = renderContext.general;
     const { color: roomColor } = renderContext.room;
 
     const useDim = roomColor.shade === "dimmed";
 
-    let leftColour;
-    let rightColour;
-    if (spriteOption.uncolourised) {
+    let leftColour: Color;
+    let rightColour: Color;
+    if (spritesheetMeta.isUncolourisedOf !== undefined) {
       // Speccy is two-tone - either room colour or black:
       leftColour = zxSpectrumPixiColor(roomColor);
       rightColour = zxSpectrumPixiColors.black;
@@ -76,10 +73,10 @@ class ItemFlashOnSwitchedRenderer<
     );
 
     const outlineColour =
-      spriteOption.uncolourised ?
+      spritesheetMeta.isUncolourisedOf !== undefined ?
         zxSpectrumPixiColors.black
-      : getAmbientSwoppedColour(
-          pixiPalette(spritesheetMeta),
+      : getAmbientSwoppedColour<string>(
+          spritesheetPixiPalettes[spritesheetMeta.name].basic,
           spritesheetMeta.effectColours.outline,
           spritesheets.spritesheetForCurrentRoom.ambient,
         );

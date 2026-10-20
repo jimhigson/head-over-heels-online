@@ -1,7 +1,5 @@
 import { type Color } from "pixi.js";
 
-import { blockStackSpritesheetMeta } from "../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
-import { toppySpritesheetMeta } from "../../../gfx/spritesheetMeta/toppySpritesheetMeta";
 import { type NamedPixiColours } from "../../utils/palette/palette";
 import {
   type EffectColourName,
@@ -12,46 +10,22 @@ import {
   spritesheetPixiPalettes,
 } from "./spritesheetPixiPalettes";
 
-const pixiPalettesOf = <PaletteColourName extends string>(
-  spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
-) =>
-  // looked up by a runtime key, so this spritesheet meta's colour names are
-  // restored here
-  spritesheetPixiPalettes[
-    spritesheetMeta.paletteName
-  ] as PixiPalettes<PaletteColourName>;
-
 /**
- * a spritesheet's palette as pixi `Color`s
- */
-export const pixiPalette = <PaletteColourName extends string>(
-  spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
-): NamedPixiColours<PaletteColourName> =>
-  pixiPalettesOf(spritesheetMeta).palette;
-
-/**
- * the renderer's view of whichever of a spritesheet's palettes applies
+ * whichever of a spritesheet's palettes applies, keeping that sheet's colour
+ * names
  */
 export const maybeDimPixiPalette = <PaletteColourName extends string>(
-  spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
+  { basic, dim }: PixiPalettes<PaletteColourName>,
   wantDimmedPalette: boolean,
-): NamedPixiColours<PaletteColourName> => {
-  const { palette, paletteDim } = pixiPalettesOf(spritesheetMeta);
-  return wantDimmedPalette && paletteDim !== undefined ? paletteDim : palette;
-};
+): NamedPixiColours<PaletteColourName> =>
+  wantDimmedPalette && dim !== undefined ? dim : basic;
 
-export const effectPixiColour = <PaletteColourName extends string>(
-  spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
+export const effectPixiColour = (
+  spritesheetMeta: SpritesheetMetadata,
   wantDimmedPalette: boolean,
   effectColourName: EffectColourName,
 ): Color =>
-  maybeDimPixiPalette(spritesheetMeta, wantDimmedPalette)[
-    spritesheetMeta.effectColours[effectColourName]
-  ];
-
-export const pixiPaletteBlockstack = pixiPalette(blockStackSpritesheetMeta);
-export const pixiPaletteBlockstackDim = maybeDimPixiPalette(
-  blockStackSpritesheetMeta,
-  true,
-);
-export const pixiPaletteToppy = pixiPalette(toppySpritesheetMeta);
+  maybeDimPixiPalette<string>(
+    spritesheetPixiPalettes[spritesheetMeta.name],
+    wantDimmedPalette,
+  )[spritesheetMeta.effectColours[effectColourName]];

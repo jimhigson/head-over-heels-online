@@ -8,8 +8,10 @@ import {
   type makeSpritesheetData,
   type SpritesheetDataFrames,
 } from "./spritesheetData/makeSpritesheetData";
-import { type SpritesheetMetadata } from "./spritesheetData/spritesheetMetaData";
-import { type SpriteOptionName } from "./Spritesheets";
+import {
+  type SpritesheetMetadata,
+  type SpritesheetName,
+} from "./spritesheetData/spritesheetMetaData";
 
 /**
  * the animations each builder writes, taken from the builders themselves so
@@ -50,7 +52,10 @@ declare const variantsBaked: unique symbol;
  * whose variant ids are all aliases
  */
 export type AppSpritesheet = Spritesheet<AppSpritesheetDataWithVariants> & {
-  spriteOptionName: SpriteOptionName;
+  /**
+   * the spritesheet whose image this sheet is drawn from
+   */
+  spritesheetArtName: SpritesheetName;
   ambient?: PaletteSwopSpec[];
   spritesheetMeta: SpritesheetMetadata;
 };

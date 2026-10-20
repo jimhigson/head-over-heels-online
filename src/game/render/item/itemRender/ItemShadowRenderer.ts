@@ -184,7 +184,7 @@ class ItemShadowRenderer<
     this.#output.addChild(this.#shadowsContainer);
     if (
       !this.#showShadowMasks &&
-      !renderContext.general.spriteOption.uncolourised
+      renderContext.general.spritesheetMeta.isUncolourisedOf === undefined
     ) {
       // identical for every shadow in the room, so shared via the room
       // renderer's filter cache:
@@ -293,10 +293,11 @@ class ItemShadowRenderer<
         pixiRenderer,
         cameraAngle,
         upscale: { gameEngineUpscale },
-        spriteOption: { uncolourised },
+        spritesheetMeta,
       },
       room,
     } = this.renderContext;
+    const uncolourised = spritesheetMeta.isUncolourisedOf !== undefined;
     const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
 
     if (
@@ -356,7 +357,8 @@ class ItemShadowRenderer<
     // with a single tint on top of its shaped shadows. Colourised only - uncolourised cast
     // shadows are hard black, so a whole-item tint would erase the item into its silhouette
     const wholeShadowed =
-      !this.renderContext.general.spriteOption.uncolourised &&
+      this.renderContext.general.spritesheetMeta.isUncolourisedOf ===
+        undefined &&
       wholeShadowCastersCoverReceiver(castersAbove, item, cameraQuarterAngle);
 
     // tint the whole item when wholly shadowed, on top of (not instead of) its shaped

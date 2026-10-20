@@ -1,71 +1,45 @@
 ---
 name: spritesheet-guide
-description: Spritesheet variant architecture reference — the six parallel spritesheets, initialisation flow, colourised vs uncolourised split, and how renderers pick a variant. Use when working on sprite rendering, palette swaps, or debugging "swopped spritesheet undefined" errors.
+description: Spritesheet architecture reference — the original and per-room sheets, how variants are baked into one atlas, colourised vs uncolourised (speccy), how renderers pick a texture, and the sprites option. Use when working on sprite rendering, palette swaps, or spritesheet loading.
 ---
 
-The renderer doesn't draw from a single spritesheet — it draws from up to **six** parallel spritesheets, each derived from the same source PNG with a different palette swap baked in via a Pixi filter. Selecting which one to sample is the renderer's job; building/tearing down the right ones is the main loop's job.
+The renderer samples one atlas per room, built from the loaded spritesheet image with palette swaps baked in. `Spritesheets` (`src/sprites/spritesheet/Spritesheets.ts`) owns both sheets; the main loop decides when to rebuild them.
 
-## The variant types
+## The two sheets
 
-Defined in `src/sprites/spritesheet/variants/SpritesheetVariant.tsx`:
+- **`originalSpritesheet`** — the loaded image with the shadow preprocess baked in, never room-swopped. Built by `loadImage(renderer, spritesheetArtName)`, and re-baked at a new upscale factor when that changes.
+- **`spritesheetForCurrentRoom`** — rebuilt by `rebuild(renderer, scenery, colour, spritesheetMeta, upscale)` through `buildRoomSheet`. Everything in-room samples this one; `shadowSpritesheet` is the same sheet.
 
-- `original` — the raw loaded PNG, no swaps. The base every other variant is derived from.
-- `for-current-room` — palette-swapped to the current room's `(planet, colour)`. Most rendering uses this one.
-- `deactivated` — the colour palette monsters/platforms render in when their `activated: false` state is showing. Visual cue.
-- `doughnutted` — the palette stunned characters use after a doughnut hit.
-- `sceneryPlayer` — used when a player needs to render in scenery colours (e.g. some teleporter overlays).
-- `uncolourised` — for ZX Spectrum mode (`spriteOption.uncolourised: true`). The sprite art is recoloured to white-on-shadow so the user can see the per-room ZX colour-attribute via the room's tinting layer rather than baked into the sprite.
+## Variants are texture ids, not sheets
 
-Each variant lives in its own file under `src/sprites/spritesheet/variants/<name>SpritesheetVariant.ts` with the exact same shape:
+The room sheet holds every base frame swopped for the room, and every variant frame alongside it, under suffixed texture ids (`variantSuffixes` in `variantSpritesheetData.ts`): `deactivated`, `doughnutted`, `mirrorReflection`, `sceneryPlayer`, the arcade-button `action=…` colours and the door-hue ones. Each suffix bakes only where the spritesheet meta declares the swop (`bakeableVariantSuffixes`, `stripGroupPasses` in `variantSwopRecipes.ts`); an unbaked variant id aliases its base frame's rect, so every id always resolves.
+
+Renderers pick a frame by id, never a sheet:
 
 ```ts
-let swopped: AppSpritesheet | undefined = undefined;
-export const destroyXxxSpritesheet = () => { /* destroy textures + sheet, set undefined */ };
-export const createXxxSpritesheet = (...) => { destroyXxxSpritesheet(); swopped = createSpritesheetVariant(...); };
-export const xxxSpritesheetVariant = (): AppSpritesheet => { if (swopped === undefined) throw ...; return swopped; };
+spritesheets.spritesheetForCurrentRoom.textures[
+  variantTextureId(id, isReflection, doughnutted, deactivated, sceneryPlayer)
+];
 ```
 
-The module-level `swopped` singleton is the variant. The accessor **throws** if it's undefined — variants must be built before any code reads them, never lazily.
+## Colourised vs uncolourised
 
-## Initialisation flow
+`roomSpritesheetTextureSwops` gives each spritesheet its room swops. The uncolourised sheet (speccy) swops the whole sheet to near-white instead, bakes only the arcade-button variants, and is coloured at render time by a per-room tint.
 
-1. `gameMain.ts` calls `initOriginalSpritesheet(renderer)` followed by `createUncolourisedSpritesheet(renderer)`. So at game-start, two variants are present: `original` and `uncolourised`. (The latter is built up-front because it's a one-shot — its swap doesn't depend on room data.)
-2. The first main-loop tick calls `tickSpritesheetVariants(renderer, planet, color, spriteOption)` (in `src/game/mainLoop/tickSpritesheetVariants.ts`). This is the **only** path that creates `for-current-room`, `deactivated`, `doughnutted`, and `sceneryPlayer`. They depend on the current room's `(scenery, colour)` so they can't be built until the player has entered a room.
-3. Subsequent ticks call `tickSpritesheetVariants` again only when the room changes OR `spriteOption` changes (`MainLoop.ts:190-211`). Each rebuild destroys the previous variant first, then builds a fresh one — no caching across rooms.
+## When the room sheet is rebuilt
 
-## The colourised vs uncolourised split
+`MainLoop` rebuilds it when the room changes, the upscale factor changes, the WebGL context is restored, or the tick's spritesheet meta differs from the room renderer's. A paused tick renders with the selected sheet's `spritesheetWhenPaused` (blockstack pauses as speccy). If the art sheet isn't loaded yet, the tick loads it first.
 
-`tickSpritesheetVariants` branches on `spriteOption.uncolourised`:
-
-- **`uncolourised: true`** → `initAndBuildUncolourised`: ensures `original` is loaded, destroys `for-current-room`, creates `uncolourised`. Note: `deactivated`/`doughnutted`/`sceneryPlayer` are **not** built — uncolourised mode bypasses those code paths because per-room recolouring is what they exist to do.
-- **`uncolourised: false`** → `initAndBuildColourised`: ensures `original` is loaded, destroys `uncolourised`, builds the four colourised variants.
-
-So at any given moment the set of available variants is **either** `{original, uncolourised}` **or** `{original, for-current-room, deactivated, doughnutted, sceneryPlayer}` — never both. This is the trap: a renderer that picks a variant based on a stale `spriteOption.uncolourised` value can call `xxxSpritesheetVariant()` on a destroyed variant and hit the throw.
-
-## How renderers pick a variant
-
-`src/sprites/spritesheet/variants/getSpriteSheetVariant.tsx` is the single lookup point. Most item-appearance functions in `src/game/render/itemAppearances/*` follow the same pattern:
+## The sprites option: a spritesheet name
 
 ```ts
-const variant: SpritesheetVariant =
-  spriteOption.uncolourised ? "uncolourised" : "for-current-room";
-const sprite = getSpriteSheetVariant(variant).textures[textureId];
+type SpritesheetName = "blockstack" | "debug" | "speccy" | "toppy";
 ```
 
-The `spriteOption` here comes from `itemRenderContext.general.spriteOption`, which is captured from the redux store at renderer construction time. **If the captured value drifts from the current store value** between construction and access, the lookup will request a variant that no longer exists and `getSpriteSheetVariant` throws (`could not get spritesheet variant "X"`). This is the failure mode behind mid-game errors that mention `swopped spritesheet undefined`.
+Stored at `userSettings.userSettings.displaySettings.sprites`, it names one of `spritesheetMetas`. `speccy` has `isUncolourisedOf: "blockstack"`: it draws BlockStack's art, uncoloured and tinted per room at render time (`spritesheetMeta.isUncolourisedOf !== undefined`, `spritesheetArtName(spritesheetMeta)`). Render code reads `general.spritesheetMeta`, never the option itself. Selectors:
 
-## `SpriteOption` shape and where it lives
-
-```ts
-type SpriteOption =
-  | { name: "BlockStack"; uncolourised: false }
-  | { name: "BlockStack"; uncolourised: true }
-  | { name: "Toppy"; uncolourised: false };
-```
-
-Stored at `userSettings.userSettings.displaySettings.sprites`. The `name` selects the asset bundle (`BlockStack` is the default; `Toppy` is the alternate spritesheet). `uncolourised` is only valid for `BlockStack` because Toppy doesn't have a ZX-mode palette spec. Selectors:
-
-- `selectSpritesOption`, `useSpritesOption` — full SpriteOption
+- `selectSpritesheetName`, `useSpritesheetName` — the selected `SpritesheetName`
+- `selectSpritesheetArtName`, `useSpritesheetArtName` — the sheet whose image is drawn
 - `selectIsUncolourised`, `useIsUncolourised` — boolean shorthand
 
-Toggling sprites at runtime fires reducers in `userSettingsSlice` (`setSpritesOption`, `nextSpritesOption`, `toggleUserSetting`) — the next main-loop tick then sees the new `spriteOption`, hits the `spriteOptionEquals` change-check at `MainLoop.ts:193-196`, and rebuilds variants.
+Toggling sprites at runtime fires reducers in `userSettingsSlice` (`setSpritesheetName`, `nextSpritesheetName`, `toggleUserSetting`) — the next main-loop tick then sees `general.spritesheetMeta` differ, and rebuilds the room sheet.

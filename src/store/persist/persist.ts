@@ -27,7 +27,7 @@ import storage from "./storage";
  * version building up to a new release will have the same version, and may break
  * - it only matters if released versions can migrate.
  */
-export const persistVersion = 23;
+export const persistVersion = 28;
 
 // Migration step 2 of 2: per-slice schema migrations, run by redux-persist
 // after rehydration. Step 1 (re-keying the legacy combined blob) runs
@@ -59,6 +59,18 @@ const userSettingsMigrations = createMigrate({
         } satisfies PokesEnabled,
       },
     } as unknown as typeof state;
+  },
+  // v28: the sprites option became a spritesheet name - drop the old object
+  28(state) {
+    const { displaySettings } = (
+      state as unknown as {
+        userSettings: { displaySettings: { sprites?: unknown } };
+      }
+    ).userSettings;
+    if (typeof displaySettings.sprites !== "string") {
+      delete displaySettings.sprites;
+    }
+    return state;
   },
 });
 

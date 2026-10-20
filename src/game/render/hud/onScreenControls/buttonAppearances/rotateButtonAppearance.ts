@@ -22,10 +22,9 @@ export const rotateButtonAppearance =
   ({ currentRendering, tickContext, renderContext: { general } }) => {
     if (currentRendering !== undefined) {
       currentRendering.output!.tint = tintForHud(
-        general.spriteOption,
+        general.spritesheetMeta,
         tickContext.room.color,
         tickContext.hovered ?? false,
-        general.spritesheetMeta,
       );
       return "no-update";
     }
@@ -39,10 +38,9 @@ export const rotateButtonAppearance =
       doubleWidth: true,
       text: glyph,
       colour: tintForHud(
-        general.spriteOption,
+        general.spritesheetMeta,
         tickContext.room.color,
         tickContext.hovered ?? false,
-        general.spritesheetMeta,
       ),
     });
 

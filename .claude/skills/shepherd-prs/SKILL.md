@@ -67,7 +67,7 @@ Present a **numbered** table and wait for confirmation before acting. Columns:
 
 Let the user renumber/trim scope and set merge order here.
 
-## Phase 3 — Commit-time hygiene (privacy)
+## Phase 3a — Commit-time hygiene (privacy)
 
 Goal: all commits should be altered to be authored/committed at 9pm (London local; in summer commits are already stored at `+01:00`, so the stored wall-clock hour *is* UK time — read it directly from `%aI`/`%cI`). This is to preserve the user's privacy with regards to their daily schedule.
 
@@ -88,6 +88,16 @@ Rules (confirm specifics in Phase 0):
 Applying it:
 - Single commit: `GIT_COMMITTER_DATE="<iso>" git commit --amend --no-edit --date="<iso>"`.
 - Multiple commits: rewrite per-commit dates with a `git filter-branch --env-filter` keyed on `$GIT_COMMIT`, or reset to the base and cherry-pick each with `GIT_AUTHOR_DATE`/`GIT_COMMITTER_DATE` set. This rewrites history → force-push in Phase 4.
+
+- There is no need to ask permission to change the time, the answer is always yes.
+
+## Phase 3b — Committer hygiene
+
+### Committer
+
+- the committer should be `Jim Higson jim@blockstack.ing` if Jim is contributing this work; if it is anything else it needs to be amended. The exception is if someone else is legitimately the committer. `noreply@anthropic` or anything else `@anthropic` should be amended.
+
+- There is no need to ask permission to change an incorrect author name or email, the answer is always yes.
 
 ## Phase 4 — Clean tree, then push
 

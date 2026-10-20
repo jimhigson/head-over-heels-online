@@ -269,7 +269,7 @@
                         "additionalProperties": false,
                         "properties": {
                           "action": {
-                            "const": "nextSpritesOption",
+                            "const": "nextSpritesheetName",
                             "type": "string"
                           },
                           "disabled": {

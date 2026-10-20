@@ -1,7 +1,7 @@
 import { Container, Graphics } from "pixi.js";
 
 import { isWholeRoomSubRooms } from "../../../model/RoomJson";
-import { pixiPaletteBlockstack } from "../../../sprites/palette/pixiPalette";
+import { blockstackPixiPalettes } from "../../../sprites/palette/spritesheetPixiPalettes";
 import { selectShowSubrooms } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { objectEntriesIter } from "../../../utils/entries";
@@ -11,12 +11,12 @@ import { TextContainer } from "../text/TextContainer";
 import { type DecorateRoomRenderer } from "./DecorateRoomRenderer";
 
 const subRoomColours = [
-  pixiPaletteBlockstack.metallicBlue,
-  pixiPaletteBlockstack.midRed,
-  pixiPaletteBlockstack.pink,
-  pixiPaletteBlockstack.moss,
-  pixiPaletteBlockstack.swop_cyan,
-  pixiPaletteBlockstack.pastelBlue,
+  blockstackPixiPalettes.basic.metallicBlue,
+  blockstackPixiPalettes.basic.midRed,
+  blockstackPixiPalettes.basic.pink,
+  blockstackPixiPalettes.basic.moss,
+  blockstackPixiPalettes.basic.swop_cyan,
+  blockstackPixiPalettes.basic.pastelBlue,
 ] as const;
 
 export const subRoomBoundariesDecorateRoomRenderer: DecorateRoomRenderer = (

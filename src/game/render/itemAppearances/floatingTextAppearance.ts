@@ -1,6 +1,6 @@
 import { type Color, Container } from "pixi.js";
 
-import { pixiPalette } from "../../../sprites/palette/pixiPalette";
+import { spritesheetPixiPalettes } from "../../../sprites/palette/spritesheetPixiPalettes";
 import { type AppSpritesheet } from "../../../sprites/spritesheet/AppSpritesheet";
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { getAmbientSwoppedColour } from "../../../utils/palette/palette";
@@ -22,8 +22,8 @@ const buildFadeOrder = <PaletteColourName extends string>(
   spritesheet: AppSpritesheet,
 ): Color[] => {
   const lightening = spritesheetMeta.floatingTextGradient.map((name) =>
-    getAmbientSwoppedColour(
-      pixiPalette(spritesheetMeta),
+    getAmbientSwoppedColour<string>(
+      spritesheetPixiPalettes[spritesheetMeta.name].basic,
       name,
       spritesheet.ambient,
     ),

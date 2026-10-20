@@ -1,12 +1,12 @@
 import { type CharacterName } from "../../model/modelTypes";
-import { type SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
+import { type SpritesheetName } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type Xy } from "../../utils/vectors/vectors";
 
 export type E2EEventBusPayloadMap = {
   characterChanged: { characterName: CharacterName };
   frameRendered: {
     roomId: string;
-    spriteOption: SpriteOption;
+    spritesheetName: SpritesheetName;
     cameraAngle: Xy;
     /** 1 = the plain art, above 1 = drawn from a upscaled sheet */
     spritesheetUpscale: number;

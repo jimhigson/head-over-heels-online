@@ -106,7 +106,7 @@ test.describe("persistence across reload", () => {
 
     await page.goto("/?cheats=1&track=0");
     await page.locator('[data-dialog-id="mainMenu"]').waitFor();
-    await setSkinViaMenus(page, testInfo.project.name, "Toppy");
+    await setSkinViaMenus(page, testInfo.project.name, "toppy");
 
     await backToMainMenu(page, testInfo.project.name);
 
@@ -126,10 +126,9 @@ test.describe("persistence across reload", () => {
       if (!store) {
         return undefined;
       }
-      return store.getState().userSettings.userSettings.displaySettings.sprites
-        ?.name;
+      return store.getState().userSettings.userSettings.displaySettings.sprites;
     });
-    expect(skinName).toBe("Toppy");
+    expect(skinName).toBe("toppy");
   });
 
   test("original - get egyptus crown, reload, view progress -> highlighted", async ({

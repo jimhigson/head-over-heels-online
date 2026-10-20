@@ -15,10 +15,9 @@ export const mapButtonAppearance: ButtonAppearance<
 > = ({ currentRendering, tickContext, renderContext: { general } }) => {
   if (currentRendering !== undefined) {
     currentRendering.output!.tint = tintForHud(
-      general.spriteOption,
+      general.spritesheetMeta,
       tickContext.room.color,
       tickContext.hovered ?? false,
-      general.spritesheetMeta,
     );
     return "no-update";
   }
@@ -33,10 +32,9 @@ export const mapButtonAppearance: ButtonAppearance<
     doubleHeight: true,
     text: "MAP",
     colour: tintForHud(
-      general.spriteOption,
+      general.spritesheetMeta,
       tickContext.room.color,
       tickContext.hovered ?? false,
-      general.spritesheetMeta,
     ),
   });
 

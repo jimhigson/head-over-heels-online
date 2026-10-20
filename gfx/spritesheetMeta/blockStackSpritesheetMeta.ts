@@ -9,13 +9,14 @@ import { itemRenderExtents } from "./itemRenderExtents";
 
 export const blockStackSpritesheetMeta: SpritesheetMetadata<
   BlockstackPaletteColourName,
-  "BlockStack",
-  true
+  "blockstack"
 > = {
-  name: "BlockStack",
-  paletteName: "blockstack",
-  palette: paletteBlockstackHex,
-  paletteDim: paletteBlockstackDimHex,
+  name: "blockstack",
+  spritesheetWhenPaused: "speccy",
+  palettes: {
+    basic: paletteBlockstackHex,
+    dim: paletteBlockstackDimHex,
+  },
   itemRenderExtents,
   playable: {
     head: {
@@ -208,7 +209,6 @@ export const blockStackSpritesheetMeta: SpritesheetMetadata<
     rotateClockwise: "lightGrey",
     rotateAnticlockwise: "lightGrey",
   },
-  supportsUncolourised: true,
   showFloorOverDraw: true,
   // we have black outlines, so use an almost black blackpoint
   // on this spritesheet:

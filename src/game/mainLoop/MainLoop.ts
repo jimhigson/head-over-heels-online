@@ -2,7 +2,11 @@ import { type Application, Container, Rectangle } from "pixi.js";
 
 import { audioCtx } from "../../sound/audioCtx";
 import { ensureRoomSoundsLoaded } from "../../sound/ensureRoomSoundsLoaded";
-import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import {
+  spritesheetArtName,
+  spritesheetMetas,
+  type SpritesheetName,
+} from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import {
   errorCaught,
@@ -15,15 +19,13 @@ import {
   selectIsPointerOnTube,
   selectShouldRenderOnScreenControls,
   selectShowFps,
-  selectSpritesOption,
+  selectSpritesheetName,
 } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { type Upscale } from "../../store/slices/upscale/Upscale";
 import { selectGameEngineUpscale } from "../../store/slices/upscale/upscaleSlice";
-import { spriteOptionEquals } from "../../store/slices/userSettings/spriteOptionEquals";
 import {
   type DisplaySettings,
   type SoundSettings,
-  type SpriteOption,
 } from "../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../store/store";
 import { validateSceneGraph } from "../../utils/pixi/validateSceneGraph";
@@ -265,7 +267,7 @@ export class MainLoop<RoomId extends string> {
     paused: boolean,
     displaySettings: DisplaySettings,
     soundSettings: SoundSettings,
-    spriteOption: SpriteOption,
+    spritesheetName: SpritesheetName,
     upscale: Upscale,
     /** whether the on-screen touch controls are shown */
     onScreenControls: boolean,
@@ -284,8 +286,7 @@ export class MainLoop<RoomId extends string> {
         paused,
         displaySettings,
         soundSettings,
-        spriteOption,
-        spritesheetMeta: spritesheetMetaForOption(spriteOption),
+        spritesheetMeta: spritesheetMetas[spritesheetName],
         upscale,
         onScreenControls,
         cameraAngle,
@@ -299,8 +300,7 @@ export class MainLoop<RoomId extends string> {
       existing.paused = paused;
       existing.displaySettings = displaySettings;
       existing.soundSettings = soundSettings;
-      existing.spriteOption = spriteOption;
-      existing.spritesheetMeta = spritesheetMetaForOption(spriteOption);
+      existing.spritesheetMeta = spritesheetMetas[spritesheetName];
       existing.upscale = upscale;
       existing.onScreenControls = onScreenControls;
     }
@@ -381,17 +381,17 @@ export class MainLoop<RoomId extends string> {
 
     const isPaused = selectIsPaused(tickState);
 
-    const selectedSpriteOption = selectSpritesOption(tickState);
-    const tickSpriteOption: SpriteOption =
-      (
-        isPaused &&
-        spritesheetMetaForOption(selectedSpriteOption).supportsUncolourised
-      ) ?
-        ({ ...selectedSpriteOption, uncolourised: true } as SpriteOption)
-      : selectedSpriteOption;
+    const selectedSpritesheetName = selectSpritesheetName(tickState);
+    const tickSpritesheetName =
+      isPaused ?
+        spritesheetMetas[selectedSpritesheetName].spritesheetWhenPaused
+      : selectedSpritesheetName;
+    const tickSpritesheetMeta = spritesheetMetas[tickSpritesheetName];
 
     this.#mainContainer.tint =
-      isPaused && !tickSpriteOption.uncolourised ? pausedDimTint : noTint;
+      isPaused && tickSpritesheetMeta.isUncolourisedOf === undefined ?
+        pausedDimTint
+      : noTint;
 
     const tickBakedUpscaleFactor = selectSpritesheetUpscale(tickState);
 
@@ -460,18 +460,17 @@ export class MainLoop<RoomId extends string> {
         this.#webGlContextRestored ||
         this.#spritesheets.spritesheetUpscale !== tickBakedUpscaleFactor ||
         (this.#roomRenderer !== undefined &&
-          !spriteOptionEquals(
-            tickSpriteOption,
-            this.#roomRenderer.renderContext.general.spriteOption,
-          ))) &&
+          tickSpritesheetMeta !==
+            this.#roomRenderer.renderContext.general.spritesheetMeta)) &&
       tickEndRoom !== undefined &&
       this.#spritesheetLoadPromise === undefined &&
       this.#upscaleSpritesBakeModuleLoadPromise === undefined;
 
     if (spritesheetVariantsStale) {
-      if (!this.#spritesheets.isTextureLoaded(tickSpriteOption.name)) {
+      const tickSpritesheetArtName = spritesheetArtName(tickSpritesheetMeta);
+      if (!this.#spritesheets.isTextureLoaded(tickSpritesheetArtName)) {
         this.#spritesheetLoadPromise = this.#spritesheets
-          .loadImage(this.#app.renderer, tickSpriteOption.name)
+          .loadImage(this.#app.renderer, tickSpritesheetArtName)
           .then(() => {
             this.#spritesheetLoadPromise = undefined;
             // oxlint-disable-next-line no-unused-expressions
@@ -516,7 +515,7 @@ export class MainLoop<RoomId extends string> {
           this.#app.renderer,
           tickEndRoom.planet,
           tickEndRoom.color,
-          tickSpriteOption,
+          tickSpritesheetMeta,
           tickBakedUpscaleFactor,
         );
         timingRecord?.recordSpritesheetRebuild(
@@ -576,7 +575,7 @@ export class MainLoop<RoomId extends string> {
 
     const createNewHudRenderer = needsNewHudRenderer(
       this.#hudRenderer,
-      tickSpriteOption,
+      tickSpritesheetMeta,
       tickOnScreenControls,
       tickInputDirectionMode,
       tickUpscale,
@@ -627,7 +626,7 @@ export class MainLoop<RoomId extends string> {
       isPaused,
       tickDisplaySettings,
       tickSoundSettings,
-      tickSpriteOption,
+      tickSpritesheetName,
       tickUpscale,
       tickOnScreenControls,
       cameraAngle,
@@ -755,7 +754,7 @@ export class MainLoop<RoomId extends string> {
         // to land in the output rather than guessing with a fixed delay:
         E2EEventBus.emit("frameRendered", {
           roomId: tickEndRoom.id,
-          spriteOption: tickSpriteOption,
+          spritesheetName: tickSpritesheetName,
           cameraAngle,
           spritesheetUpscale: this.#spritesheets.spritesheetUpscale,
         });

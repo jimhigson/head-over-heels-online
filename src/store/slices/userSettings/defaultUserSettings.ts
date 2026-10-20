@@ -36,7 +36,7 @@ export const defaultUserSettings: DefaultUserSettings = {
     // authentic blocky pixels by default; smoothing is opt-in
     upscaledSprites: false,
     emulatedResolution: defaultEmulatedResolution(deviceType),
-    sprites: { name: "BlockStack", uncolourised: false },
+    sprites: "blockstack",
   },
 
   gameSpeed: 1.2,

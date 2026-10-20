@@ -6,7 +6,7 @@ import {
   type E2EEventBusPayloadMap,
 } from "../../src/game/mainLoop/E2EEventBus";
 import { type CharacterName } from "../../src/model/modelTypes";
-import { type SpriteOption } from "../../src/store/slices/userSettings/userSettingsSlice";
+import { type SpritesheetName } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type AppDispatch } from "../../src/store/store";
 import {
   advanceUntil,
@@ -391,24 +391,22 @@ export const waitForEventOnBus = async <N extends E2EEventBusEventName, A>(
  * the option that frame was rendered with. Pass an `afterId` captured
  * before the option was dispatched so a matching frame is never missed.
  */
-export const waitForSpriteOptionRenderEvent = async (
+export const waitForSpritesheetRenderEvent = async (
   page: Page,
-  spriteOption: SpriteOption,
+  spritesheetName: SpritesheetName,
   afterId: number,
   logHeader?: string,
 ): Promise<void> => {
   await waitForEventOnBus(page, {
     name: "frameRendered",
     afterId,
-    arg: spriteOption,
-    match: (payload, expected) =>
-      payload.spriteOption.name === expected.name &&
-      payload.spriteOption.uncolourised === expected.uncolourised,
+    arg: spritesheetName,
+    match: (payload, expected) => payload.spritesheetName === expected,
   });
 
   if (logHeader !== undefined) {
     console.log(
-      `${logHeader} ${elapsed()} received frameRendered for ${chalk.cyan(spriteOption.name)} (uncolourised: ${spriteOption.uncolourised})`,
+      `${logHeader} ${elapsed()} received frameRendered for ${chalk.cyan(spritesheetName)}`,
     );
   }
 };

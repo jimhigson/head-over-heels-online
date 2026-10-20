@@ -11,7 +11,10 @@ import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { type Campaign } from "../../../model/modelTypes";
 import { type AppSpritesheetData } from "../../../sprites/spritesheet/AppSpritesheet";
 import { makeBaseSpritesheetData } from "../../../sprites/spritesheet/spritesheetData/makeBaseSpritesheetData";
-import { spritesheetMetas } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import {
+  spritesheetArtName,
+  spritesheetMetas,
+} from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { objectEntriesIter, valuesIter } from "../../../utils/entries";
 import { getAtPath } from "../../../utils/getAtPath";
 import { size } from "../../../utils/iterators/size";
@@ -104,9 +107,18 @@ export const useEmulatedResolutionName = () =>
   useAppSelector(selectEmulatedResolutionName);
 
 const selectIsUncolourised = (state: GameRootState): boolean =>
-  selectSpritesOption(state).uncolourised;
+  spritesheetMetas[selectSpritesheetName(state)].isUncolourisedOf !== undefined;
 
-export const useSpritesOption = () => useAppSelector(selectSpritesOption);
+/**
+ * the spritesheet whose image the selected sprites option draws
+ */
+export const selectSpritesheetArtName = (state: GameRootState) =>
+  spritesheetArtName(spritesheetMetas[selectSpritesheetName(state)]);
+
+export const useSpritesheetArtName = () =>
+  useAppSelector(selectSpritesheetArtName);
+
+export const useSpritesheetName = () => useAppSelector(selectSpritesheetName);
 
 export const useIsUncolourised = () => useAppSelector(selectIsUncolourised);
 export const selectIsCrtFilter = selectUserSetting("displaySettings.crtFilter");
@@ -156,7 +168,9 @@ export const selectPlanetsLiberatedCount = (state: GameRootState) =>
     valuesIter(state.gameInPlay.gameInPlay.planetsLiberated).filter(Boolean),
   );
 
-export const selectSpritesOption = selectUserSetting("displaySettings.sprites");
+export const selectSpritesheetName = selectUserSetting(
+  "displaySettings.sprites",
+);
 
 const selectShowBoundingBoxTypes = selectUserSetting(
   "displaySettings.showBoundingBoxTypes",
@@ -259,12 +273,12 @@ export const selectMaybeCurrentCampaign = <RoomId extends string = string>(
 
 /**
  * caching selector to get the spritesheet data for the currently
- * selected spritesOption. Base texture ids only, not variants
+ * selected spritesheetName. Base texture ids only, not variants
  */
 const selectCurrentSpritesheetData = createSelector(
-  [selectSpritesOption],
-  (spriteOption): AppSpritesheetData =>
-    makeBaseSpritesheetData(spritesheetMetas[spriteOption.name]),
+  [selectSpritesheetArtName],
+  (selectedSpritesheetArtName): AppSpritesheetData =>
+    makeBaseSpritesheetData(spritesheetMetas[selectedSpritesheetArtName]),
 );
 
 export const useCurrentSpritesheetData = () =>

@@ -20,14 +20,15 @@ const {
  */
 export const debugSpritesheetMeta: SpritesheetMetadata<
   DebugPaletteColourName,
-  "Debug",
-  false
+  "debug"
 > = {
-  name: "Debug",
-  paletteName: "debug",
-  palette: {
-    red: "#ff0000",
-    cyan: "#00ffff",
+  name: "debug",
+  spritesheetWhenPaused: "debug",
+  palettes: {
+    basic: {
+      red: "#ff0000",
+      cyan: "#00ffff",
+    },
   },
   playable,
   itemRenderExtents,
@@ -57,7 +58,6 @@ export const debugSpritesheetMeta: SpritesheetMetadata<
     rotateClockwise: "red",
     rotateAnticlockwise: "red",
   },
-  supportsUncolourised: false,
   debug: true,
   showFloorOverDraw,
   teleporterEffectBlackPoint,

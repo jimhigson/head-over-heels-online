@@ -203,7 +203,7 @@ const row3 = [
  * A single HUD glyph as the font generator sees it: the raw character, its
  * advance width, and its frame rectangle in BlockStack spritesheet coordinates
  * (the generator samples these pixels from the unmasked sheet,
- * gfx/sprites.borders.png).
+ * gfx/spritesBlockstack.borders.png).
  */
 export type HudGlyph<C extends string> = {
   char: C;

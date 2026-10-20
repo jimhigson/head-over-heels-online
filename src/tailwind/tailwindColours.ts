@@ -19,7 +19,7 @@ const paletteUtilityColours = new Set([
   "ss_background",
 ]);
 
-const displayPalette = Object.fromEntries(
+const displayBlockstackPalette = Object.fromEntries(
   objectEntriesIter(paletteBlockstackHex).filter(
     ([name]) => !paletteUtilityColours.has(name),
   ),
@@ -34,8 +34,8 @@ const displayToppyPalette = Object.fromEntries(
   ),
 ) as Omit<typeof paletteToppyHex, "replaceDark" | "replaceLight">;
 
-const halfbriteSpritesheetPalette = transformObject(
-  displayPalette,
+const halfbriteBlockstackPalette = transformObject(
+  displayBlockstackPalette,
   ([colourName, colourValue]) => [
     (colourName + "Halfbrite") as `${typeof colourName}Halfbrite`,
     halfbriteHex(colourValue),
@@ -67,8 +67,8 @@ const zxSpecTailwindColoursDimmed = transformObject(
   ],
 );
 export const colorsSrgb = {
-  ...displayPalette,
-  ...halfbriteSpritesheetPalette,
+  ...displayBlockstackPalette,
+  ...halfbriteBlockstackPalette,
 
   // toppy colours prefixed with 'toppy' ie toppyWarm1, toppyCool2
   ...toppyTailwindColours,
@@ -90,11 +90,12 @@ export const coloursCssVariables = transformObject(colorsSrgb, ([name]) => [
 ]);
 
 type TailwindColourName = keyof typeof colorsSrgb;
-type TailwindColourisedColourName =
-  keyof typeof displayPalette | keyof typeof halfbriteSpritesheetPalette;
+type TailwindBlockstackColourName =
+  | keyof typeof displayBlockstackPalette
+  | keyof typeof halfbriteBlockstackPalette;
 type TailwindToppyColourName = keyof typeof toppyTailwindColours;
 
 export type TailwindTextColourClassname =
-  | `text-${TailwindColourisedColourName}`
+  | `text-${TailwindBlockstackColourName}`
   | `toppy:text-${TailwindToppyColourName}`
   | `zx:text-${TailwindColourName}`;

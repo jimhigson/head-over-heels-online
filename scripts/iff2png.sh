@@ -162,44 +162,44 @@ mkdir $TMP_DIR_ICONS
 
 cd gfx;
 echo
-echo "🤖 converting iff: sprites.iff -> " ../$TMP_DIR/sprites.png ...
-yes | ffmpeg -hide_banner -i sprites.iff -update 1 -frames:v 1 ../$TMP_DIR/sprites.png
+echo "🤖 converting iff: spritesBlockstack.iff -> " ../$TMP_DIR/spritesBlockstack.png ...
+yes | ffmpeg -hide_banner -i spritesBlockstack.iff -update 1 -frames:v 1 ../$TMP_DIR/spritesBlockstack.png
 cd ..
 # put the easily visually parsable png version somewhere - this is never used by the game
-cp "$TMP_DIR/sprites.png" "$TMP_DIR/sprites.borders".png
+cp "$TMP_DIR/spritesBlockstack.png" "$TMP_DIR/spritesBlockstack.borders".png
 
 echo "🤖 sampling palette -> {json, ts}"
-write_palette "$TMP_DIR/sprites.png" spritesheetPalette blockstackColourNames 17 true
+write_palette "$TMP_DIR/spritesBlockstack.png" spritesheetBlockstackPalette blockstackColourNames 17 true
 # sprites_dim_lut.png has been edited using the curves tool in Krita to adjust the colours; we don't use most of the image
 # but we can sample the palette from it:
-write_palette gfx/palette_dim_lut.png spritesheetPaletteDim blockstackColourNames 17
+write_palette gfx/palette_dim_lut.png spritesheetBlockstackPaletteDim blockstackColourNames 17
 
 write_palette gfx/spritesToppy.webp spritesheetToppyPalette toppyColourNames 999
 
 
 # make sprite mask colours actually transparent in the png (dpaint uses rgb colours, no alpha channel)
 echo "🤖 making transparent"
-alphaKeyColor=$(jq -r '.ss_alphaKey' "$TMP_DIR/spritesheetPalette.json")
-backgroundColor=$(jq -r '.ss_background' "$TMP_DIR/spritesheetPalette.json")
+alphaKeyColor=$(jq -r '.ss_alphaKey' "$TMP_DIR/spritesheetBlockstackPalette.json")
+backgroundColor=$(jq -r '.ss_background' "$TMP_DIR/spritesheetBlockstackPalette.json")
 print_with_bg_color "alpha key: $alphaKeyColor" "$alphaKeyColor"
 print_with_bg_color "background: $backgroundColor" "$backgroundColor"
 
-magick "$TMP_DIR/sprites.png" -transparent "$alphaKeyColor" -transparent "$backgroundColor" "$TMP_DIR/sprites.png"
+magick "$TMP_DIR/spritesBlockstack.png" -transparent "$alphaKeyColor" -transparent "$backgroundColor" "$TMP_DIR/spritesBlockstack.png"
 
 # Tag as Display P3 by embedding a compact ICC profile (456 bytes)
 # from https://github.com/saucecontrol/Compact-ICC-Profiles
-echo "🤖 tagging sprites.png as Display P3"
-magick "$TMP_DIR/sprites.png" -profile gfx/DisplayP3-v2-micro.icc "$TMP_DIR/sprites.png"
+echo "🤖 tagging spritesBlockstack.png as Display P3"
+magick "$TMP_DIR/spritesBlockstack.png" -profile gfx/DisplayP3-v2-micro.icc "$TMP_DIR/spritesBlockstack.png"
 
 #make the icon (from the p3-tagged png, before we convert to webp):
 ICON_FRAME=$(scripts/iconLocationOnSpriteSheet.ts)
 echo "🤖 ✂️ cutting out icon at frame (XxY+W+H) is $ICON_FRAME"
 # crop out
-magick $TMP_DIR/sprites.png -crop $ICON_FRAME +repage $TMP_DIR_ICONS/icon.png
+magick $TMP_DIR/spritesBlockstack.png -crop $ICON_FRAME +repage $TMP_DIR_ICONS/icon.png
 # move to centre of icon (if it doesn't fill the whole frame)
 magick $TMP_DIR_ICONS/icon.png -trim -gravity center -background transparent -extent 24x24 $TMP_DIR_ICONS/icon.png
 # remove transparency and put in fixed background:
-ICON_BG=`jq -r '.moss' src/_generated/palette/spritesheetPalette.json`
+ICON_BG=`jq -r '.moss' src/_generated/palette/spritesheetBlockstackPalette.json`
 print_with_bg_color "ICON_BACKGROUND ${ICON_BG}" "$ICON_BG"
 magick $TMP_DIR_ICONS/icon.png -background $ICON_BG -alpha remove $TMP_DIR_ICONS/icon.png
 # scale with nearest neighbour up so it remains pixelated after phone/tablet/etc scales it up:
@@ -224,7 +224,7 @@ for icon in $TMP_DIR_ICONS/icon-192 $TMP_DIR_ICONS/icon-512; do
     echo "  $(basename "$icon").webp: $(ls -lh "$icon.webp" | awk '{print $5}') (png $(ls -lh "$icon.png" | awk '{print $5}'))"
 done
 
-# blank everything that isn't inside a BlockStack sprite frame (sprites.webp is
+# blank everything that isn't inside a BlockStack sprite frame (spritesBlockstack.webp is
 # the BlockStack sheet) - drops the palette-swatch strip, gutters and any stray
 # off-frame art the game never samples. Done after the icon is cut, so the icon
 # is unaffected. sharp drops the icc, so re-tag P3 afterwards.
@@ -232,20 +232,20 @@ echo "🤖 masking non-sprite areas to transparent"
 # strip the icc first: sharp (in the mask script) colour-manages a P3-tagged
 # input and shifts every rgb value off-palette, which breaks palette swapping.
 # Untagged, sharp is an sRGB identity; re-tag P3 after (assign, pixels unchanged).
-magick "$TMP_DIR/sprites.png" -strip "$TMP_DIR/sprites.png"
-node_modules/.bin/tsx scripts/maskNonSpriteAreas.ts "$TMP_DIR/sprites.png"
-magick "$TMP_DIR/sprites.png" -profile gfx/DisplayP3-v2-micro.icc "$TMP_DIR/sprites.png"
+magick "$TMP_DIR/spritesBlockstack.png" -strip "$TMP_DIR/spritesBlockstack.png"
+node_modules/.bin/tsx scripts/maskNonSpriteAreas.ts "$TMP_DIR/spritesBlockstack.png"
+magick "$TMP_DIR/spritesBlockstack.png" -profile gfx/DisplayP3-v2-micro.icc "$TMP_DIR/spritesBlockstack.png"
 
 echo "🤖 converting sprites to webp (lossless, cwebp -z 9)"
 # cwebp -z 9 (max lossless preset) beats magick's lossless encode by ~4%.
 # -metadata icc keeps the Display-P3 profile embedded above.
-cwebp -quiet -z 9 -metadata icc "$TMP_DIR/sprites.png" -o "$TMP_DIR/sprites.webp"
-magick identify -verbose "$TMP_DIR/sprites.webp" | grep -E "^  (Geometry|Colorspace|Type|Depth|Colors):"
-echo "  Filesize: $(ls -lh "$TMP_DIR/sprites.webp" | awk '{print $5}')"
+cwebp -quiet -z 9 -metadata icc "$TMP_DIR/spritesBlockstack.png" -o "$TMP_DIR/spritesBlockstack.webp"
+magick identify -verbose "$TMP_DIR/spritesBlockstack.webp" | grep -E "^  (Geometry|Colorspace|Type|Depth|Colors):"
+echo "  Filesize: $(ls -lh "$TMP_DIR/spritesBlockstack.webp" | awk '{print $5}')"
 
 echo "🤖 moving temp to real"
-cp $TMP_DIR/sprites.borders.png $OUT_DIR
-cp $TMP_DIR/sprites.webp $OUT_DIR
+cp $TMP_DIR/spritesBlockstack.borders.png $OUT_DIR
+cp $TMP_DIR/spritesBlockstack.webp $OUT_DIR
 cp $TMP_DIR/*.json src/_generated/palette
 rm -f public/icon*.png public/icon*.webp
 # only the webp icons and the tauri-source pngs (icon.png, icon-512.png) go to
@@ -269,7 +269,7 @@ rm -fR $TMP_DIR
 rm -fR $TMP_DIR_ICONS
 
 echo "🤖 reverting noop files"
-revert_noop_images public/icon*.png public/icon*.webp gfx/sprites.borders.png gfx/sprites.webp src-tauri/icons/*.png
+revert_noop_images public/icon*.png public/icon*.webp gfx/spritesBlockstack.borders.png gfx/spritesBlockstack.webp src-tauri/icons/*.png
 
 
 

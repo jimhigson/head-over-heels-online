@@ -241,14 +241,14 @@ export const textureForItem = (
         case "head":
         case "headOverHeels":
           return playableTailwindSpriteClassname({
-            spritesheetName: "BlockStack" as "BlockStack",
+            spritesheetName: "blockstack" as "blockstack",
             character: "head",
             action: "idle",
             facingXy8: "towards",
           });
         case "heels":
           return playableTailwindSpriteClassname({
-            spritesheetName: "BlockStack" as "BlockStack",
+            spritesheetName: "blockstack" as "blockstack",
             character: "heels",
             action: "idle",
             facingXy8: "towards",
@@ -262,14 +262,14 @@ export const textureForItem = (
         case "head":
         case "headOverHeels":
           return playableTailwindSpriteClassname({
-            spritesheetName: "BlockStack" as "BlockStack",
+            spritesheetName: "blockstack" as "blockstack",
             character: "head",
             action: "idle",
             facingXy8: item.config.startDirection,
           });
         case "heels":
           return playableTailwindSpriteClassname({
-            spritesheetName: "BlockStack" as "BlockStack",
+            spritesheetName: "blockstack" as "blockstack",
             character: "heels",
             action: "idle",
             facingXy8: item.config.startDirection,
