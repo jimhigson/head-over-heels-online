@@ -7,17 +7,87 @@ on:
   # reflect just-merged code (a pull_request run doesn't re-fire when main moves)
   push:
     branches: [main]
+  # measure past commits on main into the size history (see the backfill job)
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: 'commits to measure into the size history: comma-separated ranges ("v27.0.0..main"), counts of main''s latest commits ("30"), "releases:6" for the latest releases, or single refs'
+        default: "30"
 
 permissions:
-  contents: read
+  # contents: write lets pushes to main (and backfills) record into the
+  # true-site-size-history branch
+  contents: write
   pull-requests: write
 
 concurrency:
-  group: true-site-size-${{ github.ref }}
-  cancel-in-progress: true
+  # a new push to a PR makes its running measurement stale, so it's cancelled.
+  # But each push to main records its commit into the size history, and a
+  # cancelled run would leave a gap - so main's runs get a group per commit and
+  # never cancel each other. (Queueing in one group isn't enough: github keeps
+  # only one pending run per group and cancels the rest.) Concurrent history
+  # writes are safe - the action retries a rejected push
+  group: true-site-size-${{ github.event_name == 'pull_request' && github.ref || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  # a manual dispatch measures past commits into the true-site-size-history
+  # branch that the size comment charts. Commits already recorded are skipped
+  # and each is pushed as measured, so a long range can be split across
+  # several dispatches, or rerun if it stops short of timeout-ms
+  backfill:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    name: backfill ${{ inputs.backfill }}
+    env:
+      # must match the measure job's journey exactly - only commits measured
+      # under the same config are charted together
+      journey: |
+        [
+          { "startAgain": "game" },
+          { "goto": "/?track=0" },
+          { "row": "to menu", "mark": "menu-ready", "emoji": "📋" },
+          { "click": "[data-menuitem_id=\"playGame\"]" },
+          { "click": "[data-menuitem_id=\"originalGame\"]" },
+          { "click": "[data-dialog-id=\"crowns\"]", "afterMark": "first-gameplay" },
+          { "waitForGone": "[data-dialog-id=\"crowns\"]" },
+          { "row": "to game", "mark": "first-gameplay", "emoji": "🎮", "chart": "cumulative" },
+          { "keys": "M" },
+          { "row": "open map", "mark": "open map", "emoji": "🗺️" },
+          { "keys": "M" },
+          { "keys": "Y" },
+          { "row": "turn smoothing on", "mark": "smooth-ui-ready", "emoji": "✨" },
+          { "startAgain": "editor" },
+          { "goto": "/editor/" },
+          { "row": "editor", "marks": ["editor-monaco-ready", "editor-map-ready"], "emoji": "🛠️" }
+        ]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".node-version"
+          cache: pnpm
+      - uses: jimhigson/true-site-size@main
+        with:
+          history-branch: true-site-size-history
+          backfill: ${{ inputs.backfill }}
+          install-command: pnpm install --frozen-lockfile
+          clean-command: pnpm clean:ci
+          build-command: pnpm build
+          serve-dir: dist
+          compression: br
+          compression-level: 11
+          ignore-url-patterns: '["supabase\\.co"]'
+          ignore-low-priority: "true"
+          mark-timeout-ms: "20000"
+          # 5h30 - inside the 6h job limit; the backfill stops cleanly before
+          # starting a commit that would overrun, and a rerun continues it
+          timeout-ms: "19800000"
+          journey: ${{ env.journey }}
+
   measure:
+    if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
     name: size
     env:
@@ -34,7 +104,7 @@ jobs:
           { "click": "[data-menuitem_id=\"originalGame\"]" },
           { "click": "[data-dialog-id=\"crowns\"]", "afterMark": "first-gameplay" },
           { "waitForGone": "[data-dialog-id=\"crowns\"]" },
-          { "row": "to game", "mark": "first-gameplay", "emoji": "🎮" },
+          { "row": "to game", "mark": "first-gameplay", "emoji": "🎮", "chart": "cumulative" },
           { "keys": "M" },
           { "row": "open map", "mark": "open map", "emoji": "🗺️" },
           { "keys": "M" },
@@ -147,6 +217,10 @@ jobs:
       - uses: jimhigson/true-site-size@main
         if: github.event_name == 'pull_request'
         with:
+          history-branch: true-site-size-history
+          # the since-last-release chart is capped at this many commits; 72
+          # reaches back past v27.0.0 to show the whole run since it
+          history-length: "72"
           install-command: pnpm install --frozen-lockfile
           clean-command: pnpm clean:ci
           build-command: pnpm build
@@ -168,9 +242,13 @@ jobs:
           # alone.
           base-refs: ${{ steps.base-refs.outputs.json }}
           journey: ${{ env.journey }}
+      # every push to main runs, recording main's sizes into the history; it
+      # comments only when there's an open release PR to refresh
       - uses: jimhigson/true-site-size@main
-        if: github.event_name == 'push' && steps.release-pr.outputs.number != ''
+        if: github.event_name == 'push'
         with:
+          history-branch: true-site-size-history
+          history-length: "72"
           install-command: pnpm install --frozen-lockfile
           clean-command: pnpm clean:ci
           build-command: pnpm build
