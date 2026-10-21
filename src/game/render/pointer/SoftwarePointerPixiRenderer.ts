@@ -38,11 +38,17 @@ export class SoftwarePointerPixiRenderer {
   }
 
   tick(
-    /** whether the pointer is drawn on the television, rather than the page */
+    /**
+     * whether the pointer is drawn on the television, rather than the page,
+     * while it is over the canvas
+     */
     pointerOnTube: boolean,
   ): void {
     const { output } = this;
-    const shown = pointerOnTube && this.#pointerTracker.shown;
+    const shown =
+      pointerOnTube &&
+      this.#pointerTracker.overCanvas &&
+      this.#pointerTracker.shown;
     output.visible = shown;
     if (!shown || output.parent === null) {
       return;

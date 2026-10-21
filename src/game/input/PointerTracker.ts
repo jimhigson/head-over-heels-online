@@ -20,7 +20,7 @@ const pointerFps = 24;
 const pointerIntervalMs = 1_000 / pointerFps;
 
 export type PointerTrackerEvents = {
-  /** {@link PointerTracker.active}, {@link PointerTracker.shown} or the sampled position changed */
+  /** {@link PointerTracker.active}, {@link PointerTracker.shown}, the sampled position or {@link PointerTracker.overCanvas} changed */
   change: void;
 };
 
@@ -49,9 +49,11 @@ export class PointerTracker {
   // where the mouse has reached, held as scalars so a move costs no allocation
   #latestClientX = 0;
   #latestClientY = 0;
+  #latestOverCanvas = false;
   // the position as last sampled - what renderers draw
   #clientX = 0;
   #clientY = 0;
+  #overCanvas = false;
   // false until the first sample since becoming active
   #sampled = false;
   #sampledAtMs = -Infinity;
@@ -77,6 +79,14 @@ export class PointerTracker {
 
   get clientY(): number {
     return this.#clientY;
+  }
+
+  /**
+   * whether the pointer, as last sampled, is directly over a canvas - not over
+   * dom drawn on top of it
+   */
+  get overCanvas(): boolean {
+    return this.#overCanvas;
   }
 
   start(): void {
@@ -130,6 +140,7 @@ export class PointerTracker {
     }
     this.#latestClientX = e.clientX;
     this.#latestClientY = e.clientY;
+    this.#latestOverCanvas = e.target instanceof HTMLCanvasElement;
     this.#idleTracker.markActive();
   };
 
@@ -165,13 +176,15 @@ export class PointerTracker {
     if (
       this.#sampled &&
       this.#clientX === this.#latestClientX &&
-      this.#clientY === this.#latestClientY
+      this.#clientY === this.#latestClientY &&
+      this.#overCanvas === this.#latestOverCanvas
     ) {
       return;
     }
     this.#sampledAtMs = nowMs;
     this.#clientX = this.#latestClientX;
     this.#clientY = this.#latestClientY;
+    this.#overCanvas = this.#latestOverCanvas;
     this.#sampled = true;
     this.events.emit("change");
   };
