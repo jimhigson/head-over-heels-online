@@ -17,7 +17,7 @@ export type EditorRoomView = {
 
 // low enough that even very large rooms can still be fitted entirely in a
 // small pane:
-const editorRoomViewMinZoom = 2;
+const editorRoomViewMinZoom = 1;
 const editorRoomViewMaxZoom = 16;
 
 const clampZoom = (zoom: number): number =>

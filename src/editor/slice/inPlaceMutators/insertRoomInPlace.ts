@@ -2,6 +2,7 @@ import { addReturnDoorInPlace } from "../../../model/inPlaceMutators/addReturnDo
 import { nextItemId } from "../../../model/inPlaceMutators/nextItemId";
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
 import { typePrefix } from "../../../model/json/typePrefix";
+import { doorTargetSubRoomId } from "../../../model/map/doorTargetSubRoomId";
 import { findSubRoomForItem } from "../../../model/map/itemIsInSubRoom";
 import { roomGridPositions } from "../../../model/map/roomGridPositions";
 import {
@@ -118,7 +119,8 @@ export const insertRoomInPlace = (
       if (
         door.config.toRoom === currentRoom.id &&
         door.config.direction === oppositeDir &&
-        (door.config.meta?.toSubRoom ?? "*") === subRoomId
+        doorTargetSubRoomId(state.campaignInProgress.rooms, room.id, door) ===
+          subRoomId
       ) {
         inboundDoorsFromOppositeDirection.push({
           doorId: doorId as EditorRoomItemId,

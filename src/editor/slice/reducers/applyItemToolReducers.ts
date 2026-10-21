@@ -9,6 +9,7 @@ import { type EditorJsonItemUnion } from "../../editorTypes";
 import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import { addDoorInPlace } from "../inPlaceMutators/addDoorInPlace";
 import { addItemInPlace } from "../inPlaceMutators/addItemInPlace";
+import { commitPendingNudgeInPlace } from "../inPlaceMutators/commitPendingNudgeInPlace";
 import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
 import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "../inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
@@ -52,6 +53,7 @@ export const applyItemToolReducers = {
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
+    commitPendingNudgeInPlace(state);
 
     const { tool } = state;
 
@@ -70,6 +72,7 @@ export const applyItemToolReducers = {
         edits: {},
         description: { kind: "editRoomJson" },
         timestamp,
+        origin: { type: "itemTool" },
       };
     }
     setSelectedJsonItemIdsOnCursorRoomInPlace(state, []);
@@ -143,6 +146,7 @@ export const applyItemToolReducers = {
         edits: state.pendingEdits!.edits,
         description,
         timestamp,
+        origin: { type: "itemTool" },
       };
     }
 

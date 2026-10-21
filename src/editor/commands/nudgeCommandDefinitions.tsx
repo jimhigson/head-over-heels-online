@@ -1,5 +1,3 @@
-import { getConsolidatableVector } from "../../consolidateItems/ConsolidatableJsonItem";
-import { getJsonItemTimes } from "../../model/times";
 import { type EditorRootState } from "../../store/store";
 import { fromAllEntries } from "../../utils/entries";
 import { unitVectors } from "../../utils/vectors/unitVectors";
@@ -7,24 +5,28 @@ import {
   type DirectionXy4,
   elementWiseProductXyz,
   originXyz,
-  unitXyz,
   type Xyz,
 } from "../../utils/vectors/vectors";
+import { editorLoadedRoom } from "../editorLoadedRoom";
 import { type EditorJsonItemUnion } from "../editorTypes";
 import {
   selectCurrentCommittedRoomJson,
   selectCursorRoomSelectedJsonItemIds,
   selectEditorCameraAngle,
 } from "../slice/levelEditorSlice";
+import {
+  canMultiplyAlong,
+  multiplyPlan,
+  type MultiplyType,
+} from "../slice/multiplyPlan";
 import { getMovableVector } from "../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import {
-  apparentGrowArgs,
   apparentMoveVector,
   apparentNudgeAxis,
-  apparentShrinkArgs,
   type NudgeArgs,
 } from "../toolbar/buttons/nudgeDirections";
 import { type ActionCommand } from "./EditorCommand";
+import { multiplySelectedItemsThunk } from "./multiplySelectedItemsThunk";
 import { nudgeSelectedItemsThunk } from "./nudgeSelectedItemsThunk";
 import {
   rotateSelectionOrToolItemThunk,
@@ -45,29 +47,6 @@ const selectMovableAxes = (state: EditorRootState): Xyz => {
   const selectedItems = selectSelectedJsonItems(state);
   return selectedItems.length > 0 ?
       elementWiseProductXyz(...selectedItems.map(getMovableVector))
-    : originXyz;
-};
-
-/** the axes every selected item can be resized along (1) or not (0) */
-const selectConsolidatableAxes = (state: EditorRootState): Xyz => {
-  const selectedItems = selectSelectedJsonItems(state);
-  return selectedItems.length > 0 ?
-      elementWiseProductXyz(...selectedItems.map(getConsolidatableVector))
-    : originXyz;
-};
-
-/** the largest size of any selected item, along each axis */
-const selectLargestSize = (state: EditorRootState): Xyz => {
-  const selectedItems = selectSelectedJsonItems(state);
-  return selectedItems.length > 0 ?
-      selectedItems.map(getJsonItemTimes).reduce(
-        (largest, times) => ({
-          x: Math.max(largest.x, times.x),
-          y: Math.max(largest.y, times.y),
-          z: Math.max(largest.z, times.z),
-        }),
-        unitXyz,
-      )
     : originXyz;
 };
 
@@ -107,10 +86,57 @@ const nudgeCommand = (
   shortcutKeys,
   selectIsAvailable,
   action: () => (dispatch, getState) =>
-    dispatch(nudgeSelectedItemsThunk(nudgeArgs(getState()))),
+    dispatch(
+      nudgeSelectedItemsThunk(
+        nudgeArgs(getState()),
+        editorLoadedRoom.getRoomState(),
+      ),
+    ),
 });
 
-/** moving, growing, shrinking and rotating the selected items */
+const selectCanShrinkAlong = (state: EditorRootState, direction: Xyz) => {
+  const { resizedItemIds, deletedItemIds } = multiplyPlan(
+    selectCurrentCommittedRoomJson(state),
+    selectCursorRoomSelectedJsonItemIds(state),
+    direction,
+    "shrink",
+  );
+  return resizedItemIds.length > 0 || deletedItemIds.length > 0;
+};
+
+const multiplyCommand = (
+  label: string,
+  glyph: string,
+  shortcutKeys: ActionCommand["shortcutKeys"],
+  multiplyType: MultiplyType,
+  /**
+   * the world direction to multiply or shrink in
+   */
+  worldDirection: (state: EditorRootState) => Xyz,
+): ActionCommand => ({
+  type: "action",
+  label,
+  icon: glyphIcon(glyph),
+  shortcutKeys,
+  selectIsAvailable: (state) =>
+    multiplyType === "multiply" ?
+      canMultiplyAlong(
+        selectCurrentCommittedRoomJson(state),
+        selectCursorRoomSelectedJsonItemIds(state),
+        worldDirection(state),
+      )
+    : selectCanShrinkAlong(state, worldDirection(state)),
+  action: () => (dispatch, getState) =>
+    dispatch(
+      multiplySelectedItemsThunk(
+        worldDirection(getState()),
+        multiplyType,
+        editorLoadedRoom.getRoomState(),
+      ),
+    ),
+});
+
+/** moving, multiplying, shrinking and rotating the selected items */
 export const nudgeCommandDefinitions = {
   ...fromAllEntries(
     apparentDirections.flatMap(
@@ -119,7 +145,7 @@ export const nudgeCommandDefinitions = {
         arrowKey,
         glyph,
       }): Array<
-        [`${"grow" | "move" | "shrink"}.${typeof direction}`, ActionCommand]
+        [`${"move" | "multiply" | "shrink"}.${typeof direction}`, ActionCommand]
       > => [
         [
           `move.${direction}`,
@@ -139,30 +165,25 @@ export const nudgeCommandDefinitions = {
           ),
         ],
         [
-          `grow.${direction}`,
-          nudgeCommand(
-            `Grow ${direction}`,
+          `multiply.${direction}`,
+          multiplyCommand(
+            `Multiply ${direction}`,
             glyph,
             [`⌥${arrowKey}`],
+            "multiply",
             (state) =>
-              selectConsolidatableAxes(state)[
-                selectApparentAxis(state, direction)
-              ] !== 0,
-            (state) =>
-              apparentGrowArgs(direction, selectEditorCameraAngle(state)),
+              apparentMoveVector(direction, selectEditorCameraAngle(state)),
           ),
         ],
         [
           `shrink.${direction}`,
-          nudgeCommand(
+          multiplyCommand(
             `Shrink ${direction}`,
             glyph,
             [`⌥⇧${arrowKey}`],
+            "shrink",
             (state) =>
-              selectLargestSize(state)[selectApparentAxis(state, direction)] >
-              1,
-            (state) =>
-              apparentShrinkArgs(direction, selectEditorCameraAngle(state)),
+              apparentMoveVector(direction, selectEditorCameraAngle(state)),
           ),
         ],
       ],
@@ -184,33 +205,33 @@ export const nudgeCommandDefinitions = {
     (state) => selectMovableAxes(state).z !== 0,
     () => ({ posVector: unitVectors.down }),
   ),
-  "grow.up": nudgeCommand(
-    "Grow up",
+  "multiply.up": multiplyCommand(
+    "Multiply up",
     "⬆",
     ["⌥PageUp"],
-    (state) => selectConsolidatableAxes(state).z !== 0,
-    () => ({ timesDelta: { z: 1 } }),
+    "multiply",
+    () => unitVectors.up,
   ),
-  "grow.down": nudgeCommand(
-    "Grow down",
+  "multiply.down": multiplyCommand(
+    "Multiply down",
     "⬇",
     ["⌥PageDown"],
-    (state) => selectConsolidatableAxes(state).z !== 0,
-    () => ({ posVector: { x: 0, y: 0, z: -1 }, timesDelta: { z: 1 } }),
+    "multiply",
+    () => unitVectors.down,
   ),
-  "shrink.up": nudgeCommand(
+  "shrink.up": multiplyCommand(
     "Shrink up",
     "⬆",
     ["⌥⇧PageUp"],
-    (state) => selectLargestSize(state).z > 1,
-    () => ({ posVector: { x: 0, y: 0, z: 1 }, timesDelta: { z: -1 } }),
+    "shrink",
+    () => unitVectors.up,
   ),
-  "shrink.down": nudgeCommand(
+  "shrink.down": multiplyCommand(
     "Shrink down",
     "⬇",
     ["⌥⇧PageDown"],
-    (state) => selectLargestSize(state).z > 1,
-    () => ({ timesDelta: { z: -1 } }),
+    "shrink",
+    () => unitVectors.down,
   ),
   "rotate.anticlockwise": {
     type: "action",

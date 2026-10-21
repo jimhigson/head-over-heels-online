@@ -5,6 +5,7 @@ import { DisappearingMenuItems } from "./DisappearingMenuItems";
 import { DoorGameEndMenuItem } from "./DoorGameEndMenuItem";
 import { DuplicateMenuItem } from "./DuplicateMenuItem";
 import { ExplodeMenuItem } from "./ExplodeMenuItem";
+import { MakeHoleMenuItem } from "./MakeHoleMenuItem";
 import { MirrorOrientationMenuItems } from "./MirrorOrientationMenuItems";
 import { MonsterMovementMenuItems } from "./MonsterMovementMenuItems";
 import { StartDirectionMenuItems } from "./StartDirectionMenuItems";
@@ -20,6 +21,7 @@ export const ItemActionMenuItems = () => (
     <DuplicateMenuItem />
     <ExplodeMenuItem />
     <CoalesceMenuItem />
+    <MakeHoleMenuItem />
     <ActivationMenuItems />
     <DisappearingMenuItems />
     <MonsterMovementMenuItems />

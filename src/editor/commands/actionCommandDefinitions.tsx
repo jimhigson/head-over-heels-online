@@ -16,6 +16,7 @@ import {
   addRoom,
   deleteSelected,
   redo,
+  resetTool,
   roomBack,
   roomForward,
   selectBackRooms,
@@ -27,6 +28,7 @@ import {
   selectTool,
   selectUndoHistory,
   setTool,
+  togglePointerTool,
   undo,
 } from "../slice/levelEditorSlice";
 import { revertPressed, savePressed } from "../slice/saveAndLoadThunks";
@@ -69,15 +71,20 @@ export const actionCommandDefinitions = {
       />
     ),
     menuIcon: "texture-pointer",
-    shortcutKeys: [
-      // Escape key to switch back to default pointer tool
-      "Escape",
-      // dot copies the dpaint shortcut to go back to a single pixel brush
-      ".",
-    ],
+    // dot copies the dpaint shortcut to go back to a single pixel brush
+    shortcutKeys: ["."],
     tooltipContent: `## Pointer`,
     selectIsActive: (state) => selectTool(state).type === "pointer",
-    action: () => setTool({ type: "pointer" }),
+    action: () => resetTool(),
+  },
+  togglePointerTool: {
+    type: "action",
+    label: "Pointer / last item tool",
+    synonyms: ["select", "arrow", "swap tool"],
+    menuIcon: "texture-pointer",
+    // Escape key to switch back to default pointer tool
+    shortcutKeys: ["Escape"],
+    action: () => togglePointerTool(),
   },
   eyeDropperTool: {
     type: "action",

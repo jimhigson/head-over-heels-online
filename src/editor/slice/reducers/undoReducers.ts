@@ -1,5 +1,4 @@
 import {
-  createSelector,
   current,
   type PayloadAction,
   type SliceCaseReducers,
@@ -9,7 +8,11 @@ import {
 import { emptyObject } from "../../../utils/empty";
 import { type EditorRoomId, type EditorRoomJson } from "../../editorTypes";
 import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
-import { pinRoomTabInPlace } from "../inPlaceMutators/pinRoomTabInPlace";
+import { commitPendingNudgeInPlace } from "../inPlaceMutators/commitPendingNudgeInPlace";
+import {
+  pushUndoEntryInPlace,
+  roomHistory,
+} from "../inPlaceMutators/pushUndoEntryInPlace";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomIdFromLevelEditorState,
@@ -34,38 +37,23 @@ export type UndoRedoPayload = {
   steps?: number;
 };
 
-const roomHistory = (
-  state: LevelEditorState,
-  roomId: EditorRoomId = selectCursorRoomIdFromLevelEditorState(state),
-): RoomUndoHistory => {
-  state.history[roomId] ??= { undo: [], redo: [] };
-  return state.history[roomId];
-};
-
 export const snapshotRoomForUndo = (state: LevelEditorState): EditorRoomJson =>
   structuredClone(
     current(selectCurrentCommittedRoomJsonFromLevelEditorState(state)),
   );
 
-/** push an undo entry for any room, not necessarily the current one */
+/**
+ * push an undo entry for any room, not necessarily the current one - after
+ * committing any nudges still being previewed, which come first
+ */
 export const pushUndoForRoomInPlace = (
   state: LevelEditorState,
   roomId: EditorRoomId,
   description: UndoDescription,
   timestamp: number,
 ) => {
-  const previousRoom = structuredClone(
-    current(state.campaignInProgress.rooms[roomId] as EditorRoomJson),
-  );
-  const { undo, redo } = roomHistory(state, roomId);
-
-  // remove any 'redo' state that is now invalid since we forked to a new branch
-  redo.length = 0;
-  state.hoveredUndoIndex = 0;
-
-  undo.push({ room: previousRoom, description, timestamp });
-  // an edited room's tab stays open:
-  pinRoomTabInPlace(state, roomId);
+  commitPendingNudgeInPlace(state);
+  pushUndoEntryInPlace(state, roomId, description, timestamp);
 };
 
 export const pushUndoToCursorRoomInPlace = (
@@ -106,6 +94,9 @@ export const undoReducers = {
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
+    // nudges still being previewed are the newest edit, so are committed to
+    // be what's undone or redone from:
+    commitPendingNudgeInPlace(state);
 
     const { campaignInProgress } = state;
     const currentlyEditingRoomId =
@@ -151,6 +142,9 @@ export const undoReducers = {
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
+    // nudges still being previewed are the newest edit, so are committed to
+    // be what's undone or redone from:
+    commitPendingNudgeInPlace(state);
 
     const { campaignInProgress } = state;
     const currentlyEditingRoomId =
@@ -188,22 +182,15 @@ export const undoReducers = {
 
 export type UndoHistoryItem = Pick<UndoEntry, "description" | "timestamp">;
 
-const extractHistoryItems = (entries: UndoEntry[]): UndoHistoryItem[] =>
-  entries.map(({ description, timestamp }) => ({ description, timestamp }));
-
 const emptyUndoEntries: UndoEntry[] = [];
 
+// the entries themselves (seen only as history items), so each keeps its
+// identity as the history grows, and what draws it needn't redraw:
 export const undoSelectors = {
-  selectUndoHistory: createSelector(
-    (state: LevelEditorState) =>
-      state.history[selectCursorRoomIdFromLevelEditorState(state)]?.undo ??
-      emptyUndoEntries,
-    extractHistoryItems,
-  ),
-  selectRedoHistory: createSelector(
-    (state: LevelEditorState) =>
-      state.history[selectCursorRoomIdFromLevelEditorState(state)]?.redo ??
-      emptyUndoEntries,
-    extractHistoryItems,
-  ),
+  selectUndoHistory: (state: LevelEditorState): UndoHistoryItem[] =>
+    state.history[selectCursorRoomIdFromLevelEditorState(state)]?.undo ??
+    emptyUndoEntries,
+  selectRedoHistory: (state: LevelEditorState): UndoHistoryItem[] =>
+    state.history[selectCursorRoomIdFromLevelEditorState(state)]?.redo ??
+    emptyUndoEntries,
 } satisfies SliceSelectors<LevelEditorState>;

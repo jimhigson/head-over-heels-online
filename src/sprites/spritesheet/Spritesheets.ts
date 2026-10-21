@@ -93,6 +93,18 @@ export class Spritesheets {
    */
   #currentSheetTarget: RenderTexture | undefined;
   /**
+   * what #currentSpritesheet was baked for - a rebuild asking for the same
+   * again keeps it, rather than baking an identical sheet
+   */
+  #currentSpritesheetBakedFor:
+    | {
+        originalSpritesheet: AppSpritesheetWithVariants;
+        roomScenery: SceneryName;
+        roomColor: ZxSpectrumRoomColour;
+        spritesheetMeta: SpritesheetMetadata;
+      }
+    | undefined;
+  /**
    * maps textureId → where that frame now sits after the sheet is re-composed for upscaling
    */
   #repackedFrameRects: ReadonlyMap<string, FrameRect> | undefined;
@@ -219,6 +231,21 @@ export class Spritesheets {
     }
 
     const orig = this.#originalSpritesheet;
+
+    const bakedFor = this.#currentSpritesheetBakedFor;
+    if (
+      this.#currentSpritesheet !== undefined &&
+      bakedFor !== undefined &&
+      bakedFor.originalSpritesheet === orig &&
+      bakedFor.roomScenery === roomScenery &&
+      bakedFor.roomColor.hue === roomColor.hue &&
+      bakedFor.roomColor.shade === roomColor.shade &&
+      bakedFor.spritesheetMeta === spritesheetMeta
+    ) {
+      // eg moving between rooms of the same scenery and colour:
+      return originalRebuilt;
+    }
+
     // bakes sample the original sheet's pixels (a view over its source, so
     // destroying it after the bakes leaves the source untouched):
     const bt = new Texture({ source: orig.textureSource });
@@ -243,6 +270,13 @@ export class Spritesheets {
 
     this.#currentSpritesheet = built.sheet;
     this.#currentSheetTarget = built.target;
+    this.#currentSpritesheetBakedFor = {
+      originalSpritesheet: orig,
+      roomScenery,
+      // copied, since the room's own colour may change after:
+      roomColor: { ...roomColor },
+      spritesheetMeta,
+    };
 
     bt.destroy();
 
@@ -509,6 +543,7 @@ export class Spritesheets {
     this.#currentSpritesheet = undefined;
     this.#currentSheetTarget?.destroy(true);
     this.#currentSheetTarget = undefined;
+    this.#currentSpritesheetBakedFor = undefined;
   }
 
   destroy() {

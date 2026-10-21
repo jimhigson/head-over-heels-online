@@ -3,23 +3,11 @@ import { type ComponentChildren, type VNode } from "preact";
 import { type TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { cn } from "../cn";
 import { CommandItem } from "../command/CommandItem";
-import { formatShortcutKey } from "../enhanceTooltipWithHotkeys";
+import { CurrentMarker } from "../CurrentMarker";
+import { ShortcutUnderlinedLabel } from "../ShortcutUnderlinedLabel";
 import { type ShortcutKeys } from "../useKeyboardShortcut";
 import { MenuItemIconSpace } from "./MenuItemIconSpace";
-
-const isApplePlatform = /Mac|iPhone|iPad/.test(navigator.platform);
-
-/** the shortcut to show: the one using this platform's command key, if any */
-const shortcutHint = (shortcutKeys: ShortcutKeys): string => {
-  const platformModifier = isApplePlatform ? "⌘" : "^";
-  const otherModifier = isApplePlatform ? "^" : "⌘";
-  const [firstShortcutKey] = shortcutKeys;
-  return formatShortcutKey(
-    shortcutKeys.find((key) => key.includes(platformModifier)) ??
-      shortcutKeys.find((key) => !key.includes(otherModifier)) ??
-      firstShortcutKey,
-  );
-};
+import { shortcutHint } from "./shortcutHint";
 
 export type MenuItemProps = {
   /** what the item says, and its value for keyboard navigation */
@@ -78,12 +66,8 @@ export const MenuItem = ({
         : icon}
       </MenuItemIconSpace>
       <span class={cn("text-single-line whitespace-nowrap", className)}>
-        {checked === undefined ?
-          ""
-        : checked ?
-          <span class="text-moss">➡ </span>
-        : "  "}
-        {label}
+        {checked !== undefined && <CurrentMarker isCurrent={checked} />}
+        <ShortcutUnderlinedLabel text={label} shortcutKeys={shortcutKeys} />
       </span>
     </span>
     {control !== undefined && (

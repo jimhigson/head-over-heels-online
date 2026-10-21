@@ -4,9 +4,7 @@ import {
   selectCursorRoomView,
   selectRoomPaneSize,
 } from "../../slice/levelEditorSlice";
-
-/** the discrete zooms stepping goes through (the wheel is continuous) */
-const zoomLadder = [0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 8, 11, 16];
+import { zoomLadder } from "./zoomLadder";
 
 // past the ends of the ladder (eg after a fit zoomed a huge room way out),
 // stepping is a no-op rather than jumping to the ladder's nearest end:

@@ -11,6 +11,7 @@ import {
   type EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
 import { type GridResolution } from "../../slice/levelEditorSlice";
+import { snapGridResolution } from "../../snapGridResolution";
 import { type Tool } from "../interactivity/Tool";
 import { frontItemFromPointerIntersections } from "./frontItemFromPointerIntersections";
 import { pointerIntersectionCorner } from "./pointerIntersectionCorner";
@@ -35,13 +36,8 @@ export const roundXyzProjection = (
    * applies rounding, but not in the direction of a normal to this plane
    */
   planeNormal: Xyz,
-  tool: Tool,
-  gridResolutionParam: GridResolution,
+  gridResolution: GridResolution,
 ) => {
-  const gridResolution: GridResolution =
-    // the tool placement granularity can change depending on the tool - doors can never be placed at half-steps:
-    tool.type === "item" && tool.item.type === "door" ? 1 : gridResolutionParam;
-
   // potentially allow items to be positioned on half-blocks for x and y
   // (unlike original hoh)
   const incrementXy = blockSizePx.x * gridResolution;
@@ -106,8 +102,11 @@ const worldPositionOnFaceForScreenPosition = (
   const rounded = roundXyzProjection(
     cursorWorldPosition,
     plane,
-    tool,
-    gridResolution,
+    // the tool's item may need placing on a coarser grid:
+    snapGridResolution(
+      gridResolution,
+      tool.type === "item" ? [tool.item.type] : [],
+    ),
   );
 
   return rounded;
@@ -133,8 +132,9 @@ const isPointableItemForTool =
       return itemIsSolid && item.type === "wall";
     }
 
-    // for everything else, no special rules
-    return itemIsSolid;
+    // floors with no surface (holes) still mark out the room's floor, so are
+    // pointed at like any other floor:
+    return itemIsSolid || item.type === "floor";
   };
 export type FindPointerPointingAtOptions = {
   scrXy: Xy;

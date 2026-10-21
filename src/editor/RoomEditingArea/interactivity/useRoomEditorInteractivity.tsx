@@ -1,10 +1,10 @@
 import nanoEqual from "nano-equal";
 import { type RefObject } from "preact";
-import { useEffect, useMemo, useRef } from "preact/hooks";
+import { useCallback, useEffect, useMemo, useRef } from "preact/hooks";
 
 import { useAppDispatch } from "../../../store/hooks";
 import { editorStore, store } from "../../../store/store";
-import { useMouseWheel } from "../../../ui/useMouseWheel";
+import { usePanZoomWheel } from "../../../ui/usePanZoomWheel";
 import { catchErrors } from "../../../utils/errors/errors";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { editorLoadedRoom } from "../../editorLoadedRoom";
@@ -18,6 +18,7 @@ import {
   cursorRoomViewPanned,
   cursorRoomViewZoomed,
   resetPreviewedEdits,
+  selectCursorRoomView,
   selectTool,
 } from "../../slice/levelEditorSlice";
 import { findPointerPointingAt } from "../cursor/findPointerPointingAt";
@@ -26,6 +27,7 @@ import { viewportMousePosition } from "../cursor/viewportMouse";
 import { useProvidedPixiApplication } from "../PixiApplicationProvider";
 import { useEditorE2eApi } from "../useEditorE2eApi";
 import { useEditorViewport } from "../viewport/EditorViewportProvider";
+import { nearestLadderZoom } from "../viewport/zoomLadder";
 import { type Tool } from "./Tool";
 import { EyeDropperToolHandler } from "./toolHandlers/EyeDropperToolHandler";
 import { ItemToolHandler } from "./toolHandlers/ItemToolHandler";
@@ -46,17 +48,33 @@ const toolHandlers: {
  */
 const panMinimumDistancePx = 3;
 
-/**
- * the wheel walks the zoom in steps of this size, snapped to its grid -
- * whole-number zooms match the upscales the game engine itself renders at
- */
-const wheelZoomStep = 1;
-
 type PanSession = {
   /** pans immediately (middle button); left-drags activate after a threshold */
   active: boolean;
   startClientX: number;
   startClientY: number;
+};
+
+/**
+ * zoom the cursor room's view about a client point, from its latest zoom -
+ * several wheel events can arrive per render
+ */
+const zoomCursorRoomViewAbout = (
+  renderArea: HTMLDivElement | null,
+  clientXy: Xy,
+  newZoom: (zoom: number) => number,
+) => {
+  const cursorRoomView = selectCursorRoomView(editorStore.getState());
+  if (renderArea === null || cursorRoomView === undefined) {
+    return;
+  }
+  const rect = renderArea.getBoundingClientRect();
+  store.dispatch(
+    cursorRoomViewZoomed({
+      zoom: newZoom(cursorRoomView.zoom),
+      fixedPanePoint: { x: clientXy.x - rect.left, y: clientXy.y - rect.top },
+    }),
+  );
 };
 
 export const useRoomEditorInteractivity = (
@@ -84,24 +102,27 @@ export const useRoomEditorInteractivity = (
 
   useEditorE2eApi({ renderArea, viewport, pointingAtRef });
 
-  // wheel zooming: one normalised wheel notch walks the zoom a quarter-step
-  // along the wheelZoomStep grid, about the cursor:
+  // wheel panning and pinch zooming, about the pointer:
   const renderAreaRef = useMemo(() => ({ current: renderArea }), [renderArea]);
-  useMouseWheel(renderAreaRef, (direction, wheelEvent) => {
-    if (renderArea === null) {
-      return;
-    }
-    const gridSteps = Math.round(viewport.zoom / wheelZoomStep);
-    const rect = renderArea.getBoundingClientRect();
-    store.dispatch(
-      cursorRoomViewZoomed({
-        zoom: (gridSteps + direction) * wheelZoomStep,
-        fixedPanePoint: {
-          x: wheelEvent.clientX - rect.left,
-          y: wheelEvent.clientY - rect.top,
-        },
-      }),
-    );
+  const onWheelPan = useCallback(
+    (delta: Xy) => store.dispatch(cursorRoomViewPanned(delta)),
+    [],
+  );
+  const onWheelZoom = useCallback(
+    (factor: number, clientXy: Xy) =>
+      zoomCursorRoomViewAbout(renderArea, clientXy, (zoom) => zoom * factor),
+    [renderArea],
+  );
+  // the gesture zooms freely, then settles on the nearest standard zoom:
+  const onWheelZoomEnd = useCallback(
+    (clientXy: Xy) =>
+      zoomCursorRoomViewAbout(renderArea, clientXy, nearestLadderZoom),
+    [renderArea],
+  );
+  usePanZoomWheel(renderAreaRef, {
+    onPan: onWheelPan,
+    onZoom: onWheelZoom,
+    onZoomEnd: onWheelZoomEnd,
   });
 
   useEffect(() => {

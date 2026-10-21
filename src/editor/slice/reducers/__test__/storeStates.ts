@@ -80,17 +80,21 @@ export const reduceLevelEditorActions = (
     }
 
     let current = state;
-    (
-      action as (
-        dispatch: (a: LevelEditorSliceAction) => void,
-        getState: () => { levelEditor: LevelEditorState },
-      ) => void
-    )(
-      (a) => {
-        current = levelEditorSlice.reducer(current, a);
-      },
-      () => ({ levelEditor: current }),
-    );
+    const getState = () => ({ levelEditor: current });
+    // thunks may dispatch further thunks:
+    const dispatch = (dispatched: ReducibleAction) => {
+      if (typeof dispatched === "function") {
+        (
+          dispatched as (
+            dispatch: (a: ReducibleAction) => void,
+            getState: () => { levelEditor: LevelEditorState },
+          ) => void
+        )(dispatch, getState);
+      } else {
+        current = levelEditorSlice.reducer(current, dispatched);
+      }
+    };
+    dispatch(action);
     return current;
   }, state);
 };

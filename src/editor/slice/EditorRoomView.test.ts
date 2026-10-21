@@ -27,7 +27,7 @@ test("zoom clamps to the minimum", () => {
   expect(
     zoomEditorRoomView({ zoom: 4, pan: { x: 0, y: 0 } }, 0.01, { x: 0, y: 0 })
       .zoom,
-  ).toBe(2);
+  ).toBe(1);
 });
 
 test("panning moves the pan by the delta", () => {

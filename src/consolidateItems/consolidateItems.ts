@@ -77,10 +77,12 @@ const isConsolidatableItemWithId = (
 
 // Helper to get the fractional offset of a position
 // For example with 16px blocks: position 2.25 has offset 4 (since 0.25 * 16 = 4)
+// The offset is from the floored position, so is never negative: -0.5 is
+// -1 + 0.5, offset 8 - which is what restores it once floored
 const getFractionalOffset = (position: Xyz): { x: number; y: number } => {
   return {
-    x: Math.floor((position.x % 1) * blockSizePx.x),
-    y: Math.floor((position.y % 1) * blockSizePx.y),
+    x: Math.floor((position.x - Math.floor(position.x)) * blockSizePx.x),
+    y: Math.floor((position.y - Math.floor(position.y)) * blockSizePx.y),
   };
 };
 

@@ -11,6 +11,7 @@ import { actionCommandDefinitions } from "../commands/actionCommandDefinitions";
 import { CommandToolbarButton } from "../commands/CommandToolbarButton";
 import { itemToolCommandDefinitions } from "../commands/itemToolCommandDefinitions";
 import { changeToRoom, selectCursorRoomId } from "../slice/levelEditorSlice";
+import { selectRoomHues } from "../slice/selectRoomHues";
 import { AddAndDeleteRoomButtons } from "./buttons/AddAndDeleteRoomButtons";
 import { AutoCoalesceSwitch } from "./buttons/AutoCoalesceSwitch";
 import { BackAndForwardRoomButtons } from "./buttons/BackAndForwardRoomButtons";
@@ -40,9 +41,7 @@ const HorizontalGap = () => <div class="w-[calc(var(--block)-1px)]" />;
 const VerticalGap = () => <div class="w-full h-half" />;
 
 export const LevelEditorToolbar = () => {
-  const campaign = useEditorAppSelector(
-    (state) => state.levelEditor.campaignInProgress,
-  );
+  const campaignRoomHues = useEditorAppSelector(selectRoomHues);
   const currentlyEditingRoomId = useEditorAppSelector(selectCursorRoomId);
   const dispatch = useAppDispatch();
 
@@ -85,7 +84,7 @@ export const LevelEditorToolbar = () => {
           <CommandToolbarButton command={actionCommandDefinitions.clearRoom} />
           <RoomSelect
             value={currentlyEditingRoomId}
-            campaign={campaign}
+            roomHues={campaignRoomHues}
             onSelect={(roomId) => {
               dispatch(changeToRoom(roomId));
             }}

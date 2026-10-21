@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 import { playableTailwindSpriteClassname } from "../../game/components/tailwindSprites/playableTailwindSpriteClassname";
 import { rotatingSceneryTiles } from "../../model/inPlaceMutators/rotatingSceneryTiles";
 import {
@@ -19,6 +21,9 @@ import {
   type EditorCommandDefinition,
   type ItemToolCommand,
 } from "./EditorCommand";
+
+const selectCursorRoomScenery = (state: EditorRootState) =>
+  selectCurrentCommittedRoomJsonFromLevelEditorState(state.levelEditor).planet;
 
 /** the items the editor can place, each as a command that picks its item tool */
 export const itemToolCommandDefinitions = {
@@ -1113,69 +1118,71 @@ stand around not doing much`,
       />
     ),
   },
-  wall(state: EditorRootState): ItemToolCommand {
-    const scenery = selectCurrentCommittedRoomJsonFromLevelEditorState(
-      state.levelEditor,
-    ).planet;
+  // memoised on what the command depends on, so it is the same object until
+  // that changes, sparing re-renders of whatever selects it:
+  wall: createSelector(
+    [selectCursorRoomScenery],
+    (scenery): ItemToolCommand => {
+      const textureClassname =
+        scenery === "blacktooth" ?
+          twClass<TextureTailwindClass>("texture-blacktooth_wall_plain_d2")
+        : scenery === "bookworld" ?
+          twClass<TextureTailwindClass>("texture-bookworld_wall_cowboy_d2")
+        : scenery === "jail" ?
+          twClass<TextureTailwindClass>("texture-jail_wall_bars_d2")
+        : scenery === "egyptus" ?
+          twClass<TextureTailwindClass>("texture-egyptus_wall_hieroglyphics_d2")
+        : scenery === "market" ?
+          twClass<TextureTailwindClass>("texture-market_wall_passage_d2")
+        : scenery === "moonbase" ?
+          twClass<TextureTailwindClass>("texture-moonbase_wall_window1_d2")
+        : scenery === "penitentiary" ?
+          twClass<TextureTailwindClass>("texture-penitentiary_wall_loop_d2")
+        : twClass<TextureTailwindClass>("texture-safari_wall_wall_d2");
 
-    const textureClassname =
-      scenery === "blacktooth" ?
-        twClass<TextureTailwindClass>("texture-blacktooth_wall_plain_d2")
-      : scenery === "bookworld" ?
-        twClass<TextureTailwindClass>("texture-bookworld_wall_cowboy_d2")
-      : scenery === "jail" ?
-        twClass<TextureTailwindClass>("texture-jail_wall_bars_d2")
-      : scenery === "egyptus" ?
-        twClass<TextureTailwindClass>("texture-egyptus_wall_hieroglyphics_d2")
-      : scenery === "market" ?
-        twClass<TextureTailwindClass>("texture-market_wall_passage_d2")
-      : scenery === "moonbase" ?
-        twClass<TextureTailwindClass>("texture-moonbase_wall_window1_d2")
-      : scenery === "penitentiary" ?
-        twClass<TextureTailwindClass>("texture-penitentiary_wall_loop_d2")
-      : twClass<TextureTailwindClass>("texture-safari_wall_wall_d2");
-
-    return {
-      label: "Wall",
-      type: "itemTool",
-      itemTool: {
-        type: "wall" as "wall",
-        config: {
-          direction: "away" as "away",
-          tiles: Array.from(rotatingSceneryTiles(scenery, 1)),
+      return {
+        label: "Wall",
+        type: "itemTool",
+        itemTool: {
+          type: "wall" as "wall",
+          config: {
+            direction: "away" as "away",
+            tiles: Array.from(rotatingSceneryTiles(scenery, 1)),
+          },
         },
-      },
-      icon: (
-        <span
-          class={`sprite ${textureClassname} ${buttonSpriteRevertColourClasses}`}
-        />
-      ),
-    };
-  },
-  door(state: EditorRootState): ItemToolCommand {
-    const { doorAutoAddsRoom } = state.levelEditor;
-    const scenery = selectCurrentCommittedRoomJsonFromLevelEditorState(
-      state.levelEditor,
-    ).planet;
+        icon: (
+          <span
+            class={`sprite ${textureClassname} ${buttonSpriteRevertColourClasses}`}
+          />
+        ),
+      };
+    },
+  ),
+  door: createSelector(
+    [
+      (state: EditorRootState) => state.levelEditor.doorAutoAddsRoom,
+      selectCursorRoomScenery,
+    ],
+    (doorAutoAddsRoom, scenery): ItemToolCommand => {
+      const textureClassname =
+        scenery === "moonbase" ?
+          twClass<TextureTailwindClass>("texture-door_frame_moonbase_d0_whole")
+        : twClass<TextureTailwindClass>("texture-door_frame_generic_d0_whole");
 
-    const textureClassname =
-      scenery === "moonbase" ?
-        twClass<TextureTailwindClass>("texture-door_frame_moonbase_d0_whole")
-      : twClass<TextureTailwindClass>("texture-door_frame_generic_d0_whole");
-
-    return {
-      label: doorAutoAddsRoom ? "Door (adds adjacent room)" : "Door",
-      type: "itemTool",
-      itemTool: doorItemTool(doorAutoAddsRoom),
-      shortcutKeys: ["D"],
-      icon: (
-        <LabelledToolbarIcon
-          iconClasses={`sprite top-[calc(-17px*var(--scale))] left-[calc(-2px*var(--scale))] ${textureClassname} ${buttonSpriteRevertColourClasses}`}
-          text={doorAutoAddsRoom ? "+" : ""}
-        />
-      ),
-    };
-  },
+      return {
+        label: doorAutoAddsRoom ? "Door (adds adjacent room)" : "Door",
+        type: "itemTool",
+        itemTool: doorItemTool(doorAutoAddsRoom),
+        shortcutKeys: ["D"],
+        icon: (
+          <LabelledToolbarIcon
+            iconClasses={`sprite top-[calc(-17px*var(--scale))] left-[calc(-2px*var(--scale))] ${textureClassname} ${buttonSpriteRevertColourClasses}`}
+            text={doorAutoAddsRoom ? "+" : ""}
+          />
+        ),
+      };
+    },
+  ),
 } as const satisfies {
   [s in string]: EditorCommandDefinition<ItemToolCommand>;
 };

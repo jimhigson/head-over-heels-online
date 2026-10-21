@@ -7,12 +7,12 @@ import { useRegisterDecorateRoomRenderers } from "../../game/render/useRegisterD
 import { type EditorRoomRenderer } from "../editorTypes";
 import { makeEditorAnnotationsDecorateItemRenderer } from "../rendering/EditorAnnotationsRenderer";
 import { ItemContextMenu } from "./contextMenu/ItemContextMenu";
+import { EditorMainLoop } from "./EditorMainLoop";
 import { useRoomEditorInteractivity } from "./interactivity/useRoomEditorInteractivity";
 import { PixiApplicationProvider } from "./PixiApplicationProvider";
 import { RoomTabBar } from "./RoomTabBar";
 import { RotateViewControls } from "./RotateViewControls";
 import { useAddApplicationCanvasToDom } from "./useAddApplicationCanvasToDom";
-import { useEditorMainLoop } from "./useEditorMainLoop";
 import { useRemoveCursorPreviewsWhenToolChanges } from "./useRemoveCursorPreviewsWhenToolChanges";
 import { useResizePixiApplicationToPane } from "./useResizePixiApplicationToPane";
 import { useRoomEditingAreaCursorClassName } from "./useRoomEditingAreaCursorClassName";
@@ -44,7 +44,6 @@ const RoomEditingAreaInner = () => {
   // the main loop keeps this pointing at the current room renderer;
   // interactivity reads its render boxes for pointer picking:
   const roomRendererRef = useRef<EditorRoomRenderer | undefined>(undefined);
-  useEditorMainLoop(spritesheets, roomRendererRef);
 
   const [renderArea, setRenderArea] = useState<HTMLDivElement | null>(null);
 
@@ -78,6 +77,10 @@ const RoomEditingAreaInner = () => {
         class={`w-full h-full ${cursorClassname} bg-shadowHalfbrite overflow-hidden focus-visible:outline-none`}
       />
       <ItemContextMenu renderArea={renderArea} />
+      <EditorMainLoop
+        spritesheets={spritesheets}
+        roomRendererRef={roomRendererRef}
+      />
     </div>
   );
 };

@@ -4,24 +4,23 @@ import { subRoomById, type SubRooms } from "../../../RoomJson";
 import { type CampaignVerifier } from "../CampaignVerification";
 import { dividedCells } from "../helpers/subRoomGeometry";
 import { subRoomAdjacencyVerifier } from "../subRooms/subRoomAdjacencyVerifier";
-import { subRoomFloorCoverageVerifier } from "../subRooms/subRoomFloorCoverageVerifier";
 import { subRoomInvertedExtentVerifier } from "../subRooms/subRoomInvertedExtentVerifier";
 import {
   addDoor,
   campaignOf,
   newRoom,
   runCheck,
+  setSubRoomCell,
   setWholeRoomCell,
 } from "../testUtils";
 import { type VerificationRoomId } from "../verificationTypes";
 import { mapGeometryVerifier } from "./mapGeometryVerifier";
-import { oversizedUndividedRoomVerifier } from "./oversizedUndividedRoomVerifier";
+import { subRoomsFitFloorVerifier } from "./subRoomsFitFloorVerifier";
 
 /** run the check, then apply the fix for every issue it found */
 const fixAll = (campaign: ReturnType<typeof campaignOf>) =>
-  runCheck(oversizedUndividedRoomVerifier, campaign).reduce(
-    (fixed, { issueData }) =>
-      oversizedUndividedRoomVerifier.fix(fixed, issueData),
+  runCheck(subRoomsFitFloorVerifier, campaign).reduce(
+    (fixed, { issueData }) => subRoomsFitFloorVerifier.fix(fixed, issueData),
     campaign,
   );
 
@@ -33,7 +32,7 @@ test.for([
   const roomA = newRoom("roomA", { size });
 
   expect(
-    runCheck(oversizedUndividedRoomVerifier, campaignOf({ roomA })).map(
+    runCheck(subRoomsFitFloorVerifier, campaignOf({ roomA })).map(
       ({ roomId, fixable }) => ({ roomId, fixable }),
     ),
   ).toEqual([{ roomId: "roomA", fixable: true }]);
@@ -42,9 +41,7 @@ test.for([
 test("accepts a 12×12 room as one map cell", () => {
   const roomA = newRoom("roomA", { size: { x: 12, y: 12 } });
 
-  expect(
-    runCheck(oversizedUndividedRoomVerifier, campaignOf({ roomA })),
-  ).toEqual([]);
+  expect(runCheck(subRoomsFitFloorVerifier, campaignOf({ roomA }))).toEqual([]);
 });
 
 test("flags an oversized room with only a whole-room sub-room", () => {
@@ -52,7 +49,7 @@ test("flags an oversized room with only a whole-room sub-room", () => {
   setWholeRoomCell(roomA, { above: { room: "roomB" } });
 
   expect(
-    runCheck(oversizedUndividedRoomVerifier, campaignOf({ roomA })),
+    runCheck(subRoomsFitFloorVerifier, campaignOf({ roomA })),
   ).toHaveLength(1);
 });
 
@@ -64,9 +61,7 @@ test("ignores an oversized room that is already divided", () => {
     ],
   });
 
-  expect(
-    runCheck(oversizedUndividedRoomVerifier, campaignOf({ roomA })),
-  ).toEqual([]);
+  expect(runCheck(subRoomsFitFloorVerifier, campaignOf({ roomA }))).toEqual([]);
 });
 
 test("fix divides a 14×8 room into two side-by-side sub-rooms", () => {
@@ -119,7 +114,7 @@ test("fix leaves nothing for the check to flag", () => {
   const roomA = newRoom("roomA", { size: { x: 14, y: 25 } });
 
   expect(
-    runCheck(oversizedUndividedRoomVerifier, fixAll(campaignOf({ roomA }))),
+    runCheck(subRoomsFitFloorVerifier, fixAll(campaignOf({ roomA }))),
   ).toEqual([]);
 });
 
@@ -167,7 +162,6 @@ const twoWideRoomsJoinedByTwoDoors = () => {
 };
 
 test.for<[string, CampaignVerifier<unknown>]>([
-  ["sub-room floor coverage", subRoomFloorCoverageVerifier],
   ["sub-room adjacency", subRoomAdjacencyVerifier],
   ["sub-room inverted extent", subRoomInvertedExtentVerifier],
   ["map geometry", mapGeometryVerifier],
@@ -175,4 +169,88 @@ test.for<[string, CampaignVerifier<unknown>]>([
   expect(runCheck(verifier, fixAll(twoWideRoomsJoinedByTwoDoors()))).toEqual(
     [],
   );
+});
+
+test("flags floor squares left outside every sub-room, once per room", () => {
+  const roomA = newRoom("roomA", {
+    gridPositions: [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+    ],
+  });
+  // shrink the first cell so squares x=4..7 fall outside both cells
+  setSubRoomCell(roomA, "0", {
+    physicalPosition: { from: { x: 0, y: 0 }, to: { x: 4, y: 8 } },
+  });
+
+  expect(
+    runCheck(subRoomsFitFloorVerifier, campaignOf({ roomA })).map(
+      ({ severity, roomId, fixable }) => ({ severity, roomId, fixable }),
+    ),
+  ).toEqual([{ severity: "warning", roomId: "roomA", fixable: true }]);
+});
+
+test("fix divides the floor afresh between sub-rooms that form a grid, keeping their links", () => {
+  const roomA = newRoom("roomA", {
+    gridPositions: [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+    ],
+  });
+  setSubRoomCell(roomA, "0", {
+    physicalPosition: { from: { x: 0, y: 0 }, to: { x: 4, y: 8 } },
+    above: { room: "roomB" as VerificationRoomId },
+  });
+
+  expect(subRoomById(fixAll(campaignOf({ roomA })).rooms.roomA, "0")).toEqual({
+    gridPosition: { x: 0, y: 0 },
+    physicalPosition: { from: { x: 0, y: 0 }, to: { x: 8, y: 8 } },
+    above: { room: "roomB" },
+  });
+});
+
+test("fix leaves no floor outside the sub-rooms", () => {
+  const roomA = newRoom("roomA", {
+    gridPositions: [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+    ],
+  });
+  setSubRoomCell(roomA, "0", {
+    physicalPosition: { from: { x: 0, y: 0 }, to: { x: 4, y: 8 } },
+  });
+
+  expect(
+    runCheck(subRoomsFitFloorVerifier, fixAll(campaignOf({ roomA }))),
+  ).toEqual([]);
+});
+
+test("can't fix floor outside sub-rooms that aren't a grid of the size the floor needs", () => {
+  const roomA = newRoom("roomA", {
+    gridPositions: [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 0, y: 1 },
+    ],
+  });
+  setSubRoomCell(roomA, "0", {
+    physicalPosition: { from: { x: 0, y: 0 }, to: { x: 4, y: 8 } },
+  });
+
+  expect(
+    runCheck(subRoomsFitFloorVerifier, campaignOf({ roomA })).map(
+      ({ fixable }) => fixable,
+    ),
+  ).toEqual([false]);
+});
+
+test("accepts a divided room whose sub-rooms cover the whole floor", () => {
+  const roomA = newRoom("roomA", {
+    gridPositions: [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+    ],
+  });
+
+  expect(runCheck(subRoomsFitFloorVerifier, campaignOf({ roomA }))).toEqual([]);
 });

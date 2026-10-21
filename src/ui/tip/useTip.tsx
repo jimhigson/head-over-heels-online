@@ -1,7 +1,9 @@
 import { type ComponentChildren, type VNode } from "preact";
-import { useId } from "preact/hooks";
+import { useState } from "preact/hooks";
 
 import { Tip } from "./Tip";
+
+let tipCount = 0;
 
 export type UseTipOptions = {
   /** see {@link TipProps#svgInvoker} */
@@ -26,7 +28,9 @@ export const useTip = (
   content: ComponentChildren,
   { svgInvoker }: UseTipOptions = {},
 ): UseTipReturn => {
-  const id = useId();
+  // unique across render roots: useId's ids repeat in each separately
+  // rendered root (eg dialogs shown from outside the component tree)
+  const [id] = useState(() => `tip-${++tipCount}`);
 
   return !content ?
       { interestfor: undefined, tip: null }

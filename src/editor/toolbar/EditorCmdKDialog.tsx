@@ -1,3 +1,5 @@
+import { useState } from "preact/hooks";
+
 import { editorStore, store, useEditorAppSelector } from "../../store/store";
 import { Border } from "../../ui/Border";
 import { Dialog } from "../../ui/Dialog";
@@ -9,6 +11,7 @@ import {
   type EditorCommandDefinition,
   resolveCommandDefinition,
 } from "../commands/EditorCommand";
+import { roomCommandDefinitions } from "../commands/roomCommandDefinitions";
 import { runCommand } from "../commands/runCommand";
 import { selectCommandIsAvailable } from "../commands/selectCommandIsAvailable";
 import { selectCmdKSearch, setCmdKSearch } from "../slice/levelEditorSlice";
@@ -40,6 +43,11 @@ export type EditorCmdKDialogProps = {
  */
 export const EditorCmdKDialog = ({ onClose }: EditorCmdKDialogProps) => {
   const search = useEditorAppSelector(selectCmdKSearch);
+  // the rooms can't change while the palette is open:
+  const [commandAndRoomDefinitions] = useState(() => ({
+    ...commandDefinitions,
+    ...roomCommandDefinitions(editorStore.getState()),
+  }));
 
   return (
     <DialogPortal>
@@ -48,9 +56,9 @@ export const EditorCmdKDialog = ({ onClose }: EditorCmdKDialogProps) => {
       <div class="contents no-keyboard-shortcuts">
         <Dialog wide class="scale-editor p-1 bg-metallicBlueHalfbrite">
           <CmdKContents
-            commandDefinitions={commandDefinitions}
+            commandDefinitions={commandAndRoomDefinitions}
             resolveEntry={resolveEntryForEditor}
-            placeholder="Search items and commands..."
+            placeholder="Search items, commands and rooms..."
             onSelect={(command) => {
               onClose();
               runCommand(command);

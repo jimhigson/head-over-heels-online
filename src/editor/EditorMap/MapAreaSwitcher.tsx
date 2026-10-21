@@ -1,7 +1,15 @@
-import { lowestRoomIdOfArea } from "../../game/components/dialogs/menuDialog/dialogs/map/lowestRoomIdOfArea";
+import { memo } from "preact/compat";
+
 import { type MapArea } from "../../game/components/dialogs/menuDialog/dialogs/map/MapData";
-import { Button } from "../../ui/Button";
+import { useEditorAppSelector } from "../../store/store";
+import { RoomSelect } from "../../ui/RoomSelect";
 import { type EditorRoomId } from "../editorTypes";
+import { buttonSmallHeightClassNames } from "../toolbar/buttonSizeClassNames";
+import {
+  selectEditorMapAreaFirstRoomHues,
+  selectEditorMapAreaLabels,
+  selectEditorMapAreaRoomCounts,
+} from "./useEditorMapData";
 
 export type MapAreaSwitcherProps = {
   areas: ReadonlyArray<MapArea<EditorRoomId>>;
@@ -11,40 +19,47 @@ export type MapAreaSwitcherProps = {
 };
 
 /**
- * < and > buttons for paging between the map's areas, which aren't positioned
- * relative to each other. Hidden when there is only one area
+ * chooses an area of the map by name - the areas' names are selected on
+ * their own, so this doesn't re-render for edits that leave them
+ */
+const MapAreaSelect = memo(
+  ({ shownAreaFirstRoomId, onSwitchToRoom }: MapAreaSelectProps) => {
+    const areaLabels = useEditorAppSelector(selectEditorMapAreaLabels);
+    const areaRoomCounts = useEditorAppSelector(selectEditorMapAreaRoomCounts);
+    return (
+      <RoomSelect<EditorRoomId>
+        roomHues={useEditorAppSelector(selectEditorMapAreaFirstRoomHues)}
+        roomLabel={(roomId) => areaLabels[roomId] ?? roomId}
+        roomDetail={(roomId) => areaRoomCounts[roomId]}
+        withoutSearch
+        value={shownAreaFirstRoomId}
+        onSelect={onSwitchToRoom}
+        triggerButtonClassName={`px-1 ${buttonSmallHeightClassNames}`}
+        tooltipContent="Go to an unconnected area of the map"
+      />
+    );
+  },
+);
+
+export type MapAreaSelectProps = {
+  shownAreaFirstRoomId: EditorRoomId;
+  onSwitchToRoom: MapAreaSwitcherProps["onSwitchToRoom"];
+};
+
+/**
+ * chooses between the map's areas, which aren't positioned relative to each
+ * other. Hidden when there is only one area
  */
 export const MapAreaSwitcher = ({
   areas,
   shownAreaIndex,
   onSwitchToRoom,
-}: MapAreaSwitcherProps) => {
-  if (areas.length < 2) {
-    return null;
-  }
-
-  const switchBy = (delta: -1 | 1) => {
-    const area = areas[(shownAreaIndex + delta + areas.length) % areas.length];
-    onSwitchToRoom(lowestRoomIdOfArea(area.gridPositions));
-  };
-
-  return (
-    <div class="absolute bottom-1 right-1 z-10 flex text-white">
-      <Button
-        class="px-1 py-half"
-        onClick={() => switchBy(-1)}
-        tooltipContent="Previous unconnected area of the map"
-      >
-        <span class="text-single-line">{"<"}</span>
-      </Button>
-      <span class="px-1 bg-shadow items-center flex self-stretch text-single-line pt-oneScaledPix whitespace-pre">{`${shownAreaIndex + 1}/${areas.length}`}</span>
-      <Button
-        class="px-1 py-half"
-        onClick={() => switchBy(1)}
-        tooltipContent="Next unconnected area of the map"
-      >
-        <span class="text-single-line">{">"}</span>
-      </Button>
-    </div>
-  );
-};
+}: MapAreaSwitcherProps) =>
+  areas.length < 2 ?
+    null
+  : <div class="z-10 flex leading-none text-white pointer-events-auto">
+      <MapAreaSelect
+        shownAreaFirstRoomId={areas[shownAreaIndex].firstRoomId}
+        onSwitchToRoom={onSwitchToRoom}
+      />
+    </div>;

@@ -1,12 +1,12 @@
 import { produce } from "immer";
 
-import { partnerDoorSubRoomId } from "../../../map/partnerDoorSubRoomId";
-import { isWholeRoomSubRooms } from "../../../RoomJson";
-import { exitGameRoomId } from "../../ItemConfigMap";
-import { type CampaignVerifier } from "../CampaignVerification";
-import { allDoors, type DoorRef } from "../helpers/doorPartner";
 import {
-  type VerificationCampaign,
+  dropRedundantToSubRoomInPlace,
+  toSubRoomRedundancy,
+} from "../../../map/toSubRoomRedundancy";
+import { type CampaignVerifier } from "../CampaignVerification";
+import { allDoors } from "../helpers/doorPartner";
+import {
   type VerificationRoomId,
   type VerificationRoomItemId,
 } from "../verificationTypes";
@@ -14,33 +14,6 @@ import {
 type RedundantToSubRoom = {
   roomId: VerificationRoomId;
   doorId: VerificationRoomItemId;
-};
-
-type RedundancyReason = "inferable" | "undivided";
-
-/** why a door's `toSubRoom` is redundant, or undefined when it isn't */
-const redundancyReason = (
-  campaign: VerificationCampaign,
-  { roomId, door }: DoorRef,
-): RedundancyReason | undefined => {
-  const { toRoom } = door.config;
-  const toSubRoom = door.config.meta?.toSubRoom;
-  if (
-    toSubRoom === undefined ||
-    toRoom === exitGameRoomId ||
-    !(toRoom in campaign.rooms)
-  ) {
-    return undefined;
-  }
-  const subRooms = campaign.rooms[toRoom].meta?.subRooms;
-  if (subRooms === undefined || isWholeRoomSubRooms(subRooms)) {
-    return "undivided";
-  }
-  return (
-      partnerDoorSubRoomId(campaign.rooms, roomId, door, toRoom) === toSubRoom
-    ) ?
-      "inferable"
-    : undefined;
 };
 
 /**
@@ -52,11 +25,11 @@ export const redundantToSubRoomVerifier: CampaignVerifier<RedundantToSubRoom> =
     name: "Redundant property on door.config: `toSubRoom`",
     *check(campaign) {
       for (const doorRef of allDoors(campaign)) {
-        const reason = redundancyReason(campaign, doorRef);
+        const { roomId, doorId, door } = doorRef;
+        const reason = toSubRoomRedundancy(campaign.rooms, roomId, door);
         if (reason === undefined) {
           continue;
         }
-        const { roomId, doorId, door } = doorRef;
         const { toRoom } = door.config;
         const toSubRoom = door.config.meta?.toSubRoom;
         yield {
@@ -78,7 +51,7 @@ export const redundantToSubRoomVerifier: CampaignVerifier<RedundantToSubRoom> =
       const door = campaign.rooms[roomId].items[doorId];
       if (
         door.type !== "door" ||
-        redundancyReason(campaign, { roomId, doorId, door }) === undefined
+        toSubRoomRedundancy(campaign.rooms, roomId, door) === undefined
       ) {
         throw new Error(
           `cannot auto-fix toSubRoom on door ‘${doorId}’ in ‘${roomId}’: it isn't redundant`,
@@ -86,11 +59,8 @@ export const redundantToSubRoomVerifier: CampaignVerifier<RedundantToSubRoom> =
       }
       return produce(campaign, (draft) => {
         const draftDoor = draft.rooms[roomId].items[doorId];
-        if (draftDoor.type === "door" && draftDoor.config.meta !== undefined) {
-          delete draftDoor.config.meta.toSubRoom;
-          if (Object.keys(draftDoor.config.meta).length === 0) {
-            delete draftDoor.config.meta;
-          }
+        if (draftDoor.type === "door") {
+          dropRedundantToSubRoomInPlace(draft.rooms, roomId, draftDoor);
         }
       });
     },

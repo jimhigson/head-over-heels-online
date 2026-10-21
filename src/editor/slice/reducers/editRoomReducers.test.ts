@@ -1,16 +1,21 @@
 import { produce } from "immer";
 import { describe, expect, test } from "vitest";
 
+import { createNewRoom } from "../../../model/inPlaceMutators/createNewRoom";
 import { nowhereRoomId } from "../../../model/json/ItemConfigMap";
+import { type VerificationCampaign } from "../../../model/json/verification/verificationTypes";
+import { verifyCampaign } from "../../../model/json/verification/verifyCampaign";
 import {
   roomNonContiguousRelationship,
   roomVerticalLink,
+  subRoomById,
   type SubRooms,
 } from "../../../model/RoomJson";
 import {
   iterateRoomJsonItemsWithIds,
   roomJsonItemsIterable,
 } from "../../../model/RoomJsonItemIterators";
+import { keys } from "../../../utils/entries";
 import {
   type EditorJsonItem,
   type EditorJsonItemUnion,
@@ -31,6 +36,7 @@ import {
   applyItemTool,
   deleteSelected,
   type LevelEditorState,
+  makeHoleInSelectedFloor,
   roomJsonEdited,
   selectCurrentCommittedRoomJson,
   setRoomAboveOrBelow,
@@ -890,5 +896,243 @@ describe("undo descriptions for JSON edits", () => {
 
     const [{ description }] = result.history[testRoomId]!.undo;
     expect(description).toEqual({ kind: "editRoomJson" });
+  });
+});
+
+describe("makeHoleInSelectedFloor", () => {
+  const floorId = "f" as EditorRoomItemId;
+  const stateWithSelectedFloor: LevelEditorState = produce(
+    editorStateWithOneRoomWithNoItems,
+    (draft) => {
+      draft.campaignInProgress.rooms[testRoomId].items[floorId] = {
+        type: "floor",
+        position: { x: 0, y: 0, z: 0 },
+        config: {
+          floorType: "standable",
+          scenery: "blacktooth",
+          times: { x: 6, y: 7 },
+        },
+      };
+      draft.selectedJsonItemIdsByRoom[testRoomId] = [floorId];
+    },
+  );
+
+  test("splits the floor into a 2×2 'none' floor at its centre and the floors around it", () => {
+    const result = reduceLevelEditorActions(
+      stateWithSelectedFloor,
+      makeHoleInSelectedFloor({ timestamp: 0 }),
+    );
+
+    const floors = roomJsonItemsIterable(
+      result.campaignInProgress.rooms[testRoomId],
+    )
+      .filter((item) => item.type === "floor")
+      .map(({ position, config }) => ({
+        position,
+        times: config.times,
+        floorType: config.floorType,
+      }))
+      .toArray();
+
+    expect(floors).toEqual(
+      expect.arrayContaining([
+        {
+          position: { x: 0, y: 0, z: 0 },
+          times: { x: 6, y: 2 },
+          floorType: "standable",
+        },
+        {
+          position: { x: 0, y: 4, z: 0 },
+          times: { x: 6, y: 3 },
+          floorType: "standable",
+        },
+        {
+          position: { x: 0, y: 2, z: 0 },
+          times: { x: 2, y: 2 },
+          floorType: "standable",
+        },
+        {
+          position: { x: 4, y: 2, z: 0 },
+          times: { x: 2, y: 2 },
+          floorType: "standable",
+        },
+        {
+          position: { x: 2, y: 2, z: 0 },
+          times: { x: 2, y: 2 },
+          floorType: "none",
+        },
+      ]),
+    );
+    expect(floors).toHaveLength(5);
+  });
+
+  test("links a newly created room below, both ways", () => {
+    const result = reduceLevelEditorActions(
+      stateWithSelectedFloor,
+      makeHoleInSelectedFloor({ timestamp: 0 }),
+    );
+
+    const roomBelowId = roomBelowOf(
+      result.campaignInProgress.rooms[testRoomId],
+    )!;
+    expect(roomAboveOf(result.campaignInProgress.rooms[roomBelowId])).toBe(
+      testRoomId,
+    );
+  });
+
+  test("the room created below has a floor the same size as the room", () => {
+    const result = reduceLevelEditorActions(
+      stateWithSelectedFloor,
+      makeHoleInSelectedFloor({ timestamp: 0 }),
+    );
+
+    const roomBelowId = roomBelowOf(
+      result.campaignInProgress.rooms[testRoomId],
+    )!;
+    const floorsBelowTimes = roomJsonItemsIterable(
+      result.campaignInProgress.rooms[roomBelowId],
+    )
+      .filter((item) => item.type === "floor")
+      .map(({ config }) => config.times)
+      .toArray();
+    expect(floorsBelowTimes).toEqual([{ x: 6, y: 7 }]);
+  });
+
+  test("a hole across all four sub-rooms of a divided room links each to the matching sub-room of one room below", () => {
+    const cell = (x: number, y: number) => ({
+      gridPosition: { x, y },
+      physicalPosition: {
+        from: { x: x * 8, y: y * 8 },
+        to: { x: (x + 1) * 8, y: (y + 1) * 8 },
+      },
+    });
+    const stateWithDividedRoom: LevelEditorState = produce(
+      editorStateWithOneRoomWithNoItems,
+      (draft) => {
+        const room = draft.campaignInProgress.rooms[testRoomId];
+        room.items[floorId] = {
+          type: "floor",
+          position: { x: -8, y: -8, z: 0 },
+          config: {
+            floorType: "standable",
+            scenery: "blacktooth",
+            times: { x: 16, y: 16 },
+          },
+        };
+        room.meta = {
+          subRooms: {
+            a: cell(-1, -1),
+            b: cell(0, -1),
+            c: cell(-1, 0),
+            d: cell(0, 0),
+          },
+        };
+        draft.cursorRoom = { roomId: testRoomId, subRoomId: "a" };
+        draft.selectedJsonItemIdsByRoom[testRoomId] = [floorId];
+      },
+    );
+
+    const result = reduceLevelEditorActions(
+      stateWithDividedRoom,
+      makeHoleInSelectedFloor({ timestamp: 0 }),
+    );
+
+    const room = result.campaignInProgress.rooms[testRoomId];
+    const linkedBelow = ["a", "b", "c", "d"].map((subRoomId) => {
+      const below = roomVerticalLink(room, "below", subRoomId)!;
+      const roomBelow = result.campaignInProgress.rooms[below.room];
+      return {
+        room: below.room,
+        gridPosition: subRoomById(roomBelow, below.subRoom!)?.gridPosition,
+      };
+    });
+    const [{ room: roomBelowId }] = linkedBelow;
+    expect(linkedBelow).toEqual([
+      { room: roomBelowId, gridPosition: { x: 0, y: 0 } },
+      { room: roomBelowId, gridPosition: { x: 1, y: 0 } },
+      { room: roomBelowId, gridPosition: { x: 0, y: 1 } },
+      { room: roomBelowId, gridPosition: { x: 1, y: 1 } },
+    ]);
+  });
+
+  test("keeps an existing room below rather than creating another", () => {
+    const roomB = "roomB" as EditorRoomId;
+    const stateWithRoomBelow: LevelEditorState = produce(
+      stateWithSelectedFloor,
+      (draft) => {
+        draft.campaignInProgress.rooms[roomB] = {
+          id: roomB,
+          planet: "blacktooth",
+          color: { hue: "cyan", shade: "basic" },
+          items: {},
+          meta: { subRooms: { "*": { above: { room: testRoomId } } } },
+        };
+        draft.campaignInProgress.rooms[testRoomId].meta = {
+          subRooms: { "*": { below: { room: roomB } } },
+        };
+      },
+    );
+
+    const result = reduceLevelEditorActions(
+      stateWithRoomBelow,
+      makeHoleInSelectedFloor({ timestamp: 0 }),
+    );
+
+    expect(keys(result.campaignInProgress.rooms)).toEqual([testRoomId, roomB]);
+  });
+});
+
+describe("makeHoleInSelectedFloor leaves the campaign without verification issues", () => {
+  test.for([
+    { roomShape: "undivided", gridPositions: [{ x: 0, y: 0 }] },
+    {
+      roomShape: "divided 2×2",
+      gridPositions: [
+        { x: 0, y: 0 },
+        { x: 1, y: 0 },
+        { x: 0, y: 1 },
+        { x: 1, y: 1 },
+      ],
+    },
+  ])("$roomShape room", ({ gridPositions }) => {
+    const roomId = "holed" as EditorRoomId;
+    const room = createNewRoom<EditorRoomId, EditorRoomItemId>(
+      roomId,
+      { x: 8, y: 8 },
+      { hue: "cyan", shade: "basic" },
+      "blacktooth",
+      gridPositions,
+    );
+    const [[floorId]] = iterateRoomJsonItemsWithIds(
+      room.items,
+      "floor",
+    ).toArray();
+    const state0: LevelEditorState = {
+      ...editorStateWithOneRoomWithNoItems,
+      selectedRoomIds: [roomId],
+      cursorRoom: {
+        roomId,
+        subRoomId: Object.keys(room.meta?.subRooms ?? { "*": {} })[0],
+      },
+      openRoomTabs: [{ roomId, isPreview: false, view: undefined }],
+      campaignInProgress: {
+        ...editorStateWithOneRoomWithNoItems.campaignInProgress,
+        rooms: {
+          [roomId]: room,
+        } as LevelEditorState["campaignInProgress"]["rooms"],
+      },
+      selectedJsonItemIdsByRoom: { [roomId]: [floorId] },
+    };
+    const issueMessages = (state: LevelEditorState) =>
+      verifyCampaign(state.campaignInProgress as VerificationCampaign).map(
+        ({ msg }) => msg,
+      );
+    const result = reduceLevelEditorActions(
+      state0,
+      makeHoleInSelectedFloor({ timestamp: 0 }),
+    );
+
+    // only the campaign-wide issues of a one-room campaign, from before:
+    expect(issueMessages(result)).toEqual(issueMessages(state0));
   });
 });
