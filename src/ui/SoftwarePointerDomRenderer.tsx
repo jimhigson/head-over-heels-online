@@ -66,7 +66,9 @@ export const SoftwarePointerDomRenderer = (_emptyProps: EmptyObject) => {
     }
 
     const render = () => {
-      const shown = pointerTracker.shown && !pointerOnTube;
+      // over dom drawn on top of the canvas, the page draws the pointer
+      const shown =
+        pointerTracker.shown && !(pointerOnTube && pointerTracker.overCanvas);
       if (shown) {
         // positioned before being shown, so it cannot appear at a stale position
         applyTransform(
