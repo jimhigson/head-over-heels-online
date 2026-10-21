@@ -33,7 +33,8 @@ import {
 import { type MechanicResult } from "../physics/MechanicResult";
 import {
   blockSizePx,
-  lightBeamCrossSectionPx,
+  lightBeamHeightPx,
+  lightBeamWidthPx,
 } from "../physics/mechanicsConstants";
 import { shadowFullBlock } from "../render/shadows/shadowCastTextures";
 import { getBehaviourForItemTypeAndConfig } from "./attachBehaviourToItem";
@@ -60,23 +61,28 @@ type BeamSegment = {
 };
 
 const beamSegmentAabb = (axis: AxisXy, lengthPx: number): Xyz => ({
-  x: axis === "x" ? lengthPx : lightBeamCrossSectionPx,
-  y: axis === "y" ? lengthPx : lightBeamCrossSectionPx,
-  z: lightBeamCrossSectionPx,
+  x: axis === "x" ? lengthPx : lightBeamWidthPx,
+  y: axis === "y" ? lengthPx : lightBeamWidthPx,
+  z: lightBeamHeightPx,
 });
 
-// the beam's cross-section is a constant 8px wide on each perpendicular axis,
-// so a band is just its min coordinate - its max is min + lightBeamCrossSectionPx
+// the beam's cross-section is constant on each perpendicular axis (its width
+// horizontally, its height in z), so a band is its min coordinate and size
 
 const bandsOverlapStrictly = (
   itemMin: number,
   itemMax: number,
   bandMin: number,
-) => itemMax > bandMin && itemMin < bandMin + lightBeamCrossSectionPx;
+  bandSize: number,
+) => itemMax > bandMin && itemMin < bandMin + bandSize;
 
 /** does the item's extent fully contain the beam's cross-section at bandMin? */
-const containsBand = (itemMin: number, itemMax: number, bandMin: number) =>
-  itemMin <= bandMin && itemMax >= bandMin + lightBeamCrossSectionPx;
+const containsBand = (
+  itemMin: number,
+  itemMax: number,
+  bandMin: number,
+  bandSize: number,
+) => itemMin <= bandMin && itemMax >= bandMin + bandSize;
 
 /** which side a beam turns to when its direction reflects to another */
 const turnOfReflection = (
@@ -114,10 +120,10 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
     const sign = direction[axis];
 
     const sourceBox = source.state.box;
-    // the 8px cross-section, centred in the source's perpendicular footprint:
+    // the cross-section, centred in the source's perpendicular footprint:
     const perpMin: number =
       sourceBox[perpAxis] +
-      (boxSizeOnAxis(sourceBox, perpAxis) - lightBeamCrossSectionPx) / 2;
+      (boxSizeOnAxis(sourceBox, perpAxis) - lightBeamWidthPx) / 2;
 
     const startPlane =
       sign > 0 ? boxMaxOnAxis(sourceBox, axis) : sourceBox[axis];
@@ -143,9 +149,9 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
           index.worldXToCellX(world)
         : index.worldYToCellY(world);
 
-      // the 8px-wide beam straddles at most two perpendicular cells:
+      // the beam is no wider than a cell, so straddles at most two perpendicular cells:
       const perpCellLo = toPerpCell(perpMin);
-      const perpCellHi = toPerpCell(perpMin + lightBeamCrossSectionPx);
+      const perpCellHi = toPerpCell(perpMin + lightBeamWidthPx);
 
       const startCell = toAlongCell(startPlane);
       // bound the walk: never past the index's occupied extent on this axis,
@@ -207,8 +213,14 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
                 itemBox[perpAxis],
                 boxMaxOnAxis(itemBox, perpAxis),
                 perpMin,
+                lightBeamWidthPx,
               ) ||
-              !bandsOverlapStrictly(itemBox.z, itemBox.z + itemBox.zd, zMin)
+              !bandsOverlapStrictly(
+                itemBox.z,
+                itemBox.z + itemBox.zd,
+                zMin,
+                lightBeamHeightPx,
+              )
             ) {
               continue;
             }
@@ -250,11 +262,13 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
           nearestBlocker.state.box[perpAxis],
           boxMaxOnAxis(nearestBlocker.state.box, perpAxis),
           perpMin,
+          lightBeamWidthPx,
         ) &&
         containsBand(
           nearestBlocker.state.box.z,
           nearestBlocker.state.box.z + nearestBlocker.state.box.zd,
           zMin,
+          lightBeamHeightPx,
         )
       ) ?
         nearestBlocker

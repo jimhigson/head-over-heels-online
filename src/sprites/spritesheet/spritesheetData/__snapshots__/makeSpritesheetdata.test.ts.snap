@@ -8612,48 +8612,136 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
   },
   "lightBeam.1": {
     "frame": {
-      "h": 16,
-      "w": 16,
+      "h": 20,
+      "w": 24,
       "x": 114,
+      "y": 885,
+    },
+  },
+  "lightBeam.10": {
+    "frame": {
+      "h": 20,
+      "w": 24,
+      "x": 339,
+      "y": 885,
+    },
+  },
+  "lightBeam.11": {
+    "frame": {
+      "h": 20,
+      "w": 24,
+      "x": 364,
+      "y": 885,
+    },
+  },
+  "lightBeam.12": {
+    "frame": {
+      "h": 20,
+      "w": 24,
+      "x": 389,
+      "y": 885,
+    },
+  },
+  "lightBeam.13": {
+    "frame": {
+      "h": 20,
+      "w": 24,
+      "x": 414,
+      "y": 885,
+    },
+  },
+  "lightBeam.14": {
+    "frame": {
+      "h": 20,
+      "w": 24,
+      "x": 439,
+      "y": 885,
+    },
+  },
+  "lightBeam.15": {
+    "frame": {
+      "h": 20,
+      "w": 24,
+      "x": 464,
+      "y": 885,
+    },
+  },
+  "lightBeam.16": {
+    "frame": {
+      "h": 20,
+      "w": 24,
+      "x": 489,
       "y": 885,
     },
   },
   "lightBeam.2": {
     "frame": {
-      "h": 16,
-      "w": 16,
-      "x": 131,
+      "h": 20,
+      "w": 24,
+      "x": 139,
       "y": 885,
     },
   },
   "lightBeam.3": {
     "frame": {
-      "h": 16,
-      "w": 16,
-      "x": 148,
+      "h": 20,
+      "w": 24,
+      "x": 164,
       "y": 885,
     },
   },
   "lightBeam.4": {
     "frame": {
-      "h": 16,
-      "w": 16,
-      "x": 165,
+      "h": 20,
+      "w": 24,
+      "x": 189,
       "y": 885,
     },
   },
   "lightBeam.5": {
     "frame": {
-      "h": 16,
-      "w": 16,
-      "x": 182,
+      "h": 20,
+      "w": 24,
+      "x": 214,
+      "y": 885,
+    },
+  },
+  "lightBeam.6": {
+    "frame": {
+      "h": 20,
+      "w": 24,
+      "x": 239,
+      "y": 885,
+    },
+  },
+  "lightBeam.7": {
+    "frame": {
+      "h": 20,
+      "w": 24,
+      "x": 264,
+      "y": 885,
+    },
+  },
+  "lightBeam.8": {
+    "frame": {
+      "h": 20,
+      "w": 24,
+      "x": 289,
+      "y": 885,
+    },
+  },
+  "lightBeam.9": {
+    "frame": {
+      "h": 20,
+      "w": 24,
+      "x": 314,
       "y": 885,
     },
   },
   "lightBeam.terminus.1": {
     "frame": {
       "h": 16,
-      "w": 16,
+      "w": 20,
       "x": 114,
       "y": 868,
     },
@@ -8661,8 +8749,8 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
   "lightBeam.terminus.2": {
     "frame": {
       "h": 16,
-      "w": 16,
-      "x": 131,
+      "w": 20,
+      "x": 135,
       "y": 868,
     },
   },
@@ -12365,6 +12453,17 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "lightBeam.3",
     "lightBeam.4",
     "lightBeam.5",
+    "lightBeam.6",
+    "lightBeam.7",
+    "lightBeam.8",
+    "lightBeam.9",
+    "lightBeam.10",
+    "lightBeam.11",
+    "lightBeam.12",
+    "lightBeam.13",
+    "lightBeam.14",
+    "lightBeam.15",
+    "lightBeam.16",
   ],
   "lightBeam.terminus": [
     "lightBeam.terminus.1",

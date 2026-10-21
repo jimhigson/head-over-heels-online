@@ -19,9 +19,9 @@ beforeEach(() => {
 
 /**
  * most tests shine a lamp from block (1,1) in the "left" (+x) direction.
- * The lamp is a full block, so the beam starts at x=32. The beam's square
- * cross-section is 8px, centred in the lamp's footprint (y 20..28) and
- * lifted 2px off the lamp's base (z 2..10)
+ * The lamp is a full block, so the beam starts at x=32. The beam's
+ * cross-section is 16px wide, filling the lamp's footprint (y 16..32), and 8px
+ * high, lifted 2px off the lamp's base (z 2..10)
  */
 const lampAtOneOne = (activated: boolean): ItemsInTestRoomJson => ({
   lamp1: {
@@ -62,7 +62,7 @@ test("a lamp shines a beam to the room wall", () => {
 
   playGameThrough(gameState, { until: 200 });
 
-  // the (8x8-section) beam runs from the lamp's face at x=32 to the room's
+  // the (16x8-section) beam runs from the lamp's face at x=32 to the room's
   // left wall at x=128, where its energy dissipates:
   const beams = beamsInRoom(gameState);
   expect(beams).toHaveLength(1);
@@ -77,7 +77,7 @@ test("a lamp shines a beam to the room wall", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 32, y: 20, z: 2, xd: 96, yd: 8, zd: 8 },
+        box: { x: 32, y: 16, z: 2, xd: 96, yd: 16, zd: 8 },
         end: "terminus",
       }),
     }),
@@ -108,7 +108,7 @@ test("the beam is cast on room load, before any game time has passed", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 32, y: 20, z: 2, xd: 96, yd: 8, zd: 8 },
+        box: { x: 32, y: 16, z: 2, xd: 96, yd: 16, zd: 8 },
         end: "terminus",
       }),
     }),
@@ -149,7 +149,7 @@ test("a solid block stops the beam", () => {
   expect(beams).toContainEqual(
     expect.objectContaining({
       state: expect.objectContaining({
-        box: expect.objectContaining({ xd: 48, yd: 8, zd: 8 }),
+        box: expect.objectContaining({ xd: 48, yd: 16, zd: 8 }),
       }),
     }),
   );
@@ -174,7 +174,7 @@ test("the player's body blocks the beam, harmlessly", () => {
       state: expect.objectContaining({
         box: expect.objectContaining({
           xd: heelsState(gameState).box.x - 32,
-          yd: 8,
+          yd: 16,
           zd: 8,
         }),
       }),
@@ -203,7 +203,7 @@ test("a mirror reflects the beam 90° towards away", () => {
   const beams = beamsInRoom(gameState);
   expect(beams).toHaveLength(2);
   // the reflected beam leaves the mirror's away face at y=32, centred in the
-  // mirror's footprint (x 84..92), and runs to the away wall at y=128:
+  // mirror's footprint (x 80..96), and runs to the away wall at y=128:
   expect(beams).toContainEqual(
     expect.objectContaining({
       config: {
@@ -215,7 +215,7 @@ test("a mirror reflects the beam 90° towards away", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 84, y: 32, z: 2, xd: 8, yd: 96, zd: 8 },
+        box: { x: 80, y: 32, z: 2, xd: 16, yd: 96, zd: 8 },
         end: "terminus",
       }),
     }),
@@ -234,7 +234,7 @@ test("a mirror reflects the beam 90° towards away", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 32, y: 20, z: 2, xd: 48, yd: 8, zd: 8 },
+        box: { x: 32, y: 16, z: 2, xd: 48, yd: 16, zd: 8 },
         end: "reflect-left",
       }),
     }),
@@ -271,7 +271,7 @@ test("a mirror in the other orientation reflects the beam towards the camera", (
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 32, y: 20, z: 2, xd: 48, yd: 8, zd: 8 },
+        box: { x: 32, y: 16, z: 2, xd: 48, yd: 16, zd: 8 },
         end: "reflect-right",
       }),
     }),
@@ -288,7 +288,7 @@ test("a mirror in the other orientation reflects the beam towards the camera", (
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 84, y: 0, z: 2, xd: 8, yd: 16, zd: 8 },
+        box: { x: 80, y: 0, z: 2, xd: 16, yd: 16, zd: 8 },
         end: "terminus",
       }),
     }),
@@ -330,7 +330,7 @@ test("two mirrors chain the beam through multiple reflections", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 84, y: 32, z: 2, xd: 8, yd: 32, zd: 8 },
+        box: { x: 80, y: 32, z: 2, xd: 16, yd: 32, zd: 8 },
         end: "reflect-left",
       }),
     }),
@@ -347,7 +347,7 @@ test("two mirrors chain the beam through multiple reflections", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 32, y: 20, z: 2, xd: 48, yd: 8, zd: 8 },
+        box: { x: 32, y: 16, z: 2, xd: 48, yd: 16, zd: 8 },
         end: "reflect-left",
       }),
     }),
@@ -365,7 +365,7 @@ test("two mirrors chain the beam through multiple reflections", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 0, y: 68, z: 2, xd: 80, yd: 8, zd: 8 },
+        box: { x: 0, y: 64, z: 2, xd: 80, yd: 16, zd: 8 },
         end: "terminus",
       }),
     }),
@@ -420,7 +420,7 @@ test("colliding with a mirror rotates it, re-routing the light", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 32, y: 20, z: 2, xd: 48, yd: 8, zd: 8 },
+        box: { x: 32, y: 16, z: 2, xd: 48, yd: 16, zd: 8 },
         end: "reflect-right",
       }),
     }),
@@ -436,7 +436,7 @@ test("colliding with a mirror rotates it, re-routing the light", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 84, y: 0, z: 2, xd: 8, yd: 16, zd: 8 },
+        box: { x: 80, y: 0, z: 2, xd: 16, yd: 16, zd: 8 },
         end: "terminus",
       }),
     }),
@@ -885,7 +885,7 @@ test("a monster partly in a beam slides out of it, and the beam reaches the wall
       // starts overlapping the beam's row, walking towards the block and lamp:
       skiHead: {
         type: "monster",
-        position: { x: 3.625, y: 6.625, z: 0 },
+        position: { x: 3.625, y: 6.375, z: 0 },
         config: {
           which: "skiHead",
           style: "greenAndPink",
