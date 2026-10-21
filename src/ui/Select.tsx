@@ -1,8 +1,9 @@
 import { type ComponentChildren } from "preact";
 import { type CSSProperties, type FC } from "preact/compat";
-import { useId, useRef, useState } from "preact/hooks";
+import { useRef, useState } from "preact/hooks";
 
 import { emptyObject } from "../utils/empty";
+import { useUniqueId } from "../utils/preact/useUniqueId";
 import { Button } from "./Button";
 import { cn } from "./cn";
 import { Command } from "./command/Command";
@@ -12,12 +13,16 @@ import { CommandInput } from "./command/CommandInput";
 import { CommandItem } from "./command/CommandItem";
 import { CommandList } from "./command/CommandList";
 import { CommandMatch } from "./command/CommandMatch";
+import { CurrentMarker } from "./CurrentMarker";
 import { PopoverPanel } from "./PopoverPanel";
 import { useMouseWheelOptions } from "./useMouseWheel";
 
 type OptionCommandItemComponent<Value extends string> = FC<{
   itemValue: Value;
-  currentValue: undefined | Value;
+  /**
+   * whether this option is the select's value
+   */
+  isCurrent: boolean;
   onSelect: (value: string) => void;
   valueDisplayFormat?: (value: Value) => string;
 }>;
@@ -45,11 +50,13 @@ export type SelectProps<Value extends string> = {
 
 const DefaultOptionCommandItem: OptionCommandItemComponent<string> = ({
   itemValue: value,
+  isCurrent,
   onSelect,
   valueDisplayFormat = (value) => value,
 }) => {
   return (
     <CommandItem value={value} onSelect={onSelect} class="px-1">
+      <CurrentMarker isCurrent={isCurrent} />
       <CommandMatch text={valueDisplayFormat(value)} />
     </CommandItem>
   );
@@ -69,7 +76,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
   } = props;
 
   const [open, setOpen] = useState(false);
-  const popoverId = useId();
+  const popoverId = useUniqueId();
 
   const wheelElementRef = useRef<HTMLButtonElement | null>(null);
   useMouseWheelOptions(
@@ -114,7 +121,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
                 <OptionCommandItem
                   key={itemValue}
                   itemValue={itemValue}
-                  currentValue={value}
+                  isCurrent={itemValue === value}
                   onSelect={(newValue) => {
                     setOpen(false);
                     onSelect(newValue as Value);

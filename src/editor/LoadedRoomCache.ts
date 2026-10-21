@@ -8,7 +8,7 @@ import {
   roomJsonItemsIterable,
 } from "../model/RoomJsonItemIterators";
 import { errorCaught } from "../store/slices/errors/errorsSlice";
-import { type EditorAppStore } from "../store/store";
+import { type EditorAppStore, type EditorRootState } from "../store/store";
 import { createSerialisableErrors } from "../utils/redux/createSerialisableErrors";
 import {
   type EditorJsonItemUnion,
@@ -18,9 +18,22 @@ import {
   type EditorRoomState,
   type EditorUnionOfAllItemInPlayTypes,
 } from "./editorTypes";
-import { selectCurrentEditingRoomJsonWithPreviews } from "./slice/levelEditorSelectors";
-import { selectCurrentCommittedRoomJson } from "./slice/levelEditorSlice";
 import { loadEditorRoom } from "./slice/loadEditorRoom";
+
+/**
+ * which room json a {@link LoadedRoomCache} follows. Both must be caching
+ * selectors - a changed identity is taken to mean a changed room
+ */
+export type LoadedRoomJsonSelectors = {
+  /**
+   * the json to load, previews included
+   */
+  selectRoomJsonWithPreviews: (state: EditorRootState) => EditorRoomJson;
+  /**
+   * the committed json of the same room
+   */
+  selectCommittedRoomJson: (state: EditorRootState) => EditorRoomJson;
+};
 
 type LoadedRoom = {
   /**
@@ -46,7 +59,7 @@ type LoadedRoom = {
  * they all see the same items (by identity, not just by id), which is what
  * makes the renderer's render boxes usable outside the renderer.
  *
- * It follows the store from its creation: patched in place for edits and
+ * It follows the store from its creation until it is disposed: patched in place for edits and
  * previews (much cheaper than reloading), and reloaded when the room changes or
  * edits are committed. Redux tells its subscribers before a dispatch returns,
  * so it is up to date for any code that reads it after a dispatch.
@@ -65,20 +78,29 @@ export class LoadedRoomCache {
   #failedRoomJsonWithPreviews: EditorRoomJson | undefined = undefined;
   #revision = 0;
   readonly #store: EditorAppStore;
+  readonly #roomJsonSelectors: LoadedRoomJsonSelectors;
   readonly #listeners = new Set<() => void>();
+  readonly #unsubscribeFromStore: () => void;
 
   constructor(
     /** the store to follow */
     store: EditorAppStore,
+    roomJsonSelectors: LoadedRoomJsonSelectors,
   ) {
     this.#store = store;
+    this.#roomJsonSelectors = roomJsonSelectors;
     const state = store.getState();
     this.#loaded = this.#tryLoad(
-      selectCurrentEditingRoomJsonWithPreviews(state),
-      selectCurrentCommittedRoomJson(state),
+      roomJsonSelectors.selectRoomJsonWithPreviews(state),
+      roomJsonSelectors.selectCommittedRoomJson(state),
     );
-    // the cache lives as long as the store, so never unsubscribes:
-    store.subscribe(() => this.#bringUpToDate());
+    this.#unsubscribeFromStore = store.subscribe(() => this.#bringUpToDate());
+  }
+
+  /** stop following the store */
+  dispose() {
+    this.#unsubscribeFromStore();
+    this.#listeners.clear();
   }
 
   /**
@@ -88,7 +110,7 @@ export class LoadedRoomCache {
   getRoomState = (): EditorRoomState => {
     const maybeLoaded = this.#loaded;
     if (import.meta.env.DEV && maybeLoaded === undefined) {
-      throw new Error("the editor's room was read but had failed to load");
+      throw new Error("a loaded room was read but had failed to load");
     }
     return maybeLoaded!.roomState;
   };
@@ -108,14 +130,15 @@ export class LoadedRoomCache {
   };
 
   /**
-   * make the loaded room match the store's current room, previews included -
+   * make the loaded room match the room json it follows -
    * either by patching or full reload, or leave it be if nothing has changed
    */
   #bringUpToDate() {
     const state = this.#store.getState();
-    const roomJsonWithPreviews =
-      selectCurrentEditingRoomJsonWithPreviews(state);
-    const committedRoomJson = selectCurrentCommittedRoomJson(state);
+    const { selectRoomJsonWithPreviews, selectCommittedRoomJson } =
+      this.#roomJsonSelectors;
+    const roomJsonWithPreviews = selectRoomJsonWithPreviews(state);
+    const committedRoomJson = selectCommittedRoomJson(state);
     const loaded = this.#loaded;
 
     if (loaded === undefined) {

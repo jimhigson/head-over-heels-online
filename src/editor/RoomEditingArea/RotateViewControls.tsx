@@ -1,10 +1,8 @@
 import { store, useEditorAppSelector } from "../../store/store";
+import { directionXyz4Glyphs } from "../../utils/vectors/directionGlyphs";
 import { rotateXy } from "../../utils/vectors/rotateXy";
 import { unitVectors } from "../../utils/vectors/unitVectors";
-import {
-  type DirectionXy4,
-  nonZeroVectorClosestDirectionXy4,
-} from "../../utils/vectors/vectors";
+import { nonZeroVectorClosestDirectionXy4 } from "../../utils/vectors/vectors";
 import {
   rotateViewAnticlockwise,
   rotateViewClockwise,
@@ -12,14 +10,6 @@ import {
   selectEditorCameraAngle,
 } from "../slice/levelEditorSlice";
 import { ToolbarButton } from "../toolbar/buttons/ToolbarButton";
-
-/** the screen direction each world direction renders in at the base angle */
-const directionGlyphs = {
-  away: "↗",
-  right: "↘",
-  towards: "↙",
-  left: "↖",
-} as const satisfies Record<DirectionXy4, string>;
 
 /**
  * two buttons that rotate the editor's view of the room a quarter-turn each way,
@@ -47,7 +37,7 @@ export const RotateViewControls = () => {
         tooltipContent="Reset view rotation"
         onClick={() => store.dispatch(rotateViewTo("away"))}
       >
-        {directionGlyphs[cameraAngleXy4]}
+        {directionXyz4Glyphs[cameraAngleXy4]}
       </ToolbarButton>
       <ToolbarButton
         small

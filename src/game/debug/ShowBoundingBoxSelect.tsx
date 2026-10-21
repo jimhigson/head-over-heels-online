@@ -1,4 +1,4 @@
-import { useId, useState } from "preact/hooks";
+import { useState } from "preact/hooks";
 
 import { type ItemInPlayType, itemInPlayTypes } from "../../model/ItemInPlay";
 import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
@@ -23,6 +23,7 @@ import { CommandList } from "../../ui/command/CommandList";
 import { CommandMatch } from "../../ui/command/CommandMatch";
 import { PopoverPanel } from "../../ui/PopoverPanel";
 import { Switch, SwitchN } from "../../ui/Switch";
+import { useUniqueId } from "../../utils/preact/useUniqueId";
 
 const sortedItemInPlayTypes = itemInPlayTypes.toSorted();
 
@@ -65,7 +66,7 @@ export const ShowBoundingBoxSelect = ({
   const showRoomScrollBounds = useShowRoomScrollBounds();
   const showSubrooms = useShowSubrooms();
   const [open, setOpen] = useState(false);
-  const popoverId = useId();
+  const popoverId = useUniqueId();
   const [visibleTypes, setVisibleTypes] = useState<readonly ItemInPlayType[]>(
     sortedItemInPlayTypes,
   );

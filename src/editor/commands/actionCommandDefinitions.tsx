@@ -6,8 +6,9 @@ import { copySelectedItemsToClipboard } from "../clipboard/copySelectedItemsToCl
 import { pasteItemsFromClipboard } from "../clipboard/pasteItemsFromClipboard";
 import { campaignIsNamed } from "../editorTypes";
 import { playtest } from "../playtest";
-import { fitCursorRoomInViewThunk } from "../RoomEditingArea/viewport/fitCursorRoomInViewThunk";
-import { stepCursorRoomZoomThunk } from "../RoomEditingArea/viewport/stepCursorRoomZoomThunk";
+import { activePaneThunk } from "../RoomEditingArea/pane/activePaneThunk";
+import { fitPaneRoomInViewThunk } from "../RoomEditingArea/viewport/fitPaneRoomInViewThunk";
+import { stepPaneZoomThunk } from "../RoomEditingArea/viewport/stepPaneZoomThunk";
 import {
   openCampaignDialogShown,
   saveAsDialogShown,
@@ -16,6 +17,7 @@ import {
   addRoom,
   deleteSelected,
   redo,
+  resetTool,
   roomBack,
   roomForward,
   selectBackRooms,
@@ -27,6 +29,7 @@ import {
   selectTool,
   selectUndoHistory,
   setTool,
+  togglePointerTool,
   undo,
 } from "../slice/levelEditorSlice";
 import { revertPressed, savePressed } from "../slice/saveAndLoadThunks";
@@ -69,15 +72,20 @@ export const actionCommandDefinitions = {
       />
     ),
     menuIcon: "texture-pointer",
-    shortcutKeys: [
-      // Escape key to switch back to default pointer tool
-      "Escape",
-      // dot copies the dpaint shortcut to go back to a single pixel brush
-      ".",
-    ],
+    // dot copies the dpaint shortcut to go back to a single pixel brush
+    shortcutKeys: ["."],
     tooltipContent: `## Pointer`,
     selectIsActive: (state) => selectTool(state).type === "pointer",
-    action: () => setTool({ type: "pointer" }),
+    action: () => resetTool(),
+  },
+  togglePointerTool: {
+    type: "action",
+    label: "Pointer / last item tool",
+    synonyms: ["select", "arrow", "swap tool"],
+    menuIcon: "texture-pointer",
+    // Escape key to switch back to default pointer tool
+    shortcutKeys: ["Escape"],
+    action: () => togglePointerTool(),
   },
   eyeDropperTool: {
     type: "action",
@@ -377,7 +385,7 @@ Give anyone the link to your game
     menuIcon: <MenuItemGlyphIcon glyph="-" />,
     shortcutKeys: ["-"],
     tooltipContent: `## zoom ⬇\n\nmakes things look *smaller*`,
-    action: () => stepCursorRoomZoomThunk("out"),
+    action: () => activePaneThunk((paneId) => stepPaneZoomThunk(paneId, "out")),
   },
   zoomIn: {
     type: "action",
@@ -386,7 +394,7 @@ Give anyone the link to your game
     menuIcon: <MenuItemGlyphIcon glyph="+" />,
     shortcutKeys: ["⇧+", "="],
     tooltipContent: `## zoom ⬆\n\nmakes things look *bigger*`,
-    action: () => stepCursorRoomZoomThunk("in"),
+    action: () => activePaneThunk((paneId) => stepPaneZoomThunk(paneId, "in")),
   },
   fitRoomInView: {
     type: "action",
@@ -396,7 +404,7 @@ Give anyone the link to your game
     shortcutKeys: ["0"],
     tooltipContent: `## fit\n\nzoom and pan the room to exactly fit the pane`,
     toolbarClass: "bg-moss px-2",
-    action: () => fitCursorRoomInViewThunk(),
+    action: () => activePaneThunk(fitPaneRoomInViewThunk),
   },
 } as const satisfies {
   [s in string]: EditorCommandDefinition;

@@ -1,6 +1,6 @@
 import { type ComponentChildren, type VNode } from "preact";
-import { useId } from "preact/hooks";
 
+import { useUniqueId } from "../../utils/preact/useUniqueId";
 import { Tip } from "./Tip";
 
 export type UseTipOptions = {
@@ -26,7 +26,7 @@ export const useTip = (
   content: ComponentChildren,
   { svgInvoker }: UseTipOptions = {},
 ): UseTipReturn => {
-  const id = useId();
+  const id = useUniqueId();
 
   return !content ?
       { interestfor: undefined, tip: null }

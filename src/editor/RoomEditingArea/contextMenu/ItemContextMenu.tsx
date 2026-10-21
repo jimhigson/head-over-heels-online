@@ -7,8 +7,9 @@ import { MenuHeader } from "../../../ui/menuBar/MenuHeader";
 import { type Xy } from "../../../utils/vectors/vectors";
 import {
   closeItemContextMenu,
-  selectContextMenuXy,
+  selectPaneContextMenuXy,
 } from "../../slice/levelEditorSlice";
+import { useEditorPane } from "../pane/EditorPaneProvider";
 import { useEditorViewport } from "../viewport/EditorViewportProvider";
 import { ItemActionMenuItems } from "./ItemActionMenuItems";
 import { useSelectionLabel } from "./useSelectionLabel";
@@ -20,12 +21,15 @@ export type ItemContextMenuProps = {
 
 /**
  * Bridges the editor store to the generic `ContextMenu`: opens from the stored
- * `contextMenuXy`, converts it to a viewport point, and shows the available
+ * pane's `contextMenuXy`, converts it to a viewport point, and shows the available
  * actions. Each action component decides for itself whether it should appear.
  */
 export const ItemContextMenu = ({ renderArea }: ItemContextMenuProps) => {
   const dispatch = useAppDispatch();
-  const contextMenuXy = useEditorAppSelector(selectContextMenuXy);
+  const { paneId } = useEditorPane();
+  const contextMenuXy = useEditorAppSelector((state) =>
+    selectPaneContextMenuXy(state, paneId),
+  );
   const viewport = useEditorViewport();
   const selectionLabel = useSelectionLabel();
 

@@ -19,7 +19,7 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
   Sprite
 > = ({
   renderContext: {
-    general: { pixiRenderer, spritesheets, cameraAngle },
+    general: { pixiRenderer, spritesheets, cameraAngle, planetsLiberated },
     item,
     room,
   },
@@ -34,7 +34,7 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
 
   const currentlyRenderedProps = currentRendering?.renderProps;
 
-  const activated = teleporterIsActive(item);
+  const activated = teleporterIsActive(item, planetsLiberated);
 
   const flashing =
     activated &&

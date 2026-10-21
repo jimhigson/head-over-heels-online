@@ -1,4 +1,8 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import {
+  type PayloadAction,
+  type SliceCaseReducers,
+  type SliceSelectors,
+} from "@reduxjs/toolkit";
 
 import { doorItemTool } from "../../RoomEditingArea/interactivity/doorItemTool";
 import {
@@ -49,3 +53,7 @@ export const editorSettingsReducers = {
     levelEditorState.wallsFloorsLocked = wallsFloorsLocked;
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
+
+export const editorSettingsSelectors = {
+  selectDoorAutoAddsRoom: (state: LevelEditorState) => state.doorAutoAddsRoom,
+} satisfies SliceSelectors<LevelEditorState>;

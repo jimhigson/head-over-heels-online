@@ -1,4 +1,5 @@
 import { type EditorRoomId } from "../../editorTypes";
+import { forgetTabSelectionsInPlace } from "../EditorPane";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 
@@ -20,7 +21,7 @@ export const openRoomTabInPlace = (
 
   const previewIndex = roomTabs.findIndex(({ isPreview }) => isPreview);
   if (previewIndex !== -1) {
-    delete state.selectedJsonItemIdsByRoom[roomTabs[previewIndex].roomId];
+    forgetTabSelectionsInPlace(state, roomTabs[previewIndex].roomId);
     state.openRoomTabs = roomTabs.with(previewIndex, {
       roomId,
       isPreview: true,

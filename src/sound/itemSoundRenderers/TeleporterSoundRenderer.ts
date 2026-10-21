@@ -49,11 +49,15 @@ export class TeleporterSoundRenderer implements ItemSoundRenderer<
 
   tick(tickContext: ItemTickContext) {
     const {
-      renderContext: { item, room },
+      renderContext: {
+        item,
+        room,
+        general: { planetsLiberated },
+      },
     } = this;
 
     this.#sirenBracket.tick(
-      teleporterIsActive(item) &&
+      teleporterIsActive(item, planetsLiberated) &&
         iterateStoodOnByItems(item.state.stoodOnBy, room).some(isPlayableItem),
     );
 

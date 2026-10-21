@@ -8,6 +8,7 @@ import { type EditorRoomId } from "../editorTypes";
 import { dropItemsOnRoomThunk } from "../slice/dropItemsOnRoomThunk";
 import { findItemsDropPlacement } from "../slice/findItemsDropPlacement";
 import {
+  selectActivePaneDragInProgress,
   selectCursorRoomId,
   selectCursorRoomSelectedJsonItemIds,
 } from "../slice/levelEditorSlice";
@@ -44,7 +45,7 @@ const useEditorMapItemDropTarget = ({
     const isDraggingItemsFromAnotherRoom = () => {
       const editorState = editorStore.getState();
       return (
-        editorState.levelEditor.dragInProgress === "moveItems" &&
+        selectActivePaneDragInProgress(editorState) === "moveItems" &&
         selectCursorRoomId(editorState) !== roomId
       );
     };

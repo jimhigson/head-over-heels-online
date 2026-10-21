@@ -15,6 +15,7 @@ import {
   editorStateWithOneRoomWithNoItems,
   editorStateWithOneRoomWithOneAwayWall,
   reduceLevelEditorActions,
+  testPaneId,
   testRoomId,
   wallItemId,
 } from "./__test__/storeStates";
@@ -31,7 +32,7 @@ const multipliedBlock = produce(editorStateWithOneRoomWithNoItems, (draft) => {
 const explodeBlock = reduceLevelEditorActions(
   multipliedBlock,
   setSelectedItemsInRoom({ jsonItemIds: ["bm"] as EditorRoomItemId[] }),
-  openItemContextMenu({ scrXy: { x: 1, y: 1 } }),
+  openItemContextMenu({ paneId: testPaneId, scrXy: { x: 1, y: 1 } }),
   explodeSelectedItems({ timestamp: 0 }),
 );
 
@@ -63,7 +64,7 @@ test("selects the exploded parts", () => {
 });
 
 test("closes the context menu", () => {
-  expect(explodeBlock.contextMenuXy).toBeUndefined();
+  expect(explodeBlock.panes[testPaneId]?.contextMenuXy).toBeUndefined();
 });
 
 const explodeWall = reduceLevelEditorActions(

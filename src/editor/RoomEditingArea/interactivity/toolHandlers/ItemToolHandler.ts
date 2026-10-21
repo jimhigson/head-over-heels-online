@@ -14,7 +14,7 @@ import { selectPreviewOnlyJsonItemIds } from "../../../slice/levelEditorSelector
 import {
   applyItemTool,
   resetPreviewedEdits,
-  setTool,
+  resetTool,
 } from "../../../slice/levelEditorSlice";
 import { addingItemWouldCollide } from "../../cursor/editWouldCollide";
 import { itemToolPutDownLocation } from "../../cursor/itemToolPutDownLocation";
@@ -120,7 +120,7 @@ export class ItemToolHandler implements ToolHandler<
     if (pointingAt.world === undefined) {
       // if using item tool, clicking on nothing is a quick way to go back to
       // the pointer:
-      dispatch(setTool({ type: "pointer" }));
+      dispatch(resetTool());
       return;
     }
 

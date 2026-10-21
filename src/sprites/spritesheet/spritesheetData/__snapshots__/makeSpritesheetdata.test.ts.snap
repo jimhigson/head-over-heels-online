@@ -9642,6 +9642,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 577,
     },
   },
+  "portableTeleporter.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 577,
+    },
+  },
   "portableTeleporter.flashing.1": {
     "frame": {
       "h": 24,
@@ -11155,6 +11163,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     },
   },
   "teleporter": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 1,
+      "y": 624,
+    },
+  },
+  "teleporter.deactivated": {
     "frame": {
       "h": 28,
       "w": 32,

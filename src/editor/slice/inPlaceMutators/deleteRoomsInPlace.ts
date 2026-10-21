@@ -1,4 +1,5 @@
 import { type EditorRoomId } from "../../editorTypes";
+import { forgetRoomSelectionsInPlace } from "../EditorPane";
 import { type LevelEditorState } from "../levelEditorSlice";
 
 /**
@@ -12,7 +13,7 @@ export const deleteRoomsInPlace = (
   for (const roomId of roomIds) {
     delete state.campaignInProgress.rooms[roomId];
     delete state.history[roomId];
-    delete state.selectedJsonItemIdsByRoom[roomId];
+    forgetRoomSelectionsInPlace(state, roomId);
   }
 
   const isNotDeleted = (id: EditorRoomId) => !roomIds.has(id);

@@ -1,21 +1,14 @@
-import { useId, useRef } from "preact/hooks";
+import { memo } from "preact/compat";
+import { useMemo, useRef } from "preact/hooks";
 
-import { type PlayableItem } from "../../../../../../model/ItemInPlayNarrowedUnions";
 import {
   type Boundaries,
   type RoomNode,
 } from "../../../../../../model/map/roomGridPositions";
-import {
-  type CharacterName,
-  type IndividualCharacterName,
-} from "../../../../../../model/modelTypes";
-import {
-  type RoomJson,
-  roomVerticalLinkHolders,
-} from "../../../../../../model/RoomJson";
+import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
 import { hudCharTextureSize } from "../../../../../../sprites/spritesheet/spritesheetData/textureSizes";
-import { valuesIter } from "../../../../../../utils/entries";
 import { range } from "../../../../../../utils/iterators/range";
+import { useUniqueId } from "../../../../../../utils/preact/useUniqueId";
 import {
   addXy,
   type DirectionXy4,
@@ -28,6 +21,7 @@ import {
   InPlayItemsInRoomLayout,
   NotableJsonItemsInRoomLayout,
 } from "./ItemsInRoomLayout";
+import { type MapCellOutline, mapCellOutline } from "./mapCellOutline";
 import { roomAccentColourClass } from "./mapColours";
 import {
   doorwayGap,
@@ -37,10 +31,9 @@ import {
   roomGridSizeZ,
   strokeWidth,
 } from "./mapConstants";
+import { useMapContext } from "./MapContext";
 import { PlayableItemInRoom } from "./NotableItem";
-import { type NotableItemsInCell } from "./notableItemsByCell";
 import { RoomDecoration } from "./RoomDecoration";
-import { type RoomBehaviourComponent } from "./RoomDecoratorProps";
 import { roomWorldPosition } from "./roomWorldPosition";
 import { project, roundForSvg, translateXyz } from "./svgHelpers";
 import { VisitedFootprint } from "./VisitedFootprint";
@@ -49,14 +42,15 @@ const boundaryLineLength = lengthXy(
   projectWorldXyzToScreenXy({ x: roomGridSizeXY, y: 0 }),
 );
 
+// open sides draw no boundary line at all:
 const boundaryDashArrays = {
   wall: undefined,
-  open: "0,999",
   doorway: `${roundForSvg(boundaryLineLength * ((1 - doorwayGap) / 2) - strokeWidth / 2)}, ${roundForSvg(boundaryLineLength * doorwayGap + strokeWidth)}, 999`,
 };
 
 const floorPathFillPathD = (
   boundaries: Boundaries,
+  openCorners: MapCellOutline["openCorners"],
   pathThickness = doorwayGap,
 ) => {
   const roomFront = roomGridSizeXY * ((1 - pathThickness) / 2);
@@ -67,25 +61,44 @@ const floorPathFillPathD = (
   const leftOpen = boundaries.left !== "wall";
   const rightOpen = boundaries.right !== "wall";
 
-  let shape = `M${project({ x: roomFront, y: roomFront })}`;
+  // at each corner, the inside corner of the middle - or, where the floor
+  // carries on into the cell diagonally across, the cell's own corner:
+  const corner = (open: boolean, inside: Xy, outside: Xy) =>
+    `L${project(open ? outside : inside)}`;
+
+  let shape = `M${project(
+    openCorners.rightTowards ? { x: 0, y: 0 } : { x: roomFront, y: roomFront },
+  )}`;
 
   if (rightOpen) {
     shape += `L${project({ x: 0, y: roomFront })} L${project({ x: 0, y: roomBack })}`;
   }
 
-  shape += `L${project({ x: roomFront, y: roomBack })}`;
+  shape += corner(
+    openCorners.rightAway,
+    { x: roomFront, y: roomBack },
+    { x: 0, y: roomGridSizeXY },
+  );
 
   if (awayOpen) {
     shape += `L${project({ x: roomFront, y: roomGridSizeXY })} L${project({ x: roomBack, y: roomGridSizeXY })}`;
   }
 
-  shape += `L${project({ x: roomBack, y: roomBack })}`;
+  shape += corner(
+    openCorners.leftAway,
+    { x: roomBack, y: roomBack },
+    { x: roomGridSizeXY, y: roomGridSizeXY },
+  );
 
   if (leftOpen) {
     shape += `L${project({ x: roomGridSizeXY, y: roomBack })} L${project({ x: roomGridSizeXY, y: roomFront })}`;
   }
 
-  shape += `L${project({ x: roomBack, y: roomFront })}`;
+  shape += corner(
+    openCorners.leftTowards,
+    { x: roomBack, y: roomFront },
+    { x: roomGridSizeXY, y: 0 },
+  );
   if (towardsOpen) {
     shape += `L${project({ x: roomBack, y: 0 })} L${project({ x: roomFront, y: 0 })}`;
   }
@@ -129,18 +142,34 @@ L${project({ x: roomFront, y: roomGridSizeXY })}`
   );
 };
 
-const highRoomBackVerticalLinesPathD = `            
-M${project({ x: roomGridSizeXY, y: roomGridSizeXY, z: roomGridSizeZ })}            
-L${project({ x: roomGridSizeXY, y: roomGridSizeXY })}            
-M${project({ x: roomGridSizeXY, y: 0, z: roomGridSizeZ })}            
-L${project({ x: roomGridSizeXY, y: 0 })}            
-M${project({ x: 0, y: roomGridSizeXY, z: roomGridSizeZ })}            
-L${project({ x: 0, y: roomGridSizeXY })}            
+/**
+ * the vertical edge of a high room's box, at a corner of its floor
+ */
+const verticalLinePathD = (corner: Xy) => `
+M${project({ ...corner, z: roomGridSizeZ })}
+L${project(corner)}
 `;
-const highRoomFrontVerticalLinesPathD = `
-M${project({ x: 0, y: 0, z: roomGridSizeZ })}
-L0, 0
-`;
+
+/**
+ * the vertical edges of a high cell's box that its outline has
+ */
+const highCellVerticalLinesPathD = (
+  outline: MapCellOutline,
+  which: "back" | "front",
+) =>
+  (which === "front" ?
+    [outline.frontPost && verticalLinePathD({ x: 0, y: 0 })]
+  : [
+      outline.backCornerPost &&
+        verticalLinePathD({ x: roomGridSizeXY, y: roomGridSizeXY }),
+      outline.leftWallFrontPost &&
+        verticalLinePathD({ x: roomGridSizeXY, y: 0 }),
+      outline.awayWallRightPost &&
+        verticalLinePathD({ x: 0, y: roomGridSizeXY }),
+    ]
+  )
+    .filter((pathD) => pathD !== false)
+    .join("");
 
 // the interactive area's <a> exists to be an interest invoker (and click
 // target), not to navigate:
@@ -162,50 +191,44 @@ const labelLayoutByDirection = {
 
 type RoomSvgProps<RoomId extends string> = {
   roomGridPositionSpec: RoomNode<RoomId>;
-  roomJson: RoomJson<RoomId, string>;
-  roomVisited: boolean;
-  headItemInRoom?: PlayableItem<"head", RoomId>;
-  heelsItemInRoom?: PlayableItem<"heels", RoomId>;
-  headOverHeelsItemInRoom?: PlayableItem<"headOverHeels", RoomId>;
-  notableItemsInCell?: NotableItemsInCell<RoomId>;
-  onPlayableClick?: (name: IndividualCharacterName) => void;
-  currentCharacterName: CharacterName;
   isCurrentRoom: boolean;
-  isSelected: boolean;
-  behaviours?: RoomBehaviourComponent<RoomId>[];
 };
 
-export const RoomSvg = <RoomId extends string>({
-  roomGridPositionSpec: { boundaries, subRoomId },
-  notableItemsInCell,
-  roomJson,
-  roomVisited,
-  headItemInRoom,
-  heelsItemInRoom,
-  headOverHeelsItemInRoom,
-  currentCharacterName,
-  onPlayableClick,
+const RoomSvgUnmemoised = <RoomId extends string>({
+  roomGridPositionSpec,
   isCurrentRoom,
-  isSelected,
-  behaviours,
 }: RoomSvgProps<RoomId>) => {
-  const { id, color, items } = roomJson;
-  const roomAbove = roomVerticalLinkHolders(roomJson).some(
-    (holder) => holder.above !== undefined,
+  const { boundaries, roomId, subRoomId } = roomGridPositionSpec;
+  const {
+    behaviours,
+    currentCharacterName,
+    onPlayableClick,
+    useRoomJson,
+    useNotableItemsInCell,
+    useCellPlayables,
+    useRoomVisited,
+    useIsRoomSelected,
+  } = useMapContext<RoomId>();
+  const roomJson = useRoomJson(roomId);
+  const notableItemsInCell = useNotableItemsInCell(`${roomId}/${subRoomId}`);
+  const {
+    head: headItemInRoom,
+    heels: heelsItemInRoom,
+    headOverHeels: headOverHeelsItemInRoom,
+  } = useCellPlayables(roomId, subRoomId);
+  const roomVisited = useRoomVisited(roomId);
+  const isSelected = useIsRoomSelected(roomId);
+
+  const { id, color } = roomJson;
+  const outline = useMemo(
+    () => mapCellOutline(roomJson, roomGridPositionSpec),
+    [roomJson, roomGridPositionSpec],
   );
   const label = roomJson.meta?.label;
   const labelLayout = label && labelLayoutByDirection[label.direction];
   const interactiveAreaRef = useRef<null | SVGPathElement>(null);
-  const tipId = useId();
-  const hasBehaviours = behaviours !== undefined && behaviours.length > 0;
-
-  const floors = valuesIter(items)
-    .filter((item) => item.type === "floor")
-    .toArray();
-  const noFloor = floors.every((floor) => floor.config.floorType === "none");
-  const deadlyFloor = floors.some(
-    (floor) => floor.config.floorType === "deadly",
-  );
+  const tipId = useUniqueId();
+  const hasBehaviours = behaviours.length > 0;
 
   return (
     <g
@@ -230,20 +253,20 @@ export const RoomSvg = <RoomId extends string>({
         }
         `}
     >
-      {noFloor ?
+      {outline.floor === "hole" ?
         <>
           {/* show a floor outlining the room with a hole: */}
           <path
             class="fill-[var(--roomHintColor)]"
             fillRule="evenodd"
             // whole tile, then use evenodd to cut out the middle:
-            d={`${floorFillPathD} ${floorPathFillPathD(boundaries)}`}
+            d={`${floorFillPathD} ${floorPathFillPathD(boundaries, outline.openCorners)}`}
           />
           <path
             class="fill-[var(--floorColor)]"
             fillRule="evenodd"
             // whole tile, then use evenodd to cut out the middle:
-            d={`${floorPathFillPathD(boundaries)} ${floorPathFillPathD(boundaries, doorwayGap * 0.7)}`}
+            d={`${floorPathFillPathD(boundaries, outline.openCorners)} ${floorPathFillPathD(boundaries, outline.openCorners, doorwayGap * 0.7)}`}
           />
         </>
       : <>
@@ -260,9 +283,9 @@ export const RoomSvg = <RoomId extends string>({
                 : ""
               }
             `}
-            d={floorPathFillPathD(boundaries)}
+            d={floorPathFillPathD(boundaries, outline.openCorners)}
           />
-          {deadlyFloor && (
+          {outline.deadlyFloor && (
             <path
               class="stroke-[var(--roomHintColor)]"
               strokeDasharray="1, 12.4"
@@ -275,58 +298,64 @@ export const RoomSvg = <RoomId extends string>({
       {roomJson.meta?.roomDecoration && (
         <RoomDecoration decoration={roomJson.meta.roomDecoration} />
       )}
-      {roomAbove && (
-        // walls
-        <>
-          {/* away wall: */}
-          <path
-            class="fill-[var(--roomHintColorDarker)]"
-            fillRule="evenodd"
-            d={awayWallFillPathD(boundaries.away === "doorway")}
-          />
-          {/* left wall is just the away wall flipped: */}
-          <path
-            class="fill-[var(--roomHintColor)]"
-            fillRule="evenodd"
-            transform="scale(-1, 1)"
-            d={awayWallFillPathD(boundaries.left === "doorway")}
-          />
-        </>
+      {outline.awayWall !== "none" && (
+        <path
+          class="fill-[var(--roomHintColorDarker)]"
+          fillRule="evenodd"
+          d={awayWallFillPathD(outline.awayWall === "doorway")}
+        />
+      )}
+      {/* left wall is just the away wall flipped: */}
+      {outline.leftWall !== "none" && (
+        <path
+          class="fill-[var(--roomHintColor)]"
+          fillRule="evenodd"
+          transform="scale(-1, 1)"
+          d={awayWallFillPathD(outline.leftWall === "doorway")}
+        />
       )}
       {/* boundary lines */}
       <g class="fill-transparent stroke-midGreyHalfbrite">
-        <path // right
-          d={`M${project({ x: 0, y: roomGridSizeXY })} L0, 0`}
-          data-direction="right"
-          data-boundary={boundaries.right}
-          strokeDasharray={boundaryDashArrays[boundaries.right]}
-        />
-        <path // left
-          d={`M${project({ x: roomGridSizeXY, y: 0 })} L${project({ x: roomGridSizeXY, y: roomGridSizeXY })}`}
-          data-direction="left"
-          data-boundary={boundaries.left}
-          strokeDasharray={boundaryDashArrays[boundaries.left]}
-        />
-        <path // towards
-          d={`M${project({ x: roomGridSizeXY, y: 0 })} L0, 0`}
-          data-direction="towards"
-          data-boundary={boundaries.towards}
-          strokeDasharray={boundaryDashArrays[boundaries.towards]}
-        />
-        <path // away
-          d={`M${project({ x: 0, y: roomGridSizeXY })} L${project({ x: roomGridSizeXY, y: roomGridSizeXY })}`}
-          data-direction="away"
-          data-boundary={boundaries.away}
-          strokeDasharray={boundaryDashArrays[boundaries.away]}
-        />
+        {boundaries.right !== "open" && (
+          <path // right
+            d={`M${project({ x: 0, y: roomGridSizeXY })} L0, 0`}
+            data-direction="right"
+            data-boundary={boundaries.right}
+            strokeDasharray={boundaryDashArrays[boundaries.right]}
+          />
+        )}
+        {boundaries.left !== "open" && (
+          <path // left
+            d={`M${project({ x: roomGridSizeXY, y: 0 })} L${project({ x: roomGridSizeXY, y: roomGridSizeXY })}`}
+            data-direction="left"
+            data-boundary={boundaries.left}
+            strokeDasharray={boundaryDashArrays[boundaries.left]}
+          />
+        )}
+        {boundaries.towards !== "open" && (
+          <path // towards
+            d={`M${project({ x: roomGridSizeXY, y: 0 })} L0, 0`}
+            data-direction="towards"
+            data-boundary={boundaries.towards}
+            strokeDasharray={boundaryDashArrays[boundaries.towards]}
+          />
+        )}
+        {boundaries.away !== "open" && (
+          <path // away
+            d={`M${project({ x: 0, y: roomGridSizeXY })} L${project({ x: roomGridSizeXY, y: roomGridSizeXY })}`}
+            data-direction="away"
+            data-boundary={boundaries.away}
+            strokeDasharray={boundaryDashArrays[boundaries.away]}
+          />
+        )}
       </g>
       {roomVisited && <VisitedFootprint class="fill-[var(--roomHintColor)]" />}
 
-      {roomAbove && (
+      {outline.high && (
         // vertical lines
         <path
           class="fill-transparent stroke-midGreyHalfbrite"
-          d={highRoomBackVerticalLinesPathD}
+          d={highCellVerticalLinesPathD(outline, "back")}
         />
       )}
 
@@ -382,11 +411,11 @@ export const RoomSvg = <RoomId extends string>({
           positions={notableItemsInCell.positions}
         />
       : null}
-      {roomAbove && (
+      {outline.high && (
         // vertical lines
         <path
           class="fill-transparent stroke-midGreyHalfbrite"
-          d={highRoomFrontVerticalLinesPathD}
+          d={highCellVerticalLinesPathD(outline, "front")}
         />
       )}
       {label && labelLayout && (
@@ -440,3 +469,10 @@ export const RoomSvg = <RoomId extends string>({
     </g>
   );
 };
+
+/**
+ * a room on the map, redrawn only when its own place on the map, or what the
+ * map's context gives for it, changes - so an edit to one room leaves the rest
+ * of the map's rooms alone
+ */
+export const RoomSvg = memo(RoomSvgUnmemoised);

@@ -18,6 +18,7 @@ export const directionsXy8 = [
   ...directionsXyDiagonal,
 ] as const;
 export type DirectionXy8 = (typeof directionsXy8)[number];
+export type DirectionXyz8 = "down" | "up" | DirectionXy8;
 
 export const tangentAxis = (direction: DirectionXy4): AxisXy =>
   direction === "away" || direction === "towards" ? "y" : "x";

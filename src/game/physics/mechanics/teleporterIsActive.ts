@@ -1,7 +1,6 @@
 import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
-import { store } from "../../../store/store";
-import { getAtPath } from "../../../utils/getAtPath";
+import { type PlanetName } from "../../../sprites/planets";
 
 /** whether the item is a teleporter, fixed or portable - whether active or not */
 export const isTeleporter = <RoomId extends string, RoomItemId extends string>(
@@ -11,14 +10,14 @@ export const isTeleporter = <RoomId extends string, RoomItemId extends string>(
 export const teleporterIsActive = <
   RoomId extends string,
   RoomItemId extends string,
->({
-  config: { activatedOnStoreValue },
-}: ItemTypeUnion<
-  "portableTeleporter" | "teleporter",
-  RoomId,
-  RoomItemId
->): boolean => {
-  return activatedOnStoreValue === undefined ? true : (
-      !!getAtPath(store.getState().gameInPlay.gameInPlay, activatedOnStoreValue)
-    );
-};
+>(
+  {
+    config: { activatedIfPlanetLiberated },
+  }: ItemTypeUnion<"portableTeleporter" | "teleporter", RoomId, RoomItemId>,
+  /**
+   * which planets have been liberated so far
+   */
+  planetsLiberated: Readonly<Record<PlanetName, boolean>>,
+): boolean =>
+  activatedIfPlanetLiberated === undefined ||
+  planetsLiberated[activatedIfPlanetLiberated];

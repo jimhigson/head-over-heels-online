@@ -19,6 +19,7 @@ import {
   showOkAfterSaveDuration,
 } from "./editorSaveSlice";
 import {
+  commitPendingNudge,
   loadCampaign,
   saveSuccessful,
   selectCurrentCampaignInProgress,
@@ -39,6 +40,8 @@ export const saveCampaign =
     Promise<SaveResult>
   > =>
   async (dispatch, getState) => {
+    // nudges still being previewed are saved too:
+    dispatch(commitPendingNudge());
     const campaign = selectCurrentCampaignInProgress(getState());
     if (!campaignIsNamed(campaign)) {
       return {

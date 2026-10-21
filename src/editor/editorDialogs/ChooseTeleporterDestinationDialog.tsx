@@ -1,0 +1,253 @@
+import { Suspense } from "preact/compat";
+import { useCallback, useMemo, useState } from "preact/hooks";
+
+import { useAppDispatch } from "../../store/hooks";
+import { useEditorAppSelector } from "../../store/store";
+import { Border } from "../../ui/Border";
+import { Button } from "../../ui/Button";
+import { Dialog } from "../../ui/Dialog";
+import { DialogHeader } from "../../ui/DialogHeader";
+import { DialogPortal } from "../../ui/DialogPortal";
+import { SpinnerHeels } from "../../ui/Spinner";
+import { Tab } from "../../ui/tabs/Tab";
+import { TabBar } from "../../ui/tabs/TabBar";
+import {
+  type ShortcutKeys,
+  useKeyboardShortcut,
+} from "../../ui/useKeyboardShortcut";
+import {
+  type EditorCampaign,
+  type EditorRoomId,
+  type EditorRoomItemId,
+} from "../editorTypes";
+import { LazyRoomEditingArea } from "../RoomEditingArea/RoomEditingArea.lazy";
+import {
+  type EditorPaneId,
+  type EditorPaneRoomSource,
+  generateEditorPaneId,
+} from "../slice/EditorPane";
+import {
+  selectPaneSelectedJsonItemIds,
+  selectRoom,
+  setSelectedItemsInRoom,
+} from "../slice/levelEditorSlice";
+import { buttonSmallHeightClassNames } from "../toolbar/buttonSizeClassNames";
+import { ChooseRoomMap } from "./ChooseRoomMap";
+import { type TeleporterDestination } from "./chooseTeleporterDestination";
+import { teleporterDefaultLandingItemId } from "./teleporterDefaultLandingItemId";
+
+type DestinationTab = "map" | "room";
+
+const destinationTabs: DestinationTab[] = ["map", "room"];
+
+const okShortcutKeys: ShortcutKeys = ["Enter"];
+
+export type ChooseTeleporterDestinationDialogProps = {
+  campaign: EditorCampaign;
+  /** the room the teleporters are in */
+  fromRoomId: EditorRoomId;
+  /** the teleporters whose destination is being chosen */
+  teleporterIds: readonly EditorRoomItemId[];
+  /** the destination chosen when the dialog opens, if any */
+  initialDestination: TeleporterDestination | undefined;
+  onChoose: (destination: TeleporterDestination) => void;
+  onCancel: () => void;
+};
+
+export type RoomItemPickerProps = {
+  roomId: EditorRoomId;
+  initialItemId: EditorRoomItemId | undefined;
+  paneId: EditorPaneId;
+};
+
+/** a rendering of the room, where clicking an item picks it */
+const RoomItemPicker = ({
+  roomId,
+  initialItemId,
+  paneId,
+}: RoomItemPickerProps) => {
+  const roomSource = useMemo(
+    (): EditorPaneRoomSource => ({ type: "room", roomId }),
+    [roomId],
+  );
+  const [initialSelectedJsonItemIds] = useState(() =>
+    initialItemId === undefined ? [] : [initialItemId],
+  );
+  return (
+    <Suspense fallback={<SpinnerHeels loadingBorder />}>
+      <LazyRoomEditingArea
+        paneId={paneId}
+        roomSource={roomSource}
+        pickOnly
+        activateOnMount
+        initialSelectedJsonItemIds={initialSelectedJsonItemIds}
+      />
+    </Suspense>
+  );
+};
+
+/**
+ * choose where teleporters lead: a room from the map, and the item in it to
+ * land on from a rendering of the room. Where the room has a single
+ * teleporter, landing on it needs no item named
+ */
+export const ChooseTeleporterDestinationDialog = ({
+  campaign,
+  fromRoomId,
+  teleporterIds,
+  initialDestination,
+  onChoose,
+  onCancel,
+}: ChooseTeleporterDestinationDialogProps) => {
+  const dispatch = useAppDispatch();
+  const [tab, setTab] = useState<DestinationTab>(
+    initialDestination === undefined ? "map" : "room",
+  );
+  const [toRoom, setToRoom] = useState(initialDestination?.toRoom);
+  // a new pane for each room, so changing room clears the item picked:
+  const [picker, setPicker] = useState(() => ({
+    paneId: generateEditorPaneId(),
+    initialItemId: initialDestination?.toItemId,
+  }));
+  const chooseRoom = useCallback(
+    (roomId: EditorRoomId) => {
+      if (roomId !== toRoom) {
+        setToRoom(roomId);
+        setPicker({ paneId: generateEditorPaneId(), initialItemId: undefined });
+      }
+    },
+    [toRoom],
+  );
+
+  const [pickedItemId] = useEditorAppSelector((state) =>
+    selectPaneSelectedJsonItemIds(state, picker.paneId),
+  );
+  const roomJson = useEditorAppSelector((state) =>
+    toRoom === undefined ? undefined : selectRoom(state, toRoom),
+  );
+  const defaultLandingItemId =
+    roomJson === undefined ? undefined : (
+      teleporterDefaultLandingItemId(roomJson, teleporterIds)
+    );
+  const landingItemId = pickedItemId ?? defaultLandingItemId;
+
+  const [dialogEl, setDialogEl] = useState<HTMLDialogElement | null>(null);
+  const dialogRef = useCallback((el: HTMLDialogElement | null) => {
+    setDialogEl(el);
+    el?.focus();
+  }, []);
+  useKeyboardShortcut(["Escape"], false, onCancel, dialogEl);
+
+  const canOk = toRoom !== undefined && landingItemId !== undefined;
+  const ok = () => {
+    if (toRoom !== undefined) {
+      onChoose({
+        toRoom,
+        // naming the item landed on by default is redundant:
+        toItemId:
+          pickedItemId === defaultLandingItemId ? undefined : pickedItemId,
+      });
+    }
+  };
+  useKeyboardShortcut(okShortcutKeys, !canOk, ok, dialogEl);
+
+  return (
+    <DialogPortal>
+      {/* at dialog z index, so it also covers any dialog this was opened over: */}
+      <Border class="scale-editor !z-dialog" scrim />
+      <div class="contents no-keyboard-shortcuts">
+        <Dialog
+          ref={dialogRef}
+          tall
+          wide
+          class="scale-editor p-1 flex flex-col gap-1"
+        >
+          <DialogHeader>Teleport to</DialogHeader>
+          <TabBar tabLabels={destinationTabs} label="Destination">
+            {destinationTabs.map((destinationTab) => (
+              <Tab
+                key={destinationTab}
+                label={destinationTab}
+                shortLabel={destinationTab}
+                isActive={tab === destinationTab}
+                onSelect={() => setTab(destinationTab)}
+                class={`${buttonSmallHeightClassNames} pr-1`}
+              />
+            ))}
+          </TabBar>
+          <div class="relative flex-1 min-h-0">
+            <div class={tab === "map" ? "h-full" : "hidden"}>
+              <ChooseRoomMap
+                campaign={campaign}
+                mapRoomId={fromRoomId}
+                chosenRoomId={toRoom}
+                onChoose={chooseRoom}
+              />
+            </div>
+            {/* kept mounted while the map is shown, so the item picked stays picked: */}
+            <div
+              class={tab === "room" ? "h-full flex flex-col gap-1" : "hidden"}
+            >
+              {toRoom === undefined ?
+                <span class="text-multi-line text-lightGrey">
+                  Choose a room on the map
+                </span>
+              : <>
+                  <span class="text-multi-line text-lightGrey">
+                    {defaultLandingItemId === undefined ?
+                      "Pick an item to land on"
+                    : `Lands on teleporter ‘${defaultLandingItemId}’ by default — no item needed`
+                    }
+                  </span>
+                  <div class="relative flex-1 min-h-0">
+                    <RoomItemPicker
+                      key={picker.paneId}
+                      roomId={toRoom}
+                      initialItemId={picker.initialItemId}
+                      paneId={picker.paneId}
+                    />
+                  </div>
+                </>
+              }
+            </div>
+          </div>
+          <span class="text-single-line text-lightGrey self-end">
+            {toRoom === undefined ?
+              "no room chosen"
+            : landingItemId === undefined ?
+              `lands in room ‘${toRoom}’`
+            : `lands in room ‘${toRoom}’ item ‘${landingItemId}’`}
+          </span>
+          <div class="flex flex-wrap gap-1 text-white items-center">
+            <Button
+              aria-label="Clear item"
+              onClick={() =>
+                dispatch(setSelectedItemsInRoom({ jsonItemIds: [] }))
+              }
+              disabled={pickedItemId === undefined}
+              class="px-1 py-half self-stretch"
+            >
+              <span class="text-single-line">Clear item</span>
+            </Button>
+            <Button
+              aria-label="Cancel"
+              onClick={onCancel}
+              class="px-1 py-half self-stretch ml-auto"
+            >
+              <span class="text-single-line">Cancel</span>
+            </Button>
+            <Button
+              aria-label="OK"
+              onClick={ok}
+              disabled={!canOk}
+              shortcutKeys={okShortcutKeys}
+              class="bg-midRed px-1 py-half"
+            >
+              <span class="text-single-line">OK</span>
+            </Button>
+          </div>
+        </Dialog>
+      </div>
+    </DialogPortal>
+  );
+};

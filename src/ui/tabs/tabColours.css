@@ -1,0 +1,12 @@
+/*
+ * Tabs' colours unless given their own. Zero specificity (via :where), so any
+ * colours a tab is given override these
+ */
+:where([role="tab"]) {
+  background-color: var(--colour-lightGrey);
+  color: var(--colour-midGrey);
+}
+:where([role="tab"][data-selected="true"]) {
+  background-color: var(--colour-white);
+  color: var(--colour-metallicBlue);
+}

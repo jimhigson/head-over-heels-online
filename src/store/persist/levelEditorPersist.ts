@@ -6,6 +6,8 @@ import {
   type LevelEditorState,
 } from "../../editor/slice/levelEditorSlice";
 import { levelEditorSliceNonPersistedFields } from "../../editor/slice/levelEditorSliceTransientFields";
+import { levelEditorCampaignMigrationTransform } from "./levelEditorCampaignMigrationTransform";
+import { levelEditorHistoryTransform } from "./levelEditorHistoryTransform";
 import { persistVersion } from "./persist";
 import storage from "./storage";
 
@@ -14,6 +16,10 @@ const levelEditorPersistConfig: PersistConfig<LevelEditorState> = {
   version: persistVersion,
   storage,
   blacklist: levelEditorSliceNonPersistedFields,
+  transforms: [
+    levelEditorHistoryTransform,
+    levelEditorCampaignMigrationTransform,
+  ],
 };
 
 export const levelEditorPersistedReducer = persistReducer(

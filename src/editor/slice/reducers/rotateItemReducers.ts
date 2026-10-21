@@ -2,7 +2,13 @@ import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { valuesIter } from "../../../utils/entries";
 import { type EditorJsonItemUnion } from "../../editorTypes";
-import { rotateItemInPlace, type RotationSense } from "../../itemRotation";
+import {
+  isPlacedItemRotatable,
+  rotateItemInPlace,
+  rotatePlacedItemInPlace,
+  type RotationSense,
+} from "../../itemRotation";
+import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
@@ -15,9 +21,12 @@ export const rotateItemReducers = {
       payload: { sense, timestamp },
     }: PayloadAction<{ sense: RotationSense; timestamp: number }>,
   ) {
-    mutateSelectedItemsInPlace(state, { verb: "Rotate", timestamp }, (item) =>
-      rotateItemInPlace(item, sense),
-    );
+    const roomJson = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
+    mutateSelectedItemsInPlace(state, { verb: "Rotate", timestamp }, (item) => {
+      if (isPlacedItemRotatable(roomJson, item)) {
+        rotatePlacedItemInPlace(item, sense);
+      }
+    });
     clearContextMenuXyInPlace(state);
   },
 
@@ -45,7 +54,7 @@ export const rotateItemReducers = {
     // rotating in place keeps any preview-only config (eg a cyberman placed on
     // a toaster starts deactivated). rotateItemInPlace no-ops on non-rotatable
     // entries, so iterating them all is safe:
-    if (state.pendingEdits !== undefined) {
+    if (state.pendingEdits?.madeBy.type === "itemTool") {
       for (const itemPreview of valuesIter(state.pendingEdits.edits)) {
         if (itemPreview !== null) {
           rotateItemInPlace(itemPreview, sense);

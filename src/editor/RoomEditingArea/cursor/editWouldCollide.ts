@@ -13,6 +13,7 @@ import {
   type EditorJsonItemUnion,
   type EditorJsonItemWithTimes,
   type EditorRoomItemId,
+  type EditorRoomJson,
   type EditorRoomState,
   type EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
@@ -50,24 +51,30 @@ const collideableForItem = (
  */
 export const itemMoveOrResizeWouldCollide = ({
   roomState,
+  roomJson,
   jsonItemIds,
   blockPositionDelta,
   timesDelta,
 }: {
   roomState: EditorRoomState;
+  /**
+   * the room's json with the items where they are now, previews included -
+   * which the loaded room's own json needn't be
+   */
+  roomJson: EditorRoomJson;
   jsonItemIds: EditorRoomItemId[];
   blockPositionDelta: Xyz;
   timesDelta?: Xyz;
 }) => {
   const directionalIndex = buildRoomJsonDirectionalIndex(
-    roomJsonItemsIterable(roomState.roomJson),
+    roomJsonItemsIterable(roomJson),
   );
 
   const loadedModifiedItemTuples = Iterator.from(jsonItemIds)
     // get the json items from the room json:
     .map(
       (jsonItemId) =>
-        [jsonItemId, roomState.roomJson.items[jsonItemId]] as [
+        [jsonItemId, roomJson.items[jsonItemId]] as [
           EditorRoomItemId,
           EditorJsonItemUnion,
         ],
@@ -94,7 +101,7 @@ export const itemMoveOrResizeWouldCollide = ({
       for (const loadedItem of loadItemFromJson(
         jsonItemId,
         modifiedJsonItem,
-        roomState.roomJson,
+        roomJson,
         directionalIndex,
       )) {
         yield [jsonItemId, modifiedJsonItem, loadedItem] as [
