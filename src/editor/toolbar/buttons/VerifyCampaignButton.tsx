@@ -1,22 +1,16 @@
 import { store } from "../../../store/store";
-import { useVerifyCampaign } from "../../verify/useVerifyCampaign";
+import { useVerificationCounts } from "../../verify/useVerifyCampaign";
 import { showVerifyIssuesThunk } from "../showVerifyIssuesThunk";
 import { ToolbarButton } from "./ToolbarButton";
 
 export const VerifyCampaignButton = () => {
-  const verification = useVerifyCampaign();
+  const { errors: errorCount, warnings: warningCount } =
+    useVerificationCounts();
 
-  if (verification.length === 0) {
+  if (errorCount === 0 && warningCount === 0) {
     // campaign is valid - nothing to warn about
     return null;
   }
-
-  const errorCount = verification.filter(
-    (issue) => issue.severity === "error",
-  ).length;
-  const warningCount = verification.filter(
-    (issue) => issue.severity === "warning",
-  ).length;
 
   return (
     <ToolbarButton

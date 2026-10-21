@@ -2,11 +2,15 @@ import { autoDetectRenderer, Rectangle, type Renderer } from "pixi.js";
 
 import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
 import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
-import { RoomRenderer } from "../../game/render/room/RoomRenderer";
+import {
+  noRoomRendererDecorators,
+  RoomRenderer,
+} from "../../game/render/room/RoomRenderer";
 import { roomRenderExtent } from "../../game/render/room/roomRenderExtent";
 import { blockstackPixiPalettes } from "../../sprites/palette/spritesheetPixiPalettes";
 import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { Spritesheets } from "../../sprites/spritesheet/Spritesheets";
+import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { emptyUserSettings } from "../../store/slices/userSettings/emptyUserSettings";
 import { store } from "../../store/store";
@@ -91,12 +95,13 @@ export const renderRoomPreviewImage = async (
     onScreenControls: false,
     speedCoefficient: 1,
     spritesheets: ssv,
+    planetsLiberated: noPlanetsLiberated,
   };
 
-  const roomRenderer = new RoomRenderer<EditorRoomId, EditorRoomItemId>({
-    room,
-    general,
-  });
+  const roomRenderer = new RoomRenderer<EditorRoomId, EditorRoomItemId>(
+    { room, general },
+    noRoomRendererDecorators,
+  );
 
   try {
     // the first tick treats every item as moved regardless of what is passed,

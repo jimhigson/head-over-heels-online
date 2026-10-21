@@ -1,18 +1,18 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { produce } from "immer";
 import nanoEqual from "nano-equal";
-import { type ValueOf } from "type-fest";
 
 import { roomVerticalLink } from "../../model/RoomJson";
 import { type EditorRootState } from "../../store/store";
 import { emptyArray } from "../../utils/empty";
-import { keysIter, objectEntriesIter } from "../../utils/entries";
+import { keysIter } from "../../utils/entries";
 import {
   type EditorJsonItemUnion,
   type EditorRoomId,
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../editorTypes";
+import { selectActiveCursorRoomEditingPaneFromLevelEditorState } from "./EditorPane";
+import { jsonItemsWithEdits } from "./jsonItemsWithEdits";
 import { type LevelEditorState } from "./levelEditorSlice";
 
 /** whether the campaign being edited differs from as last saved (or loaded) */
@@ -76,21 +76,17 @@ export const selectItemInLevelEditorState = (
     roomId ?? selectCursorRoomIdFromLevelEditorState(state)
   ]?.items[itemId] as EditorJsonItemUnion | undefined;
 
-/** the items selected in the cursor room */
+/**
+ * the items selected in the cursor room, by the active pane - the selection
+ * that commands act on. Empty unless the active pane edits the cursor room
+ */
 export const selectCursorRoomSelectedJsonItemIdsFromLevelEditorState = (
   state: LevelEditorState,
 ): EditorRoomItemId[] =>
-  state.selectedJsonItemIdsByRoom[
+  selectActiveCursorRoomEditingPaneFromLevelEditorState(state)
+    ?.selectedJsonItemIdsByRoom[
     selectCursorRoomIdFromLevelEditorState(state)
   ] ?? emptyArray;
-
-export const selectItemIsSelectedInCursorRoomInLevelEditorState = (
-  state: LevelEditorState,
-  itemId: EditorRoomItemId,
-) =>
-  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state).includes(
-    itemId,
-  );
 
 /**
  * the json ids of items that exist only as an uncommitted preview - ie, the
@@ -168,20 +164,9 @@ export const selectCurrentEditingRoomJsonWithPreviews = createSelector(
       return roomJson;
     }
 
-    return produce(roomJson, (draftRoomJson) => {
-      const pendingEditsEntryIter = objectEntriesIter(
-        pendingEdits as Partial<
-          Record<EditorRoomItemId, ValueOf<typeof pendingEdits>>
-        >,
-      );
-
-      for (const [itemId, itemPreview] of pendingEditsEntryIter) {
-        if (itemPreview === null) {
-          delete draftRoomJson.items[itemId];
-        } else {
-          draftRoomJson.items[itemId] = itemPreview;
-        }
-      }
-    });
+    return {
+      ...roomJson,
+      items: jsonItemsWithEdits(roomJson.items, pendingEdits),
+    };
   },
 );

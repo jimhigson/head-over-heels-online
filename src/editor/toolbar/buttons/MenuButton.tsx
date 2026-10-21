@@ -1,11 +1,12 @@
 import { type RefObject, type VNode } from "preact";
 import { type PropsWithChildren } from "preact/compat";
-import { useId, useState } from "preact/hooks";
+import { useState } from "preact/hooks";
 import { type EmptyObject } from "type-fest";
 
 import { Button, type ButtonProps } from "../../../ui/Button";
 import { cn } from "../../../ui/cn";
 import { PopoverPanel } from "../../../ui/PopoverPanel";
+import { useUniqueId } from "../../../utils/preact/useUniqueId";
 import { buttonSizeClassNames } from "../buttonSizeClassNames";
 
 export interface MenuButtonProps {
@@ -22,7 +23,7 @@ export const MenuButton = ({
   ref,
 }: MenuButtonProps) => {
   const [open, setOpen] = useState(false);
-  const popoverId = useId();
+  const popoverId = useUniqueId();
 
   return (
     <div
@@ -53,16 +54,19 @@ export const MenuButton = ({
               </span>
             </Button>
             <PopoverPanel id={popoverId} open={open} onOpenChange={setOpen}>
-              <div
-                class={cn(
-                  "flex flex-col gap-oneScaledPix py-oneScaledPix",
-                  "bg-metallicBlueHalfbrite text-white max-h-20 overflow-y-auto",
-                  "scrollbar scrollbar-w-1 scrollbar-thumb-highlightBeige",
-                  contentsClassName,
-                )}
-              >
-                {children}
-              </div>
+              {/* contents mount only while open, so closed menus follow nothing: */}
+              {open && (
+                <div
+                  class={cn(
+                    "flex flex-col gap-oneScaledPix py-oneScaledPix",
+                    "bg-metallicBlueHalfbrite text-white max-h-20 overflow-y-auto",
+                    "scrollbar scrollbar-w-1 scrollbar-thumb-highlightBeige",
+                    contentsClassName,
+                  )}
+                >
+                  {children}
+                </div>
+              )}
             </PopoverPanel>
           </>
         )}

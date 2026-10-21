@@ -2,7 +2,7 @@ import { type FunctionComponent, type RefObject } from "preact";
 
 import { type Boundaries } from "../../../../../../model/map/roomGridPositions";
 import { type SortedObjectOfRoomGridPositionSpecs } from "../../../../../../model/map/sortRoomGridPositions";
-import { type MapData } from "./MapData";
+import { type TeleporterLink } from "../../../../../../model/map/teleporterLinks";
 
 export type RoomDecoratorProps<RoomId extends string> = {
   roomId: RoomId;
@@ -10,12 +10,11 @@ export type RoomDecoratorProps<RoomId extends string> = {
   boundaries: Boundaries;
   isCurrentRoom: boolean;
   isCurrentSubRoom: boolean;
-  isSelected: boolean;
   allGridPositions: SortedObjectOfRoomGridPositionSpecs<RoomId>;
-  /** the whole map data, so decorators can read any geometry/linking they need */
-  mapData: MapData<RoomId>;
-  /** which of `mapData`'s areas is drawn */
-  areaIndex: number;
+  /**
+   * teleporter links between rooms on the map, for maps that have them
+   */
+  teleporterLinks: TeleporterLink<RoomId>[] | undefined;
 };
 
 export type RoomBehaviourProps<RoomId extends string> = {

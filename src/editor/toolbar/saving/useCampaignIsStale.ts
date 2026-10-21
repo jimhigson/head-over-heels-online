@@ -3,11 +3,7 @@ import { skipToken } from "@reduxjs/toolkit/query/react";
 import { originalUserId } from "../../../gameInfo";
 import { useGetLatestCampaignVersionQuery } from "../../../store/slices/campaigns/editorCampaignsApiSlice";
 import { useEditorAppSelector } from "../../../store/store";
-import { campaignIsNamed } from "../../editorTypes";
-import {
-  selectCurrentCampaignInProgress,
-  selectCurrentCampaignVersion,
-} from "../../slice/levelEditorSlice";
+import { selectCurrentCampaignVersion } from "../../slice/levelEditorSlice";
 
 export type CampaignStaleness = {
   /** true when the db holds a newer version than the one we have loaded */
@@ -26,20 +22,18 @@ export const useCampaignIsStale = (): CampaignStaleness => {
   const currentCampaignVersion = useEditorAppSelector(
     selectCurrentCampaignVersion,
   );
-  const currentCampaignInProgress = useEditorAppSelector(
-    selectCurrentCampaignInProgress,
+  // only the locator, so edits to the campaign's rooms don't re-render:
+  const { userId, campaignName } = useEditorAppSelector(
+    (state) => state.levelEditor.campaignInProgress.locator,
   );
 
   const queryArg =
     (
-      campaignIsNamed(currentCampaignInProgress) &&
-      currentCampaignInProgress.locator.userId !== originalUserId &&
-      !currentCampaignInProgress.locator.campaignName.startsWith("data:")
+      campaignName !== undefined &&
+      userId !== originalUserId &&
+      !campaignName.startsWith("data:")
     ) ?
-      {
-        userId: currentCampaignInProgress.locator.userId,
-        campaignName: currentCampaignInProgress.locator.campaignName,
-      }
+      { userId, campaignName }
     : skipToken;
 
   // currentData, not data: data keeps the previous campaign's result after switching

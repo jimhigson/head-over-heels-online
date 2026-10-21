@@ -1,16 +1,8 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { type ValueOf } from "type-fest";
 
 import { clearAllData } from "../../store/slices/clearAllData";
-import {
-  quarterTurnAnticlockwise,
-  quarterTurnClockwise,
-} from "../../utils/vectors/cameraAngleVectors";
-import {
-  rotateXy,
-  rotationVectorsByDirectionXy4,
-} from "../../utils/vectors/rotateXy";
-import { type DirectionXy4, type Xy } from "../../utils/vectors/vectors";
+import { type Xy, type Xyz } from "../../utils/vectors/vectors";
 import {
   type EditorCampaign,
   type EditorRoomId,
@@ -19,19 +11,23 @@ import {
 } from "../editorTypes";
 import { type PlaytestOptions } from "../PlaytestOptions";
 import { type PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
-import { type Tool } from "../RoomEditingArea/interactivity/Tool";
+import {
+  type ItemTool,
+  type Tool,
+} from "../RoomEditingArea/interactivity/Tool";
+import {
+  type EditorPane,
+  type EditorPaneId,
+  resetPanesInPlace,
+} from "./EditorPane";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
-import { forgetRoomTabViewsInPlace } from "./inPlaceMutators/forgetRoomTabViewsInPlace";
-import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "./inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
 import {
   selectCampaignHasUnsavedChangesFromLevelEditorState,
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomFromLevelEditorState,
   selectCursorRoomIdFromLevelEditorState,
-  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
   selectCursorSubRoomIdFromLevelEditorState,
   selectItemInLevelEditorState,
-  selectItemIsSelectedInCursorRoomInLevelEditorState,
   selectRoomFromLevelEditorState,
   selectRoomHasUnsavedChangesFromLevelEditorState,
 } from "./levelEditorSelectors";
@@ -42,19 +38,26 @@ import {
   changeRoomReducers,
   changeRoomSelectors,
 } from "./reducers/changeRoomReducers";
+import {
+  cmdKSearchReducers,
+  cmdKSearchSelectors,
+} from "./reducers/cmdKSearchReducers";
 import { coalesceItemsReducers } from "./reducers/coalesceItemsReducers";
 import { coalesceRoomsReducers } from "./reducers/coalesceRoomsReducers";
 import {
-  clearContextMenuXyInPlace,
   contextMenuReducers,
+  contextMenuSelectors,
 } from "./reducers/contextMenuReducers";
 import { disappearingReducers } from "./reducers/disappearingReducers";
 import { doorGameEndReducers } from "./reducers/doorGameEndReducers";
 import {
-  type DragInProgress,
   dragToMoveReducers,
+  dragToMoveSelectors,
 } from "./reducers/dragToMoveReducers";
-import { editorSettingsReducers } from "./reducers/editorSettingsReducers";
+import {
+  editorSettingsReducers,
+  editorSettingsSelectors,
+} from "./reducers/editorSettingsReducers";
 import { editRoomReducers } from "./reducers/editRoomReducers";
 import { explodeItemsReducers } from "./reducers/explodeItemsReducers";
 import { itemActivationReducers } from "./reducers/itemActivationReducers";
@@ -63,7 +66,13 @@ import { mirrorOrientationReducers } from "./reducers/mirrorOrientationReducers"
 import { monsterMovementReducers } from "./reducers/monsterMovementReducers";
 import { moveItemsToRoomReducers } from "./reducers/moveItemsToRoomReducers";
 import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
-import { playtestOptionsReducers } from "./reducers/playtestOptionsReducers";
+import { multiplyItemsReducers } from "./reducers/multiplyItemsReducers";
+import { nudgeReducers } from "./reducers/nudgeReducers";
+import { panesReducers, panesSelectors } from "./reducers/panesReducers";
+import {
+  playtestOptionsReducers,
+  playtestOptionsSelectors,
+} from "./reducers/playtestOptionsReducers";
 import { roomSelectionReducers } from "./reducers/roomSelectionReducers";
 import {
   roomTabsReducers,
@@ -74,8 +83,16 @@ import {
   roomViewSelectors,
 } from "./reducers/roomViewReducers";
 import { rotateItemReducers } from "./reducers/rotateItemReducers";
+import {
+  rotateViewReducers,
+  rotateViewSelectors,
+} from "./reducers/rotateViewReducers";
 import { saveAndLoadReducers } from "./reducers/saveAndLoadReducers";
-import { selectionsReducers } from "./reducers/selectionsReducers";
+import {
+  selectionsReducers,
+  selectionsSelectors,
+} from "./reducers/selectionsReducers";
+import { setToolReducers, setToolSelectors } from "./reducers/setToolReducers";
 import { startDirectionReducers } from "./reducers/startDirectionReducers";
 import { teleporterDestinationReducers } from "./reducers/teleporterDestinationReducers";
 import { type UndoDescription } from "./reducers/undoDescription";
@@ -93,6 +110,37 @@ export type HoveredItem = {
 
 export type PreviewedRoomItemEdits = {
   [k in keyof EditorRoomJsonItems]: EditorRoomJsonItems[k] | null;
+};
+
+/**
+ * the kinds of nudge (from the keys or toolbar buttons)
+ */
+export const nudgeKinds = ["move", "multiplyOrGrow", "removeOrShrink"] as const;
+export type NudgeKind = (typeof nudgeKinds)[number];
+
+/**
+ * pendingEdits is one preview slot shared by the item tool's inline 'ghost' preview render, drags and
+ * nudges, and each is ended differently - eg a held key's nudges build one
+ * preview that becomes one undo entry, while the item tool's 'ghost' preview follows
+ * the tool. This type says which kind the current preview is
+ */
+type PendingEditsMadeBy =
+  | { type: "drag" }
+  | { type: "itemTool" }
+  | {
+      type: "nudge";
+      kind: NudgeKind;
+      /**
+       * the total move of the nudges so far, for the edit's description
+       */
+      positionDelta: Xyz;
+    };
+
+export type PendingEdits = {
+  edits: PreviewedRoomItemEdits;
+  description: UndoDescription;
+  timestamp: number;
+  madeBy: PendingEditsMadeBy;
 };
 
 export const gridResolutions = [1, 0.5, 0.125] as const;
@@ -119,26 +167,23 @@ export type LevelEditorState = {
    * committed to the room. When present, both the edits and a label describing
    * the action are required together.
    */
-  pendingEdits?: {
-    edits: PreviewedRoomItemEdits;
-    description: UndoDescription;
-    timestamp: number;
-  };
+  pendingEdits?: PendingEdits;
   tool: Tool;
+  /**
+   * the item tool most recently chosen, so we can switch to the pointer and later switch back
+   */
+  lastItemTool: ItemTool | undefined;
   /** the text currently typed into the cmd-k menu's search input, retained while the menu is closed */
   cmdKSearch: string;
   /**
-   * when set, the item context menu is shown at this position (scaled pixels, in
-   * the room's projected screen space). Undefined when no menu is open.
+   * the mounted room panes, by the ids they were given on mounting
    */
-  contextMenuXy?: Xy;
-  hoveredItem?: HoveredItem;
-  clickableAnnotationHovered: boolean;
+  panes: Record<EditorPaneId, EditorPane>;
   /**
-   * each room's selected items, maintained per-room and kept while other rooms are being edited,
-   * removed when its tab is closed
+   * the pane last interacted with - commands acting on the selection act on
+   * its selection. Undefined while no pane is mounted
    */
-  selectedJsonItemIdsByRoom: Partial<Record<EditorRoomId, EditorRoomItemId[]>>;
+  activePaneId: EditorPaneId | undefined;
   gridResolution: GridResolution;
   /** the 90°-increment camera rotation the editor is viewing the room from */
   cameraAngle: Xy;
@@ -146,12 +191,8 @@ export type LevelEditorState = {
   wallsFloorsLocked: boolean;
   /** whether placing a door also adds a room beyond it */
   doorAutoAddsRoom: boolean;
-  /** the room editing pane's size, in css px */
-  roomPaneSize: Xy;
   /** how the playtest button and menu open the game */
   playtestOptions: PlaytestOptions;
-  /** what the pointer is dragging in the room editing pane, if anything */
-  dragInProgress: DragInProgress | undefined;
   /**
    * Index into the undo/redo history for hover preview.
    * Positive = undo stack index (1-based), negative = redo stack index (-1-based), 0 = none.
@@ -174,55 +215,9 @@ export const levelEditorSlice = createSlice({
   name: "levelEditor",
   initialState: initialLevelEditorSliceState,
   reducers: {
-    /**
-     * set the tool that is currently selected
-     */
-    setTool(_state, { payload: tool }: PayloadAction<Tool>) {
-      // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
-      // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
-      // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
-      const state = _state as LevelEditorState;
-
-      // unselect if using an item tool
-      if (tool.type === "item") {
-        setSelectedJsonItemIdsOnCursorRoomInPlace(state, []);
-        state.hoveredItem = undefined;
-        clearContextMenuXyInPlace(state);
-      }
-
-      state.tool = tool;
-    },
-
-    /**
-     * set the text typed into the cmd-k menu's search input
-     */
-    setCmdKSearch(state, { payload: search }: PayloadAction<string>) {
-      state.cmdKSearch = search;
-    },
-
-    /** rotate the editor's view of the room a quarter-turn clockwise */
-    rotateViewClockwise(state) {
-      state.cameraAngle = rotateXy(state.cameraAngle, quarterTurnClockwise);
-      forgetRoomTabViewsInPlace(state);
-    },
-    /** rotate the editor's view of the room a quarter-turn anticlockwise */
-    rotateViewAnticlockwise(state) {
-      state.cameraAngle = rotateXy(state.cameraAngle, quarterTurnAnticlockwise);
-      forgetRoomTabViewsInPlace(state);
-    },
-    /**
-     * rotate the editor's view to the angle named by where world "away"
-     * appears on screen - the label the compass between the rotate buttons
-     * shows (eg "away" = the base angle)
-     */
-    rotateViewTo(
-      state,
-      { payload: awayAppearsAs }: PayloadAction<DirectionXy4>,
-    ) {
-      state.cameraAngle = rotationVectorsByDirectionXy4[awayAppearsAs];
-      forgetRoomTabViewsInPlace(state);
-    },
-
+    ...cmdKSearchReducers,
+    ...setToolReducers,
+    ...rotateViewReducers,
     ...editorSettingsReducers,
     ...undoReducers,
     ...applyItemToolReducers,
@@ -244,6 +239,8 @@ export const levelEditorSlice = createSlice({
     ...disappearingReducers,
     ...monsterMovementReducers,
     ...moveItemsToRoomReducers,
+    ...multiplyItemsReducers,
+    ...nudgeReducers,
     ...teleporterDestinationReducers,
     ...doorGameEndReducers,
     ...startDirectionReducers,
@@ -252,11 +249,19 @@ export const levelEditorSlice = createSlice({
     ...campaignManagementReducers,
     ...contextMenuReducers,
     ...playtestOptionsReducers,
+    ...panesReducers,
   },
   extraReducers(builder) {
-    builder.addCase(clearAllData, () =>
-      structuredClone(initialLevelEditorSliceState),
-    );
+    builder.addCase(clearAllData, ({ panes, activePaneId }) => {
+      // the panes reflect the DOM, so keep them until the DOM nodes are unmounted, which will cause this state to go:
+      const clearedState: LevelEditorState = {
+        ...structuredClone(initialLevelEditorSliceState),
+        panes,
+        activePaneId,
+      };
+      resetPanesInPlace(clearedState);
+      return clearedState;
+    });
   },
   selectors: {
     selectCursorRoom: selectCursorRoomFromLevelEditorState,
@@ -272,15 +277,6 @@ export const levelEditorSlice = createSlice({
       selectCurrentCommittedRoomJsonFromLevelEditorState(state).color,
     selectCurrentEditingRoomScenery: (state) =>
       selectCurrentCommittedRoomJsonFromLevelEditorState(state).planet,
-    selectTool: (state) => state.tool,
-    selectCmdKSearch: (state) => state.cmdKSearch,
-    selectPlaytestOptions: (state) => state.playtestOptions,
-    selectEditorCameraAngle: (state) => state.cameraAngle,
-    selectContextMenuXy: (state) => state.contextMenuXy,
-    selectCursorRoomSelectedJsonItemIds:
-      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
-    selectHoveredItem: (state) => state.hoveredItem,
-    selectItemIsSelected: selectItemIsSelectedInCursorRoomInLevelEditorState,
     selectCampaignHasUnsavedChanges:
       selectCampaignHasUnsavedChangesFromLevelEditorState,
     selectRoom: selectRoomFromLevelEditorState,
@@ -290,7 +286,15 @@ export const levelEditorSlice = createSlice({
     ...changeRoomSelectors,
     ...roomTabsSelectors,
     ...roomViewSelectors,
-    selectDoorAutoAddsRoom: (state) => state.doorAutoAddsRoom,
+    ...cmdKSearchSelectors,
+    ...setToolSelectors,
+    ...rotateViewSelectors,
+    ...playtestOptionsSelectors,
+    ...editorSettingsSelectors,
+    ...panesSelectors,
+    ...selectionsSelectors,
+    ...contextMenuSelectors,
+    ...dragToMoveSelectors,
   },
 });
 
@@ -314,9 +318,12 @@ export const {
   closeOtherRoomTabs,
   closeRoomTab,
   closeItemContextMenu,
-  cursorRoomViewChanged,
-  cursorRoomViewPanned,
-  cursorRoomViewZoomed,
+  editorPaneActivated,
+  editorPaneMounted,
+  editorPaneUnmounted,
+  paneViewChanged,
+  paneViewPanned,
+  paneViewZoomed,
   coalesceSelectedItems,
   coalesceSelectedRooms,
   commitCurrentPreviewedEdits,
@@ -326,6 +333,9 @@ export const {
   loadCampaign,
   moveItemsToRoom,
   moveOrResizeItemAsPreview,
+  multiplySelectedItems,
+  nudgeSelectedItems,
+  commitPendingNudge,
   newCampaign,
   openItemContextMenu,
   redo,
@@ -334,7 +344,7 @@ export const {
   roomBack,
   roomForward,
   roomJsonEdited,
-  roomPaneResized,
+  paneResized,
   rotateCurrentToolItem,
   rotateSelectedItems,
   rotateViewAnticlockwise,
@@ -354,6 +364,7 @@ export const {
   setHoveredItemInRoom,
   setRemoteCampaign,
   setRoomAboveOrBelow,
+  makeHoleInSelectedFloor,
   setSelectedItemsActivation,
   setSelectedItemsDisappearing,
   setSelectedItemsInRoom,
@@ -363,6 +374,8 @@ export const {
   setSelectedDoorsToGameEnd,
   setSelectedTeleportersDestination,
   setTool,
+  resetTool,
+  togglePointerTool,
   toggleRoomInSelection,
   toggleSelectedItemInRoom,
   undo,
@@ -372,7 +385,11 @@ export const {
   selectBackRooms,
   selectPlaytestOptions,
   selectCmdKSearch,
-  selectContextMenuXy,
+  selectPaneContextMenuXy,
+  selectPaneSelectedJsonItemIds,
+  selectPaneDragInProgress,
+  selectActivePaneId,
+  selectActivePaneDragInProgress,
   selectCurrentCampaignInProgress,
   selectCurrentCampaignVersion,
   selectCurrentEditingRoomColour,
@@ -381,19 +398,18 @@ export const {
   selectCursorRoom,
   selectCursorRoomId,
   selectCursorSubRoomId,
-  selectCursorRoomView,
+  selectPaneView,
   selectDoorAutoAddsRoom,
   selectEditorCameraAngle,
   selectForwardRooms,
-  selectHoveredItem,
+  selectPaneHoveredItem,
   selectItem,
-  selectItemIsSelected,
   selectOpenRoomTabs,
   selectRedoHistory,
   selectCampaignHasUnsavedChanges,
   selectRoom,
   selectRoomHasUnsavedChanges,
-  selectRoomPaneSize,
+  selectPaneSize,
   selectCursorRoomSelectedJsonItemIds,
   selectTool,
   selectUndoHistory,

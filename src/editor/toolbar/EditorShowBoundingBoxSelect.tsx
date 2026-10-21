@@ -1,8 +1,8 @@
 import { ShowBoundingBoxSelect } from "../../game/debug/ShowBoundingBoxSelect";
-import { editorLoadedRoom } from "../editorLoadedRoom";
+import { activePaneLoadedRoom } from "../paneLoadedRooms";
 
 export const EditorShowBoundingBoxSelect = () => (
   <ShowBoundingBoxSelect
-    getCurrentRoomItems={() => editorLoadedRoom.getRoomState().items}
+    getCurrentRoomItems={() => activePaneLoadedRoom()?.getRoomState().items}
   />
 );

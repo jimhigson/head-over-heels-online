@@ -46,7 +46,7 @@ export const room = inferRoomJson({
     pu: { config: {}, position: { x: 2, y: 1, z: 0 }, type: "pushableBlock" },
     t: {
       config: {
-        activatedOnStoreValue: "planetsLiberated.safari",
+        activatedIfPlanetLiberated: "safari",
         times: { x: 2, y: 2 },
         toRoom: "safari1",
       },

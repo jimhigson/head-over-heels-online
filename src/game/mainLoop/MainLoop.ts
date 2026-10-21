@@ -2,6 +2,7 @@ import { type Application, Container, Rectangle } from "pixi.js";
 
 import { audioCtx } from "../../sound/audioCtx";
 import { ensureRoomSoundsLoaded } from "../../sound/ensureRoomSoundsLoaded";
+import { type PlanetName } from "../../sprites/planets";
 import {
   spritesheetArtName,
   spritesheetMetas,
@@ -47,7 +48,10 @@ import {
   type InGameGeneralRenderContext,
   type RoomRenderContextInGame,
 } from "../render/room/RoomRenderContexts";
-import { RoomRenderer } from "../render/room/RoomRenderer";
+import {
+  noRoomRendererDecorators,
+  RoomRenderer,
+} from "../render/room/RoomRenderer";
 import { type RoomRendererType } from "../render/room/RoomRendererType";
 import { RoomScrollRenderer } from "../render/room/RoomScrollRenderer";
 import {
@@ -275,6 +279,7 @@ export class MainLoop<RoomId extends string> {
     cameraAngle: Xy,
     /** game-speed multiplier - <1 for slow-mo, 0 while paused */
     speedCoefficient: number,
+    planetsLiberated: Readonly<Record<PlanetName, boolean>>,
   ): InGameGeneralRenderContext<RoomId> {
     const existing = this.#generalRenderContext;
 
@@ -291,6 +296,7 @@ export class MainLoop<RoomId extends string> {
         onScreenControls,
         cameraAngle,
         speedCoefficient,
+        planetsLiberated,
       };
       this.#generalRenderContext = created;
       return created;
@@ -307,6 +313,7 @@ export class MainLoop<RoomId extends string> {
 
     existing.cameraAngle = cameraAngle;
     existing.speedCoefficient = speedCoefficient;
+    existing.planetsLiberated = planetsLiberated;
     return existing;
   }
 
@@ -631,6 +638,7 @@ export class MainLoop<RoomId extends string> {
       tickOnScreenControls,
       cameraAngle,
       gameSpeed,
+      tickState.gameInPlay.gameInPlay.planetsLiberated,
     );
 
     if (createNewHudRenderer) {
@@ -680,7 +688,7 @@ export class MainLoop<RoomId extends string> {
           roomRenderContext,
           new ColourClashCircleEffectRenderer(
             roomRenderContext,
-            new RoomRenderer(roomRenderContext),
+            new RoomRenderer(roomRenderContext, noRoomRendererDecorators),
           ),
         );
         this.#worldContainer.addChild(this.#roomRenderer.output.graphics);

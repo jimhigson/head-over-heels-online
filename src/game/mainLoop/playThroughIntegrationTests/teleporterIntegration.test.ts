@@ -237,7 +237,7 @@ test("teleporter can be inactive based on a store value", () => {
         config: {
           toRoom: secondRoomId,
           toItemId: "teleporterLanding",
-          activatedOnStoreValue: "planetsLiberated.egyptus",
+          activatedIfPlanetLiberated: "egyptus",
         },
       },
     },
@@ -300,7 +300,7 @@ test("teleporter can be activated based on a store value", () => {
         config: {
           toRoom: secondRoomId,
           toItemId: "teleporterLanding",
-          activatedOnStoreValue: "planetsLiberated.egyptus",
+          activatedIfPlanetLiberated: "egyptus",
         },
       },
     },

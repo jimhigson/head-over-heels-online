@@ -34,17 +34,15 @@ export const areRoomsCoalesceable = (
     return { coalesceable: false };
   }
 
-  const allCells = [...cellsByRoom.values()].flat();
-  const [
-    {
-      gridPosition: { z: firstZ },
-    },
-  ] = [...valuesIter(gridPositions)];
+  // the selected rooms must all be on one level:
+  const selectedCells = valuesIter(gridPositions)
+    .filter((spec) => selectedSet.has(spec.roomId))
+    .toArray();
+  const [firstSelectedCell] = selectedCells;
   if (
-    allCells.length === 0 ||
-    ![...valuesIter(gridPositions)]
-      .filter((s) => selectedSet.has(s.roomId as EditorRoomId))
-      .every((s) => s.gridPosition.z === firstZ)
+    !selectedCells.every(
+      ({ gridPosition: { z } }) => z === firstSelectedCell.gridPosition.z,
+    )
   ) {
     return { coalesceable: false };
   }

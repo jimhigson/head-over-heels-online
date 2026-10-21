@@ -17,7 +17,6 @@ import {
   type IndividualCharacterName,
 } from "../../../model/modelTypes";
 import { type PlanetName } from "../../../sprites/planets";
-import { type ToggleablePaths } from "../../../utils/Toggleable";
 import { clearAllData } from "../clearAllData";
 import { type DeathMenuParam } from "../gameMenus/gameMenusSlice";
 import { savedGameLoadedOnAppLoad } from "../savedGames/savedGamesSlice";
@@ -74,8 +73,6 @@ type GameInPlaySliceState = {
    */
   gameRunning: boolean;
 };
-
-export type GameInPlayBooleanPaths = ToggleablePaths<GameInPlayStoreState>;
 
 export const noPlanetsLiberated = {
   blacktooth: false,

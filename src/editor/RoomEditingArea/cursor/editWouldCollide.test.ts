@@ -60,6 +60,7 @@ describe("itemMoveOrResizeWouldCollide", () => {
 
       const wouldCollide = itemMoveOrResizeWouldCollide({
         roomState,
+        roomJson: roomState.roomJson,
         jsonItemIds: ["tower1" as EditorRoomItemId],
         blockPositionDelta: xyz(0, 0, 0), // Not moving position
         timesDelta: xyz(0, 0, 1), // Increase height by 1
@@ -73,6 +74,7 @@ describe("itemMoveOrResizeWouldCollide", () => {
 
       const wouldCollide = itemMoveOrResizeWouldCollide({
         roomState,
+        roomJson: roomState.roomJson,
         jsonItemIds: ["tower1" as EditorRoomItemId],
         blockPositionDelta: xyz(0, 0, 0), // Not moving position
         timesDelta: xyz(0, 0, 2), // Increasing height by 2 would collide

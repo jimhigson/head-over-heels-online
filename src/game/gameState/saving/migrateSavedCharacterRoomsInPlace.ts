@@ -1,4 +1,8 @@
 import {
+  migrateTeleporterActivationConfigInPlace,
+  migrateTeleporterActivationInPlace,
+} from "../../../model/inPlaceMutators/migrateTeleporterActivationInPlace";
+import {
   type LegacyWallConfig,
   migrateWallConfigInPlace,
   migrateWallTilesInPlace,
@@ -164,6 +168,9 @@ const migrateHeelsAbilitiesInPlace = (
     if (heelsAbilities.carrying.type === "sceneryPlayer") {
       migrateSceneryPlayerInPlace(heelsAbilities.carrying);
     }
+    if (heelsAbilities.carrying.type === "portableTeleporter") {
+      migrateTeleporterActivationConfigInPlace(heelsAbilities.carrying.config);
+    }
   }
 };
 
@@ -205,6 +212,7 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
   // head and heels can be in the same room (the same object twice):
   for (const room of new Set(valuesIter(savedCharacterRooms))) {
     migrateWallTilesInPlace(room.roomJson);
+    migrateTeleporterActivationInPlace(room.roomJson);
 
     // saves from before change-tracking was a progression count omit these:
     room.progression ??= 0 as Progression;
@@ -281,6 +289,10 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
           break;
         case "sceneryPlayer":
           migrateSceneryPlayerInPlace(item);
+          break;
+        case "teleporter":
+        case "portableTeleporter":
+          migrateTeleporterActivationConfigInPlace(item.config);
           break;
         case "head":
           migratePlayableStateInPlace(item.state);

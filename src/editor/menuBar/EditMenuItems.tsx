@@ -31,6 +31,7 @@ export const EditMenuItems = () => {
       <CommandMenuItem command={actionCommandDefinitions.paste} />
       <CommandMenuItem command={actionCommandDefinitions.delete} />
       <CommandMenuItem command={actionCommandDefinitions.pointerTool} />
+      <CommandMenuItem command={actionCommandDefinitions.togglePointerTool} />
       <CommandMenuItem command={actionCommandDefinitions.eyeDropperTool} />
       <CommandMenuItem command={actionCommandDefinitions.commandPalette} />
       <MenuItem

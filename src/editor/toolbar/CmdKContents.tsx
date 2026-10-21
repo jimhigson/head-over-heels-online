@@ -8,6 +8,8 @@ import { CommandInput } from "../../ui/command/CommandInput";
 import { CommandItem } from "../../ui/command/CommandItem";
 import { CommandList } from "../../ui/command/CommandList";
 import { CommandMatch } from "../../ui/command/CommandMatch";
+import { shortcutHint } from "../../ui/menuBar/shortcutHint";
+import { useTip } from "../../ui/tip/useTip";
 import { entries } from "../../utils/entries";
 import {
   type EditorCommand,
@@ -34,6 +36,61 @@ export type CmdKContentsProps<TCommand extends EditorCommand> = {
   onSearchChange?: (search: string) => void;
   /** sees every keydown first, before it is acted on */
   onKeyDown?: CommandProps["onKeyDown"];
+};
+
+type CmdKEntryProps<TCommand extends EditorCommand> = {
+  entryKey: string;
+  command: TCommand;
+  onSelect: (command: TCommand) => void;
+};
+
+const CmdKEntry = <TCommand extends EditorCommand>({
+  entryKey,
+  command,
+  onSelect,
+}: CmdKEntryProps<TCommand>) => {
+  const { interestfor, tip } = useTip(command.cmdKTip);
+
+  return (
+    <CommandItem
+      value={cmdKSearchText(entryKey, command)}
+      onSelect={() => onSelect(command)}
+      class="px-1"
+    >
+      {/* div copies the form of the <button> in ToolbarButton without actually being a button - kept
+          without an icon, so every label starts at the same x: */}
+      <div
+        class={cn(
+          `${buttonSizeClassNames} active:pt-oneScaledPix gap-0 inline-flex items-center justify-center overflow-hidden`,
+          // as on the toolbar, eg its colour, or how its icon is positioned:
+          command.toolbarClass,
+        )}
+      >
+        {command.icon}
+      </div>
+      {
+        interestfor === undefined ?
+          <CommandMatch class="ml-1" text={command.label} />
+          // a button, as only buttons and links can invoke a tip by interest:
+        : <button
+            type="button"
+            tabIndex={-1}
+            interestfor={interestfor}
+            // fills the row, so hovering anywhere on it shows the tip:
+            class="ml-1 flex-1 self-stretch text-left"
+          >
+            <CommandMatch text={command.label} />
+          </button>
+
+      }
+      {tip}
+      {command.shortcutKeys !== undefined && (
+        <span class="ml-auto pl-2 text-single-line whitespace-nowrap text-highlightBeige">
+          {shortcutHint(command.shortcutKeys)}
+        </span>
+      )}
+    </CommandItem>
+  );
 };
 
 /** a searchable list of commands, eg the items the editor can place */
@@ -72,24 +129,12 @@ export const CmdKContents = <TCommand extends EditorCommand>({
         </CommandEmpty>
         <CommandGroup>
           {listedEntries.map(({ key, command }) => (
-            <CommandItem
+            <CmdKEntry
               key={key}
-              value={cmdKSearchText(key, command)}
-              onSelect={() => onSelect(command)}
-              class="px-1"
-            >
-              {/* div copies the form of the <button> in ToolbarButton without actually being a button: */}
-              <div
-                class={cn(
-                  `${buttonSizeClassNames} active:pt-oneScaledPix gap-0 inline-flex items-center justify-center overflow-hidden`,
-                  // as on the toolbar, eg its colour, or how its icon is positioned:
-                  command.toolbarClass,
-                )}
-              >
-                {command.icon}
-              </div>
-              <CommandMatch class="ml-1" text={command.label} />
-            </CommandItem>
+              entryKey={key}
+              command={command}
+              onSelect={onSelect}
+            />
           ))}
         </CommandGroup>
       </CommandList>

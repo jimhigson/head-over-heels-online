@@ -167,6 +167,7 @@ export const findItemsDropPlacement = (
     (candidate) =>
       !itemMoveOrResizeWouldCollide({
         roomState: trialRoomState,
+        roomJson: trialRoomState.roomJson,
         jsonItemIds: trialIds,
         blockPositionDelta: addXyz(candidate, { x: insideX, y: insideY }),
       }),

@@ -10,6 +10,7 @@ import {
   changeToRoom,
   setRoomAboveOrBelow,
 } from "../../slice/levelEditorSlice";
+import { selectRoomHues } from "../../slice/selectRoomHues";
 import { ToolbarButton } from "./ToolbarButton";
 
 const RoomsAboveOrBelowSelectOrCreate = ({
@@ -19,9 +20,7 @@ const RoomsAboveOrBelowSelectOrCreate = ({
   currentRoomId: EditorRoomId | undefined;
   direction: "above" | "below";
 }) => {
-  const campaign = useEditorAppSelector(
-    ({ levelEditor }) => levelEditor.campaignInProgress,
-  );
+  const campaignRoomHues = useEditorAppSelector(selectRoomHues);
   const currentlyEditingRoomId = useEditorAppSelector(({ levelEditor }) =>
     selectCursorRoomIdFromLevelEditorState(levelEditor),
   );
@@ -98,7 +97,7 @@ const RoomsAboveOrBelowSelectOrCreate = ({
       <div class="flex flex-row gap-oneScaledPix w-full flex-wrap">
         <RoomSelect
           value={currentRoomId}
-          campaign={campaign}
+          roomHues={campaignRoomHues}
           excludeRoomIds={[currentlyEditingRoomId]}
           triggerButtonClassName="w-full"
           onSelect={(roomId) => {

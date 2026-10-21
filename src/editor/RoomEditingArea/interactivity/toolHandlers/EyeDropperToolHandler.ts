@@ -18,10 +18,12 @@ export class EyeDropperToolHandler implements ToolHandler<
   Extract<Tool, { type: "eyeDropper" }>
 > {
   handleMouseMove({
+    paneId,
+    editable,
     roomState,
     pointingAt,
   }: MouseMoveParams<Extract<Tool, { type: "eyeDropper" }>>) {
-    dispatchHoveredOnChangedIfNeeded(roomState, pointingAt);
+    dispatchHoveredOnChangedIfNeeded(paneId, editable, roomState, pointingAt);
   }
 
   handleMouseUp({

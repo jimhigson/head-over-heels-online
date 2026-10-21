@@ -3,10 +3,14 @@ import { type RefObject } from "preact";
 import { useEffect } from "preact/hooks";
 
 import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
-import { RoomRenderer } from "../../game/render/room/RoomRenderer";
+import {
+  RoomRenderer,
+  type RoomRendererDecorators,
+} from "../../game/render/room/RoomRenderer";
 import { blockstackPixiPalettes } from "../../sprites/palette/spritesheetPixiPalettes";
 import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
+import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { type Upscale } from "../../store/slices/upscale/Upscale";
 import { store } from "../../store/store";
 import { type AppTicker } from "../../utils/ticker/AppTicker";
@@ -56,11 +60,12 @@ const editorGeneralRenderContext = (
   spritesheetMeta: spritesheetMetas.blockstack,
   upscale: editorEngineUpscale,
   // the editor has no rotation transitions - the render angle is always the
-  // settled quarter angle:
+  // settled quarter angle, kept up to date each tick:
   cameraAngle: selectEditorCameraAngle(store.getState()),
   onScreenControls: false,
   speedCoefficient: 1,
   spritesheets,
+  planetsLiberated: noPlanetsLiberated,
 });
 
 export const useEditorMainLoop = (
@@ -70,6 +75,12 @@ export const useEditorMainLoop = (
    * (eg pointer picking) can read its render boxes
    */
   roomRendererRef: RefObject<EditorRoomRenderer | undefined>,
+  /**
+   * the pane's own decorators for the room renderer - eg each item's
+   * selection and hover highlights and its annotations (a door's destination
+   * room), and the room's sub-room boundaries
+   */
+  decorators: RoomRendererDecorators,
 ): void => {
   const pixiApp = useProvidedPixiApplication();
   const viewport = useEditorViewport();
@@ -140,10 +151,13 @@ export const useEditorMainLoop = (
           1,
         );
 
-        roomRenderer = new RoomRenderer({
-          room: roomState,
-          general: editorGeneralRenderContext(pixiRenderer, spritesheets),
-        });
+        roomRenderer = new RoomRenderer(
+          {
+            room: roomState,
+            general: editorGeneralRenderContext(pixiRenderer, spritesheets),
+          },
+          decorators,
+        );
 
         roomContainer.addChild(roomRenderer.output.graphics);
         roomRendererRef.current = roomRenderer;
@@ -178,6 +192,11 @@ export const useEditorMainLoop = (
       // incrementing between frames
       roomState.roomTime += deltaMS;
 
+      // update the camera angle per-frame:
+      roomRenderer.renderContext.general.cameraAngle = selectEditorCameraAngle(
+        store.getState(),
+      );
+
       roomRenderer.tick({
         deltaMS,
         // no fps display in the editor - nothing records frame timings:
@@ -202,5 +221,6 @@ export const useEditorMainLoop = (
     spritesheets,
     viewport,
     roomRendererRef,
+    decorators,
   ]);
 };

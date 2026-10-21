@@ -1,21 +1,28 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { type TeleporterLandingConfig } from "../../../model/json/resolveTeleporterLanding";
-import { type EditorRoomId } from "../../editorTypes";
+import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
 
 export const teleporterDestinationReducers = {
   /**
-   * point every selected teleporter at a room. Where in the old destination
-   * to land no longer applies, so it is dropped
+   * point every selected teleporter at a room, landing on an item in it, or
+   * where it lands by default. Any landing position is dropped
    */
   setSelectedTeleportersDestination(
     state,
     {
-      payload: { toRoom, timestamp },
-    }: PayloadAction<{ toRoom: EditorRoomId; timestamp: number }>,
+      payload: { toRoom, toItemId, timestamp },
+    }: PayloadAction<{
+      toRoom: EditorRoomId;
+      /**
+       * the item to land on - undefined to land by default
+       */
+      toItemId: EditorRoomItemId | undefined;
+      timestamp: number;
+    }>,
   ) {
     mutateSelectedItemsInPlace(
       state,
@@ -25,7 +32,11 @@ export const teleporterDestinationReducers = {
           item.config.toRoom = toRoom;
           // viewed with both landing fields optional, so either can be deleted:
           const landingConfig: TeleporterLandingConfig = item.config;
-          delete landingConfig.toItemId;
+          if (toItemId === undefined) {
+            delete landingConfig.toItemId;
+          } else {
+            landingConfig.toItemId = toItemId;
+          }
         }
       },
     );

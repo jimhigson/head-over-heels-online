@@ -80,6 +80,45 @@ describe("blocks", () => {
   });
 
   describe("fractional positions", () => {
+    test("leaves a lone block at a negative fractional position where it is", () => {
+      const items: Record<string, JsonItem<"block">> = {
+        block: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: -2, y: -0.5, z: 6 },
+        },
+      };
+
+      expect(
+        Object.values(consolidateItemsMap(items)).map(
+          ({ position }) => position,
+        ),
+      ).toEqual([{ x: -2, y: -0.5, z: 6 }]);
+    });
+
+    test("can consolidate two blocks on a negative fractional grid position in y", () => {
+      const items: Record<string, JsonItem<"block">> = {
+        block1: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 0, y: -1.5, z: 0 },
+        },
+        block2: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 0, y: -0.5, z: 0 },
+        },
+      };
+
+      expect(Object.values(consolidateItemsMap(items))).toEqual([
+        {
+          type: "block",
+          config: { style: "organic", times: { y: 2 } },
+          position: { x: 0, y: -1.5, z: 0 },
+        },
+      ]);
+    });
+
     test("can consolidate two blocks on fractional grid position in x", () => {
       const items: Record<string, JsonItem<"block">> = {
         block1: {

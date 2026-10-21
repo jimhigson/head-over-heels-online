@@ -10,6 +10,7 @@ import { forEachRoomItem } from "../../../model/roomItemsInPlayIterators";
 import { audioCtx } from "../../../sound/audioCtx";
 import { soundsFadeDurationSec } from "../../../sound/soundUtils/stopWithFade";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
+import { emptyArray } from "../../../utils/empty";
 import { Graph } from "../../../utils/graph/Graph";
 import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { type Xy } from "../../../utils/vectors/vectors";
@@ -58,12 +59,34 @@ const recordPerf = (
   return now;
 };
 
+/**
+ * decorators for one room renderer's items and room, on top of those
+ * registered for every room renderer
+ */
+export type RoomRendererDecorators = {
+  itemDecorators: DecorateItemMaybeRenderer[];
+  roomDecorators: DecorateRoomRenderer[];
+};
+
+export const noRoomRendererDecorators: RoomRendererDecorators = {
+  itemDecorators: emptyArray,
+  roomDecorators: emptyArray,
+};
+
 export class RoomRenderer<
   RoomId extends string,
   RoomItemId extends string,
 > implements RoomRendererType<RoomId, RoomItemId> {
+  /**
+   * decorators for every room renderer's items
+   */
   static itemDecorators: DecorateItemMaybeRenderer[][] = [];
+  /**
+   * decorators for every room renderer's room
+   */
   static roomDecorators: DecorateRoomRenderer[][] = [];
+
+  readonly #decorators: RoomRendererDecorators;
 
   #destroyed = false;
 
@@ -142,8 +165,15 @@ export class RoomRenderer<
 
   readonly renderContext: RoomRenderContext<RoomId, RoomItemId>;
 
-  constructor(renderContext: RoomRenderContext<RoomId, RoomItemId>) {
+  constructor(
+    renderContext: RoomRenderContext<RoomId, RoomItemId>,
+    /**
+     * decorators for this renderer only
+     */
+    decorators: RoomRendererDecorators,
+  ) {
     this.renderContext = renderContext;
+    this.#decorators = decorators;
     this.#appliedQuarterAngle = nearestQuarterAngle(
       renderContext.general.cameraAngle,
     );
@@ -291,7 +321,7 @@ export class RoomRenderer<
           filterCache: this.#filterCache,
           isReflection: false,
         },
-        RoomRenderer.itemDecorators,
+        [...RoomRenderer.itemDecorators, this.#decorators.itemDecorators],
       );
 
       this.#itemRenderers.set(item, itemRenderer);
@@ -554,7 +584,10 @@ export class RoomRenderer<
 
     if (!this.#everRendered) {
       // these only get to render once (never tick again)
-      for (const group of RoomRenderer.roomDecorators) {
+      for (const group of [
+        ...RoomRenderer.roomDecorators,
+        this.#decorators.roomDecorators,
+      ]) {
         for (const decorator of group) {
           const container = decorator(this.renderContext);
           if (container) {

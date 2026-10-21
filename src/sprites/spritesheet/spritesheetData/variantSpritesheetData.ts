@@ -36,6 +36,8 @@ type DeactivatedIdPattern =
   | "bag"
   | "doughnuts"
   | "hooter"
+  | "portableTeleporter"
+  | "teleporter"
   | `buttonInGame${"" | `.${string}`}`
   | `charles.${string}`
   | `conveyor.${string}`
@@ -280,6 +282,8 @@ const variantEligible: Record<VariantSuffix, (id: string) => boolean> = {
     id.startsWith("conveyor.") ||
     id === "emperorsGuardian" ||
     id.startsWith("emperorsGuardian.") ||
+    id === "teleporter" ||
+    id === "portableTeleporter" ||
     /^(head|heels)\.(standing|walking)\./.test(id),
   doughnutted: isMonsterId,
   mirrorReflection: (id) => !matchesAny(id, neverReflectedPrefixes),

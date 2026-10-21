@@ -10,6 +10,7 @@ import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
 import { deleteRoomsInPlace } from "../inPlaceMutators/deleteRoomsInPlace";
 import { insertRoomInPlace } from "../inPlaceMutators/insertRoomInPlace";
+import { insertRoomsBesideSelectionInPlace } from "../inPlaceMutators/insertRoomsBesideSelectionInPlace";
 import { removeInboundRoomReferencesInPlace } from "../inPlaceMutators/removeInboundRoomReferencesInPlace";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
@@ -42,7 +43,16 @@ export const addOrRemoveRoomReducers = {
       payload: { direction, roomSize },
     }: PayloadAction<{ direction: DirectionXy4; roomSize?: Xy }>,
   ) {
-    insertRoomInPlace(state, direction, roomSize);
+    // with more of the selection than the cursor room, inserts beside all of it:
+    const cursorRoomId = selectCursorRoomIdFromLevelEditorState(state);
+    if (
+      state.selectedRoomIds.length > 1 &&
+      state.selectedRoomIds.includes(cursorRoomId)
+    ) {
+      insertRoomsBesideSelectionInPlace(state, direction, roomSize);
+    } else {
+      insertRoomInPlace(state, direction, roomSize);
+    }
   },
   removeRoom(
     state,

@@ -220,6 +220,7 @@ const toolAndPreviewAfterRotate = reduceLevelEditorActions(
       },
       description: { kind: "editRoomJson" },
       timestamp: 0,
+      madeBy: { type: "itemTool" },
     };
   }),
   rotateCurrentToolItem({ sense: "clockwise" }),

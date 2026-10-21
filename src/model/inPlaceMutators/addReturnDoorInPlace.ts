@@ -8,6 +8,7 @@ import { type JsonItem } from "../json/JsonItem";
 import { typePrefix } from "../json/typePrefix";
 import { doorWidth } from "../json/verification/helpers/roomPerimeter";
 import { findSubRoomForItem } from "../map/itemIsInSubRoom";
+import { dropRedundantToSubRoomInPlace } from "../map/toSubRoomRedundancy";
 import { type Campaign } from "../modelTypes";
 import { type RoomJson } from "../RoomJson";
 import { roomWallBounds } from "../roomWallBounds";
@@ -149,6 +150,10 @@ export const addReturnDoorInPlace = <
   } else {
     delete outgoingDoor.config.toDoor;
   }
+
+  // the pair now finds each other, so may imply the sub-rooms by themselves:
+  dropRedundantToSubRoomInPlace(rooms, toRoomJson.id, returnDoorItemJson);
+  dropRedundantToSubRoomInPlace(rooms, fromRoomJson.id, outgoingDoor);
 
   for (const [itemId, modifiedWall] of generateHoleInWallsForDoor(
     toRoomJson.items,

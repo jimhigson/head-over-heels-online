@@ -1,7 +1,9 @@
 import nanoEqual from "nano-equal";
 
+import { camelToSpaced } from "../../../utils/camelToSpaced";
 import { keys } from "../../../utils/entries";
-import { type Xyz } from "../../../utils/vectors/vectors";
+import { directionXyz4Glyphs } from "../../../utils/vectors/directionGlyphs";
+import { type DirectionXyz4, type Xyz } from "../../../utils/vectors/vectors";
 import {
   type EditorJsonItemUnion,
   type EditorRoomItemId,
@@ -19,9 +21,6 @@ export type UndoDescription =
   | { kind: "editRoomProperty"; property: string }
   | { kind: "itemAction"; verb: string; items: UndoItemEntry[] }
   | { kind: "pasteItems" };
-
-export const camelToSpaced = (s: string): string =>
-  s.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase();
 
 export const describeItem = (item: EditorJsonItemUnion): string => {
   switch (item.type) {
@@ -42,25 +41,37 @@ export const describeItem = (item: EditorJsonItemUnion): string => {
   }
 };
 
-export const moveVerb = ({ x, y, z }: Xyz): string => {
+/** the direction a single-axis move goes in, if it is one */
+const singleAxisMoveDirection = ({
+  x,
+  y,
+  z,
+}: Xyz): DirectionXyz4 | undefined => {
   switch (true) {
     case x < 0 && y === 0 && z === 0:
-      return "↘ Move";
+      return "right";
     case x > 0 && y === 0 && z === 0:
-      return "↖ Move";
+      return "left";
     case x === 0 && y > 0 && z === 0:
-      return "↗ Move";
+      return "away";
     case x === 0 && y < 0 && z === 0:
-      return "↙ Move";
+      return "towards";
     case x === 0 && y === 0 && z > 0:
-      return "⬆ Move";
+      return "up";
     case x === 0 && y === 0 && z < 0:
-      return "⬇ Move";
+      return "down";
     case x === 0 && y === 0 && z === 0:
       throw new Error("moveVerb called with zero movement");
     default:
-      return "Move";
+      return undefined;
   }
+};
+
+export const moveVerb = (positionDelta: Xyz): string => {
+  const direction = singleAxisMoveDirection(positionDelta);
+  return direction === undefined ? "Move" : (
+      `${directionXyz4Glyphs[direction]} Move`
+    );
 };
 
 export const describeRoomJsonEdit = (
