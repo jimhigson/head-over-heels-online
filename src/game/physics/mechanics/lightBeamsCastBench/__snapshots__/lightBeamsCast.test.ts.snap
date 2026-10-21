@@ -4,8 +4,8 @@ exports[`bench scenario casts a stable set of beam items 1`] = `
 [
   {
     "box": {
-      "x": 116,
-      "xd": 8,
+      "x": 112,
+      "xd": 16,
       "y": 48,
       "yd": 144,
       "z": 2,
@@ -23,8 +23,8 @@ exports[`bench scenario casts a stable set of beam items 1`] = `
     "box": {
       "x": 48,
       "xd": 64,
-      "y": 196,
-      "yd": 8,
+      "y": 192,
+      "yd": 16,
       "z": 2,
       "zd": 8,
     },
@@ -38,8 +38,8 @@ exports[`bench scenario casts a stable set of beam items 1`] = `
   },
   {
     "box": {
-      "x": 36,
-      "xd": 8,
+      "x": 32,
+      "xd": 16,
       "y": 80,
       "yd": 112,
       "z": 2,
@@ -57,8 +57,8 @@ exports[`bench scenario casts a stable set of beam items 1`] = `
     "box": {
       "x": 48,
       "xd": 208,
-      "y": 68,
-      "yd": 8,
+      "y": 64,
+      "yd": 16,
       "z": 2,
       "zd": 8,
     },
@@ -72,8 +72,8 @@ exports[`bench scenario casts a stable set of beam items 1`] = `
   },
   {
     "box": {
-      "x": 116,
-      "xd": 8,
+      "x": 112,
+      "xd": 16,
       "y": 48,
       "yd": 144,
       "z": 14,
@@ -91,8 +91,8 @@ exports[`bench scenario casts a stable set of beam items 1`] = `
     "box": {
       "x": 0,
       "xd": 112,
-      "y": 196,
-      "yd": 8,
+      "y": 192,
+      "yd": 16,
       "z": 14,
       "zd": 8,
     },

@@ -232,6 +232,14 @@ export const walkResumeGraceTime = 120;
 export const doughnutsAutofireRate = 500;
 
 /**
- * the size of a light beam's square cross-section, in world px
+ * the width of a light beam's cross-section, in world px.
+ *
+ * At least a full block is required to work as a 'pen' from the inside
+ * so that the mirror can't be touched by a monster inside the pen
  */
-export const lightBeamCrossSectionPx = 8;
+export const lightBeamWidthPx = blockSizePx.x;
+
+/**
+ * the height of a light beam's cross-section, in world px
+ */
+export const lightBeamHeightPx = 8;

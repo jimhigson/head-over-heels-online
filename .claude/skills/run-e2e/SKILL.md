@@ -45,6 +45,18 @@ pnpm playwright test roomSnapshots.spec.ts --project=chromium-desktop
 
 Baselines: `e2e/<spec>.spec.ts-snapshots/<projectName>/<name>.png`.
 
+### Committed baselines are recompressed - compare pixels, not bytes
+
+The husky `pre-commit` hook (`.husky/pre-commit`) losslessly recompresses
+every staged `*-snapshots/*.png`.
+
+A freshly regenerated baseline is usually several times larger than the
+committed one (eg 16KB → 65KB) even when it is pixel-identical or nearly so -
+that is playwright's truecolour encoding, not a content change, and it
+shrinks back on commit. Never read a size or byte diff as a rendering change:
+compare pixels, eg `magick compare -metric AE old.png new.png null:` (prints
+the count of differing pixels).
+
 ## Sandboxed environment (browser download blocked)
 
 A fresh sandbox has no browser binaries for the Playwright version this repo

@@ -3,6 +3,7 @@ import { bench } from "vitest";
 import {
   buildBeamScenario,
   castOnce,
+  loadBeamScenarioRoomJson,
 } from "../../../../_testUtils/buildBeamScenario";
 
 /*
@@ -23,7 +24,7 @@ after dropping the per-row merge + generator and packing cell keys as ints (18/6
   => ~6.7x over the original scan; ~1.5x over the cell-march above
 */
 
-const scenario = buildBeamScenario();
+const scenario = buildBeamScenario(await loadBeamScenarioRoomJson());
 
 bench(
   "cast beams (3 reflections + split) through a room of 48 monsters",
