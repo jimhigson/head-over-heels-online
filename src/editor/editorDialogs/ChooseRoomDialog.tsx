@@ -2,6 +2,14 @@ import { useCallback, useMemo, useState } from "preact/hooks";
 
 import { createClickableRoomBehaviour } from "../../game/components/dialogs/menuDialog/dialogs/map/createClickableRoomBehaviour";
 import { MapSvg } from "../../game/components/dialogs/menuDialog/dialogs/map/Map.svg";
+import {
+  MapContextProvider,
+  type MapContextValue,
+  noCellPlayables,
+} from "../../game/components/dialogs/menuDialog/dialogs/map/MapContext";
+import { type RoomBehaviourComponent } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
+import { originalUserId } from "../../gameInfo";
+import { roomHues } from "../../model/roomHues";
 import { Border } from "../../ui/Border";
 import { Button } from "../../ui/Button";
 import { Dialog } from "../../ui/Dialog";
@@ -12,7 +20,11 @@ import { useKeyboardShortcut } from "../../ui/useKeyboardShortcut";
 import { useElementSize } from "../../utils/preact/useElementSize";
 import { mapAreaIndexOfRoom } from "../EditorMap/mapAreaIndexOfRoom";
 import { MapAreaSwitcher } from "../EditorMap/MapAreaSwitcher";
-import { editorMapAreas, editorMapData } from "../EditorMap/useEditorMapData";
+import {
+  editorMapAreas,
+  editorMapData,
+  editorNotableItemsByCell,
+} from "../EditorMap/useEditorMapData";
 import { type EditorCampaign, type EditorRoomId } from "../editorTypes";
 import { firstSubRoomId } from "../slice/inPlaceMutators/changeCurrentRoomInPlace";
 
@@ -29,18 +41,47 @@ export type ChooseRoomDialogProps = {
   onCancel: () => void;
 };
 
-/** the map with the given room as current, recomputed only when either changes */
-const useMapDataForRoom = (campaign: EditorCampaign, roomId: EditorRoomId) =>
-  useMemo(
+/**
+ * the map with the given room as current, and the context its rooms draw from
+ */
+const useMapForRoom = (
+  campaign: EditorCampaign,
+  roomId: EditorRoomId,
+  behaviours: RoomBehaviourComponent<EditorRoomId>[],
+  chosenRoomId: EditorRoomId | undefined,
+) => {
+  const mapAreas = useMemo(() => editorMapAreas(campaign), [campaign]);
+  const mapData = useMemo(
     () =>
       editorMapData(
-        campaign,
-        editorMapAreas(campaign),
+        mapAreas,
         roomId,
         firstSubRoomId(campaign.rooms[roomId]),
+        campaign.rooms[roomId].planet,
       ),
-    [campaign, roomId],
+    [mapAreas, campaign, roomId],
   );
+  const mapContext = useMemo((): MapContextValue<EditorRoomId> => {
+    const notableItemsByCell = editorNotableItemsByCell(campaign, mapAreas);
+    return {
+      isOriginalCampaign: campaign.locator.userId === originalUserId,
+      currentCharacterName: "head",
+      onPlayableClick: undefined,
+      behaviours,
+      prefixDecorators: [],
+      postfixDecorators: [],
+      // none of these call any hooks, so are fine to swap for others when
+      // the campaign or choice changes:
+      useRoomJson: (mapRoomId) => campaign.rooms[mapRoomId],
+      useNotableItemsInCell: (cellKey) => notableItemsByCell[cellKey],
+      useNotableItemsByCell: () => notableItemsByCell,
+      useCellPlayables: () => noCellPlayables,
+      useRoomVisited: () => false,
+      useIsRoomSelected: (mapRoomId) => mapRoomId === chosenRoomId,
+    };
+  }, [campaign, mapAreas, behaviours, chosenRoomId]);
+  return { mapData, mapContext };
+};
 
 /** a map behaviour that makes clicking a room choose it */
 const useChooseOnClickBehaviours = (
@@ -69,6 +110,7 @@ export const ChooseRoomDialog = ({
   onCancel,
 }: ChooseRoomDialogProps) => {
   const [chosenRoomId, setChosenRoomId] = useState(initialRoomId);
+  const campaignRoomHues = useMemo(() => roomHues(campaign.rooms), [campaign]);
   // any room of the area the map shows:
   const [shownAreaRoomId, setShownAreaRoomId] = useState(
     initialRoomId ?? mapRoomId,
@@ -88,8 +130,13 @@ export const ChooseRoomDialog = ({
     height: mapContainerHeight,
   } = useElementSize<HTMLDivElement>();
 
-  const mapData = useMapDataForRoom(campaign, mapRoomId);
   const behaviours = useChooseOnClickBehaviours(chooseRoom);
+  const { mapData, mapContext } = useMapForRoom(
+    campaign,
+    mapRoomId,
+    behaviours,
+    chosenRoomId,
+  );
   const shownAreaIndex =
     mapData.isError ? 0 : mapAreaIndexOfRoom(mapData.areas, shownAreaRoomId);
 
@@ -108,7 +155,7 @@ export const ChooseRoomDialog = ({
         >
           <DialogHeader>{heading}</DialogHeader>
           <RoomSelect<EditorRoomId>
-            campaign={campaign}
+            roomHues={campaignRoomHues}
             value={chosenRoomId}
             onSelect={chooseRoom}
           />
@@ -122,15 +169,13 @@ export const ChooseRoomDialog = ({
                   {`Could not draw the map:\n${mapData.errors.join("\n")}`}
                 </span>
               : mapContainerHeight !== 0 && (
-                  <MapSvg<EditorRoomId>
-                    containerWidth={mapContainerWidth}
-                    behaviours={behaviours}
-                    selectedRoomIds={
-                      chosenRoomId === undefined ? [] : [chosenRoomId]
-                    }
-                    {...mapData}
-                    areaIndex={shownAreaIndex}
-                  />
+                  <MapContextProvider value={mapContext}>
+                    <MapSvg<EditorRoomId>
+                      containerWidth={mapContainerWidth}
+                      {...mapData}
+                      areaIndex={shownAreaIndex}
+                    />
+                  </MapContextProvider>
                 )
               }
             </div>

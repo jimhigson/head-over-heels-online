@@ -1,7 +1,9 @@
+import { memo } from "preact/compat";
 import { useEffect } from "preact/hooks";
 
 import { createClickableRoomBehaviour } from "../../game/components/dialogs/menuDialog/dialogs/map/createClickableRoomBehaviour";
 import { MapSvg } from "../../game/components/dialogs/menuDialog/dialogs/map/Map.svg";
+import { MapContextProvider } from "../../game/components/dialogs/menuDialog/dialogs/map/MapContext";
 import { type RoomBehaviourComponent } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
 import { type Key } from "../../game/input/keys";
 import { type SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRoomGridPositions";
@@ -35,6 +37,7 @@ import { LazyEditorMapNonContiguousRelationshipDecorator } from "./LazyEditorMap
 import { LazyEditorMapTeleporterLinkDecorator } from "./LazyEditorMapTeleporterLinkDecorator";
 import { mapAreaIndexOfRoom } from "./mapAreaIndexOfRoom";
 import { MapAreaSwitcher } from "./MapAreaSwitcher";
+import { useEditorMapContextValue } from "./useEditorMapContextValue";
 import { useEditorMapData } from "./useEditorMapData";
 
 const editorClickableRoomBehaviour = createClickableRoomBehaviour<EditorRoomId>(
@@ -57,14 +60,21 @@ const editorBehaviours: RoomBehaviourComponent<EditorRoomId>[] = [
   EditorMapItemDropTargetBehaviour,
 ];
 
+// memoised so each room's decorations redraw only when their own props change:
 const editorPrefixDecorators = [
-  LazyEditorMapNonContiguousRelationshipDecorator,
+  memo(LazyEditorMapNonContiguousRelationshipDecorator),
 ];
 
 const editorPostfixDecorators = [
-  LazyEditorMapTeleporterLinkDecorator,
-  LazyEditorMapInsertButtonDecorator,
+  memo(LazyEditorMapTeleporterLinkDecorator),
+  memo(LazyEditorMapInsertButtonDecorator),
 ];
+
+const editorMapContextOptions = {
+  behaviours: editorBehaviours,
+  prefixDecorators: editorPrefixDecorators,
+  postfixDecorators: editorPostfixDecorators,
+};
 
 const keyToDirectionXyz4 = {
   ArrowLeft: "left",
@@ -186,9 +196,7 @@ const EditorMap = () => {
     height: mapContainerHeight,
   } = useElementSize<HTMLDivElement>();
   const mapData = useEditorMapData();
-  const selectedRoomIds = useEditorAppSelector(
-    (state) => state.levelEditor.selectedRoomIds,
-  );
+  const mapContext = useEditorMapContextValue(editorMapContextOptions);
   const { roomId: cursorRoomId } = useEditorAppSelector((state) =>
     selectCursorRoomFromLevelEditorState(state.levelEditor),
   );
@@ -243,15 +251,13 @@ const EditorMap = () => {
           }
         }}
       >
-        <MapSvg<EditorRoomId>
-          containerWidth={mapContainerWidth}
-          behaviours={editorBehaviours}
-          prefixDecorators={editorPrefixDecorators}
-          postfixDecorators={editorPostfixDecorators}
-          selectedRoomIds={selectedRoomIds}
-          {...mapData}
-          areaIndex={shownAreaIndex}
-        />
+        <MapContextProvider value={mapContext}>
+          <MapSvg<EditorRoomId>
+            containerWidth={mapContainerWidth}
+            {...mapData}
+            areaIndex={shownAreaIndex}
+          />
+        </MapContextProvider>
       </div>
       <CoalesceButton />
       <MapAreaSwitcher

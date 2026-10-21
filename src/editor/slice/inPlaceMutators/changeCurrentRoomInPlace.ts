@@ -3,6 +3,7 @@ import { type EditorRoomId } from "../../editorTypes";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "../reducers/contextMenuReducers";
+import { commitPendingNudgeInPlace } from "./commitPendingNudgeInPlace";
 import { openRoomTabInPlace } from "./openRoomTabInPlace";
 
 export const firstSubRoomId = (roomJson: RoomJson<string, string>): string => {
@@ -22,6 +23,9 @@ export const changeCurrentRoomInPlace = (
     console.warn(`can't change to room ${roomId} - it doesn't exist`);
     return;
   }
+
+  // nudges being previewed are of the room being left:
+  commitPendingNudgeInPlace(state);
 
   const resolvedSubRoomId = subRoomId ?? firstSubRoomId(roomJson);
 

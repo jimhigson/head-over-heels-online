@@ -168,17 +168,24 @@ const computeOffsets = (
   }
 };
 
+/**
+ * for each room merged in, the items whose ids clashed and so were renamed -
+ * kept per room, since the same id can be in more than one of them
+ */
+type ReIdMaps = Map<EditorRoomId, Map<EditorRoomItemId, EditorRoomItemId>>;
+
 const mergeItems = (
   cursorRoom: EditorRoomJson,
   layout: RoomLayoutEntry[],
-): Map<EditorRoomItemId, EditorRoomItemId> => {
+): ReIdMaps => {
   const existingIds = new Set(keys(cursorRoom.items) as EditorRoomItemId[]);
-  const reIdMap = new Map<EditorRoomItemId, EditorRoomItemId>();
+  const reIdMaps: ReIdMaps = new Map();
 
   for (const entry of layout) {
     if (entry.gridPosition.x === 0 && entry.gridPosition.y === 0) {
       continue;
     }
+    const reIdMap = reIdMaps.getOrInsertComputed(entry.roomId, () => new Map());
 
     for (const [originalId, item] of roomJsonItemsEntriesIterable(
       entry.room.items,
@@ -209,13 +216,13 @@ const mergeItems = (
     }
   }
 
-  return reIdMap;
+  return reIdMaps;
 };
 
 const removeInternalDoorsAndUpdateExternal = (
   cursorRoom: EditorRoomJson,
   mergedRoomIds: Set<EditorRoomId>,
-  reIdMap: Map<EditorRoomItemId, EditorRoomItemId>,
+  reIdMaps: ReIdMaps,
   roomIdToSubRoom: Map<EditorRoomId, string>,
   state: LevelEditorState,
 ): void => {
@@ -238,18 +245,8 @@ const removeInternalDoorsAndUpdateExternal = (
     delete cursorRoom.items[doorId];
   }
 
-  for (const [, item] of roomJsonItemsEntriesIterable(cursorRoom.items)) {
-    if (item.type !== "door") {
-      continue;
-    }
-
-    if (item.config.toDoor) {
-      const remapped = reIdMap.get(item.config.toDoor as EditorRoomItemId);
-      if (remapped) {
-        item.config.toDoor = remapped;
-      }
-    }
-  }
+  // the merged room's own doors keep their toDoor: those name doors in the
+  // rooms they lead to, none of which were merged (those doors were removed)
 
   for (const room of valuesIter(state.campaignInProgress.rooms)) {
     if (room.id === cursorRoom.id) {
@@ -257,7 +254,8 @@ const removeInternalDoorsAndUpdateExternal = (
     }
 
     for (const item of roomJsonItemsIterable(room, "door")) {
-      if (mergedRoomIds.has(item.config.toRoom as EditorRoomId)) {
+      const leadsToRoomId = item.config.toRoom as EditorRoomId;
+      if (mergedRoomIds.has(leadsToRoomId)) {
         const subRoom = roomIdToSubRoom.get(item.config.toRoom as EditorRoomId);
         item.config.toRoom = cursorRoom.id;
         if (subRoom !== undefined) {
@@ -272,11 +270,16 @@ const removeInternalDoorsAndUpdateExternal = (
         }
       }
 
-      if (item.config.toDoor) {
-        const remapped = reIdMap.get(item.config.toDoor as EditorRoomItemId);
-        if (remapped) {
-          item.config.toDoor = remapped;
-        }
+      // only a door into a merged room needs its toDoor following, by that
+      // room's renames - a door to anywhere else names a door that stayed put:
+      const remapped =
+        item.config.toDoor === undefined ?
+          undefined
+        : reIdMaps
+            .get(leadsToRoomId)
+            ?.get(item.config.toDoor as EditorRoomItemId);
+      if (remapped !== undefined) {
+        item.config.toDoor = remapped;
       }
     }
   }
@@ -617,7 +620,7 @@ export const coalesceRoomsInPlace = (state: LevelEditorState): void => {
       .map((e) => e.roomId),
   );
 
-  const reIdMap = mergeItems(cursorRoom, layout);
+  const reIdMaps = mergeItems(cursorRoom, layout);
 
   const cells = expandToGridCells(layout);
 
@@ -636,7 +639,7 @@ export const coalesceRoomsInPlace = (state: LevelEditorState): void => {
   removeInternalDoorsAndUpdateExternal(
     cursorRoom,
     mergedRoomIds,
-    reIdMap,
+    reIdMaps,
     roomIdToSubRoom,
     state,
   );

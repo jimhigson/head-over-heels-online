@@ -8,6 +8,7 @@ import { CommandInput } from "../../ui/command/CommandInput";
 import { CommandItem } from "../../ui/command/CommandItem";
 import { CommandList } from "../../ui/command/CommandList";
 import { CommandMatch } from "../../ui/command/CommandMatch";
+import { shortcutHint } from "../../ui/menuBar/shortcutHint";
 import { entries } from "../../utils/entries";
 import {
   type EditorCommand,
@@ -89,6 +90,11 @@ export const CmdKContents = <TCommand extends EditorCommand>({
                 {command.icon}
               </div>
               <CommandMatch class="ml-1" text={command.label} />
+              {command.shortcutKeys !== undefined && (
+                <span class="ml-auto pl-2 text-single-line whitespace-nowrap text-highlightBeige">
+                  {shortcutHint(command.shortcutKeys)}
+                </span>
+              )}
             </CommandItem>
           ))}
         </CommandGroup>

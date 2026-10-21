@@ -7,24 +7,29 @@ import {
   type MapData,
   type MapDataError,
 } from "../../game/components/dialogs/menuDialog/dialogs/map/MapData";
-import { computeNotableItemsByCell } from "../../game/components/dialogs/menuDialog/dialogs/map/notableItemsByCell";
 import {
-  type CharacterRooms,
-  type PickupsCollected,
-} from "../../game/gameState/GameState";
+  computeNotableItemsByCell,
+  type NotableItemsByCell,
+} from "../../game/components/dialogs/menuDialog/dialogs/map/notableItemsByCell";
+import { type PickupsCollected } from "../../game/gameState/GameState";
 import {
   roomGridPositions,
   type RoomNode,
 } from "../../model/map/roomGridPositions";
 import { sortRoomGridPositions } from "../../model/map/sortRoomGridPositions";
 import { type TeleporterLink } from "../../model/map/teleporterLinks";
+import { type SceneryName } from "../../sprites/planets";
 import { type EditorRootState, useEditorAppSelector } from "../../store/store";
 import { emptyObject } from "../../utils/empty";
 import { keys } from "../../utils/entries";
 import { naturalCompare } from "../../utils/naturalCompare";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
+import { createStructurallySharedSelector } from "../../utils/redux/createStructurallySharedSelector";
 import { type EditorCampaign, type EditorRoomId } from "../editorTypes";
-import { selectCursorRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
+import {
+  selectCurrentCommittedRoomJsonFromLevelEditorState,
+  selectCursorRoomFromLevelEditorState,
+} from "../slice/levelEditorSelectors";
 
 /** the parts of the map that depend only on the campaign, not the cursor */
 export type EditorMapAreas = Pick<
@@ -57,15 +62,9 @@ export const editorMapAreas = (
     const areas = nodesBySubgraph
       .values()
       .map((roomNodes): MapArea<EditorRoomId> => {
-        const gridPositions = sortRoomGridPositions(roomNodes);
         return {
           mapBounds: findMapBounds(roomNodes),
-          gridPositions,
-          notableItemsByCell: computeNotableItemsByCell(
-            gridPositions,
-            campaign,
-            noPickupsCollected,
-          ),
+          gridPositions: sortRoomGridPositions(roomNodes),
         };
       })
       .toArray()
@@ -103,45 +102,73 @@ export const editorMapAreas = (
   }
 };
 
+/**
+ * every placed cell's notable items, across all of the map's areas
+ */
+export const editorNotableItemsByCell = (
+  campaign: EditorCampaign,
+  mapAreas: EditorMapAreas | MapDataError,
+): NotableItemsByCell<EditorRoomId> =>
+  mapAreas.isError ? emptyObject : (
+    Object.assign(
+      {},
+      ...mapAreas.areas.map(({ gridPositions }) =>
+        computeNotableItemsByCell(gridPositions, campaign, noPickupsCollected),
+      ),
+    )
+  );
+
 /** the editor's map, with the given room as the current one */
 export const editorMapData = (
-  campaign: EditorCampaign,
   mapAreas: EditorMapAreas | MapDataError,
   roomId: EditorRoomId,
   subRoomId: string,
+  /**
+   * the scenery of the current room
+   */
+  curRoomScenery: SceneryName,
 ): MapData<EditorRoomId> | MapDataError =>
   mapAreas.isError ? mapAreas : (
     {
       ...mapAreas,
       curRoomId: roomId,
       curSubRoomId: subRoomId,
-      // TODO: not sure if this applies for the editor, maybe should be optional
-      currentCharacterName: "head",
-      pickupsCollected: noPickupsCollected,
-      characterRooms: emptyObject as CharacterRooms<EditorRoomId>,
-      campaign,
-      roomsExplored: emptyObject as Record<EditorRoomId, true>,
-      curRoomScenery: campaign.rooms[roomId].planet,
+      curRoomScenery,
     }
   );
 
 const selectCampaignInProgress = (state: EditorRootState) =>
   state.levelEditor.campaignInProgress;
 
-const selectEditorMapAreas = createSelector(
+// rebuilt for any change to the campaign, so shares what is unchanged - an
+// edit inside a room then leaves the rest of the map's parts as they were:
+const selectEditorMapAreas = createStructurallySharedSelector(
   [selectCampaignInProgress],
   editorMapAreas,
 );
 
+// depends on the campaign only through its parts that edits inside rooms
+// leave alone, so is unchanged by them:
 export const selectEditorMapData = createSelector(
   [
-    selectCampaignInProgress,
     selectEditorMapAreas,
     (state: EditorRootState) =>
       selectCursorRoomFromLevelEditorState(state.levelEditor),
+    (state: EditorRootState) =>
+      selectCurrentCommittedRoomJsonFromLevelEditorState(state.levelEditor)
+        .planet,
   ],
-  (campaign, mapAreas, { roomId, subRoomId }) =>
-    editorMapData(campaign, mapAreas, roomId, subRoomId),
+  (mapAreas, { roomId, subRoomId }, curRoomScenery) =>
+    editorMapData(mapAreas, roomId, subRoomId, curRoomScenery),
+);
+
+/**
+ * shares what is unchanged, so that an edit to the notable items of one cell
+ * leaves every other cell's as they were
+ */
+export const selectEditorNotableItemsByCell = createStructurallySharedSelector(
+  [selectCampaignInProgress, selectEditorMapAreas],
+  editorNotableItemsByCell,
 );
 
 export const useEditorMapData = (): MapData<EditorRoomId> | MapDataError =>

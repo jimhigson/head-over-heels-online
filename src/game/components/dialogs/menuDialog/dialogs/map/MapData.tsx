@@ -1,16 +1,7 @@
 import { type SortedObjectOfRoomGridPositionSpecs } from "../../../../../../model/map/sortRoomGridPositions";
 import { type TeleporterLink } from "../../../../../../model/map/teleporterLinks";
-import {
-  type CharacterName,
-  type OptionallyNamedCampaign,
-} from "../../../../../../model/modelTypes";
 import { type SceneryName } from "../../../../../../sprites/planets";
-import {
-  type CharacterRooms,
-  type PickupsCollected,
-} from "../../../../../gameState/GameState";
 import { type Bounds } from "./Map.svg";
-import { type NotableItemsByCell } from "./notableItemsByCell";
 
 /**
  * everything needed to load the map -
@@ -29,22 +20,16 @@ export type MapDataError = {
 export type MapArea<RoomId extends string> = {
   mapBounds: Bounds;
   gridPositions: SortedObjectOfRoomGridPositionSpecs<RoomId>;
-  /**
-   * the notable items (and their icon positions) per map cell, computed once so
-   * the room renderer and behaviours draw to the same positions
-   */
-  notableItemsByCell?: NotableItemsByCell<RoomId>;
 };
 
+/**
+ * the map's geometry, and where on it the current room is. What is drawn in
+ * each room comes from the map's context (see `MapContextValue`)
+ */
 export type MapData<RoomId extends string> = {
   isError: false;
-  campaign: OptionallyNamedCampaign<RoomId>;
-  characterRooms: CharacterRooms<RoomId>;
-  currentCharacterName: CharacterName;
   curRoomId: RoomId | undefined;
   curSubRoomId: string | undefined;
-  pickupsCollected: PickupsCollected<RoomId>;
-  roomsExplored: Record<RoomId, true>;
   curRoomScenery?: SceneryName;
 
   /**

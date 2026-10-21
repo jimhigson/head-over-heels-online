@@ -195,13 +195,54 @@ export function* loadPortalsAboveAndBelow<
       [["*", subRooms["*"]]]
     : [...objectEntriesIter(subRooms)];
 
+  // sub-rooms linking to the same room share one portal, since passing
+  // through any of them is the same transition. Keyed by the linked room:
+  const belowGroups = new Map<RoomId, PortalGroup>();
+  const aboveGroups = new Map<RoomId, PortalGroup>();
   for (const [subRoomId, { above, below }] of linkHolders) {
     const footprint = footprintForSubRoom(subRoomId);
     if (below !== undefined) {
-      yield belowPortal(subRoomId, footprint, below.room);
+      addToPortalGroup(belowGroups, below.room, subRoomId, footprint);
     }
     if (above !== undefined) {
-      yield abovePortal(subRoomId, footprint, above.room);
+      addToPortalGroup(aboveGroups, above.room, subRoomId, footprint);
     }
   }
+
+  for (const [toRoom, { firstSubRoomId, footprint }] of belowGroups) {
+    yield belowPortal(firstSubRoomId, footprint, toRoom);
+  }
+  for (const [toRoom, { firstSubRoomId, footprint }] of aboveGroups) {
+    yield abovePortal(firstSubRoomId, footprint, toRoom);
+  }
 }
+
+type PortalGroup = {
+  /**
+   * names the group's portal, so a room with one link per direction keeps
+   * the same portal ids however its links are grouped
+   */
+  firstSubRoomId: string;
+  /**
+   * the bounding box of every sub-room in the group - covering any cells
+   * between them when they are not a rectangle
+   */
+  footprint: FloorFootprint;
+};
+
+const addToPortalGroup = <RoomId extends string>(
+  groups: Map<RoomId, PortalGroup>,
+  toRoom: RoomId,
+  subRoomId: string,
+  { minX, maxX, minY, maxY }: FloorFootprint,
+) => {
+  const group = groups.getOrInsertComputed(toRoom, () => ({
+    firstSubRoomId: subRoomId,
+    footprint: { minX, maxX, minY, maxY },
+  }));
+  const { footprint } = group;
+  footprint.minX = Math.min(footprint.minX, minX);
+  footprint.maxX = Math.max(footprint.maxX, maxX);
+  footprint.minY = Math.min(footprint.minY, minY);
+  footprint.maxY = Math.max(footprint.maxY, maxY);
+};

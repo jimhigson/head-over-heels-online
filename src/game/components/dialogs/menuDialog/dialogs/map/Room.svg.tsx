@@ -1,18 +1,12 @@
+import { memo } from "preact/compat";
 import { useId, useRef } from "preact/hooks";
 
-import { type PlayableItem } from "../../../../../../model/ItemInPlayNarrowedUnions";
 import {
   type Boundaries,
   type RoomNode,
 } from "../../../../../../model/map/roomGridPositions";
-import {
-  type CharacterName,
-  type IndividualCharacterName,
-} from "../../../../../../model/modelTypes";
-import {
-  type RoomJson,
-  roomVerticalLinkHolders,
-} from "../../../../../../model/RoomJson";
+import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
+import { roomVerticalLinkHolders } from "../../../../../../model/RoomJson";
 import { hudCharTextureSize } from "../../../../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { valuesIter } from "../../../../../../utils/entries";
 import { range } from "../../../../../../utils/iterators/range";
@@ -37,10 +31,9 @@ import {
   roomGridSizeZ,
   strokeWidth,
 } from "./mapConstants";
+import { useMapContext } from "./MapContext";
 import { PlayableItemInRoom } from "./NotableItem";
-import { type NotableItemsInCell } from "./notableItemsByCell";
 import { RoomDecoration } from "./RoomDecoration";
-import { type RoomBehaviourComponent } from "./RoomDecoratorProps";
 import { roomWorldPosition } from "./roomWorldPosition";
 import { project, roundForSvg, translateXyz } from "./svgHelpers";
 import { VisitedFootprint } from "./VisitedFootprint";
@@ -162,33 +155,33 @@ const labelLayoutByDirection = {
 
 type RoomSvgProps<RoomId extends string> = {
   roomGridPositionSpec: RoomNode<RoomId>;
-  roomJson: RoomJson<RoomId, string>;
-  roomVisited: boolean;
-  headItemInRoom?: PlayableItem<"head", RoomId>;
-  heelsItemInRoom?: PlayableItem<"heels", RoomId>;
-  headOverHeelsItemInRoom?: PlayableItem<"headOverHeels", RoomId>;
-  notableItemsInCell?: NotableItemsInCell<RoomId>;
-  onPlayableClick?: (name: IndividualCharacterName) => void;
-  currentCharacterName: CharacterName;
   isCurrentRoom: boolean;
-  isSelected: boolean;
-  behaviours?: RoomBehaviourComponent<RoomId>[];
 };
 
-export const RoomSvg = <RoomId extends string>({
-  roomGridPositionSpec: { boundaries, subRoomId },
-  notableItemsInCell,
-  roomJson,
-  roomVisited,
-  headItemInRoom,
-  heelsItemInRoom,
-  headOverHeelsItemInRoom,
-  currentCharacterName,
-  onPlayableClick,
+const RoomSvgUnmemoised = <RoomId extends string>({
+  roomGridPositionSpec: { boundaries, roomId, subRoomId },
   isCurrentRoom,
-  isSelected,
-  behaviours,
 }: RoomSvgProps<RoomId>) => {
+  const {
+    behaviours,
+    currentCharacterName,
+    onPlayableClick,
+    useRoomJson,
+    useNotableItemsInCell,
+    useCellPlayables,
+    useRoomVisited,
+    useIsRoomSelected,
+  } = useMapContext<RoomId>();
+  const roomJson = useRoomJson(roomId);
+  const notableItemsInCell = useNotableItemsInCell(`${roomId}/${subRoomId}`);
+  const {
+    head: headItemInRoom,
+    heels: heelsItemInRoom,
+    headOverHeels: headOverHeelsItemInRoom,
+  } = useCellPlayables(roomId, subRoomId);
+  const roomVisited = useRoomVisited(roomId);
+  const isSelected = useIsRoomSelected(roomId);
+
   const { id, color, items } = roomJson;
   const roomAbove = roomVerticalLinkHolders(roomJson).some(
     (holder) => holder.above !== undefined,
@@ -197,7 +190,7 @@ export const RoomSvg = <RoomId extends string>({
   const labelLayout = label && labelLayoutByDirection[label.direction];
   const interactiveAreaRef = useRef<null | SVGPathElement>(null);
   const tipId = useId();
-  const hasBehaviours = behaviours !== undefined && behaviours.length > 0;
+  const hasBehaviours = behaviours.length > 0;
 
   const floors = valuesIter(items)
     .filter((item) => item.type === "floor")
@@ -440,3 +433,10 @@ export const RoomSvg = <RoomId extends string>({
     </g>
   );
 };
+
+/**
+ * a room on the map, redrawn only when its own place on the map, or what the
+ * map's context gives for it, changes - so an edit to one room leaves the rest
+ * of the map's rooms alone
+ */
+export const RoomSvg = memo(RoomSvgUnmemoised);

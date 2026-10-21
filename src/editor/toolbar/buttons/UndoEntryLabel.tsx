@@ -1,3 +1,5 @@
+import { memo } from "preact/compat";
+
 import { type SceneryName } from "../../../sprites/planets";
 import { itemGlyph, textureForItem } from "../../../sprites/textureForItem";
 import { Timeago } from "../../../ui/Timeago";
@@ -81,7 +83,7 @@ export type UndoEntryLabelProps = {
   scenery: SceneryName;
 };
 
-export const UndoEntryLabel = ({
+const UndoEntryLabelUnmemoised = ({
   entry: { description, timestamp },
   scenery,
 }: UndoEntryLabelProps) => {
@@ -171,3 +173,9 @@ export const UndoEntryLabel = ({
       return description satisfies never;
   }
 };
+
+/**
+ * an undo or redo entry's label, redrawn only when its own entry changes - so
+ * pushing to the history doesn't redraw the whole of it
+ */
+export const UndoEntryLabel = memo(UndoEntryLabelUnmemoised);

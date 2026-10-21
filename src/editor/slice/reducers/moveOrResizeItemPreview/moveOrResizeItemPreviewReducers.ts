@@ -6,21 +6,32 @@ import {
 
 import { getConsolidatableVector } from "../../../../consolidateItems/ConsolidatableJsonItem";
 import { generateHoleInWallsForDoor } from "../../../../model/inPlaceMutators/generateHoleInWallsForDoor";
+import { isRoomStructureItemType } from "../../../../model/json/isRoomStructureItemType";
+import { isDoorBesideFloor } from "../../../../model/json/verification/helpers/isDoorBesideFloor";
+import {
+  isItemOverFloor,
+  needsFloorUnder,
+} from "../../../../model/json/verification/helpers/isItemOverFloor";
+import {
+  doorWidth,
+  floorSquares,
+} from "../../../../model/json/verification/helpers/roomPerimeter";
 import { iterateRoomJsonItemsWithIds } from "../../../../model/RoomJsonItemIterators";
 import {
   getJsonItemTimes,
   optimiseTimesXyz,
   wallTimes,
 } from "../../../../model/times";
-import { type SceneryName } from "../../../../sprites/planets";
-import { keys } from "../../../../utils/entries";
+import { entries, keys, valuesIter } from "../../../../utils/entries";
 import { eachAxis } from "../../../../utils/vectors/eachAxis";
 import {
   addXyz,
   type AxisXy,
+  doorAlongAxis,
   elementWiseProductXyz,
   isExactIntegerXyz,
   manhattanLengthXyz,
+  tangentAxis,
   type Xyz,
 } from "../../../../utils/vectors/vectors";
 import {
@@ -29,18 +40,24 @@ import {
   type EditorJsonItemWithTimes,
   type EditorRoomItemId,
   type EditorRoomJson,
+  type EditorRoomJsonItems,
 } from "../../../editorTypes";
-import { addOrRemoveWallTilesInPlace } from "../../inPlaceMutators/addOrRemoveWallTilesInPlace";
+import { movesOnlyInWholeBlocks } from "../../../snapGridResolution";
+import { commitPendingNudgeInPlace } from "../../inPlaceMutators/commitPendingNudgeInPlace";
 import { generateWallHealingInPlaceOfDoor } from "../../inPlaceMutators/generateWallHealingInPlaceOfDoor";
+import { itemsWithEdits } from "../../itemsWithEdits";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectItemInLevelEditorState,
 } from "../../levelEditorSelectors";
 import {
   type LevelEditorState,
+  type PendingEdits,
   type PreviewedRoomItemEdits,
 } from "../../levelEditorSlice";
+import { perimeterGapFillingEdits } from "../../perimeterGapFillingEdits";
 import { moveVerb, type UndoItemEntry } from "../undoDescription";
+import { wallAndDoorEditsForFloorChange } from "./wallAndDoorEditsForFloorChange";
 
 // Helper type for wall edge information
 type WallEdgeInfo = {
@@ -155,221 +172,52 @@ function getWallEdgeInfo(
   return null;
 }
 
-function* changeWallsAndDoorsForFloorChangeInPlace(
-  items: Iterable<
-    [EditorRoomItemId, EditorJsonItem<"door"> | EditorJsonItem<"wall">]
-  >,
-  floor: EditorJsonItem<"floor">,
-  scenery: SceneryName,
-  positionDelta: Xyz,
-  timesDelta?: Xyz,
-): Generator<[EditorRoomItemId, EditorJsonItemUnion | null]> {
-  const floorNewPosition = addXyz(floor.position, positionDelta);
-  const floorOldTimes = floor.config.times;
-  const floorNewTimes =
-    timesDelta ? addXyz(floorOldTimes, timesDelta) : floor.config.times;
+/**
+ * a wall dragged along its edge, carrying the floor's end with it: it moves
+ * whole, as far as the floor goes
+ */
+const wallDraggedAlongFloorEnd = (
+  wall: EditorJsonItem<"wall">,
+  wallPositionDelta: Xyz,
+  alongAxis: AxisXy,
+  /**
+   * where the floor starts along the wall, after the drag
+   */
+  floorStart: number,
+  /**
+   * where the floor ends along the wall, after the drag
+   */
+  floorEnd: number,
+): EditorJsonItem<"wall"> => {
+  const { tiles } = wall.config;
+  const movedStart = wall.position[alongAxis] + wallPositionDelta[alongAxis];
+  const start = Math.max(movedStart, floorStart);
+  const end = Math.min(movedStart + tiles.length, floorEnd);
+  return {
+    ...wall,
+    position: {
+      ...addXyz(wall.position, wallPositionDelta),
+      [alongAxis]: start,
+    },
+    config: {
+      ...wall.config,
+      tiles: tiles.slice(start - movedStart, end - movedStart),
+    },
+  };
+};
 
-  // Get the floor boundaries (old and new)
-  const floorOldEnd = addXyz(floor.position, floorOldTimes);
-  const floorNewEnd = addXyz(floorNewPosition, floorNewTimes);
-
-  for (const [id, item] of Iterator.from(items)) {
-    if (item.type === "wall" && item.position.z !== floor.position.z) {
-      continue;
-    }
-
-    if (item.type === "door") {
-      // Doors just move with the floor, they don't resize
-      const doorConfig = item.config;
-
-      // Check if door is on a floor edge
-      let shouldMove = false;
-      let newPosition = { ...current(item.position) };
-
-      switch (doorConfig.direction) {
-        case "towards":
-          if (
-            item.position.y === floor.position.y &&
-            item.position.x >= floor.position.x &&
-            item.position.x < floor.position.x + floorOldTimes.x
-          ) {
-            shouldMove = true;
-            newPosition = addXyz(item.position, positionDelta);
-          }
-          break;
-        case "right":
-          if (
-            item.position.x === floor.position.x &&
-            item.position.y >= floor.position.y &&
-            item.position.y < floor.position.y + floorOldTimes.y
-          ) {
-            shouldMove = true;
-            newPosition = addXyz(item.position, positionDelta);
-          }
-          break;
-        case "away":
-          if (
-            item.position.y === floor.position.y + floorOldTimes.y &&
-            item.position.x >= floor.position.x &&
-            item.position.x < floor.position.x + floorOldTimes.x
-          ) {
-            shouldMove = true;
-            newPosition = addXyz(item.position, {
-              x: positionDelta.x,
-              y: positionDelta.y + (timesDelta?.y ?? 0),
-              z: positionDelta.z,
-            });
-          }
-          break;
-        case "left":
-          if (
-            item.position.x === floor.position.x + floorOldTimes.x &&
-            item.position.y >= floor.position.y &&
-            item.position.y < floor.position.y + floorOldTimes.y
-          ) {
-            shouldMove = true;
-            newPosition = addXyz(item.position, {
-              x: positionDelta.x + (timesDelta?.x ?? 0),
-              y: positionDelta.y,
-              z: positionDelta.z,
-            });
-          }
-          break;
-      }
-
-      if (shouldMove) {
-        const doorCopy = structuredClone(
-          current(item) as EditorJsonItem<"door">,
-        );
-        doorCopy.position = newPosition;
-        yield [id, doorCopy];
-      }
-      continue;
-    }
-
-    // Handle walls
-    const wall = item;
-    const wallInfo = getWallEdgeInfo(wall, floor);
-
-    if (!wallInfo || !wallInfo.isOnFloorEdge) {
-      continue;
-    }
-
-    const wallCopy = structuredClone(current(wall)) as EditorJsonItem<"wall">;
-
-    // Calculate new position based on wall direction
-    switch (wall.config.direction) {
-      case "towards":
-      case "right":
-        wallCopy.position = addXyz(wall.position, positionDelta);
-        break;
-      case "away": {
-        const newY = floorNewPosition.y + floorNewTimes.y;
-        wallCopy.position = {
-          ...wall.position,
-          x: wall.position.x + positionDelta.x,
-          y: newY,
-        };
-        break;
-      }
-      case "left": {
-        const newX = floorNewPosition.x + floorNewTimes.x;
-        wallCopy.position = {
-          ...wall.position,
-          x: newX,
-          y: wall.position.y + positionDelta.y,
-        };
-        break;
-      }
-    }
-
-    // Handle wall resizing
-    if (wallInfo.wallFullySpansFloor) {
-      // Wall fully spans floor, resize to match new floor size
-      const newLength = floorNewTimes[wallInfo.tangentAxis];
-
-      addOrRemoveWallTilesInPlace(wallCopy.config.tiles, scenery, newLength);
-      yield [id, wallCopy as EditorJsonItem<"wall">];
-    } else {
-      // Partial wall - calculate new bounds
-      const floorOldStart = floor.position[wallInfo.tangentAxis];
-      const floorOldEndCoord = floorOldEnd[wallInfo.tangentAxis];
-      const floorNewStart = floorNewPosition[wallInfo.tangentAxis];
-      const floorNewEndCoord = floorNewEnd[wallInfo.tangentAxis];
-
-      // Check if wall is completely outside new floor bounds
-      const wallNewStart = wallCopy.position[wallInfo.tangentAxis];
-      if (wallNewStart >= floorNewEndCoord) {
-        yield [id, null];
-        continue;
-      }
-
-      // Calculate current wall overlap with floor
-      const currentWallStart = Math.max(wallInfo.wallStart, floorOldStart);
-      const currentWallEnd = Math.min(
-        wallInfo.wallStart + wallInfo.wallLength,
-        floorOldEndCoord,
-      );
-      const currentWallLength = currentWallEnd - currentWallStart;
-
-      // Check if the edge the wall is ON is moving
-      let edgeIsMoving: boolean;
-      if (
-        wall.config.direction === "away" ||
-        wall.config.direction === "left"
-      ) {
-        // Far edges - check if the far edge moved
-        const oldFarEdge =
-          floor.position[wallInfo.normalAxis] +
-          floorOldTimes[wallInfo.normalAxis];
-        const newFarEdge =
-          floorNewPosition[wallInfo.normalAxis] +
-          floorNewTimes[wallInfo.normalAxis];
-        edgeIsMoving = oldFarEdge !== newFarEdge;
-      } else {
-        // Near edges - check if the near edge moved
-        edgeIsMoving =
-          floor.position[wallInfo.normalAxis] !==
-          floorNewPosition[wallInfo.normalAxis];
-      }
-
-      // Calculate new wall bounds
-      const newWallStart = Math.max(wallNewStart, floorNewStart);
-      let newWallEnd;
-
-      if (wallInfo.wallTouchesFloorEnd && !edgeIsMoving) {
-        // Wall touches floor edge and edge isn't moving - extend to maintain connection
-        newWallEnd = floorNewEndCoord;
-      } else {
-        // Normal case - maintain current length
-        newWallEnd = Math.min(
-          wallNewStart + currentWallLength,
-          floorNewEndCoord,
-        );
-      }
-
-      const newWallLength = newWallEnd - newWallStart;
-
-      if (newWallLength <= 0) {
-        yield [id, null];
-      } else {
-        addOrRemoveWallTilesInPlace(
-          wallCopy.config.tiles,
-          scenery,
-          newWallLength,
-        );
-        yield [id, wallCopy];
-      }
-    }
-  }
-}
-
-function* moveFloorForWallChangeInPlace(
+/**
+ * the edits that resize the floor a wall is on as the wall moves, keeping the
+ * floor's other walls and doors around it - or undefined if that is not a valid edit
+ */
+const floorEditsForWallChange = (
   room: EditorRoomJson,
+  wallId: EditorRoomItemId,
   wall: EditorJsonItem<"wall">,
   wallPositionDelta: Xyz,
   wallTimesDelta?: Xyz,
-): Generator<[EditorRoomItemId, EditorJsonItemUnion | null]> {
+): PreviewedRoomItemEdits | undefined => {
+  const edits: PreviewedRoomItemEdits = {};
   for (const [floorId, floor] of iterateRoomJsonItemsWithIds(
     room.items,
     "floor",
@@ -453,160 +301,308 @@ function* moveFloorForWallChangeInPlace(
           },
         },
       } as EditorJsonItem<"floor">;
-      yield [floorId, floorCopy];
+      edits[floorId] = floorCopy;
     }
 
-    yield* changeWallsAndDoorsForFloorChangeInPlace(
-      iterateRoomJsonItemsWithIds(room.items, "wall", "door"),
+    const wallAndDoorEdits = wallAndDoorEditsForFloorChange(
+      room,
       floor,
-      room.planet,
       floorPositionDelta,
       floorTimesDelta,
     );
+    if (wallAndDoorEdits === undefined) {
+      return undefined;
+    }
+    Object.assign(edits, wallAndDoorEdits);
+
+    if (
+      wallMovementTangent !== 0 &&
+      (wallEdgeInfo.wallStart === floor.position[wallEdgeInfo.tangentAxis] ||
+        wallEdgeInfo.wallTouchesFloorEnd)
+    ) {
+      edits[wallId] = wallDraggedAlongFloorEnd(
+        wall,
+        wallPositionDelta,
+        wallEdgeInfo.tangentAxis,
+        addXyz(floor.position, floorPositionDelta)[wallEdgeInfo.tangentAxis],
+        addXyz(
+          floor.position,
+          floorPositionDelta,
+          floor.config.times,
+          floorTimesDelta,
+        )[wallEdgeInfo.tangentAxis],
+      );
+    }
   }
-}
+  return edits;
+};
 
-export const moveOrResizeItemPreviewReducers = {
-  /** add or remove the room above the current room */
-  moveOrResizeItemAsPreview(
-    _state,
-    {
-      payload: { jsonItemIds, timesDelta, positionDelta, timestamp },
-    }: PayloadAction<{
-      jsonItemIds: EditorRoomItemId[];
-      timesDelta?: Xyz;
-      positionDelta: Xyz;
-      timestamp: number;
-    }>,
-  ) {
-    const state = _state as LevelEditorState;
-    // positionDelta is cumulative (total offset from the original position), so
-    // each preview must be recomputed from the base room state, not layered on
-    // top of a previous preview's edits (which may have modified surrounding
-    // walls, doors, etc.)
-    const isResize =
-      timesDelta !== undefined && manhattanLengthXyz(timesDelta) > 0;
-    const isMove = manhattanLengthXyz(positionDelta) > 0;
+/**
+ * whether the room, as edited, is still valid where the edit touches it: every
+ * door it moves or makes still has floor beside it, no wall it moves or makes
+ * lies over a door, and nothing that was over the floor is left hanging off it
+ */
+const isValidEdit = (
+  room: EditorRoomJson,
+  edits: PreviewedRoomItemEdits,
+  /**
+   * the room's items with the edits applied
+   */
+  editedItems: EditorRoomJsonItems,
+  /**
+   * whether the edits change any of the room's floors, walls or doors
+   */
+  editsStructure: boolean,
+): boolean => {
+  const editedFloorSquares = floorSquares({ items: editedItems });
+  const editedDoors = iterateRoomJsonItemsWithIds(editedItems, "door")
+    .map(([, door]) => door)
+    .toArray();
 
-    if (!isResize && !isMove) {
-      // ie, drag-and-return to the original position - clear the pending edits
-      // since nothing was done:
-      state.pendingEdits = undefined;
-      return;
+  const wallIsOverDoor = (wall: EditorJsonItem<"wall">) => {
+    const { direction } = wall.config;
+    const alongAxis = doorAlongAxis(direction);
+    const throughAxis = tangentAxis(direction);
+    const wallStart = wall.position[alongAxis];
+    const wallEnd = wallStart + wall.config.tiles.length;
+    return editedDoors.some(
+      (door) =>
+        door.config.direction === direction &&
+        door.position[throughAxis] === wall.position[throughAxis] &&
+        door.position[alongAxis] < wallEnd &&
+        door.position[alongAxis] + doorWidth > wallStart,
+    );
+  };
+
+  const editedItemsAreValid = valuesIter(edits).every(
+    (item) =>
+      item === null ||
+      (item.type === "door" ?
+        isDoorBesideFloor(editedFloorSquares, item)
+      : item.type !== "wall" || !wallIsOverDoor(item)),
+  );
+
+  // changing the room's structure can strand anything in the room, so then
+  // every item that was over the floor must still be; otherwise the floor is
+  // as it was, and only the edited items can have left it:
+  const floorSquaresBefore =
+    editsStructure ? floorSquares(room) : editedFloorSquares;
+  const itemsToCheck =
+    editsStructure ?
+      iterateRoomJsonItemsWithIds(editedItems)
+    : entries(edits).filter(
+        (entry): entry is [EditorRoomItemId, EditorJsonItemUnion] =>
+          entry[1] !== null,
+      );
+  const itemsStayOverFloor = itemsToCheck.every(([id, item]) => {
+    const itemBefore = room.items[id];
+    return (
+      !needsFloorUnder(room, item) ||
+      itemBefore === undefined ||
+      !isItemOverFloor(floorSquaresBefore, itemBefore) ||
+      isItemOverFloor(editedFloorSquares, item)
+    );
+  });
+
+  return editedItemsAreValid && itemsStayOverFloor;
+};
+
+export type MoveOrResizeItems = {
+  jsonItemIds: EditorRoomItemId[];
+  timesDelta?: Xyz;
+  /**
+   * the total offset from where the items were, not from any previous preview
+   */
+  positionDelta: Xyz;
+  timestamp: number;
+};
+
+/**
+ * what moving or resizing items does to the room: the edits it makes, with
+ * whatever corrections keep the room valid (walls cut back to floors, doors
+ * pushed along with them, gaps in the perimeter closed) - or that the move
+ * isn't a valid edit, or does nothing
+ */
+export type MoveOrResizeOutcome =
+  | { type: "invalid" }
+  | { type: "unchanged" }
+  | {
+      type: "valid";
+      pendingEdits: Omit<PendingEdits, "origin">;
+    };
+
+/**
+ * work out what moving or resizing items would do, without doing it - so a
+ * drag can try out moves to find one that is valid
+ */
+export const moveOrResizeOutcome = (
+  state: LevelEditorState,
+  { jsonItemIds, timesDelta, positionDelta, timestamp }: MoveOrResizeItems,
+): MoveOrResizeOutcome => {
+  // positionDelta is cumulative (total offset from the original position), so
+  // each preview must be recomputed from the base room state, not layered on
+  // top of a previous preview's edits (which may have modified surrounding
+  // walls, doors, etc.)
+  const isResize =
+    timesDelta !== undefined && manhattanLengthXyz(timesDelta) > 0;
+  const isMove = manhattanLengthXyz(positionDelta) > 0;
+
+  if (!isResize && !isMove) {
+    // ie, drag-and-return to the original position - nothing is done:
+    return { type: "unchanged" };
+  }
+
+  const verb = isResize ? "Resize" : moveVerb(positionDelta);
+  const items: UndoItemEntry[] = jsonItemIds.map((id) => {
+    const item = selectItemInLevelEditorState(state, id);
+    if (item === undefined) {
+      throw new Error(
+        `no item found for id ${id} when generating undo description`,
+      );
+    }
+    return [id, item];
+  });
+
+  const edits: PreviewedRoomItemEdits = {};
+
+  const room = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
+  const isIntegerPosDelta = isExactIntegerXyz(positionDelta);
+
+  for (const jsonItemId of jsonItemIds) {
+    // get the json item we will be changing for the preview:
+    const jsonItem = selectItemInLevelEditorState(state, jsonItemId);
+
+    if (jsonItem === undefined) {
+      throw new Error(
+        `no json item found for some of the ids in resize ${jsonItemId}`,
+      );
     }
 
-    const verb = isResize ? "Resize" : moveVerb(positionDelta);
-    const items: UndoItemEntry[] = jsonItemIds.map((id) => {
-      const item = selectItemInLevelEditorState(state, id);
-      if (item === undefined) {
-        throw new Error(
-          `no item found for id ${id} when generating undo description`,
-        );
-      }
-      return [id, item];
-    });
+    if (movesOnlyInWholeBlocks(jsonItem.type) && !isIntegerPosDelta) {
+      continue;
+    }
 
-    const edits: PreviewedRoomItemEdits = {};
-
-    const room = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
-    const isIntegerPosDelta = isExactIntegerXyz(positionDelta);
-
-    for (const jsonItemId of jsonItemIds) {
-      // get the json item we will be changing for the preview:
-      const jsonItem = selectItemInLevelEditorState(state, jsonItemId);
-
-      if (jsonItem === undefined) {
-        throw new Error(
-          `no json item found for some of the ids in resize ${jsonItemId}`,
-        );
-      }
-
-      if (jsonItem.type === "wall") {
-        if (!isIntegerPosDelta) {
-          continue;
-        }
-
-        for (const [id, modifiedItem] of moveFloorForWallChangeInPlace(
-          room,
-          jsonItem,
-          positionDelta,
-          timesDelta,
-        )) {
-          // Apply the modified wall item to the preview state
-          edits[id] = modifiedItem;
-        }
-        continue;
-      }
-
-      if (jsonItem.type === "floor") {
-        if (!isIntegerPosDelta) {
-          continue;
-        }
-
-        for (const [
-          id,
-          modifiedItem,
-        ] of changeWallsAndDoorsForFloorChangeInPlace(
-          iterateRoomJsonItemsWithIds(room.items, "wall", "door"),
-          jsonItem,
-          room.planet,
-          positionDelta,
-          timesDelta,
-        )) {
-          // Apply the modified floor item to the preview state
-          edits[id] = modifiedItem;
-        }
-      }
-
-      if (jsonItem.type === "door") {
-        if (!isIntegerPosDelta) {
-          continue;
-        }
-
-        // first, we heal up the wall under the door:
-        for (const [
-          healedWallItemId,
-          healedWallItem,
-        ] of generateWallHealingInPlaceOfDoor(jsonItem, room.planet, [
-          ...keys(room.items),
-          ...keys(edits),
-        ])) {
-          edits[healedWallItemId] = healedWallItem;
-        }
-      }
-
-      const previewedCopy = {
-        ...jsonItem,
-        position: addXyz(jsonItem.position, positionDelta),
-        config: {
-          ...jsonItem.config,
-        },
-      };
-
-      edits[jsonItemId] = previewedCopy as EditorJsonItemUnion;
-
-      addTimesDeltaToJsonItemInPlace(
-        previewedCopy as EditorJsonItemWithTimes,
+    if (jsonItem.type === "wall") {
+      const floorEdits = floorEditsForWallChange(
+        room,
+        jsonItemId,
+        jsonItem,
+        positionDelta,
         timesDelta,
       );
+      if (floorEdits === undefined) {
+        return { type: "invalid" };
+      }
+      Object.assign(edits, floorEdits);
+      continue;
+    }
 
-      if (jsonItem.type === "door") {
-        // now, we cut any wall under the door:
-        for (const [cutItemId, cutItem] of generateHoleInWallsForDoor(
-          { ...current(room.items), ...edits },
-          (previewedCopy as EditorJsonItem<"door">).config.direction,
-          previewedCopy.position,
-        )) {
-          edits[cutItemId] = cutItem;
-        }
+    if (jsonItem.type === "floor") {
+      const wallAndDoorEdits = wallAndDoorEditsForFloorChange(
+        room,
+        jsonItem,
+        positionDelta,
+        timesDelta,
+      );
+      if (wallAndDoorEdits === undefined) {
+        return { type: "invalid" };
+      }
+      Object.assign(edits, wallAndDoorEdits);
+    }
+
+    if (jsonItem.type === "door") {
+      // first, we heal up the wall under the door:
+      for (const [
+        healedWallItemId,
+        healedWallItem,
+      ] of generateWallHealingInPlaceOfDoor(jsonItem, room.planet, [
+        ...keys(room.items),
+        ...keys(edits),
+      ])) {
+        edits[healedWallItemId] = healedWallItem;
       }
     }
 
-    state.pendingEdits = {
+    const previewedCopy = {
+      ...jsonItem,
+      position: addXyz(jsonItem.position, positionDelta),
+      config: {
+        ...jsonItem.config,
+      },
+    };
+
+    edits[jsonItemId] = previewedCopy as EditorJsonItemUnion;
+
+    addTimesDeltaToJsonItemInPlace(
+      previewedCopy as EditorJsonItemWithTimes,
+      timesDelta,
+    );
+
+    if (jsonItem.type === "door") {
+      // now, we cut any wall under the door:
+      for (const [cutItemId, cutItem] of generateHoleInWallsForDoor(
+        { ...room.items, ...edits },
+        (previewedCopy as EditorJsonItem<"door">).config.direction,
+        previewedCopy.position,
+      )) {
+        edits[cutItemId] = cutItem;
+      }
+    }
+  }
+
+  const editsStructure = valuesIter(edits).some(
+    (item) => item !== null && isRoomStructureItemType(item.type),
+  );
+  const editedItems = itemsWithEdits(room.items, edits);
+  if (editsStructure) {
+    // only a change to the room's structure can open a gap in its perimeter:
+    const fillingWalls = perimeterGapFillingEdits(room, editedItems);
+    Object.assign(edits, fillingWalls);
+    Object.assign(editedItems, fillingWalls);
+  }
+
+  if (!isValidEdit(room, edits, editedItems, editsStructure)) {
+    return { type: "invalid" };
+  }
+
+  return {
+    type: "valid",
+    pendingEdits: {
       edits,
       description: { kind: "itemAction", verb, items },
       timestamp,
-    };
+    },
+  };
+};
+
+export const moveOrResizeItemPreviewReducers = {
+  /**
+   * preview moving or resizing items - or, if that isn't a valid edit, keep
+   * the last valid preview
+   */
+  moveOrResizeItemAsPreview(
+    _state,
+    { payload }: PayloadAction<MoveOrResizeItems>,
+  ) {
+    const state = _state as LevelEditorState;
+    commitPendingNudgeInPlace(state);
+    // worked out on a snapshot of the state rather than on the draft of it:
+    const outcome = moveOrResizeOutcome(current(_state), payload);
+    switch (outcome.type) {
+      case "unchanged":
+        state.pendingEdits = undefined;
+        return;
+      case "invalid":
+        return;
+      case "valid":
+        state.pendingEdits = {
+          ...outcome.pendingEdits,
+          origin: { type: "drag" },
+        };
+        return;
+      default:
+        outcome satisfies never;
+    }
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
 

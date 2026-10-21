@@ -3,7 +3,7 @@ import { type ComponentChildren } from "preact";
 import { cssForRoomColour } from "../editor/toolbar/buttons/RoomColourSelect";
 import { CssVariables } from "../game/components/CssVariables";
 import { usePlayableTailwindSpriteClassname } from "../game/components/tailwindSprites/playableTailwindSpriteClassname";
-import { type Campaign } from "../model/modelTypes";
+import { type RoomHues } from "../model/roomHues";
 import { useIsUncolourised } from "../store/slices/gameMenus/gameMenusSelectors";
 import { naturalCompare } from "../utils/naturalCompare";
 import { CommandItem } from "./command/CommandItem";
@@ -11,7 +11,10 @@ import { CommandMatch } from "./command/CommandMatch";
 import { Select } from "./Select";
 
 export type RoomSelectProps<RoomId extends string> = {
-  campaign: Pick<Campaign<RoomId>, "rooms">;
+  /**
+   * the rooms to choose from, with the hue to show each in
+   */
+  roomHues: RoomHues<RoomId>;
   headRoomId?: RoomId;
   heelsRoomId?: RoomId;
   value?: RoomId;
@@ -22,7 +25,7 @@ export type RoomSelectProps<RoomId extends string> = {
 };
 
 export function RoomSelect<RoomId extends string>({
-  campaign,
+  roomHues,
   onSelect,
   headRoomId,
   heelsRoomId,
@@ -32,7 +35,7 @@ export function RoomSelect<RoomId extends string>({
   tooltipContent,
 }: RoomSelectProps<RoomId>) {
   const spriteClassname = usePlayableTailwindSpriteClassname();
-  const roomIds = Object.keys(campaign.rooms)
+  const roomIds = Object.keys(roomHues)
     .filter((r) => !excludeRoomIds.includes(r as RoomId))
     .sort(naturalCompare) as RoomId[];
 
@@ -55,10 +58,7 @@ export function RoomSelect<RoomId extends string>({
             onSelect={onSelect}
             class="px-1"
             data-test-id={`room-select-${itemValue}`}
-            style={cssForRoomColour(
-              campaign.rooms[itemValue].color.hue,
-              uncolourised,
-            )}
+            style={cssForRoomColour(roomHues[itemValue], uncolourised)}
           >
             {headRoomId === itemValue && (
               <CssVariables scaleFactor={1}>

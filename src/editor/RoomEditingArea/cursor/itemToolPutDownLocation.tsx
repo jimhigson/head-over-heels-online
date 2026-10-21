@@ -97,8 +97,12 @@ export const itemToolPutDownLocation = (
     return fineXyzToBlockXyz(clampedPosition);
   }
 
-  // for pointing at vertical surfaces, move the location out of the item being pointed at
-  // by adding the normal of the face. Since the normal of the face points out of the item
-  // being pointed at, this prevents putting down inside the item we are pointing at
-  return addXyz(fineXyzToBlockXyz(pointingAtPosition), pointingAtFace);
+  // for pointing at vertical surfaces, put the item down against the face, outside of
+  // the item being pointed at. The pointed-at position is on the face, which is where
+  // the put-down item starts if the face points along +x or +y; one pointing along -x or -y
+  // needs the item a block back, so it ends at the face instead:
+  return addXyz(fineXyzToBlockXyz(pointingAtPosition), {
+    x: Math.min(pointingAtFace.x, 0),
+    y: Math.min(pointingAtFace.y, 0),
+  });
 };

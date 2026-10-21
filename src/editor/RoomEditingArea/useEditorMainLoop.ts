@@ -56,7 +56,7 @@ const editorGeneralRenderContext = (
   spritesheetMeta: spritesheetMetas.blockstack,
   upscale: editorEngineUpscale,
   // the editor has no rotation transitions - the render angle is always the
-  // settled quarter angle:
+  // settled quarter angle, kept up to date each tick:
   cameraAngle: selectEditorCameraAngle(store.getState()),
   onScreenControls: false,
   speedCoefficient: 1,
@@ -177,6 +177,11 @@ export const useEditorMainLoop = (
       // some animations (ie, cyberman bob) depend on the roomTime
       // incrementing between frames
       roomState.roomTime += deltaMS;
+
+      // the room renderer follows its context's angle, so rotating needs no new renderer:
+      roomRenderer.renderContext.general.cameraAngle = selectEditorCameraAngle(
+        store.getState(),
+      );
 
       roomRenderer.tick({
         deltaMS,

@@ -1,7 +1,8 @@
 import { useCallback, useState } from "preact/hooks";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
-import { type JsonItemType } from "../../model/json/JsonItem";
+import { CssVariables } from "../../game/components/CssVariables";
+import { isRoomStructureItemType } from "../../model/json/isRoomStructureItemType";
 import { type CampaignVerificationIssue } from "../../model/json/verification/CampaignVerification";
 import { fixAllVerificationIssues } from "../../model/json/verification/fixAllVerificationIssues";
 import {
@@ -9,6 +10,7 @@ import {
   type VerificationRoomJson,
 } from "../../model/json/verification/verificationTypes";
 import { roomJsonItemsIterable } from "../../model/RoomJsonItemIterators";
+import { type TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { editorStore, store, useEditorAppSelector } from "../../store/store";
 import { Border } from "../../ui/Border";
 import { Button } from "../../ui/Button";
@@ -17,6 +19,7 @@ import { DialogHeader } from "../../ui/DialogHeader";
 import { DialogPortal } from "../../ui/DialogPortal";
 import { useKeyboardShortcut } from "../../ui/useKeyboardShortcut";
 import { entries } from "../../utils/entries";
+import { twClass } from "../../utils/twClass" with { type: "macro" };
 import {
   type EditorCampaign,
   type EditorRoomId,
@@ -35,17 +38,33 @@ import { confirmDeleteRoomThunk } from "./confirmThunk";
 /** heading for issues that aren't tied to one room (eg a missing player start) */
 const wholeCampaignHeading = "";
 
-/** item types that are just room structure, not gameplay content */
-const structuralItemTypes = new Set<JsonItemType>(["wall", "floor", "door"]);
-
 /**
  * a room with nothing but walls, floors and doors carries no gameplay content,
  * so it is most likely a shell left over by mistake and safe to offer to delete
  */
 const isEmptyLeftoverRoom = (room: VerificationRoomJson): boolean =>
   roomJsonItemsIterable(room).every((item) =>
-    structuralItemTypes.has(item.type),
+    isRoomStructureItemType(item.type),
   );
+
+/**
+ * shown in place of the issues once there are none left
+ */
+const AllIssuesFixed = () => (
+  <div class="flex flex-col flex-grow items-center justify-center gap-2">
+    <CssVariables scaleFactor={2}>
+      <div class="flex gap-1">
+        <span
+          class={`sprite ${twClass<TextureTailwindClass>("texture-head_falling_d6")}`}
+        />
+        <span
+          class={`sprite ${twClass<TextureTailwindClass>("texture-heels_falling_d6")}`}
+        />
+      </div>
+    </CssVariables>
+    <span class="text-double-height text-shadow">All issues fixed!</span>
+  </div>
+);
 
 export type VerifyIssuesDialogProps = {
   onClose: () => void;
@@ -57,6 +76,7 @@ export type VerifyIssuesDialogProps = {
  * follows the campaign, so it shrinks as issues are fixed
  */
 export const VerifyIssuesDialog = ({ onClose }: VerifyIssuesDialogProps) => {
+  // the issues as they are now, since fixing works on the campaign as it is now:
   const issues = useVerifyCampaign();
   // the element is state, not a ref, so the shortcut is added once it exists:
   const [dialogEl, setDialogEl] = useState<HTMLDialogElement | null>(null);
@@ -128,6 +148,7 @@ export const VerifyIssuesDialog = ({ onClose }: VerifyIssuesDialogProps) => {
         <Dialog ref={dialogRef} wide tall class="scale-editor p-1 allow-select">
           <DialogHeader>{issues.length} Issues</DialogHeader>
           <div class="flex flex-col pt-1 flex-grow text-multi-line overflow-y-auto scrollbar scrollbar-w1 scrollbar-thumb-lightGrey pr-1 gap-2">
+            {issues.length === 0 && <AllIssuesFixed />}
             {entries(issuesByRoom)
               .sort(([a], [b]) =>
                 a === wholeCampaignHeading ? -1

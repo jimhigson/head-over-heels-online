@@ -19,6 +19,7 @@ import { type JsonMovement } from "../../model/json/utilityJsonConfigTypes";
 import { blockstackPixiPalettes } from "../../sprites/palette/spritesheetPixiPalettes";
 import { editorStore, store } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
+import { rotateXy } from "../../utils/vectors/rotateXy";
 import { isNegativeSideXy, type Xy } from "../../utils/vectors/vectors";
 import {
   type EditorItemInPlayUnion,
@@ -97,7 +98,10 @@ const textAnnotationErrorColour = blockstackPixiPalettes.basic.midRed;
 const textClickableAnnotationHoverColour =
   blockstackPixiPalettes.basic.pastelBlue;
 
-/** the isometric arrow glyph pointing along a cardinal direction vector */
+/**
+ * the isometric arrow glyph pointing along a cardinal direction vector, as it
+ * appears on screen - give it {@link apparentDirection}, not a world direction
+ */
 const directionArrow = ({ x, y }: Xy): string =>
   y > 0 ?
     `↗` // away
@@ -107,8 +111,19 @@ const directionArrow = ({ x, y }: Xy): string =>
     `↖` // left
   : `↘`; // right
 
+/**
+ * the direction a world direction appears in on screen at the camera's angle -
+ * the direction it would be at the default angle, which the arrow glyphs and
+ * label layouts here are drawn for
+ */
+const apparentDirection = (worldDirection: Xy, cameraAngle: Xy): Xy =>
+  rotateXy(worldDirection, cameraAngle);
+
 const movementPatternAnnotationText = (
   movement: JsonMovement,
+  /**
+   * the apparent start direction, as given by {@link apparentDirection}
+   */
   startDirection: Xy,
 ) => {
   const { x, y } = startDirection;
@@ -207,6 +222,16 @@ class EditorAnnotationsRenderer<
     this.#initAnnotations();
   }
 
+  /**
+   * which way a world direction appears at the camera's current angle
+   */
+  #apparent(worldDirection: Xy): Xy {
+    return apparentDirection(
+      worldDirection,
+      this.renderContext.general.cameraAngle,
+    );
+  }
+
   #initAnnotations() {
     const item = this.renderContext.item as unknown as EditorItemInPlayUnion<T>;
 
@@ -251,15 +276,17 @@ class EditorAnnotationsRenderer<
           if (toRoom !== exitGameRoomId) {
             const toRoomExists = !!rooms[toRoom];
 
-            const arrow = directionArrow(direction);
+            // laid out as the door appears, which depends on the camera:
+            const apparentDoorDirection = this.#apparent(direction);
+            const arrow = directionArrow(apparentDoorDirection);
             const text =
-              direction.y > 0 || direction.x < 0 ?
+              apparentDoorDirection.y > 0 || apparentDoorDirection.x < 0 ?
                 `${toRoom}${arrow}`
               : `${arrow}${toRoom}`;
 
             this.#addTextAnnotation({
               annotationText: text,
-              yAdj: !isNegativeSideXy(direction) ? -48 : 0,
+              yAdj: !isNegativeSideXy(apparentDoorDirection) ? -48 : 0,
               tint:
                 toRoomExists ?
                   textAnnotationNormalColour
@@ -318,7 +345,9 @@ class EditorAnnotationsRenderer<
           // direction arrow:
           this.#addTextAnnotation({
             annotationText:
-              disappearing !== null ? "*" : directionArrow(direction),
+              disappearing !== null ? "*" : (
+                directionArrow(this.#apparent(direction))
+              ),
             yAdj: -12,
           });
         }
@@ -342,7 +371,7 @@ class EditorAnnotationsRenderer<
           this.#addTextAnnotation({
             annotationText: movementPatternAnnotationText(
               movement,
-              startDirection,
+              this.#apparent(startDirection),
             ),
             yAdj: -12,
           });
@@ -367,7 +396,7 @@ class EditorAnnotationsRenderer<
               this.#addTextAnnotation({
                 annotationText: movementPatternAnnotationText(
                   config.movement,
-                  config.startDirection,
+                  this.#apparent(config.startDirection),
                 ),
                 yAdj: -12,
               });
@@ -447,6 +476,15 @@ class EditorAnnotationsRenderer<
     this.#annotations.push(annotationContainer);
   }
 
+  #destroyAnnotations() {
+    const { frontLayer } = this.renderContext;
+    for (const annotation of this.#annotations) {
+      frontLayer.detach(annotation);
+      annotation.destroy({ children: true });
+    }
+    this.#annotations = [];
+  }
+
   /**
    * annotations are a ui overlay rather than part of the room, so they render
    * at a constant on-screen size: counter-scale them by the inverse of the
@@ -468,6 +506,11 @@ class EditorAnnotationsRenderer<
   }
 
   tick(tickContext: ItemTickContext) {
+    if (tickContext.cameraAngleChanged) {
+      // arrows and label layouts follow the camera, so draw them afresh:
+      this.#destroyAnnotations();
+      this.#initAnnotations();
+    }
     this.#updateSelectedAndHovered();
     this.#updateAnnotationScale();
 

@@ -7,9 +7,9 @@ import {
   roomBack,
   roomForward,
   selectBackRooms,
-  selectCurrentCampaignInProgress,
   selectForwardRooms,
 } from "../../slice/levelEditorSlice";
+import { selectRoomHues } from "../../slice/selectRoomHues";
 import { MenuButton, MenuItemButton } from "./MenuButton";
 import { cssForRoomColour } from "./RoomColourSelect";
 
@@ -18,7 +18,7 @@ const maxHistoryItems = 8;
 export const BackAndForwardRoomButtons = () => {
   const backRooms = useEditorAppSelector(selectBackRooms);
   const forwardRooms = useEditorAppSelector(selectForwardRooms);
-  const campaign = useEditorAppSelector(selectCurrentCampaignInProgress);
+  const campaignRoomHues = useEditorAppSelector(selectRoomHues);
   const uncolourised = useIsUncolourised();
   const dispatch = useAppDispatch();
 
@@ -39,10 +39,7 @@ export const BackAndForwardRoomButtons = () => {
               key={`${roomId}-${index}`}
               onClick={() => dispatch(roomBack(index + 1))}
               class="command-colours"
-              style={cssForRoomColour(
-                campaign.rooms[roomId].color.hue,
-                uncolourised,
-              )}
+              style={cssForRoomColour(campaignRoomHues[roomId], uncolourised)}
             >
               <span class="text-single-line">{roomId}</span>
             </MenuItemButton>
@@ -61,10 +58,7 @@ export const BackAndForwardRoomButtons = () => {
               key={`${roomId}-${index}`}
               onClick={() => dispatch(roomForward(index + 1))}
               class="command-colours"
-              style={cssForRoomColour(
-                campaign.rooms[roomId].color.hue,
-                uncolourised,
-              )}
+              style={cssForRoomColour(campaignRoomHues[roomId], uncolourised)}
             >
               <span class="text-single-line">{roomId}</span>
             </MenuItemButton>

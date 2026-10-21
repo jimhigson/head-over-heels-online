@@ -1,10 +1,12 @@
-import { useEffect, useMemo } from "preact/hooks";
+import { useCallback, useEffect, useMemo } from "preact/hooks";
 
+import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
 import { useCheatsOn } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import { emptyArray } from "../../../../../../utils/empty";
 import { useElementSize } from "../../../../../../utils/preact/useElementSize";
 import { swopPlayables } from "../../../../../gameState/mutators/swopPlayables";
 import { useGameApi } from "../../../../GameApiContext";
@@ -12,6 +14,7 @@ import { useScrollingFromInput } from "../useScrollingFromInput";
 import { createClickableRoomBehaviour } from "./createClickableRoomBehaviour";
 import { MapSvg } from "./Map.svg";
 import { getMapColoursClass } from "./mapColours";
+import { MapContextProvider } from "./MapContext";
 import { mapDialogColourClasses } from "./mapDialogColourClasses";
 import { MapRoomTooltipBehaviour } from "./MapRoomTooltipBehaviour";
 import { useMapDataForCurrentGame } from "./useMapDataForCurrentGame";
@@ -23,7 +26,7 @@ const useGameMapBehaviours = <RoomId extends string>() => {
 
   return useMemo(() => {
     if (!cheatsOn) {
-      return undefined;
+      return emptyArray;
     }
 
     const clickableBehaviour = createClickableRoomBehaviour((roomId) => {
@@ -48,16 +51,20 @@ const MapDialog = <RoomId extends string>() => {
     performance.mark("open map");
   }, []);
 
-  const mapData = useMapDataForCurrentGame<RoomId>();
+  const onPlayableClick = useCallback(
+    (name: IndividualCharacterName) => swopPlayables(gameApi.gameState, name),
+    [gameApi],
+  );
+  const { mapData, mapContext } = useMapDataForCurrentGame<RoomId>(
+    useGameMapBehaviours<RoomId>(),
+    onPlayableClick,
+  );
   const mapColourClasses = getMapColoursClass(mapData.curRoomScenery);
 
   const mapSvg = (
-    <MapSvg<RoomId>
-      onPlayableClick={(name) => swopPlayables(gameApi.gameState, name)}
-      containerWidth={mapContainerWidth}
-      behaviours={useGameMapBehaviours<RoomId>()}
-      {...mapData}
-    />
+    <MapContextProvider value={mapContext}>
+      <MapSvg<RoomId> containerWidth={mapContainerWidth} {...mapData} />
+    </MapContextProvider>
   );
 
   return (

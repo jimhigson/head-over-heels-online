@@ -53,16 +53,19 @@ export const MenuButton = ({
               </span>
             </Button>
             <PopoverPanel id={popoverId} open={open} onOpenChange={setOpen}>
-              <div
-                class={cn(
-                  "flex flex-col gap-oneScaledPix py-oneScaledPix",
-                  "bg-metallicBlueHalfbrite text-white max-h-20 overflow-y-auto",
-                  "scrollbar scrollbar-w-1 scrollbar-thumb-highlightBeige",
-                  contentsClassName,
-                )}
-              >
-                {children}
-              </div>
+              {/* contents mount only while open, so closed menus follow nothing: */}
+              {open && (
+                <div
+                  class={cn(
+                    "flex flex-col gap-oneScaledPix py-oneScaledPix",
+                    "bg-metallicBlueHalfbrite text-white max-h-20 overflow-y-auto",
+                    "scrollbar scrollbar-w-1 scrollbar-thumb-highlightBeige",
+                    contentsClassName,
+                  )}
+                >
+                  {children}
+                </div>
+              )}
             </PopoverPanel>
           </>
         )}

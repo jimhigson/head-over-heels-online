@@ -1,6 +1,7 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { type EditorRoomItemId } from "../../editorTypes";
+import { commitPendingNudgeInPlace } from "../inPlaceMutators/commitPendingNudgeInPlace";
 import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "../inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
@@ -39,6 +40,8 @@ export const selectionsReducers = {
       jsonItemIds: EditorRoomItemId[];
     }>,
   ) {
+    // nudges act on the selection, so a new one ends them:
+    commitPendingNudgeInPlace(state as LevelEditorState);
     const roomItems =
       selectCurrentCommittedRoomJsonFromLevelEditorState(state).items;
     for (const jsonItemId of jsonItemIds) {
@@ -67,6 +70,8 @@ export const selectionsReducers = {
       onlySelect?: boolean;
     }>,
   ) {
+    // nudges act on the selection, so a new one ends them:
+    commitPendingNudgeInPlace(state as LevelEditorState);
     const selectedJsonItemIds =
       selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state);
     if (!selectedJsonItemIds.includes(jsonItemId)) {

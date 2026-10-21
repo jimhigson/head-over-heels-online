@@ -46,32 +46,32 @@ export const NudgeButtons = () => (
     </div>
 
     <div class={lineContainerClassName}>
-      <span class={lineTitleHeaderClassName}>{"Grow:"}</span>
+      <span class={lineTitleHeaderClassName}>{"Multiply:"}</span>
       <div class="flex-grow" />
       <div class={buttonsClassName}>
         <CommandToolbarButton
           small
-          command={nudgeCommandDefinitions["grow.left"]}
+          command={nudgeCommandDefinitions["multiply.left"]}
         />
         <CommandToolbarButton
           small
-          command={nudgeCommandDefinitions["grow.right"]}
+          command={nudgeCommandDefinitions["multiply.right"]}
         />
         <CommandToolbarButton
           small
-          command={nudgeCommandDefinitions["grow.away"]}
+          command={nudgeCommandDefinitions["multiply.away"]}
         />
         <CommandToolbarButton
           small
-          command={nudgeCommandDefinitions["grow.towards"]}
+          command={nudgeCommandDefinitions["multiply.towards"]}
         />
         <CommandToolbarButton
           small
-          command={nudgeCommandDefinitions["grow.up"]}
+          command={nudgeCommandDefinitions["multiply.up"]}
         />
         <CommandToolbarButton
           small
-          command={nudgeCommandDefinitions["grow.down"]}
+          command={nudgeCommandDefinitions["multiply.down"]}
         />
       </div>
     </div>

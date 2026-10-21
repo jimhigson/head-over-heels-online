@@ -4,6 +4,7 @@ import {
 } from "../../../../consolidateItems/ConsolidatableJsonItem";
 import {
   fineXyzToBlockXyz,
+  projectWorldXyzToScreenXy,
   unprojectScreenXyToWorldXyz,
 } from "../../../../game/render/projections";
 import {
@@ -33,9 +34,11 @@ import {
   type EditorRoomItemId,
   type EditorRoomState,
 } from "../../../editorTypes";
+import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../../../slice/levelEditorSelectors";
 import {
   changeDragInProgress,
   commitCurrentPreviewedEdits,
+  type GridResolution,
   moveOrResizeItemAsPreview,
   openItemContextMenu,
   selectCursorRoomSelectedJsonItemIds,
@@ -47,6 +50,8 @@ import {
 } from "../../../slice/levelEditorSlice";
 import { type ItemsDrag } from "../../../slice/reducers/dragToMoveReducers";
 import { getMovableVector } from "../../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
+import { moveOrResizeOutcome } from "../../../slice/reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
+import { snapGridResolution } from "../../../snapGridResolution";
 import { itemMoveOrResizeWouldCollide } from "../../cursor/editWouldCollide";
 import { roundXyzProjection } from "../../cursor/findPointerPointingAt";
 import { type MaybePointingAtSomething } from "../../cursor/PointingAt";
@@ -219,22 +224,69 @@ const getDragVector = (
     : dragVectorWorld;
 };
 
-const roundDragVector = (
-  dragVector: Xyz,
-  /**
-   * if given and false, the halfGridResolution setting is ignored and will never
-   * round to halves
-   */
-  alwaysFullBlocks = false,
-) => {
-  const levelEditorState = editorStore.getState().levelEditor;
+const roundDragVector = (dragVector: Xyz, gridResolution: GridResolution) =>
+  roundXyzProjection(dragVector, unitXyz_z, gridResolution);
 
-  return roundXyzProjection(
-    dragVector,
-    unitXyz_z,
-    levelEditorState.tool,
-    alwaysFullBlocks ? 1 : levelEditorState.gridResolution,
+/**
+ * the most moves a drag tries each time the pointer moves - if none of them
+ * can be made, the drag keeps its last valid preview
+ */
+const maxDragMovesToTry = 64;
+
+/** the multiples of `step` from 0 to `to` (inclusive), in the direction of `to` */
+const stepsTowards = (to: number, step: number): number[] =>
+  Array.from(
+    { length: Math.round(Math.abs(to) / step) + 1 },
+    (_, index) => Math.sign(to) * index * step,
   );
+
+/**
+ * the moves to try for a drag, best first: every grid step in the rectangle
+ * between where the items started and where they are dragged to, closest on
+ * screen to where they are dragged to first (then furthest from the start) -
+ * so a drag that can't go where it points goes as near to it as it can,
+ * sliding along whatever blocks it or stopping just short of it
+ */
+const dragMovesToTry = (
+  /**
+   * where the drag would move the items to, from where they started
+   */
+  target: Xyz,
+  gridResolution: GridResolution,
+  cameraAngle: Xy,
+): Xyz[] => {
+  const targetOnScreen = projectWorldXyzToScreenXy(target, cameraAngle);
+  const screenDistanceToTarget = (move: Xyz) =>
+    lengthXy(
+      subXy(projectWorldXyzToScreenXy(move, cameraAngle), targetOnScreen),
+    );
+  const isTarget = (move: Xyz) => move.x === target.x && move.y === target.y;
+
+  return stepsTowards(target.x, gridResolution)
+    .flatMap((x) =>
+      stepsTowards(target.y, gridResolution).map((y) => ({
+        x,
+        y,
+        z: target.z,
+      })),
+    )
+    .filter(
+      (move) =>
+        // not moving across at all would undo the drag, rather than follow it:
+        isTarget(move) || move.x !== 0 || move.y !== 0,
+    )
+    .map((move) => ({
+      move,
+      screenDistanceToTarget: screenDistanceToTarget(move),
+      distanceFromStart: lengthXy(move),
+    }))
+    .sort(
+      (a, b) =>
+        a.screenDistanceToTarget - b.screenDistanceToTarget ||
+        b.distanceFromStart - a.distanceFromStart,
+    )
+    .slice(0, maxDragMovesToTry)
+    .map(({ move }) => move);
 };
 
 export class PointerToolHandler implements ToolHandler<
@@ -321,12 +373,20 @@ export class PointerToolHandler implements ToolHandler<
       resizeEdge === undefined ? "moveItems" : "resizeItems";
 
     const prevDragAccVec: Xyz = dragAccVec.current ?? originXyz;
+    const dragGridResolution =
+      // sizes are always whole blocks:
+      itemsDrag === "resizeItems" ? 1 : (
+        snapGridResolution(
+          storeState.levelEditor.gridResolution,
+          jsonItems.map(({ type }) => type),
+        )
+      );
 
     // accumulate some more on the drag vector:
     const nextDragAccVec = addXyz(prevDragAccVec, dragDeltaVec);
     const nextDragAccVecRound = roundDragVector(
       nextDragAccVec,
-      itemsDrag === "resizeItems",
+      dragGridResolution,
     );
 
     // store for the next frame:
@@ -334,7 +394,7 @@ export class PointerToolHandler implements ToolHandler<
 
     if (
       xyzEqual(
-        roundDragVector(prevDragAccVec, itemsDrag === "resizeItems"),
+        roundDragVector(prevDragAccVec, dragGridResolution),
         nextDragAccVecRound,
       )
     ) {
@@ -378,25 +438,49 @@ export class PointerToolHandler implements ToolHandler<
       //
       positionDelta = blockDragAccVec;
     }
-    // collision has to happen on the loaded room, not the json, so can't
-    // be done in the reducer:
-    const collides = itemMoveOrResizeWouldCollide({
-      roomState,
-      jsonItemIds,
-      blockPositionDelta: positionDelta,
-      timesDelta,
-    });
+    const movesToTry =
+      resizeEdge === undefined ?
+        dragMovesToTry(
+          positionDelta,
+          dragGridResolution,
+          storeState.levelEditor.cameraAngle,
+        )
+      : [positionDelta];
 
-    if (collides) {
+    const { levelEditor: levelEditorState } = editorStore.getState();
+    const validMove = movesToTry.find(
+      (moveToTry) =>
+        // collision has to happen on the loaded room, not the json:
+        !itemMoveOrResizeWouldCollide({
+          roomState,
+          // the drag's moves are from the committed room:
+          roomJson:
+            selectCurrentCommittedRoomJsonFromLevelEditorState(
+              levelEditorState,
+            ),
+          jsonItemIds,
+          blockPositionDelta: moveToTry,
+          timesDelta,
+        }) &&
+        moveOrResizeOutcome(levelEditorState, {
+          jsonItemIds,
+          positionDelta: moveToTry,
+          timesDelta,
+          timestamp: 0,
+        }).type !== "invalid",
+    );
+
+    if (validMove === undefined) {
+      // nowhere near the drag can be moved to, so keep the last valid preview
       return;
     }
-    if (storeState.levelEditor.dragInProgress !== itemsDrag) {
+    if (levelEditorState.dragInProgress !== itemsDrag) {
       dispatch(changeDragInProgress(itemsDrag));
     }
     dispatch(
       moveOrResizeItemAsPreview({
         jsonItemIds,
-        positionDelta,
+        positionDelta: validMove,
         timesDelta,
         timestamp: Date.now(),
       }),
@@ -431,21 +515,28 @@ export class PointerToolHandler implements ToolHandler<
       }
 
       const isRightClick = mouseEvent.button === 2;
+      // right-clicking within the selection opens the menu for all of it:
+      const keepsSelection =
+        isRightClick &&
+        selectItemIsSelected(storeState, clickedOnItem.jsonItemId);
 
-      dispatch(
-        mouseEvent.ctrlKey || mouseEvent.metaKey ?
-          toggleSelectedItemInRoom({
-            jsonItemId: clickedOnItem.jsonItemId,
-            onlySelect: isRightClick,
-          })
-        : setSelectedItemsInRoom({
-            jsonItemIds: [clickedOnItem.jsonItemId],
-          }),
-      );
+      if (!keepsSelection) {
+        dispatch(
+          mouseEvent.ctrlKey || mouseEvent.metaKey ?
+            toggleSelectedItemInRoom({
+              jsonItemId: clickedOnItem.jsonItemId,
+              onlySelect: isRightClick,
+            })
+          : setSelectedItemsInRoom({
+              jsonItemIds: [clickedOnItem.jsonItemId],
+            }),
+        );
+      }
 
       if (isRightClick) {
         // a right-click selects the item the same way a left-click does (above),
-        // then additionally opens the context menu for the resulting selection
+        // unless it is already selected, then additionally opens the context
+        // menu for the resulting selection
         if (
           clickedOnItem?.jsonItemId !== undefined &&
           !itemsAreLocked(storeState, clickedOnItem)

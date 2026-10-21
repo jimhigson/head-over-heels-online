@@ -1,3 +1,4 @@
+import { produce } from "immer";
 import { expect, test } from "vitest";
 
 import { roomJsonMatchers } from "../../model/json/__test__/roomJsonMatchers";
@@ -5,7 +6,11 @@ import { roomGridPositions } from "../../model/map/roomGridPositions";
 import { isWholeRoomSubRooms } from "../../model/RoomJson";
 import { iterateRoomJsonItemsWithIds } from "../../model/RoomJsonItemIterators";
 import { keys } from "../../utils/entries";
-import { type EditorRoomJson } from "../editorTypes";
+import {
+  type EditorRoomId,
+  type EditorRoomItemId,
+  type EditorRoomJson,
+} from "../editorTypes";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
   selectCursorRoomFromLevelEditorState,
@@ -329,4 +334,59 @@ test("merging two rooms below a room that is above one of them does not break ma
         subRoomId,
       }).nodes,
   ).not.toThrow();
+});
+
+test("coalescing rooms leaves the links of doors in unrelated rooms alone", () => {
+  // two rooms side by side, made from the same template so they share item ids:
+  const twoRooms = reduceLevelEditorActions(
+    initialLevelEditorSliceState,
+    insertRoom({ direction: "right" }),
+  );
+  const cursorRoomId = selectCursorRoomIdFromLevelEditorState(twoRooms);
+  const [otherRoomId] = keys(twoRooms.campaignInProgress.rooms).filter(
+    (id) => id !== cursorRoomId,
+  );
+  // an id both rooms have, so merging must rename the other room's copy:
+  const [sharedItemId] = keys(
+    twoRooms.campaignInProgress.rooms[otherRoomId].items,
+  ).filter(
+    (id) =>
+      twoRooms.campaignInProgress.rooms[cursorRoomId].items[id] !== undefined,
+  );
+
+  // a door elsewhere, leading to an unrelated room's door that happens to
+  // have that same id:
+  const unrelatedRoomId = "unrelated" as EditorRoomId;
+  const unrelatedDoorId = "unrelatedDoor" as EditorRoomItemId;
+  const withUnrelatedRoom = produce(twoRooms, (draft) => {
+    draft.campaignInProgress.rooms[unrelatedRoomId] = {
+      id: unrelatedRoomId,
+      planet: "blacktooth",
+      color: { hue: "cyan", shade: "basic" },
+      items: {
+        [unrelatedDoorId]: {
+          type: "door",
+          position: { x: 0, y: 3, z: 0 },
+          config: {
+            direction: "right",
+            toRoom: "elsewhere" as EditorRoomId,
+            toDoor: sharedItemId,
+          },
+        },
+      },
+    };
+  });
+
+  const result = reduceLevelEditorActions(
+    withUnrelatedRoom,
+    toggleRoomInSelection({ roomId: otherRoomId, subRoomId: "*" }),
+    expectCoalesceable,
+    coalesceSelectedRooms(),
+  );
+
+  const unrelatedDoor =
+    result.campaignInProgress.rooms[unrelatedRoomId].items[unrelatedDoorId];
+  expect(unrelatedDoor?.type === "door" && unrelatedDoor.config.toDoor).toBe(
+    sharedItemId,
+  );
 });

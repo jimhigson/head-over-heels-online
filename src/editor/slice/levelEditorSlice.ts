@@ -10,7 +10,11 @@ import {
   rotateXy,
   rotationVectorsByDirectionXy4,
 } from "../../utils/vectors/rotateXy";
-import { type DirectionXy4, type Xy } from "../../utils/vectors/vectors";
+import {
+  type DirectionXy4,
+  type Xy,
+  type Xyz,
+} from "../../utils/vectors/vectors";
 import {
   type EditorCampaign,
   type EditorRoomId,
@@ -63,6 +67,8 @@ import { mirrorOrientationReducers } from "./reducers/mirrorOrientationReducers"
 import { monsterMovementReducers } from "./reducers/monsterMovementReducers";
 import { moveItemsToRoomReducers } from "./reducers/moveItemsToRoomReducers";
 import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
+import { multiplyItemsReducers } from "./reducers/multiplyItemsReducers";
+import { nudgeReducers } from "./reducers/nudgeReducers";
 import { playtestOptionsReducers } from "./reducers/playtestOptionsReducers";
 import { roomSelectionReducers } from "./reducers/roomSelectionReducers";
 import {
@@ -95,6 +101,35 @@ export type PreviewedRoomItemEdits = {
   [k in keyof EditorRoomJsonItems]: EditorRoomJsonItems[k] | null;
 };
 
+/**
+ * the kinds of nudge (from the keys or toolbar buttons) - a held key's
+ * repeated nudges of one kind build a single preview, committed as one edit
+ */
+export type NudgeKind = "move" | "multiply" | "shrink";
+
+/**
+ * what made the pending edits, so they are committed (or left) correctly when
+ * something else happens
+ */
+export type PendingEditsOrigin =
+  | { type: "drag" }
+  | { type: "itemTool" }
+  | {
+      type: "nudge";
+      kind: NudgeKind;
+      /**
+       * the total move of the nudges so far, for the edit's description
+       */
+      positionDelta: Xyz;
+    };
+
+export type PendingEdits = {
+  edits: PreviewedRoomItemEdits;
+  description: UndoDescription;
+  timestamp: number;
+  origin: PendingEditsOrigin;
+};
+
 export const gridResolutions = [1, 0.5, 0.125] as const;
 export type GridResolution = (typeof gridResolutions)[number];
 
@@ -119,11 +154,7 @@ export type LevelEditorState = {
    * committed to the room. When present, both the edits and a label describing
    * the action are required together.
    */
-  pendingEdits?: {
-    edits: PreviewedRoomItemEdits;
-    description: UndoDescription;
-    timestamp: number;
-  };
+  pendingEdits?: PendingEdits;
   tool: Tool;
   /** the text currently typed into the cmd-k menu's search input, retained while the menu is closed */
   cmdKSearch: string;
@@ -244,6 +275,8 @@ export const levelEditorSlice = createSlice({
     ...disappearingReducers,
     ...monsterMovementReducers,
     ...moveItemsToRoomReducers,
+    ...multiplyItemsReducers,
+    ...nudgeReducers,
     ...teleporterDestinationReducers,
     ...doorGameEndReducers,
     ...startDirectionReducers,
@@ -326,6 +359,9 @@ export const {
   loadCampaign,
   moveItemsToRoom,
   moveOrResizeItemAsPreview,
+  multiplySelectedItems,
+  nudgeSelectedItems,
+  commitPendingNudge,
   newCampaign,
   openItemContextMenu,
   redo,
@@ -354,6 +390,7 @@ export const {
   setHoveredItemInRoom,
   setRemoteCampaign,
   setRoomAboveOrBelow,
+  makeHoleInSelectedFloor,
   setSelectedItemsActivation,
   setSelectedItemsDisappearing,
   setSelectedItemsInRoom,

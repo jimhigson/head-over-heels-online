@@ -1,38 +1,34 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { applyPreviewedEditsInPlace } from "../applyPreviewedEditsInPlace";
-import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
-import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
+import {
+  commitPendingEditsInPlace,
+  commitPendingNudgeInPlace,
+} from "../inPlaceMutators/commitPendingNudgeInPlace";
 import { type LevelEditorState } from "../levelEditorSlice";
-import { pushUndoToCursorRoomInPlace } from "./undoReducers";
 
 export const itemPreviewReducers = {
   setAutoCoalesce(_state: LevelEditorState, action: PayloadAction<boolean>) {
     _state.autoCoalesce = action.payload;
   },
-  resetPreviewedEdits(state) {
+  /**
+   * drop the previewed edits - though nudges, which are only previewed until
+   * they pause, are committed rather than lost
+   */
+  resetPreviewedEdits(_state) {
+    const state = _state as LevelEditorState;
+    commitPendingNudgeInPlace(state);
     state.pendingEdits = undefined;
   },
   /**
    * overwrite the permanent state of the current room by committing the previewed edits
    */
-  commitCurrentPreviewedEdits(state) {
-    if (state.pendingEdits === undefined) {
-      return;
-    }
-    pushUndoToCursorRoomInPlace(
-      state,
-      state.pendingEdits.description,
-      state.pendingEdits.timestamp,
-    );
-    applyPreviewedEditsInPlace(
-      selectCurrentCommittedRoomJsonFromLevelEditorState(state),
-      state.pendingEdits.edits,
-    );
-    if (state.autoCoalesce) {
-      consolidateCurrentRoomInPlace(state);
-    }
-
-    state.pendingEdits = undefined;
+  commitCurrentPreviewedEdits(_state) {
+    commitPendingEditsInPlace(_state as LevelEditorState);
+  },
+  /**
+   * commit the nudges being previewed, if there are any - once they pause
+   */
+  commitPendingNudge(_state) {
+    commitPendingNudgeInPlace(_state as LevelEditorState);
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

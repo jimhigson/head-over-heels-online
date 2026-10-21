@@ -45,7 +45,7 @@ export const rotateItemReducers = {
     // rotating in place keeps any preview-only config (eg a cyberman placed on
     // a toaster starts deactivated). rotateItemInPlace no-ops on non-rotatable
     // entries, so iterating them all is safe:
-    if (state.pendingEdits !== undefined) {
+    if (state.pendingEdits?.origin.type === "itemTool") {
       for (const itemPreview of valuesIter(state.pendingEdits.edits)) {
         if (itemPreview !== null) {
           rotateItemInPlace(itemPreview, sense);
