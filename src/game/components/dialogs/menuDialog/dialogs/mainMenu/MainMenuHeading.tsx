@@ -12,21 +12,21 @@ export const MainMenuHeading = ({
   <header class={`flex flex-col items-center ${className}`}>
     <h1 class="text-single-line whitespace-nowrap">
       <span class="text-double-height text-double-height-on-baseline uppercase text-pastelBlue zx:text-zxYellow toppy:text-toppyCool2">
-        Head
+        Foot
       </span>
       <CharacterSprite
         character="head"
         defaultFacing="right"
         class="inline-block align-baseline mx-1"
       />
-      <ColourCycleText classnameCycle={mainMenuCycle}>over</ColourCycleText>
+      <ColourCycleText classnameCycle={mainMenuCycle}>and</ColourCycleText>
       <CharacterSprite
         character="heels"
         defaultFacing="towards"
         class="inline-block align-baseline mx-1"
       />
       <span class="text-double-height text-double-height-on-baseline uppercase text-pink zx:text-zxYellow toppy:text-toppyPink1">
-        Heels
+        Mouth
       </span>
     </h1>
     {noSubtitle || (
