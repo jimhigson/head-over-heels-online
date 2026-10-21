@@ -94,13 +94,18 @@ jobs:
         with:
           script: |
             const { sha, baseRef, gameUrl, editorUrl } = process.env;
+            // scan-to-play on a phone. The editor has no mobile layout, so only
+            // the game gets a code
+            const gameQr = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(gameUrl)}`;
             const body = [
               `<!-- deploy-preview -->`,
-              `### 🚀 Deploy preview for \`${sha}\` (merge result into ${baseRef})`,
+              `### 🚀 Deploy preview for \`${sha}\``,
+              ``,
+              `previews of the merge result with ${baseRef}`,
               ``,
               `| | |`,
               `|:-:|---|`,
-              `| 🎮 game | ${gameUrl} |`,
+              `| 🎮 game | <div align="center"><img src="${gameQr}" width="160" alt="qr code to open the game preview on a phone"><br>${gameUrl}</div> |`,
               `| 🛠️ editor | ${editorUrl} |`,
             ].join("\n");
             await require("./.github/scripts/upsertPreviewComment.cjs")({ github, context, body });
