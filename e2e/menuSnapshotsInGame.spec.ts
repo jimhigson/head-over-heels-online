@@ -14,26 +14,26 @@ import {
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import {
-  enabledSpriteModes,
-  spriteOptionSuffix,
+  enabledSpritesheets,
+  spritesheetSuffix,
   takeScreenshot,
   testTimeout,
 } from "./testUtils/screenshots";
-import { setSpriteOption } from "./testUtils/setSpriteOption";
+import { setSpritesheet } from "./testUtils/setSpritesheet";
 import { test } from "./testUtils/test";
 
-for (const spriteOption of enabledSpriteModes) {
-  test.describe(`Menu Visual Snapshots ${JSON.stringify(spriteOption)}`, () => {
+for (const spritesheetName of enabledSpritesheets) {
+  test.describe(`Menu Visual Snapshots ${JSON.stringify(spritesheetName)}`, () => {
     test.beforeEach(async ({ page }) => {
       await setupE2ePage(page);
     });
 
-    test(`Snapshot in game dialogs ${JSON.stringify(spriteOption)}`, async ({
+    test(`Snapshot in game dialogs ${JSON.stringify(spritesheetName)}`, async ({
       page,
     }, testInfo) => {
       const { mainMenuOnly, noUncolourised } = testInfo.project
         .use as ScreenshotTestOptions;
-      if (mainMenuOnly || (spriteOption.uncolourised && noUncolourised)) {
+      if (mainMenuOnly || (spritesheetName === "speccy" && noUncolourised)) {
         test.skip();
         return;
       }
@@ -54,8 +54,8 @@ for (const spriteOption of enabledSpriteModes) {
 
       await logUpscale(page, formattedName);
 
-      await test.step(`set sprite option to ${JSON.stringify(spriteOption)}`, async () => {
-        await setSpriteOption(page, formattedName, spriteOption);
+      await test.step(`set sprite option to ${JSON.stringify(spritesheetName)}`, async () => {
+        await setSpritesheet(page, formattedName, spritesheetName);
       });
 
       await clickPlayTheGame(page, formattedName);
@@ -70,9 +70,9 @@ for (const spriteOption of enabledSpriteModes) {
         );
         await takeScreenshot(
           page,
-          `crowns${spriteOptionSuffix(spriteOption)}`,
+          `crowns${spritesheetSuffix(spritesheetName)}`,
           formattedName,
-          spriteOption,
+          spritesheetName,
           testInfo.project.name,
         );
       });
@@ -95,9 +95,9 @@ for (const spriteOption of enabledSpriteModes) {
         );
         await takeScreenshot(
           page,
-          `map${spriteOptionSuffix(spriteOption)}`,
+          `map${spritesheetSuffix(spritesheetName)}`,
           formattedName,
-          spriteOption,
+          spritesheetName,
           testInfo.project.name,
         );
       });
@@ -125,9 +125,9 @@ for (const spriteOption of enabledSpriteModes) {
         );
         await takeScreenshot(
           page,
-          `hold${spriteOptionSuffix(spriteOption)}`,
+          `hold${spritesheetSuffix(spritesheetName)}`,
           formattedName,
-          spriteOption,
+          spritesheetName,
           testInfo.project.name,
         );
       });
@@ -146,9 +146,9 @@ for (const spriteOption of enabledSpriteModes) {
         );
         await takeScreenshot(
           page,
-          `main-inGame${spriteOptionSuffix(spriteOption)}`,
+          `main-inGame${spritesheetSuffix(spritesheetName)}`,
           formattedName,
-          spriteOption,
+          spritesheetName,
           testInfo.project.name,
         );
       });
@@ -165,9 +165,9 @@ for (const spriteOption of enabledSpriteModes) {
         );
         await takeScreenshot(
           page,
-          `score${spriteOptionSuffix(spriteOption)}`,
+          `score${spritesheetSuffix(spritesheetName)}`,
           formattedName,
-          spriteOption,
+          spritesheetName,
           testInfo.project.name,
         );
       });
@@ -195,9 +195,9 @@ for (const spriteOption of enabledSpriteModes) {
         );
         await takeScreenshot(
           page,
-          `proclaimEmperor${spriteOptionSuffix(spriteOption)}`,
+          `proclaimEmperor${spritesheetSuffix(spritesheetName)}`,
           formattedName,
-          spriteOption,
+          spritesheetName,
           testInfo.project.name,
         );
       });

@@ -1,5 +1,4 @@
 import {
-  Color,
   Container,
   type Filter,
   Rectangle,
@@ -9,13 +8,10 @@ import {
   Texture,
 } from "pixi.js";
 
-import { speccySpritesheetMeta } from "../../../gfx/spritesheetMeta/speccySpritesheetMeta";
 import { PaletteSwapFilter } from "../../game/render/filters/PaletteSwapFilter";
 import { binariseAlphaFilter } from "../../game/render/filters/shadows/binariseAlphaFilter";
 import { hardenChannelsFilter } from "../../game/render/filters/shadows/hardenChannelsFilter";
 import { objectEntriesIter } from "../../utils/entries";
-import { resolveSwops } from "../../utils/palette/palette";
-import { paletteBlockstack } from "../palette/spritesheetPalette";
 import { applySpritesheetFlips } from "./applySpritesheetFlips";
 import {
   type AppSpritesheet,
@@ -30,7 +26,10 @@ import { roomSpritesheetTextureSwops } from "./roomSpritesheetTextureSwops";
 import { spritesheetSize } from "./spritesheetData/makeBaseSpritesheetData";
 import { makeSpritesheetData } from "./spritesheetData/makeSpritesheetData";
 import { packAllFrames } from "./spritesheetData/packAllFrames";
-import { spritesheetMetas } from "./spritesheetData/spritesheetMetaData";
+import {
+  spritesheetArtName,
+  spritesheetMetas,
+} from "./spritesheetData/spritesheetMetaData";
 import {
   arcadeButtonSuffixes,
   isVariantId,
@@ -57,19 +56,6 @@ const variantKeyPrefix = "variant:";
 const baseKeyPrefix = "base:";
 
 /**
- * in ZX/uncolourised mode every sprite is coloured at render time by a per-room
- * tint, so the whole sheet is swopped to near-white and the shadows to full ink
- */
-const uncolourisedAmbient = {
-  lutType: "voronoi" as const,
-  swops: resolveSwops(paletteBlockstack, {
-    pureBlack: new Color(0x00_00_00),
-    shadow: new Color(0xff_ff_ff),
-    redShadow: new Color(0xff_ff_ff),
-  }),
-};
-
-/**
  * Bakes the current room's spritesheet: every frame (base and variant) is
  * copied into a freshly-packed layout and baked through the maskless filter
  * chain its bake group needs. No frame is modified in place and no mask is used
@@ -89,11 +75,12 @@ export const buildRoomSheet = (
    */
   repackedFrameRects?: ReadonlyMap<string, FrameRect>,
 ): { sheet: AppSpritesheetWithVariants; target: RenderTexture } => {
-  const { pixiRenderer, spriteOption, spritesheetMetaData } = context;
-  const { name: spriteOptionName, uncolourised } = spriteOption;
+  const { pixiRenderer, spritesheetMetaData } = context;
+  const uncolourised = spritesheetMetaData.isUncolourisedOf !== undefined;
+  const artName = spritesheetArtName(spritesheetMetaData);
 
-  const meta = spritesheetMetas[spriteOptionName];
-  const rawData = makeSpritesheetData(meta);
+  const artSpritesheetMeta = spritesheetMetas[artName];
+  const rawData = makeSpritesheetData(artSpritesheetMeta);
   const data: AppSpritesheetDataWithVariants =
     repackedFrameRects === undefined ? rawData : (
       {
@@ -102,21 +89,11 @@ export const buildRoomSheet = (
       }
     );
 
-  const { ambient, textureSpecific = [] } =
-    uncolourised ?
-      { ambient: [uncolourisedAmbient], textureSpecific: [] }
-    : roomSpritesheetTextureSwops(
-        context.roomScenery,
-        context.roomColor,
-        spriteOptionName,
-      );
-
-  // arcade buttons are HUD (never reached by the render-time tint), so in
-  // uncolourised mode they bake at the ZX hues on the speccy meta
-  const variantContext: VariantBuildContext =
-    uncolourised ?
-      { ...context, spritesheetMetaData: speccySpritesheetMeta }
-    : context;
+  const { ambient, textureSpecific = [] } = roomSpritesheetTextureSwops(
+    context.roomScenery,
+    context.roomColor,
+    spritesheetMetaData.name,
+  );
 
   const tsMatchSets = textureSpecific.map(
     (ts) => new Set<string>(reifyTextureIds(ts.textureIds, data.frames)),
@@ -140,7 +117,7 @@ export const buildRoomSheet = (
         return null;
       }
       const group = stripGroupOf(suffix, id);
-      if (stripGroupPasses(group, variantContext) === undefined) {
+      if (stripGroupPasses(group, context) === undefined) {
         return null;
       }
       return `${variantKeyPrefix}${group}`;
@@ -219,9 +196,7 @@ export const buildRoomSheet = (
     }
     if (groupKey.startsWith(variantKeyPrefix)) {
       const group = groupKey.slice(variantKeyPrefix.length) as StripGroup;
-      const disposable = filtersForPasses(
-        stripGroupPasses(group, variantContext)!,
-      );
+      const disposable = filtersForPasses(stripGroupPasses(group, context)!);
       return { filters: disposable, disposable };
     }
     // base recipe: `base:INDICES:a?`
@@ -303,9 +278,9 @@ export const buildRoomSheet = (
   sheet.textureSource.resolution = spritesheetUpscale;
   sheet.parseSync();
   sheet.textureSource.scaleMode = "nearest";
-  sheet.spriteOptionName = spriteOptionName;
+  sheet.spritesheetArtName = artName;
   sheet.ambient = ambient;
-  sheet.spritesheetMeta = meta;
+  sheet.spritesheetMeta = artSpritesheetMeta;
   applySpritesheetFlips(sheet);
 
   return { sheet: withVariantsBaked(sheet), target };

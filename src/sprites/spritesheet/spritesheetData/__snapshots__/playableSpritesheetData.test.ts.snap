@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`BlockStack > animations 1`] = `
+exports[`blockstack > animations 1`] = `
 {
   "head.fadeOut": [
     "bubbles.head.1",
@@ -959,7 +959,7 @@ exports[`BlockStack > animations 1`] = `
 }
 `;
 
-exports[`BlockStack > frame names 1`] = `
+exports[`blockstack > frame names 1`] = `
 [
   "blank",
   "bubbles.head.1",
@@ -1080,7 +1080,7 @@ exports[`BlockStack > frame names 1`] = `
 ]
 `;
 
-exports[`Toppy > animations 1`] = `
+exports[`toppy > animations 1`] = `
 {
   "head.fadeOut": [
     "bubbles.head.1",
@@ -2159,7 +2159,7 @@ exports[`Toppy > animations 1`] = `
 }
 `;
 
-exports[`Toppy > frame names 1`] = `
+exports[`toppy > frame names 1`] = `
 [
   "blank",
   "bubbles.head.1",

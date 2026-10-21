@@ -8,8 +8,8 @@ import { type OriginalCampaignRoomId } from "../src/_generated/originalCampaign/
 import { quarterMaskFaultRoomCampaign } from "../src/game/render/sortZ/__test__/quarterMaskFaultRoom";
 import { wallFloorSeamRoomCampaign } from "../src/game/render/sortZ/__test__/wallFloorSeamRoom";
 import { type ResolutionName } from "../src/originalGame";
+import { type SpritesheetName } from "../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { defaultEmulatedResolution } from "../src/store/slices/userSettings/defaultUserSettings";
-import { type SpriteOption } from "../src/store/slices/userSettings/userSettingsSlice";
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
 import { skiHeadsMeetingRoomCampaign } from "./fixtures/skiHeadsMeetingRoom";
 import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
@@ -32,10 +32,10 @@ import { setupE2ePage } from "./testUtils/pageSetup";
 import { projectDeviceType } from "./testUtils/projectDeviceType";
 import {
   roomScreenshotOptions,
-  spriteOptionSuffix,
+  spritesheetSuffix,
   upscaledSpritesHudTextMaxDiffPixelRatio,
 } from "./testUtils/screenshots";
-import { setSpriteOption } from "./testUtils/setSpriteOption";
+import { setSpritesheet } from "./testUtils/setSpritesheet";
 import { test } from "./testUtils/test";
 import { waitForGpuToFinish } from "./testUtils/waitForGpuToFinish";
 
@@ -192,7 +192,7 @@ type SweepScenario<C extends SweepCampaign = SweepCampaign> = {
    * platform default (BlockStack colourised) - guards the palette-swapped
    * rendering of the alternate sheets/modes
    */
-  spriteOptions?: SpriteOption[];
+  spritesheetNames?: SpritesheetName[];
 
   /**
    * turns on upscaled smooth sprites
@@ -237,10 +237,7 @@ const scenarios: readonly SweepScenario[] = [
     emulatedResolution: "zxSpectrum",
     character: "head",
     // also debug ss - easier to grok errors
-    spriteOptions: [
-      { name: "BlockStack", uncolourised: false },
-      { name: "Debug", uncolourised: false },
-    ],
+    spritesheetNames: ["blockstack", "debug"],
   }),
   sweepScenario({
     roomId: "blacktooth13",
@@ -293,11 +290,7 @@ const scenarios: readonly SweepScenario[] = [
     angles: [0],
     emulatedResolution: "amigaHiResPal",
     character: "head",
-    spriteOptions: [
-      { name: "BlockStack", uncolourised: false },
-      { name: "Toppy", uncolourised: false },
-      { name: "BlockStack", uncolourised: true },
-    ],
+    spritesheetNames: ["blockstack", "toppy", "speccy"],
     captureTimesMs: [90, 170, 260],
   }),
   sweepScenario({
@@ -356,7 +349,7 @@ const scenarios: readonly SweepScenario[] = [
     ],
     emulatedResolution: "$$default",
     character: "head",
-    spriteOptions: [{ name: "Debug", uncolourised: false }],
+    spritesheetNames: ["debug"],
   }),
   sweepScenario({
     // cycles again, but uncolourised; detects regression for fixed bug: loss of
@@ -367,7 +360,7 @@ const scenarios: readonly SweepScenario[] = [
     character: "head",
     angles: [0, 90, 180, 270],
     emulatedResolution: "$$default",
-    spriteOptions: [{ name: "BlockStack", uncolourised: true }],
+    spritesheetNames: ["speccy"],
   }),
   sweepScenario({
     // heels boots here with the bag pickup right above, collects right away
@@ -412,7 +405,7 @@ const scenarios: readonly SweepScenario[] = [
     character: "head",
     angles: [0, 90, 180, 270],
     emulatedResolution: "$$default",
-    spriteOptions: [{ name: "BlockStack", uncolourised: false }],
+    spritesheetNames: ["blockstack"],
     // the playable can drift a few pixels from its spawn before the game speed
     // is zeroed (eg when it spawns on a conveyor), which reads as a
     // sprite-sized diff. Real regressions in what these rooms guard (item
@@ -428,7 +421,7 @@ const scenarios: readonly SweepScenario[] = [
     character: "head",
     angles: [0, 90, 180, 270],
     emulatedResolution: "$$default",
-    spriteOptions: [{ name: "BlockStack", uncolourised: false }],
+    spritesheetNames: ["blockstack"],
     screenshotOptions: { maxDiffPixels: 1_000 },
   }),
   sweepScenario({
@@ -440,7 +433,7 @@ const scenarios: readonly SweepScenario[] = [
     character: "head",
     angles: [0, 90, 180, 270],
     emulatedResolution: "$$default",
-    spriteOptions: [{ name: "BlockStack", uncolourised: false }],
+    spritesheetNames: ["blockstack"],
     screenshotOptions: { maxDiffPixels: 1_000 },
   }),
   sweepScenario({
@@ -452,7 +445,7 @@ const scenarios: readonly SweepScenario[] = [
     character: "head",
     angles: [0, 90, 180, 270],
     emulatedResolution: "$$default",
-    spriteOptions: [{ name: "BlockStack", uncolourised: false }],
+    spritesheetNames: ["blockstack"],
     screenshotOptions: { maxDiffPixels: 1_000 },
   }),
   sweepScenario({
@@ -469,10 +462,7 @@ const scenarios: readonly SweepScenario[] = [
     character: "head",
     angles: [0, 90, 180, 270],
     emulatedResolution: "$$default",
-    spriteOptions: [
-      { name: "BlockStack", uncolourised: false },
-      { name: "BlockStack", uncolourised: true },
-    ],
+    spritesheetNames: ["blockstack", "speccy"],
     screenshotOptions: { maxDiffPixels: 1_000 },
   }),
   sweepScenario({
@@ -492,7 +482,7 @@ const scenarios: readonly SweepScenario[] = [
     character: "head",
     angles: [0, 90, 180, 270],
     emulatedResolution: "$$default",
-    spriteOptions: [{ name: "BlockStack", uncolourised: true }],
+    spritesheetNames: ["speccy"],
     screenshotOptions: { maxDiffPixels: 1_000 },
   }),
   sweepScenario({
@@ -503,7 +493,7 @@ const scenarios: readonly SweepScenario[] = [
     character: "head",
     angles: [0, 90, 270],
     emulatedResolution: "$$default",
-    spriteOptions: [{ name: "BlockStack", uncolourised: true }],
+    spritesheetNames: ["speccy"],
   }),
   sweepScenario({
     // settled angles
@@ -814,7 +804,7 @@ const scenarioBaseName = (
  * | enterFrom          | "$$startingRoom"      | `-from-<room>` / `-from-final` |
  * | emulatedResolution | "$$default"           | `-<resolutionName>`            |
  * | upscaledSprites      | false                 | `-upscaled`                      |
- * | spriteOption       | BlockStack colourised | `-uncolourised` / `-toppy`     |
+ * | spritesheetName       | BlockStack colourised | `-speccy` / `-toppy`     |
  * | angle              | 0°                    | `-<degrees>deg`                |
  * | capture time       | 0ms                   | `-<milliseconds>ms`            |
  *
@@ -826,13 +816,13 @@ const scenarioBaseName = (
 const captureFileName = (
   scenario: SweepScenario,
   projectName: string,
-  spriteOption: SpriteOption | undefined,
+  spritesheetName: SpritesheetName | undefined,
   captureTimeMs: number,
   { baselineDegrees }: SweepCapture,
 ): string =>
   [
     scenarioBaseName(scenario, projectName),
-    spriteOption === undefined ? "" : spriteOptionSuffix(spriteOption),
+    spritesheetName === undefined ? "" : spritesheetSuffix(spritesheetName),
     baselineDegrees === 0 ? "" : `-${baselineDegrees}deg`,
     captureTimeMs === 0 ? "" : `-${captureTimeMs}ms`,
     ".png",
@@ -847,7 +837,7 @@ const count = (n: number, noun: string): string =>
  * still told apart by their test titles
  */
 const scenarioAxes = (scenario: SweepScenario): string => {
-  const { angles, spriteOptions, captureTimesMs } = scenario;
+  const { angles, spritesheetNames, captureTimesMs } = scenario;
   const anglesPart =
     !Array.isArray(angles) && angles.type === "identicallyRenderingAngles" ?
       count(angles.groups.length, "identically rendering angle group")
@@ -855,8 +845,8 @@ const scenarioAxes = (scenario: SweepScenario): string => {
 
   return [
     anglesPart,
-    spriteOptions === undefined ? "" : (
-      `, ${count(spriteOptions.length, "sprite option")}`
+    spritesheetNames === undefined ? "" : (
+      `, ${count(spritesheetNames.length, "sprite option")}`
     ),
     captureTimesMs === undefined ? "" : (
       `, ${count(captureTimesMs.length, "capture time")}`
@@ -887,12 +877,12 @@ for (const scenario of scenarios) {
     test.setTimeout(scenario.upscaledSprites ? 600_000 : 360_000);
     await bootScenario(page, scenario);
 
-    const spriteOptions: ReadonlyArray<SpriteOption | undefined> =
-      scenario.spriteOptions ?? [undefined];
+    const spritesheetNames: ReadonlyArray<SpritesheetName | undefined> =
+      scenario.spritesheetNames ?? [undefined];
 
-    for (const spriteOption of spriteOptions) {
-      if (spriteOption !== undefined) {
-        await setSpriteOption(page, "cameraRotationSweep", spriteOption);
+    for (const spritesheetName of spritesheetNames) {
+      if (spritesheetName !== undefined) {
+        await setSpritesheet(page, "cameraRotationSweep", spritesheetName);
       }
       // fast-forward to each capture time in turn (or a single un-forwarded
       // pass when the scenario names no times), capturing every angle at
@@ -928,7 +918,7 @@ for (const scenario of scenarios) {
               captureFileName(
                 scenario,
                 testInfo.project.name,
-                spriteOption,
+                spritesheetName,
                 captureTimeMs,
                 capture,
               ),

@@ -4,12 +4,11 @@ import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
 import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
 import { RoomRenderer } from "../../game/render/room/RoomRenderer";
 import { roomRenderExtent } from "../../game/render/room/roomRenderExtent";
-import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
+import { blockstackPixiPalettes } from "../../sprites/palette/spritesheetPixiPalettes";
 import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { emptyUserSettings } from "../../store/slices/userSettings/emptyUserSettings";
-import { type SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../store/store";
 import { emptyObject } from "../../utils/empty";
 import { cameraAngleBase } from "../../utils/vectors/cameraAngleVectors";
@@ -21,11 +20,6 @@ import {
 
 export const previewWidthPx = 320;
 export const previewHeightPx = 240;
-
-const blockStackSpriteOption = {
-  name: "BlockStack",
-  uncolourised: false,
-} as const satisfies SpriteOption;
 
 let rendererPromise: Promise<Renderer> | undefined;
 let spritesheets: Spritesheets | undefined;
@@ -43,12 +37,12 @@ const getRenderer = (): Promise<Renderer> => {
         preference: "webgl",
         width: previewWidthPx,
         height: previewHeightPx,
-        background: paletteBlockstack.pureBlack,
+        background: blockstackPixiPalettes.basic.pureBlack,
         useBackBuffer: true,
         antialias: false,
       });
       const s = new Spritesheets();
-      await s.loadImage(renderer, blockStackSpriteOption.name);
+      await s.loadImage(renderer, "blockstack");
       spritesheets = s;
       return renderer;
     })();
@@ -77,7 +71,13 @@ export const renderRoomPreviewImage = async (
     userSettings: emptyUserSettings,
   });
 
-  ssv.rebuild(renderer, room.planet, room.color, blockStackSpriteOption, 1);
+  ssv.rebuild(
+    renderer,
+    room.planet,
+    room.color,
+    spritesheetMetas.blockstack,
+    1,
+  );
 
   const general: GeneralRenderContext<EditorRoomId> = {
     displaySettings: { emulatedResolution: "amigaLowResPal" },
@@ -85,8 +85,7 @@ export const renderRoomPreviewImage = async (
     pixiRenderer: renderer,
     gameState: undefined,
     paused: false,
-    spriteOption: blockStackSpriteOption,
-    spritesheetMeta: spritesheetMetas.BlockStack,
+    spritesheetMeta: spritesheetMetas.blockstack,
     upscale: selectUpscale(store.getState()),
     cameraAngle: cameraAngleBase,
     onScreenControls: false,
@@ -111,7 +110,7 @@ export const renderRoomPreviewImage = async (
     const {
       floors: { edgeLeftX: l, edgeRightX: r, bottomEdgeY: b },
       allItems: { topEdgeY: t },
-    } = roomRenderExtent(room, spritesheetMetas.BlockStack);
+    } = roomRenderExtent(room, spritesheetMetas.blockstack);
 
     const centreX = (l + r) / 2;
     const centreY = (t + b) / 2;
@@ -125,7 +124,7 @@ export const renderRoomPreviewImage = async (
     const canvas = renderer.extract.canvas({
       target: roomRenderer.output.graphics,
       frame,
-      clearColor: paletteBlockstack.pureBlack,
+      clearColor: blockstackPixiPalettes.basic.pureBlack,
     });
 
     return (canvas as HTMLCanvasElement).toDataURL("image/webp", 0.5);

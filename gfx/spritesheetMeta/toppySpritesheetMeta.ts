@@ -1,5 +1,5 @@
 import {
-  paletteToppy,
+  paletteToppyHex,
   type ToppyPaletteColourName,
 } from "../../src/sprites/palette/spritesheetPalette";
 import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
@@ -8,11 +8,11 @@ import { itemRenderExtents } from "./itemRenderExtents";
 
 export const toppySpritesheetMeta: SpritesheetMetadata<
   ToppyPaletteColourName,
-  "Toppy",
-  false
+  "toppy"
 > = {
-  name: "Toppy",
-  palette: paletteToppy,
+  name: "toppy",
+  spritesheetWhenPaused: "toppy",
+  palettes: { basic: paletteToppyHex },
   itemRenderExtents,
   playable: {
     head: {
@@ -554,7 +554,6 @@ export const toppySpritesheetMeta: SpritesheetMetadata<
     rotateClockwise: "grey1",
     rotateAnticlockwise: "grey1",
   },
-  supportsUncolourised: false,
   showFloorOverDraw: false,
   teleporterEffectBlackPoint: 0.25,
   mapToZxSpectrumForDeathEffectPalette: {

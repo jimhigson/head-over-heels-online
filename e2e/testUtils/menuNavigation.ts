@@ -2,7 +2,10 @@ import { expect, type Page, test } from "@playwright/test";
 import chalk from "chalk";
 
 import { type DialogId } from "../../src/game/components/dialogs/menuDialog/DialogId";
-import { spriteOptionValues } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import {
+  type SpritesheetName,
+  spritesheetNameValues,
+} from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { advanceUntil, whilePainting } from "./advanceGameTime";
 import { dispatchKeyPress } from "./gameInteractions";
 import { maximumWaitForStep, waitForGameState } from "./gameStateQueries";
@@ -120,7 +123,7 @@ export const startCampaignViaMenu = async (
 export const setSkinViaMenus = async (
   page: Page,
   projectName: string,
-  targetLabel: "BlockStack" | "Speccy" | "Toppy",
+  targetLabel: SpritesheetName,
 ) => {
   const formattedName = formatProjectName(projectName);
   await navigateToSubmenu(page, "options", formattedName);
@@ -128,10 +131,10 @@ export const setSkinViaMenus = async (
   await navigateToSubmenu(page, "display", formattedName);
   await page.locator('[data-dialog-id="displayOptions"]').waitFor();
 
-  const skinItem = page.locator('[data-menuitem_id="spritesOption"]');
+  const skinItem = page.locator('[data-menuitem_id="spritesheetName"]');
   // the menu item cycles through the options it offers, so clicking it once per
   // option is enough to reach any of them from wherever it currently sits:
-  for (let clicks = 0; clicks < spriteOptionValues.length; clicks++) {
+  for (let clicks = 0; clicks < spritesheetNameValues.length; clicks++) {
     if ((await skinItem.textContent())?.includes(targetLabel)) {
       return;
     }

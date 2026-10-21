@@ -4,8 +4,9 @@ import { type EmptyObject } from "type-fest";
 import { useSpriteStylesheet } from "../../sprites/css/useSpriteStylesheet";
 import { useAppSelector } from "../../store/hooks";
 import {
-  selectSpritesOption,
+  selectSpritesheetName,
   useCurrentSpritesheetData,
+  useSpritesheetArtName,
 } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { selectSpritesheetOverrideBlobUrl } from "../../store/slices/spritesheetOverrideSlice";
 
@@ -14,13 +15,13 @@ declare module "preact" {
   // eslint-disable-next-line no-namespace
   namespace JSX {
     interface CSSProperties {
-      [`--spritesheetUrl`]?: string;
+      [`--spritesheetArtUrl`]?: string;
     }
   }
 }
 
 /**
- * Sets the CSS variable (`--spritesheetUrl`) and the
+ * Sets the CSS variable (`--spritesheetArtUrl`) and the
  * `set-spritesheet-vars` / `toppy-spritesheet` / `blockstack-spritesheet`
  * classnames with values from the user-settings slice (currently selected
  * sprites option) and the spritesheet-override slice (optional blob URL).
@@ -31,22 +32,23 @@ declare module "preact" {
 export const CssSpritesVariables = ({
   children,
 }: PropsWithChildren<EmptyObject>) => {
-  const spritesOption = useAppSelector(selectSpritesOption);
+  const spritesheetName = useAppSelector(selectSpritesheetName);
+  const selectedSpritesheetArtName = useSpritesheetArtName();
   useSpriteStylesheet(useCurrentSpritesheetData());
   const overrideBlobUrl =
     import.meta.env.VITE_APP === "editor" ?
       undefined
       // oxlint-disable-next-line react-hooks/rules-of-hooks -- build-time macro, not run-time conditional
     : useAppSelector((state) =>
-        selectSpritesheetOverrideBlobUrl(state, spritesOption.name),
+        selectSpritesheetOverrideBlobUrl(state, selectedSpritesheetArtName),
       );
 
   return (
     <div
-      class={`contents set-spritesheet-vars ${spritesOption.name === "Toppy" ? "toppy-spritesheet" : "blockstack-spritesheet"}`}
+      class={`contents set-spritesheet-vars ${spritesheetName === "toppy" ? "toppy-spritesheet" : "blockstack-spritesheet"}`}
       style={
         overrideBlobUrl !== undefined ?
-          { "--spritesheetUrl": `url('${overrideBlobUrl}')` }
+          { "--spritesheetArtUrl": `url('${overrideBlobUrl}')` }
         : undefined
       }
     >

@@ -18,7 +18,7 @@ import { useCurrentSpritesheetData } from "../../../../../../store/slices/gameMe
 import { keys } from "../../../../../../utils/entries";
 import { sanitiseForClassName } from "../../../../tailwindSprites/SanitiseForClassName";
 import { ScrollIntoView } from "./ScrollIntoView";
-import { useCurrentSpritesheetUrl } from "./useCurrentSpritesheetUrl";
+import { useCurrentSpritesheetArtUrl } from "./useCurrentSpritesheetArtUrl";
 
 /**
  * A sprite drawn on the map as a native SVG `<image>` cropped to one frame of the
@@ -151,7 +151,6 @@ export const SvgSpriteInRoom = ({
   onClick,
   yAdjust = 0,
 }: SvgSpriteInRoomProps) => {
-  const spritesheetUrl = useCurrentSpritesheetUrl();
   const spritesheetData = useCurrentSpritesheetData();
   const resolved = useMemo(
     () => resolveSpriteClass(spriteClass, spritesheetData),
@@ -186,7 +185,7 @@ export const SvgSpriteInRoom = ({
           onClick={onClick}
         >
           <image
-            href={spritesheetUrl}
+            href={useCurrentSpritesheetArtUrl()}
             width={spritesheetSize.w}
             height={spritesheetSize.h}
             x={-firstFrame.x}

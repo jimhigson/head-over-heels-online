@@ -75,13 +75,7 @@ export class OnScreenJoystickRenderer implements Renderer<
     this.renderContext = renderContext;
     const {
       inputDirectionMode,
-      general: {
-        spritesheets,
-        pixiRenderer,
-        gameState,
-        spriteOption,
-        spritesheetMeta,
-      },
+      general: { spritesheets, pixiRenderer, gameState, spritesheetMeta },
     } = renderContext;
 
     // the arrows' not-active hud tint: ticks re-tint the arrows, but
@@ -91,7 +85,7 @@ export class OnScreenJoystickRenderer implements Renderer<
       gameState === undefined ? undefined : selectCurrentRoomState(gameState);
     const arrowColour =
       room === undefined ? undefined : (
-        tintForHud(spriteOption, room.color, false, spritesheetMeta)
+        tintForHud(spritesheetMeta, room.color, false)
       );
 
     this.#joystickSprite = createSprite({
@@ -280,7 +274,7 @@ export class OnScreenJoystickRenderer implements Renderer<
   tick({ room }: HudRendererTickContextWithRoom<string, string>): void {
     const {
       renderContext: {
-        general: { spriteOption, spritesheets, spritesheetMeta },
+        general: { spritesheets, spritesheetMeta },
         inputStateTracker: { directionVector },
       },
     } = this;
@@ -303,18 +297,8 @@ export class OnScreenJoystickRenderer implements Renderer<
         vectorClosestDirectionXy8(directionVector)
       : undefined;
 
-    const activeTint = tintForHud(
-      spriteOption,
-      room.color,
-      true,
-      spritesheetMeta,
-    );
-    const notActiveTint = tintForHud(
-      spriteOption,
-      room.color,
-      false,
-      spritesheetMeta,
-    );
+    const activeTint = tintForHud(spritesheetMeta, room.color, true);
+    const notActiveTint = tintForHud(spritesheetMeta, room.color, false);
 
     for (const [directionXy8, sprite] of objectEntriesIter(
       this.#arrowSprites,

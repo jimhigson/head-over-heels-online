@@ -1,7 +1,7 @@
 import {
   type BlockstackPaletteColourName,
-  paletteBlockstack,
-  paletteBlockstackDim,
+  paletteBlockstackDimHex,
+  paletteBlockstackHex,
 } from "../../src/sprites/palette/spritesheetPalette";
 import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { octantIndexOfDirection } from "../../src/utils/vectors/octantIndexOfDirection" with { type: "macro" };
@@ -9,12 +9,14 @@ import { itemRenderExtents } from "./itemRenderExtents";
 
 export const blockStackSpritesheetMeta: SpritesheetMetadata<
   BlockstackPaletteColourName,
-  "BlockStack",
-  true
+  "blockstack"
 > = {
-  name: "BlockStack",
-  palette: paletteBlockstack,
-  paletteDim: paletteBlockstackDim,
+  name: "blockstack",
+  spritesheetWhenPaused: "speccy",
+  palettes: {
+    basic: paletteBlockstackHex,
+    dim: paletteBlockstackDimHex,
+  },
   itemRenderExtents,
   playable: {
     head: {
@@ -207,7 +209,6 @@ export const blockStackSpritesheetMeta: SpritesheetMetadata<
     rotateClockwise: "lightGrey",
     rotateAnticlockwise: "lightGrey",
   },
-  supportsUncolourised: true,
   showFloorOverDraw: true,
   // we have black outlines, so use an almost black blackpoint
   // on this spritesheet:

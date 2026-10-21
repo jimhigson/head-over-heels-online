@@ -6,19 +6,15 @@ import {
   type CharacterName,
   type IndividualCharacterName,
 } from "../../../../model/modelTypes";
-import {
-  zxSpectrumColor,
-  type ZxSpectrumRoomColour,
-} from "../../../../originalGame";
+import { type ZxSpectrumRoomColour } from "../../../../originalGame";
 import {
   isAnimationId,
   isTextureId,
 } from "../../../../sprites/assertIsTextureId";
-import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
+import { effectPixiColour } from "../../../../sprites/palette/pixiPalette";
 import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
 import { type SpritesheetMetadata } from "../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { variantTextureId } from "../../../../sprites/spritesheet/variantTextureId";
-import { type SpriteOption } from "../../../../store/slices/userSettings/userSettingsSlice";
 import { isEmptyObject } from "../../../../utils/empty";
 import {
   resolveSpriteDirectionIndexXy8,
@@ -42,6 +38,7 @@ import { stackSprites } from "../../itemAppearances/createStackedSprites";
 import { characterAction } from "../../itemAppearances/playable/characterAction";
 import { isHighlightedPlayableItem } from "../../itemAppearances/playable/isHighlightedPlayableItem";
 import { type ItemLeafRenderContext } from "../../ItemRenderContexts";
+import { zxSpectrumPixiColor } from "../../palette/zxSpectrumPixiColours";
 import { type ItemLeafPixiRenderer } from "./ItemPixiRenderer";
 
 /** the character's current state that a body sprite is picked from */
@@ -312,7 +309,6 @@ class IndividualPlayableRendering {
     name: IndividualCharacterName,
     isInSymbiosis: boolean,
     paused: boolean,
-    spriteOption: SpriteOption,
     spritesheetMeta: SpritesheetMetadata,
     roomColour: ZxSpectrumRoomColour,
     shineSpritesheet: AppSpritesheetWithVariants,
@@ -331,13 +327,13 @@ class IndividualPlayableRendering {
 
     const isDim = roomColour.shade === "dimmed";
     const accentColour =
-      spriteOption.uncolourised ?
-        zxSpectrumColor(roomColour)
-      : effectColour(spritesheetMeta, isDim, name);
+      spritesheetMeta.isUncolourisedOf !== undefined ?
+        zxSpectrumPixiColor(roomColour)
+      : effectPixiColour(spritesheetMeta, isDim, name);
     const invulnerableColour =
-      spriteOption.uncolourised ?
-        zxSpectrumColor(roomColour)
-      : effectColour(spritesheetMeta, isDim, "invulnerable");
+      spritesheetMeta.isUncolourisedOf !== undefined ?
+        zxSpectrumPixiColor(roomColour)
+      : effectPixiColour(spritesheetMeta, isDim, "invulnerable");
 
     this.#shineSprite = createSprite({
       animationId: variantTextureId(
@@ -449,7 +445,7 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<PlayableRe
   constructor(renderContext: ItemLeafRenderContext<PlayableRenderedType>) {
     this.renderContext = renderContext;
     const {
-      general: { paused, spriteOption, spritesheetMeta, spritesheets },
+      general: { paused, spritesheetMeta, spritesheets },
       room: { color: roomColour },
       filterCache,
       isReflection,
@@ -471,7 +467,6 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<PlayableRe
         name,
         isInSymbiosis,
         paused,
-        spriteOption,
         spritesheetMeta,
         roomColour,
         spritesheets.spritesheetForCurrentRoom,

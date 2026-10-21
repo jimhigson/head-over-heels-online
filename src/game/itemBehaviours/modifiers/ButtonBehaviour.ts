@@ -1,7 +1,7 @@
 import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { type RoomState } from "../../../model/RoomState";
-import { nextSpritesOption } from "../../../store/slices/userSettings/userSettingsSlice";
+import { nextSpritesheetName } from "../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../store/store";
 import { objectEmpty } from "../../../utils/objectEmpty";
 import { type GameState } from "../../gameState/GameState";
@@ -67,8 +67,14 @@ export class ButtonBehaviour extends ItemBehaviour {
 
     if (!pressed && isStoodOn) {
       if (config.type === "in-store") {
-        const storeActions = { nextSpritesOption } as const;
-        store.dispatch(storeActions[config.action]());
+        const storeActions = { nextSpritesheetName } as const;
+        const actionCreator = storeActions[config.action];
+        // actionCreator could be undefined if the button is from an old save with a different
+        // name for the actions, or an action that was retired - in this case, it doing nothing
+        // is preferable to crashing
+        if (actionCreator !== undefined) {
+          store.dispatch(actionCreator());
+        }
       } else {
         applyModifiesList(config.modifies, "left", button, room);
       }

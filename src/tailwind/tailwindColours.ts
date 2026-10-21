@@ -1,6 +1,11 @@
-import jsonPalette from "../_generated/palette/spritesheetPalette.json" with { type: "json" };
-import jsonToppyPalette from "../_generated/palette/spritesheetToppyPalette.json" with { type: "json" };
-import { zxSpectrumColors, zxSpectrumColorsDimmed } from "../originalGame";
+import {
+  zxSpectrumHexColours,
+  zxSpectrumHexColoursDimmed,
+} from "../originalGame";
+import {
+  paletteBlockstackHex,
+  paletteToppyHex,
+} from "../sprites/palette/spritesheetPalette";
 import { halfbriteHex } from "../utils/colour/halfbrite";
 import { srgbHexToP3 } from "../utils/colour/srgbHexToP3";
 import { objectEntriesIter } from "../utils/entries";
@@ -14,23 +19,23 @@ const paletteUtilityColours = new Set([
   "ss_background",
 ]);
 
-const displayPalette = Object.fromEntries(
-  objectEntriesIter(jsonPalette).filter(
+const displayBlockstackPalette = Object.fromEntries(
+  objectEntriesIter(paletteBlockstackHex).filter(
     ([name]) => !paletteUtilityColours.has(name),
   ),
 ) as Omit<
-  typeof jsonPalette,
+  typeof paletteBlockstackHex,
   "replaceDark" | "replaceLight" | "ss_alphaKey" | "ss_background"
 >;
 
 const displayToppyPalette = Object.fromEntries(
-  objectEntriesIter(jsonToppyPalette).filter(
+  objectEntriesIter(paletteToppyHex).filter(
     ([name]) => !paletteUtilityColours.has(name),
   ),
-) as Omit<typeof jsonToppyPalette, "replaceDark" | "replaceLight">;
+) as Omit<typeof paletteToppyHex, "replaceDark" | "replaceLight">;
 
-const halfbriteSpritesheetPalette = transformObject(
-  displayPalette,
+const halfbriteBlockstackPalette = transformObject(
+  displayBlockstackPalette,
   ([colourName, colourValue]) => [
     (colourName + "Halfbrite") as `${typeof colourName}Halfbrite`,
     halfbriteHex(colourValue),
@@ -46,24 +51,24 @@ const toppyTailwindColours = transformObject(
 );
 
 const zxSpecTailwindColours = transformObject(
-  zxSpectrumColors,
+  zxSpectrumHexColours,
   ([colourName, colourValue]) => [
     `zx${colourName.charAt(0).toUpperCase()}${colourName.slice(1)}` as `zx${Capitalize<typeof colourName>}`,
-    colourValue.toHex(),
+    colourValue,
   ],
 );
 
 // zx Spectrum colours prefixed with 'zx' ie zxRedDimmed, zxGreenDimmed
 const zxSpecTailwindColoursDimmed = transformObject(
-  zxSpectrumColorsDimmed,
+  zxSpectrumHexColoursDimmed,
   ([colourName, colourValue]) => [
     `zx${colourName.charAt(0).toUpperCase()}${colourName.slice(1)}Dimmed` as `zx${Capitalize<typeof colourName>}Dimmed`,
-    colourValue.toHex(),
+    colourValue,
   ],
 );
 export const colorsSrgb = {
-  ...displayPalette,
-  ...halfbriteSpritesheetPalette,
+  ...displayBlockstackPalette,
+  ...halfbriteBlockstackPalette,
 
   // toppy colours prefixed with 'toppy' ie toppyWarm1, toppyCool2
   ...toppyTailwindColours,
@@ -85,11 +90,12 @@ export const coloursCssVariables = transformObject(colorsSrgb, ([name]) => [
 ]);
 
 type TailwindColourName = keyof typeof colorsSrgb;
-type TailwindColourisedColourName =
-  keyof typeof displayPalette | keyof typeof halfbriteSpritesheetPalette;
+type TailwindBlockstackColourName =
+  | keyof typeof displayBlockstackPalette
+  | keyof typeof halfbriteBlockstackPalette;
 type TailwindToppyColourName = keyof typeof toppyTailwindColours;
 
 export type TailwindTextColourClassname =
-  | `text-${TailwindColourisedColourName}`
+  | `text-${TailwindBlockstackColourName}`
   | `toppy:text-${TailwindToppyColourName}`
   | `zx:text-${TailwindColourName}`;

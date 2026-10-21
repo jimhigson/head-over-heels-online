@@ -1,5 +1,3 @@
-import { Color } from "pixi.js";
-
 import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { blockStackSpritesheetMeta } from "./blockStackSpritesheetMeta";
 
@@ -22,13 +20,15 @@ const {
  */
 export const debugSpritesheetMeta: SpritesheetMetadata<
   DebugPaletteColourName,
-  "Debug",
-  false
+  "debug"
 > = {
-  name: "Debug",
-  palette: {
-    red: new Color(0xff_00_00),
-    cyan: new Color(0x00_ff_ff),
+  name: "debug",
+  spritesheetWhenPaused: "debug",
+  palettes: {
+    basic: {
+      red: "#ff0000",
+      cyan: "#00ffff",
+    },
   },
   playable,
   itemRenderExtents,
@@ -58,7 +58,6 @@ export const debugSpritesheetMeta: SpritesheetMetadata<
     rotateClockwise: "red",
     rotateAnticlockwise: "red",
   },
-  supportsUncolourised: false,
   debug: true,
   showFloorOverDraw,
   teleporterEffectBlackPoint,

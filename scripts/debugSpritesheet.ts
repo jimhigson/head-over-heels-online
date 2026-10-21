@@ -20,14 +20,17 @@
  * silhouette) and blended at 50% - black over light block colours, white over
  * dark ones.
  */
-import { type Color } from "pixi.js";
 import sharp from "sharp";
 
 import { debugSpritesheetMeta } from "../gfx/spritesheetMeta/debugSpritesheetMeta";
 import { monsterMovements } from "../src/model/json/MonsterJsonConfig";
-import { zxSpectrumColors, zxSpectrumColorsDimmed } from "../src/originalGame";
+import {
+  zxSpectrumHexColours,
+  zxSpectrumHexColoursDimmed,
+} from "../src/originalGame";
 import { makeBaseSpritesheetData } from "../src/sprites/spritesheet/spritesheetData/makeBaseSpritesheetData";
 import { type TextureId } from "../src/sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { parseHex } from "../src/utils/colour/parseHex";
 import { entries } from "../src/utils/entries";
 import {
   debugFontGlyphHeight,
@@ -35,13 +38,13 @@ import {
   debugFontGlyphWidth,
 } from "./debugFontGlyphs";
 
-const sourcePath = "gfx/sprites.webp";
+const sourcePath = "gfx/spritesBlockstack.webp";
 const outPath = "gfx/spritesDebug.webp";
 
 type Rgb = [number, number, number];
 
-const toRgb = (colour: Color): Rgb => {
-  const [r, g, b] = colour.toUint8RgbArray();
+const toRgb = (hex: string): Rgb => {
+  const { r, g, b } = parseHex(hex)!;
   return [r, g, b];
 };
 
@@ -52,11 +55,11 @@ const rgbKey = ([r, g, b]: Rgb): string => `${r},${g},${b}`;
  * excluded. Sprites bake to one of these colours (chosen by name hash); an
  * animation alternates between its hue's two shades so it stays on-palette
  */
-const zxHuePairs = entries(zxSpectrumColors)
+const zxHuePairs = entries(zxSpectrumHexColours)
   .filter(([name]) => name !== "black")
   .map(([name, bright]) => ({
     bright: toRgb(bright),
-    dimmed: toRgb(zxSpectrumColorsDimmed[name]),
+    dimmed: toRgb(zxSpectrumHexColoursDimmed[name]),
   }));
 
 const blockColours: Rgb[] = zxHuePairs.flatMap(({ bright, dimmed }) => [

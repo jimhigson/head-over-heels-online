@@ -1,6 +1,6 @@
 import { bench } from "vitest";
 
-import { paletteBlockstack } from "../../../../sprites/palette/spritesheetPalette";
+import { blockstackPixiPalettes } from "../../../../sprites/palette/spritesheetPixiPalettes";
 import { resolveSwops } from "../../../../utils/palette/palette";
 import { voronoiLut } from "./voronoiLut";
 
@@ -16,7 +16,9 @@ import { voronoiLut } from "./voronoiLut";
 bench(
   "voronoiLut (palette + halfbrite)",
   () => {
-    voronoiLut(resolveSwops(paletteBlockstack, paletteBlockstack));
+    voronoiLut(
+      resolveSwops(blockstackPixiPalettes.basic, blockstackPixiPalettes.basic),
+    );
   },
   { iterations: 500 },
 );

@@ -2,22 +2,23 @@ import { Application, type Texture } from "pixi.js";
 import { useEffect, useState } from "preact/hooks";
 
 import { installAppTickerAsPixiShared } from "../game/mainLoop/installAppTickerAsPixiShared";
+import { blockstackPaletteQuantisationLut } from "../game/render/filters/lutTexture/stdLuts/blockstackPaletteQuantisationLut";
 import { blockstackToSpectrumLut } from "../game/render/filters/lutTexture/stdLuts/blockstackToSpectrumLut";
-import { deathLutForSpriteOption } from "../game/render/filters/lutTexture/stdLuts/lutForSpriteOption";
-import { paletteQuantisationLut } from "../game/render/filters/lutTexture/stdLuts/paletteQuantisationLut";
+import { deathLutForSpritesheet } from "../game/render/filters/lutTexture/stdLuts/lutForSpritesheet";
 import { spectrumLumLut } from "../game/render/filters/lutTexture/stdLuts/spectrumLumLut";
 import { toppyToSpectrumLut } from "../game/render/filters/lutTexture/stdLuts/toppyToSpectrumLut";
+import { spritesheetMetas } from "../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 
 const lutDisplaySize = 512;
 
 const luts = [
-  paletteQuantisationLut,
+  blockstackPaletteQuantisationLut,
   blockstackToSpectrumLut(),
   toppyToSpectrumLut(),
   spectrumLumLut(),
-  deathLutForSpriteOption({ name: "BlockStack", uncolourised: false }),
-  deathLutForSpriteOption({ name: "Toppy", uncolourised: false }),
-  deathLutForSpriteOption({ name: "BlockStack", uncolourised: true }),
+  deathLutForSpritesheet(spritesheetMetas.blockstack),
+  deathLutForSpritesheet(spritesheetMetas.toppy),
+  deathLutForSpritesheet(spritesheetMetas.speccy),
 ];
 
 interface SingleLutDisplayProps {

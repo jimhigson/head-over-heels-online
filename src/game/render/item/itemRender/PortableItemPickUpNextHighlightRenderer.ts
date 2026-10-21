@@ -5,14 +5,14 @@ import {
   type ItemInPlayType,
 } from "../../../../model/ItemInPlay";
 import { getRoomItem } from "../../../../model/RoomState";
-import { zxSpectrumColor } from "../../../../originalGame";
-import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
+import { effectPixiColour } from "../../../../sprites/palette/pixiPalette";
 import { selectHeelsAbilities } from "../../../gameState/gameStateSelectors/selectPlayableItem";
 import { OutlineFilter } from "../../filters/OutlineFilter";
 import {
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
+import { zxSpectrumPixiColor } from "../../palette/zxSpectrumPixiColours";
 import { type DecorateItemRenderer } from "./DecorateItemRenderer";
 import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
@@ -37,14 +37,18 @@ class PortableItemPickUpNextHighlightRenderer<
     this.output.addChild(childRenderer.output);
 
     const {
-      general: { spriteOption, spritesheetMeta },
+      general: { spritesheetMeta },
       room,
     } = renderContext;
 
     const outlineColour =
-      spriteOption.uncolourised ?
-        zxSpectrumColor(room.color)
-      : effectColour(spritesheetMeta, room.color.shade === "dimmed", "carry");
+      spritesheetMeta.isUncolourisedOf !== undefined ?
+        zxSpectrumPixiColor(room.color)
+      : effectPixiColour(
+          spritesheetMeta,
+          room.color.shade === "dimmed",
+          "carry",
+        );
 
     // shared via the room renderer's filter cache (one per colour serves
     // every portable item in the room), so the highlight is applied by

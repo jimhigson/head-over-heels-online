@@ -273,7 +273,7 @@ export type SwitchConfig<
     >
 );
 
-type StoreActionName = "nextSpritesOption";
+type StoreActionName = "nextSpritesheetName";
 
 type ButtonConfigForUserSettings = {
   type: "in-store";

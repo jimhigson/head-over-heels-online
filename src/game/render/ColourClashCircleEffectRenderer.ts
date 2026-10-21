@@ -157,7 +157,6 @@ export class ColourClashCircleEffectRenderer<
       renderContext: {
         general: {
           upscale: { gameEngineUpscale },
-          spriteOption,
           spritesheetMeta,
         },
       },
@@ -172,7 +171,6 @@ export class ColourClashCircleEffectRenderer<
       isDeath ?
         {
           blockSize: gameEngineUpscale * 8,
-          spriteOption,
           spritesheetMeta,
           isDeath,
           zxCircleMinSize: 0,
@@ -181,18 +179,19 @@ export class ColourClashCircleEffectRenderer<
           blackCircleFeathering: 0.8,
           // stifle the frame rate of the effect when running uncolourised to make it not
           // happen too smoothly
-          timeStep: spriteOption.uncolourised ? 0.005 : undefined,
+          timeStep:
+            spritesheetMeta.isUncolourisedOf !== undefined ? 0.005 : undefined,
           distancePower: 6,
         }
       : {
           blockSize: gameEngineUpscale * 8,
-          spriteOption,
           spritesheetMeta,
           isDeath,
           zxCircleSpeed: 1.7,
           // stifle the frame rate of the effect when running uncolourised to make it not
           // happen too smoothly
-          timeStep: spriteOption.uncolourised ? 0.05 : undefined,
+          timeStep:
+            spritesheetMeta.isUncolourisedOf !== undefined ? 0.05 : undefined,
         },
     );
     this.#effectIsDeath = isDeath;

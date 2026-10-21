@@ -8,10 +8,9 @@ import { type ButtonId } from "../../../game/render/hud/HudButtonRenderer";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { type JsonItemConfig } from "../../../model/json/JsonItem";
 import { type ZxSpectrumPaletteColour } from "../../../originalGame";
-import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { entries } from "../../../utils/entries";
 import {
-  type NamedColours,
+  type NamedHexColours,
   type NamedSwops,
 } from "../../../utils/palette/palette";
 import { type DirectionXy8 } from "../../../utils/vectors/vectors";
@@ -110,22 +109,34 @@ export type ItemRenderExtents = Partial<
   Record<ItemRenderExtentKey, ItemRenderExtent>
 >;
 
-/** the name of every spritesheet that has a meta, taken from the metas themselves */
-export type SpritesheetName =
-  | typeof blockStackSpritesheetMeta.name
-  | typeof debugSpritesheetMeta.name
-  | typeof toppySpritesheetMeta.name;
+/**
+ * the name of every spritesheet, and so of every sprite option the player can
+ * choose. Written out rather than derived from the spritesheet metas, since
+ * the metas themselves refer to it
+ */
+export type SpritesheetName = "blockstack" | "debug" | "speccy" | "toppy";
 
 export type SpritesheetMetadata<
   /** if not given, the spritesheet has no specified named colours - colours can have any name */
   PaletteColourName extends string = string,
-  Name extends string = SpritesheetName,
-  SupportsUncolourised extends boolean = boolean,
+  Name extends SpritesheetName = SpritesheetName,
 > = {
   name: Name;
-  palette: NamedColours<PaletteColourName>;
-  /** if given, an alternative palette to use in dimmed rooms */
-  paletteDim?: NamedColours<PaletteColourName>;
+  /**
+   * if given, this spritesheet draws the named spritesheet's art, uncoloured
+   * and tinted per room at render time
+   */
+  isUncolourisedOf?: SpritesheetName;
+  /**
+   * the spritesheet the game is drawn with while paused - itself, or eg an
+   * uncolourised version
+   */
+  spritesheetWhenPaused: SpritesheetName;
+  palettes: {
+    basic: NamedHexColours<PaletteColourName>;
+    /** if given, an alternative palette to use in dimmed rooms */
+    dim?: NamedHexColours<PaletteColourName>;
+  };
   playable: PlayableSpritesheetMetaData;
   itemRenderExtents: ItemRenderExtents;
   overrides?: SpriteOverrides;
@@ -164,11 +175,10 @@ export type SpritesheetMetadata<
    * floating text fade-in/fade-out effect. Last element is the peak brightness.
    */
   floatingTextGradient: PaletteColourName[];
-  supportsUncolourised: SupportsUncolourised;
   /**
    * a debugging sheet: offered only by the cheats panel and the
    * cycle-sprites key while cheats are on - excluded from
-   * {@link spriteOptionValues}, so the normal display menus never offer it
+   * {@link spritesheetNameValues}, so the normal display menus never offer it
    */
   debug?: true;
   /** if true, shows original-game correct overdraws to emulate rendering artifacts on floors */
@@ -218,50 +228,39 @@ export type PlayableSpritesheetFrames = {
   [D in DirectionXy8]?: PlayableDirectionFrames;
 };
 
-// the satisfies constrains each meta to sit under a key equal to its own name
+// the satisfies constrains each spritesheet meta to sit under a key equal to its own name
 export const spritesheetMetas = {
-  BlockStack: blockStackSpritesheetMeta,
-  Toppy: toppySpritesheetMeta,
-  Debug: debugSpritesheetMeta,
+  blockstack: blockStackSpritesheetMeta,
+  speccy: speccySpritesheetMeta,
+  toppy: toppySpritesheetMeta,
+  debug: debugSpritesheetMeta,
 } satisfies { [Name in SpritesheetName]: SpritesheetMetadata<string, Name> };
 
-export const spritesheetMetaForOption = (
-  spriteOption: SpriteOption,
-): SpritesheetMetadata =>
-  spriteOption.uncolourised ?
-    speccySpritesheetMeta
-  : spritesheetMetas[spriteOption.name];
+export type SpritesheetMetas = typeof spritesheetMetas;
 
 /**
- * the sprite options offered by the normal display menus: every non-debug
- * sheet, in both colourised and (where supported) uncolourised forms
+ * the spritesheet whose image and frames a spritesheet draws: its own, unless
+ * it is an uncolourised version of another
  */
-export const spriteOptionValues = entries(spritesheetMetas)
-  .filter(([, meta]) => meta.debug !== true)
-  .flatMap(([name, meta]) =>
-    meta.supportsUncolourised ?
-      [
-        { name, uncolourised: false as const },
-        { name, uncolourised: true as const },
-      ]
-    : [{ name, uncolourised: false as const }],
-  ) as SpriteOption[];
+export const spritesheetArtName = (
+  spritesheetMeta: SpritesheetMetadata,
+): SpritesheetName => spritesheetMeta.isUncolourisedOf ?? spritesheetMeta.name;
 
 /**
- * the cheats-only debug rendering option - deliberately absent from
- * {@link spriteOptionValues}, so the normal display menus never offer it
+ * the spritesheets offered by the normal display menus: every non-debug sheet
  */
-export const debugSpriteOption: SpriteOption = {
-  name: "Debug",
-  uncolourised: false,
-};
+export const spritesheetNameValues: SpritesheetName[] = entries(
+  spritesheetMetas,
+)
+  .filter(([, spritesheetMeta]) => spritesheetMeta.debug !== true)
+  .map(([name]) => name);
 
 /**
- * the sprite options offered while cheats are on: the normal set plus the
+ * the spritesheets offered while cheats are on: the normal set plus the
  * debug sheet. Used by the cheats panel's sprites select and the cycle-sprites
  * key
  */
-export const spriteOptionValuesWithDebug: SpriteOption[] = [
-  ...spriteOptionValues,
-  debugSpriteOption,
+export const spritesheetNameValuesWithDebug: SpritesheetName[] = [
+  ...spritesheetNameValues,
+  "debug",
 ];

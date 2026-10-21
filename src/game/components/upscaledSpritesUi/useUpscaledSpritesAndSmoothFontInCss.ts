@@ -1,10 +1,10 @@
 import { useEffect, useState } from "preact/hooks";
 
-import spritesSheetUrl from "../../../../gfx/sprites.webp";
-import toppySheetUrl from "../../../../gfx/spritesToppy.webp";
+import blockstackSpritesheetArtUrl from "../../../../gfx/spritesBlockstack.webp";
+import toppySpritesheetArtUrl from "../../../../gfx/spritesToppy.webp";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { errorCaught } from "../../../store/slices/errors/errorsSlice";
-import { selectSpritesOption } from "../../../store/slices/gameMenus/gameMenusSelectors";
+import { useSpritesheetArtName } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { persistor } from "../../../store/store";
 import { createSerialisableErrors } from "../../../utils/redux/createSerialisableErrors";
 import { selectSpritesheetUpscale } from "../../render/filters/upscale/selectSpritesheetUpscale";
@@ -22,8 +22,8 @@ const uiFontProperty = "--ui-font";
  * classes' fallback chains
  */
 const upscaledSheetProperties = {
-  blockStack: "--upscaled-spritesheet-blockstack",
-  toppy: "--upscaled-spritesheet-toppy",
+  blockStack: "--upscaled-spritesheet-art-blockstack",
+  toppy: "--upscaled-spritesheet-art-toppy",
 };
 
 type UpscaledSheet = { factor: number; objectUrl: string };
@@ -92,7 +92,7 @@ const usePersistRehydrated = (): boolean => {
  */
 export const useUpscaledSpritesAndSmoothFontInCss = (): void => {
   const rehydrated = usePersistRehydrated();
-  const spritesOptionName = useAppSelector(selectSpritesOption).name;
+  const spritesheetArtName = useSpritesheetArtName();
   // the same number the game engine bakes its sheet at - 1 when the setting is
   // off, and at 1 there is nothing to upscale
   const spritesheetUpscale = useAppSelector(selectSpritesheetUpscale);
@@ -119,12 +119,20 @@ export const useUpscaledSpritesAndSmoothFontInCss = (): void => {
           // drawn as curves, so it wants the browser's antialiasing back -
           // the utility layer this class sits in overrides that base rule
           document.body.classList.add("antialiased");
-          await applySheet("blockStack", spritesSheetUrl, spritesheetUpscale);
+          await applySheet(
+            "blockStack",
+            blockstackSpritesheetArtUrl,
+            spritesheetUpscale,
+          );
           if (cancelled) {
             return;
           }
-          if (spritesOptionName === "Toppy") {
-            await applySheet("toppy", toppySheetUrl, spritesheetUpscale);
+          if (spritesheetArtName === "toppy") {
+            await applySheet(
+              "toppy",
+              toppySpritesheetArtUrl,
+              spritesheetUpscale,
+            );
           }
           // readiness signal for network-cost measurement (true-site-size)
           performance.mark("smooth-ui-ready");
@@ -146,5 +154,5 @@ export const useUpscaledSpritesAndSmoothFontInCss = (): void => {
     return () => {
       cancelled = true;
     };
-  }, [rehydrated, spritesheetUpscale, spritesOptionName, dispatch]);
+  }, [rehydrated, spritesheetUpscale, spritesheetArtName, dispatch]);
 };

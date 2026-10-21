@@ -1,4 +1,4 @@
-import { Color } from "pixi.js";
+import { type HexColour } from "./utils/colour/HexColour";
 
 export const zxSpectrumRoomHue = [
   "yellow",
@@ -44,68 +44,52 @@ export const resolutions = {
 export type ResolutionName = keyof typeof resolutions;
 export const resolutionNames = Object.keys(resolutions) as ResolutionName[];
 
-export const zxSpectrumColors = {
+export const zxSpectrumHexColours: Record<ZxSpectrumHue, HexColour> = {
   // zx-spectrum colours (mostly for tailwind):
-  red: new Color("#f00"),
-  green: new Color("#0f0"),
-  blue: new Color("#00f"),
-  cyan: new Color("#0ff"),
-  magenta: new Color("#f0f"),
-  yellow: new Color("#ff0"),
-  black: new Color("#000"),
-  white: new Color("#fff"),
+  red: "#ff0000",
+  green: "#00ff00",
+  blue: "#0000ff",
+  cyan: "#00ffff",
+  magenta: "#ff00ff",
+  yellow: "#ffff00",
+  black: "#000000",
+  white: "#ffffff",
 };
 
-export const zxSpectrumColorsDimmed = {
+export const zxSpectrumHexColoursDimmed: Record<ZxSpectrumHue, HexColour> = {
   // dimmed variants (B is 75% intensity, which approximately matches the original hardware):
-  red: new Color("#B00"),
-  green: new Color("#0B0"),
-  blue: new Color("#00B"),
-  cyan: new Color("#0BB"),
-  magenta: new Color("#B0B"),
-  yellow: new Color("#BB0"),
-  black: new Color("#000"),
-  white: new Color("#BBB"),
+  red: "#bb0000",
+  green: "#00bb00",
+  blue: "#0000bb",
+  cyan: "#00bbbb",
+  magenta: "#bb00bb",
+  yellow: "#bbbb00",
+  black: "#000000",
+  white: "#bbbbbb",
 };
 
-export const zxSpectrumPaletteColours: Record<ZxSpectrumPaletteColour, Color> =
-  {
-    redBasic: zxSpectrumColors.red,
-    greenBasic: zxSpectrumColors.green,
-    blueBasic: zxSpectrumColors.blue,
-    cyanBasic: zxSpectrumColors.cyan,
-    magentaBasic: zxSpectrumColors.magenta,
-    yellowBasic: zxSpectrumColors.yellow,
-    blackBasic: zxSpectrumColors.black,
-    whiteBasic: zxSpectrumColors.white,
-    redDimmed: zxSpectrumColorsDimmed.red,
-    greenDimmed: zxSpectrumColorsDimmed.green,
-    blueDimmed: zxSpectrumColorsDimmed.blue,
-    cyanDimmed: zxSpectrumColorsDimmed.cyan,
-    magentaDimmed: zxSpectrumColorsDimmed.magenta,
-    yellowDimmed: zxSpectrumColorsDimmed.yellow,
-    blackDimmed: zxSpectrumColorsDimmed.black,
-    whiteDimmed: zxSpectrumColorsDimmed.white,
-  };
+export const zxSpectrumHexPaletteColours: Record<
+  ZxSpectrumPaletteColour,
+  HexColour
+> = {
+  redBasic: zxSpectrumHexColours.red,
+  greenBasic: zxSpectrumHexColours.green,
+  blueBasic: zxSpectrumHexColours.blue,
+  cyanBasic: zxSpectrumHexColours.cyan,
+  magentaBasic: zxSpectrumHexColours.magenta,
+  yellowBasic: zxSpectrumHexColours.yellow,
+  blackBasic: zxSpectrumHexColours.black,
+  whiteBasic: zxSpectrumHexColours.white,
+  redDimmed: zxSpectrumHexColoursDimmed.red,
+  greenDimmed: zxSpectrumHexColoursDimmed.green,
+  blueDimmed: zxSpectrumHexColoursDimmed.blue,
+  cyanDimmed: zxSpectrumHexColoursDimmed.cyan,
+  magentaDimmed: zxSpectrumHexColoursDimmed.magenta,
+  yellowDimmed: zxSpectrumHexColoursDimmed.yellow,
+  blackDimmed: zxSpectrumHexColoursDimmed.black,
+  whiteDimmed: zxSpectrumHexColoursDimmed.white,
+};
 
 // don't know exact date but a guess based on the date of this review:
 // https://www.everygamegoing.com/larticle/Head-Over-Heels-000/32831
 export const releaseDateIso8601 = "1987-06-01T00:00:00Z";
-
-export function zxSpectrumColor(colour: ZxSpectrumRoomColour): Color;
-export function zxSpectrumColor(
-  hue: ZxSpectrumHue,
-  shade?: ZxSpectrumShade,
-): Color;
-export function zxSpectrumColor(
-  hueOrColour: ZxSpectrumHue | ZxSpectrumRoomColour,
-  shade?: ZxSpectrumShade,
-): Color {
-  const { hue, shade: resolvedShade } =
-    typeof hueOrColour === "object" ? hueOrColour : (
-      { hue: hueOrColour, shade: shade ?? "basic" }
-    );
-  const hues =
-    resolvedShade === "dimmed" ? zxSpectrumColorsDimmed : zxSpectrumColors;
-  return hues[hue];
-}

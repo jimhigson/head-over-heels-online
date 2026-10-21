@@ -1,16 +1,18 @@
 import {
+  zxSpectrumHexPaletteColours,
   type ZxSpectrumPaletteColour,
-  zxSpectrumPaletteColours,
 } from "../../src/originalGame";
 import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { blockStackSpritesheetMeta } from "./blockStackSpritesheetMeta";
 
 export const speccySpritesheetMeta: SpritesheetMetadata<
   ZxSpectrumPaletteColour,
-  "BlockStack"
+  "speccy"
 > = {
-  name: "BlockStack",
-  palette: zxSpectrumPaletteColours,
+  name: "speccy",
+  isUncolourisedOf: "blockstack",
+  spritesheetWhenPaused: "speccy",
+  palettes: { basic: zxSpectrumHexPaletteColours },
   playable: blockStackSpritesheetMeta.playable,
   itemRenderExtents: blockStackSpritesheetMeta.itemRenderExtents,
   overrides: blockStackSpritesheetMeta.overrides,
@@ -63,7 +65,6 @@ export const speccySpritesheetMeta: SpritesheetMetadata<
     rotateClockwise: "whiteBasic",
     rotateAnticlockwise: "whiteBasic",
   },
-  supportsUncolourised: false,
   showFloorOverDraw: true,
   teleporterEffectBlackPoint: 0.01,
   mapToZxSpectrumForDeathEffectPalette: {

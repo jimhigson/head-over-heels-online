@@ -24,7 +24,7 @@ export const carryAndJumpButtonAppearance: ButtonAppearance<
   renderContext: {
     button,
     inputStateTracker,
-    general: { spriteOption, spritesheets, pixiRenderer },
+    general: { spritesheetMeta, spritesheets, pixiRenderer },
   },
   currentRendering,
   tickContext: { currentPlayable, room },
@@ -68,7 +68,7 @@ export const carryAndJumpButtonAppearance: ButtonAppearance<
   if (roomChangedSinceLastRendered) {
     container.setSpritesheet(spritesheets.spritesheetForCurrentRoom);
     container.shownOnSurface.tint = getWhite(
-      spriteOption,
+      spritesheetMeta,
       room?.color.shade === "dimmed",
     );
   }

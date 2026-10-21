@@ -2,10 +2,8 @@ import { expect } from "@playwright/test";
 
 import { campaignToDataParam } from "../src/db/campaignToDataParam";
 import { type Campaign } from "../src/model/modelTypes";
-import {
-  type setEmulatedResolution,
-  type SpriteOption,
-} from "../src/store/slices/userSettings/userSettingsSlice";
+import { type SpritesheetName } from "../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { type setEmulatedResolution } from "../src/store/slices/userSettings/userSettingsSlice";
 import { dispatchToStore } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/osSlowness";
 import { setupE2ePage } from "./testUtils/pageSetup";
@@ -61,10 +59,7 @@ test.beforeAll(async () => {
 const errorDialogSelector = 'dialog[data-dialog-id="errorCaught"]';
 const stackTraceSelector = '[data-test-id="error-report"]';
 
-const blockStackColourised: SpriteOption = {
-  name: "BlockStack",
-  uncolourised: false,
-};
+const blockStackColourised: SpritesheetName = "blockstack";
 
 test.beforeEach(async ({ page }) => {
   // this test deliberately provokes the errorCaught dialog, so opt out of the

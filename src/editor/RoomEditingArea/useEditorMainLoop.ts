@@ -4,7 +4,7 @@ import { useEffect } from "preact/hooks";
 
 import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
 import { RoomRenderer } from "../../game/render/room/RoomRenderer";
-import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
+import { blockstackPixiPalettes } from "../../sprites/palette/spritesheetPixiPalettes";
 import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import { type Upscale } from "../../store/slices/upscale/Upscale";
@@ -53,8 +53,7 @@ const editorGeneralRenderContext = (
   // what does the room renderer need to do with the game state? Could it take a Pick< from it instead?
   gameState: undefined,
   paused: false,
-  spriteOption: { name: "BlockStack", uncolourised: false as const },
-  spritesheetMeta: spritesheetMetas.BlockStack,
+  spritesheetMeta: spritesheetMetas.blockstack,
   upscale: editorEngineUpscale,
   // the editor has no rotation transitions - the render angle is always the
   // settled quarter angle:
@@ -94,7 +93,7 @@ export const useEditorMainLoop = (
         roomRenderSize.w + 2 * roomEditingAreaMarginPx,
         roomRenderSize.h + 2 * roomEditingAreaMarginPx,
       )
-      .fill(paletteBlockstack.pureBlack);
+      .fill(blockstackPixiPalettes.basic.pureBlack);
     // always behind the room:
     viewport.container.addChildAt(backdrop, 0);
 
@@ -118,10 +117,10 @@ export const useEditorMainLoop = (
     let spritesheetLoadStarted = false;
 
     const tick = ({ deltaMS }: AppTicker) => {
-      if (!spritesheets.isTextureLoaded("BlockStack")) {
+      if (!spritesheets.isTextureLoaded("blockstack")) {
         if (!spritesheetLoadStarted) {
           spritesheetLoadStarted = true;
-          spritesheets.loadImage(pixiRenderer, "BlockStack");
+          spritesheets.loadImage(pixiRenderer, "blockstack");
         }
         return;
       }
@@ -137,10 +136,7 @@ export const useEditorMainLoop = (
           pixiRenderer,
           planet,
           color,
-          {
-            name: "BlockStack",
-            uncolourised: false as const,
-          },
+          spritesheetMetas.blockstack,
           1,
         );
 
@@ -160,10 +156,7 @@ export const useEditorMainLoop = (
           pixiRenderer,
           planet,
           color,
-          {
-            name: "BlockStack",
-            uncolourised: false as const,
-          },
+          spritesheetMetas.blockstack,
           1,
         );
         lastPlanet = planet;

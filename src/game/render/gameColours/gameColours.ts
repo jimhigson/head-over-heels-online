@@ -1,34 +1,37 @@
 import { type Color } from "pixi.js";
 
-import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
-import {
-  zxSpectrumColors,
-  type ZxSpectrumRoomHue,
-} from "../../../originalGame";
+import { type ZxSpectrumRoomHue } from "../../../originalGame";
+import { maybeDimPixiPalette } from "../../../sprites/palette/pixiPalette";
 import {
   type BlockstackPaletteColourName,
-  maybeDimPalette,
-  paletteToppy,
   type ToppyPaletteColourName,
 } from "../../../sprites/palette/spritesheetPalette";
-import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
-import { type NamedColours } from "../../../utils/palette/palette";
+import {
+  blockstackPixiPalettes,
+  toppyPixiPalettes,
+} from "../../../sprites/palette/spritesheetPixiPalettes";
+import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { type NamedPixiColours } from "../../../utils/palette/palette";
+import { zxSpectrumPixiColors } from "../palette/zxSpectrumPixiColours";
 
-export const gameColour = (
+export const blockstackGameColour = (
   colourName: BlockstackPaletteColourName,
   inDimmedPalette: boolean = false,
 ): Color => {
-  return maybeDimPalette(blockStackSpritesheetMeta, inDimmedPalette)[
+  return maybeDimPixiPalette(blockstackPixiPalettes, inDimmedPalette)[
     colourName
   ];
 };
 
-export const replacementColour = (
+export const blockstackReplacementColour = (
   hue: ZxSpectrumRoomHue,
   dim: boolean = false,
   inDimmedPalette: boolean = false,
 ) => {
-  return gameColour(`swop_${hue}${dim ? "Dim" : ""}`, inDimmedPalette);
+  return blockstackGameColour(
+    `swop_${hue}${dim ? "Dim" : ""}`,
+    inDimmedPalette,
+  );
 };
 
 const toppyHueMapping: Record<ZxSpectrumRoomHue, ToppyPaletteColourName> = {
@@ -40,20 +43,20 @@ const toppyHueMapping: Record<ZxSpectrumRoomHue, ToppyPaletteColourName> = {
 };
 
 export const toppyReplacementColour = (hue: ZxSpectrumRoomHue): Color =>
-  paletteToppy[toppyHueMapping[hue]];
+  toppyPixiPalettes.basic[toppyHueMapping[hue]];
 
-type PaletteSwapsForPlaceholderColours = NamedColours<
+type PaletteSwapsForPlaceholderColours = NamedPixiColours<
   "replaceDark" | "replaceLight"
 >;
 
 type Trend = "light-dark" | "light-mid" | "mid-dark";
 
-export const replacementColours = (
+export const blockstackReplacementColours = (
   hue: ZxSpectrumRoomHue,
   inDimmedPalette: boolean = false,
   trend: Trend = "light-dark",
 ): PaletteSwapsForPlaceholderColours => {
-  const palette = maybeDimPalette(blockStackSpritesheetMeta, inDimmedPalette);
+  const palette = maybeDimPixiPalette(blockstackPixiPalettes, inDimmedPalette);
 
   const requestedMid = trend === "light-mid" || trend === "mid-dark";
 
@@ -82,7 +85,9 @@ export const replacementColours = (
 };
 
 export const getWhite = (
-  spriteOption: SpriteOption,
+  spritesheetMeta: SpritesheetMetadata,
   dim: boolean = false,
 ): Color =>
-  spriteOption.uncolourised ? zxSpectrumColors.white : gameColour("white", dim);
+  spritesheetMeta.isUncolourisedOf !== undefined ?
+    zxSpectrumPixiColors.white
+  : blockstackGameColour("white", dim);

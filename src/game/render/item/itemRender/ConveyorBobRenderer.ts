@@ -52,7 +52,8 @@ class ConveyorBobRenderer<
           baseBobPeriod / speedMultiplier,
           bobAmplitude,
           item.hash,
-          this.renderContext.general.spriteOption.uncolourised,
+          this.renderContext.general.spritesheetMeta.isUncolourisedOf !==
+            undefined,
         );
       } else {
         this.output.y = 0;

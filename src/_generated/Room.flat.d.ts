@@ -1213,7 +1213,7 @@ export type RoomJsonSchema = {
                */
               disabled?: false | true;
               type: "in-store";
-              action: "nextSpritesOption";
+              action: "nextSpritesheetName";
             };
       }
     | {

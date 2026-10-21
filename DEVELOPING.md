@@ -15,8 +15,8 @@ git clone --depth 1 https://github.com/jimhigson/hohjs.git
 `pnpm playwright test` - run e2e/visual regression tests
 
 # Artwork
-The Sprites file is `gfx/sprites.iff`. It is edited in Amiga IFF format using [PydPainter](https://pydpainter.org),
-and converted to modern png for loading into the browser using a script:
+The Sprites file is `gfx/spritesBlockstack.iff`. It is edited in Amiga IFF format using [PydPainter](https://pydpainter.org),
+and converted to modern webp and png for loading into the browser using a script:
 
 ```sh
 pnpm iff2png

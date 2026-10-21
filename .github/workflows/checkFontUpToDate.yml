@@ -10,7 +10,7 @@ on:
   pull_request:
     branches: ["main"]
     paths:
-      - "gfx/sprites.webp"
+      - "gfx/spritesBlockstack.webp"
       - "scripts/genFont.ts"
       - "scripts/font/**"
       - "src/sprites/spritesheet/spritesheetData/hudSritesheetData.ts"

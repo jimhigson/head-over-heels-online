@@ -90,7 +90,7 @@ test("every cut corner of a box is claimed as a rounded corner", () => {
   ]);
 });
 
-// the 'o' and '4' glyphs exactly as they appear in gfx/sprites.borders.png
+// the 'o' and '4' glyphs exactly as they appear in gfx/spritesBlockstack.borders.png
 const oGlyph = [
   "........",
   "........",
@@ -183,7 +183,7 @@ test("a '#' keeps all four of its corners square", () => {
   ).toEqual([]);
 });
 
-// the 'e' and 'q' glyphs exactly as they appear in gfx/sprites.borders.png
+// the 'e' and 'q' glyphs exactly as they appear in gfx/spritesBlockstack.borders.png
 const eGlyph = [
   "........",
   "........",

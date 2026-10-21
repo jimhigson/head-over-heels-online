@@ -1,72 +1,77 @@
 import { Color } from "pixi.js";
 
-import {
-  zxSpectrumColor,
-  type ZxSpectrumRoomColour,
-} from "../../../originalGame";
+import { type ZxSpectrumRoomColour } from "../../../originalGame";
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { getRoomColorScheme } from "../gameColours/colourScheme";
 import {
-  replacementColour,
+  blockstackReplacementColour,
   toppyReplacementColour,
 } from "../gameColours/gameColours";
+import { zxSpectrumPixiColor } from "../palette/zxSpectrumPixiColours";
 
 const noTint = new Color(0xff_ff_ff);
 
 export const tintForHudIfUncolourised = (
-  spriteOption: SpriteOption,
+  spritesheetMeta: SpritesheetMetadata,
   roomColor: ZxSpectrumRoomColour,
   active: boolean,
 ): Color =>
-  spriteOption.uncolourised ?
-    zxSpectrumColor(
+  spritesheetMeta.isUncolourisedOf !== undefined ?
+    zxSpectrumPixiColor(
       getRoomColorScheme(roomColor).hud[active ? "brightHue" : "dimmedHue"],
     )
   : noTint;
 
 export const tintForHud = (
-  spriteOption: SpriteOption,
+  spritesheetMeta: SpritesheetMetadata,
   roomColor: ZxSpectrumRoomColour,
   active: boolean,
-  spritesheetMeta: SpritesheetMetadata,
 ): Color => {
   const colorScheme = getRoomColorScheme(roomColor);
   const hudHue = colorScheme.hud[active ? "brightHue" : "dimmedHue"];
 
-  if (spriteOption.uncolourised) {
-    return zxSpectrumColor(hudHue);
+  switch (spritesheetMeta.name) {
+    case "speccy":
+      return zxSpectrumPixiColor(hudHue);
+    case "toppy":
+      return toppyReplacementColour(hudHue);
+    case "debug":
+      return noTint;
+    case "blockstack":
+      return blockstackReplacementColour(
+        hudHue,
+        false,
+        spritesheetMeta.palettes.dim !== undefined &&
+          roomColor.shade === "dimmed",
+      );
+    default:
+      spritesheetMeta.name satisfies never;
+      throw new Error(`unknown spritesheet "${spritesheetMeta.name}"`);
   }
-  if (spriteOption.name === "Toppy") {
-    return toppyReplacementColour(hudHue);
-  }
-  if (spriteOption.name === "Debug") {
-    return noTint;
-  }
-  spriteOption.name satisfies "BlockStack";
-  return replacementColour(
-    hudHue,
-    false,
-    spritesheetMeta.paletteDim !== undefined && roomColor.shade === "dimmed",
-  );
 };
 
 export const tintForIcon = (
-  spriteOption: SpriteOption,
+  spritesheetMeta: SpritesheetMetadata,
   roomColor: ZxSpectrumRoomColour,
 ): Color => {
   const colorScheme = getRoomColorScheme(roomColor);
   const iconHue = colorScheme.hud.icons;
 
-  if (spriteOption.uncolourised) {
-    return zxSpectrumColor(iconHue);
+  switch (spritesheetMeta.name) {
+    case "speccy":
+      return zxSpectrumPixiColor(iconHue);
+    case "toppy":
+      return toppyReplacementColour(iconHue);
+    case "debug":
+      return noTint;
+    case "blockstack":
+      return blockstackReplacementColour(
+        iconHue,
+        false,
+        roomColor.shade === "dimmed",
+      );
+    default:
+      spritesheetMeta.name satisfies never;
+      throw new Error(`unknown spritesheet "${spritesheetMeta.name}"`);
   }
-  if (spriteOption.name === "Toppy") {
-    return toppyReplacementColour(iconHue);
-  }
-  if (spriteOption.name === "Debug") {
-    return noTint;
-  }
-  spriteOption.name satisfies "BlockStack";
-  return replacementColour(iconHue, false, roomColor.shade === "dimmed");
 };

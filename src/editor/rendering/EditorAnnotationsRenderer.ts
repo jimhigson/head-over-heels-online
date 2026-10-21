@@ -16,7 +16,7 @@ import { type ItemInPlayType } from "../../model/ItemInPlay";
 import { getControlTargetJsonItemsInRoom } from "../../model/json/getControlTargetJsonItemsInRoom";
 import { exitGameRoomId } from "../../model/json/ItemConfigMap";
 import { type JsonMovement } from "../../model/json/utilityJsonConfigTypes";
-import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
+import { blockstackPixiPalettes } from "../../sprites/palette/spritesheetPixiPalettes";
 import { editorStore, store } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
 import { isNegativeSideXy, type Xy } from "../../utils/vectors/vectors";
@@ -35,14 +35,14 @@ import {
   setClickableAnnotationHovered,
 } from "../slice/levelEditorSlice";
 
-const selectionColour = paletteBlockstack.pastelBlue;
-const monsterWakesColour = paletteBlockstack.lightBeige;
+const selectionColour = blockstackPixiPalettes.basic.pastelBlue;
+const monsterWakesColour = blockstackPixiPalettes.basic.lightBeige;
 const selectedFilter = new RevertColouriseFilter(selectionColour);
 
 /**
  * outline filters owned by the editor, whose width tracks the viewport zoom so
  * outlines are always one *game* pixel thick - unlike the shared prebaked
- * {@link outlineFilters}, whose width follows the game's global upscale
+ * {@link blackOutlineFilter}, whose width follows the game's global upscale
  */
 type EditorOutlineFilters = {
   pointerHover: OutlineFilter;
@@ -60,7 +60,7 @@ const makeEditorOutlineFilters = (
   // nearest-upscales back to the screen blocky:
   const filters: EditorOutlineFilters = {
     pointerHover: new OutlineFilter({
-      color: paletteBlockstack.highlightBeige,
+      color: blockstackPixiPalettes.basic.highlightBeige,
       width: 1,
     }),
     monsterWakes: new OutlineFilter({
@@ -68,11 +68,11 @@ const makeEditorOutlineFilters = (
       width: 1,
     }),
     eyeDropperHover: new OutlineFilter({
-      color: paletteBlockstack.midRed,
+      color: blockstackPixiPalettes.basic.midRed,
       width: 1,
     }),
     controlHighlight: new OutlineFilter({
-      color: paletteBlockstack.white,
+      color: blockstackPixiPalettes.basic.white,
       width: 1,
     }),
   };
@@ -92,9 +92,10 @@ const makeEditorOutlineFilters = (
 
   return filters;
 };
-const textAnnotationNormalColour = paletteBlockstack.white;
-const textAnnotationErrorColour = paletteBlockstack.midRed;
-const textClickableAnnotationHoverColour = paletteBlockstack.pastelBlue;
+const textAnnotationNormalColour = blockstackPixiPalettes.basic.white;
+const textAnnotationErrorColour = blockstackPixiPalettes.basic.midRed;
+const textClickableAnnotationHoverColour =
+  blockstackPixiPalettes.basic.pastelBlue;
 
 /** the isometric arrow glyph pointing along a cardinal direction vector */
 const directionArrow = ({ x, y }: Xy): string =>

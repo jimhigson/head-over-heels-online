@@ -106,7 +106,7 @@ export const renderBoxesForRoom = (
       makeItemRenderBoxAtCameraAngle(
         item,
         cameraAngle,
-        spritesheetMetas.BlockStack,
+        spritesheetMetas.blockstack,
       ),
     );
   }

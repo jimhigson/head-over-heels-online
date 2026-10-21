@@ -1,44 +1,40 @@
-import { Color } from "pixi.js";
-
-import jsonPalette from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
-import jsonPaletteDim from "../../_generated/palette/spritesheetPaletteDim.json" with { type: "json" };
+import jsonBlockstackPalette from "../../_generated/palette/spritesheetBlockstackPalette.json" with { type: "json" };
+import jsonBlockstackPaletteDim from "../../_generated/palette/spritesheetBlockstackPaletteDim.json" with { type: "json" };
 import jsonToppyPalette from "../../_generated/palette/spritesheetToppyPalette.json" with { type: "json" };
-import { type NamedColours } from "../../utils/palette/palette";
-import { transformObject } from "../../utils/transformObject";
+import { type HexColour } from "../../utils/colour/HexColour";
+import { type NamedHexColours } from "../../utils/palette/palette";
 import {
   type EffectColourName,
   type SpritesheetMetadata,
 } from "../spritesheet/spritesheetData/spritesheetMetaData";
 
-export const paletteBlockstack = Object.freeze(
-  transformObject(jsonPalette, ([key, hexStr]) => [key, new Color(hexStr)]),
+// the generator writes only hex codes, but json imports type them as string
+export const paletteBlockstackHex = Object.freeze(
+  jsonBlockstackPalette as NamedHexColours<keyof typeof jsonBlockstackPalette>,
 );
-export const paletteBlockstackDim = Object.freeze(
-  transformObject(jsonPaletteDim, ([key, hexStr]) => [key, new Color(hexStr)]),
+export const paletteBlockstackDimHex = Object.freeze(
+  jsonBlockstackPaletteDim as NamedHexColours<
+    keyof typeof jsonBlockstackPaletteDim
+  >,
 );
-export type BlockstackPaletteColourName = keyof typeof paletteBlockstack;
+export type BlockstackPaletteColourName = keyof typeof paletteBlockstackHex;
 
-export const paletteToppy = Object.freeze(
-  transformObject(jsonToppyPalette, ([key, hexStr]) => [
-    key,
-    new Color(hexStr),
-  ]),
+export const paletteToppyHex = Object.freeze(
+  jsonToppyPalette as NamedHexColours<keyof typeof jsonToppyPalette>,
 );
-export type ToppyPaletteColourName = keyof typeof paletteToppy;
+export type ToppyPaletteColourName = keyof typeof paletteToppyHex;
 
-export const maybeDimPalette = <PaletteColourName extends string = string>(
-  spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
+export const maybeDimPalette = <PaletteColourName extends string>(
+  { palettes: { basic, dim } }: SpritesheetMetadata<PaletteColourName>,
   wantDimmedPalette: boolean,
-): NamedColours<PaletteColourName> =>
-  wantDimmedPalette && spritesheetMeta.paletteDim !== undefined ?
-    spritesheetMeta.paletteDim
-  : spritesheetMeta.palette;
+): NamedHexColours<PaletteColourName> =>
+  wantDimmedPalette && dim !== undefined ? dim : basic;
 
-export const effectColour = <PaletteColourName extends string = string>(
+export const effectColour = <PaletteColourName extends string>(
   spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
   wantDimmedPalette: boolean,
   effectColourName: EffectColourName,
-): Color => {
+): HexColour => {
   const colourName: PaletteColourName =
     spritesheetMeta.effectColours[effectColourName];
 

@@ -18,9 +18,26 @@ Consequences you must plan around:
 - **Every merge invalidates every other open PR's up-to-date status.** So N independent green PRs cannot all merge at once — each must be `gh pr update-branch`'d onto the new `main` and have its 4 gates **re-run** (~10–15 min each) before it can merge. A batch of N PRs therefore costs ≈ N sequential gate cycles. Set that expectation with the user in Phase 0/2 (a 5-PR batch is an hour-plus of wall-clock, mostly waiting).
 - **`gh pr merge --admin` does NOT bypass this** — the checks are ruleset-required and you are (normally) not a bypass actor, so admin merge is refused with "N of N required status checks are expected" even when the rollup shows them all green (they're green on a now-stale head). Don't fight it; update-branch and wait.
 - **A PR can show all 4 gates SUCCESS in `statusCheckRollup` yet still be unmergeable** — because those successes are against an out-of-date head. `mergeStateStatus` = `BEHIND` is the tell; `CLEAN` means actually mergeable now.
-- **`Deploy preview to R2` is NOT one of the required checks** — it's informational. Never gate merges or pollers on it (see Phase 6).
+- **`Deploy preview to R2` is NOT one of the required checks** — it's informational. Never make a poller wait for it to finish (see Phase 6).
+- **A non-required check that *fails* still holds the merge.** Not being required only means it needn't finish; a failure is still a failure. Before merging, look at every check on the PR, not just the four gates: any that has failed (the deploy preview, true-site-size, anything else) holds that PR until you've reported it and discussed it with the user. One still pending or never reporting doesn't hold anything.
 
 Efficient cascade: keep only the *next* PR to merge updated+running; updating the others early just wastes a cycle since the merge re-stales them. Merge the one that's `CLEAN`, then update-branch the next, repeat.
+
+## Stacks merge together, not one by one
+
+Work is often a `gh stack`: a chain of PRs, each based on the branch of the one below. **Load the `gh-stack` skill** (if it isn't available, `pnpm skills:install` installs it) whenever any in-scope branch belongs to a stack, and use `gh stack` for viewing, rebasing, pushing and merging it rather than hand-rolled git.
+
+- **A stack has its own number**, separate from its PRs' numbers. `gh stack view` prints it (`Stack #1162` above `#1159` and `#1161`). When the user names a number that `gh pr view` can't resolve, try it as a stack number before asking.
+- **Merge the whole stack in one step**: `gh stack merge <stack-number> --yes --squash`. GitHub's atomic stack merge puts every PR of the stack into the base in a single all-or-nothing operation: if any PR can't merge, none do. It costs one merge, not one per PR. The cascade below doesn't apply within a stack: don't merge the bottom PR, retarget and rebase the next, and re-run its gates.
+- **Don't let a big stack swamp CI.** Pushing a stack starts every PR's builds at once, and each PR has many. With more than 3 PRs in the stack, run them in this order instead:
+  1. **The top PR first.** It holds all the stack's work, so it's the most likely to fail.
+  2. Cancel the other PRs' runs as soon as they start (`gh run list --branch <branch>`, then `gh run cancel <run-id>`).
+  3. Once the top PR is green, re-run the **bottom** PR's runs (`gh run rerun <run-id>`), then work upwards one PR at a time until every PR is green.
+
+  A failure at the top is then found after one build, not after the whole stack has queued.
+- **Every PR of the stack must be green first**: wait for all four required gates on *each* PR of the stack, then merge. GitHub checks the repository rules when the merge runs and reports any failure back. Bypassing them isn't supported for stacks.
+- **Rewriting a lower PR** (dates, committer, a fix) means rebasing the PRs above onto it and force-pushing them too; `gh stack rebase [--upstack]` and `gh stack push` do this.
+- **Other PRs outside the stack** still cascade as usual: after the stack lands, update-branch the next one.
 
 ## Background 
 
@@ -53,6 +70,7 @@ For each worktree (`git worktree list`), collect: branch, worktree path, dirty-f
 - **Squash-merged branches look "ahead".** `git rev-list --count origin/main..<branch>` miscounts a squash-merged branch as 1+ ahead. Confirm real merge status with `git cherry origin/main <branch>` — a `-` prefix means the patch is already on main (merged); `+` means genuinely unmerged. Drop the `-` ones (they're merged; their worktrees can be cleaned up).
 - **Diverged branches**: `git rev-list --left-right --count origin/<branch>...<branch>` → `remoteOnly  localOnly`. Non-zero on both sides = diverged; flag it in Phase 0.
 - **Stale PRs**: `gh pr list --state open --json number,headRefName,headRefOid`; a PR is stale if its `headRefOid` ≠ the local branch head.
+- **Stacks**: `gh stack view` in each branch's worktree says whether it belongs to a stack, and the stack's number. Show stacked PRs together in the Phase 2 table, with their stack number, since they merge as one.
 
 ## Phase 2 — Confirmation table, then get the go-ahead
 
@@ -67,7 +85,7 @@ Present a **numbered** table and wait for confirmation before acting. Columns:
 
 Let the user renumber/trim scope and set merge order here.
 
-## Phase 3 — Commit-time hygiene (privacy)
+## Phase 3a — Commit-time hygiene (privacy)
 
 Goal: all commits should be altered to be authored/committed at 9pm (London local; in summer commits are already stored at `+01:00`, so the stored wall-clock hour *is* UK time — read it directly from `%aI`/`%cI`). This is to preserve the user's privacy with regards to their daily schedule.
 
@@ -88,6 +106,16 @@ Rules (confirm specifics in Phase 0):
 Applying it:
 - Single commit: `GIT_COMMITTER_DATE="<iso>" git commit --amend --no-edit --date="<iso>"`.
 - Multiple commits: rewrite per-commit dates with a `git filter-branch --env-filter` keyed on `$GIT_COMMIT`, or reset to the base and cherry-pick each with `GIT_AUTHOR_DATE`/`GIT_COMMITTER_DATE` set. This rewrites history → force-push in Phase 4.
+
+- There is no need to ask permission to change the time, the answer is always yes.
+
+## Phase 3b — Committer hygiene
+
+### Committer
+
+- the committer should be `Jim Higson jim@blockstack.ing` if Jim is contributing this work; if it is anything else it needs to be amended. The exception is if someone else is legitimately the committer. `noreply@anthropic` or anything else `@anthropic` should be amended.
+
+- There is no need to ask permission to change an incorrect author name or email, the answer is always yes.
 
 ## Phase 4 — Clean tree, then push
 
@@ -118,7 +146,7 @@ Some status checks **never reach a terminal state**: a check can sit at `null`/p
 Rules for any CI poller:
 - **Fail fast — react to the *first* failing check the instant it flips, never wait for the rest of the run.** This is the most important rule. Do **not** write a loop that counts "how many of the N required checks have reached a terminal state" and only reports once that count hits N — that design hides a failure for the entire ~15-min run (the other gates are still churning), so you lose all the time you could have spent fixing it, and a fix-push then races a run that's already doomed. The moment **any single** required check has `conclusion` ∈ {FAILURE, CANCELLED, TIMED_OUT}, the loop must emit and exit immediately so you can diagnose — regardless of what the other checks are doing.
 - **Two exit conditions, checked every cycle, independently:** (a) *any* required check failed → exit now, report the failure; (b) *all* required checks are SUCCESS → exit, proceed to merge. Never make (b) the only way out.
-- **Gate on the *real* checks only.** Exclude non-blocking/never-completing statuses by name — filter out `Deploy preview to R2` before counting anything. Only the four required gates (`check`, `checkGenUpToDate`, `Visual Regression Gate`, `E2E Gate`) decide green/red.
+- **Gate on the *real* checks only.** Exclude non-blocking/never-completing statuses by name — filter out `Deploy preview to R2` before counting anything. Only the four required gates (`check`, `checkGenUpToDate`, `Visual Regression Gate`, `E2E Gate`) decide when CI has finished. Before merging, still check the rest for failures (see "A non-required check that *fails* still holds the merge").
 - **Always bound the loop** with a self-timeout (e.g. `deadline=$((SECONDS+2400))`) and print a timestamped line each cycle, so a genuinely stuck run surfaces as `TIMEOUT` rather than eternal quiet.
 - **Don't front-run CI.** Wait for one PR's first *green* cycle before propagating the same assumption (e.g. a snapshot fix) into a stacked/dependent PR. If the assumption was wrong, you find out on one PR, not two.
 
@@ -176,6 +204,8 @@ with the other PRs until the user replies
 
 ## Phase 7 — Merge on green
 
+For a stack, see "Stacks merge together, not one by one": wait for every PR of the stack to be green, then `gh stack merge <stack-number> --yes --squash`.
+
 As each PR reaches all-checks-passed **and `mergeStateStatus` is `CLEAN`** (not `BEHIND`), merge it autonomously (unless the user asked to be asked): `gh pr merge -sd` (squash + delete branch). Because of the strict up-to-date ruleset (see "Merge policy for THIS repo"), only one PR is `CLEAN` at a time; `--admin` will not force a `BEHIND` one through. After a merge, the next PR is `BEHIND` → `gh pr update-branch <n>`, wait for its 4 gates to re-run, then merge. This is the serial cascade of Phase 8.
 
 **Merge order: least-conflicting first, most-impactful last** — e.g. docs/a11y/isolated-feature branches early; broad refactors and library swaps last. Watch for branches that touch the same file (e.g. two both editing `CLAUDE.md`) — whichever lands second will need a trivial rebase-resolve.
@@ -209,6 +239,8 @@ git push --force-with-lease origin <branch>          # never bare --force
 gh pr create -f                                       # no extra params
 gh pr checks <n>;  gh run rerun <run-id> --failed
 gh pr merge -sd <n>                                   # squash + delete branch
+gh stack view                                         # is this branch in a stack? its number
+gh stack merge <stack-number> --yes --squash          # merge a whole stack at once
 ```
 
 ## Node version (sandbox)

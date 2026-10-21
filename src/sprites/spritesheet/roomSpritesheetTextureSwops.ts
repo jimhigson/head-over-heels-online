@@ -1,10 +1,10 @@
-import { type Color } from "pixi.js";
+import { Color } from "pixi.js";
 
 import { type PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
 import { colorScheme } from "../../game/render/gameColours/colourScheme";
 import {
-  gameColour,
-  replacementColours,
+  blockstackGameColour,
+  blockstackReplacementColours,
 } from "../../game/render/gameColours/gameColours";
 import {
   type ZxSpectrumRoomColour,
@@ -18,19 +18,19 @@ import {
 } from "../../utils/palette/palette";
 import { octantIndexOfDirection } from "../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { type AxisXy } from "../../utils/vectors/vectors";
+import { maybeDimPixiPalette } from "../palette/pixiPalette";
+import { type BlockstackPaletteColourName } from "../palette/spritesheetPalette";
 import {
-  type BlockstackPaletteColourName,
-  paletteBlockstack,
-  paletteBlockstackDim,
-  paletteToppy,
-} from "../palette/spritesheetPalette";
+  blockstackPixiPalettes,
+  toppyPixiPalettes,
+} from "../palette/spritesheetPixiPalettes";
 import { type SceneryName } from "../planets";
 import { type TexturesSpecifier } from "./reifyTextureIds";
 import {
   type BaseTextureId,
   type TextureId,
 } from "./spritesheetData/makeSpritesheetData";
-import { type SpriteOptionName } from "./Spritesheets";
+import { type SpritesheetName } from "./spritesheetData/spritesheetMetaData";
 
 export type TextureSpecificPaletteSwops = {
   textureIds: TexturesSpecifier;
@@ -48,6 +48,19 @@ export type SpritesheetTextureSwops = {
 /** NOTE: - does not match deadly floors */
 const isFloorTexture = (textureId: TextureId): boolean =>
   /\.floor$/.test(textureId);
+
+/**
+ * every sprite of an uncolourised sheet is coloured at render time by a per-room
+ * tint, so the whole sheet is swopped to near-white and the shadows to full ink
+ */
+const uncolourisedAmbient = {
+  lutType: "voronoi" as const,
+  swops: resolveSwops(blockstackPixiPalettes.basic, {
+    pureBlack: new Color(0x00_00_00),
+    shadow: new Color(0xff_ff_ff),
+    redShadow: new Color(0xff_ff_ff),
+  }),
+};
 
 /**
  * door leg pillars take the wall swops, since they stand in the wall's plane.
@@ -83,17 +96,20 @@ export const roomSpritesheetTextureSwops = (
    * different spritesheets will have different levels of palette swopping - this
    * param allows us to handle them differently in these cases
    */
-  spriteOptionName: SpriteOptionName,
+  spritesheetName: SpritesheetName,
 ): SpritesheetTextureSwops => {
-  switch (spriteOptionName) {
-    case "BlockStack":
+  switch (spritesheetName) {
+    case "blockstack":
       return {
         ambient: [
           {
             lutType: "sparse",
             swops: resolveSwops(
-              paletteBlockstack,
-              replacementColours(roomColor.hue, roomColor.shade === "dimmed"),
+              blockstackPixiPalettes.basic,
+              blockstackReplacementColours(
+                roomColor.hue,
+                roomColor.shade === "dimmed",
+              ),
             ),
           },
           roomColor.shade === "basic" ?
@@ -101,7 +117,10 @@ export const roomSpritesheetTextureSwops = (
           : {
               // swop to the dimmed palette:
               lutType: "sparse" as const,
-              swops: resolveSwops(paletteBlockstack, paletteBlockstackDim),
+              swops: resolveSwops(
+                blockstackPixiPalettes.basic,
+                maybeDimPixiPalette(blockstackPixiPalettes, true),
+              ),
             },
         ],
         textureSpecific: [
@@ -110,15 +129,15 @@ export const roomSpritesheetTextureSwops = (
           ...blockstackBookSwops(roomColor),
         ],
       };
-    case "Toppy":
+    case "toppy":
       return {
         ambient: [],
         // do colour replacement only on the backgrounds, which Toppy didn't (re)draw (yet?):
         textureSpecific: [
           {
             swops: resolveSwops(
-              paletteToppy,
-              replacementColours(
+              toppyPixiPalettes.basic,
+              blockstackReplacementColours(
                 roomColor.hue,
                 false, // never use the dimmed palette for replacements
               ),
@@ -134,13 +153,15 @@ export const roomSpritesheetTextureSwops = (
           ...floorEdgeSwops(roomColor),
         ],
       };
-    case "Debug":
-      // the Debug sheet renders the same in every room - an empty swop, so it
+    case "speccy":
+      return { ambient: [uncolourisedAmbient] };
+    case "debug":
+      // the debug sheet renders the same in every room - an empty swop, so it
       // still goes through the ordinary atlas bake like every other sheet:
       return { ambient: [] };
     default:
-      spriteOptionName satisfies never;
-      throw new Error(`unknown sprite option "${spriteOptionName}"`);
+      spritesheetName satisfies never;
+      throw new Error(`unknown spritesheet "${spritesheetName}"`);
   }
 };
 
@@ -149,12 +170,12 @@ const floorEdgeSwops = (
 ): Array<TextureSpecificPaletteSwops> => {
   const { edges } = colorScheme[roomColor.hue][roomColor.shade];
 
-  const rightEdgeSwops = replacementColours(
+  const rightEdgeSwops = blockstackReplacementColours(
     edges.right.hue,
     roomColor.shade === "dimmed",
     "light-mid",
   );
-  const towardsEdgeSwops = replacementColours(
+  const towardsEdgeSwops = blockstackReplacementColours(
     edges.towards.hue,
     roomColor.shade === "dimmed",
     "mid-dark",
@@ -171,7 +192,7 @@ const floorEdgeSwops = (
         `floorEdge.d${octantIndexOfDirection("right")}`,
         `generic.door.floatingThreshold.d${octantIndexOfDirection("away")}`,
       ],
-      swops: resolveSwops(paletteBlockstack, rightEdgeSwops),
+      swops: resolveSwops(blockstackPixiPalettes.basic, rightEdgeSwops),
     },
     {
       // the towards floor edge and the x-axis threshold both run along x:
@@ -180,7 +201,7 @@ const floorEdgeSwops = (
         `floorEdge.d${octantIndexOfDirection("towards")}`,
         `generic.door.floatingThreshold.d${octantIndexOfDirection("left")}`,
       ],
-      swops: resolveSwops(paletteBlockstack, towardsEdgeSwops),
+      swops: resolveSwops(blockstackPixiPalettes.basic, towardsEdgeSwops),
     },
   ];
 };
@@ -194,8 +215,8 @@ const blockstackScenerySwops = (
       {
         textureIds: isSceneryTexture,
         swops: resolveSwops(
-          paletteBlockstack,
-          replacementColours(
+          blockstackPixiPalettes.basic,
+          blockstackReplacementColours(
             roomColor.hue,
             roomColor.shade === "dimmed",
             "mid-dark",
@@ -210,8 +231,8 @@ const blockstackScenerySwops = (
       {
         textureIds: isWallTexture,
         swops: resolveSwops(
-          paletteBlockstack,
-          replacementColours(roomColor.hue, true, "light-mid"),
+          blockstackPixiPalettes.basic,
+          blockstackReplacementColours(roomColor.hue, true, "light-mid"),
         ),
       },
     ];
@@ -230,8 +251,8 @@ const blockstackScenerySwops = (
           {
             textureIds: isSceneryTexture,
             swops: resolveSwops(
-              paletteBlockstack,
-              replacementColours(
+              blockstackPixiPalettes.basic,
+              blockstackReplacementColours(
                 roomColor.hue,
                 roomColor.shade === "dimmed",
                 "mid-dark",
@@ -244,8 +265,8 @@ const blockstackScenerySwops = (
           {
             textureIds: isDoorLegsPillarTexture,
             swops: resolveSwops(
-              paletteBlockstack,
-              replacementColours(
+              blockstackPixiPalettes.basic,
+              blockstackReplacementColours(
                 roomColor.hue,
                 roomColor.shade === "dimmed",
                 "light-dark",
@@ -255,8 +276,8 @@ const blockstackScenerySwops = (
           {
             textureIds: isFloorTexture,
             swops: resolveSwops(
-              paletteBlockstack,
-              replacementColours(
+              blockstackPixiPalettes.basic,
+              blockstackReplacementColours(
                 roomColor.hue,
                 roomColor.shade === "dimmed",
                 "mid-dark",
@@ -266,8 +287,8 @@ const blockstackScenerySwops = (
           {
             textureIds: isLeftWallTexture,
             swops: resolveSwops(
-              paletteBlockstack,
-              replacementColours(
+              blockstackPixiPalettes.basic,
+              blockstackReplacementColours(
                 roomColor.hue,
                 roomColor.shade === "dimmed",
                 "light-mid",
@@ -277,8 +298,8 @@ const blockstackScenerySwops = (
           {
             textureIds: isWallTexture,
             swops: resolveSwops(
-              paletteBlockstack,
-              replacementColours(
+              blockstackPixiPalettes.basic,
+              blockstackReplacementColours(
                 roomColor.hue,
                 roomColor.shade === "dimmed",
                 "mid-dark",
@@ -296,8 +317,8 @@ const blockstackScenerySwops = (
           {
             textureIds: isFloorTexture,
             swops: resolveSwops(
-              paletteBlockstack,
-              replacementColours(
+              blockstackPixiPalettes.basic,
+              blockstackReplacementColours(
                 roomColor.hue,
                 roomColor.shade === "dimmed",
                 "mid-dark",
@@ -311,8 +332,8 @@ const blockstackScenerySwops = (
           {
             textureIds: isDoorLegsPillarTexture,
             swops: resolveSwops(
-              paletteBlockstack,
-              replacementColours(
+              blockstackPixiPalettes.basic,
+              blockstackReplacementColours(
                 roomColor.hue,
                 roomColor.shade === "dimmed",
                 "light-dark",
@@ -322,8 +343,8 @@ const blockstackScenerySwops = (
           {
             textureIds: isSceneryTexture,
             swops: resolveSwops(
-              paletteBlockstack,
-              replacementColours(
+              blockstackPixiPalettes.basic,
+              blockstackReplacementColours(
                 roomColor.hue,
                 roomColor.shade === "dimmed",
                 "light-mid",
@@ -351,11 +372,11 @@ const blockstackBookSwops = (
           `book.d${octantIndexOfDirection("left")}`,
           `book.d${octantIndexOfDirection("away")}`,
         ],
-        swops: resolveSwops(paletteBlockstack, {
-          ...replacementColours(hue, shade === "dimmed", "light-mid"),
+        swops: resolveSwops(blockstackPixiPalettes.basic, {
+          ...blockstackReplacementColours(hue, shade === "dimmed", "light-mid"),
           // books don't use any shadow pixels other than on their covers,
           // which is why it works to put in a third colour:
-          shadow: gameColour(`swop_${hue}Dim`, shade === "dimmed"),
+          shadow: blockstackGameColour(`swop_${hue}Dim`, shade === "dimmed"),
         }),
       },
     ];
@@ -368,8 +389,8 @@ const blockstackBookSwops = (
           `book.d${octantIndexOfDirection("left")}`,
           `book.d${octantIndexOfDirection("away")}`,
         ],
-        swops: resolveSwops(paletteBlockstack, {
-          ...replacementColours(
+        swops: resolveSwops(blockstackPixiPalettes.basic, {
+          ...blockstackReplacementColours(
             roomColor.hue,
             true,
             roomColor.hue === "cyan" ?
@@ -389,30 +410,40 @@ const blockstackBookSwops = (
 const blockstackSceneryColourReplacements: Partial<
   Record<SceneryName, PartialNamedColours<BlockstackPaletteColourName>>
 > = {
-  blacktooth: { pureBlack: halfbrite(paletteBlockstack.moss, 0.15) },
-  safari: { pureBlack: halfbrite(paletteBlockstack.moss, 0.17) },
-  jail: { pureBlack: halfbrite(paletteBlockstack.redShadow, 0.2) },
-  egyptus: { pureBlack: halfbrite(paletteBlockstack.redShadow) },
+  blacktooth: {
+    pureBlack: halfbrite(blockstackPixiPalettes.basic.moss, 0.15),
+  },
+  safari: {
+    pureBlack: halfbrite(blockstackPixiPalettes.basic.moss, 0.17),
+  },
+  jail: {
+    pureBlack: halfbrite(blockstackPixiPalettes.basic.redShadow, 0.2),
+  },
+  egyptus: {
+    pureBlack: halfbrite(blockstackPixiPalettes.basic.redShadow),
+  },
   moonbase: {
-    shadow: paletteBlockstack.shadow_greyBlue,
-    pureBlack: halfbrite(paletteBlockstack.metallicBlue, 0.2),
+    shadow: blockstackPixiPalettes.basic.shadow_greyBlue,
+    pureBlack: halfbrite(blockstackPixiPalettes.basic.metallicBlue, 0.2),
   },
   bookworld: {
-    shadow: paletteBlockstack.shadow_brown,
-    pureBlack: halfbrite(paletteBlockstack.highlightBeige, 0.1),
+    shadow: blockstackPixiPalettes.basic.shadow_brown,
+    pureBlack: halfbrite(blockstackPixiPalettes.basic.highlightBeige, 0.1),
   },
   penitentiary: {
-    pureBlack: halfbrite(paletteBlockstack.midGrey, 0.2),
+    pureBlack: halfbrite(blockstackPixiPalettes.basic.midGrey, 0.2),
   },
 };
 
 const blockstackHueColourReplacements: Partial<
   Record<ZxSpectrumRoomHue, PartialNamedColours<BlockstackPaletteColourName>>
 > = {
-  yellow: { shadow: paletteBlockstack.shadow_brown },
-  white: { shadow: paletteBlockstack.shadow_greyBlue },
-  magenta: { shadow: paletteBlockstack.shadow_magenta },
-  cyan: { shadow: paletteBlockstack.shadow_blue },
+  yellow: { shadow: blockstackPixiPalettes.basic.shadow_brown },
+  white: { shadow: blockstackPixiPalettes.basic.shadow_greyBlue },
+  magenta: {
+    shadow: blockstackPixiPalettes.basic.shadow_magenta,
+  },
+  cyan: { shadow: blockstackPixiPalettes.basic.shadow_blue },
 };
 
 /**
@@ -437,7 +468,7 @@ export const blockstackAmbienceSwops = (
   return {
     lutType: "sparse" as const,
     swops: resolveSwops(
-      paletteBlockstack,
+      blockstackPixiPalettes.basic,
       blockstackAmbienceNamedSwops(roomScenery, roomColor),
     ),
   };

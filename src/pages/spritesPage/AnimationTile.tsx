@@ -12,7 +12,7 @@ import {
   type BaseTextureId,
   type FramesWithSpeed,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
+import { useIsUncolourised } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { useTip } from "../../ui/tip/useTip";
 import { SpriteName } from "./SpriteName";
 
@@ -28,7 +28,7 @@ export const AnimationTile = ({
   spritesheetData,
 }: AnimationTileProps) => {
   const styleRef = useRef<HTMLStyleElement>(null);
-  const spriteOption = useSpritesOption();
+  const uncolourised = useIsUncolourised();
 
   const { interestfor, tip } = useTip(
     <ul class="max-h-16 block overflow-y-auto">
@@ -73,7 +73,7 @@ export const AnimationTile = ({
       : <div
           class={`sprite bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack hover:bg-moss zx:hover:bg-zxYellow toppy:hover:bg-toppyWarm3 border-shadow zx:border-zxRedDimmed toppy:border-toppyGrey2 box-content w-min
           ${animationIsUniformlyFlipped(frames, spritesheetData) ? "sprite-flip-x" : ""}
-          ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
+          ${uncolourised ? "sprite-revert-to-two-tone" : ""}`}
           style={animatedSpriteSpecificCssVars(
             animationName,
             sanitiseForClassName,

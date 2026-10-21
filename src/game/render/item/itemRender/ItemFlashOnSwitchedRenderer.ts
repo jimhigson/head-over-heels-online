@@ -1,10 +1,10 @@
-import { Container, type Filter } from "pixi.js";
+import { type Color, Container, type Filter } from "pixi.js";
 
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { isInRoomModifierItem } from "../../../../model/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
-import { zxSpectrumColor, zxSpectrumColors } from "../../../../originalGame";
-import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
+import { effectPixiColour } from "../../../../sprites/palette/pixiPalette";
+import { spritesheetPixiPalettes } from "../../../../sprites/palette/spritesheetPixiPalettes";
 import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
 import { OneColourFilter } from "../../filters/OneColourFilter";
 import { OutlineFilter } from "../../filters/OutlineFilter";
@@ -12,6 +12,10 @@ import {
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
+import {
+  zxSpectrumPixiColor,
+  zxSpectrumPixiColors,
+} from "../../palette/zxSpectrumPixiColours";
 import { type DecorateItemRenderer } from "./DecorateItemRenderer";
 import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
@@ -39,21 +43,20 @@ class ItemFlashOnSwitchedRenderer<
     this.#childRenderer = childRenderer;
     this.output.addChild(childRenderer.output);
 
-    const { spriteOption, spritesheets, spritesheetMeta } =
-      renderContext.general;
+    const { spritesheets, spritesheetMeta } = renderContext.general;
     const { color: roomColor } = renderContext.room;
 
     const useDim = roomColor.shade === "dimmed";
 
-    let leftColour;
-    let rightColour;
-    if (spriteOption.uncolourised) {
+    let leftColour: Color;
+    let rightColour: Color;
+    if (spritesheetMeta.isUncolourisedOf !== undefined) {
       // Speccy is two-tone - either room colour or black:
-      leftColour = zxSpectrumColor(roomColor);
-      rightColour = zxSpectrumColors.black;
+      leftColour = zxSpectrumPixiColor(roomColor);
+      rightColour = zxSpectrumPixiColors.black;
     } else {
-      leftColour = effectColour(spritesheetMeta, useDim, "left");
-      rightColour = effectColour(spritesheetMeta, useDim, "right");
+      leftColour = effectPixiColour(spritesheetMeta, useDim, "left");
+      rightColour = effectPixiColour(spritesheetMeta, useDim, "right");
     }
 
     // shared via the room renderer's filter cache (one of each per colour
@@ -70,10 +73,10 @@ class ItemFlashOnSwitchedRenderer<
     );
 
     const outlineColour =
-      spriteOption.uncolourised ?
-        zxSpectrumColors.black
-      : getAmbientSwoppedColour(
-          spritesheetMeta.palette,
+      spritesheetMeta.isUncolourisedOf !== undefined ?
+        zxSpectrumPixiColors.black
+      : getAmbientSwoppedColour<string>(
+          spritesheetPixiPalettes[spritesheetMeta.name].basic,
           spritesheetMeta.effectColours.outline,
           spritesheets.spritesheetForCurrentRoom.ambient,
         );

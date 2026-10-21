@@ -4,19 +4,20 @@ import {
   PaletteSwapFilter,
   type PaletteSwopSpec,
 } from "../../game/render/filters/PaletteSwapFilter";
-import { replacementColours } from "../../game/render/gameColours/gameColours";
+import { blockstackReplacementColours } from "../../game/render/gameColours/gameColours";
 import { halfbrite } from "../../utils/colour/halfbrite";
 import { emptyObject } from "../../utils/empty";
 import {
+  type NamedPixiColours,
   resolveNamedColourSwops,
   resolveSwops,
 } from "../../utils/palette/palette";
 import { omitArray } from "../../utils/pick";
+import { maybeDimPixiPalette } from "../palette/pixiPalette";
 import {
-  maybeDimPalette,
-  paletteBlockstack,
-  paletteBlockstackDim,
-} from "../palette/spritesheetPalette";
+  blockstackPixiPalettes,
+  spritesheetPixiPalettes,
+} from "../palette/spritesheetPixiPalettes";
 import {
   blockstackAmbienceNamedSwops,
   blockstackAmbienceSwops,
@@ -112,24 +113,38 @@ export const stripGroupPasses = (
     "roomColor" | "roomScenery" | "spritesheetMetaData"
   >,
 ): PaletteSwopSpec[] | undefined => {
-  const { palette, paletteDim, swops } = spritesheetMetaData;
+  const { palettes, swops } = spritesheetMetaData;
+  const palette: NamedPixiColours<string> =
+    spritesheetPixiPalettes[spritesheetMetaData.name].basic;
 
   const dimmed = roomColor.shade === "dimmed";
   const dimPass: PaletteSwopSpec | undefined =
-    dimmed && paletteDim !== undefined ?
-      { swops: resolveSwops(palette, paletteDim), lutType: "sparse" }
+    dimmed && palettes.dim !== undefined ?
+      {
+        swops: resolveSwops(
+          palette,
+          maybeDimPixiPalette<string>(
+            spritesheetPixiPalettes[spritesheetMetaData.name],
+            true,
+          ),
+        ),
+        lutType: "sparse",
+      }
     : undefined;
 
   if (isArcadeButtonSuffix(group)) {
     // recolour the placeholder button art to this action's colour, dimmed per room:
-    const buttonPalette = maybeDimPalette(spritesheetMetaData, dimmed);
+    const buttonPalette = maybeDimPixiPalette<string>(
+      spritesheetPixiPalettes[spritesheetMetaData.name],
+      dimmed,
+    );
     const colour =
       buttonPalette[
         spritesheetMetaData.buttonColours[arcadeButtonActionOfSuffix(group)]
       ];
     return [
       {
-        swops: resolveSwops(paletteBlockstack, {
+        swops: resolveSwops(blockstackPixiPalettes.basic, {
           replaceLight: colour,
           replaceDark: halfbrite(colour, 0.66),
           pureBlack: buttonPalette[spritesheetMetaData.effectColours.outline],
@@ -149,14 +164,14 @@ export const stripGroupPasses = (
     const trend = roomScenery === "moonbase" ? "light-mid" : "light-dark";
     return [
       {
-        swops: resolveSwops(paletteBlockstack, {
-          ...(spritesheetMetaData.name === "BlockStack" ?
-            dimmed ? paletteBlockstackDim
+        swops: resolveSwops(blockstackPixiPalettes.basic, {
+          ...(spritesheetMetaData.name === "blockstack" ?
+            dimmed ? maybeDimPixiPalette(blockstackPixiPalettes, true)
             : blockstackAmbienceNamedSwops(roomScenery, roomColor)
           : emptyObject),
-          ...replacementColours(
+          ...blockstackReplacementColours(
             destinationHue,
-            dimmed && paletteDim !== undefined,
+            dimmed && palettes.dim !== undefined,
             trend,
           ),
         }),

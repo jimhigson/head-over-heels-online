@@ -10,29 +10,29 @@ import {
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import {
-  enabledSpriteModes,
-  spriteOptionName,
+  enabledSpritesheets,
+  spritesheetFileLabel,
   takeDialogScreenshot,
   testTimeout,
 } from "./testUtils/screenshots";
-import { setSpriteOption } from "./testUtils/setSpriteOption";
+import { setSpritesheet } from "./testUtils/setSpritesheet";
 import { test } from "./testUtils/test";
 
-for (const spriteOption of enabledSpriteModes) {
-  test.describe(`Menu Visual Snapshots ${JSON.stringify(spriteOption)}`, () => {
+for (const spritesheetName of enabledSpritesheets) {
+  test.describe(`Menu Visual Snapshots ${JSON.stringify(spritesheetName)}`, () => {
     test.beforeEach(async ({ page }) => {
       await setupE2ePage(page);
     });
 
     for (const deploymentType of deploymentTypes) {
-      test(`Main menu (deploymentType = ${deploymentType}) ${JSON.stringify(spriteOption)}`, async ({
+      test(`Main menu (deploymentType = ${deploymentType}) ${JSON.stringify(spritesheetName)}`, async ({
         page,
       }, testInfo) => {
         const { noUncolourised } = testInfo.project
           .use as ScreenshotTestOptions;
         const isMobile = testInfo.project.name.startsWith("mobile-");
         if (
-          (spriteOption.uncolourised && noUncolourised) ||
+          (spritesheetName === "speccy" && noUncolourised) ||
           // currently not providing a tauri build on mobile (but could in future):
           (isMobile && deploymentType === "tauri")
         ) {
@@ -53,10 +53,10 @@ for (const spriteOption of enabledSpriteModes) {
 
         await logUpscale(page, formattedName);
 
-        const nameSegment = spriteOptionName(spriteOption) || null;
+        const nameSegment = spritesheetFileLabel(spritesheetName) || null;
 
-        await test.step(`set sprite option to ${JSON.stringify(spriteOption)}`, async () => {
-          await setSpriteOption(page, formattedName, spriteOption);
+        await test.step(`set sprite option to ${JSON.stringify(spritesheetName)}`, async () => {
+          await setSpritesheet(page, formattedName, spritesheetName);
         });
 
         await takeDialogScreenshot(
@@ -64,7 +64,7 @@ for (const spriteOption of enabledSpriteModes) {
           "mainMenu",
           formattedName,
           [deploymentType, nameSegment],
-          spriteOption,
+          spritesheetName,
           testInfo.project.name,
         );
 
@@ -78,7 +78,7 @@ for (const spriteOption of enabledSpriteModes) {
           "mainMenu",
           formattedName,
           [deploymentType, "inGame", nameSegment],
-          spriteOption,
+          spritesheetName,
           testInfo.project.name,
         );
       });

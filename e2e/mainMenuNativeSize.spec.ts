@@ -7,11 +7,11 @@ import { waitForDialog } from "./testUtils/menuNavigation";
 import { osSlowness } from "./testUtils/osSlowness";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import {
-  enabledSpriteModes,
+  enabledSpritesheets,
   takeDialogScreenshot,
   testTimeout,
 } from "./testUtils/screenshots";
-import { setSpriteOption } from "./testUtils/setSpriteOption";
+import { setSpritesheet } from "./testUtils/setSpritesheet";
 import { test } from "./testUtils/test";
 
 /**
@@ -70,8 +70,11 @@ test.describe("Main menu at each browser's own size", () => {
   });
 
   test("Main menu at the device's own viewport", async ({ page }, testInfo) => {
-    const [spriteOption] = enabledSpriteModes;
-    if (!isKnownProject(testInfo.project.name) || spriteOption === undefined) {
+    const [spritesheetName] = enabledSpritesheets;
+    if (
+      !isKnownProject(testInfo.project.name) ||
+      spritesheetName === undefined
+    ) {
       test.skip();
       return;
     }
@@ -94,8 +97,8 @@ test.describe("Main menu at each browser's own size", () => {
 
     await logUpscale(page, formattedName);
 
-    await test.step(`set sprite option to ${JSON.stringify(spriteOption)}`, async () => {
-      await setSpriteOption(page, formattedName, spriteOption);
+    await test.step(`set sprite option to ${JSON.stringify(spritesheetName)}`, async () => {
+      await setSpritesheet(page, formattedName, spritesheetName);
     });
 
     // the whole point of drawing at a real size is to see the upscaled sprites
@@ -125,7 +128,7 @@ test.describe("Main menu at each browser's own size", () => {
       "mainMenu",
       formattedName,
       "-nativeSize-upscaled",
-      spriteOption,
+      spritesheetName,
       testInfo.project.name,
     );
   });

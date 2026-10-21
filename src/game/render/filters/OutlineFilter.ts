@@ -8,13 +8,9 @@ import {
   type Texture,
 } from "pixi.js";
 
-import {
-  type BlockstackPaletteColourName,
-  paletteBlockstack,
-} from "../../../sprites/palette/spritesheetPalette";
+import { blockstackPixiPalettes } from "../../../sprites/palette/spritesheetPixiPalettes";
 import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSlice";
 import { store } from "../../../store/store";
-import { transformObject } from "../../../utils/transformObject";
 import fragment from "./outline.frag";
 
 export type OutlineFilterOptions = {
@@ -131,20 +127,6 @@ export class OutlineFilter extends Filter {
   }
 }
 
-type PrebakedFilterName = "black1pxFilter" | BlockstackPaletteColourName;
-
-/** Pre-baked outline filters for all spritesheet palette colors */
-export const outlineFilters: Record<PrebakedFilterName, OutlineFilter> = {
-  ...transformObject(paletteBlockstack, ([colorName, color]) => [
-    colorName,
-    new OutlineFilter({ color }),
-  ]),
-  /**
-   * Special black outline filter with 1px width. For example, for
-   * pre-rasterised sprites that need a consistent outline
-   */
-  black1pxFilter: new OutlineFilter({
-    color: paletteBlockstack.pureBlack,
-    width: 1,
-  }),
-};
+export const blackOutlineFilter = new OutlineFilter({
+  color: blockstackPixiPalettes.basic.pureBlack,
+});

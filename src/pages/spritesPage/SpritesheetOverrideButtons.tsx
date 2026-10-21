@@ -2,7 +2,7 @@ import { type ChangeEvent } from "preact/compat";
 import { useCallback, useRef } from "preact/hooks";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
+import { useSpritesheetArtName } from "../../store/slices/gameMenus/gameMenusSelectors";
 import {
   clearSpritesheetOverride,
   selectIsSpritesheetOverridden,
@@ -13,9 +13,9 @@ import { Button } from "../../ui/Button";
 export const SpritesheetOverrideButtons = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
-  const spriteOption = useSpritesOption();
+  const spritesheetArtName = useSpritesheetArtName();
   const overridden = useAppSelector((state) =>
-    selectIsSpritesheetOverridden(state, spriteOption.name),
+    selectIsSpritesheetOverridden(state, spritesheetArtName),
   );
 
   const handleFileChange = useCallback(
@@ -26,7 +26,7 @@ export const SpritesheetOverrideButtons = () => {
         reader.onload = () => {
           dispatch(
             setSpritesheetOverride({
-              spriteOptionName: spriteOption.name,
+              spritesheetArtName,
               dataUrl: reader.result as string,
             }),
           );
@@ -34,13 +34,13 @@ export const SpritesheetOverrideButtons = () => {
         reader.readAsDataURL(file);
       }
     },
-    [dispatch, spriteOption.name],
+    [dispatch, spritesheetArtName],
   );
 
   return overridden ?
       <Button
         class="px-1 bg-pink zx:bg-zxMagenta toppy:bg-toppyPink1"
-        onClick={() => dispatch(clearSpritesheetOverride(spriteOption.name))}
+        onClick={() => dispatch(clearSpritesheetOverride(spritesheetArtName))}
       >
         <span class="text-single-line">x Clear override</span>
       </Button>

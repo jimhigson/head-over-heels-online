@@ -1,11 +1,8 @@
 import { expect, type Page } from "@playwright/test";
 import chalk from "chalk";
 
-import { spriteOptionEquals } from "../src/store/slices/userSettings/spriteOptionEquals";
-import {
-  type SpriteOption,
-  type toggleUserSetting,
-} from "../src/store/slices/userSettings/userSettingsSlice";
+import { type SpritesheetName } from "../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { type toggleUserSetting } from "../src/store/slices/userSettings/userSettingsSlice";
 import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import { paintFrame } from "./testUtils/advanceGameTime";
 import { dispatchKeyPress } from "./testUtils/gameInteractions";
@@ -33,37 +30,37 @@ import {
 import { osSlowness } from "./testUtils/osSlowness";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import {
-  enabledSpriteModes,
+  enabledSpritesheets,
   roomScreenshotOptions,
-  spriteOptionSuffix,
+  spritesheetSuffix,
   testTimeout,
 } from "./testUtils/screenshots";
-import { setSpriteOption } from "./testUtils/setSpriteOption";
+import { setSpritesheet } from "./testUtils/setSpritesheet";
 import { test } from "./testUtils/test";
 
 const takeGameScreenshots = async (
   page: Page,
-  effectiveModes: SpriteOption[],
+  effectiveModes: SpritesheetName[],
   screenshotPrefix: string,
   formattedName: string,
   projectName: string,
 ) => {
   const screenshotOpts = roomScreenshotOptions(projectName);
-  let currentSpriteOption: SpriteOption | undefined;
+  let currentSpritesheetName: SpritesheetName | undefined;
 
-  for (const spriteOption of effectiveModes) {
+  for (const spritesheetName of effectiveModes) {
     if (
-      currentSpriteOption === undefined ||
-      !spriteOptionEquals(currentSpriteOption, spriteOption)
+      currentSpritesheetName === undefined ||
+      currentSpritesheetName !== spritesheetName
     ) {
-      await setSpriteOption(page, formattedName, spriteOption);
+      await setSpritesheet(page, formattedName, spritesheetName);
     }
-    currentSpriteOption = spriteOption;
+    currentSpritesheetName = spritesheetName;
 
-    const suffix = spriteOptionSuffix(spriteOption);
+    const suffix = spritesheetSuffix(spritesheetName);
     const filename = `${screenshotPrefix}${suffix}.png`;
     console.log(
-      `${formattedName} ${elapsed()} Taking screenshot: ${chalk.cyan(filename)} ${JSON.stringify(spriteOption)}`,
+      `${formattedName} ${elapsed()} Taking screenshot: ${chalk.cyan(filename)} ${JSON.stringify(spritesheetName)}`,
     );
     const screenshotStart = performance.now();
     await expect
@@ -98,8 +95,8 @@ test.describe("Settings reflect in game", () => {
 
     const effectiveModes =
       noUncolourised ?
-        enabledSpriteModes.filter((m) => !m.uncolourised)
-      : enabledSpriteModes;
+        enabledSpritesheets.filter((m) => m !== "speccy")
+      : enabledSpritesheets;
 
     console.log(
       `${formattedName} ${elapsed()} starting settings-reflect-in-game test`,

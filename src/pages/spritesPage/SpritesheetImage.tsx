@@ -17,7 +17,7 @@ import {
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import {
   useCurrentSpritesheetData,
-  useSpritesOption,
+  useIsUncolourised,
 } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { useTip } from "../../ui/tip/useTip";
 import { entries } from "../../utils/entries";
@@ -45,7 +45,7 @@ const AnimationPreview = ({
   frames: FramesWithSpeed<BaseTextureId[]>;
 }) => {
   const currentSpritesheetData = useCurrentSpritesheetData();
-  const spriteOption = useSpritesOption();
+  const uncolourised = useIsUncolourised();
   const styleRef = useRef<HTMLStyleElement>(null);
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const AnimationPreview = ({
         <div
           class={`sprite box-content w-min
             ${animationIsUniformlyFlipped(frames, currentSpritesheetData) ? "sprite-flip-x" : ""}
-            ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
+            ${uncolourised ? "sprite-revert-to-two-tone" : ""}`}
           style={animatedSpriteSpecificCssVars(
             animationName,
             sanitiseForClassName,
@@ -95,7 +95,7 @@ const TextureIdEntry = ({
   flipX: boolean;
 }) => {
   const currentSpritesheetData = useCurrentSpritesheetData();
-  const spriteOption = useSpritesOption();
+  const uncolourised = useIsUncolourised();
 
   const containingAnimations = entries(
     currentSpritesheetData.animations as Record<
@@ -113,7 +113,7 @@ const TextureIdEntry = ({
         <div
           class={`sprite box-content w-min
             ${flipX ? "sprite-flip-x" : ""}
-            ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
+            ${uncolourised ? "sprite-revert-to-two-tone" : ""}`}
           style={spriteSpecificCssVars(frame.w, frame.h, frame.x, frame.y)}
         />
       </div>
@@ -182,7 +182,7 @@ export const SpritesheetImage = ({
 }: {
   spriteFilter: string;
 }) => {
-  const spriteOption = useSpritesOption();
+  const uncolourised = useIsUncolourised();
   const currentSpritesheetData = useCurrentSpritesheetData();
   const [mousePos, setMousePos] = useState<null | Xy>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -241,9 +241,9 @@ export const SpritesheetImage = ({
     >
       <div
         class={`absolute inset-0 pixelated bg-no-repeat
-          ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
+          ${uncolourised ? "sprite-revert-to-two-tone" : ""}`}
         style={{
-          backgroundImage: "var(--spritesheetUrl)",
+          backgroundImage: "var(--spritesheetArtUrl)",
           backgroundSize: "100% 100%",
         }}
       />

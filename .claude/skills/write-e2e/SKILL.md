@@ -62,7 +62,7 @@ from the spec's scope has to travel as the `arg` option, as data.
 buffer plus a cursor, so an event that fires *between* your deciding to wait and
 the wait attaching is still matched.
 
-Events: `frameRendered` `{roomId, spriteOption, cameraAngle}`,
+Events: `frameRendered` `{roomId, spritesheetName, cameraAngle}`,
 `characterChanged`, `renderingSuspended`, `renderingResumed`.
 
 The pattern is always: capture `snapshotE2eCursor(page)` **before** triggering
@@ -70,8 +70,8 @@ the thing, then pass it as `afterId`.
 
 ```ts
 const cursor = await snapshotE2eCursor(page);
-await dispatchToStore(page, { type: "userSettings/setSpritesOption", payload: option });
-await waitForSpriteOptionRenderEvent(page, option, cursor);
+await dispatchToStore(page, { type: "userSettings/setSpritesheetName", payload: option });
+await waitForSpritesheetRenderEvent(page, option, cursor);
 ```
 
 Ready-made waits in `e2e/testUtils/gameStateQueries.ts`: `waitForEventOnBus`,

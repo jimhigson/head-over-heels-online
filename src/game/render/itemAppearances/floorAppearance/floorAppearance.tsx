@@ -4,8 +4,8 @@ import { type ItemInPlay } from "../../../../model/ItemInPlay";
 import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import { type RoomState } from "../../../../model/RoomState";
-import { zxSpectrumColors } from "../../../../originalGame";
 import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
+import { spritesheetPixiPalettes } from "../../../../sprites/palette/spritesheetPixiPalettes";
 import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
 import { frac } from "../../../../utils/maths/maths";
 import { rangesOverlap } from "../../../../utils/maths/numberPairs";
@@ -49,6 +49,7 @@ import { OutlineFilter } from "../../filters/OutlineFilter";
 import { floorTextureId } from "../../floorTextureId";
 import { edgeOriginalGameColour } from "../../gameColours/colourScheme";
 import { boxProjectedExtent } from "../../item/itemRender/cuboidTransitionMesh";
+import { zxSpectrumPixiColors } from "../../palette/zxSpectrumPixiColours";
 import {
   projectBlockXyzToScreenXy,
   projectFootprintScreenXExtent,
@@ -378,13 +379,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
       renderContext: {
         room,
         item: floorItem,
-        general: {
-          spriteOption,
-          spritesheets,
-          spritesheetMeta,
-          pixiRenderer,
-          cameraAngle,
-        },
+        general: { spritesheets, spritesheetMeta, pixiRenderer, cameraAngle },
         colourClashLayer,
         renderBoxes,
         filterCache,
@@ -469,10 +464,10 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
       const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
 
       const outlineColour =
-        spriteOption.uncolourised ?
-          zxSpectrumColors.black
-        : getAmbientSwoppedColour(
-            spritesheetMeta.palette,
+        spritesheetMeta.isUncolourisedOf !== undefined ?
+          zxSpectrumPixiColors.black
+        : getAmbientSwoppedColour<string>(
+            spritesheetPixiPalettes[spritesheetMeta.name].basic,
             spritesheetMeta.effectColours.outline,
             spritesheet.ambient,
           );
@@ -827,7 +822,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
           children: true,
         });
 
-        if (spriteOption.uncolourised) {
+        if (spritesheetMeta.isUncolourisedOf !== undefined) {
           const colourClashContainer = createColourClash({
             room,
             floorAabb: physicalSize,

@@ -1,9 +1,9 @@
 import { Color, type Texture } from "pixi.js";
 
 import {
-  zxSpectrumColors,
-  zxSpectrumColorsDimmed,
-} from "../../../../../originalGame";
+  zxSpectrumPixiColors,
+  zxSpectrumPixiColorsDimmed,
+} from "../../../palette/zxSpectrumPixiColours";
 import { voronoiLut } from "../voronoiLut";
 
 // must match the shader's perceptual weights in fragFns/luminance.glsl
@@ -26,8 +26,8 @@ export const spectrumLumLut = (): Texture =>
   voronoiLut(
     new Map(
       [
-        ...Object.values(zxSpectrumColors),
-        ...Object.values(zxSpectrumColorsDimmed),
+        ...Object.values(zxSpectrumPixiColors),
+        ...Object.values(zxSpectrumPixiColorsDimmed),
       ].map((spectrumColour) => [
         greyAt01(luminance(spectrumColour)),
         spectrumColour,

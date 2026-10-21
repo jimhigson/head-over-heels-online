@@ -1,9 +1,6 @@
+import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type Upscale } from "../../../store/slices/upscale/Upscale";
-import { spriteOptionEquals } from "../../../store/slices/userSettings/spriteOptionEquals";
-import {
-  type InputDirectionMode,
-  type SpriteOption,
-} from "../../../store/slices/userSettings/userSettingsSlice";
+import { type InputDirectionMode } from "../../../store/slices/userSettings/userSettingsSlice";
 import { type HudRenderer } from "./HudRenderer";
 
 export const needsNewHudRenderer = <
@@ -11,7 +8,7 @@ export const needsNewHudRenderer = <
   RoomItemId extends string,
 >(
   renderer: HudRenderer<RoomId, RoomItemId> | undefined,
-  spriteOption: SpriteOption,
+  spritesheetMeta: SpritesheetMetadata,
   onScreenControls: boolean,
   inputDirectionMode: InputDirectionMode,
   tickUpscale: Upscale,
@@ -32,13 +29,7 @@ export const needsNewHudRenderer = <
   renderer === undefined ||
   webGlContextRestored ||
   originalSheetRebuilt ||
-  // compared by value: the option the tick renders under is derived (a paused
-  // tick renders a sheet-supporting option uncolourised), so an equal option
-  // arrives as a fresh object on every tick it is derived on
-  !spriteOptionEquals(
-    renderer.renderContext.general.spriteOption,
-    spriteOption,
-  ) ||
+  renderer.renderContext.general.spritesheetMeta !== spritesheetMeta ||
   renderer.renderContext.general.onScreenControls !== onScreenControls ||
   renderer.renderContext.inputDirectionMode !== inputDirectionMode ||
   // invalidate on changing landscape/portrait since on-screen controls need this

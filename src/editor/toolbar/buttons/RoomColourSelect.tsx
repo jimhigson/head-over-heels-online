@@ -1,13 +1,13 @@
-import { Color } from "pixi.js";
 import { type CSSProperties } from "preact/compat";
 import { capitalize } from "string-transform";
 
-import { gameColour } from "../../../game/render/gameColours/gameColours";
 import {
-  zxSpectrumColor,
+  zxSpectrumHexColours,
+  zxSpectrumHexColoursDimmed,
   type ZxSpectrumRoomHue,
   zxSpectrumRoomHue,
 } from "../../../originalGame";
+import { paletteBlockstackHex } from "../../../sprites/palette/spritesheetPalette";
 import { useAppDispatch } from "../../../store/hooks";
 import { useIsUncolourised } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { useEditorAppSelector } from "../../../store/store";
@@ -15,6 +15,7 @@ import { CommandItem } from "../../../ui/command/CommandItem";
 import { CommandMatch } from "../../../ui/command/CommandMatch";
 import { Select } from "../../../ui/Select";
 import { Switch } from "../../../ui/Switch";
+import { halfbriteHex } from "../../../utils/colour/halfbrite";
 import {
   changeRoomColour,
   selectCurrentEditingRoomColour,
@@ -33,10 +34,6 @@ declare module "preact" {
   }
 }
 
-/** a colour at half brightness, like the Amiga's halfbrite */
-const halfbrite = (colour: Color): Color =>
-  new Color(colour).multiply(0x80_80_80);
-
 /**
  * Inline style for an element coloured by a room hue: it just provides the base
  * background (`--command-secondary`) and border. The `.command-colours` class
@@ -51,22 +48,22 @@ export const cssForRoomColour = (
   dim = false,
 ): CSSProperties => {
   if (dim) {
-    const dimColour = (
+    const dimColour =
       uncolourised ?
-        halfbrite(zxSpectrumColor(hue))
-      : gameColour(`swop_${hue}Dim`)).toHex();
+        halfbriteHex(zxSpectrumHexColours[hue])
+      : paletteBlockstackHex[`swop_${hue}Dim`];
     return { "--command-secondary": dimColour, borderColor: dimColour };
   }
 
   const hueColour =
     uncolourised ?
-      zxSpectrumColor(hue, "dimmed").toHex()
-    : gameColour(`swop_${hue}`).toHex();
+      zxSpectrumHexColoursDimmed[hue]
+    : paletteBlockstackHex[`swop_${hue}`];
 
   return {
     "--command-secondary": hueColour,
     borderColor:
-      uncolourised ? hueColour : gameColour(`swop_${hue}Dim`).toHex(),
+      uncolourised ? hueColour : paletteBlockstackHex[`swop_${hue}Dim`],
   };
 };
 
