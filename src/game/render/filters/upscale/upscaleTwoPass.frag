@@ -418,14 +418,11 @@ vec4 sliceDistB(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	//checkerboard edge case:
 	sliceM *= 1.0 - sim4B(f, d, b, u) * sim4B(uf, df, db, ub) * (1.0 - simB(c, f));
 
-	//a crossing cell is settled by the graph pass, not the local distances:
-	//c's own cell for the near cases, f's and d's for the far corners
-	float crossC = crossingVerdict(px, dirVec, 1.0);
-	float crossF = crossingVerdict(px + vec2(1.0, 0.0) * dirVec, dirVec, 1.0);
-	float crossD = crossingVerdict(px + vec2(0.0, 1.0) * dirVec, dirVec, 1.0);
-	float sliceC = mix(sliceM, crossC, step(0.0, crossC));
-	float sliceF = mix(sliceM, crossF, step(0.0, crossF));
-	float sliceD = mix(sliceM, crossD, step(0.0, crossD));
+	//the colour pass keeps cleanEdge's own crossing decision: the shading is
+	//read as the original's local distances read it
+	float sliceC = sliceM;
+	float sliceF = sliceM;
+	float sliceD = sliceM;
 
 	float m1 = sim3B(f, d, db) * (1.0 - sim3B(f, d, b)) * (1.0 - simB(uf, db)); //lower shallow slant
 	float m2 = sim3B(uf, f, d) * (1.0 - sim3B(u, f, d)) * (1.0 - simB(uf, db)); //forward steep slant
@@ -529,28 +526,6 @@ vec4 sliceDistB(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	dist5 -= 0.5;
 	vec4 col5 = pickB(d, df, dd);
 
-	//a dotted step: a shade's edge against f (or d) recurring two pixels on
-	//and one across, with the pixel between them another shade or abstaining -
-	//a 2:1 line of single pixels, as the colourisation's highlights are
-	//drawn. The edge is read as the line through both edges' midpoints, and
-	//this pixel gives up what lies on the far shade's side of it. Seen from
-	//either pixel of the edge, and in both axes
-	float edgeF = isC(c) * isC(f) * (1.0 - eqC(c, f));
-	float edgeD = isC(c) * isC(d) * (1.0 - eqC(c, d));
-	//only where the step runs under linework: the pixels the line would cross
-	//between the two edges are black or transparent, as in a band between
-	//strokes. In open shading a chance recurrence is dither, not a line
-	float k6 = edgeF * eqC(AT(-2.0, 1.0), c) * eqC(AT(-1.0, 1.0), f) * (1.0 - isC(AT(0.0, 1.0))) * (1.0 - isC(AT(-1.0, 0.0)));
-	float k7 = edgeF * eqC(AT( 2.0,-1.0), c) * eqC(AT( 3.0,-1.0), f) * (1.0 - isC(AT(1.0,-1.0))) * (1.0 - isC(AT(2.0, 0.0)));
-	float k8 = edgeD * eqC(AT( 1.0,-2.0), c) * eqC(AT( 1.0,-1.0), d) * (1.0 - isC(AT(1.0, 0.0))) * (1.0 - isC(AT(0.0,-1.0)));
-	float k9 = edgeD * eqC(AT(-1.0, 2.0), c) * eqC(AT(-1.0, 3.0), d) * (1.0 - isC(AT(-1.0, 1.0))) * (1.0 - isC(AT(0.0, 2.0)));
-	vec2 edgeFMid = center + vec2(0.5, 0.0) * pointDir;
-	vec2 edgeDMid = center + vec2(0.0, 0.5) * pointDir;
-	float dist6 = distToLine(point, edgeFMid, center + vec2(-1.5, 1.0) * pointDir, pointDir);
-	float dist7 = distToLine(point, edgeFMid, center + vec2( 2.5,-1.0) * pointDir, pointDir);
-	float dist8 = distToLine(point, edgeDMid, center + vec2( 1.0,-1.5) * pointDir, pointDir);
-	float dist9 = distToLine(point, edgeDMid, center + vec2(-1.0, 2.5) * pointDir, pointDir);
-
 	//select the first matching case's colour where its slice reaches this
 	//point (col.r < 0 marks an abstaining pick, colour pass only)
 	vec4 res = vec4(-1.0);
@@ -559,12 +534,6 @@ vec4 sliceDistB(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	res = mix(res, col3, sliceC * e3 * step(dist3, 0.0) * step(0.0, col3.r));
 	res = mix(res, col4, sliceF * e4 * step(dist4, 0.0) * step(0.0, col4.r));
 	res = mix(res, col5, sliceD * e5 * step(dist5, 0.0) * step(0.0, col5.r));
-	//the dotted steps are the more specific reading, so they overrule the
-	//slant cases where they apply
-	res = mix(res, f, k6 * step(dist6, 0.0));
-	res = mix(res, f, k7 * step(dist7, 0.0));
-	res = mix(res, d, k8 * step(dist8, 0.0));
-	res = mix(res, d, k9 * step(dist9, 0.0));
 	return res;
 }
 
