@@ -10,7 +10,10 @@ precision highp float;
  * corner, the step is a join only where it runs straighter through each of
  * its pixels than the links they already have - a pixel already carrying a
  * line as straight as the step could make cannot also take it, and the fill
- * between connects. A region's pixel - solid, or a corner of a region's
+ * between connects. Straightness is read along runs, not pixel to pixel: a
+ * step off a run that carries on the slope the run was entered by is
+ * straight, where one back to the side it was entered from makes the run a
+ * vertex. A region's pixel - solid, or a corner of a region's
  * ragged edge - carries no line and joins nothing: a lone pixel touching it
  * stays a dot rather than becoming a spur.
  *
@@ -108,33 +111,57 @@ bool isRegionPixel(ivec2 p){
 // the links a pixel has: the directions of its black sides and of its
 // linked diagonals
 struct Links {
+	ivec2 p;
 	int count;
-	vec2 dir[8];
+	ivec2 dir[8];
 	int candidates;
 	bool isRegion;
 };
 
 Links linksOf(ivec2 p){
 	Links links;
+	links.p = p;
 	links.count = 0;
 	links.candidates = 0;
 	for (int i = 0; i < 4; i++){
-		if (isBlack(p + dirs[i])) links.dir[links.count++] = normalize(vec2(dirs[i]));
+		if (isBlack(p + dirs[i])) links.dir[links.count++] = dirs[i];
 	}
 	for (int i = 4; i < 8; i++){
 		ivec2 d = dirs[i];
 		int link = diagonalLink(p, d);
-		if (link == linked) links.dir[links.count++] = normalize(vec2(d));
+		if (link == linked) links.dir[links.count++] = d;
 		if (link == candidate) links.candidates++;
 	}
 	links.isRegion = isRegionPixel(p);
 	return links;
 }
 
-// how straight a line through two directions out of a pixel is: 1 for
-// opposite directions, 0 for a right angle
-float straightness(vec2 dir1, vec2 dir2){
-	return -dot(dir1, dir2);
+// how far along a run its far end is looked for
+const int maxRunLength = 8;
+
+// how straight a line through p along two of its neighbours is: 1 for
+// opposite directions, 0 for a right angle. A side and a diagonal are a
+// slope's step off the run the side begins, judged by where the stroke
+// enters the run's far end: from the step's opposite side, as a 2:1 line
+// does, the step is straight; from the step's own side, the run is a vertex
+// and the step turns the corner
+float straightness(ivec2 p, ivec2 d1, ivec2 d2){
+	float base = -dot(normalize(vec2(d1)), normalize(vec2(d2)));
+	bool d1IsSide = d1.x == 0 || d1.y == 0;
+	bool d2IsSide = d2.x == 0 || d2.y == 0;
+	if (d1IsSide == d2IsSide || base < 0.5) return base;
+	ivec2 side = d1IsSide ? d1 : d2;
+	ivec2 diag = d1IsSide ? d2 : d1;
+	ivec2 far = p + side;
+	for (int i = 1; i < maxRunLength; i++){
+		if (!isBlack(far + side)) break;
+		far += side;
+	}
+	// the step's component across the run
+	ivec2 across = diag + side;
+	if (isBlack(far + side - across)) return 1.0;
+	if (isBlack(far + side + across)) return 0.5;
+	return base;
 }
 
 // the straightest line a pixel's links already make through it
@@ -142,7 +169,7 @@ float straightestLine(Links links){
 	float best = -2.0;
 	for (int i = 0; i < 8; i++){
 		for (int j = i + 1; j < 8; j++){
-			if (j < links.count) best = max(best, straightness(links.dir[i], links.dir[j]));
+			if (j < links.count) best = max(best, straightness(links.p, links.dir[i], links.dir[j]));
 		}
 	}
 	return best;
@@ -150,17 +177,17 @@ float straightestLine(Links links){
 
 // the straightest line a step out of the pixel in direction d would make
 // with one of its links
-float straightestWith(Links links, vec2 d){
+float straightestWith(Links links, ivec2 d){
 	float best = -2.0;
 	for (int i = 0; i < 8; i++){
-		if (i < links.count) best = max(best, straightness(links.dir[i], d));
+		if (i < links.count) best = max(best, straightness(links.p, links.dir[i], d));
 	}
 	return best;
 }
 
 // whether a pixel cannot take a step in direction d: its corner carries no
 // line, or the line it carries is already as straight as the step would make
-bool refuses(Links links, vec2 d){
+bool refuses(Links links, ivec2 d){
 	if (links.isRegion) return true;
 	if (links.count < 2) return false;
 	return straightestWith(links, d) <= straightestLine(links) + 0.01;
@@ -168,7 +195,7 @@ bool refuses(Links links, vec2 d){
 
 // whether the step between p and q is open to both
 bool stepOpen(ivec2 p, Links pLinks, ivec2 q, Links qLinks){
-	vec2 d = normalize(vec2(q - p));
+	ivec2 d = q - p;
 	return !refuses(pLinks, d) && !refuses(qLinks, -d);
 }
 
