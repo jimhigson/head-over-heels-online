@@ -217,6 +217,37 @@ vec4 standInAt(vec2 px){
 	return texture(uStandIn, px / uSheetSize);
 }
 
+// the eight neighbour offsets, sides then diagonals
+const vec2 around[8] = vec2[8](
+	vec2( 1.0, 0.0), vec2(-1.0, 0.0), vec2( 0.0, 1.0), vec2( 0.0,-1.0),
+	vec2( 1.0, 1.0), vec2(-1.0, 1.0), vec2( 1.0,-1.0), vec2(-1.0,-1.0)
+);
+
+// how many of the eight pixels around p are black, not counting `except`
+float blackAround(vec2 p, vec2 except){
+	float n = 0.0;
+	for (int i = 0; i < 8; i++){
+		vec2 q = p + around[i];
+		n += strokeA(srcAt(q)) * step(0.5, distance(q, except));
+	}
+	return n;
+}
+
+// 1.0 where the pixel at p is a black island: alone, or one of a pair,
+// with no other black touching either by side or by corner
+float islandA(vec2 p){
+	float own = strokeA(srcAt(p));
+	float neighbours = blackAround(p, p);
+	float alone = 1.0 - step(0.5, neighbours);
+	float pairedOff = 0.0;
+	for (int i = 0; i < 8; i++){
+		vec2 q = p + around[i];
+		pairedOff += strokeA(srcAt(q)) * (1.0 - step(0.5, blackAround(q, p)));
+	}
+	float paired = step(0.5, neighbours) * (1.0 - step(1.5, neighbours)) * step(0.5, pairedOff);
+	return own * max(alone, paired);
+}
+
 // a neighbour of the pixel being sliced, in that slice's own frame: which
 // quadrant of the pixel the fragment sits in, and the slice's mirroring, are
 // both folded into dirVec, so every case reads as though looking down-forward
@@ -477,7 +508,10 @@ vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	res = mix(res, col3, sliceC * (1.0 - notchC) * (1.0 - junctionC) * e3 * step(dist3, 0.0) * step(0.0, col3.r));
 	res = mix(res, col4, sliceF * (1.0 - notchF) * e4 * step(dist4, 0.0) * step(0.0, col4.r));
 	res = mix(res, col5, sliceD * (1.0 - notchD) * e5 * step(dist5, 0.0) * step(0.0, col5.r));
-	return res;
+	//A black island - one pixel, or two, with no other black touching them -
+	//is a dot the artist sized, so it keeps its whole square rather than
+	//being rounded down to a smaller one
+	return mix(res, vec4(-1.0), islandA(px));
 }
 
 //based on down-forward direction; branchless: all five slant cases evaluate,
