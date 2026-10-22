@@ -10,9 +10,9 @@ precision highp float;
  * corner, the step is a join only where it runs straighter through each of
  * its pixels than the links they already have - a pixel already carrying a
  * line as straight as the step could make cannot also take it, and the fill
- * between connects. A region's corner (a pixel in a solid block) carries
- * no line and joins nothing: a lone pixel touching it stays a dot rather
- * than becoming a spur.
+ * between connects. A region's pixel - solid, or a corner of a region's
+ * ragged edge - carries no line and joins nothing: a lone pixel touching it
+ * stays a dot rather than becoming a spur.
  *
  * Where the step is open to both its pixels, a stroke's end with that one
  * way left to carry on takes it - unless another end with no other way is
@@ -69,6 +69,41 @@ int diagonalLink(ivec2 p, ivec2 d){
 	return settledTlBr == pqIsTlBr ? linked : notLinked;
 }
 
+// whether p is solid: in a 2x2 block of black with more black around it
+// reached by side paths than a lone block has. A lone 2x2 block is a fat
+// corner a line may pass through; more is a region's bulk
+bool isSolid(ivec2 p){
+	if (!isBlack(p)) return false;
+	int bulk = 0;
+	bool inBlock = false;
+	for (int i = 0; i < 4; i++){
+		if (isBlack(p + dirs[i])) bulk++;
+	}
+	for (int i = 4; i < 8; i++){
+		ivec2 d = dirs[i];
+		if (isBlack(p + d)){
+			bool sideX = isBlack(p + ivec2(d.x, 0));
+			bool sideY = isBlack(p + ivec2(0, d.y));
+			if (sideX || sideY) bulk++;
+			if (sideX && sideY) inBlock = true;
+		}
+	}
+	return inBlock && bulk > 3;
+}
+
+// whether p is a region's pixel: solid itself, or a corner of a region's
+// ragged edge - two black sides at a right angle, one of them solid - as
+// where a highlight notches a blob
+bool isRegionPixel(ivec2 p){
+	if (isSolid(p)) return true;
+	for (int i = 0; i < 4; i++){
+		ivec2 a = p + dirs[i];
+		ivec2 b = p + dirs[(i + 1) & 3];
+		if (isBlack(a) && isBlack(b) && (isSolid(a) || isSolid(b))) return true;
+	}
+	return false;
+}
+
 // the links a pixel has: the directions of its black sides and of its
 // linked diagonals
 struct Links {
@@ -82,30 +117,16 @@ Links linksOf(ivec2 p){
 	Links links;
 	links.count = 0;
 	links.candidates = 0;
-	// the black around p that is bulk rather than line: its sides, and the
-	// diagonals reached by a side path
-	int bulk = 0;
-	bool inBlock = false;
 	for (int i = 0; i < 4; i++){
-		if (isBlack(p + dirs[i])){
-			links.dir[links.count++] = normalize(vec2(dirs[i]));
-			bulk++;
-		}
+		if (isBlack(p + dirs[i])) links.dir[links.count++] = normalize(vec2(dirs[i]));
 	}
 	for (int i = 4; i < 8; i++){
 		ivec2 d = dirs[i];
 		int link = diagonalLink(p, d);
 		if (link == linked) links.dir[links.count++] = normalize(vec2(d));
 		if (link == candidate) links.candidates++;
-		if (isBlack(p + d)){
-			bool bySides = isBlack(p + ivec2(d.x, 0)) && isBlack(p + ivec2(0, d.y));
-			bool bySide = isBlack(p + ivec2(d.x, 0)) || isBlack(p + ivec2(0, d.y));
-			if (bySide) bulk++;
-			if (bySides) inBlock = true;
-		}
 	}
-	// a lone 2x2 block is a fat corner a line may pass through; more is a region
-	links.isRegion = inBlock && bulk > 3;
+	links.isRegion = isRegionPixel(p);
 	return links;
 }
 
