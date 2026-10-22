@@ -11,7 +11,7 @@ import {
   type JsonItemType,
 } from "../../../../../../model/json/JsonItem";
 import { useAppDispatch } from "../../../../../../store/hooks";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { closeMenuThunk } from "../../../../../../store/slices/gameMenus/closeMenuThunk";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
@@ -38,7 +38,7 @@ export const CheatsCmdKDialog = <RoomId extends string>() => {
 
   return (
     <DialogPortal>
-      <Border onClick={useDispatchActionCallback(backToParentMenu)} />
+      <Border onClick={useDispatchActionCallback(closeMenuThunk, "cmdk")} />
       <Dialog
         class="p-1 bg-metallicBlueHalfbrite"
         dialogId="cmdk"
@@ -55,7 +55,7 @@ export const CheatsCmdKDialog = <RoomId extends string>() => {
               // editor tool room ids are not this campaign's room ids:
               itemTool.config as JsonItemConfig<JsonItemType, RoomId>,
             );
-            dispatch(backToParentMenu());
+            dispatch(closeMenuThunk("cmdk"));
           }}
           onKeyDown={stopKeydownReachingGame}
         />

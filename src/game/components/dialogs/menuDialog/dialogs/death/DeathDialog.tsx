@@ -1,8 +1,7 @@
+import { livesAfterLosingLife } from "../../../../../../game/gameState/mutators/livesAfterLosingLife";
 import { pokeableToNumber } from "../../../../../../model/ItemStateMap";
-import {
-  backToParentMenu,
-  type DeathMenuParam,
-} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { closeMenuThunk } from "../../../../../../store/slices/gameMenus/closeMenuThunk";
+import { type DeathMenuParam } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
@@ -23,60 +22,71 @@ type DeathOutcome =
   | { kind: "gameOver" }
   | { kind: "respawn" };
 
+/**
+ * what this death leads to, worked out by applying the game's own lives rules
+ * to copies of the lives as they were when the character died
+ */
 const deathOutcome = ({
   dyingCharacterName,
-  headLives: rawHeadLives,
-  heelsLives: rawHeelsLives,
+  headLives,
+  heelsLives,
 }: DeathMenuParam): DeathOutcome => {
-  const headLives = pokeableToNumber(rawHeadLives);
-  const heelsLives = pokeableToNumber(rawHeelsLives);
-
-  if (dyingCharacterName === "headOverHeels") {
-    const minLives = Math.min(headLives, heelsLives);
-    const maxLives = Math.max(headLives, heelsLives);
-
-    if (minLives <= 1 && maxLives >= 2) {
-      const donorName = headLives > heelsLives ? "Head" : "Heels";
-      const dyingName = headLives > heelsLives ? "Heels" : "Head";
-      return {
-        kind: "donate",
-        dyingName,
-        donorName,
-        livesToDonate: maxLives === 2 ? 1 : 2,
-      };
-    }
-
-    if (minLives <= 1 && maxLives <= 1) {
-      return { kind: "gameOver" };
-    }
-
-    return { kind: "respawn" };
+  // a death in symbiosis costs both of them a life, head's first
+  const headLoses = dyingCharacterName !== "heels";
+  const heelsLoses = dyingCharacterName !== "head";
+  let headLivesAfter = headLives;
+  let heelsLivesAfter = heelsLives;
+  if (headLoses) {
+    ({ losingLives: headLivesAfter, otherLives: heelsLivesAfter } =
+      livesAfterLosingLife(headLivesAfter, heelsLivesAfter, -1));
+  }
+  if (heelsLoses) {
+    ({ losingLives: heelsLivesAfter, otherLives: headLivesAfter } =
+      livesAfterLosingLife(heelsLivesAfter, headLivesAfter, -1));
   }
 
-  const dyingLives = dyingCharacterName === "head" ? headLives : heelsLives;
-  const otherLives = dyingCharacterName === "head" ? heelsLives : headLives;
-  const otherName = dyingCharacterName === "head" ? "Heels" : "Head";
+  const headBefore = pokeableToNumber(headLives);
+  const heelsBefore = pokeableToNumber(heelsLives);
+  const headAfter = pokeableToNumber(headLivesAfter);
+  const heelsAfter = pokeableToNumber(heelsLivesAfter);
 
-  if (dyingLives > 1) {
-    return { kind: "respawn" };
+  if (headAfter === 0 && heelsAfter === 0) {
+    return { kind: "gameOver" };
   }
-
-  if (otherLives >= 2) {
-    const dyingName = dyingCharacterName === "head" ? "Head" : "Heels";
+  if (headBefore > 0 && headAfter === 0) {
     return {
-      kind: "donate",
-      dyingName,
-      donorName: otherName,
-      livesToDonate: otherLives === 2 ? 1 : 2,
+      kind: "carryOnAlone",
+      outOfGameName: "Head",
+      survivorName: "Heels",
     };
   }
-
-  if (otherLives >= 1) {
-    const outOfGameName = dyingCharacterName === "head" ? "Head" : "Heels";
-    return { kind: "carryOnAlone", outOfGameName, survivorName: otherName };
+  if (heelsBefore > 0 && heelsAfter === 0) {
+    return {
+      kind: "carryOnAlone",
+      outOfGameName: "Heels",
+      survivorName: "Head",
+    };
   }
-
-  return { kind: "gameOver" };
+  // a character left with nothing by its own death but carrying on was given
+  // a life by the other, at the cost of the other's lives beyond its own death
+  if (headLoses && headBefore - 1 === 0) {
+    return {
+      kind: "donate",
+      dyingName: "Head",
+      donorName: "Heels",
+      livesToDonate:
+        heelsBefore - (heelsLoses ? 1 : 0) - heelsAfter === 1 ? 1 : 2,
+    };
+  }
+  if (heelsLoses && heelsBefore - 1 === 0) {
+    return {
+      kind: "donate",
+      dyingName: "Heels",
+      donorName: "Head",
+      livesToDonate: headBefore - (headLoses ? 1 : 0) - headAfter === 1 ? 1 : 2,
+    };
+  }
+  return { kind: "respawn" };
 };
 
 const headColourClass = "text-zxCyan toppy:text-toppyCool2";
@@ -84,6 +94,34 @@ const heelsColourClass = "text-zxMagenta toppy:text-toppyPink2";
 
 const characterColourClass = (name: string) =>
   name === "Head" ? headColourClass : heelsColourClass;
+
+export type LostLifeMessageProps = {
+  dyingCharacterName: DeathMenuParam["dyingCharacterName"];
+};
+
+/**
+ * who lost the life - which of two dialogs queued by deaths close together
+ * this one is
+ */
+const LostLifeMessage = ({ dyingCharacterName }: LostLifeMessageProps) => (
+  <div
+    class="px-1 bg-zxBlack py-oneScaledPix"
+    data-test-id="death-lost-life-message"
+  >
+    <span class="text-single-line">
+      {dyingCharacterName === "headOverHeels" ?
+        <>
+          <span class={headColourClass}>Head</span> and{" "}
+          <span class={heelsColourClass}>Heels</span>
+        </>
+      : dyingCharacterName === "head" ?
+        <span class={headColourClass}>Head</span>
+      : <span class={heelsColourClass}>Heels</span>}{" "}
+      lost a life
+      {dyingCharacterName === "headOverHeels" ? " each" : ""}
+    </span>
+  </div>
+);
 
 type OutcomeMessageProps = {
   outcome: DeathOutcome;
@@ -126,7 +164,7 @@ const OutcomeMessage = ({ outcome }: OutcomeMessageProps) => {
             <span class={characterColourClass(outcome.outOfGameName)}>
               {outcome.outOfGameName}
             </span>{" "}
-            out of the game
+            is out of the game
           </div>
           <div>
             <span class={characterColourClass(outcome.survivorName)}>
@@ -167,7 +205,7 @@ const actionText = (outcome: DeathOutcome): string => {
 export type DeathDialogProps = DeathMenuParam;
 
 const DeathDialog = (props: DeathDialogProps) => {
-  const dismiss = useDispatchActionCallback(backToParentMenu);
+  const dismiss = useDispatchActionCallback(closeMenuThunk, "death");
   const outcome = deathOutcome(props);
   const action = actionText(outcome);
 
@@ -187,6 +225,7 @@ const DeathDialog = (props: DeathDialogProps) => {
           <span class="text-double-height text-nowrap">Uh-oh!</span>
         </div>
         <span class="zx">
+          <LostLifeMessage dyingCharacterName={props.dyingCharacterName} />
           <OutcomeMessage outcome={outcome} />
           {detectDeviceType() === "desktop" ?
             <div class="text-multi-line px-1 bg-zxBlack py-oneScaledPix">
@@ -204,9 +243,9 @@ const DeathDialog = (props: DeathDialogProps) => {
               </div>
             </div>
           : <div class="px-1 bg-zxBlack py-oneScaledPix">
-              <span class="me-1 text-zxRed toppy:text-toppyPink2 text-single-line">
+              <span class="text-zxRed toppy:text-toppyPink2 text-single-line">
                 Tap screen
-              </span>
+              </span>{" "}
               <span class="text-single-line">to {action}</span>
             </div>
           }

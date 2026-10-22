@@ -4,7 +4,7 @@ import {
   pageTitle,
 } from "../../../../../manual/pages";
 import { type TextureTailwindClass } from "../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import { backToParentMenu } from "../../../../../store/slices/gameMenus/gameMenusSlice";
+import { closeMenuThunk } from "../../../../../store/slices/gameMenus/closeMenuThunk";
 import { useDispatchActionCallback } from "../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../ui/Border";
 import { Dialog } from "../../../../../ui/Dialog";
@@ -41,7 +41,7 @@ const ReadTheManualDialog = () => {
     <DialogPortal>
       <Border
         class="bg-midGrey zx:bg-zxCyan toppy:bg-toppyCool2"
-        onClick={useDispatchActionCallback(backToParentMenu)}
+        onClick={useDispatchActionCallback(closeMenuThunk, "readTheManual")}
       />
       <Dialog
         tall
@@ -52,7 +52,10 @@ const ReadTheManualDialog = () => {
         }
         dialogId="readTheManual"
       >
-        <DialogTitleBar class="pl-1 mobile:px-3 pt-1" />
+        <DialogTitleBar
+          dialogId="readTheManual"
+          class="pl-1 mobile:px-3 pt-1"
+        />
         <div
           class={
             // set up scrolling and the scroll bar:

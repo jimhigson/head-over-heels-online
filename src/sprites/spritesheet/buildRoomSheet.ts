@@ -4,27 +4,27 @@ import {
   Rectangle,
   type RenderTexture,
   Sprite,
-  Spritesheet,
   Texture,
 } from "pixi.js";
 
+import { spritesheetSideLength } from "../../../gfx/spritesheetMeta/spritesheetSize.macro.ts" with { type: "macro" };
 import { PaletteSwapFilter } from "../../game/render/filters/PaletteSwapFilter";
 import { binariseAlphaFilter } from "../../game/render/filters/shadows/binariseAlphaFilter";
 import { hardenChannelsFilter } from "../../game/render/filters/shadows/hardenChannelsFilter";
 import { objectEntriesIter } from "../../utils/entries";
-import { applySpritesheetFlips } from "./applySpritesheetFlips";
 import {
-  type AppSpritesheet,
   type AppSpritesheetDataWithVariants,
   type AppSpritesheetWithVariants,
   withVariantsBaked,
 } from "./AppSpritesheet";
-import { type FrameRect } from "./composeSpritesheetForUpscale";
 import { reifyTextureIds } from "./reifyTextureIds";
-import { reuseOrCreateSheetTarget } from "./reuseOrCreateSheetTarget";
+import { type FrameRect } from "./repackSpritesheetForSmoothUpscale";
+import { reuseOrCreateRoomSheetTexture } from "./reuseOrCreateRoomSheetTexture";
 import { roomSpritesheetTextureSwops } from "./roomSpritesheetTextureSwops";
-import { spritesheetSize } from "./spritesheetData/makeBaseSpritesheetData";
-import { makeSpritesheetData } from "./spritesheetData/makeSpritesheetData";
+import {
+  makeSpritesheetData,
+  type TextureId,
+} from "./spritesheetData/makeSpritesheetData";
 import { packAllFrames } from "./spritesheetData/packAllFrames";
 import {
   spritesheetArtName,
@@ -37,6 +37,7 @@ import {
   type VariantSuffix,
   type VariantTextureId,
 } from "./spritesheetData/variantSpritesheetData";
+import { spritesheetOverBakedTexture } from "./spritesheetOverBakedTexture";
 import { type VariantBuildContext } from "./VariantBuildContext";
 import {
   bakeableVariantSuffixes,
@@ -73,21 +74,17 @@ export const buildRoomSheet = (
    * image - the composition lays the frames out afresh, so without these the
    * bake would read every one of them from the wrong place
    */
-  repackedFrameRects?: ReadonlyMap<string, FrameRect>,
+  repackedFrameRects?: ReadonlyMap<TextureId, FrameRect>,
 ): { sheet: AppSpritesheetWithVariants; target: RenderTexture } => {
   const { pixiRenderer, spritesheetMetaData } = context;
   const uncolourised = spritesheetMetaData.isUncolourisedOf !== undefined;
   const artName = spritesheetArtName(spritesheetMetaData);
 
   const artSpritesheetMeta = spritesheetMetas[artName];
-  const rawData = makeSpritesheetData(artSpritesheetMeta);
-  const data: AppSpritesheetDataWithVariants =
-    repackedFrameRects === undefined ? rawData : (
-      {
-        ...rawData,
-        frames: withRepackedRects(rawData.frames, repackedFrameRects),
-      }
-    );
+  const data: AppSpritesheetDataWithVariants = withRepackedRects(
+    makeSpritesheetData(artSpritesheetMeta),
+    repackedFrameRects,
+  );
 
   const { ambient, textureSpecific = [] } = roomSpritesheetTextureSwops(
     context.roomScenery,
@@ -141,26 +138,28 @@ export const buildRoomSheet = (
     return `${baseKeyPrefix}${matched.join(",")}:${applyAmbient ? "a" : ""}`;
   };
 
-  const pack = packAllFrames(data.frames, groupKeyOf, spritesheetSize.w);
+  const pack = packAllFrames(data.frames, groupKeyOf, spritesheetSideLength);
 
-  // re-point every frame at its packed dest; an aliased variant takes its base's
-  const frames = {} as AppSpritesheetDataWithVariants["frames"];
-  for (const [id, entry] of objectEntriesIter(data.frames)) {
-    const dest =
-      pack.rects[id] ?? pack.rects[baseIdOfVariant(id as VariantTextureId)];
-    frames[id] = { ...entry, frame: { ...entry.frame, x: dest.x, y: dest.y } };
-  }
-  const packedData: AppSpritesheetDataWithVariants = { ...data, frames };
+  // every frame at its packed dest; an aliased variant takes its base's
+  const packedData = withRepackedRects(
+    data,
+    new Map(
+      objectEntriesIter(data.frames).map(([id]) => [
+        id,
+        pack.rects[id] ?? pack.rects[baseIdOfVariant(id as VariantTextureId)],
+      ]),
+    ),
+  );
 
   // any upscale baked into the original sheet is carried through to
   // the room sheet: the bake's blits and filter passes all run at this
   // backing-store resolution over the same logical layout
-  const spritesheetUpscale = baseTexture.source.resolution;
+  const spritesheetSmoothUpscale = baseTexture.source.resolution;
 
-  const target = reuseOrCreateSheetTarget(
+  const target = reuseOrCreateRoomSheetTexture(
     previousTarget,
     pack.height,
-    spritesheetUpscale,
+    spritesheetSmoothUpscale,
   );
 
   // shared (destroyed once, after all groups): the ambient and texture-specific
@@ -271,17 +270,13 @@ export const buildRoomSheet = (
     cellTexture.destroy(false);
   }
 
-  const sheet = new Spritesheet(target, packedData) as AppSpritesheet;
-  // pixi's Spritesheet applies the sheet data's meta.scale (1) to the texture
-  // source, wiping any bake resolution - restore it before parsing
-  // so frame UVs are computed against the logical 1x size:
-  sheet.textureSource.resolution = spritesheetUpscale;
-  sheet.parseSync();
-  sheet.textureSource.scaleMode = "nearest";
-  sheet.spritesheetArtName = artName;
+  const sheet = spritesheetOverBakedTexture(
+    target,
+    packedData,
+    artName,
+    artSpritesheetMeta,
+  );
   sheet.ambient = ambient;
-  sheet.spritesheetMeta = artSpritesheetMeta;
-  applySpritesheetFlips(sheet);
 
   return { sheet: withVariantsBaked(sheet), target };
 };

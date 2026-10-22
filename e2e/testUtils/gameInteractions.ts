@@ -249,8 +249,9 @@ const roomHasGuardian = (page: Page): Promise<boolean> =>
 
 /**
  * Summon a guardian and wait for either a death dialog or an end-of-game
- * dialog. If a death dialog appears, dismiss it and return the sr-only text.
- * If an end-of-game dialog appears, return undefined (game over).
+ * dialog. If a death dialog appears, dismiss it and return its text, a line
+ * per line as laid out on screen. If an end-of-game dialog appears, return
+ * undefined (game over).
  */
 export const loseOneLife = async (page: Page): Promise<string | undefined> => {
   const gameOverDialog = page
@@ -299,11 +300,13 @@ export const loseOneLife = async (page: Page): Promise<string | undefined> => {
     return undefined;
   }
   if (await deathDialog.isVisible().catch(() => false)) {
-    const dialogText = (await deathDialog.allTextContents())
-      .join(" ")
-      .replace(/\s+/g, " ")
-      .trim();
-    log(`death dialog text: "${dialogText}"`);
+    // as laid out, so each block of the dialog is its own line
+    const dialogText = (await deathDialog.innerText())
+      .split("\n")
+      .map((line) => line.replace(/\s+/g, " ").trim())
+      .filter((line) => line !== "")
+      .join("\n");
+    log(`death dialog text: ${JSON.stringify(dialogText)}`);
     log("dismissing death dialog");
     await dispatchKeyPress(page, " ", "Space");
     await deathDialog.waitFor({

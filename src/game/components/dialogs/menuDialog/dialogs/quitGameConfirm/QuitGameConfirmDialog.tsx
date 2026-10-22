@@ -4,7 +4,7 @@ import {
 } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { gameOver } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { closeMenuThunk } from "../../../../../../store/slices/gameMenus/closeMenuThunk";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
@@ -86,7 +86,10 @@ const QuitGameConfirmDialog = () => {
                   class={`${spriteLeaderClasses} sprite ${noUnselectedTextureClass} ${noSelectedTextureClass} sprites-normal-height zx:sprite-revert-to-white`}
                 />
               }
-              onSelect={useDispatchActionCallback(backToParentMenu)}
+              onSelect={useDispatchActionCallback(
+                closeMenuThunk,
+                "quitGameConfirm",
+              )}
               verticalAlignItemsCentre
             />
             {hasReincarnationPoint && (

@@ -327,7 +327,8 @@ export class TransitionSurfaceRenderer<
         antialias: false,
         // snapshot at the sheet's baked upscale factor so smooth-sprites
         // art doesn't drop to 1x detail during the rotation transition:
-        resolution: this.renderContext.general.spritesheets.spritesheetUpscale,
+        resolution:
+          this.renderContext.general.spritesheets.spritesheetSmoothUpscale,
       });
       this.#cuboidSnapshotTexture = texture;
       // position for the snapshot so the art's origin lands on (artShift). The

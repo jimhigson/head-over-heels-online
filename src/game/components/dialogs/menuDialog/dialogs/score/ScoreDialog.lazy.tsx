@@ -7,4 +7,5 @@ import { mainMenuDialogColourClasses } from "../mainMenu/mainMenuDialogColourCla
 export const LazyScoreDialog = LazyDialogHoc(
   lazy(importOnce(() => import("./ScoreDialog"))),
   mainMenuDialogColourClasses,
+  "score",
 );

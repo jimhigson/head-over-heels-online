@@ -7,4 +7,5 @@ import { mainMenuDialogColourClasses } from "../mainMenu/mainMenuDialogColourCla
 export const LazyCommunityGamesDialog = LazyDialogHoc(
   lazy(importOnce(() => import("./CommunityGamesDialog"))),
   mainMenuDialogColourClasses,
+  "communityGames",
 );

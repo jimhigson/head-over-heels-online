@@ -4,6 +4,7 @@ import {
 } from "../../src/sprites/palette/spritesheetPalette";
 import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { octantIndexOfDirection } from "../../src/utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
+import artUrl from "../spritesToppy.webp";
 import { itemRenderExtents } from "./itemRenderExtents";
 
 export const toppySpritesheetMeta: SpritesheetMetadata<
@@ -11,6 +12,7 @@ export const toppySpritesheetMeta: SpritesheetMetadata<
   "toppy"
 > = {
   name: "toppy",
+  artUrl,
   spritesheetWhenPaused: "toppy",
   palettes: { basic: paletteToppyHex },
   itemRenderExtents,

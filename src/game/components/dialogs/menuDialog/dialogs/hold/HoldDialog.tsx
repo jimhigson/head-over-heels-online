@@ -1,4 +1,4 @@
-import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { closeMenuThunk } from "../../../../../../store/slices/gameMenus/closeMenuThunk";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
@@ -13,7 +13,7 @@ const HoldDialog = () => {
         class="!h-min !w-max text-center text-zxCyan toppy:text-toppyCool1 p-0 bg-transparent"
         // need to be able to click/tap on the hold dialog to exit, or it
         // isn't possible to leave it on devices with no keyboard/gamepad:
-        onClick={useDispatchActionCallback(backToParentMenu)}
+        onClick={useDispatchActionCallback(closeMenuThunk, "hold")}
         dialogId="hold"
         ariaLabel="the game is paused, unpause it to continue playing (press the pause key, default 'p', or tap/click the dialog)"
       >
@@ -49,9 +49,9 @@ const HoldDialog = () => {
               </div>
             </div>
           : <div class="px-1 bg-zxBlack py-oneScaledPix">
-              <span class="me-1 text-zxRed toppy:text-toppyPink2 text-single-line">
+              <span class="text-zxRed toppy:text-toppyPink2 text-single-line">
                 Tap screen
-              </span>
+              </span>{" "}
               <span class="text-single-line">to continue</span>
             </div>
           }

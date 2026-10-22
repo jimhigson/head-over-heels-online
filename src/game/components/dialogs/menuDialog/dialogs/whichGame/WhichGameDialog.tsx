@@ -30,7 +30,11 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
         class={`${mainMenuDialogColourClasses} zx:text-zxCyan toppy:text-toppyWarm3 text-highlightBeige selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 gap-y-2 resHandheld:gap-y-1 py-0 gap-y-0`}
         dialogId="whichGame"
       >
-        <DialogTitleBar path={["Select which game"]} class="mobile:px-4 pt-1" />
+        <DialogTitleBar
+          dialogId="whichGame"
+          path={["Select which game"]}
+          class="mobile:px-4 pt-1"
+        />
         <div class={mainMenuScrollClasses}>
           <MenuItems class="gap-y-1">
             <MenuItem

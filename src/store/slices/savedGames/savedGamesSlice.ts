@@ -54,9 +54,13 @@ const sliceName = "savedGames" as const;
  *   - gameInPlaySlice writes gameInPlay + sets gameRunning=true
  *   - gameMenusSlice opens the hold (paused) menu
  */
-export const savedGameLoadedOnAppLoad = createAction<SavedStoreGameInPlay>(
-  `${sliceName}/savedGameLoadedOnAppLoad`,
-);
+export const savedGameLoadedOnAppLoad = createAction<{
+  gameInPlay: SavedStoreGameInPlay;
+  /**
+   * when the hold menu it opens was opened, by the app ticker's `time`
+   */
+  openedAt: number;
+}>(`${sliceName}/savedGameLoadedOnAppLoad`);
 
 export const savedGamesSlice = createSlice({
   name: sliceName,

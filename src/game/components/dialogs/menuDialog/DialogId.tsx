@@ -24,6 +24,7 @@ export type DialogId =
   | "readTheManual"
   | "reincarnatedRestart"
   | "score"
+  | "smoothing"
   | "sound"
   | "whichGame"
   | `markdown/${MarkdownPageName}`;

@@ -2,6 +2,7 @@ import { useEffect } from "preact/hooks";
 
 import { useMaybeGameApi } from "../../game/components/GameApiContext";
 import { saveGameThunk } from "../../game/gameState/saving/saveGameThunk";
+import { appTicker } from "../../utils/ticker/appTickerInstance";
 import { useAppDispatch } from "../hooks";
 import { holdPressed } from "../slices/gameMenus/gameMenusSlice";
 
@@ -16,7 +17,7 @@ export const useHoldOnWindowHidden = (): void => {
 
     const handleVisibilityChangeByHolding = () => {
       if (document.visibilityState === "hidden") {
-        dispatch(holdPressed("hold"));
+        dispatch(holdPressed({ press: "hold", openedAt: appTicker.time }));
 
         // probably a good time to save:
         dispatch(saveGameThunk(gameApi.gameState));

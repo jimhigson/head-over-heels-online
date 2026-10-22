@@ -1,11 +1,11 @@
 import { useMemo } from "preact/hooks";
 
+import { spritesheetSideLength } from "../../gfx/spritesheetMeta/spritesheetSize.macro.ts" with { type: "macro" };
 import { sanitiseForClassName } from "../game/components/tailwindSprites/SanitiseForClassName";
 import { zxSpectrumFrameRate } from "../originalGame";
 import { animationIsUniformlyFlipped } from "../sprites/css/spriteCss";
 import { type AppSpritesheetData } from "../sprites/spritesheet/AppSpritesheet";
 import { type AppSpriteFrame } from "../sprites/spritesheet/spritesheetData/AppSpriteFrame";
-import { spritesheetSize } from "../sprites/spritesheet/spritesheetData/makeBaseSpritesheetData";
 import {
   type BaseAnimationId,
   type BaseTextureId,
@@ -187,8 +187,8 @@ export const SvgSpriteInRoom = ({
         >
           <image
             href={spritesheetArtUrl}
-            width={spritesheetSize.w}
-            height={spritesheetSize.h}
+            width={spritesheetSideLength}
+            height={spritesheetSideLength}
             x={-firstFrame.x}
             y={-firstFrame.y}
             style={{ imageRendering: "pixelated" }}

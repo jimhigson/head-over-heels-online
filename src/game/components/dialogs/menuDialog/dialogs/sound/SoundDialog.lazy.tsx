@@ -7,4 +7,5 @@ import { optionsDialogColourClasses } from "../optionsDialogColourClasses";
 export const LazySoundDialog = LazyDialogHoc(
   lazy(importOnce(() => import("./SoundDialog"))),
   optionsDialogColourClasses,
+  "sound",
 );

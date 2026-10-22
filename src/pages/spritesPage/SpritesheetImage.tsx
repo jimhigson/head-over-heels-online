@@ -15,10 +15,8 @@ import {
   type BaseTextureId,
   type FramesWithSpeed,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import {
-  useCurrentSpritesheetData,
-  useIsUncolourised,
-} from "../../store/slices/gameMenus/gameMenusSelectors";
+import { useDrawnSpritesheetData } from "../../sprites/spritesheet/useDrawnSpritesheetData";
+import { useIsUncolourised } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { useTip } from "../../ui/tip/useTip";
 import { entries } from "../../utils/entries";
 import { type Xy } from "../../utils/vectors/vectors";
@@ -44,7 +42,7 @@ const AnimationPreview = ({
   animationName: string;
   frames: FramesWithSpeed<BaseTextureId[]>;
 }) => {
-  const currentSpritesheetData = useCurrentSpritesheetData();
+  const currentSpritesheetData = useDrawnSpritesheetData();
   const uncolourised = useIsUncolourised();
   const styleRef = useRef<HTMLStyleElement>(null);
 
@@ -94,7 +92,7 @@ const TextureIdEntry = ({
   frame: AppSpriteFrame;
   flipX: boolean;
 }) => {
-  const currentSpritesheetData = useCurrentSpritesheetData();
+  const currentSpritesheetData = useDrawnSpritesheetData();
   const uncolourised = useIsUncolourised();
 
   const containingAnimations = entries(
@@ -130,7 +128,7 @@ const TextureIdEntry = ({
 };
 
 const SpriteOverlayTooltip = ({ position }: { position: SpritePosition }) => {
-  const currentSpritesheetData = useCurrentSpritesheetData();
+  const currentSpritesheetData = useDrawnSpritesheetData();
   const { frame, textureIds } = position;
 
   return (
@@ -183,7 +181,7 @@ export const SpritesheetImage = ({
   spriteFilter: string;
 }) => {
   const uncolourised = useIsUncolourised();
-  const currentSpritesheetData = useCurrentSpritesheetData();
+  const currentSpritesheetData = useDrawnSpritesheetData();
   const [mousePos, setMousePos] = useState<null | Xy>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 

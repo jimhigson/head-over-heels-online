@@ -39,7 +39,11 @@ const SoundDialog = () => {
   const roomEntryTunes = useAppSelector(selectRoomEntryTunes);
   return (
     <Dialog fullScreen class={optionsDialogClasses} dialogId="sound">
-      <DialogTitleBar path={["Options", "Sounds"]} class={titleBarClasses} />
+      <DialogTitleBar
+        dialogId="sound"
+        path={["Options", "Sounds"]}
+        class={titleBarClasses}
+      />
       <div class={optionsMenuScrollClasses}>
         <MenuItems>
           <MenuItem

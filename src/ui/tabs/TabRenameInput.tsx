@@ -1,7 +1,7 @@
 import { type RefObject } from "preact";
 import { useEffect, useRef } from "preact/hooks";
 
-import { CssVariables } from "../../game/components/CssVariables";
+import { CssUpscaleVariables } from "../../game/components/CssUpscaleVariables";
 import { useUniqueId } from "../../utils/preact/useUniqueId";
 import { useAutoFocus } from "../useAutoFocus";
 import { type TabRename } from "./Tab";
@@ -81,7 +81,7 @@ export const TabRenameInput = ({
         }}
         onBlur={onDone}
       />
-      <CssVariables scaleFactor={2}>
+      <CssUpscaleVariables scaleFactor={2}>
         <div
           id={errorId}
           ref={errorPopoverRef}
@@ -91,7 +91,7 @@ export const TabRenameInput = ({
         >
           {whyNotTakeable}
         </div>
-      </CssVariables>
+      </CssUpscaleVariables>
     </>
   );
 };

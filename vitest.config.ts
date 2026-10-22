@@ -1,11 +1,12 @@
-import { unrunRunner } from "unplugin-macros";
 import Macros from "unplugin-macros/vite";
 import glsl from "vite-plugin-glsl";
 import { defineConfig } from "vitest/config";
 
+import { macroRunner } from "./buildTools/macroRunner";
+
 export default defineConfig({
   // glsl: item behaviours make renderers, which import shaders
-  plugins: [Macros({ runner: unrunRunner() }), glsl()],
+  plugins: [Macros({ runner: macroRunner() }), glsl()],
   resolve: {
     // as in the app's builds, third-party react libraries run on preact:
     alias: {

@@ -52,6 +52,15 @@ export abstract class AppTicker {
   /** from minFPS: the longest tick allowed, so a stalled tab cannot teleport */
   #maxElapsedMS = 100;
   #head = AppTickerListener.of(undefined, undefined, Infinity);
+  #time = 0;
+
+  /**
+   * the app's clock: the ms of every tick so far, summed. Time stands still
+   * between ticks, so it is the same whichever clock drives the ticks
+   */
+  get time(): number {
+    return this.#time;
+  }
 
   protected abstract startTicking(): void;
   protected abstract stopTicking(): void;
@@ -92,6 +101,26 @@ export abstract class AppTicker {
     }
 
     return this;
+  }
+
+  /**
+   * the browser's `setTimeout`, on the app's clock: call `fn` once, on the
+   * first tick at least `ms` of {@link time} from now
+   *
+   * @returns a function cancelling the call, if it is still to come
+   */
+  setTimeout(ms: number, fn: () => void): () => void {
+    const dueAt = this.#time + ms;
+    const callWhenDue = () => {
+      if (this.#time >= dueAt) {
+        this.remove(callWhenDue);
+        fn();
+      }
+    };
+    this.add(callWhenDue);
+    return () => {
+      this.remove(callWhenDue);
+    };
   }
 
   /** @see https://pixijs.download/release/docs/ticker.Ticker.html#start */
@@ -151,6 +180,7 @@ export abstract class AppTicker {
 
   /** call every listener, in priority order */
   protected emit(): void {
+    this.#time += this.elapsedMS;
     let listener = this.#head.next;
     while (listener !== undefined) {
       listener = listener.emit(this);

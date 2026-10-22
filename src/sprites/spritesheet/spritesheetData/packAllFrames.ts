@@ -4,18 +4,18 @@ import { type AppSpriteFrame } from "./AppSpriteFrame";
 export type PackRect = { x: number; y: number; w: number; h: number };
 
 /** one packed cell: source pixels, destination, its bake group and the ids sharing it */
-export type PackedCell = {
+export type PackedCell<Id extends string> = {
   source: PackRect;
   dest: PackRect;
   groupKey: string;
-  ids: string[];
+  ids: Id[];
 };
 
-export type PackedFrames = {
+export type PackedFrames<Id extends string> = {
   /** the destination rect every packed (non-aliased) id lives at */
-  rects: Record<string, PackRect>;
+  rects: Record<Id, PackRect>;
   /** one entry per unique cell, so a bake can group cells by their bake recipe */
-  cells: PackedCell[];
+  cells: PackedCell<Id>[];
   /** total rows used from y=0 (for the sheet-fits check) */
   height: number;
 };
@@ -32,17 +32,17 @@ const gutter = 2;
  * lives in the texture uvs, not the pixels. Sorted by height (descending, key
  * as tie-break) so the layout is stable across runs and snapshot-testable.
  */
-export const packAllFrames = (
-  frames: Record<string, { frame: AppSpriteFrame }>,
+export const packAllFrames = <Id extends string>(
+  frames: Record<Id, { frame: AppSpriteFrame }>,
   /**
    * the bake-group key for an id, or null to leave it out of the pack (an
    * aliased frame whose pixels come from another id's cell)
    */
-  groupKeyOf: (id: string) => null | string,
+  groupKeyOf: (id: Id) => null | string,
   /** the sheet width to pack within */
   width: number,
-): PackedFrames => {
-  const cellKeyToIds = new Map<string, string[]>();
+): PackedFrames<Id> => {
+  const cellKeyToIds = new Map<string, Id[]>();
   const cellKeyToInfo = new Map<
     string,
     { source: PackRect; groupKey: string }
@@ -77,8 +77,8 @@ export const packAllFrames = (
       );
     });
 
-  const rects: Record<string, PackRect> = {};
-  const cells: PackedCell[] = [];
+  const rects = {} as Record<Id, PackRect>;
+  const cells: PackedCell<Id>[] = [];
 
   let cursorX = gutter;
   let shelfY = gutter;

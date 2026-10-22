@@ -1,7 +1,10 @@
-import { expect } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 import { type ItemInPlay } from "../src/model/ItemInPlay";
-import { advanceUntilInPage } from "./testUtils/advanceGameTime";
+import { type Campaign } from "../src/model/modelTypes";
+import { type RoomJson } from "../src/model/RoomJson";
+import { advanceUntil, advanceUntilInPage } from "./testUtils/advanceGameTime";
+import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
 import {
   clickCheat,
   dispatchKeyPress,
@@ -24,6 +27,145 @@ import { osSlowness } from "./testUtils/osSlowness";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { test } from "./testUtils/test";
 
+/**
+ * head and heels side by side, each with a monster heading towards,
+ * both loose a life with a short time gap between
+ */
+const twoDeathsRoom = {
+  planet: "blacktooth",
+  color: { hue: "cyan", shade: "basic" },
+  items: {
+    floor: {
+      type: "floor",
+      config: {
+        floorType: "standable",
+        scenery: "blacktooth",
+        times: { x: 8, y: 8 },
+      },
+      position: { x: 0, y: 0, z: 0 },
+    },
+    wT: {
+      type: "wall",
+      config: {
+        direction: "towards",
+        tiles: [
+          "plain",
+          "plain",
+          "armour",
+          "shield",
+          "shield",
+          "armour",
+          "plain",
+          "plain",
+        ],
+      },
+      position: { x: 0, y: 0, z: 0 },
+    },
+    wR: {
+      type: "wall",
+      config: {
+        direction: "right",
+        tiles: [
+          "plain",
+          "plain",
+          "armour",
+          "shield",
+          "shield",
+          "armour",
+          "plain",
+          "plain",
+        ],
+      },
+      position: { x: 0, y: 0, z: 0 },
+    },
+    wA: {
+      type: "wall",
+      config: {
+        direction: "away",
+        tiles: [
+          "plain",
+          "plain",
+          "armour",
+          "shield",
+          "shield",
+          "armour",
+          "plain",
+          "plain",
+        ],
+      },
+      position: { x: 0, y: 8, z: 0 },
+    },
+    wL: {
+      type: "wall",
+      config: {
+        direction: "left",
+        tiles: [
+          "plain",
+          "plain",
+          "armour",
+          "shield",
+          "shield",
+          "armour",
+          "plain",
+          "plain",
+        ],
+      },
+      position: { x: 8, y: 0, z: 0 },
+    },
+    heels: {
+      type: "player",
+      config: { which: "heels" },
+      position: { x: 5, y: 3, z: 0 },
+    },
+    head: {
+      type: "player",
+      config: { which: "head" },
+      position: { x: 5, y: 4, z: 0 },
+    },
+    m: {
+      type: "monster",
+      config: {
+        which: "skiHead",
+        style: "greenAndPink",
+        activated: "on",
+        movement: "back-forth",
+        startDirection: "left",
+      },
+      position: { x: 2, y: 4, z: 0 },
+    },
+    m1: {
+      type: "monster",
+      config: {
+        which: "skiHead",
+        style: "greenAndPink",
+        activated: "on",
+        movement: "back-forth",
+        startDirection: "left",
+      },
+      position: { x: 1.875, y: 3, z: 0 },
+    },
+  },
+} satisfies RoomJson<"twoDeaths", string, "blacktooth">;
+
+const twoDeathsCampaign: Campaign<"twoDeaths"> = {
+  locator: { campaignName: "two-deaths", userId: "e2e", version: -1 },
+  rooms: { twoDeaths: twoDeathsRoom },
+};
+
+/**
+ * the characters named by the death dialogs open, top first
+ */
+const openDeathDialogs = (page: Page) =>
+  page.evaluate(() =>
+    window
+      ._e2e_store!.getState()
+      .gameMenus.openMenus.flatMap((openMenu) =>
+        openMenu.menuId === "death" ?
+          [openMenu.menuParam.dyingCharacterName]
+        : [],
+      ),
+  );
+
 test.describe("life and death flows", () => {
   test.setTimeout(120_000 * osSlowness);
 
@@ -36,21 +178,83 @@ test.describe("life and death flows", () => {
     const mobile = testInfo.project.name.includes("mobile");
     const messages = await loseAllLives(page);
     expect(messages).toEqual([
-      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 7 lives left after respawn, heels 8
-      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 6 lives left after respawn
-      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 5 lives left after respawn
-      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 4 lives left after respawn
-      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 3 lives left after respawn
-      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 2 lives left after respawn
-      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 1 life left after respawn
-      `Uh-oh!Heels will donate 2 livesso Head can continue with 1${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 1, heels 8
-      `Uh-oh!Heels will donate 2 livesso Head can continue with 1${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 1, heels 6
-      `Uh-oh!Heels will donate 2 livesso Head can continue with 1${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 1, heels 4
-      `Uh-oh!Heels will donate 1 lifeso Head can continue with 1${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 1, heels 2
-      `Uh-oh!Head out of the gameHeels will carry on alone${mobile ? "Tap screento continue as Heels" : "Press JUMP to continue as Heels:Space🕹A"}`, //head 1, heels 1
-      `Uh-oh!Game over${mobile ? "Tap screento continue" : "Press JUMP to continue:Space🕹A"}`, //heels 1, head 0 - game over
+      `UH-OH!
+Head lost a life
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // Head 7 left after respawn, Heels 8
+      `UH-OH!
+Head lost a life
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // Head 6
+      `UH-OH!
+Head lost a life
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // Head 5
+      `UH-OH!
+Head lost a life
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // Head 4
+      `UH-OH!
+Head lost a life
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // Head 3
+      `UH-OH!
+Head lost a life
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // Head 2
+      `UH-OH!
+Head lost a life
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // Head 1
+      `UH-OH!
+Head lost a life
+Heels will donate 2 lives
+so Head can continue with 1
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // Head 1, Heels 8
+      `UH-OH!
+Head lost a life
+Heels will donate 2 lives
+so Head can continue with 1
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // Head 1, Heels 6
+      `UH-OH!
+Head lost a life
+Heels will donate 2 lives
+so Head can continue with 1
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // Head 1, Heels 4
+      `UH-OH!
+Head lost a life
+Heels will donate 1 life
+so Head can continue with 1
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // Head 1, Heels 2
+      `UH-OH!
+Head lost a life
+Head is out of the game
+Heels will carry on alone
+${mobile ? "Tap screen to continue as Heels" : "Press JUMP to continue as Heels:\nSpace\n🕹A"}`, // Head 1, Heels 1
+      `UH-OH!
+Heels lost a life
+Game over
+${mobile ? "Tap screen to continue" : "Press JUMP to continue:\nSpace\n🕹A"}`, // Heels 1, Head 0 - game over
     ]);
     await waitForDialog(page, "score");
+  });
+
+  test("both characters dying together shows a death dialog for each", async ({
+    page,
+  }) => {
+    await bootPlaytestCampaign(page, twoDeathsCampaign, null);
+
+    expect(
+      await advanceUntil(
+        page,
+        async () => (await openDeathDialogs(page)).length > 0,
+      ),
+    ).toBe(true);
+    const deathMessage = page.locator(
+      '[data-dialog-id="death"] [data-test-id="death-lost-life-message"]',
+    );
+    // both died before the first dialog froze the game:
+    expect(await openDeathDialogs(page)).toEqual(["head", "heels"]);
+    await expect(deathMessage).toHaveText("Head lost a life");
+
+    await dispatchKeyPress(page, " ", "Space");
+
+    // dismissing the first leaves the second for its own dismissal:
+    expect(await openDeathDialogs(page)).toEqual(["heels"]);
+    await expect(deathMessage).toHaveText("Heels lost a life");
   });
 
   test("death dialog messages for headOverHeels", async ({
@@ -131,14 +335,35 @@ test.describe("life and death flows", () => {
     const mobile = testInfo.project.name.includes("mobile");
     const messages = await loseAllLives(page);
     expect(messages).toEqual([
-      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //Head 6, Heels 8
-      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //Head 5, Heels 7
-      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //Head 4, Heels 6
-      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //Head 3, Heels 5
-      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //Head 2, Heels 4
-      `Uh-oh!Heels will donate 2 livesso Head can continue with 1${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //Head 1, Heels 3
-      `Uh-oh!Heels will donate 1 lifeso Head can continue with 1${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //Head 1, Heels 2
-      `Uh-oh!Game over${mobile ? "Tap screento continue" : "Press JUMP to continue:Space🕹A"}`, //Head 1, Heels 1 - game over
+      `UH-OH!
+Head and Heels lost a life each
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // lives as they die: Head 6, Heels 10
+      `UH-OH!
+Head and Heels lost a life each
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // Head 5, Heels 9
+      `UH-OH!
+Head and Heels lost a life each
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // Head 4, Heels 8
+      `UH-OH!
+Head and Heels lost a life each
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // Head 3, Heels 7
+      `UH-OH!
+Head and Heels lost a life each
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // Head 2, Heels 6
+      `UH-OH!
+Head and Heels lost a life each
+Heels will donate 2 lives
+so Head can continue with 1
+${mobile ? "Tap screen to respawn" : "Press JUMP to respawn:\nSpace\n🕹A"}`, // Head 1, Heels 5
+      `UH-OH!
+Head and Heels lost a life each
+Heels is out of the game
+Head will carry on alone
+${mobile ? "Tap screen to continue as Head" : "Press JUMP to continue as Head:\nSpace\n🕹A"}`, // Head 1, Heels 2: Heels donates one, then loses its last
+      `UH-OH!
+Head lost a life
+Game over
+${mobile ? "Tap screen to continue" : "Press JUMP to continue:\nSpace\n🕹A"}`, // Head 1, Heels 0
     ]);
   });
 

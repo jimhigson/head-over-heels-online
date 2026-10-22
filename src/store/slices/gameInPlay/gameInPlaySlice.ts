@@ -251,10 +251,13 @@ export const gameInPlaySlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(clearAllData, () => initialGameInPlaySliceState);
-    builder.addCase(savedGameLoadedOnAppLoad, (state, { payload }) => {
-      state.gameInPlay = { freeCharacters: {}, ...payload };
-      state.gameRunning = true;
-    });
+    builder.addCase(
+      savedGameLoadedOnAppLoad,
+      (state, { payload: { gameInPlay } }) => {
+        state.gameInPlay = { freeCharacters: {}, ...gameInPlay };
+        state.gameRunning = true;
+      },
+    );
   },
 });
 

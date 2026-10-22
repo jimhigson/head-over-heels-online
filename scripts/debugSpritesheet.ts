@@ -1,4 +1,4 @@
-#!/usr/bin/env -S pnpm tsx
+#!/usr/bin/env -S pnpm tsx --import ./scripts/registerAssetImportHooks.ts
 
 /**
  * Makes the generated debug spritesheet gfx/spritesDebug.webp from the

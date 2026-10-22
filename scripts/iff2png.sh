@@ -233,7 +233,7 @@ echo "🤖 masking non-sprite areas to transparent"
 # input and shifts every rgb value off-palette, which breaks palette swapping.
 # Untagged, sharp is an sRGB identity; re-tag P3 after (assign, pixels unchanged).
 magick "$TMP_DIR/spritesBlockstack.png" -strip "$TMP_DIR/spritesBlockstack.png"
-node_modules/.bin/tsx scripts/maskNonSpriteAreas.ts "$TMP_DIR/spritesBlockstack.png"
+node_modules/.bin/tsx --import ./scripts/registerAssetImportHooks.ts scripts/maskNonSpriteAreas.ts "$TMP_DIR/spritesBlockstack.png"
 magick "$TMP_DIR/spritesBlockstack.png" -profile gfx/DisplayP3-v2-micro.icc "$TMP_DIR/spritesBlockstack.png"
 
 echo "🤖 converting sprites to webp (lossless, cwebp -z 9)"
