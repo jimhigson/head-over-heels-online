@@ -462,12 +462,19 @@ vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	float notchF = (1.0 - step(0.0, crossF)) * tipFF;
 	float notchD = (1.0 - step(0.0, crossD)) * tipDD;
 
+	//Where two one-pixel strokes meet - each with nothing of its own class
+	//on its far side, touching at df - the corner between them is a
+	//junction, not a step of a slope, and stays square: a T stays a T rather
+	//than filleting into a knot, a crossing stays a crossing, and a bend
+	//keeps its inside corner
+	float junctionC = (1.0 - step(0.0, crossC)) * strokeA(f) * simA(f, df) * (1.0 - simA(ff, f)) * (1.0 - simA(dd, d));
+
 	//select the first matching case's colour where its slice reaches this
 	//point (col.r < 0 marks an abstaining pick, colour pass only)
 	vec4 res = vec4(-1.0);
-	res = mix(res, col1, sliceC * (1.0 - notchC) * e1 * step(dist1, 0.0) * step(0.0, col1.r));
-	res = mix(res, col2, sliceC * (1.0 - notchC) * e2 * step(dist2, 0.0) * step(0.0, col2.r));
-	res = mix(res, col3, sliceC * (1.0 - notchC) * e3 * step(dist3, 0.0) * step(0.0, col3.r));
+	res = mix(res, col1, sliceC * (1.0 - notchC) * (1.0 - junctionC) * e1 * step(dist1, 0.0) * step(0.0, col1.r));
+	res = mix(res, col2, sliceC * (1.0 - notchC) * (1.0 - junctionC) * e2 * step(dist2, 0.0) * step(0.0, col2.r));
+	res = mix(res, col3, sliceC * (1.0 - notchC) * (1.0 - junctionC) * e3 * step(dist3, 0.0) * step(0.0, col3.r));
 	res = mix(res, col4, sliceF * (1.0 - notchF) * e4 * step(dist4, 0.0) * step(0.0, col4.r));
 	res = mix(res, col5, sliceD * (1.0 - notchD) * e5 * step(dist5, 0.0) * step(0.0, col5.r));
 	return res;
