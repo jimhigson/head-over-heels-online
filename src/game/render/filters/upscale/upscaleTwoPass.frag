@@ -29,11 +29,11 @@ precision highp float;
  * only to soften the step from one fixed slope to the next, and there is no
  * longer a step to soften.
  *
- * Pass A also reads the art as strokes standing on bodies: a one-pixel tip
- * keeps the square notch beside it rather than being rounded into what it
- * stands on, and a run measured for a slice stops where a stroke's width
- * meets a region's bulk, so the two are smoothed as the separate things
- * they are.
+ * Pass A also reads the art as strokes standing on solid bodies: a
+ * one-pixel tip keeps the square notch beside it rather than being rounded
+ * into the body it stands on, and a run measured along a body's edge stops
+ * short of such a tip, so the two are smoothed as the separate things they
+ * are.
  *
  * This form is BRANCHLESS: the original's booleans are exact 0/1 float
  * masks and its if/else chains are mix()/step() selections, so the whole
@@ -274,50 +274,49 @@ vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 
 	//How long the runs meeting at this corner are, up to four. A run carries
 	//on while its pixels keep matching the one it started from and the pixels
-	//alongside keep matching c - that is, while the edge stays straight - and
-	//while it stays as thick as it began: a pixel is thick where the one
-	//behind it, or both of that one's neighbours, are its own class. A
-	//stroke's one-pixel width and a region's bulk are different things, so a
-	//run does not carry on from the one into the other, and a slice is fitted
-	//to the region's edge alone where a stroke stands on it
-	float fatF1 = max(simA(AT(1.0, 1.0), f), simA(AT(0.0, 1.0), f) * simA(AT(2.0, 1.0), f));
-	float fatF2 = max(simA(AT(2.0, 1.0), f), simA(AT(1.0, 1.0), f) * simA(AT(3.0, 1.0), f));
-	float fatF3 = max(simA(AT(3.0, 1.0), f), simA(AT(2.0, 1.0), f) * simA(AT(4.0, 1.0), f));
-	float fatF4 = max(simA(AT(4.0, 1.0), f), simA(AT(3.0, 1.0), f) * simA(AT(5.0, 1.0), f));
+	//alongside keep matching c - that is, while the edge stays straight. A
+	//run along a region's edge - one whose first pixel has its own class
+	//behind it - stops short of a thin tip: a pixel with nothing of its class
+	//behind or beyond it, which is a stroke standing on the region, not the
+	//region's edge, so the slice is fitted to the region alone
+	float fatF = simA(AT(1.0, 1.0), f);
+	float tipF2 = (1.0 - simA(AT(2.0, 1.0), f)) * (1.0 - simA(AT(3.0, 0.0), f)) * (1.0 - simA(AT(3.0, 1.0), f)) * (1.0 - simA(AT(3.0,-1.0), f));
+	float tipF3 = (1.0 - simA(AT(3.0, 1.0), f)) * (1.0 - simA(AT(4.0, 0.0), f)) * (1.0 - simA(AT(4.0, 1.0), f)) * (1.0 - simA(AT(4.0,-1.0), f));
+	float tipF4 = (1.0 - simA(AT(4.0, 1.0), f)) * (1.0 - simA(AT(5.0, 0.0), f)) * (1.0 - simA(AT(5.0, 1.0), f)) * (1.0 - simA(AT(5.0,-1.0), f));
 	float fw1 = simA(AT(1.0, 0.0), f) * simA(AT(1.0,-1.0), c);
-	float fw2 = fw1 * simA(AT(2.0, 0.0), f) * simA(AT(2.0,-1.0), c) * (1.0 - abs(fatF2 - fatF1));
-	float fw3 = fw2 * simA(AT(3.0, 0.0), f) * simA(AT(3.0,-1.0), c) * (1.0 - abs(fatF3 - fatF1));
-	float fw4 = fw3 * simA(AT(4.0, 0.0), f) * simA(AT(4.0,-1.0), c) * (1.0 - abs(fatF4 - fatF1));
+	float fw2 = fw1 * simA(AT(2.0, 0.0), f) * simA(AT(2.0,-1.0), c) * (1.0 - fatF * tipF2);
+	float fw3 = fw2 * simA(AT(3.0, 0.0), f) * simA(AT(3.0,-1.0), c) * (1.0 - fatF * tipF3);
+	float fw4 = fw3 * simA(AT(4.0, 0.0), f) * simA(AT(4.0,-1.0), c) * (1.0 - fatF * tipF4);
 	float runF = max(1.0, fw1 + fw2 + fw3 + fw4);
 
-	float fatB1 = max(simA(AT( 0.0, 2.0), d), simA(AT( 1.0, 2.0), d) * simA(AT(-1.0, 2.0), d));
-	float fatB2 = max(simA(AT(-1.0, 2.0), d), simA(AT( 0.0, 2.0), d) * simA(AT(-2.0, 2.0), d));
-	float fatB3 = max(simA(AT(-2.0, 2.0), d), simA(AT(-1.0, 2.0), d) * simA(AT(-3.0, 2.0), d));
-	float fatB4 = max(simA(AT(-3.0, 2.0), d), simA(AT(-2.0, 2.0), d) * simA(AT(-4.0, 2.0), d));
+	float fatB = simA(AT( 0.0, 2.0), d);
+	float tipB2 = (1.0 - simA(AT(-1.0, 2.0), d)) * (1.0 - simA(AT(-2.0, 1.0), d)) * (1.0 - simA(AT(-2.0, 2.0), d)) * (1.0 - simA(AT(-2.0, 0.0), d));
+	float tipB3 = (1.0 - simA(AT(-2.0, 2.0), d)) * (1.0 - simA(AT(-3.0, 1.0), d)) * (1.0 - simA(AT(-3.0, 2.0), d)) * (1.0 - simA(AT(-3.0, 0.0), d));
+	float tipB4 = (1.0 - simA(AT(-3.0, 2.0), d)) * (1.0 - simA(AT(-4.0, 1.0), d)) * (1.0 - simA(AT(-4.0, 2.0), d)) * (1.0 - simA(AT(-4.0, 0.0), d));
 	float bk1 = simA(AT( 0.0, 1.0), d) * simA(AT( 0.0, 0.0), c);
-	float bk2 = bk1 * simA(AT(-1.0, 1.0), d) * simA(AT(-1.0, 0.0), c) * (1.0 - abs(fatB2 - fatB1));
-	float bk3 = bk2 * simA(AT(-2.0, 1.0), d) * simA(AT(-2.0, 0.0), c) * (1.0 - abs(fatB3 - fatB1));
-	float bk4 = bk3 * simA(AT(-3.0, 1.0), d) * simA(AT(-3.0, 0.0), c) * (1.0 - abs(fatB4 - fatB1));
+	float bk2 = bk1 * simA(AT(-1.0, 1.0), d) * simA(AT(-1.0, 0.0), c) * (1.0 - fatB * tipB2);
+	float bk3 = bk2 * simA(AT(-2.0, 1.0), d) * simA(AT(-2.0, 0.0), c) * (1.0 - fatB * tipB3);
+	float bk4 = bk3 * simA(AT(-3.0, 1.0), d) * simA(AT(-3.0, 0.0), c) * (1.0 - fatB * tipB4);
 	float runB = max(1.0, bk1 + bk2 + bk3 + bk4);
 
-	float fatD1 = max(simA(AT(1.0, 1.0), d), simA(AT(1.0, 0.0), d) * simA(AT(1.0, 2.0), d));
-	float fatD2 = max(simA(AT(1.0, 2.0), d), simA(AT(1.0, 1.0), d) * simA(AT(1.0, 3.0), d));
-	float fatD3 = max(simA(AT(1.0, 3.0), d), simA(AT(1.0, 2.0), d) * simA(AT(1.0, 4.0), d));
-	float fatD4 = max(simA(AT(1.0, 4.0), d), simA(AT(1.0, 3.0), d) * simA(AT(1.0, 5.0), d));
+	float fatD = simA(AT(1.0, 1.0), d);
+	float tipD2 = (1.0 - simA(AT(1.0, 2.0), d)) * (1.0 - simA(AT(0.0, 3.0), d)) * (1.0 - simA(AT(1.0, 3.0), d)) * (1.0 - simA(AT(-1.0, 3.0), d));
+	float tipD3 = (1.0 - simA(AT(1.0, 3.0), d)) * (1.0 - simA(AT(0.0, 4.0), d)) * (1.0 - simA(AT(1.0, 4.0), d)) * (1.0 - simA(AT(-1.0, 4.0), d));
+	float tipD4 = (1.0 - simA(AT(1.0, 4.0), d)) * (1.0 - simA(AT(0.0, 5.0), d)) * (1.0 - simA(AT(1.0, 5.0), d)) * (1.0 - simA(AT(-1.0, 5.0), d));
 	float dn1 = simA(AT(0.0, 1.0), d) * simA(AT(-1.0, 1.0), c);
-	float dn2 = dn1 * simA(AT(0.0, 2.0), d) * simA(AT(-1.0, 2.0), c) * (1.0 - abs(fatD2 - fatD1));
-	float dn3 = dn2 * simA(AT(0.0, 3.0), d) * simA(AT(-1.0, 3.0), c) * (1.0 - abs(fatD3 - fatD1));
-	float dn4 = dn3 * simA(AT(0.0, 4.0), d) * simA(AT(-1.0, 4.0), c) * (1.0 - abs(fatD4 - fatD1));
+	float dn2 = dn1 * simA(AT(0.0, 2.0), d) * simA(AT(-1.0, 2.0), c) * (1.0 - fatD * tipD2);
+	float dn3 = dn2 * simA(AT(0.0, 3.0), d) * simA(AT(-1.0, 3.0), c) * (1.0 - fatD * tipD3);
+	float dn4 = dn3 * simA(AT(0.0, 4.0), d) * simA(AT(-1.0, 4.0), c) * (1.0 - fatD * tipD4);
 	float runD = max(1.0, dn1 + dn2 + dn3 + dn4);
 
-	float fatU1 = max(simA(AT(2.0, 0.0), f), simA(AT(2.0, 1.0), f) * simA(AT(2.0,-1.0), f));
-	float fatU2 = max(simA(AT(2.0,-1.0), f), simA(AT(2.0, 0.0), f) * simA(AT(2.0,-2.0), f));
-	float fatU3 = max(simA(AT(2.0,-2.0), f), simA(AT(2.0,-1.0), f) * simA(AT(2.0,-3.0), f));
-	float fatU4 = max(simA(AT(2.0,-3.0), f), simA(AT(2.0,-2.0), f) * simA(AT(2.0,-4.0), f));
+	float fatU = simA(AT(2.0, 0.0), f);
+	float tipU2 = (1.0 - simA(AT(2.0,-1.0), f)) * (1.0 - simA(AT(1.0,-2.0), f)) * (1.0 - simA(AT(2.0,-2.0), f)) * (1.0 - simA(AT(0.0,-2.0), f));
+	float tipU3 = (1.0 - simA(AT(2.0,-2.0), f)) * (1.0 - simA(AT(1.0,-3.0), f)) * (1.0 - simA(AT(2.0,-3.0), f)) * (1.0 - simA(AT(0.0,-3.0), f));
+	float tipU4 = (1.0 - simA(AT(2.0,-3.0), f)) * (1.0 - simA(AT(1.0,-4.0), f)) * (1.0 - simA(AT(2.0,-4.0), f)) * (1.0 - simA(AT(0.0,-4.0), f));
 	float rise1 = simA(AT(1.0, 0.0), f) * simA(AT(0.0, 0.0), c);
-	float rise2 = rise1 * simA(AT(1.0,-1.0), f) * simA(AT(0.0,-1.0), c) * (1.0 - abs(fatU2 - fatU1));
-	float rise3 = rise2 * simA(AT(1.0,-2.0), f) * simA(AT(0.0,-2.0), c) * (1.0 - abs(fatU3 - fatU1));
-	float rise4 = rise3 * simA(AT(1.0,-3.0), f) * simA(AT(0.0,-3.0), c) * (1.0 - abs(fatU4 - fatU1));
+	float rise2 = rise1 * simA(AT(1.0,-1.0), f) * simA(AT(0.0,-1.0), c) * (1.0 - fatU * tipU2);
+	float rise3 = rise2 * simA(AT(1.0,-2.0), f) * simA(AT(0.0,-2.0), c) * (1.0 - fatU * tipU3);
+	float rise4 = rise3 * simA(AT(1.0,-3.0), f) * simA(AT(0.0,-3.0), c) * (1.0 - fatU * tipU4);
 	float runU = max(1.0, rise1 + rise2 + rise3 + rise4);
 
 	//A corner joining a long run to a short one is a corner, not a slope: left
@@ -403,12 +402,18 @@ vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 
 	//A pixel with nothing of its own class beyond it but the body it stands
 	//on is a protrusion's tip or a stroke's end, not a step of a slope: the
-	//notch beside it is a square corner, not a curve to round off. A crossing
-	//the graph settled is a join of two strokes and is sliced regardless
-	float tipF = (1.0 - simA(f, ff)) * (1.0 - simA(f, uf)) * (1.0 - simA(f, uff)) * (1.0 - simA(f, dff)) * (1.0 - simA(f, u));
-	float tipD = (1.0 - simA(d, dd)) * (1.0 - simA(d, db)) * (1.0 - simA(d, ddb)) * (1.0 - simA(d, ddf)) * (1.0 - simA(d, b));
-	float tipFF = (1.0 - simA(ff, AT(3.0, 0.0))) * (1.0 - simA(ff, uff)) * (1.0 - simA(ff, AT(3.0,-1.0))) * (1.0 - simA(ff, AT(3.0, 1.0))) * (1.0 - simA(ff, uf));
-	float tipDD = (1.0 - simA(dd, AT(0.0, 3.0))) * (1.0 - simA(dd, ddb)) * (1.0 - simA(dd, AT(-1.0, 3.0))) * (1.0 - simA(dd, AT(1.0, 3.0))) * (1.0 - simA(dd, db));
+	//notch beside it is a square corner, not a curve to round off. The body
+	//must be one - solid for a 2x2 block under the corner - since a few
+	//pixels on their own are a shape to round, not a body with a protrusion.
+	//A crossing the graph settled is a join of two strokes and is sliced
+	//regardless
+	float bodyC = sim4A(d, df, dd, ddf);
+	float bodyB = sim4A(f, df, ff, dff);
+	float bodyFar = sim4A(df, dff, ddf, AT(2.0, 2.0));
+	float tipF = bodyC * (1.0 - simA(f, ff)) * (1.0 - simA(f, uf)) * (1.0 - simA(f, uff)) * (1.0 - simA(f, dff)) * (1.0 - simA(f, u));
+	float tipD = bodyB * (1.0 - simA(d, dd)) * (1.0 - simA(d, db)) * (1.0 - simA(d, ddb)) * (1.0 - simA(d, ddf)) * (1.0 - simA(d, b));
+	float tipFF = bodyFar * (1.0 - simA(ff, AT(3.0, 0.0))) * (1.0 - simA(ff, uff)) * (1.0 - simA(ff, AT(3.0,-1.0))) * (1.0 - simA(ff, AT(3.0, 1.0))) * (1.0 - simA(ff, uf));
+	float tipDD = bodyFar * (1.0 - simA(dd, AT(0.0, 3.0))) * (1.0 - simA(dd, ddb)) * (1.0 - simA(dd, AT(-1.0, 3.0))) * (1.0 - simA(dd, AT(1.0, 3.0))) * (1.0 - simA(dd, db));
 	float notchC = (1.0 - step(0.0, crossC)) * max(tipF, tipD);
 	float notchF = (1.0 - step(0.0, crossF)) * tipFF;
 	float notchD = (1.0 - step(0.0, crossD)) * tipDD;
