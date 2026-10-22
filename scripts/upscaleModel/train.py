@@ -37,12 +37,24 @@ if not items:
     raise SystemExit(f"no labels in {args.labels_dir}")
 print(f"{len(items)} labels")
 
+def paddedToCrop(source, label):
+    """
+    a frame smaller than the crop in either direction, padded out with
+    transparency so every crop is the same size
+    """
+    h, w = source.shape[:2]
+    padH = max(args.crop - h, 0)
+    padW = max(args.crop - w, 0)
+    source = np.pad(source, ((0, padH), (0, padW), (0, 0)))
+    label = np.pad(label, ((0, padH * scale), (0, padW * scale), (0, 0)))
+    return source, label
+
+
 # every dihedral variant of every label, as features and targets
 examples = []
 for textureId, source, label in items:
     for variant in range(8):
-        s = dihedral(source, variant)
-        l = dihedral(label, variant)
+        s, l = paddedToCrop(dihedral(source, variant), dihedral(label, variant))
         examples.append((featuresOf(s), targetsOf(s, l)))
 
 rng = np.random.default_rng(args.seed)
@@ -54,7 +66,7 @@ def sampleBatch():
     for _ in range(args.batch):
         f, t = examples[rng.integers(len(examples))]
         h, w = f.shape[:2]
-        side = min(args.crop, h, w)
+        side = args.crop
         y = rng.integers(h - side + 1)
         x = rng.integers(w - side + 1)
         features.append(f[y : y + side, x : x + side])
