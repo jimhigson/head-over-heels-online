@@ -16,7 +16,8 @@ precision highp float;
  *
  * Where the step is open to both its pixels, a stroke's end with that one
  * way left to carry on takes it - unless another end with no other way is
- * after the same pixel, a contest left to the votes.
+ * after the same pixel, a contest left to the votes. A lone pixel is no
+ * stroke's end: it waits for the votes, where being an island counts.
  *
  * Each round settles the cells those rules reach from what is already
  * certain - a diagonal no crossing contests, such as every step of a
@@ -181,9 +182,11 @@ int openCandidatesOf(ivec2 p, Links pLinks){
 	return n;
 }
 
-// a stroke's end: a pixel still short of its two neighbours
+// a stroke's end: a pixel on a stroke still short of its two neighbours. A
+// lone pixel is not one: it has no stroke to carry on, and waits for the
+// island vote rather than taking a step a stroke may need
 bool isStrokeEnd(Links links){
-	return links.count < 2;
+	return links.count == 1;
 }
 
 // whether a stroke's end other than `except` is after p with that one way
