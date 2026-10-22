@@ -18,11 +18,13 @@ import upscaleTwoPassFrag from "./upscaleTwoPass.frag";
 type PassUniforms = Record<string, UniformData>;
 
 /**
- * how many rounds the graph's crossings are settled over. Each round settles
- * the cells one step further from what is already certain, so this bounds
- * how deep into a lattice of strokes the settlement reaches
+ * how many rounds the graph's crossings are settled over, the last two of
+ * them the voting rounds. Each round settles the cells one step further from
+ * what is already certain, so this bounds how deep into a lattice of strokes
+ * the settlement reaches: eight settles every cell of the BlockStack sheet
+ * exactly as more would
  */
-const graphRounds = 24;
+const graphRounds = 8;
 
 /**
  * one full-sheet pass: draws the geometry's quad through the fragment shader
