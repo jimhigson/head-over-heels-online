@@ -403,23 +403,49 @@ vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	dist5 -= 0.5;
 	vec4 col5 = pickA(d, df, dd);
 
-	//A black pixel with only fill beyond it, standing on a solid body, is a
-	//stroke's end or a protrusion's tip, not a step of a slope: the notch
-	//beside it is a square corner, not a curve to round off. The body must
-	//be one - solid for a 2x2 block under the corner - since a few pixels on
-	//their own are a shape to round, not a body with a protrusion. Only the
-	//linework is read this way, and only against the fill: a fill poking
-	//into the linework is the lines' own notch, which keeps their slope, and
-	//at the edge of the art there is no telling a tip from a clipped line.
-	//A crossing the graph settled is a join of two strokes and is sliced
-	//regardless
+	//A black pixel with only fill beyond it, standing on a solid body's flat
+	//edge, is a stroke's end or a protrusion's tip, not a step of a slope:
+	//the notch beside it is a square corner, not a curve to round off. The
+	//body must be one - solid for a 2x2 block under the corner - since a few
+	//pixels on their own are a shape to round, not a body with a protrusion.
+	//Only the linework is read this way, and only against the fill: a fill
+	//poking into the linework is the lines' own notch, which keeps their
+	//slope, and at the edge of the art there is no telling a tip from a
+	//clipped line. A crossing the graph settled is a join of two strokes and
+	//is sliced regardless
 	float bodyC = sim4A(d, df, dd, ddf);
 	float bodyB = sim4A(f, df, ff, dff);
 	float bodyFar = sim4A(df, dff, ddf, AT(2.0, 2.0));
-	float tipF = strokeA(f) * bodyC * isC(ff) * isC(uf) * isC(uff) * isC(dff) * isC(u);
-	float tipD = strokeA(d) * bodyB * isC(dd) * isC(db) * isC(ddb) * isC(ddf) * isC(b);
-	float tipFF = strokeA(ff) * bodyFar * isC(AT(3.0, 0.0)) * isC(uff) * isC(AT(3.0,-1.0)) * isC(AT(3.0, 1.0)) * isC(uf);
-	float tipDD = strokeA(dd) * bodyFar * isC(AT(0.0, 3.0)) * isC(ddb) * isC(AT(-1.0, 3.0)) * isC(AT(1.0, 3.0)) * isC(db);
+	//...but not where the body's edge is a slope: a run along it that ends
+	//by stepping down a row makes the pixel at its head the slope's apex,
+	//not a bar standing on a flat
+	float endsB1 = (1.0 - simA(AT(-1.0, 1.0), d)) * simA(AT(-1.0, 2.0), d);
+	float endsB2 = (1.0 - simA(AT(-2.0, 1.0), d)) * simA(AT(-2.0, 2.0), d);
+	float endsB3 = (1.0 - simA(AT(-3.0, 1.0), d)) * simA(AT(-3.0, 2.0), d);
+	float slopeB = (1.0 - bk2) * endsB1 + bk2 * (1.0 - bk3) * endsB2 + bk3 * (1.0 - bk4) * endsB3;
+	float endsU1 = (1.0 - simA(AT(1.0,-1.0), f)) * simA(AT(2.0,-1.0), f);
+	float endsU2 = (1.0 - simA(AT(1.0,-2.0), f)) * simA(AT(2.0,-2.0), f);
+	float endsU3 = (1.0 - simA(AT(1.0,-3.0), f)) * simA(AT(2.0,-3.0), f);
+	float slopeU = (1.0 - rise2) * endsU1 + rise2 * (1.0 - rise3) * endsU2 + rise3 * (1.0 - rise4) * endsU3;
+	//the same runs seen from the far corners, whose notch is f or d
+	float fbk2 = simA(d, df) * simA(c, f);
+	float fbk3 = fbk2 * simA(db, df) * simA(b, f);
+	float fbk4 = fbk3 * simA(AT(-2.0, 1.0), df) * simA(AT(-2.0, 0.0), f);
+	float endsFB1 = (1.0 - simA(d, df)) * simA(dd, df);
+	float endsFB2 = (1.0 - simA(db, df)) * simA(ddb, df);
+	float endsFB3 = (1.0 - simA(AT(-2.0, 1.0), df)) * simA(AT(-2.0, 2.0), df);
+	float slopeFB = (1.0 - fbk2) * endsFB1 + fbk2 * (1.0 - fbk3) * endsFB2 + fbk3 * (1.0 - fbk4) * endsFB3;
+	float fri2 = simA(f, df) * simA(c, d);
+	float fri3 = fri2 * simA(uf, df) * simA(u, d);
+	float fri4 = fri3 * simA(AT(1.0,-2.0), df) * simA(AT(0.0,-2.0), d);
+	float endsFU1 = (1.0 - simA(f, df)) * simA(ff, df);
+	float endsFU2 = (1.0 - simA(uf, df)) * simA(uff, df);
+	float endsFU3 = (1.0 - simA(AT(1.0,-2.0), df)) * simA(AT(2.0,-2.0), df);
+	float slopeFU = (1.0 - fri2) * endsFU1 + fri2 * (1.0 - fri3) * endsFU2 + fri3 * (1.0 - fri4) * endsFU3;
+	float tipF = strokeA(f) * bodyC * (1.0 - slopeB) * isC(ff) * isC(uf) * isC(uff) * isC(dff) * isC(u);
+	float tipD = strokeA(d) * bodyB * (1.0 - slopeU) * isC(dd) * isC(db) * isC(ddb) * isC(ddf) * isC(b);
+	float tipFF = strokeA(ff) * bodyFar * (1.0 - slopeFB) * isC(AT(3.0, 0.0)) * isC(uff) * isC(AT(3.0,-1.0)) * isC(AT(3.0, 1.0)) * isC(uf);
+	float tipDD = strokeA(dd) * bodyFar * (1.0 - slopeFU) * isC(AT(0.0, 3.0)) * isC(ddb) * isC(AT(-1.0, 3.0)) * isC(AT(1.0, 3.0)) * isC(db);
 	float notchC = (1.0 - step(0.0, crossC)) * max(tipF, tipD);
 	float notchF = (1.0 - step(0.0, crossF)) * tipFF;
 	float notchD = (1.0 - step(0.0, crossD)) * tipDD;
