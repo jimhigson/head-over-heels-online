@@ -181,14 +181,15 @@ uniform sampler2D uGraph;
 // the graph's verdict on the cell holding `cellC` and its forward, down and
 // diagonal neighbours in a slice frame: 1.0 where f and d connect (so c's
 // corner is sliced), 0.0 where c and df connect or neither does, and -1.0
-// where the cell is no crossing and the local distances decide
+// where the cell is no crossing, or is one the graph left unresolved, and
+// the local distances decide
 float crossingVerdict(vec2 cellC, vec2 dirVec, float layerB){
 	vec2 tl = cellC + min(dirVec, vec2(0.0));
 	vec4 graph = texture(uGraph, tl / uSheetSize);
 	float code = mix(graph.r, graph.g, layerB);
-	float isCrossing = step(0.125, code);
+	float isCrossing = step(0.375, code);
 	float tlBrConnects = step(0.375, code) * (1.0 - step(0.625, code));
-	float trBlConnects = step(0.625, code);
+	float trBlConnects = step(0.625, code) * (1.0 - step(0.875, code));
 	// f and d connect when the connected diagonal is the one c-df is not
 	float cDfIsTlBr = step(0.0, dirVec.x * dirVec.y);
 	float fdConnects = mix(tlBrConnects, trBlConnects, cDfIsTlBr);
@@ -346,9 +347,6 @@ vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 		max(higherA(c, f), (1.0 - simA(c, b)) * sim4A(b, f, d, u)),
 		(1.0 - simA(c, dd)) * (1.0 - simA(c, ff)),
 		diagBranch3);
-	//single pixel 2:1 slope edge case:
-	flip3 = max(flip3,
-		max(simA(f, db) * sim3A(u, f, df), simA(uf, d) * sim3A(b, d, df)) * (1.0 - simA(c, df)));
 	float dist3 = mix(
 		distToLine(point, center+cn1*pointDir, center+cn2*pointDir, pointDir),
 		1.0 - distToLine(point, center+(cn1+cnFlip)*pointDir, center+(cn2+cnFlip)*pointDir, -pointDir),
@@ -504,9 +502,6 @@ vec4 sliceDistB(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 		max(higherB(c, f), (1.0 - simB(c, b)) * sim4B(b, f, d, u)),
 		(1.0 - simB(c, dd)) * (1.0 - simB(c, ff)),
 		diagBranch3);
-	//single pixel 2:1 slope edge case:
-	flip3 = max(flip3,
-		max(simB(f, db) * sim3B(u, f, df), simB(uf, d) * sim3B(b, d, df)) * (1.0 - simB(c, df)));
 	float dist3 = mix(
 		distToLine(point, center+cn1*pointDir, center+cn2*pointDir, pointDir),
 		1.0 - distToLine(point, center+(cn1+cnFlip)*pointDir, center+(cn2+cnFlip)*pointDir, -pointDir),
@@ -534,6 +529,25 @@ vec4 sliceDistB(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	dist5 -= 0.5;
 	vec4 col5 = pickB(d, df, dd);
 
+	//a dotted step: a shade's edge against f (or d) recurring two pixels on
+	//and one across, with the pixel between them another shade or abstaining -
+	//a 2:1 line of single pixels, as the colourisation's highlights are
+	//drawn. The edge is read as the line through both edges' midpoints, and
+	//this pixel gives up what lies on the far shade's side of it. Seen from
+	//either pixel of the edge, and in both axes
+	float edgeF = isC(c) * isC(f) * (1.0 - eqC(c, f));
+	float edgeD = isC(c) * isC(d) * (1.0 - eqC(c, d));
+	float k6 = edgeF * eqC(AT(-2.0, 1.0), c) * eqC(AT(-1.0, 1.0), f);
+	float k7 = edgeF * eqC(AT( 2.0,-1.0), c) * eqC(AT( 3.0,-1.0), f);
+	float k8 = edgeD * eqC(AT( 1.0,-2.0), c) * eqC(AT( 1.0,-1.0), d);
+	float k9 = edgeD * eqC(AT(-1.0, 2.0), c) * eqC(AT(-1.0, 3.0), d);
+	vec2 edgeFMid = center + vec2(0.5, 0.0) * pointDir;
+	vec2 edgeDMid = center + vec2(0.0, 0.5) * pointDir;
+	float dist6 = distToLine(point, edgeFMid, center + vec2(-1.5, 1.0) * pointDir, pointDir);
+	float dist7 = distToLine(point, edgeFMid, center + vec2( 2.5,-1.0) * pointDir, pointDir);
+	float dist8 = distToLine(point, edgeDMid, center + vec2( 1.0,-1.5) * pointDir, pointDir);
+	float dist9 = distToLine(point, edgeDMid, center + vec2(-1.0, 2.5) * pointDir, pointDir);
+
 	//select the first matching case's colour where its slice reaches this
 	//point (col.r < 0 marks an abstaining pick, colour pass only)
 	vec4 res = vec4(-1.0);
@@ -542,6 +556,12 @@ vec4 sliceDistB(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	res = mix(res, col3, sliceC * e3 * step(dist3, 0.0) * step(0.0, col3.r));
 	res = mix(res, col4, sliceF * e4 * step(dist4, 0.0) * step(0.0, col4.r));
 	res = mix(res, col5, sliceD * e5 * step(dist5, 0.0) * step(0.0, col5.r));
+	//the dotted steps are the more specific reading, so they overrule the
+	//slant cases where they apply
+	res = mix(res, f, k6 * step(dist6, 0.0));
+	res = mix(res, f, k7 * step(dist7, 0.0));
+	res = mix(res, d, k8 * step(dist8, 0.0));
+	res = mix(res, d, k9 * step(dist9, 0.0));
 	return res;
 }
 

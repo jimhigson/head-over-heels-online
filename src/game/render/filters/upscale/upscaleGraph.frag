@@ -27,6 +27,7 @@ precision highp float;
  *   r: layer A   g: layer B
  *   0.00 no crossing   0.25 crossing, unresolved
  *   0.50 top-left to bottom-right connects   0.75 top-right to bottom-left
+ *   1.00 crossing in a chequerboard: neither connects
  */
 
 #include "fragFns/upscaleGraphCommon.glsl"
@@ -70,7 +71,9 @@ float findA(ivec2 tl){
 	int b = classAt(tl + ivec2(1, 0));
 	int c = classAt(tl + ivec2(0, 1));
 	int d = classAt(tl + ivec2(1, 1));
-	return a == d && b == c && a != b ? unresolved : noCrossing;
+	if (!(a == d && b == c && a != b)) return noCrossing;
+	if (inChequer(tl) || inChequer(tl + ivec2(1, 0)) || inChequer(tl + ivec2(0, 1)) || inChequer(tl + ivec2(1, 1))) return neitherConnects;
+	return unresolved;
 }
 
 void main(){

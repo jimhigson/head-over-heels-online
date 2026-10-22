@@ -36,7 +36,7 @@ const renderPass = (
   /**
    * the texture the pass reads as uTexture
    */
-  source: TextureSource,
+  source: Texture,
   /**
    * any further textures the pass reads, by uniform name
    */
@@ -51,8 +51,8 @@ const renderPass = (
       name,
     },
     resources: {
-      uTexture: source,
-      uSampler: source.style,
+      uTexture: source.source,
+      uSampler: source.source.style,
       ...otherTextures,
       [`${name}Uniforms`]: uniforms,
     },
@@ -106,7 +106,7 @@ export const bakeUpscaledSpritesheetTexture = (
     geometry,
     upscaleGraphFrag,
     "upscaleGraph",
-    sourceTexture.source,
+    sourceTexture,
     {},
     sheetSizeUniform,
     graph,
@@ -118,7 +118,7 @@ export const bakeUpscaledSpritesheetTexture = (
       geometry,
       upscaleGraphRoundFrag,
       "upscaleGraphRound",
-      sourceTexture.source,
+      sourceTexture,
       { uGraph: previousGraph.source },
       {
         ...sheetSizeUniform,
@@ -141,7 +141,7 @@ export const bakeUpscaledSpritesheetTexture = (
     geometry,
     upscaleTwoPassFrag,
     "upscale",
-    sourceTexture.source,
+    sourceTexture,
     { uGraph: graph.source },
     sheetSizeUniform,
     upscaled,
@@ -160,7 +160,7 @@ export const bakeUpscaledSpritesheetTexture = (
     geometry,
     despeckleFrag,
     "despeckle",
-    upscaled.source,
+    upscaled,
     {},
     {
       uPixelSize: {

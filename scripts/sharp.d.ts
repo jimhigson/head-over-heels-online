@@ -11,6 +11,17 @@ declare module "sharp" {
     ensureAlpha(): SharpInstance;
     raw(): SharpInstance;
     png(): SharpInstance;
+    extract(region: {
+      left: number;
+      top: number;
+      width: number;
+      height: number;
+    }): SharpInstance;
+    resize(
+      width: number,
+      height: number,
+      options: { kernel: "nearest" },
+    ): SharpInstance;
     toFile(path: string): Promise<unknown>;
     toBuffer(): Promise<Buffer>;
     toBuffer(options: {

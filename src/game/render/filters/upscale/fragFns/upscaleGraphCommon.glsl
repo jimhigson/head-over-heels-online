@@ -17,6 +17,7 @@ const float noCrossing = 0.0;
 const float unresolved = 0.25;
 const float tlBrConnects = 0.5;
 const float trBlConnects = 0.75;
+const float neitherConnects = 1.0;
 
 // how far a chain of valence-2 pixels is followed from a crossing. Beyond
 // this the vote is already decisive for any stroke in the art
@@ -32,8 +33,32 @@ int classOf(vec4 col){
 	return max(col.r, max(col.g, col.b)) > blackThreshold * col.a ? 2 : 1;
 }
 
+// the eight neighbour directions: sides first, then the diagonal between
+// side i-4 and side (i-3)%4
+const ivec2 dirs[8] = ivec2[8](
+	ivec2( 1, 0), ivec2( 0, 1), ivec2(-1, 0), ivec2( 0,-1),
+	ivec2( 1, 1), ivec2(-1, 1), ivec2(-1,-1), ivec2( 1,-1)
+);
+
 int classAt(ivec2 p){
 	return classOf(srcAt(p));
+}
+
+// whether p sits in a chequerboard: its sides all of one class, its
+// diagonals all of its own, and the pattern carrying on two away. A
+// chequerboard is a texture, not geometry: neither of its diagonals
+// connects, which leaves it unsliced
+bool inChequer(ivec2 p){
+	int own = classAt(p);
+	int side = classAt(p + ivec2(1, 0));
+	if (side == own) return false;
+	for (int i = 1; i < 4; i++){
+		if (classAt(p + dirs[i]) != side) return false;
+	}
+	for (int i = 4; i < 8; i++){
+		if (classAt(p + dirs[i]) != own) return false;
+	}
+	return classAt(p + ivec2(2, 0)) == own || classAt(p + ivec2(0, 2)) == own;
 }
 
 bool sameColour(vec4 col1, vec4 col2){
@@ -52,12 +77,6 @@ bool joins(vec4 ref, ivec2 p, bool layerB){
 	return layerB ? alikeB(ref, col) : classOf(ref) == classOf(col);
 }
 
-// the eight neighbour directions: sides first, then the diagonal between
-// side i-4 and side (i-3)%4
-const ivec2 dirs[8] = ivec2[8](
-	ivec2( 1, 0), ivec2( 0, 1), ivec2(-1, 0), ivec2( 0,-1),
-	ivec2( 1, 1), ivec2(-1, 1), ivec2(-1,-1), ivec2( 1,-1)
-);
 
 // the pixels connected to p in its colour's graph, as a bitmask over dirs.
 // A diagonal counts only when neither of its two flanking sides would do, so
