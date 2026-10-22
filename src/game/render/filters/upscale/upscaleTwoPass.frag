@@ -248,6 +248,30 @@ float islandA(vec2 p){
 	return own * max(alone, paired);
 }
 
+// how far, along each edge, an island's free corner is chamfered: enough
+// to round a dot at any bake size while keeping most of its square
+const float islandChamferLength = 0.35;
+
+// the fill an island's chamfered corner shows: a real fill beside it by
+// preference, else whatever is there (transparent, at the silhouette)
+vec4 islandCornerFill(vec4 side1, vec4 side2){
+	return mix(mix(side2, side1, isC(side1)), side1, 1.0 - max(isC(side1), isC(side2)));
+}
+
+// the colour a fragment of an island pixel takes from the chamfer of the
+// corner it lies in, or -1 where the corner is not free - the pixel's
+// partner is across it - or the fragment is outside the chamfer
+vec4 islandChamfer(vec2 px, vec2 local){
+	vec2 corner = step(0.5, local);
+	vec2 toward = corner * 2.0 - 1.0;
+	vec4 sideX = srcAt(px + vec2(toward.x, 0.0));
+	vec4 sideY = srcAt(px + vec2(0.0, toward.y));
+	vec4 diagonal = srcAt(px + toward);
+	float free = (1.0 - strokeA(sideX)) * (1.0 - strokeA(sideY)) * (1.0 - strokeA(diagonal));
+	float inChamfer = 1.0 - step(islandChamferLength, abs(local.x - corner.x) + abs(local.y - corner.y));
+	return mix(vec4(-1.0), islandCornerFill(sideX, sideY), free * inChamfer);
+}
+
 // a neighbour of the pixel being sliced, in that slice's own frame: which
 // quadrant of the pixel the fragment sits in, and the slice's mirroring, are
 // both folded into dirVec, so every case reads as though looking down-forward
@@ -509,8 +533,8 @@ vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	res = mix(res, col4, sliceF * (1.0 - notchF) * e4 * step(dist4, 0.0) * step(0.0, col4.r));
 	res = mix(res, col5, sliceD * (1.0 - notchD) * e5 * step(dist5, 0.0) * step(0.0, col5.r));
 	//A black island - one pixel, or two, with no other black touching them -
-	//is a dot the artist sized, so it keeps its whole square rather than
-	//being rounded down to a smaller one
+	//is a dot the artist sized: the slices leave it whole, and it is rounded
+	//by its own chamfer instead, which keeps it about that size
 	return mix(res, vec4(-1.0), islandA(px));
 }
 
@@ -690,6 +714,11 @@ void main() {
 	col = mix(col, cColA, step(0.0, cColA.r));
 	col = mix(col, bColA, step(0.0, bColA.r));
 	col = mix(col, uColA, step(0.0, uColA.r));
+
+	//an island's own rounding: its free corners chamfered a little, so a dot
+	//is rounded but stays about the size the artist drew it
+	vec4 chamfered = islandChamfer(px, local);
+	col = mix(col, chamfered, islandA(px) * step(0.0, chamfered.r));
 
 	//pass B base fill colour before slicing: c itself when it is a fill,
 	//else the closest (bilinear-weighted) fill colour of the 2x2 cell (c is
