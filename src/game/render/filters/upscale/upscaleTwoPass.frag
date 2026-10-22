@@ -537,10 +537,13 @@ vec4 sliceDistB(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	//either pixel of the edge, and in both axes
 	float edgeF = isC(c) * isC(f) * (1.0 - eqC(c, f));
 	float edgeD = isC(c) * isC(d) * (1.0 - eqC(c, d));
-	float k6 = edgeF * eqC(AT(-2.0, 1.0), c) * eqC(AT(-1.0, 1.0), f);
-	float k7 = edgeF * eqC(AT( 2.0,-1.0), c) * eqC(AT( 3.0,-1.0), f);
-	float k8 = edgeD * eqC(AT( 1.0,-2.0), c) * eqC(AT( 1.0,-1.0), d);
-	float k9 = edgeD * eqC(AT(-1.0, 2.0), c) * eqC(AT(-1.0, 3.0), d);
+	//only where the step runs under linework: the pixels the line would cross
+	//between the two edges are black or transparent, as in a band between
+	//strokes. In open shading a chance recurrence is dither, not a line
+	float k6 = edgeF * eqC(AT(-2.0, 1.0), c) * eqC(AT(-1.0, 1.0), f) * (1.0 - isC(AT(0.0, 1.0))) * (1.0 - isC(AT(-1.0, 0.0)));
+	float k7 = edgeF * eqC(AT( 2.0,-1.0), c) * eqC(AT( 3.0,-1.0), f) * (1.0 - isC(AT(1.0,-1.0))) * (1.0 - isC(AT(2.0, 0.0)));
+	float k8 = edgeD * eqC(AT( 1.0,-2.0), c) * eqC(AT( 1.0,-1.0), d) * (1.0 - isC(AT(1.0, 0.0))) * (1.0 - isC(AT(0.0,-1.0)));
+	float k9 = edgeD * eqC(AT(-1.0, 2.0), c) * eqC(AT(-1.0, 3.0), d) * (1.0 - isC(AT(-1.0, 1.0))) * (1.0 - isC(AT(0.0, 2.0)));
 	vec2 edgeFMid = center + vec2(0.5, 0.0) * pointDir;
 	vec2 edgeDMid = center + vec2(0.0, 0.5) * pointDir;
 	float dist6 = distToLine(point, edgeFMid, center + vec2(-1.5, 1.0) * pointDir, pointDir);
