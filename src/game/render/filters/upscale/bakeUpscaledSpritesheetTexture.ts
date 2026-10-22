@@ -5,11 +5,64 @@ import {
   RenderTexture,
   Shader,
   type Texture,
+  type TextureSource,
+  type UniformData,
 } from "pixi.js";
 
 import despeckleFrag from "./despeckle.frag";
+import upscaleGraphFrag from "./upscaleGraph.frag";
+import upscaleGraphRoundFrag from "./upscaleGraphRound.frag";
 import upscaleQuadVert from "./upscaleQuad.vert";
 import upscaleTwoPassFrag from "./upscaleTwoPass.frag";
+
+type PassUniforms = Record<string, UniformData>;
+
+/**
+ * how many rounds the graph's crossings are settled over. Each round settles
+ * the cells one step further from what is already certain, so this bounds
+ * how deep into a lattice of strokes the settlement reaches
+ */
+const graphRounds = 24;
+
+/**
+ * one full-sheet pass: draws the geometry's quad through the fragment shader
+ * into the target, then frees the shader
+ */
+const renderPass = (
+  pixiRenderer: Renderer,
+  geometry: MeshGeometry,
+  fragment: string,
+  name: string,
+  /**
+   * the texture the pass reads as uTexture
+   */
+  source: TextureSource,
+  /**
+   * any further textures the pass reads, by uniform name
+   */
+  otherTextures: Record<string, TextureSource>,
+  uniforms: PassUniforms,
+  target: RenderTexture,
+) => {
+  const shader = Shader.from({
+    gl: {
+      vertex: upscaleQuadVert,
+      fragment,
+      name,
+    },
+    resources: {
+      uTexture: source,
+      uSampler: source.style,
+      ...otherTextures,
+      [`${name}Uniforms`]: uniforms,
+    },
+  });
+  const mesh = new Mesh({ geometry, shader, texture: source });
+  pixiRenderer.render({ container: mesh, target });
+  target.source.scaleMode = "nearest";
+  mesh.destroy();
+  shader.destroy();
+};
 
 /**
  * Create an upscaled version of the given Texture
@@ -27,8 +80,8 @@ export const bakeUpscaledSpritesheetTexture = (
   spritesheetUpscale: number,
 ): RenderTexture => {
   const { width, height } = sourceTexture;
-  // the shader samples exact texels to decide the edges it fits; a linear
-  // sample would hand it blends of neighbouring pixels instead
+  // the shaders sample exact texels to decide the edges they fit; a linear
+  // sample would hand them blends of neighbouring pixels instead
   sourceTexture.source.scaleMode = "nearest";
 
   const geometry = new MeshGeometry({
@@ -37,80 +90,89 @@ export const bakeUpscaledSpritesheetTexture = (
     indices: new Uint32Array([0, 1, 2, 0, 2, 3]),
   });
 
-  const shader = Shader.from({
-    gl: {
-      vertex: upscaleQuadVert,
-      fragment: upscaleTwoPassFrag,
-      name: "upscale-two-pass",
-    },
-    resources: {
-      uTexture: sourceTexture.source,
-      uSampler: sourceTexture.source.style,
-      upscaleUniforms: {
-        uSheetSize: { type: "vec2<f32>", value: [width, height] },
-      },
-    },
-  });
+  const sheetSizeUniform: PassUniforms = {
+    uSheetSize: { type: "vec2<f32>", value: [width, height] },
+  };
 
-  const mesh = new Mesh({ geometry, shader, texture: sourceTexture });
+  // which diagonal of each 2x2 cell connects, decided once at 1x so every
+  // fragment the upscale draws sees the same answer: found by one pass, then
+  // settled over rounds that each read the last round's cells
+  const graphTextures = [0, 1].map(() =>
+    RenderTexture.create({ width, height, resolution: 1 }),
+  );
+  let [graph, previousGraph] = graphTextures;
+  renderPass(
+    pixiRenderer,
+    geometry,
+    upscaleGraphFrag,
+    "upscaleGraph",
+    sourceTexture.source,
+    {},
+    sheetSizeUniform,
+    graph,
+  );
+  for (let round = 0; round < graphRounds; round++) {
+    [graph, previousGraph] = [previousGraph, graph];
+    renderPass(
+      pixiRenderer,
+      geometry,
+      upscaleGraphRoundFrag,
+      "upscaleGraphRound",
+      sourceTexture.source,
+      { uGraph: previousGraph.source },
+      {
+        ...sheetSizeUniform,
+        uFinalStage: {
+          type: "f32",
+          value: Math.max(0, round - (graphRounds - 3)),
+        },
+      },
+      graph,
+    );
+  }
 
   const upscaled = RenderTexture.create({
     width,
     height,
     resolution: spritesheetUpscale,
   });
-
-  pixiRenderer.render({
-    container: mesh,
-    target: upscaled,
-  });
-
-  upscaled.source.scaleMode = "nearest";
-
-  mesh.destroy();
-  shader.destroy();
+  renderPass(
+    pixiRenderer,
+    geometry,
+    upscaleTwoPassFrag,
+    "upscale",
+    sourceTexture.source,
+    { uGraph: graph.source },
+    sheetSizeUniform,
+    upscaled,
+  );
+  for (const graphTexture of graphTextures) {
+    graphTexture.destroy(true);
+  }
 
   const target = RenderTexture.create({
     width,
     height,
     resolution: spritesheetUpscale,
   });
-
-  const despeckleShader = Shader.from({
-    gl: {
-      vertex: upscaleQuadVert,
-      fragment: despeckleFrag,
-      name: "upscale-despeckle",
-    },
-    resources: {
-      uTexture: upscaled.source,
-      uSampler: upscaled.source.style,
-      despeckleUniforms: {
-        uPixelSize: {
-          type: "vec2<f32>",
-          value: [
-            1 / (width * spritesheetUpscale),
-            1 / (height * spritesheetUpscale),
-          ],
-        },
+  renderPass(
+    pixiRenderer,
+    geometry,
+    despeckleFrag,
+    "despeckle",
+    upscaled.source,
+    {},
+    {
+      uPixelSize: {
+        type: "vec2<f32>",
+        value: [
+          1 / (width * spritesheetUpscale),
+          1 / (height * spritesheetUpscale),
+        ],
       },
     },
-  });
-  const despeckleMesh = new Mesh({
-    geometry,
-    shader: despeckleShader,
-    texture: upscaled,
-  });
-
-  pixiRenderer.render({
-    container: despeckleMesh,
     target,
-  });
-
-  target.source.scaleMode = "nearest";
-
-  despeckleMesh.destroy();
-  despeckleShader.destroy();
+  );
   upscaled.destroy(true);
   geometry.destroy();
 

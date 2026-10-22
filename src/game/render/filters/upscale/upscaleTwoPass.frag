@@ -174,6 +174,27 @@ vec4 srcAt(vec2 px){
 	return texture(uTexture, px / uSheetSize);
 }
 
+// the resolved crossings of the sheet's 2x2 cells, one texel per cell at its
+// top-left pixel, as upscaleGraph.frag encodes them
+uniform sampler2D uGraph;
+
+// the graph's verdict on the cell holding `cellC` and its forward, down and
+// diagonal neighbours in a slice frame: 1.0 where f and d connect (so c's
+// corner is sliced), 0.0 where c and df connect or neither does, and -1.0
+// where the cell is no crossing and the local distances decide
+float crossingVerdict(vec2 cellC, vec2 dirVec, float layerB){
+	vec2 tl = cellC + min(dirVec, vec2(0.0));
+	vec4 graph = texture(uGraph, tl / uSheetSize);
+	float code = mix(graph.r, graph.g, layerB);
+	float isCrossing = step(0.125, code);
+	float tlBrConnects = step(0.375, code) * (1.0 - step(0.625, code));
+	float trBlConnects = step(0.625, code);
+	// f and d connect when the connected diagonal is the one c-df is not
+	float cDfIsTlBr = step(0.0, dirVec.x * dirVec.y);
+	float fdConnects = mix(tlBrConnects, trBlConnects, cDfIsTlBr);
+	return mix(-1.0, fdConnects, isCrossing);
+}
+
 // a neighbour of the pixel being sliced, in that slice's own frame: which
 // quadrant of the pixel the fragment sits in, and the slice's mirroring, are
 // both folded into dirVec, so every case reads as though looking down-forward
@@ -219,6 +240,15 @@ vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	float chequerContinues = max(simA(c, ff), simA(c, dd));
 	sliceM *= 1.0 - sim4A(f, d, b, u) * sim4A(uf, df, db, ub) * (1.0 - simA(c, f))
 		* chequerContinues;
+
+	//a crossing cell is settled by the graph pass, not the local distances:
+	//c's own cell for the near cases, f's and d's for the far corners
+	float crossC = crossingVerdict(px, dirVec, 0.0);
+	float crossF = crossingVerdict(px + vec2(1.0, 0.0) * dirVec, dirVec, 0.0);
+	float crossD = crossingVerdict(px + vec2(0.0, 1.0) * dirVec, dirVec, 0.0);
+	float sliceC = mix(sliceM, crossC, step(0.0, crossC));
+	float sliceF = mix(sliceM, crossF, step(0.0, crossF));
+	float sliceD = mix(sliceM, crossD, step(0.0, crossD));
 
 	//the slant cases the original tests in an else-if chain, as
 	//priority-exclusive masks: each claims the fragment only where no
@@ -349,12 +379,12 @@ vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	//select the first matching case's colour where its slice reaches this
 	//point (col.r < 0 marks an abstaining pick, colour pass only)
 	vec4 res = vec4(-1.0);
-	res = mix(res, col1, e1 * step(dist1, 0.0) * step(0.0, col1.r));
-	res = mix(res, col2, e2 * step(dist2, 0.0) * step(0.0, col2.r));
-	res = mix(res, col3, e3 * step(dist3, 0.0) * step(0.0, col3.r));
-	res = mix(res, col4, e4 * step(dist4, 0.0) * step(0.0, col4.r));
-	res = mix(res, col5, e5 * step(dist5, 0.0) * step(0.0, col5.r));
-	return mix(vec4(-1.0), res, sliceM);
+	res = mix(res, col1, sliceC * e1 * step(dist1, 0.0) * step(0.0, col1.r));
+	res = mix(res, col2, sliceC * e2 * step(dist2, 0.0) * step(0.0, col2.r));
+	res = mix(res, col3, sliceC * e3 * step(dist3, 0.0) * step(0.0, col3.r));
+	res = mix(res, col4, sliceF * e4 * step(dist4, 0.0) * step(0.0, col4.r));
+	res = mix(res, col5, sliceD * e5 * step(dist5, 0.0) * step(0.0, col5.r));
+	return res;
 }
 
 //based on down-forward direction; branchless: all five slant cases evaluate,
@@ -389,6 +419,15 @@ vec4 sliceDistB(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 		lt(distAgainst, distTowards + 0.001) * (1.0 - higherB(c, f)));
 	//checkerboard edge case:
 	sliceM *= 1.0 - sim4B(f, d, b, u) * sim4B(uf, df, db, ub) * (1.0 - simB(c, f));
+
+	//a crossing cell is settled by the graph pass, not the local distances:
+	//c's own cell for the near cases, f's and d's for the far corners
+	float crossC = crossingVerdict(px, dirVec, 1.0);
+	float crossF = crossingVerdict(px + vec2(1.0, 0.0) * dirVec, dirVec, 1.0);
+	float crossD = crossingVerdict(px + vec2(0.0, 1.0) * dirVec, dirVec, 1.0);
+	float sliceC = mix(sliceM, crossC, step(0.0, crossC));
+	float sliceF = mix(sliceM, crossF, step(0.0, crossF));
+	float sliceD = mix(sliceM, crossD, step(0.0, crossD));
 
 	float m1 = sim3B(f, d, db) * (1.0 - sim3B(f, d, b)) * (1.0 - simB(uf, db)); //lower shallow slant
 	float m2 = sim3B(uf, f, d) * (1.0 - sim3B(u, f, d)) * (1.0 - simB(uf, db)); //forward steep slant
@@ -498,12 +537,12 @@ vec4 sliceDistB(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	//select the first matching case's colour where its slice reaches this
 	//point (col.r < 0 marks an abstaining pick, colour pass only)
 	vec4 res = vec4(-1.0);
-	res = mix(res, col1, e1 * step(dist1, 0.0) * step(0.0, col1.r));
-	res = mix(res, col2, e2 * step(dist2, 0.0) * step(0.0, col2.r));
-	res = mix(res, col3, e3 * step(dist3, 0.0) * step(0.0, col3.r));
-	res = mix(res, col4, e4 * step(dist4, 0.0) * step(0.0, col4.r));
-	res = mix(res, col5, e5 * step(dist5, 0.0) * step(0.0, col5.r));
-	return mix(vec4(-1.0), res, sliceM);
+	res = mix(res, col1, sliceC * e1 * step(dist1, 0.0) * step(0.0, col1.r));
+	res = mix(res, col2, sliceC * e2 * step(dist2, 0.0) * step(0.0, col2.r));
+	res = mix(res, col3, sliceC * e3 * step(dist3, 0.0) * step(0.0, col3.r));
+	res = mix(res, col4, sliceF * e4 * step(dist4, 0.0) * step(0.0, col4.r));
+	res = mix(res, col5, sliceD * e5 * step(dist5, 0.0) * step(0.0, col5.r));
+	return res;
 }
 
 void main() {
