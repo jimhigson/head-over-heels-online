@@ -9,7 +9,7 @@ export type E2EEventBusPayloadMap = {
     spritesheetName: SpritesheetName;
     cameraAngle: Xy;
     /** 1 = the plain art, above 1 = drawn from a upscaled sheet */
-    spritesheetUpscale: number;
+    spritesheetSmoothUpscale: number;
   };
   /** ticks stopped drawing anything, whatever they are waiting on */
   renderingSuspended: undefined;

@@ -7,4 +7,5 @@ import { needRefreshDialogColourClasses } from "./needRefreshDialogColourClasses
 export const LazyNeedRefreshDialog = LazyDialogHoc(
   lazy(importOnce(() => import("./NeedRefreshDialog"))),
   needRefreshDialogColourClasses,
+  "needRefresh",
 );

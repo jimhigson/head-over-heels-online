@@ -4,6 +4,7 @@ import { useCallback, useEffect } from "preact/hooks";
 import { useActionTap } from "../../game/components/dialogs/useActionTap";
 import { isInPlaytestMode } from "../../game/isInPlaytestMode";
 import { toggleFullscreen } from "../../utils/tauri/fullscreen";
+import { appTicker } from "../../utils/ticker/appTickerInstance";
 import { useAppSelector } from "../hooks";
 import {
   holdPressed,
@@ -33,16 +34,26 @@ export const useUniversalKeys = () => {
         // when playtesting, don't show a menu, just close the window
         window.close();
       }
-      store.dispatch(menuOpenOrExitPressed({ openMainIfEmpty: true }));
+      store.dispatch(
+        menuOpenOrExitPressed({
+          openMainIfEmpty: true,
+          openedAt: appTicker.time,
+        }),
+      );
     }, []),
     disabled: assigningKeys,
   });
 
   useActionTap({
     action: "menu_exit",
-    handler: useDispatchActionCallback(menuOpenOrExitPressed, {
-      openMainIfEmpty: false,
-    }),
+    handler: useCallback(() => {
+      store.dispatch(
+        menuOpenOrExitPressed({
+          openMainIfEmpty: false,
+          openedAt: appTicker.time,
+        }),
+      );
+    }, []),
     disabled: !menuOpen,
   });
 
@@ -56,19 +67,25 @@ export const useUniversalKeys = () => {
 
   useActionTap({
     action: "hold",
-    handler: useDispatchActionCallback(holdPressed, "toggle"),
+    handler: useCallback(() => {
+      store.dispatch(
+        holdPressed({ press: "toggle", openedAt: appTicker.time }),
+      );
+    }, []),
     disabled: assigningKeys,
   });
 
   useActionTap({
     action: "map",
-    handler: useDispatchActionCallback(mapPressed),
+    handler: useCallback(() => {
+      store.dispatch(mapPressed({ openedAt: appTicker.time }));
+    }, []),
     disabled: assigningKeys,
   });
 
   useEffect(() => {
     const handleWindowBlur = (): void => {
-      //store.dispatch(holdPressed("hold"));
+      //store.dispatch(holdPressed({ press: "hold", openedAt: appTicker.time }));
     };
     window.addEventListener("blur", handleWindowBlur, false);
     return () => {

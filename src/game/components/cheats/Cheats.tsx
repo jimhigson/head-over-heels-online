@@ -1,5 +1,5 @@
 import { type PropsWithChildren } from "preact/compat";
-import { useState } from "preact/hooks";
+import { useCallback, useState } from "preact/hooks";
 import { type EmptyObject } from "type-fest";
 
 import { type ItemInPlay } from "../../../model/ItemInPlay";
@@ -26,10 +26,10 @@ import {
   setGameSpeed,
   setShowShadowMasks,
 } from "../../../store/slices/userSettings/userSettingsSlice";
-import { useDispatchActionCallback } from "../../../store/useDispatchActionCallback";
 import { Button } from "../../../ui/Button";
 import { Switch } from "../../../ui/Switch";
 import { useKeyboardShortcut } from "../../../ui/useKeyboardShortcut";
+import { appTicker } from "../../../utils/ticker/appTickerInstance";
 import { ShowBoundingBoxSelect } from "../../debug/ShowBoundingBoxSelect";
 import { type GameApi } from "../../GameApi";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
@@ -266,7 +266,9 @@ const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
   useKeyboardShortcut(
     ["^K", "⌘K"],
     false,
-    useDispatchActionCallback(cmdKPressed),
+    useCallback(() => {
+      dispatch(cmdKPressed({ openedAt: appTicker.time }));
+    }, [dispatch]),
   );
 
   const [open, setOpen] = useState(false);
@@ -371,7 +373,7 @@ const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 data-test-id="cheats-summon-cmdk"
                 class={cheatsButtonClasses}
                 onClick={(e) => {
-                  dispatch(cmdKPressed());
+                  dispatch(cmdKPressed({ openedAt: appTicker.time }));
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >

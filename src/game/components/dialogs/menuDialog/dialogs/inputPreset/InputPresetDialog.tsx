@@ -16,6 +16,7 @@ const InputPresetDialog = () => {
     <DialogPortal>
       <Dialog fullScreen class={optionsDialogClasses} dialogId="inputPreset">
         <DialogTitleBar
+          dialogId="inputPreset"
           path={["Options", "Controls", "Presets"]}
           class={titleBarClasses}
         />

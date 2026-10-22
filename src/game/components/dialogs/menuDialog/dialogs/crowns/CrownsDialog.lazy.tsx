@@ -7,4 +7,5 @@ import { crownsDialogColourClasses } from "./crownsDialogColourClasses";
 export const LazyCrownsDialog = LazyDialogHoc(
   lazy(importOnce(() => import("./CrownsDialog"))),
   crownsDialogColourClasses,
+  "crowns",
 );

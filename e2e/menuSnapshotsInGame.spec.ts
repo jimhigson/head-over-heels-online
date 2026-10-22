@@ -179,7 +179,16 @@ for (const spritesheetName of enabledSpritesheets) {
         // dispatch the navigation directly:
         const shownProclaimEmperor = await dispatchToStore(page, {
           type: "gameMenus/goToSubmenu",
-          payload: "proclaimEmperor",
+          // the page's own clock is not this process's - 0 is the page's
+          // start, so the dialog is drawn as soon as it opens
+          payload: {
+            dialogId: "proclaimEmperor",
+            openedAt: 0,
+            alwaysOnTop: false,
+            notDismissable: false,
+            showAfterDelayMs: 0,
+            lingerMs: 0,
+          },
         } satisfies GoToSubMenuAction);
 
         if (!shownProclaimEmperor) {

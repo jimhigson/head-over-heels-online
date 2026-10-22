@@ -55,7 +55,11 @@ const OptionsDialog = () => {
         class={optionsDialogClasses}
         dialogId="modernisationOptions"
       >
-        <DialogTitleBar path={["Options"]} class={titleBarClasses} />
+        <DialogTitleBar
+          dialogId="modernisationOptions"
+          path={["Options"]}
+          class={titleBarClasses}
+        />
         <div class={optionsMenuScrollClasses}>
           <MenuItems class={`gap-y-half`}>
             <MenuItem

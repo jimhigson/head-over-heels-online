@@ -4,6 +4,7 @@ import {
   selectIsUpscaledSprites,
   selectShowFps,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
+import { selectIsSmoothingFailedMoreThanAllowed } from "../../../../../../store/slices/smoothing/smoothingSlice";
 import { toggleUserSetting } from "../../../../../../store/slices/userSettings/userSettingsSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
@@ -29,7 +30,11 @@ const upscaledSpritesMarkdown = `Upscale the pixel art so it looks smoother`;
 const DisplayOptionsDialog = () => {
   return (
     <Dialog fullScreen class={optionsDialogClasses} dialogId="displayOptions">
-      <DialogTitleBar path={["Options", "Display"]} class={titleBarClasses} />
+      <DialogTitleBar
+        dialogId="displayOptions"
+        path={["Options", "Display"]}
+        class={titleBarClasses}
+      />
       <div class={optionsMenuScrollClasses}>
         <MenuItems>
           {
@@ -87,6 +92,7 @@ const DisplayOptionsDialog = () => {
             doubleHeight
             id="upscaledSprites"
             verticalAlignItemsCentre
+            disabled={useAppSelector(selectIsSmoothingFailedMoreThanAllowed)}
             label="Smooth Sprites"
             valueElement={
               <Switch

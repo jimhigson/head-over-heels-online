@@ -1,4 +1,9 @@
-import { type Application, Container, Rectangle } from "pixi.js";
+import {
+  type Application,
+  Container,
+  Rectangle,
+  type WebGLRenderer,
+} from "pixi.js";
 
 import { audioCtx } from "../../sound/audioCtx";
 import { ensureRoomSoundsLoaded } from "../../sound/ensureRoomSoundsLoaded";
@@ -18,10 +23,14 @@ import {
   selectInputDirectionMode,
   selectIsPaused,
   selectIsPointerOnTube,
+  selectLooksPaused,
   selectShouldRenderOnScreenControls,
   selectShowFps,
   selectSpritesheetName,
 } from "../../store/slices/gameMenus/gameMenusSelectors";
+import { selectIsAskedForSmoothingReadyToUse } from "../../store/slices/smoothing/selectIsAskedForSmoothingReadyToUse";
+import { selectSpritesheetSmoothUpscale } from "../../store/slices/smoothing/selectSpritesheetSmoothUpscale";
+import { selectIsSmoothingInProgress } from "../../store/slices/smoothing/smoothingSlice";
 import { type Upscale } from "../../store/slices/upscale/Upscale";
 import { selectGameEngineUpscale } from "../../store/slices/upscale/upscaleSlice";
 import {
@@ -39,7 +48,6 @@ import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCu
 import { type PointerTracker } from "../input/PointerTracker";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
-import { selectSpritesheetUpscale } from "../render/filters/upscale/selectSpritesheetUpscale";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { needsNewHudRenderer } from "../render/hud/needsNewHudRenderer";
 import {
@@ -80,15 +88,12 @@ import { transitionCameraAngle } from "./transitionCameraAngle";
 registerDetailedFpsGlobal();
 
 const quarterTurnClockwise = Math.PI / 2;
+
 const pausedDimTint = 0x99_99_99;
 const noTint = 0xff_ff_ff;
 
 type HeldLoadName =
-  | "hudFont"
-  | "onScreenControlsModule"
-  | "roomSounds"
-  | "spritesheet"
-  | "upscaleBakeModule";
+  "hudFont" | "onScreenControlsModule" | "roomSounds" | "spritesheet";
 
 export class MainLoop<RoomId extends string> {
   #hudRenderer: HudRenderer<RoomId, string> | undefined;
@@ -111,12 +116,18 @@ export class MainLoop<RoomId extends string> {
 
   #onScreenControlsModule: OnScreenControlsModule | undefined;
 
+  /**
+   * the sheet is drawn at another upscale than the settings ask for, and one
+   * at theirs is being smoothed or uploaded
+   */
+  #smoothUpscaleUpgradeComing = false;
+
   #mainContainer = new Container({
     label: "MainLoop/mainContainer",
     children: [this.#worldContainer],
   });
 
-  #app: Application;
+  #app: Application<WebGLRenderer>;
   #gameState: GameState<RoomId>;
   #spritesheets: Spritesheets;
   #crtEffectContainer: CrtEffectContainer<RoomId>;
@@ -131,7 +142,7 @@ export class MainLoop<RoomId extends string> {
     undefined;
 
   constructor(
-    app: Application,
+    app: Application<WebGLRenderer>,
     gameState: GameState<RoomId>,
     spritesheets: Spritesheets,
     pointerTracker: PointerTracker,
@@ -172,7 +183,12 @@ export class MainLoop<RoomId extends string> {
 
   #handleError(thrown: unknown) {
     console.error(thrown);
-    store.dispatch(errorCaught(createSerialisableErrors(thrown)));
+    store.dispatch(
+      errorCaught({
+        caughtErrors: createSerialisableErrors(thrown),
+        openedAt: appTicker.time,
+      }),
+    );
   }
 
   /**
@@ -194,6 +210,7 @@ export class MainLoop<RoomId extends string> {
   }
 
   #firstFrameMarked = false;
+  #firstSmoothedFrameMarked = false;
 
   // set when the canvas regains its WebGL context after a loss; the next tick
   // refetches the spritesheet image and re-bakes the variants, whose
@@ -207,12 +224,17 @@ export class MainLoop<RoomId extends string> {
   // the recreation owed to a later tick:
   #originalSheetRebuilt = false;
 
+  // set when the room's sheet was rebuilt - the room renderer's sprites hold
+  // its destroyed textures, so it must be recreated. Held for the same reason
+  // as #originalSheetRebuilt:
+  #spritesheetRebuilt = false;
+
   #onWebGlContextRestored = () => {
     this.#webGlContextRestored = true;
     // every baked RenderTexture died with the old context - dropping them also
     // resets the loaded sprite option, so the next tick's isTextureLoaded
     // check refetches the image and re-bakes the original from it:
-    this.#spritesheets.invalidateUpscaledTextures();
+    this.#spritesheets.discardTexturesAfterContextLoss();
   };
 
   /**
@@ -230,7 +252,10 @@ export class MainLoop<RoomId extends string> {
   #__e2e_announceRenderingSuspension =
     import.meta.env.MODE === "visual-regression" ?
       () => {
-        const suspended = this.#heldLoads.size > 0;
+        // a coming upgrade still renders, but the frames it renders are
+        // about to change, so a test waits for it too
+        const suspended =
+          this.#heldLoads.size > 0 || this.#smoothUpscaleUpgradeComing;
 
         if (suspended === this.#renderingSuspended) {
           return;
@@ -394,24 +419,32 @@ export class MainLoop<RoomId extends string> {
       );
     }
 
+    // frozen as soon as a menu opens, but only drawn paused once it is drawn
     const isPaused = selectIsPaused(tickState);
+    const looksPaused = selectLooksPaused(tickState, appTicker.time);
 
     const selectedSpritesheetName = selectSpritesheetName(tickState);
     const tickSpritesheetName =
-      isPaused ?
+      looksPaused ?
         spritesheetMetas[selectedSpritesheetName].spritesheetWhenPaused
       : selectedSpritesheetName;
     const tickSpritesheetMeta = spritesheetMetas[tickSpritesheetName];
 
     this.#mainContainer.tint =
-      isPaused && tickSpritesheetMeta.isUncolourisedOf === undefined ?
+      looksPaused && tickSpritesheetMeta.isUncolourisedOf === undefined ?
         pausedDimTint
       : noTint;
 
-    const tickBakedUpscaleFactor = selectSpritesheetUpscale(tickState);
+    // the upscale the settings ask for, and the one the sheet is drawn at:
+    // the same, unless the sheet is still being smoothed at the one asked for
+    const tickTargetSmoothUpscale = selectSpritesheetSmoothUpscale(tickState);
+    const tickDrawnSmoothUpscale =
+      this.#spritesheets.isSmoothedAt(tickTargetSmoothUpscale) ?
+        tickTargetSmoothUpscale
+      : this.#spritesheets.spritesheetSmoothUpscale;
 
     const tickHudFontVariant = uiFontVariantAtResolution(
-      tickBakedUpscaleFactor,
+      tickDrawnSmoothUpscale,
     );
     if (
       !isUiFontLoaded(tickHudFontVariant) &&
@@ -459,13 +492,13 @@ export class MainLoop<RoomId extends string> {
     const spritesheetVariantsStale =
       (roomChanged ||
         this.#webGlContextRestored ||
-        this.#spritesheets.spritesheetUpscale !== tickBakedUpscaleFactor ||
+        this.#spritesheets.spritesheetSmoothUpscale !==
+          tickDrawnSmoothUpscale ||
         (this.#roomRenderer !== undefined &&
           tickSpritesheetMeta !==
             this.#roomRenderer.renderContext.general.spritesheetMeta)) &&
       tickEndRoom !== undefined &&
-      !this.#heldLoads.has("spritesheet") &&
-      !this.#heldLoads.has("upscaleBakeModule");
+      !this.#heldLoads.has("spritesheet");
 
     if (spritesheetVariantsStale) {
       const tickSpritesheetArtName = spritesheetArtName(tickSpritesheetMeta);
@@ -477,16 +510,6 @@ export class MainLoop<RoomId extends string> {
             tickSpritesheetArtName,
           ),
         );
-      } else if (
-        tickBakedUpscaleFactor !== 1 &&
-        !this.#spritesheets.isUpscaleBakeModuleLoaded
-      ) {
-        // fetched only once a tick asks for an upscaled sheet; the rebuild
-        // waits for it rather than building the sheet unsmoothed meanwhile
-        this.#holdRenderingFor(
-          "upscaleBakeModule",
-          this.#spritesheets.loadUpscaleBakeModule(),
-        );
       } else {
         const rebuildStartMs = performance.now();
         this.#originalSheetRebuilt ||= this.#spritesheets.rebuild(
@@ -494,12 +517,36 @@ export class MainLoop<RoomId extends string> {
           tickEndRoom.planet,
           tickEndRoom.color,
           tickSpritesheetMeta,
-          tickBakedUpscaleFactor,
+          tickDrawnSmoothUpscale,
         );
+        this.#spritesheetRebuilt = true;
         timingRecord?.recordSpritesheetRebuild(
           performance.now() - rebuildStartMs,
         );
       }
+    }
+
+    const smoothingReadyToUse = selectIsAskedForSmoothingReadyToUse(tickState);
+    const smoothUpscaleUpgradeComing =
+      tickTargetSmoothUpscale !== tickDrawnSmoothUpscale &&
+      (smoothingReadyToUse || selectIsSmoothingInProgress(tickState));
+    if (smoothUpscaleUpgradeComing !== this.#smoothUpscaleUpgradeComing) {
+      this.#smoothUpscaleUpgradeComing = smoothUpscaleUpgradeComing;
+      if (import.meta.env.MODE === "visual-regression") {
+        this.#__e2e_announceRenderingSuspension!();
+      }
+    }
+    if (
+      tickTargetSmoothUpscale !== tickDrawnSmoothUpscale &&
+      smoothingReadyToUse &&
+      this.#spritesheets.isTextureLoaded(
+        spritesheetArtName(tickSpritesheetMeta),
+      ) &&
+      // an upload into a lost context draws nothing - wait for it to be restored
+      !this.#app.renderer.gl.isContextLost()
+    ) {
+      // the sheet is rebuilt at the new upscale once it is uploaded
+      this.#spritesheets.uploadSmoothUpscaledToGpu(this.#app.renderer);
     }
 
     if (
@@ -574,8 +621,9 @@ export class MainLoop<RoomId extends string> {
       tickUpscale,
       tickDisplaySettings,
       tickSoundSettings,
-      isPaused,
+      looksPaused,
       this.#webGlContextRestored,
+      this.#spritesheetRebuilt,
     );
 
     const { cameraTransition } = this.#gameState;
@@ -593,7 +641,7 @@ export class MainLoop<RoomId extends string> {
 
     const general = this.#syncGeneralRenderContext(
       createNewHudRenderer || createNewRoomRenderer,
-      isPaused,
+      looksPaused,
       tickDisplaySettings,
       tickSoundSettings,
       tickSpritesheetName,
@@ -698,6 +746,7 @@ export class MainLoop<RoomId extends string> {
     // died with the old WebGL context or the previous original sheet:
     this.#webGlContextRestored = false;
     this.#originalSheetRebuilt = false;
+    this.#spritesheetRebuilt = false;
 
     // the room renderer runs even while paused
     if (this.#roomRenderer !== undefined) {
@@ -723,6 +772,14 @@ export class MainLoop<RoomId extends string> {
         // readiness signal for network-cost measurement (true-site-size)
         performance.mark("first-gameplay");
       }
+      if (
+        !this.#firstSmoothedFrameMarked &&
+        this.#spritesheets.spritesheetSmoothUpscale > 1
+      ) {
+        this.#firstSmoothedFrameMarked = true;
+        // readiness signal for network-cost measurement (true-site-size)
+        performance.mark("smooth-ui-ready");
+      }
       if (import.meta.env.MODE === "visual-regression") {
         // what this frame actually reflects - lets playwright wait for a change
         // to land in the output rather than guessing with a fixed delay:
@@ -730,7 +787,7 @@ export class MainLoop<RoomId extends string> {
           roomId: tickEndRoom.id,
           spritesheetName: tickSpritesheetName,
           cameraAngle,
-          spritesheetUpscale: this.#spritesheets.spritesheetUpscale,
+          spritesheetSmoothUpscale: this.#spritesheets.spritesheetSmoothUpscale,
         });
       }
     } catch (e) {

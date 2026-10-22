@@ -24,7 +24,7 @@ const AboutDialog = (_emptyProps: EmptyObject) => {
         class={`${mainMenuDialogColourClasses} text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 gap-y-0 justify-center`}
         dialogId="about"
       >
-        <DialogTitleBar class="pl-1" />
+        <DialogTitleBar dialogId="about" class="pl-1" />
         <div class={mainMenuScrollClasses}>
           <MenuItems>
             <MenuItem

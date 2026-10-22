@@ -5,6 +5,7 @@ import {
 } from "../../src/sprites/palette/spritesheetPalette";
 import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { octantIndexOfDirection } from "../../src/utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
+import artUrl from "../spritesBlockstack.webp";
 import { itemRenderExtents } from "./itemRenderExtents";
 
 export const blockStackSpritesheetMeta: SpritesheetMetadata<
@@ -12,6 +13,7 @@ export const blockStackSpritesheetMeta: SpritesheetMetadata<
   "blockstack"
 > = {
   name: "blockstack",
+  artUrl,
   spritesheetWhenPaused: "speccy",
   palettes: {
     basic: paletteBlockstackHex,

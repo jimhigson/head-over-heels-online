@@ -7,4 +7,5 @@ import { importOnce } from "../../../../../../utils/importOnce";
 export const LazyMapDialog = LazyDialogHoc(
   lazy(importOnce(() => import("./MapDialog"))),
   mapDialogColourClasses,
+  "map",
 );

@@ -7,4 +7,5 @@ import { quitGameConfirmDialogColourClasses } from "./quitGameConfirmDialogColou
 export const LazyQuitGameConfirmDialog = LazyDialogHoc(
   lazy(importOnce(() => import("./QuitGameConfirmDialog"))),
   quitGameConfirmDialogColourClasses,
+  "quitGameConfirm",
 );

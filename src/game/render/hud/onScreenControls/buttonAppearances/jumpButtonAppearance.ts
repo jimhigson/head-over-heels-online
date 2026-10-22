@@ -34,7 +34,7 @@ const createSurface = (
   });
   const text = new TextContainer({
     pixiRenderer,
-    resolution: spritesheets.spritesheetUpscale,
+    resolution: spritesheets.spritesheetSmoothUpscale,
     text: "JUMP",
     y: textYForButtonCentre,
   });

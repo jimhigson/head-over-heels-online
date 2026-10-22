@@ -1,8 +1,6 @@
-import blockstackSpritesheetArtUrl from "../../gfx/spritesBlockstack.webp";
-import toppySpritesheetArtUrl from "../../gfx/spritesToppy.webp";
+import { spritesheetArtSourceUrl } from "../sprites/spritesheet/spritesheetArtSourceUrl";
 import { useAppSelector } from "./hooks";
 import { useSpritesheetArtName } from "./slices/gameMenus/gameMenusSelectors";
-import { selectSpritesheetOverrideBlobUrl } from "./slices/spritesheetOverrideSlice";
 
 /**
  * The runtime URL of the spritesheet image for the currently-selected sprites
@@ -14,18 +12,7 @@ import { selectSpritesheetOverrideBlobUrl } from "./slices/spritesheetOverrideSl
  */
 export const useCurrentSpritesheetArtUrl = (): string => {
   const spritesheetArtName = useSpritesheetArtName();
-  const overrideBlobUrl =
-    import.meta.env.VITE_APP === "editor" ?
-      undefined
-      // oxlint-disable-next-line react-hooks/rules-of-hooks -- build-time macro, not run-time conditional
-    : useAppSelector((state) =>
-        selectSpritesheetOverrideBlobUrl(state, spritesheetArtName),
-      );
-
-  return (
-    overrideBlobUrl ??
-    (spritesheetArtName === "toppy" ?
-      toppySpritesheetArtUrl
-    : blockstackSpritesheetArtUrl)
+  return useAppSelector((state) =>
+    spritesheetArtSourceUrl(state, spritesheetArtName),
   );
 };

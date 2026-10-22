@@ -1,4 +1,5 @@
-import { type Spritesheet } from "pixi.js";
+import { type Spritesheet, type SpritesheetData } from "pixi.js";
+import { type OverrideProperties } from "type-fest";
 
 import { type PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
 import { type AppSpriteFrame } from "./spritesheetData/AppSpriteFrame";
@@ -24,12 +25,20 @@ type AnimationsWithVariants = ReturnType<
   typeof makeSpritesheetData
 >["animations"];
 
+/**
+ * pixi's meta, with the sheets' art always at one pixel per unit
+ */
+type AppSpritesheetMeta = SpritesheetData["meta"] & { scale: 1 };
+
 /** sheet data over only the ids drawn as pixels in the source image */
-export type AppSpritesheetData = {
-  frames: Record<BaseTextureId, { frame: AppSpriteFrame }>;
-  animations: BaseAnimations;
-  meta: { scale: 1 };
-};
+export type AppSpritesheetData = OverrideProperties<
+  SpritesheetData,
+  {
+    frames: Record<BaseTextureId, { frame: AppSpriteFrame }>;
+    animations: BaseAnimations;
+    meta: AppSpritesheetMeta;
+  }
+>;
 
 /**
  * sheet data additionally carrying every variant-suffixed id
@@ -37,11 +46,14 @@ export type AppSpritesheetData = {
  * re-pointed at packed strip rects where the sheet bakes that variant,
  * aliases of the base rects otherwise
  */
-export type AppSpritesheetDataWithVariants = {
-  frames: SpritesheetDataFrames;
-  animations: AnimationsWithVariants;
-  meta: { scale: 1 };
-};
+export type AppSpritesheetDataWithVariants = OverrideProperties<
+  SpritesheetData,
+  {
+    frames: SpritesheetDataFrames;
+    animations: AnimationsWithVariants;
+    meta: AppSpritesheetMeta;
+  }
+>;
 
 declare const variantsBaked: unique symbol;
 

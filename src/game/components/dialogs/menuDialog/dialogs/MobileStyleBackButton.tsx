@@ -1,18 +1,26 @@
 import { twMerge } from "tailwind-merge";
 
-import { backToParentMenu } from "../../../../../store/slices/gameMenus/gameMenusSlice";
+import { closeMenuThunk } from "../../../../../store/slices/gameMenus/closeMenuThunk";
 import { useDispatchActionCallback } from "../../../../../store/useDispatchActionCallback";
+import { type DialogId } from "../DialogId";
 import { useMenuItem } from "./menus/useMenuItem";
+
+export type MobileStyleBackButtonProps = {
+  /**
+   * the dialog this button is in, which it closes
+   */
+  dialogId: DialogId;
+  class?: string;
+};
 
 /**
  * a back button for the top-left of the screen, like in iOS
  */
 export const MobileStyleBackButton = ({
+  dialogId,
   class: className,
-}: {
-  class?: string;
-}) => {
-  const onSelect = useDispatchActionCallback(backToParentMenu);
+}: MobileStyleBackButtonProps) => {
+  const onSelect = useDispatchActionCallback(closeMenuThunk, dialogId);
 
   const { menuItemProps, ref, focussed } = useMenuItem({
     id: "back",

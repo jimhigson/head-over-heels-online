@@ -2,7 +2,7 @@ import {
   type AnimatedTextureTailwindClass,
   type TextureTailwindClass,
 } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { closeMenuThunk } from "../../../../../../store/slices/gameMenus/closeMenuThunk";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
@@ -20,7 +20,7 @@ const ProclaimEmperorDialog = () => {
       <Border class="bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack" />
       <Dialog
         class={`${proclaimEmperorDialogColourClasses} w-zx h-full block p-0`}
-        onClick={useDispatchActionCallback(backToParentMenu)}
+        onClick={useDispatchActionCallback(closeMenuThunk, "proclaimEmperor")}
         dialogId="proclaimEmperor"
       >
         <div class="flex flex-col gap-3 items-center">
@@ -53,7 +53,7 @@ const ProclaimEmperorDialog = () => {
             EMPEROR
           </ColourCycleText>
           <MenuItems class="hidden">
-            <BackMenuItem />
+            <BackMenuItem dialogId="proclaimEmperor" />
           </MenuItems>
         </div>
       </Dialog>

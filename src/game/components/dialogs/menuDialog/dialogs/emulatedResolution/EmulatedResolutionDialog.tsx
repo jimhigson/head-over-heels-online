@@ -54,6 +54,7 @@ const EmulatedResolutionDialog = () => {
         dialogId="emulatedResolution"
       >
         <DialogTitleBar
+          dialogId="emulatedResolution"
           path={["Options", "Display", "Res."]}
           class={titleBarClasses}
         />

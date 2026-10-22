@@ -1,4 +1,4 @@
-import { readBuildInfo } from "./readBuildInfo.ts" with { type: "macro" };
+import { readBuildInfo } from "./readBuildInfo.macro.ts" with { type: "macro" };
 
 /** what this build of the game is, fixed when it was built */
 export const buildInfo = {

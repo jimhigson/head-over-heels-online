@@ -6,9 +6,6 @@ import { AppTicker, deltaTimeUnitValue } from "./AppTicker";
  * to be highly deterministic since nothing relies on system clock
  */
 export class TestDrivenAppTicker extends AppTicker {
-  /** how soon is now? */
-  #time = 0;
-
   /** does nothing since only the test-specific `advance` moves time forward */
   protected startTicking(): void {}
   protected stopTicking(): void {}
@@ -29,7 +26,6 @@ export class TestDrivenAppTicker extends AppTicker {
     this.emit();
     this.minFPS = minFpsBeforeJump;
 
-    this.#time += ms;
-    this.lastTime = this.#time;
+    this.lastTime = this.time;
   }
 }

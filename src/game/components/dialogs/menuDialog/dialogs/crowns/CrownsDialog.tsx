@@ -1,7 +1,7 @@
 import { useAppSelector } from "../../../../../../store/hooks";
 import { useIsGameLoading } from "../../../../../../store/hooks/loadingHooks";
+import { closeMenuThunk } from "../../../../../../store/slices/gameMenus/closeMenuThunk";
 import { selectIsSoundMuted } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
@@ -24,7 +24,7 @@ const CrownsDialog = ({
   const muted = useAppSelector(selectIsSoundMuted);
   const shouldPlayMusic = playMusic && !muted;
 
-  const closeDialog = useDispatchActionCallback(backToParentMenu);
+  const closeDialog = useDispatchActionCallback(closeMenuThunk, "crowns");
   return (
     <DialogPortal>
       <Border class="bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack" />
@@ -44,7 +44,7 @@ const CrownsDialog = ({
         )}
         {!isLoading && (
           <MenuItems class="hidden">
-            <BackMenuItem />
+            <BackMenuItem dialogId="crowns" />
           </MenuItems>
         )}
       </Dialog>
