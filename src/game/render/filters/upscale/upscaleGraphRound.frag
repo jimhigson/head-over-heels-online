@@ -11,8 +11,8 @@ precision highp float;
  * its pixels than the links they already have - a pixel already carrying a
  * line as straight as the step could make cannot also take it, and the fill
  * between connects. A region's corner (a pixel in a solid block) carries
- * no line, and joins nothing but a lone pixel; a lone pixel joins whatever
- * it touches.
+ * no line and joins nothing: a lone pixel touching it stays a dot rather
+ * than becoming a spur.
  *
  * Where the step is open to both its pixels, a stroke's end with that one
  * way left to carry on takes it - unless another end with no other way is
@@ -138,8 +138,8 @@ float straightestWith(Links links, vec2 d){
 
 // whether a pixel cannot take a step in direction d: its corner carries no
 // line, or the line it carries is already as straight as the step would make
-bool refuses(Links links, vec2 d, bool fromLonePixel){
-	if (links.isRegion) return !fromLonePixel;
+bool refuses(Links links, vec2 d){
+	if (links.isRegion) return true;
 	if (links.count < 2) return false;
 	return straightestWith(links, d) <= straightestLine(links) + 0.01;
 }
@@ -147,7 +147,7 @@ bool refuses(Links links, vec2 d, bool fromLonePixel){
 // whether the step between p and q is open to both
 bool stepOpen(ivec2 p, Links pLinks, ivec2 q, Links qLinks){
 	vec2 d = normalize(vec2(q - p));
-	return !refuses(pLinks, d, qLinks.count == 0) && !refuses(qLinks, -d, pLinks.count == 0);
+	return !refuses(pLinks, d) && !refuses(qLinks, -d);
 }
 
 // p's candidate steps that are open to both their pixels
