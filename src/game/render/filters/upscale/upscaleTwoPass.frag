@@ -37,6 +37,10 @@ precision highp float;
  * measured along a black body's edge stops short of such a tip, so the two
  * are smoothed as the separate things they are.
  *
+ * A strip - a straight run of one to three black pixels, one pixel thick,
+ * with no black beside it - is a dot, an eye or a dash the artist sized,
+ * and is not sliced: it is drawn as a lozenge of the strip's own area.
+ *
  * This form is BRANCHLESS: the original's booleans are exact 0/1 float
  * masks and its if/else chains are mix()/step() selections, so the whole
  * shader is straight-line code (kind to slow shader compilers, eg
@@ -217,59 +221,106 @@ vec4 standInAt(vec2 px){
 	return texture(uStandIn, px / uSheetSize);
 }
 
-// the eight neighbour offsets, sides then diagonals
-const vec2 around[8] = vec2[8](
-	vec2( 1.0, 0.0), vec2(-1.0, 0.0), vec2( 0.0, 1.0), vec2( 0.0,-1.0),
-	vec2( 1.0, 1.0), vec2(-1.0, 1.0), vec2( 1.0,-1.0), vec2(-1.0,-1.0)
-);
+// ---- strips: a dot, an eye, a dash. A straight run of one to three black
+// pixels, one pixel thick, that is the whole of its black by side - black
+// may touch one of its corners, so long as that is a line crossing its
+// path and not the next step of a slope - is a thing the artist sized
+// rather than an edge to fit a slope to: the slices would round it down to
+// less. It is drawn instead as a lozenge of the strip's own area - the
+// strip's rectangle let out a little all round, with its corners cut at 45
+// degrees
 
-// how many of the eight pixels around p are black, not counting `except`
-float blackAround(vec2 p, vec2 except){
-	float n = 0.0;
-	for (int i = 0; i < 8; i++){
-		vec2 q = p + around[i];
-		n += strokeA(srcAt(q)) * step(0.5, distance(q, except));
-	}
-	return n;
+// how far along each edge a lozenge's corners are cut: half a pixel, so the
+// ends of a one-pixel strip come to a point
+const float lozengeCut = 0.5;
+
+float blackAt(vec2 p){
+	return strokeA(srcAt(p));
 }
 
-// 1.0 where the pixel at p is a black island: alone, or one of a pair,
-// with no other black touching either by side or by corner
-float islandA(vec2 p){
-	float own = strokeA(srcAt(p));
-	float neighbours = blackAround(p, p);
-	float alone = 1.0 - step(0.5, neighbours);
-	float pairedOff = 0.0;
-	for (int i = 0; i < 8; i++){
-		vec2 q = p + around[i];
-		pairedOff += strokeA(srcAt(q)) * (1.0 - step(0.5, blackAround(q, p)));
-	}
-	float paired = step(0.5, neighbours) * (1.0 - step(1.5, neighbours)) * step(0.5, pairedOff);
-	return own * max(alone, paired);
+// how far the black runs on from p along `along`, up to three
+float runOut(vec2 p, vec2 along){
+	float s1 = blackAt(p + along);
+	float s2 = s1 * blackAt(p + along * 2.0);
+	float s3 = s2 * blackAt(p + along * 3.0);
+	return s1 + s2 + s3;
 }
 
-// how far, along each edge, an island's free corner is chamfered: enough
-// to round a dot at any bake size while keeping most of its square
-const float islandChamferLength = 0.35;
+// 1.0 where no pixel of the run through p - l pixels before it and r after,
+// along `along` - has black beside it across the run
+float clearAcross(vec2 p, vec2 along, vec2 across, float l, float r){
+	float clear = 1.0;
+	for (int k = -2; k <= 2; k++){
+		float kf = float(k);
+		float inRun = step(-l - 0.5, kf) * step(kf, r + 0.5);
+		vec2 q = p + along * kf;
+		clear *= 1.0 - inRun * max(blackAt(q + across), blackAt(q - across));
+	}
+	return clear;
+}
 
-// the fill an island's chamfered corner shows: a real fill beside it by
+// 1.0 where the pixel at q carries a slope on from a run it touches corner
+// to corner: black, with no black beside it across the run. A pixel with
+// black beside it is a line crossing the run's path, not the next step of
+// the same slope
+float stepAt(vec2 q, vec2 across){
+	return blackAt(q) * (1.0 - max(blackAt(q + across), blackAt(q - across)));
+}
+
+// 1.0 where the run through p - l pixels before it and r after, along
+// `along` - may be a strip for what touches its end corners: black at no
+// more than one of them (a dot amid a chequer, or a dash bridging two lines,
+// is part of a texture, not a thing on its own), and that not carrying a
+// slope on from it - a 45 degree line, or the runs of a 2:1 one, touch
+// corner to corner and are a line to fit slices to
+float cornersClear(vec2 p, vec2 along, vec2 across, float l, float r){
+	vec2 c1 = p - along * (l + 1.0) + across;
+	vec2 c2 = p - along * (l + 1.0) - across;
+	vec2 c3 = p + along * (r + 1.0) + across;
+	vec2 c4 = p + along * (r + 1.0) - across;
+	float contacts = blackAt(c1) + blackAt(c2) + blackAt(c3) + blackAt(c4);
+	float steps = stepAt(c1, across) + stepAt(c2, across) + stepAt(c3, across) + stepAt(c4, across);
+	return step(contacts, 1.5) * (1.0 - step(0.5, steps));
+}
+
+// the strip p is a pixel of, if any: x = 1.0 for a strip, y = its length,
+// z = how many of its pixels come before p, w = 1.0 when it runs along x
+// (a lone pixel is a strip along either axis and is taken along x)
+vec4 stripAt(vec2 p){
+	float own = blackAt(p);
+	vec2 xAxis = vec2(1.0, 0.0);
+	vec2 yAxis = vec2(0.0, 1.0);
+	float lx = runOut(p, -xAxis);
+	float rx = runOut(p,  xAxis);
+	float nx = lx + 1.0 + rx;
+	float alongX = own * step(nx, 3.0) * clearAcross(p, xAxis, yAxis, lx, rx) * cornersClear(p, xAxis, yAxis, lx, rx);
+	float ly = runOut(p, -yAxis);
+	float ry = runOut(p,  yAxis);
+	float ny = ly + 1.0 + ry;
+	float alongY = own * step(ny, 3.0) * clearAcross(p, yAxis, xAxis, ly, ry) * cornersClear(p, yAxis, xAxis, ly, ry);
+	return vec4(max(alongX, alongY), mix(ny, nx, alongX), mix(ly, lx, alongX), alongX);
+}
+
+// 1.0 where the point (in pixel units) lies inside the lozenge of the strip
+// p is a pixel of
+float inLozenge(vec2 point, vec2 p, vec4 strip){
+	vec2 along = mix(vec2(0.0, 1.0), vec2(1.0, 0.0), strip.w);
+	vec2 across = along.yx;
+	float n = strip.y;
+	vec2 centre = p + along * ((n - 1.0) * 0.5 - strip.z);
+	// let out so that, with the corners cut, the lozenge has the strip's area
+	float e = (sqrt((n + 1.0) * (n + 1.0) + 8.0 * lozengeCut * lozengeCut) - (n + 1.0)) * 0.25;
+	float a = n * 0.5 + e;
+	float b = 0.5 + e;
+	float u = abs(dot(point - centre, along));
+	float v = abs(dot(point - centre, across));
+	return strip.x * step(u, a) * step(v, b) * step(lozengeCut, (a - u) + (b - v));
+}
+
+// the fill a lozenge's cut corner shows: a real fill beside it by
 // preference, else whatever is there (transparent, at the silhouette)
-vec4 islandCornerFill(vec4 side1, vec4 side2){
+vec4 cornerFill(vec4 side1, vec4 side2){
 	return mix(mix(side2, side1, isC(side1)), side1, 1.0 - max(isC(side1), isC(side2)));
-}
-
-// the colour a fragment of an island pixel takes from the chamfer of the
-// corner it lies in, or -1 where the corner is not free - the pixel's
-// partner is across it - or the fragment is outside the chamfer
-vec4 islandChamfer(vec2 px, vec2 local){
-	vec2 corner = step(0.5, local);
-	vec2 toward = corner * 2.0 - 1.0;
-	vec4 sideX = srcAt(px + vec2(toward.x, 0.0));
-	vec4 sideY = srcAt(px + vec2(0.0, toward.y));
-	vec4 diagonal = srcAt(px + toward);
-	float free = (1.0 - strokeA(sideX)) * (1.0 - strokeA(sideY)) * (1.0 - strokeA(diagonal));
-	float inChamfer = 1.0 - step(islandChamferLength, abs(local.x - corner.x) + abs(local.y - corner.y));
-	return mix(vec4(-1.0), islandCornerFill(sideX, sideY), free * inChamfer);
 }
 
 // a neighbour of the pixel being sliced, in that slice's own frame: which
@@ -281,7 +332,7 @@ vec4 islandChamfer(vec2 px, vec2 local){
 
 //based on down-forward direction; branchless: all five slant cases evaluate,
 //an exclusive mask chain reproduces the original's else-if priority
-vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
+vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px, float strip){
 	vec2 dirVec = pointDir * mainDir;
 	point = mainDir * (point - 0.5) + 0.5; //flip point
 	vec2 center = vec2(0.5, 0.5);
@@ -532,10 +583,8 @@ vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	res = mix(res, col3, sliceC * (1.0 - notchC) * (1.0 - junctionC) * e3 * step(dist3, 0.0) * step(0.0, col3.r));
 	res = mix(res, col4, sliceF * (1.0 - notchF) * e4 * step(dist4, 0.0) * step(0.0, col4.r));
 	res = mix(res, col5, sliceD * (1.0 - notchD) * e5 * step(dist5, 0.0) * step(0.0, col5.r));
-	//A black island - one pixel, or two, with no other black touching them -
-	//is a dot the artist sized: the slices leave it whole, and it is rounded
-	//by its own chamfer instead, which keeps it about that size
-	return mix(res, vec4(-1.0), islandA(px));
+	//a strip is not sliced: it is drawn as its lozenge instead
+	return mix(res, vec4(-1.0), strip);
 }
 
 //based on down-forward direction; branchless: all five slant cases evaluate,
@@ -707,18 +756,23 @@ void main() {
 
 	//pass A: c_orner, b_ack, and u_p slices on the art classes
 	// (slices from neighbor pixels will only ever reach these 3 quadrants
-	vec4 cColA = sliceDistA(local, vec2( 1.0, 1.0), pointDir, px);
-	vec4 bColA = sliceDistA(local, vec2(-1.0, 1.0), pointDir, px);
-	vec4 uColA = sliceDistA(local, vec2( 1.0,-1.0), pointDir, px);
+	vec4 stripC = stripAt(px);
+	vec4 cColA = sliceDistA(local, vec2( 1.0, 1.0), pointDir, px, stripC.x);
+	vec4 bColA = sliceDistA(local, vec2(-1.0, 1.0), pointDir, px, stripC.x);
+	vec4 uColA = sliceDistA(local, vec2( 1.0,-1.0), pointDir, px, stripC.x);
 
 	col = mix(col, cColA, step(0.0, cColA.r));
 	col = mix(col, bColA, step(0.0, bColA.r));
 	col = mix(col, uColA, step(0.0, uColA.r));
 
-	//an island's own rounding: its free corners chamfered a little, so a dot
-	//is rounded but stays about the size the artist drew it
-	vec4 chamfered = islandChamfer(px, local);
-	col = mix(col, chamfered, islandA(px) * step(0.0, chamfered.r));
+	//a strip's lozenge: black inside it, the fill beside in its cut corners
+	vec2 point = px - 0.5 + local;
+	vec2 sideX = px + vec2(pointDir.x, 0.0);
+	vec2 sideY = px + vec2(0.0, pointDir.y);
+	col = mix(col, mix(cornerFill(srcAt(sideX), srcAt(sideY)), c, inLozenge(point, px, stripC)), stripC.x);
+	//...and where a strip beside this pixel is let out into it
+	col = mix(col, srcAt(sideX), inLozenge(point, sideX, stripAt(sideX)));
+	col = mix(col, srcAt(sideY), inLozenge(point, sideY, stripAt(sideY)));
 
 	//pass B base fill colour before slicing: c itself when it is a fill,
 	//else the closest (bilinear-weighted) fill colour of the 2x2 cell (c is
