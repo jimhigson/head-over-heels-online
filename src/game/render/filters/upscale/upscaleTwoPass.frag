@@ -13,10 +13,12 @@ precision highp float;
  *   distinction, so lines and silhouettes keep cleanEdge's crisp 45-degree
  *   and 2:1 slopes;
  * - pass B re-runs cleanEdge with real colour distances to resolve each
- *   fill pixel, but black/transparent samples abstain (no edges, no
- *   priority, never the resolved colour) - so fills keep crisp
- *   palette-preserving colour boundaries that continue underneath the
- *   linework, with no mixing/blurring.
+ *   fill pixel. It reads the linework by its stand-in colours, each black
+ *   pixel as the fill nearest it (upscaleStandIn.frag), so the shading is
+ *   resolved as regions that run on beneath the lines; transparent samples
+ *   and black pixels with no fill near abstain (no edges, no priority, never
+ *   the resolved colour) - so fills keep crisp palette-preserving colour
+ *   boundaries, with no mixing/blurring.
  *
  * Each slice line is fitted to the runs the art actually has, rather than to
  * a fixed 45-degree or 2:1 slope as the original's cases assume: the line
@@ -207,10 +209,20 @@ float crossingVerdict(vec2 cellC, vec2 dirVec, float layerB){
 	return mix(-1.0, fdConnects, isCrossing);
 }
 
+// every pixel's stand-in colour for the colour pass, as upscaleStandIn.frag
+// gives it: a fill itself, a black pixel of the linework the fill nearest it
+uniform sampler2D uStandIn;
+
+vec4 standInAt(vec2 px){
+	return texture(uStandIn, px / uSheetSize);
+}
+
 // a neighbour of the pixel being sliced, in that slice's own frame: which
 // quadrant of the pixel the fragment sits in, and the slice's mirroring, are
 // both folded into dirVec, so every case reads as though looking down-forward
 #define AT(dx, dy) srcAt(px + vec2(dx, dy) * dirVec)
+// the same neighbour by its stand-in colour, for the colour pass
+#define ATB(dx, dy) standInAt(px + vec2(dx, dy) * dirVec)
 
 //based on down-forward direction; branchless: all five slant cases evaluate,
 //an exclusive mask chain reproduces the original's else-if priority
@@ -468,21 +480,21 @@ vec4 sliceDistB(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	point = mainDir * (point - 0.5) + 0.5; //flip point
 	vec2 center = vec2(0.5, 0.5);
 
-	vec4 ub  = AT(-1.0,-1.0);
-	vec4 u   = AT( 0.0,-1.0);
-	vec4 uf  = AT( 1.0,-1.0);
-	vec4 uff = AT( 2.0,-1.0);
-	vec4 b   = AT(-1.0, 0.0);
-	vec4 c   = AT( 0.0, 0.0);
-	vec4 f   = AT( 1.0, 0.0);
-	vec4 ff  = AT( 2.0, 0.0);
-	vec4 db  = AT(-1.0, 1.0);
-	vec4 d   = AT( 0.0, 1.0);
-	vec4 df  = AT( 1.0, 1.0);
-	vec4 dff = AT( 2.0, 1.0);
-	vec4 ddb = AT(-1.0, 2.0);
-	vec4 dd  = AT( 0.0, 2.0);
-	vec4 ddf = AT( 1.0, 2.0);
+	vec4 ub  = ATB(-1.0,-1.0);
+	vec4 u   = ATB( 0.0,-1.0);
+	vec4 uf  = ATB( 1.0,-1.0);
+	vec4 uff = ATB( 2.0,-1.0);
+	vec4 b   = ATB(-1.0, 0.0);
+	vec4 c   = ATB( 0.0, 0.0);
+	vec4 f   = ATB( 1.0, 0.0);
+	vec4 ff  = ATB( 2.0, 0.0);
+	vec4 db  = ATB(-1.0, 1.0);
+	vec4 d   = ATB( 0.0, 1.0);
+	vec4 df  = ATB( 1.0, 1.0);
+	vec4 dff = ATB( 2.0, 1.0);
+	vec4 ddb = ATB(-1.0, 2.0);
+	vec4 dd  = ATB( 0.0, 2.0);
+	vec4 ddf = ATB( 1.0, 2.0);
 
 	//edge detection
 	float distAgainst = 4.0*cdB(f,d) + cdB(uf,c) + cdB(c,db) + cdB(ff,df) + cdB(df,dd);

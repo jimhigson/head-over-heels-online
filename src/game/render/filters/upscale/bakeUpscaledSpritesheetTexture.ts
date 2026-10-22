@@ -13,6 +13,7 @@ import despeckleFrag from "./despeckle.frag";
 import upscaleGraphFrag from "./upscaleGraph.frag";
 import upscaleGraphRoundFrag from "./upscaleGraphRound.frag";
 import upscaleQuadVert from "./upscaleQuad.vert";
+import upscaleStandInFrag from "./upscaleStandIn.frag";
 import upscaleTwoPassFrag from "./upscaleTwoPass.frag";
 
 type PassUniforms = Record<string, UniformData>;
@@ -133,6 +134,21 @@ export const bakeUpscaledSpritesheetTexture = (
     );
   }
 
+  // every pixel's stand-in colour for the colour pass: a black pixel of the
+  // linework reads as the fill nearest it, so the shading resolves as regions
+  // that run on beneath the lines
+  const standIn = RenderTexture.create({ width, height, resolution: 1 });
+  renderPass(
+    pixiRenderer,
+    geometry,
+    upscaleStandInFrag,
+    "upscaleStandIn",
+    sourceTexture,
+    {},
+    sheetSizeUniform,
+    standIn,
+  );
+
   const upscaled = RenderTexture.create({
     width,
     height,
@@ -144,13 +160,14 @@ export const bakeUpscaledSpritesheetTexture = (
     upscaleTwoPassFrag,
     "upscale",
     sourceTexture,
-    { uGraph: graph.source },
+    { uGraph: graph.source, uStandIn: standIn.source },
     sheetSizeUniform,
     upscaled,
   );
   for (const graphTexture of graphTextures) {
     graphTexture.destroy(true);
   }
+  standIn.destroy(true);
 
   const target = RenderTexture.create({
     width,
