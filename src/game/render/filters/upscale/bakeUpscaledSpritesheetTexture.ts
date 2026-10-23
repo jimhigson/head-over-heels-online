@@ -10,6 +10,7 @@ import {
 } from "pixi.js";
 
 import despeckleFrag from "./despeckle.frag";
+import despeckleShadingFrag from "./despeckleShading.frag";
 import upscaleGraphFrag from "./upscaleGraph.frag";
 import upscaleGraphRoundFrag from "./upscaleGraphRound.frag";
 import upscaleQuadVert from "./upscaleQuad.vert";
@@ -169,7 +170,18 @@ export const bakeUpscaledSpritesheetTexture = (
   }
   standIn.destroy(true);
 
-  const target = RenderTexture.create({
+  const pixelSizeUniform: PassUniforms = {
+    uPixelSize: {
+      type: "vec2<f32>",
+      value: [
+        1 / (width * spritesheetUpscale),
+        1 / (height * spritesheetUpscale),
+      ],
+    },
+  };
+  // despeckled in two stages, as the upscale decides them: the linework
+  // and silhouette first, then the shading within the fills
+  const despeckled = RenderTexture.create({
     width,
     height,
     resolution: spritesheetUpscale,
@@ -181,18 +193,26 @@ export const bakeUpscaledSpritesheetTexture = (
     "despeckle",
     upscaled,
     {},
-    {
-      uPixelSize: {
-        type: "vec2<f32>",
-        value: [
-          1 / (width * spritesheetUpscale),
-          1 / (height * spritesheetUpscale),
-        ],
-      },
-    },
-    target,
+    pixelSizeUniform,
+    despeckled,
   );
   upscaled.destroy(true);
+  const target = RenderTexture.create({
+    width,
+    height,
+    resolution: spritesheetUpscale,
+  });
+  renderPass(
+    pixiRenderer,
+    geometry,
+    despeckleShadingFrag,
+    "despeckleShading",
+    despeckled,
+    {},
+    pixelSizeUniform,
+    target,
+  );
+  despeckled.destroy(true);
   geometry.destroy();
 
   return target;
