@@ -8,7 +8,8 @@ precision highp float;
  * beyond the corner, and lighter shades of its own hue on its two open sides.
  * At 1x that shade reads as a rounder corner; the upscale rounds the corner
  * itself, so the shade only muddies it. Such a pixel takes the lighter of the
- * two shades beside it.
+ * two shades beside it. A dark or greyish colour counts as a shade of
+ * whatever hue it sits in, as pixel art often uses one.
  *
  * The corner is matched in all eight orientations (four rotations, each
  * mirrored), and every match reads only the original pixels, so the result
@@ -25,11 +26,18 @@ uniform vec2 uSheetSize;
 
 const float blackThreshold = 0.1;
 
-// how far apart, in degrees, two hues may be to count as shades of one hue
+// how far apart, in degrees, a shade's hue may be from the lighter one's
 const float hueTolerance = 30.0;
 
-// how saturated a colour must be to have a hue at all: below this, eg the
-// whites and greys, it is a shade of nothing
+// the chroma (its strongest channel less its weakest) at and above which a
+// shade is held to hueTolerance. Below it the tolerance widens in inverse
+// proportion: pixel art uses a dark or greyish colour as a generic darker
+// shade of whatever it sits in, and the darker and greyer a colour is, the
+// less its hue says
+const float fullChroma = 0.4;
+
+// how saturated the lighter shades must be to have a hue at all: below this,
+// eg the whites and greys, they are shades of nothing
 const float minSaturation = 0.2;
 
 vec4 srcAt(ivec2 p){
@@ -61,12 +69,19 @@ vec2 hueAndSaturation(vec4 col){
 	return vec2(hue * 60.0, saturation);
 }
 
-bool sameHue(vec4 col1, vec4 col2){
-	vec2 hs1 = hueAndSaturation(col1);
-	vec2 hs2 = hueAndSaturation(col2);
-	float apart = abs(hs1.x - hs2.x);
+float chroma(vec4 col){
+	vec3 rgb = col.rgb / col.a;
+	return max(rgb.r, max(rgb.g, rgb.b)) - min(rgb.r, min(rgb.g, rgb.b));
+}
+
+// whether the darker shade own is near enough in hue to the lighter col
+bool sameHue(vec4 own, vec4 col){
+	vec2 ownHue = hueAndSaturation(own);
+	vec2 colHue = hueAndSaturation(col);
+	float apart = abs(ownHue.x - colHue.x);
 	apart = min(apart, 360.0 - apart);
-	return hs1.y >= minSaturation && hs2.y >= minSaturation && apart <= hueTolerance;
+	float tolerance = hueTolerance * max(1.0, fullChroma / max(chroma(own), 1e-6));
+	return colHue.y >= minSaturation && apart <= tolerance;
 }
 
 // a lighter shade of own's hue
