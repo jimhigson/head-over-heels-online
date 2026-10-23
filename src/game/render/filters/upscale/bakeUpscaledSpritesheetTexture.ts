@@ -11,6 +11,7 @@ import {
 
 import despeckleFrag from "./despeckle.frag";
 import despeckleShadingFrag from "./despeckleShading.frag";
+import upscaleDealiasFrag from "./upscaleDealias.frag";
 import upscaleGraphFrag from "./upscaleGraph.frag";
 import upscaleGraphRoundFrag from "./upscaleGraphRound.frag";
 import upscaleQuadVert from "./upscaleQuad.vert";
@@ -98,6 +99,20 @@ export const bakeUpscaledSpritesheetTexture = (
     uSheetSize: { type: "vec2<f32>", value: [width, height] },
   };
 
+  // the sheet every later pass reads: the source with the anti-aliasing at
+  // its outline's corners taken out, since the upscale rounds them itself
+  const dealiased = RenderTexture.create({ width, height, resolution: 1 });
+  renderPass(
+    pixiRenderer,
+    geometry,
+    upscaleDealiasFrag,
+    "upscaleDealias",
+    sourceTexture,
+    {},
+    sheetSizeUniform,
+    dealiased,
+  );
+
   // which diagonal of each 2x2 cell connects, decided once at 1x so every
   // fragment the upscale draws sees the same answer: found by one pass, then
   // settled over rounds that each read the last round's cells
@@ -110,7 +125,7 @@ export const bakeUpscaledSpritesheetTexture = (
     geometry,
     upscaleGraphFrag,
     "upscaleGraph",
-    sourceTexture,
+    dealiased,
     {},
     sheetSizeUniform,
     graph,
@@ -122,7 +137,7 @@ export const bakeUpscaledSpritesheetTexture = (
       geometry,
       upscaleGraphRoundFrag,
       "upscaleGraphRound",
-      sourceTexture,
+      dealiased,
       { uGraph: previousGraph.source },
       {
         ...sheetSizeUniform,
@@ -144,7 +159,7 @@ export const bakeUpscaledSpritesheetTexture = (
     geometry,
     upscaleStandInFrag,
     "upscaleStandIn",
-    sourceTexture,
+    dealiased,
     {},
     sheetSizeUniform,
     standIn,
@@ -160,7 +175,7 @@ export const bakeUpscaledSpritesheetTexture = (
     geometry,
     upscaleTwoPassFrag,
     "upscale",
-    sourceTexture,
+    dealiased,
     { uGraph: graph.source, uStandIn: standIn.source },
     sheetSizeUniform,
     upscaled,
@@ -169,6 +184,7 @@ export const bakeUpscaledSpritesheetTexture = (
     graphTexture.destroy(true);
   }
   standIn.destroy(true);
+  dealiased.destroy(true);
 
   const pixelSizeUniform: PassUniforms = {
     uPixelSize: {
