@@ -1,5 +1,11 @@
 import { Texture, WebGLRenderer } from "pixi.js";
 
+import { makeSpritesheetData } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import {
+  spritesheetMetas,
+  type SpritesheetName,
+} from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { valuesIter } from "../../../utils/entries";
 import { installAppTickerAsPixiShared } from "../../mainLoop/installAppTickerAsPixiShared";
 import { bakeUpscaledSpritesheetTexture } from "../../render/filters/upscale/bakeUpscaledSpritesheetTexture";
 
@@ -72,6 +78,10 @@ export const bakeUpscaledSpritesheetBlobForCss = async (
   imageUrl: string,
   /** integer upscale factor, capped by what the hardware will hold */
   factor: number,
+  /**
+   * the sheet the image is of, for where its frames lie
+   */
+  spritesheetArtName: SpritesheetName,
 ): Promise<Blob> => {
   const response = await fetch(imageUrl);
   if (!response.ok) {
@@ -103,6 +113,9 @@ export const bakeUpscaledSpritesheetBlobForCss = async (
       renderer,
       sourceTexture,
       factor,
+      valuesIter(
+        makeSpritesheetData(spritesheetMetas[spritesheetArtName]).frames,
+      ).map(({ frame }) => frame),
     );
     try {
       const extracted = renderer.extract.canvas(baked);

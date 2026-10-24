@@ -21,6 +21,11 @@ export type ComposedSpritesheet = {
   texture: RenderTexture;
   /** where each frame's art now lives, by texture id */
   repackedFrameRects: ReadonlyMap<string, FrameRect>;
+  /**
+   * each frame's whole cell, by texture id: its art and, for a tiled frame,
+   * the apron around it
+   */
+  repackedCellRects: ReadonlyMap<string, FrameRect>;
 };
 
 const intersect = (a: Rect, b: Rect): Rect | undefined => {
@@ -153,6 +158,7 @@ export const composeSpritesheetForUpscale = (
   };
 
   const repackedFrameRects = new Map<string, FrameRect>();
+  const repackedCellRects = new Map<string, FrameRect>();
   for (const { source, dest, ids } of pack.cells) {
     const neighbourOffsets = neighbourOffsetsOf.get(ids[0]) ?? [];
     const tiled = neighbourOffsets.length > 0;
@@ -171,8 +177,10 @@ export const composeSpritesheetForUpscale = (
       w: art.w,
       h: art.h,
     };
+    const cell = { x: dest.x, y: dest.y, w: source.w, h: source.h };
     for (const id of ids) {
       repackedFrameRects.set(id, art);
+      repackedCellRects.set(id, cell);
     }
 
     quad(art, from);
@@ -221,5 +229,5 @@ export const composeSpritesheetForUpscale = (
   mesh.destroy();
   geometry.destroy();
 
-  return { texture, repackedFrameRects };
+  return { texture, repackedFrameRects, repackedCellRects };
 };

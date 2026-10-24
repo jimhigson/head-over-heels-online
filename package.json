@@ -51,6 +51,7 @@
     "bench": "pnpm vitest bench",
     "build-and-playwright": "pnpm build:game && playwright test",
     "gen:rooms": "tsx scripts/campaignXml2Json/scripts/genRooms.ts && (oxlint --fix --no-ignore src/_generated/originalCampaign || true) && prettier src/_generated/originalCampaign --write && oxlint --no-ignore src/_generated/originalCampaign",
+    "gen:upscaleLabelTemplates": "tsx scripts/upscaleLabels/writeUpscaleLabelTemplates.ts",
     "gen:roomsPatch": "tsx scripts/campaignXml2Json/scripts/genRoomsPatch.ts && prettier src/_generated/originalCampaign/patches/*.json --write",
     "deploy:r2": "tsx scripts/deployToR2.ts",
     "deploy:previews:worker": "wrangler deploy --config workers/previews/wrangler.jsonc",
