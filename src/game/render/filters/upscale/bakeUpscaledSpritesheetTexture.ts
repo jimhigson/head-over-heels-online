@@ -9,11 +9,19 @@ import {
   type UniformData,
 } from "pixi.js";
 
+import { type FrameRect } from "../../../../sprites/spritesheet/composeSpritesheetForUpscale";
 import despeckleFrag from "./despeckle.frag";
 import despeckleShadingFrag from "./despeckleShading.frag";
+import { renderFrameRectsMask } from "./renderFrameRectsMask";
+import upscaleArcAnchorsFrag from "./upscaleArcAnchors.frag";
+import upscaleArcEllipseFrag from "./upscaleArcEllipse.frag";
+import upscaleArcPeaksFrag from "./upscaleArcPeaks.frag";
+import upscaleArcsFrag from "./upscaleArcs.frag";
+import upscaleArcSpreadFrag from "./upscaleArcSpread.frag";
 import upscaleDealiasFrag from "./upscaleDealias.frag";
 import upscaleGraphFrag from "./upscaleGraph.frag";
 import upscaleGraphRoundFrag from "./upscaleGraphRound.frag";
+import upscaleOutlineWidthFrag from "./upscaleOutlineWidth.frag";
 import upscaleQuadVert from "./upscaleQuad.vert";
 import upscaleStandInFrag from "./upscaleStandIn.frag";
 import upscaleTwoPassFrag from "./upscaleTwoPass.frag";
@@ -83,6 +91,11 @@ export const bakeUpscaledSpritesheetTexture = (
    * baked texels off the pixel grid and look bad
    */
   spritesheetUpscale: number,
+  /**
+   * where the frames lie on the sheet: the outlines are only ever widened
+   * inside them, and never from one frame into another
+   */
+  frameRects: Iterable<FrameRect>,
 ): RenderTexture => {
   const { width, height } = sourceTexture;
   // the shaders sample exact texels to decide the edges they fit; a linear
@@ -165,18 +178,108 @@ export const bakeUpscaledSpritesheetTexture = (
     standIn,
   );
 
-  const upscaled = RenderTexture.create({
-    width,
-    height,
-    resolution: spritesheetUpscale,
-  });
+  // the arcs in the outlines, and which pixels are drawn to their ellipses:
+  // quarter arcs and over-the-top ones found at their anchors, then told to
+  // the arcs' own pixels, then to the pixels beside them; and each arc's
+  // ellipse, kept at its anchor
+  const findArcs = (
+    /**
+     * 0 for the black outlines most items have, 1 for the coloured ones of
+     * dark items
+     */
+    lineClass: number,
+  ) => {
+    const arcUniforms: PassUniforms = {
+      ...sheetSizeUniform,
+      uLineClass: { type: "f32", value: lineClass },
+    };
+    const arcPass = (
+      fragment: string,
+      name: string,
+      otherTextures: Record<string, TextureSource>,
+      uniforms: PassUniforms,
+    ) => {
+      const target = RenderTexture.create({ width, height, resolution: 1 });
+      renderPass(
+        pixiRenderer,
+        geometry,
+        fragment,
+        name,
+        dealiased,
+        otherTextures,
+        uniforms,
+        target,
+      );
+      return target;
+    };
+    const anchors = arcPass(
+      upscaleArcAnchorsFrag,
+      "upscaleArcAnchors",
+      {},
+      arcUniforms,
+    );
+    const peaks = arcPass(
+      upscaleArcPeaksFrag,
+      "upscaleArcPeaks",
+      {},
+      arcUniforms,
+    );
+    const [centres, axes] = [0, 1].map((part) =>
+      arcPass(
+        upscaleArcEllipseFrag,
+        "upscaleArcEllipse",
+        { uAnchors: anchors.source, uPeaks: peaks.source },
+        { ...arcUniforms, uPart: { type: "f32", value: part } },
+      ),
+    );
+    const ellipses = { uArcCentres: centres.source, uArcAxes: axes.source };
+    const arcPixels = arcPass(
+      upscaleArcsFrag,
+      "upscaleArcs",
+      { uAnchors: anchors.source, uPeaks: peaks.source, ...ellipses },
+      arcUniforms,
+    );
+    const spreadPass = (from: RenderTexture, ring: number) =>
+      arcPass(
+        upscaleArcSpreadFrag,
+        "upscaleArcSpread",
+        { uArcPixels: from.source, ...ellipses },
+        { ...arcUniforms, uRing: { type: "f32", value: ring } },
+      );
+    const firstRing = spreadPass(arcPixels, 0);
+    arcPixels.destroy(true);
+    // only coloured lines' arcs can be layered, and need the second ring
+    const pixels = lineClass === 0 ? firstRing : spreadPass(firstRing, 1);
+    if (pixels !== firstRing) {
+      firstRing.destroy(true);
+    }
+    anchors.destroy(true);
+    peaks.destroy(true);
+    return { pixels, centres, axes };
+  };
+  const blackArcs = findArcs(0);
+  const colourArcs = findArcs(1);
+
+  const bakedTexture = () =>
+    RenderTexture.create({ width, height, resolution: spritesheetUpscale });
+
+  const upscaled = bakedTexture();
   renderPass(
     pixiRenderer,
     geometry,
     upscaleTwoPassFrag,
     "upscale",
     dealiased,
-    { uGraph: graph.source, uStandIn: standIn.source },
+    {
+      uGraph: graph.source,
+      uStandIn: standIn.source,
+      uArcs: blackArcs.pixels.source,
+      uArcCentres: blackArcs.centres.source,
+      uArcAxes: blackArcs.axes.source,
+      uColourArcs: colourArcs.pixels.source,
+      uColourArcCentres: colourArcs.centres.source,
+      uColourArcAxes: colourArcs.axes.source,
+    },
     sheetSizeUniform,
     upscaled,
   );
@@ -184,6 +287,12 @@ export const bakeUpscaledSpritesheetTexture = (
     graphTexture.destroy(true);
   }
   standIn.destroy(true);
+  for (const arcTexture of [
+    ...Object.values(blackArcs),
+    ...Object.values(colourArcs),
+  ]) {
+    arcTexture.destroy(true);
+  }
   dealiased.destroy(true);
 
   const pixelSizeUniform: PassUniforms = {
@@ -195,29 +304,51 @@ export const bakeUpscaledSpritesheetTexture = (
       ],
     },
   };
-  // despeckled in two stages, as the upscale decides them: the linework
-  // and silhouette first, then the shading within the fills
-  const despeckled = RenderTexture.create({
+  // the outlines held to at least a source pixel wide, grown a baked pixel
+  // a pass, and only within the frames
+  const frameMask = renderFrameRectsMask(
+    pixiRenderer,
+    frameRects,
     width,
     height,
-    resolution: spritesheetUpscale,
-  });
+  );
+  const outlineWidthUniforms: PassUniforms = {
+    ...pixelSizeUniform,
+    uScale: { type: "f32", value: spritesheetUpscale },
+  };
+  let widened = upscaled;
+  for (let pass = 1; pass < spritesheetUpscale; pass++) {
+    const target = bakedTexture();
+    renderPass(
+      pixiRenderer,
+      geometry,
+      upscaleOutlineWidthFrag,
+      "upscaleOutlineWidth",
+      widened,
+      { uFrames: frameMask.source },
+      outlineWidthUniforms,
+      target,
+    );
+    widened.destroy(true);
+    widened = target;
+  }
+  frameMask.destroy(true);
+
+  // despeckled in two stages, as the upscale decides them: the linework
+  // and silhouette first, then the shading within the fills
+  const despeckled = bakedTexture();
   renderPass(
     pixiRenderer,
     geometry,
     despeckleFrag,
     "despeckle",
-    upscaled,
+    widened,
     {},
     pixelSizeUniform,
     despeckled,
   );
-  upscaled.destroy(true);
-  const target = RenderTexture.create({
-    width,
-    height,
-    resolution: spritesheetUpscale,
-  });
+  widened.destroy(true);
+  const target = bakedTexture();
   renderPass(
     pixiRenderer,
     geometry,

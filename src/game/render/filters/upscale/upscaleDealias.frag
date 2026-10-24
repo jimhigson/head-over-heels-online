@@ -7,7 +7,7 @@ precision highp float;
  * tucked into a corner of the black outline, with the outside of the sprite
  * beyond the corner, and lighter shades of its own hue on its two open sides.
  * At 1x that shade reads as a rounder corner; the upscale rounds the corner
- * itself, so the shade only muddies it. Such a pixel takes the lighter of the
+ * itself, so the shade only muddies it. Such a pixel takes the darker of the
  * two shades beside it. A dark or greyish colour counts as a shade of
  * whatever hue it sits in, as pixel art often uses one.
  *
@@ -91,10 +91,10 @@ bool lighterShade(vec4 own, vec4 col){
 
 // the corner in one orientation: x and y are the directions, in the sheet,
 // of the kernel's right and down
-bool cornerMatches(ivec2 p, vec4 own, ivec2 x, ivec2 y, out vec4 lighter){
+bool cornerMatches(ivec2 p, vec4 own, ivec2 x, ivec2 y, out vec4 replacement){
 	vec4 right = srcAt(p + x);
 	vec4 below = srcAt(p + y);
-	lighter = luma(right) >= luma(below) ? right : below;
+	replacement = luma(right) <= luma(below) ? right : below;
 	return classOf(srcAt(p - x - y)) == 0
 		&& classOf(srcAt(p - y)) == 1
 		&& classOf(srcAt(p - x)) == 1
@@ -110,21 +110,21 @@ void main(){
 	vec4 own = srcAt(p);
 	finalColor = own;
 	if (classOf(own) != 2) return;
-	// the lightest shade any matching orientation offers, so that a pixel
+	// the darkest shade any matching orientation offers, so that a pixel
 	// matched more than one way is decided the same in a mirror image
-	vec4 lightest = own;
+	vec4 darkest = own;
 	bool matched = false;
 	for (int r = 0; r < 4; r++){
 		ivec2 x = rotations[r];
 		ivec2 y = ivec2(-x.y, x.x);
 		for (int m = 0; m < 2; m++){
 			ivec2 mirroredX = m == 0 ? x : -x;
-			vec4 lighter;
-			if (cornerMatches(p, own, mirroredX, y, lighter) && (!matched || luma(lighter) > luma(lightest))){
-				lightest = lighter;
+			vec4 replacement;
+			if (cornerMatches(p, own, mirroredX, y, replacement) && (!matched || luma(replacement) < luma(darkest))){
+				darkest = replacement;
 				matched = true;
 			}
 		}
 	}
-	finalColor = lightest;
+	finalColor = darkest;
 }

@@ -41,6 +41,12 @@ precision highp float;
  * with no black beside it - is a dot, an eye or a dash the artist sized,
  * and is not sliced: it is drawn as a lozenge of the strip's own area.
  *
+ * An arc - runs that lengthen steadily either side of a 45 degree middle,
+ * found by the arc passes (upscaleArcAnchors.frag and the two after it) - is
+ * not sliced either: its pixels, and those beside it, are drawn to the
+ * ellipse fitted through its runs - black outlines' arcs first, then those
+ * of the coloured outlines dark items have.
+ *
  * This form is BRANCHLESS: the original's booleans are exact 0/1 float
  * masks and its if/else chains are mix()/step() selections, so the whole
  * shader is straight-line code (kind to slow shader compilers, eg
@@ -321,6 +327,112 @@ float inLozenge(vec2 point, vec2 p, vec4 strip){
 // preference, else whatever is there (transparent, at the silhouette)
 vec4 cornerFill(vec4 side1, vec4 side2){
 	return mix(mix(side2, side1, isC(side1)), side1, 1.0 - max(isC(side1), isC(side2)));
+}
+
+// ---- arcs: a pixel that upscaleArcSpread.frag found on an arc, or beside
+// one, is drawn to the arc's ellipse rather than sliced: within half a pixel
+// of the ellipse it takes the line's colour, as the slices draw a line about
+// its runs' centres, and beyond that band the colour of that side
+
+uniform sampler2D uArcs;
+// each black arc's ellipse, at its anchor: its centre, then its semi-axes
+uniform sampler2D uArcCentres;
+uniform sampler2D uArcAxes;
+
+// half the width of the band an arc draws about its ellipse
+const float arcHalfWidth = 0.5;
+
+const vec4 arcBlack = vec4(0.0, 0.0, 0.0, 1.0);
+
+// the flags upscaleArcs.frag and upscaleArcSpread.frag give a pixel
+float arcFlags(vec4 arc){
+	return floor(arc.b * 255.0 + 0.5);
+}
+
+// 1.0 where the pixel is drawn to an arc's ellipse
+float arcDrawn(vec4 arc){
+	return step(2.5, mod(arcFlags(arc), 4.0));
+}
+
+vec2 unpackWords(vec4 texel){
+	vec4 bytes = floor(texel * 255.0 + 0.5);
+	return (bytes.xz * 256.0 + bytes.yw) / 256.0;
+}
+
+// where a fragment is from an arc's ellipse: x is its signed distance (out
+// from the centre positive), yz the direction across the band away from it
+vec3 fromArc(vec2 px, vec2 local, vec4 arc, sampler2D centres, sampler2D axesAt){
+	vec2 anchor = px + floor(arc.rg * 255.0 + 0.5) - 128.0;
+	vec2 centre = anchor + unpackWords(texture(centres, anchor / uSheetSize)) - 128.0;
+	vec2 axes = unpackWords(texture(axesAt, anchor / uSheetSize));
+	vec2 fromCentre = (px - 0.5 + local) - centre;
+	vec2 scaled = fromCentre / (axes * axes);
+	float level = dot(fromCentre, scaled) - 1.0;
+	vec2 gradient = 2.0 * scaled;
+	float signedDistance = level / length(gradient);
+	return vec3(signedDistance, gradient * sign(signedDistance));
+}
+
+// the pixel beside a fragment's own on the side away points to: across the
+// side it points at more
+vec2 sideOf(vec2 away){
+	float acrossX = step(abs(away.y), abs(away.x));
+	return mix(vec2(0.0, sign(away.y)), vec2(sign(away.x), 0.0), acrossX);
+}
+
+// the colour a fragment of a pixel drawn to a black outline's arc takes:
+// black in the band, else the pixel's own colour - or, for a black pixel,
+// the colour of the pixel beside it on the band's far side
+vec4 arcColour(vec2 px, vec2 local, vec4 c, vec4 arc){
+	vec3 where = fromArc(px, local, arc, uArcCentres, uArcAxes);
+	float inBand = step(abs(where.x), arcHalfWidth);
+	vec4 beyond = mix(c, srcAt(px + sideOf(where.yz)), strokeA(c));
+	return mix(beyond, arcBlack, inBand);
+}
+
+// arcs of a dark item's coloured outline, drawn after the black ones: the
+// band takes the outline's colour - its own pixels' own, any other pixel
+// that of the outline pixel beside it toward the band - and beyond the band
+// an outline pixel shows the pixel beside it on that side, while any other
+// keeps what it had. A layered arc - a coloured line between two black
+// ones - draws all three from the one ellipse: black for a band either
+// side of the coloured one, and beyond those what lies past them
+
+uniform sampler2D uColourArcs;
+uniform sampler2D uColourArcCentres;
+uniform sampler2D uColourArcAxes;
+
+vec4 colourArcColour(vec2 px, vec2 local, vec4 c, vec4 arc, vec4 under){
+	vec3 where = fromArc(px, local, arc, uColourArcCentres, uColourArcAxes);
+	float flags = arcFlags(arc);
+	float layered = mod(floor(flags / 4.0), 2.0);
+	float takenIn = step(7.5, flags);
+	float inBand = step(abs(where.x), arcHalfWidth);
+	float inLayers = step(abs(where.x), 3.0 * arcHalfWidth) * layered;
+	vec2 away = where.yz;
+	vec2 sideX = vec2(sign(away.x), 0.0);
+	vec2 sideY = vec2(0.0, sign(away.y));
+	vec2 side = sideOf(away);
+	vec2 otherSide = sideX + sideY - side;
+	// the outline pixel beside this one toward the band: across the nearer
+	// side first, then the other, then the corner
+	vec4 towardFirst = srcAt(px - side);
+	vec4 towardSecond = srcAt(px - otherSide);
+	vec4 towardCorner = srcAt(px - sideX - sideY);
+	vec4 toward = mix(mix(towardCorner, towardSecond, isC(towardSecond)), towardFirst, isC(towardFirst));
+	float ownOutline = isC(c) * (1.0 - takenIn);
+	vec4 bandColour = mix(toward, c, ownOutline);
+	// a pixel taken in beyond the black layers takes black only where the
+	// pixel in from it is the layer itself: a band passing through empty
+	// space, with no black beside it, is the ellipse straying from the art
+	inLayers *= mix(1.0, strokeA(towardFirst), takenIn * (1.0 - strokeA(c)));
+	vec4 beside = srcAt(px + side);
+	// past the black layer beside an outline pixel, in a layered arc
+	vec4 besideLayer = mix(beside, srcAt(px + 2.0 * side), strokeA(beside));
+	vec4 beyondPlain = mix(under, beside, ownOutline);
+	vec4 beyondLayered = mix(mix(c, beside, strokeA(c)), besideLayer, ownOutline);
+	vec4 beyond = mix(beyondPlain, beyondLayered, layered);
+	return mix(mix(beyond, arcBlack, inLayers), bandColour, inBand);
 }
 
 // a neighbour of the pixel being sliced, in that slice's own frame: which
@@ -773,6 +885,12 @@ void main() {
 	//...and where a strip beside this pixel is let out into it
 	col = mix(col, srcAt(sideX), inLozenge(point, sideX, stripAt(sideX)));
 	col = mix(col, srcAt(sideY), inLozenge(point, sideY, stripAt(sideY)));
+
+	//an arc's pixels, and those beside it, drawn to its circle
+	vec4 arc = texture(uArcs, px / uSheetSize);
+	col = mix(col, arcColour(px, local, c, arc), arcDrawn(arc));
+	vec4 colourArc = texture(uColourArcs, px / uSheetSize);
+	col = mix(col, colourArcColour(px, local, c, colourArc, col), arcDrawn(colourArc));
 
 	//pass B base fill colour before slicing: c itself when it is a fill,
 	//else the closest (bilinear-weighted) fill colour of the 2x2 cell (c is
