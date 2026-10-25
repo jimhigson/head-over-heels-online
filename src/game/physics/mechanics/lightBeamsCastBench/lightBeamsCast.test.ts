@@ -3,7 +3,10 @@ import { expect, test } from "vitest";
 import {
   beamItemsSnapshot,
   buildBeamScenario,
+  loadBeamScenarioRoomJson,
 } from "../../../../_testUtils/buildBeamScenario";
+
+const beamScenarioRoomJson = await loadBeamScenarioRoomJson();
 
 /**
  * Snapshot of the beam items the demanding bench scenario casts - a precise
@@ -11,11 +14,13 @@ import {
  * lightBeamsIntegration.test.ts.
  */
 test("bench scenario casts a stable set of beam items", () => {
-  expect(beamItemsSnapshot(buildBeamScenario())).toMatchSnapshot();
+  expect(
+    beamItemsSnapshot(buildBeamScenario(beamScenarioRoomJson)),
+  ).toMatchSnapshot();
 });
 
 test("the scenario casts independent per-row beams that reflect several times", () => {
-  const beams = beamItemsSnapshot(buildBeamScenario());
+  const beams = beamItemsSnapshot(buildBeamScenario(beamScenarioRoomJson));
   // lamp->m1 (both rows), the upper row continuing past the single-height m2,
   // m1->m2, m2->m3, m3->wall, plus tips
   expect<boolean>(beams.length >= 5).toBe(true);

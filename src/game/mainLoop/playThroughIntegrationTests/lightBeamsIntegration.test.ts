@@ -8,6 +8,7 @@ import {
 import { heelsState, itemState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
+import { hasCollided } from "../../../_testUtils/playThroughUntilHelpers";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { type Xyz } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
@@ -19,9 +20,9 @@ beforeEach(() => {
 
 /**
  * most tests shine a lamp from block (1,1) in the "left" (+x) direction.
- * The lamp is a full block, so the beam starts at x=32. The beam's square
- * cross-section is 8px, centred in the lamp's footprint (y 20..28) and
- * lifted 2px off the lamp's base (z 2..10)
+ * The lamp is a full block, so the beam starts at x=32. The beam's
+ * cross-section is 16px wide, filling the lamp's footprint (y 16..32), and 8px
+ * high, lifted 2px off the lamp's base (z 2..10)
  */
 const lampAtOneOne = (activated: boolean): ItemsInTestRoomJson => ({
   lamp1: {
@@ -62,7 +63,7 @@ test("a lamp shines a beam to the room wall", () => {
 
   playGameThrough(gameState, { until: 200 });
 
-  // the (8x8-section) beam runs from the lamp's face at x=32 to the room's
+  // the (16x8-section) beam runs from the lamp's face at x=32 to the room's
   // left wall at x=128, where its energy dissipates:
   const beams = beamsInRoom(gameState);
   expect(beams).toHaveLength(1);
@@ -77,7 +78,7 @@ test("a lamp shines a beam to the room wall", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 32, y: 20, z: 2, xd: 96, yd: 8, zd: 8 },
+        box: { x: 32, y: 16, z: 2, xd: 96, yd: 16, zd: 8 },
         end: "terminus",
       }),
     }),
@@ -108,7 +109,7 @@ test("the beam is cast on room load, before any game time has passed", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 32, y: 20, z: 2, xd: 96, yd: 8, zd: 8 },
+        box: { x: 32, y: 16, z: 2, xd: 96, yd: 16, zd: 8 },
         end: "terminus",
       }),
     }),
@@ -149,7 +150,7 @@ test("a solid block stops the beam", () => {
   expect(beams).toContainEqual(
     expect.objectContaining({
       state: expect.objectContaining({
-        box: expect.objectContaining({ xd: 48, yd: 8, zd: 8 }),
+        box: expect.objectContaining({ xd: 48, yd: 16, zd: 8 }),
       }),
     }),
   );
@@ -174,7 +175,7 @@ test("the player's body blocks the beam, harmlessly", () => {
       state: expect.objectContaining({
         box: expect.objectContaining({
           xd: heelsState(gameState).box.x - 32,
-          yd: 8,
+          yd: 16,
           zd: 8,
         }),
       }),
@@ -182,6 +183,34 @@ test("the player's body blocks the beam, harmlessly", () => {
   );
   // standing in the light is harmless to the player:
   expect(heelsState(gameState).action).not.toBe("death");
+});
+
+test("a player walking up the beam to the lamp leaves a zero-length beam", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      // in the beam's row, a little way from the lamp:
+      ...playerOutOfBeamPath({ x: 4, y: 1, z: 0 }),
+      ...lampAtOneOne(true),
+    },
+  });
+
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      // heels walks right (-x), up the beam towards the lamp:
+      mockInputStateTracker.mockDirectionPressed = "right";
+    },
+    until: hasCollided("heels", "lamp1"),
+    failAfter: 5_000,
+  });
+
+  // heels' body now blocks the beam right at the lamp's face (x=32):
+  expect(beamsInRoom(gameState)).toContainEqual(
+    expect.objectContaining({
+      state: expect.objectContaining({
+        box: expect.objectContaining({ x: 32, xd: 0 }),
+      }),
+    }),
+  );
 });
 
 test("a mirror reflects the beam 90° towards away", () => {
@@ -203,7 +232,7 @@ test("a mirror reflects the beam 90° towards away", () => {
   const beams = beamsInRoom(gameState);
   expect(beams).toHaveLength(2);
   // the reflected beam leaves the mirror's away face at y=32, centred in the
-  // mirror's footprint (x 84..92), and runs to the away wall at y=128:
+  // mirror's footprint (x 80..96), and runs to the away wall at y=128:
   expect(beams).toContainEqual(
     expect.objectContaining({
       config: {
@@ -215,7 +244,7 @@ test("a mirror reflects the beam 90° towards away", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 84, y: 32, z: 2, xd: 8, yd: 96, zd: 8 },
+        box: { x: 80, y: 32, z: 2, xd: 16, yd: 96, zd: 8 },
         end: "terminus",
       }),
     }),
@@ -234,11 +263,84 @@ test("a mirror reflects the beam 90° towards away", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 32, y: 20, z: 2, xd: 48, yd: 8, zd: 8 },
+        box: { x: 32, y: 16, z: 2, xd: 48, yd: 16, zd: 8 },
         end: "reflect-left",
       }),
     }),
   );
+});
+
+test("a mirror 4px out of line with the beam still reflects it, re-aligned to the mirror", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      ...playerOutOfBeamPath(),
+      ...lampAtOneOne(true),
+      mirror1: {
+        type: "mirror",
+        // a quarter of a block (4px) further away than the beam's row:
+        position: { x: 5, y: 1 + 4 / 16, z: 0 },
+        config: { orientation: "awayLeft" },
+      },
+    },
+  });
+
+  playGameThrough(gameState, { until: 200 });
+
+  const beams = beamsInRoom(gameState);
+  expect(beams).toHaveLength(2);
+  // the incoming beam ends at the mirror's near face, turning:
+  expect(beams).toContainEqual(
+    expect.objectContaining({
+      state: expect.objectContaining({
+        box: { x: 32, y: 16, z: 2, xd: 48, yd: 16, zd: 8 },
+        end: "reflect-left",
+      }),
+    }),
+  );
+  // the reflected beam is centred in the mirror's footprint (x 80..96), as
+  // when hit square on, leaving its away face at y=36:
+  expect(beams).toContainEqual(
+    expect.objectContaining({
+      config: expect.objectContaining({
+        direction: {
+          x: expect.closeTo(0),
+          y: expect.closeTo(1),
+          z: expect.closeTo(0),
+        },
+      }),
+      state: expect.objectContaining({
+        box: { x: 80, y: 36, z: 2, xd: 16, yd: 92, zd: 8 },
+        end: "terminus",
+      }),
+    }),
+  );
+});
+
+test("a mirror 6px out of line with the beam blocks it without reflecting", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      ...playerOutOfBeamPath(),
+      ...lampAtOneOne(true),
+      mirror1: {
+        type: "mirror",
+        // 6/16 of a block (6px) further away than the beam's row:
+        position: { x: 5, y: 1 + 6 / 16, z: 0 },
+        config: { orientation: "awayLeft" },
+      },
+    },
+  });
+
+  playGameThrough(gameState, { until: 200 });
+
+  // a single beam, dissipating against the mirror's near face:
+  expect(beamsInRoom(gameState)).toEqual([
+    expect.objectContaining({
+      state: expect.objectContaining({
+        box: { x: 32, y: 16, z: 2, xd: 48, yd: 16, zd: 8 },
+        end: "terminus",
+      }),
+    }),
+  ]);
 });
 
 test("a mirror in the other orientation reflects the beam towards the camera", () => {
@@ -271,7 +373,7 @@ test("a mirror in the other orientation reflects the beam towards the camera", (
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 32, y: 20, z: 2, xd: 48, yd: 8, zd: 8 },
+        box: { x: 32, y: 16, z: 2, xd: 48, yd: 16, zd: 8 },
         end: "reflect-right",
       }),
     }),
@@ -288,7 +390,7 @@ test("a mirror in the other orientation reflects the beam towards the camera", (
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 84, y: 0, z: 2, xd: 8, yd: 16, zd: 8 },
+        box: { x: 80, y: 0, z: 2, xd: 16, yd: 16, zd: 8 },
         end: "terminus",
       }),
     }),
@@ -330,7 +432,7 @@ test("two mirrors chain the beam through multiple reflections", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 84, y: 32, z: 2, xd: 8, yd: 32, zd: 8 },
+        box: { x: 80, y: 32, z: 2, xd: 16, yd: 32, zd: 8 },
         end: "reflect-left",
       }),
     }),
@@ -347,7 +449,7 @@ test("two mirrors chain the beam through multiple reflections", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 32, y: 20, z: 2, xd: 48, yd: 8, zd: 8 },
+        box: { x: 32, y: 16, z: 2, xd: 48, yd: 16, zd: 8 },
         end: "reflect-left",
       }),
     }),
@@ -365,7 +467,7 @@ test("two mirrors chain the beam through multiple reflections", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 0, y: 68, z: 2, xd: 80, yd: 8, zd: 8 },
+        box: { x: 0, y: 64, z: 2, xd: 80, yd: 16, zd: 8 },
         end: "terminus",
       }),
     }),
@@ -420,7 +522,7 @@ test("colliding with a mirror rotates it, re-routing the light", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 32, y: 20, z: 2, xd: 48, yd: 8, zd: 8 },
+        box: { x: 32, y: 16, z: 2, xd: 48, yd: 16, zd: 8 },
         end: "reflect-right",
       }),
     }),
@@ -436,7 +538,7 @@ test("colliding with a mirror rotates it, re-routing the light", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        box: { x: 84, y: 0, z: 2, xd: 8, yd: 16, zd: 8 },
+        box: { x: 80, y: 0, z: 2, xd: 16, yd: 16, zd: 8 },
         end: "terminus",
       }),
     }),
@@ -885,7 +987,7 @@ test("a monster partly in a beam slides out of it, and the beam reaches the wall
       // starts overlapping the beam's row, walking towards the block and lamp:
       skiHead: {
         type: "monster",
-        position: { x: 3.625, y: 6.625, z: 0 },
+        position: { x: 3.625, y: 6.375, z: 0 },
         config: {
           which: "skiHead",
           style: "greenAndPink",
