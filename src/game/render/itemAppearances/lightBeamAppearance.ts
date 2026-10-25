@@ -14,7 +14,11 @@ import {
   xyEqual,
   type Xyz,
 } from "../../../utils/vectors/vectors";
-import { lightBeamCrossSectionPx } from "../../physics/mechanicsConstants";
+import {
+  blockSizePx,
+  lightBeamHeightPx,
+  lightBeamWidthPx,
+} from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
 import { projectWorldXyzToScreenXy } from "../projections";
 import { type ItemAppearance } from "./ItemAppearance";
@@ -31,14 +35,28 @@ type LightBeamRenderProps = {
   terminus: Container | undefined;
 };
 
-/** world px of beam covered by one beam tile sprite (half a block) */
-const beamTilePx = lightBeamCrossSectionPx;
+/**
+ * world px of beam covered by one beam tile sprite - its art is half a block
+ * of beam, all three visible faces
+ */
+const beamTilePx = blockSizePx.x / 2;
+
+/**
+ * the tile art's near bottom corner, which sits on the tile's near corner -
+ * the art is as wide on screen as the beam's length plus width in world px
+ */
+const beamTileAnchor = {
+  x: beamTilePx / (beamTilePx + lightBeamWidthPx),
+  y: 1,
+};
 
 /**
  * beams render as a row of animated tile sprites along the beam's axis, one
- * tile per half block. The animation frames shift the light's pattern along
+ * per half-block. The animation frames shift the light's pattern along
  * the beam, so it appears to travel in the direction of emission - reversed
- * playback covers the negative directions, like conveyors do.
+ * playback covers the negative directions, like conveyors do. The pattern
+ * repeats every block, so alternate tiles play half the animation out of step
+ * to show the pattern's next half block.
  *
  * A beam re-renders whenever its length changes (eg something moving in/out of
  * its path). Rather than rebuilding the whole strip each time, it reconciles
@@ -48,10 +66,6 @@ const beamTilePx = lightBeamCrossSectionPx;
  * every segment of every beam in the room stays in phase. A direction change is
  * the one case rebuilt from scratch, since every tile's position, flip and play
  * direction would differ.
- *
- * The beam's length is quantised to the nearest tile, with the quantisation
- * error kept at the beam's tip (where it hits whatever blocks it) rather than
- * at the lamp it shines out of
  */
 export const lightBeamAppearance: ItemAppearance<
   "lightBeam",
@@ -83,7 +97,7 @@ export const lightBeamAppearance: ItemAppearance<
   const alongReversed = axisProjectsReversed(axis, cameraQuarterAngle);
   const crossReversed = axisProjectsReversed(crossAxis, cameraQuarterAngle);
   const alongAnchorAdjust = alongReversed ? beamTilePx : 0;
-  const crossAnchorAdjust = crossReversed ? lightBeamCrossSectionPx : 0;
+  const crossAnchorAdjust = crossReversed ? lightBeamWidthPx : 0;
 
   const previous = currentRendering?.renderProps;
   if (
@@ -100,7 +114,10 @@ export const lightBeamAppearance: ItemAppearance<
   // mirror-reflection suffix:
   const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
   const dominantOrdinal = direction[axis];
-  const tileCount = Math.max(1, Math.round(lengthPx / beamTilePx));
+  // Beam length is rounded-down to whole tiles, so it never overspills
+  // onto whatever is blocking it; it can stop slightly short of the
+  // terminus, and a beam shorter than a tile draws no tiles at all
+  const tileCount = Math.floor(lengthPx / beamTilePx);
 
   // the y-axis beam is the x-axis beam flipped in x (swapping x/y axes is a
   // horizontal flip in this projection), so only the x art exists:
@@ -130,11 +147,13 @@ export const lightBeamAppearance: ItemAppearance<
   const rendering = reused?.output ?? new Container({ label: "lightBeam" });
   const tiles = reused?.renderProps.tiles ?? [];
 
-  const seekTile = (tile: AnimatedSprite) => {
+  const seekTile = (tile: AnimatedSprite, tileI: number) => {
+    // odd tiles are the pattern's other half block, half the animation on:
+    const frame = (startFrame + (tileI % 2) * (frameCount / 2)) % frameCount;
     if (paused) {
-      tile.gotoAndStop(startFrame);
+      tile.gotoAndStop(frame);
     } else {
-      tile.gotoAndPlay(startFrame);
+      tile.gotoAndPlay(frame);
     }
   };
 
@@ -166,6 +185,7 @@ export const lightBeamAppearance: ItemAppearance<
         // projects reversed on screen the art's travel appears mirrored, so
         // the play direction swaps with it:
         reverse: dominantOrdinal < 0 !== alongReversed,
+        anchor: beamTileAnchor,
         paused,
         x: screenXy.x,
         y: screenXy.y,
@@ -174,7 +194,7 @@ export const lightBeamAppearance: ItemAppearance<
       tiles.push(tile);
       rendering.addChild(tile);
     }
-    seekTile(tile);
+    seekTile(tile, tileI);
   }
 
   // trim the tiles past the new tip (when the beam has shortened):
@@ -194,8 +214,8 @@ export const lightBeamAppearance: ItemAppearance<
     const tipScreenXy = projectWorldXyzToScreenXy(
       {
         [axis]: dominantOrdinal > 0 ? lengthPx : 0,
-        [crossAxis]: lightBeamCrossSectionPx / 2,
-        z: lightBeamCrossSectionPx / 2,
+        [crossAxis]: lightBeamWidthPx / 2,
+        z: lightBeamHeightPx / 2,
       },
       cameraQuarterAngle,
     );

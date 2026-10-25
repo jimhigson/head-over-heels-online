@@ -1,110 +1,65 @@
+import { loadCampaignFromDb } from "../db/campaign";
+import { postgrestDb } from "../db/postgrestDb";
+import { loadRoom } from "../game/gameState/loadRoom/loadRoom";
 import {
   castBeamSegments,
   tickLampLightBeams,
 } from "../game/itemBehaviours/LampBehaviour";
+import { jimAtBlockstackingUserId } from "../gameInfo";
 import { type ItemInPlay } from "../model/ItemInPlay";
 import { roomItemsIterable } from "../model/roomItemsInPlayIterators";
+import { type RoomJson } from "../model/RoomJson";
 import { type RoomState } from "../model/RoomState";
-import {
-  type ItemsInTestRoomJson,
-  setUpBasicGame,
-  type TestRoomId,
-} from "./basicRoom";
-import { resetStore } from "./initStoreForTests";
 
 /**
- * A deliberately demanding room for benchmarking beam casting: a tall (2-row)
- * lamp whose beam reflects several times and is partially reflected (split) by
- * a single-height mirror, in a room crowded with monsters that sit OFF the
- * beam's path. The monsters are what the old all-items scan pays for on every
- * search but the cell-march skips - they drive the measured speedup.
- *
- * Geometry (block coords; away=+y, towards=-y, left=+x, right=-x):
- *  - lamp at (7,2) shines "away" (+y), 2 rows tall, up column x=7
- *  - m1 (7,12) awayRight, SINGLE height: the lower row reflects to "right"
- *    (-x) along y=12; the upper row is uncovered so it carries on "away" to
- *    the far wall -> a partial reflection / split
- *  - m2 (2,12) awayLeft: "right" -> "towards" (-y) down column x=2
- *  - m3 (2,4) awayRight: "towards" -> "left" (+x) along y=4 to the far wall
- *  - 48 turtles fill x in 9..14, y in 6..14 (minus 12) - none on the beam
- *    lines (cols x=2,7; rows y=4,12), so they only inflate the candidate set
+ * the "laboratory" campaign's room for benchmarking beam casting: a tall lamp
+ * whose beam reflects several times and splits, in a room crowded with
+ * monsters off the beam's path. A scroll in the room explains its layout
  */
+const beamScenarioRoomId = "beam_scenario";
 
-const monsters = (): ItemsInTestRoomJson => {
-  const items: ItemsInTestRoomJson = {};
-  for (let x = 9; x <= 14; x++) {
-    for (let y = 6; y <= 14; y++) {
-      if (y === 12) {
-        continue;
-      }
-      items[`turtle_${x}_${y}`] = {
-        type: "monster",
-        position: { x, y, z: 0 },
-        config: {
-          which: "turtle",
-          movement: "back-forth",
-          startDirection: "left",
-          activated: "off",
-        },
-      };
+export type BeamScenarioRoomJson = RoomJson<string, string>;
+
+/**
+ * the scenario room's json, at the latest version in the db - so tests follow
+ * the room as it is edited
+ */
+export const loadBeamScenarioRoomJson =
+  async (): Promise<BeamScenarioRoomJson> => {
+    const laboratoryCampaign = await loadCampaignFromDb(postgrestDb, {
+      userId: jimAtBlockstackingUserId,
+      campaignName: "laboratory",
+    });
+    const maybeRoomJson = laboratoryCampaign.rooms[beamScenarioRoomId];
+    if (maybeRoomJson === undefined) {
+      throw new Error(
+        `laboratory campaign v${laboratoryCampaign.locator.version} has no "${beamScenarioRoomId}" room`,
+      );
     }
-  }
-  return items;
-};
-
-const scenarioItems = (): ItemsInTestRoomJson => ({
-  // a bigger floor than the 8x8 default - the perimeter walls size to it
-  floor: {
-    type: "floor",
-    config: {
-      floorType: "standable",
-      scenery: "blacktooth",
-      times: { x: 16, y: 16 },
-    },
-    position: { x: 0, y: 0, z: 0 },
-  },
-  lamp: {
-    type: "lamp",
-    position: { x: 7, y: 2, z: 0 },
-    config: { direction: "away", activated: true, times: { z: 2 } },
-  },
-  // tall enough that both lamp rows reflect here (each as its own beam)
-  m1: {
-    type: "mirror",
-    position: { x: 7, y: 12, z: 0 },
-    config: { orientation: "awayRight", times: { z: 2 } },
-  },
-  // single height: the upper row sails over it, the lower row reflects - the
-  // partial-reflection split
-  m2: {
-    type: "mirror",
-    position: { x: 2, y: 12, z: 0 },
-    config: { orientation: "awayLeft" },
-  },
-  m3: {
-    type: "mirror",
-    position: { x: 2, y: 4, z: 0 },
-    config: { orientation: "awayRight", times: { z: 2 } },
-  },
-  // a head so the room is the current character's room; placed off the beam
-  head: {
-    type: "player",
-    position: { x: 10, y: 7, z: 0 },
-    config: { which: "head" },
-  },
-  ...monsters(),
-});
+    return maybeRoomJson;
+  };
 
 export type BeamScenario = {
-  room: RoomState<TestRoomId, string>;
-  lamp: ItemInPlay<"lamp", TestRoomId, string>;
+  room: RoomState<string, string>;
+  lamp: ItemInPlay<"lamp", string, string>;
 };
 
-/** build the scenario once (resets the store first) */
-export const buildBeamScenario = (): BeamScenario => {
-  resetStore();
-  const gameState = setUpBasicGame({ firstRoomItems: scenarioItems() });
-  const room = gameState.characterRooms.head as RoomState<TestRoomId, string>;
+/**
+ * load the scenario room into play, fresh each call
+ */
+export const buildBeamScenario = (
+  roomJson: BeamScenarioRoomJson,
+): BeamScenario => {
+  const room = loadRoom({
+    roomJson,
+    scrollsRead: {},
+    roomPickupsCollected: {},
+    userSettings: {
+      soundSettings: {},
+      displaySettings: {},
+      pokesEnabled: {},
+    },
+  });
   const lamp = roomItemsIterable(room.items).find(
     (item) => item.type === "lamp",
   );

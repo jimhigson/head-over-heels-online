@@ -17,6 +17,15 @@ const wallNeighboursAlongX: ReadonlyArray<Xy> = [
 ];
 
 /**
+ * a light beam's tiles are half a block apart along it. Its art runs along x
+ * only (the y-axis beam is it flipped)
+ */
+const lightBeamNeighbours: ReadonlyArray<Xy> = [
+  projectBlockXyzToScreenXy({ x: 0.5 }),
+  projectBlockXyzToScreenXy({ x: -0.5 }),
+];
+
+/**
  * a floor is drawn as one tiling sprite, so its tile is surrounded by copies
  * of itself on the plain rectangular grid of its own frame size
  */
@@ -34,6 +43,11 @@ const floorNeighbours: ReadonlyArray<Xy> = [
 const doesNotTile: ReadonlyArray<Xy> = emptyArray;
 
 /**
+ * the beam's tile frames, not its terminus
+ */
+const lightBeamTileTextureId = /^lightBeam\.\d+$/;
+
+/**
  * Where a tiled frame's tiled neighbours sit relative to it in screen
  * pixels. A little repeat gets added to avoid artefacts at the edge of
  * tiles sprites, making the result property continuous
@@ -43,6 +57,9 @@ export const tilingOffsets = (textureId: string): ReadonlyArray<Xy> => {
     return textureId.endsWith(".d0") ? wallNeighboursAlongY : (
         wallNeighboursAlongX
       );
+  }
+  if (lightBeamTileTextureId.test(textureId)) {
+    return lightBeamNeighbours;
   }
   if (textureId.endsWith(".floor")) {
     return floorNeighbours;

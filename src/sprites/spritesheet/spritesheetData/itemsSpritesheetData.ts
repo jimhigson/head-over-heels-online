@@ -1001,13 +1001,16 @@ const frames = {
     },
   },
 
-  // light beam segments - tiled along the beam, half a block per tile,
-  // with three frames so the light animates along its direction of travel:
+  // light beam segments - half a block of full-width beam per tile (all
+  // three visible faces). Frames step the light's lattice left, then
+  // left+up, and advance a brightness wave a block long by 1px, so the
+  // light animates along its direction of travel; sixteen frames until both
+  // repeat. Eight frames on is the wave's next half block:
   ...seriesOfNumberedTextures(
     "lightBeam",
-    5,
+    16,
     { x: 114, y: 885 },
-    { w: 16, h: 16 },
+    { w: 24, h: 20 },
   ),
 
   // the glow where a beam terminates: a disc on the plane normal to the
@@ -1016,7 +1019,7 @@ const frames = {
     "lightBeam.terminus",
     2,
     { x: 114, y: 868 },
-    { w: 16, h: 16 },
+    { w: 20, h: 16 },
   ),
 
   ...seriesOfNumberedTextures(
@@ -1145,7 +1148,7 @@ export const itemsSpritesheetData = {
       0.5,
     ),
     [`lightBeam.d${octantIndexOfDirection("left")}` as const]: withSpeed(
-      seriesOfAnimationFrameTextureIds("lightBeam", 5),
+      seriesOfAnimationFrameTextureIds("lightBeam", 16),
       1,
     ),
     "lightBeam.terminus": withSpeed(
