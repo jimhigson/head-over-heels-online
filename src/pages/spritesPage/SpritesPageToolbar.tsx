@@ -3,6 +3,8 @@ import { useState } from "preact/hooks";
 import { useSpritesheetName } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { Button } from "../../ui/Button";
 import { DownloadSpritesheetButton } from "./DownloadSpritesheetButton";
+import { type PixelAspectName } from "./pixelAspectNames";
+import { PixelAspectSelect } from "./PixelAspectSelect";
 import { ScaleSelect } from "./ScaleSelect";
 import { SpriteFilterInput } from "./SpriteFilterInput";
 import { SpritesheetArtUrlDisplay } from "./SpritesheetArtUrlDisplay";
@@ -16,6 +18,8 @@ export type SpritesPageToolbarProps = {
   onScaleChange: (scale: number) => void;
   spriteFilter: string;
   onSpriteFilterChange: (filter: string) => void;
+  pixelAspect: PixelAspectName;
+  onPixelAspectChange: (pixelAspect: PixelAspectName) => void;
 };
 
 export const SpritesPageToolbar = ({
@@ -23,6 +27,8 @@ export const SpritesPageToolbar = ({
   onScaleChange,
   spriteFilter,
   onSpriteFilterChange,
+  pixelAspect,
+  onPixelAspectChange,
 }: SpritesPageToolbarProps) => {
   const spritesheetName = useSpritesheetName();
   const [shown, setShown] = useState(true);
@@ -38,6 +44,10 @@ export const SpritesPageToolbar = ({
             </Button>
           </div>
           <ScaleSelect scale={scale} onScaleChange={onScaleChange} />
+          <PixelAspectSelect
+            pixelAspect={pixelAspect}
+            onPixelAspectChange={onPixelAspectChange}
+          />
           <UpscaledSpritesSwitch />
           <div class="flex flex-row gap-x-2">
             <div>

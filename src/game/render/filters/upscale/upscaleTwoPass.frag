@@ -13,10 +13,12 @@ precision highp float;
  *   distinction, so lines and silhouettes keep cleanEdge's crisp 45-degree
  *   and 2:1 slopes;
  * - pass B re-runs cleanEdge with real colour distances to resolve each
- *   fill pixel, but black/transparent samples abstain (no edges, no
- *   priority, never the resolved colour) - so fills keep crisp
- *   palette-preserving colour boundaries that continue underneath the
- *   linework, with no mixing/blurring.
+ *   fill pixel. It reads the linework by its stand-in colours, each black
+ *   pixel as the fill nearest it (upscaleStandIn.frag), so the shading is
+ *   resolved as regions that run on beneath the lines; transparent samples
+ *   and black pixels with no fill near abstain (no edges, no priority, never
+ *   the resolved colour) - so fills keep crisp palette-preserving colour
+ *   boundaries, with no mixing/blurring.
  *
  * Each slice line is fitted to the runs the art actually has, rather than to
  * a fixed 45-degree or 2:1 slope as the original's cases assume: the line
@@ -28,6 +30,22 @@ precision highp float;
  * next. The original's transition cleanups are gone with them: they existed
  * only to soften the step from one fixed slope to the next, and there is no
  * longer a step to soften.
+ *
+ * Pass A also reads the linework as strokes standing on solid black
+ * bodies: a one-pixel black tip in the fill keeps the square notch beside
+ * it rather than being rounded into the body it stands on, and a run
+ * measured along a black body's edge stops short of such a tip, so the two
+ * are smoothed as the separate things they are.
+ *
+ * A strip - a straight run of one to three black pixels, one pixel thick,
+ * with no black beside it - is a dot, an eye or a dash the artist sized,
+ * and is not sliced: it is drawn as a lozenge of the strip's own area.
+ *
+ * An arc - runs that lengthen steadily either side of a 45 degree middle,
+ * found by the arc passes (upscaleArcAnchors.frag and the two after it) - is
+ * not sliced either: its pixels, and those beside it, are drawn to the
+ * ellipse fitted through its runs - black outlines' arcs first, then those
+ * of the coloured outlines dark items have.
  *
  * This form is BRANCHLESS: the original's booleans are exact 0/1 float
  * masks and its if/else chains are mix()/step() selections, so the whole
@@ -107,6 +125,11 @@ float cdA(vec4 col1, vec4 col2){
 	return 1.0 - simA(col1, col2);
 }
 
+// 1.0 for the black linework
+float strokeA(vec4 col){
+	return step(0.5, classOf(col)) * (1.0 - step(1.5, classOf(col)));
+}
+
 vec4 pickA(vec4 ref, vec4 a, vec4 b){
 	return mix(b, a, step(cdA(ref, a), cdA(ref, b)));
 }
@@ -174,14 +197,282 @@ vec4 srcAt(vec2 px){
 	return texture(uTexture, px / uSheetSize);
 }
 
+// the resolved crossings of the sheet's 2x2 cells, one texel per cell at its
+// top-left pixel, as upscaleGraph.frag encodes them
+uniform sampler2D uGraph;
+
+// the graph's verdict on the cell holding `cellC` and its forward, down and
+// diagonal neighbours in a slice frame: 1.0 where f and d connect (so c's
+// corner is sliced), 0.0 where c and df connect or neither does, and -1.0
+// where the cell is no crossing, or is one the graph left unresolved, and
+// the local distances decide
+float crossingVerdict(vec2 cellC, vec2 dirVec, float layerB){
+	vec2 tl = cellC + min(dirVec, vec2(0.0));
+	vec4 graph = texture(uGraph, tl / uSheetSize);
+	float code = mix(graph.r, graph.g, layerB);
+	float isCrossing = step(0.375, code);
+	float tlBrConnects = step(0.375, code) * (1.0 - step(0.625, code));
+	float trBlConnects = step(0.625, code) * (1.0 - step(0.875, code));
+	// f and d connect when the connected diagonal is the one c-df is not
+	float cDfIsTlBr = step(0.0, dirVec.x * dirVec.y);
+	float fdConnects = mix(tlBrConnects, trBlConnects, cDfIsTlBr);
+	return mix(-1.0, fdConnects, isCrossing);
+}
+
+// every pixel's stand-in colour for the colour pass, as upscaleStandIn.frag
+// gives it: a fill itself, a black pixel of the linework the fill nearest it
+uniform sampler2D uStandIn;
+
+vec4 standInAt(vec2 px){
+	return texture(uStandIn, px / uSheetSize);
+}
+
+// ---- strips: a dot, an eye, a dash. A straight run of one to three black
+// pixels, one pixel thick, that is the whole of its black by side - black
+// may touch one of its corners, so long as that is a line crossing its
+// path and not the next step of a slope - is a thing the artist sized
+// rather than an edge to fit a slope to: the slices would round it down to
+// less. It is drawn instead as a lozenge of the strip's own area - the
+// strip's rectangle let out a little all round, with its corners cut at 45
+// degrees
+
+// how far along each edge a lozenge's corners are cut: half a pixel, so the
+// ends of a one-pixel strip come to a point
+const float lozengeCut = 0.5;
+
+float blackAt(vec2 p){
+	return strokeA(srcAt(p));
+}
+
+// how far the black runs on from p along `along`, up to three
+float runOut(vec2 p, vec2 along){
+	float s1 = blackAt(p + along);
+	float s2 = s1 * blackAt(p + along * 2.0);
+	float s3 = s2 * blackAt(p + along * 3.0);
+	return s1 + s2 + s3;
+}
+
+// 1.0 where no pixel of the run through p - l pixels before it and r after,
+// along `along` - has black beside it across the run
+float clearAcross(vec2 p, vec2 along, vec2 across, float l, float r){
+	float clear = 1.0;
+	for (int k = -2; k <= 2; k++){
+		float kf = float(k);
+		float inRun = step(-l - 0.5, kf) * step(kf, r + 0.5);
+		vec2 q = p + along * kf;
+		clear *= 1.0 - inRun * max(blackAt(q + across), blackAt(q - across));
+	}
+	return clear;
+}
+
+// 1.0 where the pixel at q carries a slope on from a run it touches corner
+// to corner: black, with no black beside it across the run. A pixel with
+// black beside it is a line crossing the run's path, not the next step of
+// the same slope
+float stepAt(vec2 q, vec2 across){
+	return blackAt(q) * (1.0 - max(blackAt(q + across), blackAt(q - across)));
+}
+
+// 1.0 where the run through p - l pixels before it and r after, along
+// `along` - may be a strip for what touches its end corners: black at no
+// more than one of them (a dot amid a chequer, or a dash bridging two lines,
+// is part of a texture, not a thing on its own), and that not carrying a
+// slope on from it - a 45 degree line, or the runs of a 2:1 one, touch
+// corner to corner and are a line to fit slices to
+float cornersClear(vec2 p, vec2 along, vec2 across, float l, float r){
+	vec2 c1 = p - along * (l + 1.0) + across;
+	vec2 c2 = p - along * (l + 1.0) - across;
+	vec2 c3 = p + along * (r + 1.0) + across;
+	vec2 c4 = p + along * (r + 1.0) - across;
+	float contacts = blackAt(c1) + blackAt(c2) + blackAt(c3) + blackAt(c4);
+	float steps = stepAt(c1, across) + stepAt(c2, across) + stepAt(c3, across) + stepAt(c4, across);
+	return step(contacts, 1.5) * (1.0 - step(0.5, steps));
+}
+
+// the strip p is a pixel of, if any: x = 1.0 for a strip, y = its length,
+// z = how many of its pixels come before p, w = 1.0 when it runs along x
+// (a lone pixel is a strip along either axis and is taken along x)
+vec4 stripAt(vec2 p){
+	float own = blackAt(p);
+	vec2 xAxis = vec2(1.0, 0.0);
+	vec2 yAxis = vec2(0.0, 1.0);
+	float lx = runOut(p, -xAxis);
+	float rx = runOut(p,  xAxis);
+	float nx = lx + 1.0 + rx;
+	float alongX = own * step(nx, 3.0) * clearAcross(p, xAxis, yAxis, lx, rx) * cornersClear(p, xAxis, yAxis, lx, rx);
+	float ly = runOut(p, -yAxis);
+	float ry = runOut(p,  yAxis);
+	float ny = ly + 1.0 + ry;
+	float alongY = own * step(ny, 3.0) * clearAcross(p, yAxis, xAxis, ly, ry) * cornersClear(p, yAxis, xAxis, ly, ry);
+	return vec4(max(alongX, alongY), mix(ny, nx, alongX), mix(ly, lx, alongX), alongX);
+}
+
+// 1.0 where the point (in pixel units) lies inside the lozenge of the strip
+// p is a pixel of
+float inLozenge(vec2 point, vec2 p, vec4 strip){
+	vec2 along = mix(vec2(0.0, 1.0), vec2(1.0, 0.0), strip.w);
+	vec2 across = along.yx;
+	float n = strip.y;
+	vec2 centre = p + along * ((n - 1.0) * 0.5 - strip.z);
+	// let out so that, with the corners cut, the lozenge has the strip's area
+	float e = (sqrt((n + 1.0) * (n + 1.0) + 8.0 * lozengeCut * lozengeCut) - (n + 1.0)) * 0.25;
+	float a = n * 0.5 + e;
+	float b = 0.5 + e;
+	float u = abs(dot(point - centre, along));
+	float v = abs(dot(point - centre, across));
+	return strip.x * step(u, a) * step(v, b) * step(lozengeCut, (a - u) + (b - v));
+}
+
+// the fill a lozenge's cut corner shows: a real fill beside it by
+// preference, else whatever is there (transparent, at the silhouette)
+vec4 cornerFill(vec4 side1, vec4 side2){
+	return mix(mix(side2, side1, isC(side1)), side1, 1.0 - max(isC(side1), isC(side2)));
+}
+
+// ---- arcs: a pixel that upscaleArcSpread.frag found on an arc, or beside
+// one, is drawn to the arc's curve |x/a|^n + |y/b|^n = 1 rather than
+// sliced: within half a pixel of the curve it takes the line's colour, as
+// the slices draw a line about its runs' centres, and beyond that band the
+// colour of that side
+
+uniform sampler2D uArcs;
+// each black arc's curve, at its anchor: its centre, its semi-axes and its
+// exponent
+uniform sampler2D uArcCentres;
+uniform sampler2D uArcAxes;
+uniform sampler2D uArcExponents;
+
+// half the width of the band an arc draws about its ellipse
+const float arcHalfWidth = 0.5;
+
+const vec4 arcBlack = vec4(0.0, 0.0, 0.0, 1.0);
+
+// the flags upscaleArcs.frag and upscaleArcSpread.frag give a pixel
+float arcFlags(vec4 arc){
+	return floor(arc.b * 255.0 + 0.5);
+}
+
+// 1.0 where the pixel is drawn to an arc's ellipse
+float arcDrawn(vec4 arc){
+	return step(2.5, mod(arcFlags(arc), 4.0));
+}
+
+vec2 unpackWords(vec4 texel){
+	vec4 bytes = floor(texel * 255.0 + 0.5);
+	return (bytes.xz * 256.0 + bytes.yw) / 256.0;
+}
+
+// where a fragment is from an arc's curve: x is its signed distance (out
+// from the centre positive), yz the direction across the band away from it
+vec3 fromArc(vec2 px, vec2 local, vec4 arc, sampler2D centres, sampler2D axesAt, sampler2D exponents){
+	vec2 anchor = px + floor(arc.rg * 255.0 + 0.5) - 128.0;
+	vec2 centre = anchor + unpackWords(texture(centres, anchor / uSheetSize)) - 128.0;
+	vec2 axes = unpackWords(texture(axesAt, anchor / uSheetSize));
+	float exponent = unpackWords(texture(exponents, anchor / uSheetSize)).x;
+	vec2 fromCentre = (px - 0.5 + local) - centre;
+	vec2 scaled = abs(fromCentre) / axes;
+	// |u|^(n - 1), zero on an axis: pow cannot be trusted with a zero base
+	vec2 powered = pow(max(scaled, 1e-30), vec2(exponent - 1.0)) * step(1e-6, scaled);
+	float level = dot(scaled, powered) - 1.0;
+	vec2 gradient = exponent * powered * sign(fromCentre) / axes;
+	float signedDistance = level / length(gradient);
+	return vec3(signedDistance, gradient * sign(signedDistance));
+}
+
+// the pixel beside a fragment's own on the side away points to: across the
+// side it points at more
+vec2 sideOf(vec2 away){
+	float acrossX = step(abs(away.y), abs(away.x));
+	return mix(vec2(0.0, sign(away.y)), vec2(sign(away.x), 0.0), acrossX);
+}
+
+// the colour a fragment of a pixel drawn to a black outline's arc takes:
+// black in the band; beyond it, what the slices made of the fragment
+// (`under`), bar a slice of the line itself, which the ellipse has redrawn:
+// the pixel's own colour then - or, for a black pixel, the colour of the
+// pixel beside it on the band's far side. inBand tells whether the
+// fragment was in the band
+vec4 arcColour(vec2 px, vec2 local, vec4 c, vec4 arc, vec4 under, out float inBand){
+	vec3 where = fromArc(px, local, arc, uArcCentres, uArcAxes, uArcExponents);
+	inBand = step(abs(where.x), arcHalfWidth);
+	vec4 unsliced = mix(c, srcAt(px + sideOf(where.yz)), strokeA(c));
+	vec4 beyond = mix(under, unsliced, max(strokeA(c), strokeA(under)));
+	return mix(beyond, arcBlack, inBand);
+}
+
+// arcs of a dark item's coloured outline, drawn after the black ones: the
+// band takes the outline's colour - its own pixels' own, any other pixel
+// that of the outline pixel beside it toward the band - and beyond the band
+// an outline pixel shows the pixel beside it on that side, while any other
+// keeps what it had. A layered arc - a coloured line between two black
+// ones - draws all three from the one ellipse: black for a band either
+// side of the coloured one, and beyond those what lies past them
+
+uniform sampler2D uColourArcs;
+uniform sampler2D uColourArcCentres;
+uniform sampler2D uColourArcAxes;
+uniform sampler2D uColourArcExponents;
+
+// whether a black line pixel touching the pixel at px is drawn by the
+// slices rather than to a black arc: the slices it puts through this pixel
+// are that line's own, and stay in front of a plain coloured arc's band
+float slicedBlackBeside(vec2 px){
+	float beside = 0.0;
+	for (int dy = -1; dy <= 1; dy++){
+		for (int dx = -1; dx <= 1; dx++){
+			if (dx == 0 && dy == 0) continue;
+			vec2 q = px + vec2(float(dx), float(dy));
+			beside = max(beside, strokeA(srcAt(q)) * (1.0 - arcDrawn(texture(uArcs, q / uSheetSize))));
+		}
+	}
+	return beside;
+}
+
+vec4 colourArcColour(vec2 px, vec2 local, vec4 c, vec4 arc, vec4 under){
+	vec3 where = fromArc(px, local, arc, uColourArcCentres, uColourArcAxes, uColourArcExponents);
+	float flags = arcFlags(arc);
+	float layered = mod(floor(flags / 4.0), 2.0);
+	float takenIn = step(7.5, flags);
+	float inBand = step(abs(where.x), arcHalfWidth);
+	float inLayers = step(abs(where.x), 3.0 * arcHalfWidth) * layered;
+	vec2 away = where.yz;
+	vec2 sideX = vec2(sign(away.x), 0.0);
+	vec2 sideY = vec2(0.0, sign(away.y));
+	vec2 side = sideOf(away);
+	vec2 otherSide = sideX + sideY - side;
+	// the outline pixel beside this one toward the band: across the nearer
+	// side first, then the other, then the corner
+	vec4 towardFirst = srcAt(px - side);
+	vec4 towardSecond = srcAt(px - otherSide);
+	vec4 towardCorner = srcAt(px - sideX - sideY);
+	vec4 toward = mix(mix(towardCorner, towardSecond, isC(towardSecond)), towardFirst, isC(towardFirst));
+	float ownOutline = isC(c) * (1.0 - takenIn);
+	vec4 bandColour = mix(toward, c, ownOutline);
+	// a pixel taken in beyond the black layers takes black only where the
+	// pixel in from it is the layer itself: a band passing through empty
+	// space, with no black beside it, is the ellipse straying from the art
+	inLayers *= mix(1.0, strokeA(towardFirst), takenIn * (1.0 - strokeA(c)));
+	vec4 beside = srcAt(px + side);
+	// past the black layer beside an outline pixel, in a layered arc
+	vec4 besideLayer = mix(beside, srcAt(px + 2.0 * side), strokeA(beside));
+	vec4 beyondPlain = mix(under, beside, ownOutline);
+	vec4 beyondLayered = mix(mix(c, beside, strokeA(c)), besideLayer, ownOutline);
+	vec4 beyond = mix(beyondPlain, beyondLayered, layered);
+	vec4 drawn = mix(mix(beyond, arcBlack, inLayers), bandColour, inBand);
+	// a sliced black line's own slices through the pixel stay
+	return mix(drawn, under, strokeA(under) * slicedBlackBeside(px) * (1.0 - layered));
+}
+
 // a neighbour of the pixel being sliced, in that slice's own frame: which
 // quadrant of the pixel the fragment sits in, and the slice's mirroring, are
 // both folded into dirVec, so every case reads as though looking down-forward
 #define AT(dx, dy) srcAt(px + vec2(dx, dy) * dirVec)
+// the same neighbour by its stand-in colour, for the colour pass
+#define ATB(dx, dy) standInAt(px + vec2(dx, dy) * dirVec)
 
 //based on down-forward direction; branchless: all five slant cases evaluate,
 //an exclusive mask chain reproduces the original's else-if priority
-vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
+vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px, float strip){
 	vec2 dirVec = pointDir * mainDir;
 	point = mainDir * (point - 0.5) + 0.5; //flip point
 	vec2 center = vec2(0.5, 0.5);
@@ -220,6 +511,15 @@ vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	sliceM *= 1.0 - sim4A(f, d, b, u) * sim4A(uf, df, db, ub) * (1.0 - simA(c, f))
 		* chequerContinues;
 
+	//a crossing cell is settled by the graph pass, not the local distances:
+	//c's own cell for the near cases, f's and d's for the far corners
+	float crossC = crossingVerdict(px, dirVec, 0.0);
+	float crossF = crossingVerdict(px + vec2(1.0, 0.0) * dirVec, dirVec, 0.0);
+	float crossD = crossingVerdict(px + vec2(0.0, 1.0) * dirVec, dirVec, 0.0);
+	float sliceC = mix(sliceM, crossC, step(0.0, crossC));
+	float sliceF = mix(sliceM, crossF, step(0.0, crossF));
+	float sliceD = mix(sliceM, crossD, step(0.0, crossD));
+
 	//the slant cases the original tests in an else-if chain, as
 	//priority-exclusive masks: each claims the fragment only where no
 	//earlier one did
@@ -237,29 +537,47 @@ vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 
 	//How long the runs meeting at this corner are, up to four. A run carries
 	//on while its pixels keep matching the one it started from and the pixels
-	//alongside keep matching c - that is, while the edge stays straight.
+	//alongside keep matching c - that is, while the edge stays straight. A
+	//run along a solid black body's edge - its first two pixels and the two
+	//behind them a block of black - stops short of a tip: a pixel of its own
+	//with fill alongside, beyond and behind, which is a stroke standing on
+	//the body, not the body's edge, so the slice is fitted to the body alone
+	float solidF = strokeA(f) * sim4A(f, ff, df, dff);
+	float solidD = strokeA(d) * sim4A(d, dd, df, ddf);
+	float tipF2 = isC(AT(2.0, 1.0)) * isC(AT(3.0, 0.0)) * isC(AT(3.0, 1.0)) * isC(AT(3.0,-1.0));
+	float tipF3 = isC(AT(3.0, 1.0)) * isC(AT(4.0, 0.0)) * isC(AT(4.0, 1.0)) * isC(AT(4.0,-1.0));
+	float tipF4 = isC(AT(4.0, 1.0)) * isC(AT(5.0, 0.0)) * isC(AT(5.0, 1.0)) * isC(AT(5.0,-1.0));
 	float fw1 = simA(AT(1.0, 0.0), f) * simA(AT(1.0,-1.0), c);
-	float fw2 = fw1 * simA(AT(2.0, 0.0), f) * simA(AT(2.0,-1.0), c);
-	float fw3 = fw2 * simA(AT(3.0, 0.0), f) * simA(AT(3.0,-1.0), c);
-	float fw4 = fw3 * simA(AT(4.0, 0.0), f) * simA(AT(4.0,-1.0), c);
+	float fw2 = fw1 * simA(AT(2.0, 0.0), f) * simA(AT(2.0,-1.0), c) * (1.0 - solidF * tipF2);
+	float fw3 = fw2 * simA(AT(3.0, 0.0), f) * simA(AT(3.0,-1.0), c) * (1.0 - solidF * tipF3);
+	float fw4 = fw3 * simA(AT(4.0, 0.0), f) * simA(AT(4.0,-1.0), c) * (1.0 - solidF * tipF4);
 	float runF = max(1.0, fw1 + fw2 + fw3 + fw4);
 
+	float tipB2 = isC(AT(-1.0, 2.0)) * isC(AT(-2.0, 1.0)) * isC(AT(-2.0, 2.0)) * isC(AT(-2.0, 0.0));
+	float tipB3 = isC(AT(-2.0, 2.0)) * isC(AT(-3.0, 1.0)) * isC(AT(-3.0, 2.0)) * isC(AT(-3.0, 0.0));
+	float tipB4 = isC(AT(-3.0, 2.0)) * isC(AT(-4.0, 1.0)) * isC(AT(-4.0, 2.0)) * isC(AT(-4.0, 0.0));
 	float bk1 = simA(AT( 0.0, 1.0), d) * simA(AT( 0.0, 0.0), c);
-	float bk2 = bk1 * simA(AT(-1.0, 1.0), d) * simA(AT(-1.0, 0.0), c);
-	float bk3 = bk2 * simA(AT(-2.0, 1.0), d) * simA(AT(-2.0, 0.0), c);
-	float bk4 = bk3 * simA(AT(-3.0, 1.0), d) * simA(AT(-3.0, 0.0), c);
+	float bk2 = bk1 * simA(AT(-1.0, 1.0), d) * simA(AT(-1.0, 0.0), c) * (1.0 - solidD * tipB2);
+	float bk3 = bk2 * simA(AT(-2.0, 1.0), d) * simA(AT(-2.0, 0.0), c) * (1.0 - solidD * tipB3);
+	float bk4 = bk3 * simA(AT(-3.0, 1.0), d) * simA(AT(-3.0, 0.0), c) * (1.0 - solidD * tipB4);
 	float runB = max(1.0, bk1 + bk2 + bk3 + bk4);
 
+	float tipD2 = isC(AT(1.0, 2.0)) * isC(AT(0.0, 3.0)) * isC(AT(1.0, 3.0)) * isC(AT(-1.0, 3.0));
+	float tipD3 = isC(AT(1.0, 3.0)) * isC(AT(0.0, 4.0)) * isC(AT(1.0, 4.0)) * isC(AT(-1.0, 4.0));
+	float tipD4 = isC(AT(1.0, 4.0)) * isC(AT(0.0, 5.0)) * isC(AT(1.0, 5.0)) * isC(AT(-1.0, 5.0));
 	float dn1 = simA(AT(0.0, 1.0), d) * simA(AT(-1.0, 1.0), c);
-	float dn2 = dn1 * simA(AT(0.0, 2.0), d) * simA(AT(-1.0, 2.0), c);
-	float dn3 = dn2 * simA(AT(0.0, 3.0), d) * simA(AT(-1.0, 3.0), c);
-	float dn4 = dn3 * simA(AT(0.0, 4.0), d) * simA(AT(-1.0, 4.0), c);
+	float dn2 = dn1 * simA(AT(0.0, 2.0), d) * simA(AT(-1.0, 2.0), c) * (1.0 - solidD * tipD2);
+	float dn3 = dn2 * simA(AT(0.0, 3.0), d) * simA(AT(-1.0, 3.0), c) * (1.0 - solidD * tipD3);
+	float dn4 = dn3 * simA(AT(0.0, 4.0), d) * simA(AT(-1.0, 4.0), c) * (1.0 - solidD * tipD4);
 	float runD = max(1.0, dn1 + dn2 + dn3 + dn4);
 
+	float tipU2 = isC(AT(2.0,-1.0)) * isC(AT(1.0,-2.0)) * isC(AT(2.0,-2.0)) * isC(AT(0.0,-2.0));
+	float tipU3 = isC(AT(2.0,-2.0)) * isC(AT(1.0,-3.0)) * isC(AT(2.0,-3.0)) * isC(AT(0.0,-3.0));
+	float tipU4 = isC(AT(2.0,-3.0)) * isC(AT(1.0,-4.0)) * isC(AT(2.0,-4.0)) * isC(AT(0.0,-4.0));
 	float rise1 = simA(AT(1.0, 0.0), f) * simA(AT(0.0, 0.0), c);
-	float rise2 = rise1 * simA(AT(1.0,-1.0), f) * simA(AT(0.0,-1.0), c);
-	float rise3 = rise2 * simA(AT(1.0,-2.0), f) * simA(AT(0.0,-2.0), c);
-	float rise4 = rise3 * simA(AT(1.0,-3.0), f) * simA(AT(0.0,-3.0), c);
+	float rise2 = rise1 * simA(AT(1.0,-1.0), f) * simA(AT(0.0,-1.0), c) * (1.0 - solidF * tipU2);
+	float rise3 = rise2 * simA(AT(1.0,-2.0), f) * simA(AT(0.0,-2.0), c) * (1.0 - solidF * tipU3);
+	float rise4 = rise3 * simA(AT(1.0,-3.0), f) * simA(AT(0.0,-3.0), c) * (1.0 - solidF * tipU4);
 	float runU = max(1.0, rise1 + rise2 + rise3 + rise4);
 
 	//A corner joining a long run to a short one is a corner, not a slope: left
@@ -316,9 +634,6 @@ vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 		max(higherA(c, f), (1.0 - simA(c, b)) * sim4A(b, f, d, u)),
 		(1.0 - simA(c, dd)) * (1.0 - simA(c, ff)),
 		diagBranch3);
-	//single pixel 2:1 slope edge case:
-	flip3 = max(flip3,
-		max(simA(f, db) * sim3A(u, f, df), simA(uf, d) * sim3A(b, d, df)) * (1.0 - simA(c, df)));
 	float dist3 = mix(
 		distToLine(point, center+cn1*pointDir, center+cn2*pointDir, pointDir),
 		1.0 - distToLine(point, center+(cn1+cnFlip)*pointDir, center+(cn2+cnFlip)*pointDir, -pointDir),
@@ -346,15 +661,70 @@ vec4 sliceDistA(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	dist5 -= 0.5;
 	vec4 col5 = pickA(d, df, dd);
 
+	//A black pixel with only fill beyond it, standing on a solid body's flat
+	//edge, is a stroke's end or a protrusion's tip, not a step of a slope:
+	//the notch beside it is a square corner, not a curve to round off. The
+	//body must be one - solid for a 2x2 block under the corner - since a few
+	//pixels on their own are a shape to round, not a body with a protrusion.
+	//Only the linework is read this way, and only against the fill: a fill
+	//poking into the linework is the lines' own notch, which keeps their
+	//slope, and at the edge of the art there is no telling a tip from a
+	//clipped line. A crossing the graph settled is a join of two strokes and
+	//is sliced regardless
+	float bodyC = sim4A(d, df, dd, ddf);
+	float bodyB = sim4A(f, df, ff, dff);
+	float bodyFar = sim4A(df, dff, ddf, AT(2.0, 2.0));
+	//...but not where the body's edge is a slope: a run along it that ends
+	//by stepping down a row makes the pixel at its head the slope's apex,
+	//not a bar standing on a flat
+	float endsB1 = (1.0 - simA(AT(-1.0, 1.0), d)) * simA(AT(-1.0, 2.0), d);
+	float endsB2 = (1.0 - simA(AT(-2.0, 1.0), d)) * simA(AT(-2.0, 2.0), d);
+	float endsB3 = (1.0 - simA(AT(-3.0, 1.0), d)) * simA(AT(-3.0, 2.0), d);
+	float slopeB = (1.0 - bk2) * endsB1 + bk2 * (1.0 - bk3) * endsB2 + bk3 * (1.0 - bk4) * endsB3;
+	float endsU1 = (1.0 - simA(AT(1.0,-1.0), f)) * simA(AT(2.0,-1.0), f);
+	float endsU2 = (1.0 - simA(AT(1.0,-2.0), f)) * simA(AT(2.0,-2.0), f);
+	float endsU3 = (1.0 - simA(AT(1.0,-3.0), f)) * simA(AT(2.0,-3.0), f);
+	float slopeU = (1.0 - rise2) * endsU1 + rise2 * (1.0 - rise3) * endsU2 + rise3 * (1.0 - rise4) * endsU3;
+	//the same runs seen from the far corners, whose notch is f or d
+	float fbk2 = simA(d, df) * simA(c, f);
+	float fbk3 = fbk2 * simA(db, df) * simA(b, f);
+	float fbk4 = fbk3 * simA(AT(-2.0, 1.0), df) * simA(AT(-2.0, 0.0), f);
+	float endsFB1 = (1.0 - simA(d, df)) * simA(dd, df);
+	float endsFB2 = (1.0 - simA(db, df)) * simA(ddb, df);
+	float endsFB3 = (1.0 - simA(AT(-2.0, 1.0), df)) * simA(AT(-2.0, 2.0), df);
+	float slopeFB = (1.0 - fbk2) * endsFB1 + fbk2 * (1.0 - fbk3) * endsFB2 + fbk3 * (1.0 - fbk4) * endsFB3;
+	float fri2 = simA(f, df) * simA(c, d);
+	float fri3 = fri2 * simA(uf, df) * simA(u, d);
+	float fri4 = fri3 * simA(AT(1.0,-2.0), df) * simA(AT(0.0,-2.0), d);
+	float endsFU1 = (1.0 - simA(f, df)) * simA(ff, df);
+	float endsFU2 = (1.0 - simA(uf, df)) * simA(uff, df);
+	float endsFU3 = (1.0 - simA(AT(1.0,-2.0), df)) * simA(AT(2.0,-2.0), df);
+	float slopeFU = (1.0 - fri2) * endsFU1 + fri2 * (1.0 - fri3) * endsFU2 + fri3 * (1.0 - fri4) * endsFU3;
+	float tipF = strokeA(f) * bodyC * (1.0 - slopeB) * isC(ff) * isC(uf) * isC(uff) * isC(dff) * isC(u);
+	float tipD = strokeA(d) * bodyB * (1.0 - slopeU) * isC(dd) * isC(db) * isC(ddb) * isC(ddf) * isC(b);
+	float tipFF = strokeA(ff) * bodyFar * (1.0 - slopeFB) * isC(AT(3.0, 0.0)) * isC(uff) * isC(AT(3.0,-1.0)) * isC(AT(3.0, 1.0)) * isC(uf);
+	float tipDD = strokeA(dd) * bodyFar * (1.0 - slopeFU) * isC(AT(0.0, 3.0)) * isC(ddb) * isC(AT(-1.0, 3.0)) * isC(AT(1.0, 3.0)) * isC(db);
+	float notchC = (1.0 - step(0.0, crossC)) * max(tipF, tipD);
+	float notchF = (1.0 - step(0.0, crossF)) * tipFF;
+	float notchD = (1.0 - step(0.0, crossD)) * tipDD;
+
+	//Where two one-pixel strokes meet - each with nothing of its own class
+	//on its far side, touching at df - the corner between them is a
+	//junction, not a step of a slope, and stays square: a T stays a T rather
+	//than filleting into a knot, a crossing stays a crossing, and a bend
+	//keeps its inside corner
+	float junctionC = (1.0 - step(0.0, crossC)) * strokeA(f) * simA(f, df) * (1.0 - simA(ff, f)) * (1.0 - simA(dd, d));
+
 	//select the first matching case's colour where its slice reaches this
 	//point (col.r < 0 marks an abstaining pick, colour pass only)
 	vec4 res = vec4(-1.0);
-	res = mix(res, col1, e1 * step(dist1, 0.0) * step(0.0, col1.r));
-	res = mix(res, col2, e2 * step(dist2, 0.0) * step(0.0, col2.r));
-	res = mix(res, col3, e3 * step(dist3, 0.0) * step(0.0, col3.r));
-	res = mix(res, col4, e4 * step(dist4, 0.0) * step(0.0, col4.r));
-	res = mix(res, col5, e5 * step(dist5, 0.0) * step(0.0, col5.r));
-	return mix(vec4(-1.0), res, sliceM);
+	res = mix(res, col1, sliceC * (1.0 - notchC) * (1.0 - junctionC) * e1 * step(dist1, 0.0) * step(0.0, col1.r));
+	res = mix(res, col2, sliceC * (1.0 - notchC) * (1.0 - junctionC) * e2 * step(dist2, 0.0) * step(0.0, col2.r));
+	res = mix(res, col3, sliceC * (1.0 - notchC) * (1.0 - junctionC) * e3 * step(dist3, 0.0) * step(0.0, col3.r));
+	res = mix(res, col4, sliceF * (1.0 - notchF) * e4 * step(dist4, 0.0) * step(0.0, col4.r));
+	res = mix(res, col5, sliceD * (1.0 - notchD) * e5 * step(dist5, 0.0) * step(0.0, col5.r));
+	//a strip is not sliced: it is drawn as its lozenge instead
+	return mix(res, vec4(-1.0), strip);
 }
 
 //based on down-forward direction; branchless: all five slant cases evaluate,
@@ -364,21 +734,21 @@ vec4 sliceDistB(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	point = mainDir * (point - 0.5) + 0.5; //flip point
 	vec2 center = vec2(0.5, 0.5);
 
-	vec4 ub  = AT(-1.0,-1.0);
-	vec4 u   = AT( 0.0,-1.0);
-	vec4 uf  = AT( 1.0,-1.0);
-	vec4 uff = AT( 2.0,-1.0);
-	vec4 b   = AT(-1.0, 0.0);
-	vec4 c   = AT( 0.0, 0.0);
-	vec4 f   = AT( 1.0, 0.0);
-	vec4 ff  = AT( 2.0, 0.0);
-	vec4 db  = AT(-1.0, 1.0);
-	vec4 d   = AT( 0.0, 1.0);
-	vec4 df  = AT( 1.0, 1.0);
-	vec4 dff = AT( 2.0, 1.0);
-	vec4 ddb = AT(-1.0, 2.0);
-	vec4 dd  = AT( 0.0, 2.0);
-	vec4 ddf = AT( 1.0, 2.0);
+	vec4 ub  = ATB(-1.0,-1.0);
+	vec4 u   = ATB( 0.0,-1.0);
+	vec4 uf  = ATB( 1.0,-1.0);
+	vec4 uff = ATB( 2.0,-1.0);
+	vec4 b   = ATB(-1.0, 0.0);
+	vec4 c   = ATB( 0.0, 0.0);
+	vec4 f   = ATB( 1.0, 0.0);
+	vec4 ff  = ATB( 2.0, 0.0);
+	vec4 db  = ATB(-1.0, 1.0);
+	vec4 d   = ATB( 0.0, 1.0);
+	vec4 df  = ATB( 1.0, 1.0);
+	vec4 dff = ATB( 2.0, 1.0);
+	vec4 ddb = ATB(-1.0, 2.0);
+	vec4 dd  = ATB( 0.0, 2.0);
+	vec4 ddf = ATB( 1.0, 2.0);
 
 	//edge detection
 	float distAgainst = 4.0*cdB(f,d) + cdB(uf,c) + cdB(c,db) + cdB(ff,df) + cdB(df,dd);
@@ -389,6 +759,12 @@ vec4 sliceDistB(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 		lt(distAgainst, distTowards + 0.001) * (1.0 - higherB(c, f)));
 	//checkerboard edge case:
 	sliceM *= 1.0 - sim4B(f, d, b, u) * sim4B(uf, df, db, ub) * (1.0 - simB(c, f));
+
+	//the colour pass keeps cleanEdge's own crossing decision: the shading is
+	//read as the original's local distances read it
+	float sliceC = sliceM;
+	float sliceF = sliceM;
+	float sliceD = sliceM;
 
 	float m1 = sim3B(f, d, db) * (1.0 - sim3B(f, d, b)) * (1.0 - simB(uf, db)); //lower shallow slant
 	float m2 = sim3B(uf, f, d) * (1.0 - sim3B(u, f, d)) * (1.0 - simB(uf, db)); //forward steep slant
@@ -465,9 +841,6 @@ vec4 sliceDistB(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 		max(higherB(c, f), (1.0 - simB(c, b)) * sim4B(b, f, d, u)),
 		(1.0 - simB(c, dd)) * (1.0 - simB(c, ff)),
 		diagBranch3);
-	//single pixel 2:1 slope edge case:
-	flip3 = max(flip3,
-		max(simB(f, db) * sim3B(u, f, df), simB(uf, d) * sim3B(b, d, df)) * (1.0 - simB(c, df)));
 	float dist3 = mix(
 		distToLine(point, center+cn1*pointDir, center+cn2*pointDir, pointDir),
 		1.0 - distToLine(point, center+(cn1+cnFlip)*pointDir, center+(cn2+cnFlip)*pointDir, -pointDir),
@@ -498,12 +871,12 @@ vec4 sliceDistB(vec2 point, vec2 mainDir, vec2 pointDir, vec2 px){
 	//select the first matching case's colour where its slice reaches this
 	//point (col.r < 0 marks an abstaining pick, colour pass only)
 	vec4 res = vec4(-1.0);
-	res = mix(res, col1, e1 * step(dist1, 0.0) * step(0.0, col1.r));
-	res = mix(res, col2, e2 * step(dist2, 0.0) * step(0.0, col2.r));
-	res = mix(res, col3, e3 * step(dist3, 0.0) * step(0.0, col3.r));
-	res = mix(res, col4, e4 * step(dist4, 0.0) * step(0.0, col4.r));
-	res = mix(res, col5, e5 * step(dist5, 0.0) * step(0.0, col5.r));
-	return mix(vec4(-1.0), res, sliceM);
+	res = mix(res, col1, sliceC * e1 * step(dist1, 0.0) * step(0.0, col1.r));
+	res = mix(res, col2, sliceC * e2 * step(dist2, 0.0) * step(0.0, col2.r));
+	res = mix(res, col3, sliceC * e3 * step(dist3, 0.0) * step(0.0, col3.r));
+	res = mix(res, col4, sliceF * e4 * step(dist4, 0.0) * step(0.0, col4.r));
+	res = mix(res, col5, sliceD * e5 * step(dist5, 0.0) * step(0.0, col5.r));
+	return res;
 }
 
 void main() {
@@ -523,13 +896,36 @@ void main() {
 
 	//pass A: c_orner, b_ack, and u_p slices on the art classes
 	// (slices from neighbor pixels will only ever reach these 3 quadrants
-	vec4 cColA = sliceDistA(local, vec2( 1.0, 1.0), pointDir, px);
-	vec4 bColA = sliceDistA(local, vec2(-1.0, 1.0), pointDir, px);
-	vec4 uColA = sliceDistA(local, vec2( 1.0,-1.0), pointDir, px);
+	vec4 stripC = stripAt(px);
+	vec4 cColA = sliceDistA(local, vec2( 1.0, 1.0), pointDir, px, stripC.x);
+	vec4 bColA = sliceDistA(local, vec2(-1.0, 1.0), pointDir, px, stripC.x);
+	vec4 uColA = sliceDistA(local, vec2( 1.0,-1.0), pointDir, px, stripC.x);
 
 	col = mix(col, cColA, step(0.0, cColA.r));
 	col = mix(col, bColA, step(0.0, bColA.r));
 	col = mix(col, uColA, step(0.0, uColA.r));
+
+	//a strip's lozenge: black inside it, the fill beside in its cut corners
+	vec2 point = px - 0.5 + local;
+	vec2 sideX = px + vec2(pointDir.x, 0.0);
+	vec2 sideY = px + vec2(0.0, pointDir.y);
+	col = mix(col, mix(cornerFill(srcAt(sideX), srcAt(sideY)), c, inLozenge(point, px, stripC)), stripC.x);
+	//...and where a strip beside this pixel is let out into it
+	col = mix(col, srcAt(sideX), inLozenge(point, sideX, stripAt(sideX)));
+	col = mix(col, srcAt(sideY), inLozenge(point, sideY, stripAt(sideY)));
+
+	//an arc's pixels, and those beside it, drawn to its curve; where a
+	//black outline's arc and a plain coloured one both claim a pixel, the
+	//black band is in front: lines stacked a pixel apart share their widest
+	//points, where the bands cross. A layered coloured arc draws the black
+	//either side of it itself, from its one curve, so a black arc is not
+	//drawn where a layered one claims the pixel
+	vec4 arc = texture(uArcs, px / uSheetSize);
+	vec4 colourArc = texture(uColourArcs, px / uSheetSize);
+	float colourLayered = mod(floor(arcFlags(colourArc) / 4.0), 2.0) * arcDrawn(colourArc);
+	float blackBand = 0.0;
+	col = mix(col, arcColour(px, local, c, arc, col, blackBand), arcDrawn(arc) * (1.0 - colourLayered));
+	col = mix(col, colourArcColour(px, local, c, colourArc, col), arcDrawn(colourArc) * (1.0 - arcDrawn(arc) * blackBand));
 
 	//pass B base fill colour before slicing: c itself when it is a fill,
 	//else the closest (bilinear-weighted) fill colour of the 2x2 cell (c is
@@ -556,6 +952,15 @@ void main() {
 
 	//apply the pass B fill resolve only where pass A output is a fill:
 	col = mix(col, vec4(resolved.rgb, col.a), step(1.5, classOf(col)));
+
+	//a lozenge floats clear of a black line beneath or above it: its fill
+	//stops a texel short of that edge, as the graph flags it
+	float inset = texture(uGraph, px / uSheetSize).b;
+	float insetBelow = step(0.45, inset);
+	float insetAbove = step(0.2, inset - 0.5 * insetBelow);
+	float texel = fwidth(vUV.y * uSheetSize.y);
+	float atEdge = max(insetBelow * step(1.0 - texel, local.y), insetAbove * step(local.y, texel));
+	col = mix(col, arcBlack, atEdge * step(1.5, classOf(col)));
 
 	finalColor = col;
 }

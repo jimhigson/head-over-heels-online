@@ -8,16 +8,27 @@ import { entries, keys } from "../../utils/entries";
 import { AnimationTile } from "./AnimationTile";
 import { FontSpecimen } from "./FontSpecimen";
 import { PaletteSwatch } from "./PaletteSwatch";
+import { type PixelAspectName } from "./pixelAspectNames";
 import { SpritesheetImage } from "./SpritesheetImage";
 import { SpriteTile } from "./SpriteTile";
+import { usePixelAspectSheetStyle } from "./usePixelAspectSheetStyle";
 
-export type SpritesPageContentProps = { scale: number; spriteFilter: string };
+export type SpritesPageContentProps = {
+  scale: number;
+  spriteFilter: string;
+  pixelAspect: PixelAspectName;
+};
 
 export const SpritesPageContent = ({
   scale,
   spriteFilter,
+  pixelAspect,
 }: SpritesPageContentProps) => {
   const currentSpritesheetData = useCurrentSpritesheetData();
+  const { style: pixelAspectStyle, pixelAspectY } = usePixelAspectSheetStyle(
+    pixelAspect,
+    scale,
+  );
 
   const animationEntries = entries(
     currentSpritesheetData.animations as Record<
@@ -28,7 +39,7 @@ export const SpritesPageContent = ({
 
   const textureIds = keys(currentSpritesheetData.frames).sort();
   return (
-    <div class="e2e-snapshot-target">
+    <div class="e2e-snapshot-target" style={pixelAspectStyle}>
       <PaletteSwatch />
       <FontSpecimen scale={scale} />
       <SpritesheetImage spriteFilter={spriteFilter} />
@@ -63,6 +74,7 @@ export const SpritesPageContent = ({
               textureId={textureId}
               frame={frame as AppSpriteFrame}
               scale={scale}
+              pixelAspectY={pixelAspectY}
             />
           );
         })}

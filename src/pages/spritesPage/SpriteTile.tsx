@@ -24,9 +24,18 @@ export type SpriteTileProps = {
   textureId: BaseTextureId;
   frame: AppSpriteFrame;
   scale: number;
+  /**
+   * how much shorter than square the sprite's pixels are shown
+   */
+  pixelAspectY: number;
 };
 
-export const SpriteTile = ({ textureId, frame, scale }: SpriteTileProps) => {
+export const SpriteTile = ({
+  textureId,
+  frame,
+  scale,
+  pixelAspectY,
+}: SpriteTileProps) => {
   const uncolourised = useIsUncolourised();
 
   return (
@@ -59,7 +68,7 @@ export const SpriteTile = ({ textureId, frame, scale }: SpriteTileProps) => {
               width: `${pivotOutlineSizePx}px`,
               height: `${pivotOutlineSizePx}px`,
               left: `${frame.pivot.x * scale - pivotOutlineSizePx / 2}px`,
-              top: `${frame.pivot.y * scale - pivotOutlineSizePx / 2}px`,
+              top: `${frame.pivot.y * scale * pixelAspectY - pivotOutlineSizePx / 2}px`,
             }}
           />
         : null}

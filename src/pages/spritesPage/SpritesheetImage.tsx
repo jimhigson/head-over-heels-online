@@ -234,7 +234,8 @@ export const SpritesheetImage = ({
       ref={containerRef}
       class="relative w-full cursor-crosshair [background:repeating-conic-gradient(#ddd_0_25%,_#ccc_0_50%)_50%_/_20px_20px]"
       style={{
-        aspectRatio: "var(--spritesheetW) / var(--spritesheetH)",
+        aspectRatio:
+          "var(--spritesheetW) / (var(--spritesheetH) * var(--pixelAspectY, 1))",
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={() => setMousePos(null)}

@@ -3,6 +3,7 @@ import { useState } from "preact/hooks";
 import { CssVariables } from "../../game/components/CssVariables";
 import { typedURLSearchParams } from "../../options/queryParams";
 import { useUniversalKeys } from "../../store/storeFlow/useUniversalKeys";
+import { type PixelAspectName } from "./pixelAspectNames";
 import { SpritesPageContent } from "./SpritesPageContent";
 import { SpritesPageToolbar } from "./SpritesPageToolbar";
 
@@ -18,6 +19,7 @@ export const SpritesPage = () => {
     scaleParam ? Number(scaleParam) : defaultScale,
   );
   const [spriteFilter, setSpriteFilter] = useState("");
+  const [pixelAspect, setPixelAspect] = useState<PixelAspectName>("square");
 
   const handleScaleChange = (newScale: number) => {
     setScale(newScale);
@@ -34,8 +36,14 @@ export const SpritesPage = () => {
         onScaleChange={handleScaleChange}
         spriteFilter={spriteFilter}
         onSpriteFilterChange={setSpriteFilter}
+        pixelAspect={pixelAspect}
+        onPixelAspectChange={setPixelAspect}
       />
-      <SpritesPageContent scale={scale} spriteFilter={spriteFilter} />
+      <SpritesPageContent
+        scale={scale}
+        spriteFilter={spriteFilter}
+        pixelAspect={pixelAspect}
+      />
     </CssVariables>
   );
 };

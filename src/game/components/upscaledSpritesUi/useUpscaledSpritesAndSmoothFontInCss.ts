@@ -1,7 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 
-import blockstackSpritesheetArtUrl from "../../../../gfx/spritesBlockstack.webp";
-import toppySpritesheetArtUrl from "../../../../gfx/spritesToppy.webp";
+import { type SpritesheetName } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { errorCaught } from "../../../store/slices/errors/errorsSlice";
 import { useSpritesheetArtName } from "../../../store/slices/gameMenus/gameMenusSelectors";
@@ -10,6 +9,7 @@ import { createSerialisableErrors } from "../../../utils/redux/createSerialisabl
 import { selectSpritesheetUpscale } from "../../render/filters/upscale/selectSpritesheetUpscale";
 import { loadHudFont, uiFontFamilies } from "../../render/text/uiFont";
 import { importBakeUpscaledSpritesheetBlobOnce } from "./bakeUpscaledSpritesheetBlobForCss.import";
+import { spritesheetArtUrls } from "./spritesheetArtUrls";
 
 /**
  * css property (on :root) that switches all ui text between the base and
@@ -22,9 +22,9 @@ const uiFontProperty = "--ui-font";
  * classes' fallback chains
  */
 const upscaledSheetProperties = {
-  blockStack: "--upscaled-spritesheet-art-blockstack",
+  blockstack: "--upscaled-spritesheet-art-blockstack",
   toppy: "--upscaled-spritesheet-art-toppy",
-};
+} as const satisfies Partial<Record<SpritesheetName, string>>;
 
 type UpscaledSheet = { factor: number; objectUrl: string };
 const upscaledSheets = new Map<
@@ -41,7 +41,11 @@ const applySheet = async (
   if (existing?.factor !== factor) {
     const { bakeUpscaledSpritesheetBlobForCss: bakeUpscaledSpritesheetBlob } =
       await importBakeUpscaledSpritesheetBlobOnce();
-    const blob = await bakeUpscaledSpritesheetBlob(sourceUrl, factor);
+    const { blob } = await bakeUpscaledSpritesheetBlob(
+      sourceUrl,
+      { x: factor, y: factor },
+      sheet,
+    );
     if (existing !== undefined) {
       URL.revokeObjectURL(existing.objectUrl);
     }
@@ -120,8 +124,8 @@ export const useUpscaledSpritesAndSmoothFontInCss = (): void => {
           // the utility layer this class sits in overrides that base rule
           document.body.classList.add("antialiased");
           await applySheet(
-            "blockStack",
-            blockstackSpritesheetArtUrl,
+            "blockstack",
+            spritesheetArtUrls.blockstack,
             spritesheetUpscale,
           );
           if (cancelled) {
@@ -130,7 +134,7 @@ export const useUpscaledSpritesAndSmoothFontInCss = (): void => {
           if (spritesheetArtName === "toppy") {
             await applySheet(
               "toppy",
-              toppySpritesheetArtUrl,
+              spritesheetArtUrls.toppy,
               spritesheetUpscale,
             );
           }
