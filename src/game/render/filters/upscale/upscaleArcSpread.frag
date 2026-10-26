@@ -33,9 +33,10 @@ uniform sampler2D uTexture;
 // the arcs' black pixels, from upscaleArcs.frag
 uniform sampler2D uArcPixels;
 
-// each arc's ellipse, at its anchor
+// each arc's curve, at its anchor
 uniform sampler2D uArcCentres;
 uniform sampler2D uArcAxes;
+uniform sampler2D uArcExponents;
 
 // the size of the source sheet in (1x) texels
 uniform vec2 uSheetSize;
@@ -69,14 +70,18 @@ vec2 unpackWords(vec4 texel){
 }
 
 // the signed distance (out from the centre positive) from the centre of the
-// pixel at p to the ellipse of the arc anchored at anchor
+// pixel at p to the curve |x/a|^n + |y/b|^n = 1 of the arc anchored at anchor
 float distanceFromArc(ivec2 p, ivec2 anchor){
 	vec2 uv = (vec2(anchor) + 0.5) / uSheetSize;
 	vec2 centre = vec2(anchor) + unpackWords(texture(uArcCentres, uv)) - 128.0;
 	vec2 axes = unpackWords(texture(uArcAxes, uv));
+	float exponent = unpackWords(texture(uArcExponents, uv)).x;
 	vec2 fromCentre = vec2(p) - centre;
-	vec2 scaled = fromCentre / (axes * axes);
-	return (dot(fromCentre, scaled) - 1.0) / length(2.0 * scaled);
+	vec2 scaled = abs(fromCentre) / axes;
+	// |u|^(n - 1), zero on an axis: pow cannot be trusted with a zero base
+	vec2 powered = pow(max(scaled, 1e-30), vec2(exponent - 1.0)) * step(1e-6, scaled);
+	vec2 gradient = exponent * powered / axes;
+	return (dot(scaled, powered) - 1.0) / length(gradient);
 }
 
 int unpackByte(float channel){
@@ -109,6 +114,50 @@ vec4 arcData(ivec2 anchor, ivec2 p, int flags){
 
 ivec2 anchorOf(ivec2 q, vec4 arc){
 	return q + ivec2(unpackByte(arc.r), unpackByte(arc.g)) - 128;
+}
+
+// whether two anchors' arcs draw the one curve, as the two halves of a
+// closed ring do: the same centre, semi-axes and exponent
+bool sameCurve(ivec2 a, ivec2 b){
+	if (a == b) return true;
+	vec2 ua = (vec2(a) + 0.5) / uSheetSize;
+	vec2 ub = (vec2(b) + 0.5) / uSheetSize;
+	vec2 centreA = vec2(a) + unpackWords(texture(uArcCentres, ua));
+	vec2 centreB = vec2(b) + unpackWords(texture(uArcCentres, ub));
+	vec2 axesA = unpackWords(texture(uArcAxes, ua));
+	vec2 axesB = unpackWords(texture(uArcAxes, ub));
+	float exponentA = unpackWords(texture(uArcExponents, ua)).x;
+	float exponentB = unpackWords(texture(uArcExponents, ub)).x;
+	const float slack = 1.0 / 128.0;
+	return all(lessThanEqual(abs(centreA - centreB), vec2(slack))) && all(lessThanEqual(abs(axesA - axesB), vec2(slack))) && abs(exponentA - exponentB) <= slack;
+}
+
+// the arc pixel drawn to its curve at q, if there is one, as its anchor
+bool drawnArcAt(ivec2 q, out ivec2 anchor){
+	anchor = ivec2(0);
+	if (!isLine(q)) return false;
+	vec4 arc = arcPixelAt(q);
+	if (arc.a == 0.0 || !isDrawn(unpackByte(arc.b))) return false;
+	anchor = anchorOf(q, arc);
+	return true;
+}
+
+// whether p is the inside corner of a diagonal step in an arc: it touches
+// one of the arc's drawn pixels beside it and one above or below, which
+// touch each other only corner to corner, so the curve runs through p
+bool insideCorner(ivec2 p, out ivec2 anchor){
+	for (int i = 0; i < 2; i++){
+		for (int j = 2; j < 4; j++){
+			ivec2 besideAnchor;
+			ivec2 aboveAnchor;
+			if (drawnArcAt(p + around[i], besideAnchor) && drawnArcAt(p + around[j], aboveAnchor) && sameCurve(besideAnchor, aboveAnchor)){
+				anchor = besideAnchor;
+				return true;
+			}
+		}
+	}
+	anchor = ivec2(0);
+	return false;
 }
 
 void main(){
@@ -160,13 +209,19 @@ void main(){
 	bool found = false;
 	bool drawn = false;
 	ivec2 anchor = ivec2(0);
+	// the curve passes through an inside corner whatever else the pixel
+	// touches, and the band is all it paints there
+	if (insideCorner(p, anchor)){
+		finalColor = arcData(anchor, p, 3 | 8);
+		return;
+	}
 	for (int i = 0; i < 8; i++){
 		ivec2 q = p + around[i];
 		if (!isLine(q)) continue;
 		vec4 arc = arcPixelAt(q);
 		if (arc.a == 0.0) continue;
 		ivec2 qAnchor = anchorOf(q, arc);
-		if (found && qAnchor != anchor) return;
+		if (found && !sameCurve(qAnchor, anchor)) return;
 		found = true;
 		anchor = qAnchor;
 		drawn = drawn || isDrawn(unpackByte(arc.b));

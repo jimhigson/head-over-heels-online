@@ -30,7 +30,15 @@ precision highp float;
  *   g, b, a: one 24-bit number, low byte first: the side's horizontal runs
  *      | its single pixels << 2 | its vertical runs << 5, then the runs'
  *      lengths less one, three bits each from bit 7: the horizontal runs
- *      from the peak out, then the vertical ones from bit 16
+ *      from the peak out, then the vertical ones from bit 16; bit 22 set
+ *      where the sides end at the ellipse's widest points and the curve
+ *      was taken from them, bit 23 where
+ *      the ring closes: the outline runs on from both widest points to
+ *      the ends of the peak's mirror run across the ellipse
+ *
+ * A run that is the far end of a ring closing on its other side is that
+ * ring's, not the peak of whatever lies beyond it, so is passed over as a
+ * peak facing that way unless a ring closes on that side too.
  */
 
 #include "fragFns/upscaleArcCommon.glsl"
@@ -47,6 +55,8 @@ struct Side {
 	int count;
 	int followingType;
 	int followingLength;
+	// where each item's far end lies, in the frame
+	ivec2 farEnds[maxSideItems];
 };
 
 // the run the edge goes on into from start, toward the frame's vertical
@@ -76,6 +86,7 @@ Side measureSide(ivec2 origin, int frame){
 	for (int i = 0; i < maxSideItems; i++){
 		side.types[i] = 0;
 		side.lengths[i] = 0;
+		side.farEnds[i] = ivec2(0);
 	}
 	ivec2 cur = ivec2(0);
 	int hRuns = 0;
@@ -98,6 +109,7 @@ Side measureSide(ivec2 origin, int frame){
 		if (kind == itemVertical) vRuns++;
 		side.types[side.count] = kind;
 		side.lengths[side.count] = len;
+		side.farEnds[side.count] = farEnd;
 		side.count++;
 		cur = farEnd;
 	}
@@ -176,9 +188,117 @@ bool turnsAsArc(Side side, int items){
 	return !(nextType == side.types[last] && nextLength == side.lengths[last]);
 }
 
+// whether another outline runs parallel to the peak two rows beyond it, over
+// the peak's whole length, with a row of the outside between: the peak is
+// the inner of two concentric rings, and the outer, where it touches the
+// peak's ends corner to corner, is not this outline carrying on
+bool ringBeyond(ivec2 origin, int quarter, int peakLength){
+	for (int i = 0; i < maxPeakLength; i++){
+		if (i >= peakLength) break;
+		ivec2 v = ivec2(i, 0);
+		if (!isOutside(origin + toSheet(v + ivec2(0, -1), quarter))) return false;
+		if (!isLine(origin + toSheet(v + ivec2(0, -2), quarter))) return false;
+	}
+	return true;
+}
+
+// whether the side, cut to its first items, ends at the ellipse's widest
+// point: its last item runs along the axis there, with the outline not
+// running on down the axis further out beyond it, or is the single pixel
+// the outline turns back in from, toward the far peak
+bool reachesExtreme(ivec2 origin, int frame, Side side, int items){
+	int last = items - 1;
+	if (side.types[last] == itemVertical){
+		// a run cut at the measuring limit may run on unmeasured
+		if (onEdge(origin, frame, side.farEnds[last] + ivec2(0, 1))) return false;
+		int nextType = items < side.count ? side.types[min(items, maxSideItems - 1)] : side.followingType;
+		return nextType != itemVertical;
+	}
+	if (side.types[last] != itemSingle) return false;
+	ivec2 end = side.farEnds[last];
+	bool turnsBack = onEdge(origin, frame, end + ivec2(1, 1)) && !onEdge(origin, frame, end + ivec2(0, 1)) && !onEdge(origin, frame, end + ivec2(-1, 1));
+	return turnsBack;
+}
+
+// the pixel the side's last item ends at, in the sheet
+ivec2 sideEnd(ivec2 origin, int frame, Side side, int items){
+	return origin + toSheet(side.farEnds[items - 1], frame);
+}
+
+// the middle of the side's last item, in the sheet: the same whichever
+// end of the ring the item is measured from
+vec2 sideMiddle(ivec2 origin, int frame, Side side, int items){
+	int last = items - 1;
+	ivec2 farEnd = side.farEnds[last];
+	ivec2 start = side.types[last] == itemVertical ? farEnd - ivec2(0, side.lengths[last] - 1) : farEnd;
+	return vec2(origin) + toSheetF(vec2(start + farEnd) * 0.5, frame);
+}
+
+// the furthest the outline is walked on from a widest point to find the
+// ring's far run
+const int maxWalk = 64;
+
+// whether the run of peakLength at row y of the frame, with the outside
+// beyond it, is bounded: the peak's mirror run across the ellipse
+bool mirrorRunAt(ivec2 origin, int quarter, int peakLength, int y){
+	for (int i = 0; i < maxPeakLength; i++){
+		if (i >= peakLength) break;
+		ivec2 v = ivec2(i, y);
+		if (!isLine(origin + toSheet(v, quarter)) || !isOutside(origin + toSheet(v + ivec2(0, 1), quarter))) return false;
+	}
+	return !isLine(origin + toSheet(ivec2(-1, y), quarter)) && !isLine(origin + toSheet(ivec2(peakLength, y), quarter));
+}
+
+// whether the ring the peak tops closes: walked on from the left widest
+// point, the outline reaches the end of the peak's mirror run across the
+// ring, and that run's own sides, measured as a peak's facing the other
+// way, end at the same two widest points. Walking on turns back toward
+// the far run, which is toward the horizontal end in the frame across
+// from this one
+bool ringCloses(ivec2 origin, int quarter, int peakLength, Side left, Side right){
+	int across = (quarter + 2) & 3;
+	ivec2 rightOrigin = origin + toSheet(ivec2(peakLength - 1, 0), quarter);
+	ivec2 leftExtreme = sideEnd(origin, quarter, left, left.count);
+	int bottom = -1;
+	ivec2 v = ivec2(0);
+	for (int step = 0; step < maxWalk; step++){
+		ivec2 at = toFrame(leftExtreme + toSheet(v, across + 4) - origin, quarter);
+		if (at.x == 0 && at.y >= 2 && mirrorRunAt(origin, quarter, peakLength, at.y)){
+			bottom = at.y;
+			break;
+		}
+		ivec2 next;
+		if (towardHorizontalEnd(leftExtreme, across + 4, v, next) == moveNone) return false;
+		v = next;
+	}
+	if (bottom < 0) return false;
+	// the mirror run's left end, in the frame across, is this frame's right
+	ivec2 farLeft = origin + toSheet(ivec2(peakLength - 1, bottom), quarter);
+	ivec2 farRight = origin + toSheet(ivec2(0, bottom), quarter);
+	Side farLeftSide = measureSide(farLeft, across);
+	Side farRightSide = measureSide(farRight, across + 4);
+	if (farLeftSide.count == 0 || farRightSide.count == 0) return false;
+	if (!reachesExtreme(farLeft, across, farLeftSide, farLeftSide.count) || !reachesExtreme(farRight, across + 4, farRightSide, farRightSide.count)) return false;
+	return sideMiddle(farLeft, across, farLeftSide, farLeftSide.count) == sideMiddle(rightOrigin, quarter + 4, right, right.count)
+		&& sideMiddle(farRight, across + 4, farRightSide, farRightSide.count) == sideMiddle(origin, quarter, left, left.count);
+}
+
+// whether the ring a run tops, read from its left end in the frame with
+// sides measured from both ends, closes: both sides must reach the
+// widest points first
+bool ringClosesFrom(ivec2 origin, int frame, int peakLength){
+	ivec2 rightOrigin = origin + toSheet(ivec2(peakLength - 1, 0), frame);
+	Side left = measureSide(origin, frame);
+	Side right = measureSide(rightOrigin, frame + 4);
+	if (left.count == 0 || right.count == 0) return false;
+	if (!reachesExtreme(origin, frame, left, left.count) || !reachesExtreme(rightOrigin, frame + 4, right, right.count)) return false;
+	return ringCloses(origin, frame, peakLength, left, right);
+}
+
 PeakArc peakArcOf(int peakLength, Side side, int items){
 	PeakArc arc;
 	arc.peakLength = peakLength;
+	arc.atExtreme = false;
 	arc.hCount = 0;
 	arc.singles = 0;
 	arc.vCount = 0;
@@ -219,8 +339,9 @@ void main(){
 			peakLength++;
 		}
 		if (peakLength < 2) continue;
-		// ...and its right end must fall away down-right, mirroring the left
-		if (towardHorizontalEnd(p, quarter, rightEnd, ignored) != moveNone) continue;
+		// ...and its right end must fall away down-right, mirroring the left,
+		// with nothing carrying on from it - bar a concentric ring beyond
+		if (towardHorizontalEnd(p, quarter, rightEnd, ignored) != moveNone && !ringBeyond(p, quarter, peakLength)) continue;
 		ivec2 rightOrigin = p + toSheet(rightEnd, quarter);
 		if (towardVerticalEnd(rightOrigin, quarter + 4, ivec2(0), ignored) != moveDiagonal) continue;
 
@@ -230,6 +351,11 @@ void main(){
 		// peak's length; a far longer peak is a straight edge with its
 		// corners cut, not an arc's extreme
 		if (left.count == 0 || peakLength > 4 * left.lengths[0] + 1) continue;
+		bool closes = right.count > 0
+			&& reachesExtreme(p, quarter, left, left.count) && reachesExtreme(rightOrigin, quarter + 4, right, right.count)
+			&& ringCloses(p, quarter, peakLength, left, right);
+		// the far end of a ring closing on the other side of the run
+		if (!closes && ringClosesFrom(rightOrigin, (quarter + 2) & 3, peakLength)) continue;
 		int alike = min(usableItems(left, peakLength), usableItems(right, peakLength));
 		for (int i = 0; i < maxSideItems; i++){
 			if (i >= alike) break;
@@ -243,10 +369,15 @@ void main(){
 			if (items > alike) continue;
 			if (items == 1 ? !crown : !turnsAsArc(left, items) || !turnsAsArc(right, items)) continue;
 			PeakArc arc = peakArcOf(peakLength, left, items);
+			arc.atExtreme = reachesExtreme(p, quarter, left, items) && reachesExtreme(rightOrigin, quarter + 4, right, items);
 			vec2 centre;
 			vec2 axes;
-			if (!fitPeak(arc, centre, axes)) continue;
-			int bits = arc.hCount | (arc.singles << 2) | (arc.vCount << 5);
+			float exponent;
+			bool fromExtremes;
+			if (!fitPeak(arc, centre, axes, exponent, fromExtremes)) continue;
+			// bit 22 only where the fit took the curve from the widest points:
+			// the record is refitted from it, and drawn out to them
+			int bits = arc.hCount | (arc.singles << 2) | (arc.vCount << 5) | (fromExtremes ? 1 << 22 : 0) | (fromExtremes && closes ? 1 << 23 : 0);
 			for (int j = 0; j < maxSideHRuns; j++) bits |= (arc.hRuns[j] - 1) << (7 + 3 * j);
 			for (int j = 0; j < maxSideVRuns; j++) bits |= (arc.vRuns[j] - 1) << (16 + 3 * j);
 			finalColor = vec4(

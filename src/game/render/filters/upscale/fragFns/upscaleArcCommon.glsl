@@ -46,6 +46,14 @@ const float maxPeakStray = 0.5;
 // the most its sides' run centres may stray: a little more than another
 // arc's, since its sides must also mirror each other run for run
 const float maxPeakSideStray = 0.3;
+// the exponent of the curve |x/a|^n + |y/b|^n = 1 an arc is drawn to: 2 is
+// an ellipse, and down toward 1 a lozenge with its corners rounded, which
+// is how flat isometric ellipses are drawn
+const float ellipseExponent = 2.0;
+// kept above 1, where the curve's corners would have no gradient
+const float minExponent = 1.0 + 1.0 / 64.0;
+// the bisection steps the exponent is found to: 2^-8 of its range
+const int exponentSteps = 8;
 // the largest semi-axis an arc's ellipse may have, in pixels
 const float maxRadius = 32.0;
 // the fewest points (run centres and middle pixels) an ellipse is fitted
@@ -212,31 +220,67 @@ bool fitEllipse(vec2 points[maxFitPoints], int count, vec2 origin, out vec2 cent
 	return true;
 }
 
-// whether the ellipse is small enough, and every point from the first on
+// |u|^(n - 1) for each component, as the curve's level and gradient need:
+// zero on an axis, where a component is zero, since n is above 1 - which
+// pow cannot be trusted to give for a zero base
+vec2 poweredLess(vec2 scaled, float exponent){
+	return pow(max(scaled, 1e-30), vec2(exponent - 1.0)) * step(1e-6, scaled);
+}
+
+// the level of a point from the centre of the curve |x/a|^n + |y/b|^n = 1
+// (zero on it, negative within) and the curve's gradient there, so that
+// level over the gradient's length is the point's distance from the curve
+float curveLevel(vec2 fromCentre, vec2 axes, float exponent, out vec2 gradient){
+	vec2 scaled = abs(fromCentre) / axes;
+	vec2 powered = poweredLess(scaled, exponent);
+	gradient = exponent * powered * sign(fromCentre) / axes;
+	return dot(scaled, powered) - 1.0;
+}
+
+// whether the curve is small enough, and every point from the first on
 // lies within stray of it - the point at index extreme, if any, being an
 // extreme allowed to stray further
-bool keepsNear(vec2 points[maxFitPoints], int count, int first, int extreme, float stray, vec2 centre, vec2 axes){
+bool keepsNear(vec2 points[maxFitPoints], int count, int first, int extreme, float stray, vec2 centre, vec2 axes, float exponent){
 	if (axes.x > maxRadius || axes.y > maxRadius) return false;
 	for (int i = 0; i < maxFitPoints; i++){
 		if (i >= count) break;
 		if (i < first) continue;
-		vec2 fromCentre = points[i] - centre;
-		vec2 scaled = fromCentre / (axes * axes);
-		float level = dot(fromCentre, scaled) - 1.0;
-		if (abs(level) / length(2.0 * scaled) > (i == extreme ? maxPeakStray : stray)) return false;
+		vec2 gradient;
+		float level = curveLevel(points[i] - centre, axes, exponent, gradient);
+		if (abs(level) / length(gradient) > (i == extreme ? maxPeakStray : stray)) return false;
 	}
 	return true;
 }
 
+// the exponent of the curve about the given centre and semi-axes that the
+// points lie nearest: found by bisection, as their mean level only falls
+// as the exponent rises
+float fitExponent(vec2 points[maxFitPoints], int count, vec2 centre, vec2 axes){
+	float low = minExponent;
+	float high = ellipseExponent;
+	for (int step = 0; step < exponentSteps; step++){
+		float middle = 0.5 * (low + high);
+		float meanLevel = 0.0;
+		for (int i = 0; i < maxFitPoints; i++){
+			if (i >= count) break;
+			vec2 scaled = max(abs(points[i] - centre) / axes, 1e-4);
+			meanLevel += pow(scaled.x, middle) + pow(scaled.y, middle) - 1.0;
+		}
+		if (meanLevel > 0.0) low = middle; else high = middle;
+	}
+	return 0.5 * (low + high);
+}
+
 // The ellipse through an arc's points - its middle's pixels and its runs'
 // centres, its last runs clipped to the arc, in its frame from its anchor -
-// as its centre and semi-axes. An arc of few points has a circle fitted
-// instead, with its centre on the middle's perpendicular, which only a
-// symmetric arc can have. False where no fit keeps every run centre near
+// as its centre, semi-axes and exponent. An arc of few points has a circle
+// fitted instead, with its centre on the middle's perpendicular, which only
+// a symmetric arc can have. False where no fit keeps every run centre near
 // enough.
-bool fitArc(ArcRuns measured, out vec2 centre, out vec2 axes){
+bool fitArc(ArcRuns measured, out vec2 centre, out vec2 axes, out float exponent){
 	centre = vec2(0.0);
 	axes = vec2(0.0);
+	exponent = ellipseExponent;
 	ArcRuns arc = clippedToArc(measured);
 	vec2 points[maxFitPoints];
 	int count = 0;
@@ -266,7 +310,7 @@ bool fitArc(ArcRuns measured, out vec2 centre, out vec2 axes){
 
 	if (count >= minEllipsePoints){
 		if (!fitEllipse(points, count, middle + vec2(4.0), centre, axes)) return false;
-		return keepsNear(points, count, 0, -1, maxStray, centre, axes);
+		return keepsNear(points, count, 0, -1, maxStray, centre, axes, exponent);
 	}
 	if (!isSymmetric(arc)) return false;
 	vec2 perpendicular = vec2(0.70710678);
@@ -283,7 +327,7 @@ bool fitArc(ArcRuns measured, out vec2 centre, out vec2 axes){
 	float radius = sumSquares / sumAlong;
 	centre = middle + perpendicular * radius;
 	axes = vec2(radius);
-	return keepsNear(points, count, firstRunPoint, -1, maxStray, centre, axes);
+	return keepsNear(points, count, firstRunPoint, -1, maxStray, centre, axes, exponent);
 }
 
 // the arc an anchor texel (from upscaleArcAnchors.frag) describes, and its
@@ -316,6 +360,10 @@ struct PeakArc {
 	int singles;
 	int vRuns[maxSideVRuns];
 	int vCount;
+	// whether the sides end at the curve's widest points - the outline
+	// turns back in there, or runs along the axis - and the curve was taken
+	// from them
+	bool atExtreme;
 };
 
 // the side's last vertical run, as much of it as is the arc's: as for an
@@ -360,11 +408,17 @@ int peakSidePoints(PeakArc arc, out vec2 points[maxSideItems]){
 	return count;
 }
 
-// the ellipse through an over-the-top arc's peak centre and both sides'
-// run centres, in its frame from its anchor; false where it strays
-bool fitPeak(PeakArc measured, out vec2 centre, out vec2 axes){
+// the curve through an over-the-top arc's peak centre and both sides' run
+// centres, in its frame from its anchor, as its centre, semi-axes and
+// exponent; false where it strays. Sides that reach the widest point give
+// the centre and semi-axes outright: the peak and that point are the two
+// extremes, and only the exponent is fitted between them. Elsewhere the
+// curve is an ellipse
+bool fitPeak(PeakArc measured, out vec2 centre, out vec2 axes, out float exponent, out bool fromExtremes){
 	centre = vec2(0.0);
 	axes = vec2(0.0);
+	exponent = ellipseExponent;
+	fromExtremes = false;
 	PeakArc arc = peakClippedToArc(measured);
 	vec2 side[maxSideItems];
 	int sideCount = peakSidePoints(arc, side);
@@ -377,6 +431,28 @@ bool fitPeak(PeakArc measured, out vec2 centre, out vec2 axes){
 		points[count] = side[i];
 		points[count + 1] = vec2(2.0 * peakMiddle - side[i].x, side[i].y);
 		count += 2;
+	}
+	if (arc.atExtreme && sideCount > 0){
+		// the widest point is the middle of the side's whole last item,
+		// unclipped: the run along the axis there is the curve's own
+		vec2 unclipped[maxSideItems];
+		int unclippedCount = peakSidePoints(measured, unclipped);
+		vec2 extreme = unclipped[unclippedCount - 1];
+		centre = vec2(peakMiddle, extreme.y);
+		axes = vec2(peakMiddle - extreme.x, extreme.y);
+		if (axes.x > 0.0 && axes.y > 0.0){
+			exponent = fitExponent(points, count, centre, axes);
+			// a run along the axis there can only be as long as the curve
+			// stays within half a pixel of its widest point; a longer one
+			// is a straight side the arc runs on into, not the curve's own
+			float tangentRun = 2.0 * axes.y * pow(1.0 - pow(1.0 - 0.5 / axes.x, exponent), 1.0 / exponent) + 1.0;
+			float lastRun = measured.vCount > 0 ? float(measured.vRuns[measured.vCount - 1]) : 1.0;
+			if (lastRun <= tangentRun && keepsNear(points, count, 0, 0, maxPeakSideStray, centre, axes, exponent)){
+				fromExtremes = true;
+				return true;
+			}
+			exponent = ellipseExponent;
+		}
 	}
 	if (count < minEllipsePoints){
 		// a crown - the peak and one run each side - takes the circle
@@ -391,7 +467,7 @@ bool fitPeak(PeakArc measured, out vec2 centre, out vec2 axes){
 		return radius <= maxRadius;
 	}
 	if (!fitEllipse(points, count, vec2(peakMiddle, 3.0), centre, axes)) return false;
-	return keepsNear(points, count, 0, 0, maxPeakSideStray, centre, axes);
+	return keepsNear(points, count, 0, 0, maxPeakSideStray, centre, axes, exponent);
 }
 
 // the over-the-top arc a peaks texel (from upscaleArcPeaks.frag) describes,
@@ -406,6 +482,7 @@ bool decodePeak(vec4 texel, out PeakArc arc, out int quarter){
 	arc.vCount = (bits >> 5) & 3;
 	for (int j = 0; j < maxSideHRuns; j++) arc.hRuns[j] = ((bits >> (7 + 3 * j)) & 7) + 1;
 	for (int j = 0; j < maxSideVRuns; j++) arc.vRuns[j] = ((bits >> (16 + 3 * j)) & 7) + 1;
+	arc.atExtreme = ((bits >> 22) & 1) == 1;
 	return head >= 128;
 }
 
@@ -413,17 +490,4 @@ bool decodePeak(vec4 texel, out PeakArc arc, out int quarter){
 vec2 unpackWords(vec4 texel){
 	vec4 bytes = floor(texel * 255.0 + 0.5);
 	return (bytes.xz * 256.0 + bytes.yw) / 256.0;
-}
-
-// where the centre of the pixel at p is from the ellipse of the arc anchored
-// at anchor (from upscaleArcEllipse.frag's textures): x its signed distance,
-// out from the centre positive, and yz the direction out across the curve
-vec3 arcDistanceAt(ivec2 p, ivec2 anchor, sampler2D centres, sampler2D axesAt){
-	vec2 uv = (vec2(anchor) + 0.5) / uSheetSize;
-	vec2 centre = vec2(anchor) + unpackWords(texture(centres, uv)) - 128.0;
-	vec2 axes = unpackWords(texture(axesAt, uv));
-	vec2 fromCentre = vec2(p) - centre;
-	vec2 scaled = fromCentre / (axes * axes);
-	vec2 gradient = 2.0 * scaled;
-	return vec3((dot(fromCentre, scaled) - 1.0) / length(gradient), normalize(gradient));
 }

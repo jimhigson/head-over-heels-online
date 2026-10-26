@@ -102,12 +102,31 @@ bool isRing(ivec2 anchor, int quarter){
 	return false;
 }
 
+// whether black lies either side of the arc across its widest points, as
+// along its peak: a rim's black layers run alongside its colour all round,
+// whereas rings stacked one below another - a disc's top edge, its face,
+// its bottom edge - share a width and part at the sides. True where the
+// arc's sides do not reach the widest points, which then cannot tell
+bool blackAcrossExtremes(ivec2 anchor, int quarter, PeakArc arc){
+	if (!arc.atExtreme) return true;
+	vec2 side[maxSideItems];
+	int sideCount = peakSidePoints(arc, side);
+	if (sideCount == 0) return true;
+	vec2 extreme = side[sideCount - 1];
+	float peakMiddle = float(arc.peakLength - 1) * 0.5;
+	ivec2 across = toSheet(ivec2(1, 0), quarter);
+	ivec2 left = anchor + ivec2(round(toSheetF(extreme, quarter)));
+	ivec2 right = anchor + ivec2(round(toSheetF(vec2(2.0 * peakMiddle - extreme.x, extreme.y), quarter)));
+	return isBlack(left - across) && isBlack(left + across) && isBlack(right - across) && isBlack(right + across);
+}
+
 // 4 where the over-the-top arc anchored at anchor is layered - a coloured
-// line with black either side of it along its peak run, as a rim between
-// two black outlines is - and half of a ring, so its layers are rings of
-// their own; else 0. Only the peak decides it: a line that merely touches
-// black along its sides, as the fill inside an outline does where the
-// lines of a pattern meet it, is not layered
+// line with black either side of it along its peak run and across its
+// widest points, as a rim between two black outlines is - and half of a
+// ring, so its layers are rings of their own; else 0. Only the peak and
+// the widest points decide it: a line that merely touches black along its
+// sides, as the fill inside an outline does where the lines of a pattern
+// meet it, is not layered
 int layering(ivec2 anchor, int quarter, bool isPeak){
 	if (uLineClass != lineColour || !isPeak) return 0;
 	PeakArc arc;
@@ -120,6 +139,7 @@ int layering(ivec2 anchor, int quarter, bool isPeak){
 		ivec2 q = anchor + along * i;
 		if (!isBlack(q + inward) || !isBlack(q - inward)) return 0;
 	}
+	if (!blackAcrossExtremes(anchor, quarter, arc)) return 0;
 	return isRing(anchor, quarter) ? 4 : 0;
 }
 
@@ -178,7 +198,9 @@ bool arcFromAnchor(ivec2 p, int quarter, ivec2 v, out vec4 arcData){
 }
 
 // how a pixel at rel from an over-the-top arc's anchor (in the arc's frame)
-// belongs to its arc
+// belongs to its arc. Sides that end at the ellipse's widest points are
+// drawn to it whole, last item and all: the curve runs through the widest
+// point, and on a ring the far half's sides end there too
 int peakMembership(ivec2 rel, PeakArc measured){
 	PeakArc arc = peakClippedToArc(measured);
 	if (rel.y == 0 && rel.x >= 0 && rel.x < arc.peakLength) return drawnToCircle;
@@ -201,15 +223,16 @@ int peakMembership(ivec2 rel, PeakArc measured){
 	for (int j = 0; j < maxSideSingles; j++){
 		if (j >= arc.singles) break;
 		leftEnd += ivec2(-1, 1);
-		if (q == leftEnd) return index < last ? drawnToCircle : onArc;
+		if (q == leftEnd) return index < last || measured.atExtreme ? drawnToCircle : onArc;
 		index++;
 	}
 	for (int j = 0; j < maxSideVRuns; j++){
 		if (j >= arc.vCount) break;
-		int len = arc.vRuns[j];
+		// the run at the widest point is the curve's own, however long
+		int len = index == last && measured.atExtreme ? measured.vRuns[j] : arc.vRuns[j];
 		ivec2 top = leftEnd + ivec2(-1, 1);
 		if (q.x == top.x && q.y >= top.y && q.y < top.y + len){
-			return index < last ? drawnToCircle : endRunMembership(q.y - top.y, len, measured.vRuns[j]);
+			return index < last || measured.atExtreme ? drawnToCircle : endRunMembership(q.y - top.y, len, measured.vRuns[j]);
 		}
 		leftEnd = top + ivec2(0, len - 1);
 		index++;

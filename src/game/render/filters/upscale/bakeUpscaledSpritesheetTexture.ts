@@ -202,10 +202,10 @@ export const bakeUpscaledSpritesheetTexture = (
     standIn,
   );
 
-  // the arcs in the outlines, and which pixels are drawn to their ellipses:
+  // the arcs in the outlines, and which pixels are drawn to their curves:
   // quarter arcs and over-the-top ones found at their anchors, then told to
   // the arcs' own pixels, then to the pixels beside them; and each arc's
-  // ellipse, kept at its anchor
+  // curve, kept at its anchor
   const findArcs = (
     /**
      * 0 for the black outlines most items have, 1 for the coloured ones of
@@ -248,7 +248,7 @@ export const bakeUpscaledSpritesheetTexture = (
       {},
       arcUniforms,
     );
-    const [centres, axes] = [0, 1].map((part) =>
+    const [centres, axes, exponents] = [0, 1, 2].map((part) =>
       arcPass(
         upscaleArcEllipseFrag,
         "upscaleArcEllipse",
@@ -256,7 +256,11 @@ export const bakeUpscaledSpritesheetTexture = (
         { ...arcUniforms, uPart: { type: "f32", value: part } },
       ),
     );
-    const ellipses = { uArcCentres: centres.source, uArcAxes: axes.source };
+    const ellipses = {
+      uArcCentres: centres.source,
+      uArcAxes: axes.source,
+      uArcExponents: exponents.source,
+    };
     const arcPixels = arcPass(
       upscaleArcsFrag,
       "upscaleArcs",
@@ -279,7 +283,7 @@ export const bakeUpscaledSpritesheetTexture = (
     }
     anchors.destroy(true);
     peaks.destroy(true);
-    return { pixels, centres, axes };
+    return { pixels, centres, axes, exponents };
   };
   const blackArcs = findArcs(0);
   const colourArcs = findArcs(1);
@@ -309,9 +313,11 @@ export const bakeUpscaledSpritesheetTexture = (
       uArcs: blackArcs.pixels.source,
       uArcCentres: blackArcs.centres.source,
       uArcAxes: blackArcs.axes.source,
+      uArcExponents: blackArcs.exponents.source,
       uColourArcs: colourArcs.pixels.source,
       uColourArcCentres: colourArcs.centres.source,
       uColourArcAxes: colourArcs.axes.source,
+      uColourArcExponents: colourArcs.exponents.source,
     },
     sheetSizeUniform,
     upscaled,

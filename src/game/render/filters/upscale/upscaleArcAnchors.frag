@@ -146,7 +146,8 @@ void main(){
 					if (!isSymmetric(arc) && min(hCount, vCount) < 2 && max(hCount, vCount) < 3) continue;
 					vec2 centre;
 					vec2 axes;
-					if (!fitArc(arc, centre, axes)) continue;
+					float exponent;
+					if (!fitArc(arc, centre, axes, exponent)) continue;
 					int lengths = packedLengths(arc);
 					finalColor = vec4(
 						packByte(float((middleLength - 1) | ((hCount - 1) << 2) | ((vCount - 1) << 4) | (quarter << 6))),
