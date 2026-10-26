@@ -1,5 +1,12 @@
 import { Texture, WebGLRenderer } from "pixi.js";
 
+import { makeSpritesheetData } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import {
+  spritesheetMetas,
+  type SpritesheetName,
+} from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { valuesIter } from "../../../utils/entries";
+import { type Xy } from "../../../utils/vectors/vectors";
 import { installAppTickerAsPixiShared } from "../../mainLoop/installAppTickerAsPixiShared";
 import { bakeUpscaledSpritesheetTexture } from "../../render/filters/upscale/bakeUpscaledSpritesheetTexture";
 
@@ -62,17 +69,34 @@ const extractedCanvasToPngBlob = (canvas: ExtractedCanvas): Promise<Blob> =>
       }, "image/png");
     });
 
+export type UpscaledSpritesheetBlob = {
+  /**
+   * a png of the upscaled sheet
+   */
+  blob: Blob;
+  /**
+   * the png's pixels per source pixel, each axis: the y asked for, realised
+   * to a whole number of pixels over the sheet's height
+   */
+  upscale: Xy;
+};
+
 /**
  * Upscale a spritesheet the same way as in-game, but for css sprites
- *
- * @returns a png blob of the upscaled image, `factor` times the source size
  */
 export const bakeUpscaledSpritesheetBlobForCss = async (
   /** url of the source image (eg the sprites webp asset) */
   imageUrl: string,
-  /** integer upscale factor, capped by what the hardware will hold */
-  factor: number,
-): Promise<Blob> => {
+  /**
+   * pixels per source pixel, each axis: x a whole number, capped by what the
+   * hardware will hold; y may be fractional, for non-square pixels
+   */
+  upscale: Xy,
+  /**
+   * the sheet the image is of, for where its frames lie
+   */
+  spritesheetArtName: SpritesheetName,
+): Promise<UpscaledSpritesheetBlob> => {
   const response = await fetch(imageUrl);
   if (!response.ok) {
     throw new Error(
@@ -102,15 +126,26 @@ export const bakeUpscaledSpritesheetBlobForCss = async (
     const baked = bakeUpscaledSpritesheetTexture(
       renderer,
       sourceTexture,
-      factor,
+      upscale,
+      valuesIter(
+        makeSpritesheetData(spritesheetMetas[spritesheetArtName]).frames,
+      ).map(({ frame }) => frame),
     );
     try {
       const extracted = renderer.extract.canvas(baked);
       const p3Canvas = asDisplayP3Canvas(extracted);
       // without p3, fall back to srgb: less saturated than the source, but still upscaled
-      return p3Canvas === undefined ?
+      const blob =
+        p3Canvas === undefined ?
           await extractedCanvasToPngBlob(extracted)
         : await p3Canvas.convertToBlob({ type: "image/png" });
+      return {
+        blob,
+        upscale: {
+          x: upscale.x,
+          y: baked.source.pixelHeight / sourceTexture.height,
+        },
+      };
     } finally {
       baked.destroy(true);
     }

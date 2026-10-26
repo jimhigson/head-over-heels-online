@@ -20,6 +20,9 @@ export type ZxSpectrumRoomColour = {
 export const zxSpectrumFrameRate = 25; // machine did 50.08 or 50.02 :-) interlaced frames, hoh was at 25fps
 export const originalGameFrameDuration = 1_000 / zxSpectrumFrameRate;
 
+// a PAL television drew the Spectrum's 7 MHz pixels this much wider than tall
+export const palPixelAspect = 59 / 56;
+
 export const resolutions = {
   // Amiga hires: in game, too many pixels, game doesn't fill enough of the screen
   // but, in the level editor is quite useful

@@ -161,13 +161,13 @@ export class Spritesheets {
             .frames,
         )
       );
-    const spritesheetToUpscale = repacked?.texture ?? rawTexture;
     const baseTexture =
-      spritesheetUpscale === 1 ? rawTexture : (
+      repacked === undefined ? rawTexture : (
         this.#bakeUpscaledSpritesheetTexture!(
           pixiRenderer,
-          spritesheetToUpscale,
-          spritesheetUpscale,
+          repacked.texture,
+          { x: spritesheetUpscale, y: spritesheetUpscale },
+          repacked.repackedCellRects.values(),
         )
       );
     destroySpritesheet(this.#originalSpritesheet);

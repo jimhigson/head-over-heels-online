@@ -280,5 +280,5 @@ void main(){
 		: previous.r < 0.625 ? tlBrConnects
 		: previous.r < 0.875 ? trBlConnects
 		: neitherConnects;
-	finalColor = vec4(settle(tl, state), previous.g, 0.0, 1.0);
+	finalColor = vec4(settle(tl, state), previous.g, previous.b, 1.0);
 }

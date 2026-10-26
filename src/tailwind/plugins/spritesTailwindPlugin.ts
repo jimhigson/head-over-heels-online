@@ -31,18 +31,20 @@ export const spritesTailwindPlugin = plugin(
 
     const spriteStyles = (type: "background" | "mask") => ({
       [`${type}Image`]: `var(--spritesheetArtUrl)`,
-      [`${type}Position`]: `calc(-1 * var(--x) * var(--totalScale) * 1px) calc(-1 * var(--y) * var(--totalScale) * var(--doubleHeight, 1) * 1px)`,
-      [`${type}Size`]: `calc(var(--spritesheetW) * var(--totalScale) * 1px) calc(var(--spritesheetH) * var(--totalScale) * var(--doubleHeight, 1) * 1px)`,
+      [`${type}Position`]: `calc(-1 * var(--x) * var(--totalScale) * 1px) calc(-1 * var(--y) * var(--totalScale) * var(--doubleHeight, 1) * var(--pixelAspectY, 1) * 1px)`,
+      [`${type}Size`]: `calc(var(--spritesheetW) * var(--totalScale) * 1px) calc(var(--spritesheetH) * var(--totalScale) * var(--doubleHeight, 1) * var(--pixelAspectY, 1) * 1px)`,
     });
 
     const utilities: CSSRuleObject = {
       // the crop vars (--x/--y/--w/--h) come from the runtime-generated
-      // sprite stylesheet (spriteCssText), adopted per selected spritesheet
+      // sprite stylesheet (spriteCssText), adopted per selected spritesheet.
+      // --pixelAspectY squashes the height to non-square pixels, for a
+      // sheet baked that way (see usePixelAspectSheetStyle)
       ".sprite": {
         "--totalScale": `calc(var(--scale, 1) * var(--sprite-scale, 1))`,
         display: "inline-block",
         width: `calc(var(--w) * var(--totalScale) * 1px)`,
-        height: `calc(var(--h) * var(--totalScale) * var(--doubleHeight, 1) * 1px)`,
+        height: `calc(var(--h) * var(--totalScale) * var(--doubleHeight, 1) * var(--pixelAspectY, 1) * 1px)`,
         imageRendering: "pixelated",
         // horizontally mirrored copies (copyFrom flipX) set --flip: -1; default
         // 1 is the identity for every other sprite

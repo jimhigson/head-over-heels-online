@@ -4,12 +4,14 @@ precision highp float;
 /*
  * Takes the anti-aliasing out of the 1x sheet before it is upscaled. The art
  * softens the inside corner of its outline with a darker shade: a fill pixel
- * tucked into a corner of the black outline, with the outside of the sprite
- * beyond the corner, and lighter shades of its own hue on its two open sides.
- * At 1x that shade reads as a rounder corner; the upscale rounds the corner
- * itself, so the shade only muddies it. Such a pixel takes the lighter of the
- * two shades beside it. A dark or greyish colour counts as a shade of
- * whatever hue it sits in, as pixel art often uses one.
+ * tucked into a corner of the black outline - black above and beside it,
+ * with the outside of the sprite beyond the corner, whether the outline
+ * turns there or steps on as a slope - and lighter shades of its own hue on
+ * its two open sides. At 1x that shade reads as a rounder corner; the
+ * upscale rounds the corner itself, so the shade only muddies it. Such a
+ * pixel takes the darker of the two shades beside it. A dark or greyish
+ * colour counts as a shade of whatever hue it sits in, as pixel art often
+ * uses one, and so may be lightened to a greyish shade too.
  *
  * The corner is matched in all eight orientations (four rotations, each
  * mirrored), and every match reads only the original pixels, so the result
@@ -36,8 +38,13 @@ const float hueTolerance = 30.0;
 // less its hue says
 const float fullChroma = 0.4;
 
+// the chroma at and below which a shade's hue says nothing at all: it sits
+// in any hue
+const float greyChroma = 0.1;
+
 // how saturated the lighter shades must be to have a hue at all: below this,
-// eg the whites and greys, they are shades of nothing
+// eg the whites and greys, they are shades of nothing - to a darker shade
+// with a hue of its own; a dark or greyish one sits in them as in any
 const float minSaturation = 0.2;
 
 vec4 srcAt(ivec2 p){
@@ -80,8 +87,10 @@ bool sameHue(vec4 own, vec4 col){
 	vec2 colHue = hueAndSaturation(col);
 	float apart = abs(ownHue.x - colHue.x);
 	apart = min(apart, 360.0 - apart);
+	if (chroma(own) <= greyChroma) return true;
 	float tolerance = hueTolerance * max(1.0, fullChroma / max(chroma(own), 1e-6));
-	return colHue.y >= minSaturation && apart <= tolerance;
+	bool colHasHue = colHue.y >= minSaturation || chroma(own) < fullChroma;
+	return colHasHue && apart <= tolerance;
 }
 
 // a lighter shade of own's hue
@@ -91,14 +100,13 @@ bool lighterShade(vec4 own, vec4 col){
 
 // the corner in one orientation: x and y are the directions, in the sheet,
 // of the kernel's right and down
-bool cornerMatches(ivec2 p, vec4 own, ivec2 x, ivec2 y, out vec4 lighter){
+bool cornerMatches(ivec2 p, vec4 own, ivec2 x, ivec2 y, out vec4 replacement){
 	vec4 right = srcAt(p + x);
 	vec4 below = srcAt(p + y);
-	lighter = luma(right) >= luma(below) ? right : below;
+	replacement = luma(right) <= luma(below) ? right : below;
 	return classOf(srcAt(p - x - y)) == 0
 		&& classOf(srcAt(p - y)) == 1
 		&& classOf(srcAt(p - x)) == 1
-		&& classOf(srcAt(p - x + y)) == 1
 		&& lighterShade(own, right)
 		&& lighterShade(own, below);
 }
@@ -110,21 +118,21 @@ void main(){
 	vec4 own = srcAt(p);
 	finalColor = own;
 	if (classOf(own) != 2) return;
-	// the lightest shade any matching orientation offers, so that a pixel
+	// the darkest shade any matching orientation offers, so that a pixel
 	// matched more than one way is decided the same in a mirror image
-	vec4 lightest = own;
+	vec4 darkest = own;
 	bool matched = false;
 	for (int r = 0; r < 4; r++){
 		ivec2 x = rotations[r];
 		ivec2 y = ivec2(-x.y, x.x);
 		for (int m = 0; m < 2; m++){
 			ivec2 mirroredX = m == 0 ? x : -x;
-			vec4 lighter;
-			if (cornerMatches(p, own, mirroredX, y, lighter) && (!matched || luma(lighter) > luma(lightest))){
-				lightest = lighter;
+			vec4 replacement;
+			if (cornerMatches(p, own, mirroredX, y, replacement) && (!matched || luma(replacement) < luma(darkest))){
+				darkest = replacement;
 				matched = true;
 			}
 		}
 	}
-	finalColor = lightest;
+	finalColor = darkest;
 }
