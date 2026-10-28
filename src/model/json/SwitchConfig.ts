@@ -1,6 +1,6 @@
 import { type UserSettingsBooleanPaths } from "../../store/slices/userSettings/userSettingsSlice";
 import { type Subset } from "../../utils/Subset";
-import { type DirectionXy4, type Xyz } from "../../utils/vectors/vectors";
+import { type DirectionXy4 } from "../../utils/vectors/vectors";
 import { type SwitchSetting } from "../ItemInPlay";
 import { type ItemState } from "../ItemState";
 import { type ItemStateMap } from "../ItemStateMap";
@@ -223,14 +223,14 @@ export type SwitchItemModificationUnion<
         Partial<ItemStateMap<RoomId, RoomItemId>["teleporter"]>,
         {
           toRoom: RoomId;
-          toPosition: Xyz;
+          toItem: RoomItemId;
         }
       >;
       rightState: Subset<
         Partial<ItemStateMap<RoomId, RoomItemId>["teleporter"]>,
         {
           toRoom: RoomId;
-          toPosition: Xyz;
+          toItem: RoomItemId;
         }
       >;
     };

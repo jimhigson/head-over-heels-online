@@ -104,7 +104,7 @@ test("removeRoom removes toRoom from teleporters referencing deleted room", () =
       addRooms(draft);
       draft.campaignInProgress.rooms[roomB].items[teleporter1] = {
         type: "teleporter",
-        config: { toRoom: roomA, toPosition: { x: 0, y: 0, z: 0 } },
+        config: { toRoom: roomA },
         position: { x: 0, y: 0, z: 0 },
       };
     }),

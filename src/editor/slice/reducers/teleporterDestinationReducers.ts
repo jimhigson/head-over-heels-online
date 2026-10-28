@@ -25,7 +25,6 @@ export const teleporterDestinationReducers = {
           item.config.toRoom = toRoom;
           // viewed with both landing fields optional, so either can be deleted:
           const landingConfig: TeleporterLandingConfig = item.config;
-          delete landingConfig.toPosition;
           delete landingConfig.toItemId;
         }
       },

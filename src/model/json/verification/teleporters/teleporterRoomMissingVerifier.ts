@@ -111,7 +111,6 @@ export const teleporterRoomMissingVerifier: CampaignVerifier<TeleporterRoomMissi
           draftTeleporter.config.toRoom = newRoomId;
           // viewed with both landing fields optional, so either can be deleted:
           const landingConfig: TeleporterLandingConfig = draftTeleporter.config;
-          delete landingConfig.toPosition;
           delete landingConfig.toItemId;
         }
       });

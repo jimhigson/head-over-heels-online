@@ -1,5 +1,5 @@
 import { canonicalize } from "json-canonicalize";
-import { type AllUnionFields, type ValueOf } from "type-fest";
+import { type ValueOf } from "type-fest";
 
 import { blockSizePx } from "../game/physics/mechanicsConstants";
 import { type JsonItemUnion } from "../model/json/JsonItem";
@@ -21,22 +21,9 @@ export type ConsolidatableItemWithId = [
 
 // Generate a stable hash key for the visited map
 const hashItem = (o: ConsolidatableJsonItem): string => {
-  return (
-    o.type === "wall" ? `wall/${o.config.direction}`
-    : o.type === "teleporter" ?
-      // for teleporters, the toPosition will always be different so it can't be used to decide consolidatability
-      // also exclude times as it represents extent, not type
-      canonicalize({
-        type: o.type,
-        config: omit(
-          o.config as AllUnionFields<typeof o.config>,
-          "toPosition",
-          "times",
-        ),
-      })
-      // for other items, exclude times as it represents extent, not type
-    : canonicalize({ type: o.type, config: omit(o.config, "times") })
-  );
+  return o.type === "wall" ?
+      `wall/${o.config.direction}`
+    : canonicalize({ type: o.type, config: omit(o.config, "times") });
 };
 
 const isConsolidatableItemWithId = (

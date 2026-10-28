@@ -242,7 +242,7 @@ export const moveItemsToRoomInPlace = (
       }
     }
 
-    if (landing === undefined || destinationConfig.toPosition !== undefined) {
+    if (landing === undefined) {
       continue;
     }
     if (destinationConfig.toItemId !== undefined) {

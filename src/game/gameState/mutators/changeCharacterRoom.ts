@@ -208,13 +208,6 @@ const findTeleporterDestinationPosition = <
     toRoom.items[sourceItem.id] === sourceItem ? sourceItem.id : undefined,
   );
 
-  if (landing.type === "position") {
-    return addXyz(
-      blockXyzToFineXyz(landing.position),
-      positionRelativeToSourcePortal,
-    );
-  }
-
   const destinationItem: DestinationItem<RoomId, RoomItemId> =
     landing.type === "item" ?
       toRoom.items[landing.itemId]
