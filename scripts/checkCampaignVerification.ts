@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { createClient } from "@supabase/supabase-js";
 import chalk from "chalk";
 
@@ -52,12 +53,31 @@ for (const [campaignName, campaign] of campaignsToCheck) {
   const issues = verifyCampaign(campaign);
   issueCount += issues.length;
   const countColour = issues.length === 0 ? chalk.green : chalk.red;
+  const roomCount = Object.keys(campaign.rooms).length;
   console.log(
-    `${chalk.magenta(campaignName)}, ${Object.keys(campaign.rooms).length} rooms: ${countColour(`${issues.length} verification issue(s)`)}`,
+    `${chalk.magenta(campaignName)}, ${roomCount} rooms: ${countColour(`${issues.length} verification issue(s)`)}`,
   );
-  for (const { severity, verifier, msg } of issues) {
+  for (const {
+    severity,
+    verifier,
+    msg,
+    roomId,
+    itemId,
+    fixable,
+    fixText,
+    issueData,
+  } of issues) {
     const severityColour = severity === "error" ? chalk.red : chalk.yellow;
-    console.log(`  ${severityColour(severity)} [${verifier.name}] ${msg}`);
+    console.log(
+      `\t• ${severityColour(severity)}
+\t\tverifier.name: ${verifier.name}
+\t\tmsg: ${msg}
+\t\troomId: ${roomId}
+\t\titemId: ${itemId}
+\t\tfixable?: ${fixable}
+\t\tfixText?: ${fixText}
+\t\tissueData?: ${JSON.stringify(issueData)}`,
+    );
   }
 }
 
