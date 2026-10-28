@@ -107,10 +107,6 @@ const findTargetEndpoint = <RoomId extends string>(
     sourceItemIdInTarget,
   );
   switch (landing.type) {
-    case "position":
-      return {
-        subRoomId: findSubRoomForItem(landing.position, "block", targetRoom),
-      };
     case "item":
       return {
         subRoomId: findSubRoomForItem(

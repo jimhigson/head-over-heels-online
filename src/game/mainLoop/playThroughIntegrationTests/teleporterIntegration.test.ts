@@ -15,106 +15,6 @@ beforeEach(() => {
   resetStore();
 });
 
-test("can teleport to the next room (with `config.toPosition`)", () => {
-  const gameState = setUpBasicGame({
-    firstRoomItems: {
-      heels: {
-        type: "player",
-        position: { x: 0, y: 2, z: 1 },
-        config: {
-          which: "heels",
-        },
-      },
-      teleporter: {
-        type: "teleporter",
-        position: { x: 0, y: 2, z: 0 },
-        config: { toRoom: secondRoomId, toPosition: { x: 4, y: 4, z: 3 } },
-      },
-    },
-    secondRoomItems: {
-      teleporterLanding: {
-        type: "block",
-        position: { x: 4, y: 4, z: 2 },
-        config: { style: "organic" },
-      },
-    },
-  });
-
-  playGameThrough(gameState, {
-    frameRate: { fps: [15] }, // keep frame rate low to reduce computation
-
-    setupInitialInput(mockInputStateTracker) {
-      mockInputStateTracker.mockPressing("jump");
-    },
-    until(gameState) {
-      if (heelsState(gameState).teleporting !== null) {
-        gameState.inputStateTracker.mockNotPressing("jump");
-      }
-      return heelsState(gameState).standingOnItemId === "teleporterLanding";
-    },
-  });
-
-  expect(heelsState(gameState).box).toMatchInlineSnapshot(`
-    {
-      "x": 65,
-      "xd": 12,
-      "y": 65,
-      "yd": 12,
-      "z": 36,
-      "zd": 12,
-    }
-  `);
-});
-
-test("can teleport to the same room (with `config.toPosition`)", () => {
-  const gameState = setUpBasicGame({
-    firstRoomItems: {
-      heels: {
-        type: "player",
-        position: { x: 0, y: 2, z: 1 },
-        config: {
-          which: "heels",
-        },
-      },
-      teleporter: {
-        type: "teleporter",
-        position: { x: 0, y: 2, z: 0 },
-        config: { toRoom: firstRoomId, toPosition: { x: 4, y: 4, z: 3 } },
-      },
-      teleporterLanding: {
-        type: "block",
-        position: { x: 4, y: 4, z: 2 },
-        config: { style: "organic" },
-      },
-    },
-  });
-
-  playGameThrough(gameState, {
-    frameRate: { fps: [15] }, // keep frame rate low to reduce computation
-
-    setupInitialInput(mockInputStateTracker) {
-      mockInputStateTracker.mockPressing("jump");
-    },
-    until(gameState) {
-      if (heelsState(gameState).teleporting !== null) {
-        gameState.inputStateTracker.mockNotPressing("jump");
-      }
-      return heelsState(gameState).standingOnItemId === "teleporterLanding";
-    },
-  });
-
-  expect(heelsState(gameState).box).toMatchInlineSnapshot(`
-    {
-      "x": 65,
-      "xd": 12,
-      "y": 65,
-      "yd": 12,
-      "z": 36,
-      "zd": 12,
-    }
-  `);
-});
-
 test("can teleport to the same room (with empty config`)", () => {
   const gameState = setUpBasicGame({
     firstRoomItems: {
@@ -336,7 +236,7 @@ test("teleporter can be inactive based on a store value", () => {
         position: { x: 0, y: 2, z: 0 },
         config: {
           toRoom: secondRoomId,
-          toPosition: { x: 4, y: 4, z: 2 },
+          toItemId: "teleporterLanding",
           activatedOnStoreValue: "planetsLiberated.egyptus",
         },
       },
@@ -399,7 +299,7 @@ test("teleporter can be activated based on a store value", () => {
         position: { x: 0, y: 2, z: 0 },
         config: {
           toRoom: secondRoomId,
-          toPosition: { x: 4, y: 4, z: 2 },
+          toItemId: "teleporterLanding",
           activatedOnStoreValue: "planetsLiberated.egyptus",
         },
       },
@@ -432,7 +332,7 @@ test("teleporter can be activated based on a store value", () => {
       "xd": 12,
       "y": 0,
       "yd": 12,
-      "z": 11.42777777777782,
+      "z": 14.408333333333355,
       "zd": 12,
     }
   `);

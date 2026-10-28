@@ -1,6 +1,5 @@
 import { type UnknownAction } from "@reduxjs/toolkit";
 import { type Color, Container } from "pixi.js";
-import { type AllUnionFields } from "type-fest";
 
 import { OutlineFilter } from "../../game/render/filters/OutlineFilter";
 import { RevertColouriseFilter } from "../../game/render/filters/RevertColouriseFilter";
@@ -279,9 +278,7 @@ class EditorAnnotationsRenderer<
           const { rooms } =
             editorStore.getState().levelEditor.campaignInProgress;
 
-          const config = item.config as AllUnionFields<typeof item.config>;
-
-          const { toRoom, toItemId, toPosition } = config;
+          const { toRoom, toItemId } = item.config;
 
           const toRoomExists =
             // teleporter to finish game:
@@ -290,7 +287,7 @@ class EditorAnnotationsRenderer<
             toRoom === undefined ||
             !!rooms[toRoom];
 
-          const annotationText = `➡${toRoom ?? "."}${toItemId ? `:${toItemId}` : ""}${toPosition ? `@(${toPosition.x},${toPosition.y},${toPosition.z})` : ""}`;
+          const annotationText = `➡${toRoom ?? "."}${toItemId ? `:${toItemId}` : ""}`;
 
           this.#addTextAnnotation({
             annotationText,

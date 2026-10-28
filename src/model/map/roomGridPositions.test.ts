@@ -4455,29 +4455,6 @@ const collectTeleporterLinks = (
     .toArray();
 };
 
-test("teleporter with toPosition resolves the destination sub-room (no item id)", () => {
-  expect(
-    collectTeleporterLinks(
-      {
-        a: testRoom("a", {
-          tp_a: {
-            type: "teleporter",
-            position: { x: 0, y: 0, z: 0 },
-            config: { toRoom: "b", toPosition: { x: 1, y: 1, z: 0 } },
-          },
-        }),
-        b: testRoom("b", {}),
-      },
-      "a",
-    ),
-  ).toEqual<TeleporterLink<string>[]>([
-    {
-      from: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
-      to: { roomId: "b", subRoomId: "*" },
-    },
-  ]);
-});
-
 test("teleporter with toItemId resolves to that item", () => {
   expect(
     collectTeleporterLinks(

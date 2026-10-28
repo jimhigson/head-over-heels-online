@@ -19,15 +19,6 @@ const resolveIn = (
     sourceItemIdInDestination,
   );
 
-test("a toPosition is landed on, whatever the room holds", () => {
-  expect<TeleporterLanding<string>>(
-    resolveIn({ toPosition: { x: 1, y: 2, z: 0 } }, [], []),
-  ).toEqual<TeleporterLanding<string>>({
-    type: "position",
-    position: { x: 1, y: 2, z: 0 },
-  });
-});
-
 test("a toItemId in the room is landed on", () => {
   expect<TeleporterLanding<string>>(
     resolveIn({ toItemId: "a" }, ["a", "b"], ["a", "b"]),

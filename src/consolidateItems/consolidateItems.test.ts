@@ -756,12 +756,12 @@ describe("teleporters", () => {
     const items: Record<string, JsonItem<"teleporter">> = {
       teleporter1: {
         type: "teleporter",
-        config: { toRoom: "any", toPosition: { x: 0, y: 0, z: 0 } },
+        config: { toRoom: "any" },
         position: { x: 0, y: 0, z: 0 },
       },
       teleporter2: {
         type: "teleporter",
-        config: { toRoom: "any", toPosition: { x: 0, y: 1, z: 0 } },
+        config: { toRoom: "any" },
         position: { x: 0, y: 1, z: 0 },
       },
     };
@@ -776,11 +776,6 @@ describe("teleporters", () => {
         config: {
           times: {
             y: 2,
-          },
-          toPosition: {
-            x: 0,
-            y: 0,
-            z: 0,
           },
           toRoom: "any",
         },
@@ -799,14 +794,13 @@ describe("teleporters", () => {
         type: "teleporter",
         config: {
           toRoom: "any",
-          toPosition: { x: 0, y: 0, z: 0 },
           times: { x: 2 },
         },
         position: { x: 0, y: 0, z: 0 },
       },
       teleporter2: {
         type: "teleporter",
-        config: { toRoom: "any", toPosition: { x: 2, y: 0, z: 0 } },
+        config: { toRoom: "any" },
         position: { x: 2, y: 0, z: 0 },
       },
     };
@@ -821,11 +815,6 @@ describe("teleporters", () => {
         config: {
           times: {
             x: 3,
-          },
-          toPosition: {
-            x: 0,
-            y: 0,
-            z: 0,
           },
           toRoom: "any",
         },
@@ -844,13 +833,12 @@ describe("teleporters", () => {
         type: "teleporter",
         config: {
           toRoom: "any",
-          toPosition: { x: 0, y: 0, z: 0 },
         },
         position: { x: 0, y: 0, z: 0 },
       },
       teleporter2: {
         type: "teleporter",
-        config: { toRoom: "any", toPosition: { x: 2, y: 0, z: 0 } },
+        config: { toRoom: "any" },
         position: { x: 0, y: 0, z: 1 },
       },
     };
@@ -863,11 +851,6 @@ describe("teleporters", () => {
       {
         type: "teleporter",
         config: {
-          toPosition: {
-            x: 0,
-            y: 0,
-            z: 0,
-          },
           toRoom: "any",
         },
         position: {
@@ -879,11 +862,6 @@ describe("teleporters", () => {
       {
         type: "teleporter",
         config: {
-          toPosition: {
-            x: 2,
-            y: 0,
-            z: 0,
-          },
           toRoom: "any",
         },
         position: {
@@ -2026,15 +2004,15 @@ test("consolidateItems does not mutate input", () => {
       config: { style: "organic" },
       position: { x: 0, y: 1, z: 0 },
     },
-    // Teleporters with different toPositions
+    // Teleporters with different toItemId
     teleporter1: {
       type: "teleporter",
-      config: { toRoom: "room1", toPosition: { x: 5, y: 5, z: 0 } },
+      config: { toRoom: "room1", toItemId: "item1" },
       position: { x: 2, y: 0, z: 0 },
     },
     teleporter2: {
       type: "teleporter",
-      config: { toRoom: "room1", toPosition: { x: 5, y: 6, z: 0 } },
+      config: { toRoom: "room1", toItemId: "item2" },
       position: { x: 2, y: 1, z: 0 },
     },
     // Walls with tiles that should consolidate

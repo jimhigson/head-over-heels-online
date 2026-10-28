@@ -240,7 +240,7 @@ export const allItemsTestRoom = inferRoomJson({
       type: "sceneryCrown",
     },
     teleporter: {
-      config: { toPosition: { x: 1, y: 1, z: 0 } },
+      config: {},
       position: { x: 5, y: 2, z: 0 },
       type: "teleporter",
     },
@@ -549,7 +549,7 @@ export const allItemsTestRoom = inferRoomJson({
       type: "movingPlatform",
     },
     portableTeleporter: {
-      config: { toPosition: { x: 1, y: 1, z: 0 } },
+      config: {},
       position: { x: 11, y: 9, z: 0 },
       type: "portableTeleporter",
     },
