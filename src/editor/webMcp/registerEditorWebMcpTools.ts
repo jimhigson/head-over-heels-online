@@ -43,8 +43,8 @@ import {
   selectCursorRoomId,
   selectCursorRoomSelectedJsonItemIds,
   selectCursorSubRoomId,
-  selectEditorCameraAngle,
   selectItem,
+  selectOpenRoomCameraAngle,
   selectPlaytestOptions,
   selectRoom,
   selectTabRoomIds,
@@ -221,9 +221,10 @@ const roomTabTool = (
  */
 const roomTabsForTools = (editorState: EditorRootState) => {
   const tabRoomIds = selectTabRoomIds(editorState);
-  return selectTabs(editorState).map(({ isPreview }, tabIndex) => ({
+  return selectTabs(editorState).map(({ isPreview, openRoomId }, tabIndex) => ({
     roomId: tabRoomIds[tabIndex],
     isPreview,
+    cameraAngle: selectOpenRoomCameraAngle(editorState, openRoomId),
   }));
 };
 
@@ -331,12 +332,11 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
   {
     name: "getEditorView",
     description:
-      "the editor's view and ui state: camera angle, current tool, current sub-room, grid resolution and the rooms open in tabs (in order; isPreview tabs are replaced by the next room browsed to)",
+      "the editor's ui state: current tool, current sub-room, grid resolution and the rooms open in tabs (in order, each with the camera angle it is viewed from; isPreview tabs are replaced by the next room browsed to)",
     inputSchema: { type: "object", properties: {} },
     async execute() {
       const editorState = editorStore.getState();
       return jsonResult({
-        cameraAngle: selectEditorCameraAngle(editorState),
         tool: selectTool(editorState),
         subRoomId: selectCursorSubRoomId(editorState),
         gridResolution: editorState.levelEditor.gridResolution,

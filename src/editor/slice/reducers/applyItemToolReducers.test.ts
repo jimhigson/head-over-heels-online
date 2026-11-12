@@ -31,7 +31,7 @@ import {
   setSelectedItemsInRoom,
   setTool,
 } from "../levelEditorSlice";
-import { newOpenRoom } from "../OpenRoom";
+import { openRoomDefaults } from "../OpenRoom";
 import {
   doorItemToolWithAutoAddRooms,
   doorItemToolWithoutAutoAddRooms,
@@ -630,7 +630,14 @@ test("a door adding a room beside one sub-room of a divided room adds no verific
   const state0: LevelEditorState = {
     ...editorStateWithOneRoomWithNoItems,
     selectedRoomIds: [roomId],
-    openRooms: { [testOpenRoomId]: newOpenRoom(roomId, "2", true) },
+    openRooms: {
+      [testOpenRoomId]: {
+        ...openRoomDefaults,
+        roomId,
+        subRoomId: "2",
+        editable: true,
+      },
+    },
     cursorRoomId: roomId,
     campaignInProgress: {
       ...editorStateWithOneRoomWithNoItems.campaignInProgress,

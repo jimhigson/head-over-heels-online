@@ -240,7 +240,7 @@ export const createGameWebMcpTools = (
   {
     name: "getGameState",
     description:
-      "the running game engine's state (not redux), or part of it; repeated objects show as [circular]",
+      "the running game engine's state (not redux), or part of it; circular references show as [circular]",
     inputSchema: pathArgSchema,
     execute: async (args) =>
       gameApi === undefined ?

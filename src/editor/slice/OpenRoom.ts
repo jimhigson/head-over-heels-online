@@ -2,6 +2,8 @@ import { type Tagged } from "type-fest";
 
 import { emptyArray } from "../../utils/empty";
 import { entries, keys, valuesIter } from "../../utils/entries";
+import { omit } from "../../utils/pick";
+import { cameraAngleBase } from "../../utils/vectors/cameraAngleVectors";
 import { type Xy } from "../../utils/vectors/vectors";
 import { type EditorRoomId, type EditorRoomItemId } from "../editorTypes";
 import { type EditorRoomView } from "./EditorRoomView";
@@ -50,6 +52,10 @@ export type OpenRoom = {
    * how the room is framed; undefined until it is first fitted
    */
   view: EditorRoomView | undefined;
+  /**
+   * the 90°-increment camera rotation the room is viewed from
+   */
+  cameraAngle: Xy;
 };
 
 /**
@@ -65,23 +71,21 @@ export type Tab = {
   openRoomId: OpenRoomId;
 };
 
-export const newOpenRoom = (
-  roomId: EditorRoomId,
-  subRoomId: string,
-  editable: boolean,
-  selectedJsonItemIds: EditorRoomItemId[] = [],
-): OpenRoom => ({
-  roomId,
-  subRoomId,
-  editable,
-  selectedJsonItemIds,
+/**
+ * a newly opened room's fields, other than which room it is and whether it is
+ * editable: nothing selected, hovered, dragged or open, not yet sized or
+ * fitted, and viewed from the base angle
+ */
+export const openRoomDefaults = {
+  selectedJsonItemIds: [],
   hoveredItem: undefined,
   clickableAnnotationHovered: false,
   dragInProgress: undefined,
   contextMenuXy: undefined,
   paneSize: { x: 0, y: 0 },
   view: undefined,
-});
+  cameraAngle: cameraAngleBase,
+} satisfies Partial<OpenRoom>;
 
 /**
  * keep an open room in the store, under a new id
@@ -222,10 +226,14 @@ export const showRoomInFrontTabInPlace = (
     return;
   }
 
-  const openRoomId = addOpenRoomInPlace(
-    state,
-    newOpenRoom(roomId, subRoomId, true),
-  );
+  // a room browsed to keeps the angle of the room browsed from:
+  const openRoomId = addOpenRoomInPlace(state, {
+    ...openRoomDefaults,
+    roomId,
+    subRoomId,
+    editable: true,
+    cameraAngle: selectFrontOpenRoomFromLevelEditorState(state).cameraAngle,
+  });
 
   const previewTab = state.tabs.find(({ isPreview }) => isPreview);
   if (previewTab !== undefined) {
@@ -256,10 +264,12 @@ export const openOnlyRoomInPlace = (
   subRoomId: string,
 ) => {
   state.openRooms = {};
-  const openRoomId = addOpenRoomInPlace(
-    state,
-    newOpenRoom(roomId, subRoomId, true),
-  );
+  const openRoomId = addOpenRoomInPlace(state, {
+    ...openRoomDefaults,
+    roomId,
+    subRoomId,
+    editable: true,
+  });
   const tab: Tab = {
     id: `tab${state.nextIdNumber++}` as TabId,
     isPreview: false,
@@ -316,15 +326,12 @@ export const closeRoomsNotInCampaignInPlace = (state: LevelEditorState) => {
 };
 
 /**
- * clear what every open room has selected, hovered or open - eg after
- * restoring them from storage, where none of that is current
+ * return every open room's selection, hover, drag, context menu, size and
+ * framing to how they were newly opened, keeping the angle it is viewed from -
+ * eg after restoring them from storage, where none of those is current
  */
-export const resetOpenRoomsInteractionInPlace = (state: LevelEditorState) => {
+export const resetOpenRoomsInPlace = (state: LevelEditorState) => {
   for (const openRoom of valuesIter(state.openRooms)) {
-    openRoom.selectedJsonItemIds = [];
-    openRoom.hoveredItem = undefined;
-    openRoom.clickableAnnotationHovered = false;
-    openRoom.dragInProgress = undefined;
-    openRoom.contextMenuXy = undefined;
+    Object.assign(openRoom, omit(openRoomDefaults, "cameraAngle"));
   }
 };

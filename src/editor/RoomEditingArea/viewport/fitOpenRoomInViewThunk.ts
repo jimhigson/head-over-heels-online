@@ -3,7 +3,7 @@ import { loadedRoomCaches } from "../../loadedRoomCache/loadedRoomCaches";
 import { fitEditorRoomView } from "../../slice/EditorRoomView";
 import {
   openRoomViewChanged,
-  selectEditorCameraAngle,
+  selectOpenRoomCameraAngle,
   selectOpenRoomPaneSize,
 } from "../../slice/levelEditorSlice";
 import { type OpenRoomId } from "../../slice/OpenRoom";
@@ -34,7 +34,7 @@ export const fitOpenRoomInViewThunk =
         view: fitEditorRoomView(
           editorRoomRenderDimensions(
             loadedRoom.getRoomState(),
-            selectEditorCameraAngle(state),
+            selectOpenRoomCameraAngle(state, openRoomId),
           ),
           paneSize,
           fitMarginFraction,

@@ -7,7 +7,6 @@ import { type EditorRootState } from "../../src/store/store";
 import {
   type DirectionXy4,
   type DirectionXyz4,
-  type Xy,
   type Xyz,
 } from "../../src/utils/vectors/vectors";
 
@@ -50,7 +49,7 @@ export const fitRoomInView = async (page: Page): Promise<void> => {
   await paintEditorFrame(page);
 };
 
-export const rotateEditorViewTo = async (
+export const rotateActiveRoomViewTo = async (
   page: Page,
   /** where world "away" should appear on screen */
   awayAppearsAs: DirectionXy4,
@@ -71,15 +70,12 @@ const editorSliceState = (page: Page) =>
     () => (window._e2e_store!.getState() as EditorRootState).levelEditor,
   );
 
-export const editorCameraAngle = async (page: Page): Promise<Xy> =>
-  (await editorSliceState(page)).cameraAngle;
-
 /** the room json for the room being edited, as it would be saved */
 export const editorCurrentRoomJson = async (
   page: Page,
 ): Promise<EditorRoomJson> => {
-  const { campaignInProgress, cursorRoom } = await editorSliceState(page);
-  return campaignInProgress.rooms[cursorRoom.roomId] as EditorRoomJson;
+  const { campaignInProgress, cursorRoomId } = await editorSliceState(page);
+  return campaignInProgress.rooms[cursorRoomId] as EditorRoomJson;
 };
 
 export const editorItems = async (page: Page): Promise<Array<EditorE2eItem>> =>
