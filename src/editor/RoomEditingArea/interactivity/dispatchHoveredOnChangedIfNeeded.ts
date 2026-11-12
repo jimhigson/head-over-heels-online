@@ -2,19 +2,19 @@ import nanoEqual from "nano-equal";
 
 import { editorStore, store } from "../../../store/store";
 import { type EditorRoomState } from "../../editorTypes";
-import { type EditorPaneId } from "../../slice/EditorPane";
 import {
   type HoveredItem,
-  selectPaneHoveredItem,
+  selectOpenRoomHoveredItem,
   setHoveredItemInRoom,
 } from "../../slice/levelEditorSlice";
+import { type OpenRoomId } from "../../slice/OpenRoom";
 import { type MaybePointingAtSomething } from "../cursor/PointingAt";
 import { itemsAreLocked } from "./itemsAreLocked";
 
 export const dispatchHoveredOnChangedIfNeeded = (
-  paneId: EditorPaneId,
+  openRoomId: OpenRoomId,
   /**
-   * whether the pane edits its room - only an editing pane locks items
+   * whether the open room is editable - only an editable one locks items
    */
   editable: boolean,
   roomState: EditorRoomState,
@@ -49,10 +49,13 @@ export const dispatchHoveredOnChangedIfNeeded = (
 
   if (
     // only dispatch if something is different, to stop the redux dev tools being flooded:
-    !nanoEqual(selectPaneHoveredItem(storeState, paneId), newHoveredItem)
+    !nanoEqual(
+      selectOpenRoomHoveredItem(storeState, openRoomId),
+      newHoveredItem,
+    )
   ) {
     store.dispatch(
-      setHoveredItemInRoom({ paneId, hoveredItem: newHoveredItem }),
+      setHoveredItemInRoom({ openRoomId, hoveredItem: newHoveredItem }),
     );
   }
 };

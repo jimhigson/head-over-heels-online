@@ -9,7 +9,7 @@ import { verificationGraph } from "../../model/json/verification/helpers/verific
 import { type VerificationCampaign } from "../../model/json/verification/verificationTypes";
 import { type CampaignLocator } from "../../model/modelTypes";
 import { editorCampaignsApiSlice } from "../../store/slices/campaigns/editorCampaignsApiSlice";
-import { editorStore } from "../../store/store";
+import { type EditorRootState, editorStore } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
 import { queryJsonPattern } from "../../utils/jsonPattern/queryJsonPattern";
 import { setJsonPattern } from "../../utils/jsonPattern/setJsonPattern";
@@ -45,9 +45,10 @@ import {
   selectCursorSubRoomId,
   selectEditorCameraAngle,
   selectItem,
-  selectOpenRoomTabs,
   selectPlaytestOptions,
   selectRoom,
+  selectTabRoomIds,
+  selectTabs,
   selectTool,
 } from "../slice/levelEditorSlice";
 import {
@@ -210,10 +211,21 @@ const roomTabTool = (
     }
     editorStore.dispatch(roomTabAction(roomId as EditorRoomId));
     return jsonResult({
-      openRoomTabs: selectOpenRoomTabs(editorStore.getState()),
+      openRoomTabs: roomTabsForTools(editorStore.getState()),
     });
   },
 });
+
+/**
+ * the rooms open in tabs, in order, as the tools report them
+ */
+const roomTabsForTools = (editorState: EditorRootState) => {
+  const tabRoomIds = selectTabRoomIds(editorState);
+  return selectTabs(editorState).map(({ isPreview }, tabIndex) => ({
+    roomId: tabRoomIds[tabIndex],
+    isPreview,
+  }));
+};
 
 const editorWebMcpTools: WebMCP.ModelContextTool[] = [
   {
@@ -328,7 +340,7 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
         tool: selectTool(editorState),
         subRoomId: selectCursorSubRoomId(editorState),
         gridResolution: editorState.levelEditor.gridResolution,
-        openRoomTabs: selectOpenRoomTabs(editorState),
+        openRoomTabs: roomTabsForTools(editorState),
       });
     },
   },

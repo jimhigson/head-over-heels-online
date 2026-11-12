@@ -1,10 +1,10 @@
 import { type EditorRoomId } from "../../editorTypes";
-import { forgetRoomSelectionsInPlace } from "../EditorPane";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { closeRoomsNotInCampaignInPlace } from "../OpenRoom";
 
 /**
  * remove rooms from the campaign, with the editor state kept about them: undo
- * history, back/forward history, tabs and item selections
+ * history, back/forward history, and the open rooms (and tabs) showing them
  */
 export const deleteRoomsInPlace = (
   state: LevelEditorState,
@@ -13,7 +13,6 @@ export const deleteRoomsInPlace = (
   for (const roomId of roomIds) {
     delete state.campaignInProgress.rooms[roomId];
     delete state.history[roomId];
-    forgetRoomSelectionsInPlace(state, roomId);
   }
 
   const isNotDeleted = (id: EditorRoomId) => !roomIds.has(id);
@@ -21,7 +20,5 @@ export const deleteRoomsInPlace = (
     state.editingRoomIdHistory.back.filter(isNotDeleted);
   state.editingRoomIdHistory.forward =
     state.editingRoomIdHistory.forward.filter(isNotDeleted);
-  state.openRoomTabs = state.openRoomTabs.filter(({ roomId }) =>
-    isNotDeleted(roomId),
-  );
+  closeRoomsNotInCampaignInPlace(state);
 };

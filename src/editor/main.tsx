@@ -15,6 +15,7 @@ import { store } from "../store/store";
 import { LevelEditorLoader } from "./LevelEditorLoader";
 import { registerRoomPreviewSnapshotListeners } from "./roomPreview/roomPreviewListeners";
 import { registerNudgeCommitListeners } from "./slice/registerNudgeCommitListeners";
+import { registerOpenRoomsRestoredListener } from "./slice/registerOpenRoomsRestoredListener";
 import { registerEditorWebMcpTools } from "./webMcp/registerEditorWebMcpTools";
 
 if (import.meta.env.MODE === "visual-regression") {
@@ -30,6 +31,7 @@ TextureStyle.defaultOptions.scaleMode = "nearest";
 
 registerRoomPreviewSnapshotListeners();
 registerNudgeCommitListeners();
+registerOpenRoomsRestoredListener();
 registerEditorWebMcpTools();
 
 render(

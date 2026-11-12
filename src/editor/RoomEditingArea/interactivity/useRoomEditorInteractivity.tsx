@@ -8,23 +8,23 @@ import { usePanZoomWheel } from "../../../ui/usePanZoomWheel";
 import { catchErrors } from "../../../utils/errors/errors";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { type EditorRoomRenderer } from "../../editorTypes";
-import { type EditorPaneId, paneRoomId } from "../../slice/EditorPane";
 import { selectPreviewOnlyJsonItemIds } from "../../slice/levelEditorSelectors";
 import {
   changeDragInProgress,
-  paneViewPanned,
-  paneViewZoomed,
+  openRoomViewPanned,
+  openRoomViewZoomed,
   resetPreviewedEdits,
-  selectPaneDragInProgress,
-  selectPaneView,
+  selectOpenRoomDragInProgress,
+  selectOpenRoomView,
   selectTool,
 } from "../../slice/levelEditorSlice";
+import { existingOpenRoom, type OpenRoomId } from "../../slice/OpenRoom";
 import { findPointerPointingAt } from "../cursor/findPointerPointingAt";
 import { type MaybePointingAtSomething } from "../cursor/PointingAt";
 import { viewportMousePosition } from "../cursor/viewportMouse";
-import { useEditorPane } from "../pane/EditorPaneProvider";
 import { useProvidedPixiApplication } from "../PixiApplicationProvider";
 import { useEditorE2eApi } from "../useEditorE2eApi";
+import { useOpenRoomPane } from "../useOpenRoomPane";
 import { useEditorViewport } from "../viewport/EditorViewportProvider";
 import { nearestLadderZoom } from "../viewport/zoomLadder";
 import { type Tool } from "./Tool";
@@ -36,9 +36,9 @@ import { type ToolHandler } from "./toolHandlers/ToolHandler";
 const pointerTool: Tool = { type: "pointer" };
 
 /**
- * the tool used in a pane - a pane that doesn't edit only ever points
+ * the tool used in an open room - a non-editable one only ever points
  */
-const paneTool = (storeState: EditorRootState, editable: boolean): Tool =>
+const openRoomTool = (storeState: EditorRootState, editable: boolean): Tool =>
   editable ? selectTool(storeState) : pointerTool;
 
 const toolHandlers: {
@@ -63,24 +63,24 @@ type PanSession = {
 };
 
 /**
- * zoom a pane's view about a client point, from its latest zoom - several
+ * zoom an open room's view about a client point, from its latest zoom - several
  * wheel events can arrive per render
  */
-const zoomPaneViewAbout = (
-  paneId: EditorPaneId,
+const zoomOpenRoomViewAbout = (
+  openRoomId: OpenRoomId,
   renderArea: HTMLDivElement | null,
   clientXy: Xy,
   newZoom: (zoom: number) => number,
 ) => {
-  const paneView = selectPaneView(editorStore.getState(), paneId);
-  if (renderArea === null || paneView === undefined) {
+  const openRoomView = selectOpenRoomView(editorStore.getState(), openRoomId);
+  if (renderArea === null || openRoomView === undefined) {
     return;
   }
   const rect = renderArea.getBoundingClientRect();
   store.dispatch(
-    paneViewZoomed({
-      paneId,
-      zoom: newZoom(paneView.zoom),
+    openRoomViewZoomed({
+      openRoomId,
+      zoom: newZoom(openRoomView.zoom),
       fixedPanePoint: { x: clientXy.x - rect.left, y: clientXy.y - rect.top },
     }),
   );
@@ -92,7 +92,7 @@ export const useRoomEditorInteractivity = (
   roomRendererRef: RefObject<EditorRoomRenderer | undefined>,
 ) => {
   const viewport = useEditorViewport();
-  const { paneId, editable, loadedRoom } = useEditorPane();
+  const { openRoomId, editable, loadedRoom } = useOpenRoomPane();
   const pixiApplication = useProvidedPixiApplication();
   const dispatch = useAppDispatch();
   const pointingAtRef = useRef<MaybePointingAtSomething | undefined>(undefined);
@@ -121,19 +121,29 @@ export const useRoomEditorInteractivity = (
   // wheel panning and pinch zooming, about the pointer:
   const renderAreaRef = useMemo(() => ({ current: renderArea }), [renderArea]);
   const onWheelPan = useCallback(
-    (delta: Xy) => store.dispatch(paneViewPanned({ paneId, delta })),
-    [paneId],
+    (delta: Xy) => store.dispatch(openRoomViewPanned({ openRoomId, delta })),
+    [openRoomId],
   );
   const onWheelZoom = useCallback(
     (factor: number, clientXy: Xy) =>
-      zoomPaneViewAbout(paneId, renderArea, clientXy, (zoom) => zoom * factor),
-    [paneId, renderArea],
+      zoomOpenRoomViewAbout(
+        openRoomId,
+        renderArea,
+        clientXy,
+        (zoom) => zoom * factor,
+      ),
+    [openRoomId, renderArea],
   );
   // the gesture zooms freely, then settles on the nearest standard zoom:
   const onWheelZoomEnd = useCallback(
     (clientXy: Xy) =>
-      zoomPaneViewAbout(paneId, renderArea, clientXy, nearestLadderZoom),
-    [paneId, renderArea],
+      zoomOpenRoomViewAbout(
+        openRoomId,
+        renderArea,
+        clientXy,
+        nearestLadderZoom,
+      ),
+    [openRoomId, renderArea],
   );
   usePanZoomWheel(renderAreaRef, {
     onPan: onWheelPan,
@@ -149,7 +159,7 @@ export const useRoomEditorInteractivity = (
     const endPanSession = () => {
       if (panSessionRef.current?.active) {
         store.dispatch(
-          changeDragInProgress({ paneId, dragInProgress: undefined }),
+          changeDragInProgress({ openRoomId, dragInProgress: undefined }),
         );
       }
       panSessionRef.current = undefined;
@@ -164,7 +174,7 @@ export const useRoomEditorInteractivity = (
       if (dragAccVec.current !== undefined) {
         store.dispatch(resetPreviewedEdits());
         store.dispatch(
-          changeDragInProgress({ paneId, dragInProgress: undefined }),
+          changeDragInProgress({ openRoomId, dragInProgress: undefined }),
         );
       }
       dragAccVec.current = undefined;
@@ -209,7 +219,7 @@ export const useRoomEditorInteractivity = (
         };
       }
       if (
-        selectPaneDragInProgress(editorStore.getState(), paneId) ===
+        selectOpenRoomDragInProgress(editorStore.getState(), openRoomId) ===
           "moveItems" &&
         !isInsidePane(mouseEvent)
       ) {
@@ -234,14 +244,14 @@ export const useRoomEditorInteractivity = (
             panSession.active = true;
             // reuse the drag-in-progress state for the grabbing cursor:
             store.dispatch(
-              changeDragInProgress({ paneId, dragInProgress: "pan" }),
+              changeDragInProgress({ openRoomId, dragInProgress: "pan" }),
             );
           }
         }
         if (panSession.active) {
           store.dispatch(
-            paneViewPanned({
-              paneId,
+            openRoomViewPanned({
+              openRoomId,
               delta: { x: mouseEvent.movementX, y: mouseEvent.movementY },
             }),
           );
@@ -259,7 +269,7 @@ export const useRoomEditorInteractivity = (
       const roomState = loadedRoom.getRoomState();
       const mouseXy = viewportMousePosition(viewport, mouseEvent);
 
-      const tool = paneTool(storeState, editable);
+      const tool = openRoomTool(storeState, editable);
 
       const pointingAt = findPointerPointingAt({
         scrXy: mouseXy,
@@ -280,7 +290,7 @@ export const useRoomEditorInteractivity = (
 
       const handler = toolHandlers[tool.type] as ToolHandler<Tool>;
       handler.handleMouseMove({
-        paneId,
+        openRoomId,
         editable,
         pointingAtChanged,
         roomState,
@@ -319,15 +329,17 @@ export const useRoomEditorInteractivity = (
       const storeState = editorStore.getState();
       const roomState = loadedRoom.getRoomState();
 
-      const pane = storeState.levelEditor.panes[paneId];
-      if (roomState.id !== paneRoomId(storeState.levelEditor, pane)) {
+      if (
+        roomState.id !==
+        existingOpenRoom(storeState.levelEditor, openRoomId).roomId
+      ) {
         return;
       }
 
       const mouseXy = viewportMousePosition(viewport, mouseEvent);
 
       // no point in re-running this effect when it changes so select it 'live':
-      const tool = paneTool(storeState, editable);
+      const tool = openRoomTool(storeState, editable);
 
       // get a fresh PointingAt - the one in the ref could be pointing
       // at a previous room if we just switched
@@ -361,7 +373,7 @@ export const useRoomEditorInteractivity = (
       mouseDownPointingAtRef.current = undefined;
 
       store.dispatch(
-        changeDragInProgress({ paneId, dragInProgress: undefined }),
+        changeDragInProgress({ openRoomId, dragInProgress: undefined }),
       );
 
       if (!isClick && !isDragEnd) {
@@ -371,7 +383,7 @@ export const useRoomEditorInteractivity = (
 
       const handler = toolHandlers[tool.type] as ToolHandler<Tool>;
       handler.handleMouseUp({
-        paneId,
+        openRoomId,
         editable,
         roomState,
         pointingAt,
@@ -397,11 +409,11 @@ export const useRoomEditorInteractivity = (
 
       const storeState = editorStore.getState();
       const roomState = loadedRoom.getRoomState();
-      const tool = paneTool(storeState, editable);
+      const tool = openRoomTool(storeState, editable);
 
       const handler = toolHandlers[tool.type] as ToolHandler<Tool>;
       handler.handleMouseLeave({
-        paneId,
+        openRoomId,
         editable,
         roomState,
         tool,
@@ -429,14 +441,16 @@ export const useRoomEditorInteractivity = (
           startClientX: mouseEvent.clientX,
           startClientY: mouseEvent.clientY,
         };
-        store.dispatch(changeDragInProgress({ paneId, dragInProgress: "pan" }));
+        store.dispatch(
+          changeDragInProgress({ openRoomId, dragInProgress: "pan" }),
+        );
         return;
       }
 
       const storeState = editorStore.getState();
       const roomState = loadedRoom.getRoomState();
       const mouseXy = viewportMousePosition(viewport, mouseEvent);
-      const tool = paneTool(storeState, editable);
+      const tool = openRoomTool(storeState, editable);
 
       const pointingAt = findPointerPointingAt({
         scrXy: mouseXy,
@@ -452,7 +466,7 @@ export const useRoomEditorInteractivity = (
       const handler = toolHandlers[tool.type] as ToolHandler<Tool>;
 
       const mouseDownParams = {
-        paneId,
+        openRoomId,
         editable,
         roomState,
         pointingAt,
@@ -538,7 +552,7 @@ export const useRoomEditorInteractivity = (
     viewport,
     roomRendererRef,
     pixiApplication,
-    paneId,
+    openRoomId,
     editable,
     loadedRoom,
   ]);

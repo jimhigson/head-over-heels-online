@@ -193,19 +193,20 @@ test("flips the mirror held by the current item tool", () => {
 });
 
 test("rotateCurrentToolItem is a no-op when no item tool is active", () => {
-  expect(
-    reduceLevelEditorActions(
-      editorStateWithOneRoomWithNoItems,
-      setTool({ type: "pointer" }),
-      rotateCurrentToolItem({ sense: "clockwise" }),
-    ).tool,
-  ).toEqual({ type: "pointer" });
+  const state0 = editorStateWithOneRoomWithNoItems;
+  const state1 = reduceLevelEditorActions(
+    state0,
+    setTool({ type: "pointer" }),
+    rotateCurrentToolItem({ sense: "clockwise" }),
+  );
+  expect(state1.tool).toEqual({ type: "pointer" });
 });
 
 // a lamp tool actively hovering the room, so there is a preview item in
 // pendingEdits built from the tool:
-const toolAndPreviewAfterRotate = reduceLevelEditorActions(
-  produce(editorStateWithOneRoomWithNoItems, (draft) => {
+const state0LampToolHovering = produce(
+  editorStateWithOneRoomWithNoItems,
+  (draft) => {
     draft.tool = {
       type: "item",
       item: { type: "lamp", config: { direction: "towards" } },
@@ -222,19 +223,23 @@ const toolAndPreviewAfterRotate = reduceLevelEditorActions(
       timestamp: 0,
       madeBy: { type: "itemTool" },
     };
-  }),
+  },
+);
+
+const state1ToolAndPreviewRotated = reduceLevelEditorActions(
+  state0LampToolHovering,
   rotateCurrentToolItem({ sense: "clockwise" }),
 );
 
 test("rotates the tool item when a hover preview is present", () => {
-  expect(toolAndPreviewAfterRotate.tool).toMatchObject({
+  expect(state1ToolAndPreviewRotated.tool).toMatchObject({
     item: { config: { direction: "left" } },
   });
 });
 
 test("also rotates the hover preview to match the rotated tool", () => {
   expect(
-    toolAndPreviewAfterRotate.pendingEdits?.edits[
+    state1ToolAndPreviewRotated.pendingEdits?.edits[
       "preview" as EditorRoomItemId
     ],
   ).toMatchObject({ config: { direction: "left" } });

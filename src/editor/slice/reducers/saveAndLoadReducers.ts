@@ -4,20 +4,17 @@ import {
   type SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
-import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
-import { keysIter, valuesIter } from "../../../utils/entries";
-import { first } from "../../../utils/iterators/first";
 import { pick } from "../../../utils/pick";
 import { type EditorCampaign } from "../../editorTypes";
-import { resetPanesInPlace } from "../EditorPane";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
-import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
+import { firstSubRoomId } from "../inPlaceMutators/firstSubRoomId";
 import { migrateRoomItems } from "../inPlaceMutators/migrateRoomItems";
 import { migrateRoomNonContiguousRelationships } from "../inPlaceMutators/migrateRoomNonContiguousRelationships";
 import { migrateRoomVerticalLinks } from "../inPlaceMutators/migrateRoomVerticalLinks";
-import { pinRoomTabInPlace } from "../inPlaceMutators/pinRoomTabInPlace";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { levelEditorSliceCampaignTransientFields } from "../levelEditorSliceTransientFields";
+import { openOnlyRoomInPlace } from "../OpenRoom";
+import { startingRoomId } from "../startingRoomId";
 
 export const saveAndLoadReducers = {
   loadCampaign(
@@ -49,30 +46,15 @@ export const saveAndLoadReducers = {
         "history",
       ),
     );
-    resetPanesInPlace(state);
-    state.openRoomTabs = [];
 
-    // choose which room to start the editor in.
-    const startingRoom =
-      // First look for head's room as the traditional starting room:
-      valuesIter(migratedCampaign.rooms).find((room) => {
-        return roomJsonItemsIterable(room).some(
-          (item) => item.type === "player" && item.config.which === "head",
-        );
-      })?.id ??
-      valuesIter(migratedCampaign.rooms).find((room) => {
-        return roomJsonItemsIterable(room).some(
-          (item) => item.type === "player" && item.config.which === "heels",
-        );
-      })?.id ??
-      // if not that, just find any room
-      first(keysIter(migratedCampaign.rooms));
-
-    if (startingRoom === undefined) {
-      throw new Error("could not find any rooms in this campaign");
-    }
-    changeCurrentRoomInPlace(state, startingRoom, undefined, true);
-    pinRoomTabInPlace(state, startingRoom);
+    // start the editor in the campaign's starting room:
+    const roomId = startingRoomId(migratedCampaign);
+    openOnlyRoomInPlace(
+      state,
+      roomId,
+      firstSubRoomId(migratedCampaign.rooms[roomId]),
+    );
+    state.selectedRoomIds = [roomId];
   },
 
   setRemoteCampaign(

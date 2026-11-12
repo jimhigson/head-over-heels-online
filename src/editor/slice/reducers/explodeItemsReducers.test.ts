@@ -15,30 +15,35 @@ import {
   editorStateWithOneRoomWithNoItems,
   editorStateWithOneRoomWithOneAwayWall,
   reduceLevelEditorActions,
-  testPaneId,
+  testOpenRoomId,
   testRoomId,
   wallItemId,
 } from "./__test__/storeStates";
 
-const multipliedBlock = produce(editorStateWithOneRoomWithNoItems, (draft) => {
-  draft.autoCoalesce = true;
-  draft.campaignInProgress.rooms[testRoomId].items["bm" as EditorRoomItemId] = {
-    type: "block",
-    config: { style: "artificial", times: { x: 2 } },
-    position: { x: 0, y: 0, z: 0 },
-  };
-});
+const state0MultipliedBlock = produce(
+  editorStateWithOneRoomWithNoItems,
+  (draft) => {
+    draft.autoCoalesce = true;
+    draft.campaignInProgress.rooms[testRoomId].items["bm" as EditorRoomItemId] =
+      {
+        type: "block",
+        config: { style: "artificial", times: { x: 2 } },
+        position: { x: 0, y: 0, z: 0 },
+      };
+  },
+);
 
-const explodeBlock = reduceLevelEditorActions(
-  multipliedBlock,
+const state1ExplodedBlock = reduceLevelEditorActions(
+  state0MultipliedBlock,
   setSelectedItemsInRoom({ jsonItemIds: ["bm"] as EditorRoomItemId[] }),
-  openItemContextMenu({ paneId: testPaneId, scrXy: { x: 1, y: 1 } }),
+  openItemContextMenu({ openRoomId: testOpenRoomId, scrXy: { x: 1, y: 1 } }),
   explodeSelectedItems({ timestamp: 0 }),
 );
 
 test("explodes a multiplied block into its separate single parts", () => {
   expect(
-    selectCurrentCommittedRoomJsonFromLevelEditorState(explodeBlock).items,
+    selectCurrentCommittedRoomJsonFromLevelEditorState(state1ExplodedBlock)
+      .items,
   ).toEqual({
     bm: {
       type: "block",
@@ -54,20 +59,24 @@ test("explodes a multiplied block into its separate single parts", () => {
 });
 
 test("turns off auto-coalesce so the parts do not re-join", () => {
-  expect(explodeBlock.autoCoalesce).toBe(false);
+  expect(state1ExplodedBlock.autoCoalesce).toBe(false);
 });
 
 test("selects the exploded parts", () => {
   expect(
-    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(explodeBlock),
+    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(
+      state1ExplodedBlock,
+    ),
   ).toEqual(["bm", "bm1"]);
 });
 
 test("closes the context menu", () => {
-  expect(explodeBlock.panes[testPaneId]?.contextMenuXy).toBeUndefined();
+  expect(
+    state1ExplodedBlock.openRooms[testOpenRoomId].contextMenuXy,
+  ).toBeUndefined();
 });
 
-const explodeWall = reduceLevelEditorActions(
+const state1ExplodedWall = reduceLevelEditorActions(
   editorStateWithOneRoomWithOneAwayWall,
   setSelectedItemsInRoom({ jsonItemIds: [wallItemId] }),
   explodeSelectedItems({ timestamp: 0 }),
@@ -75,7 +84,8 @@ const explodeWall = reduceLevelEditorActions(
 
 test("explodes a tiled away-wall into one single-tile wall per tile", () => {
   const walls = Object.values(
-    selectCurrentCommittedRoomJsonFromLevelEditorState(explodeWall).items,
+    selectCurrentCommittedRoomJsonFromLevelEditorState(state1ExplodedWall)
+      .items,
   );
 
   expect(

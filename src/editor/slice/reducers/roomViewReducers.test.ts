@@ -5,15 +5,16 @@ import { type EditorRoomId } from "../../editorTypes";
 import { type EditorRoomView } from "../EditorRoomView";
 import {
   changeToRoom,
-  paneViewChanged,
-  paneViewPanned,
+  openRoomViewChanged,
+  openRoomViewPanned,
   rotateViewClockwise,
-  selectPaneView,
+  selectFrontOpenRoomId,
+  selectOpenRoomView,
 } from "../levelEditorSlice";
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,
-  testPaneId,
+  testOpenRoomId,
   testRoomId,
 } from "./__test__/storeStates";
 
@@ -27,59 +28,76 @@ const baseState = produce(editorStateWithOneRoomWithNoItems, (draft) => {
 const someView: EditorRoomView = { zoom: 3, pan: { x: 10, y: 20 } };
 
 test("a newly opened tab has no view of its own", () => {
-  const state = reduceLevelEditorActions(
-    baseState,
-    paneViewChanged({ paneId: testPaneId, view: someView }),
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
+    openRoomViewChanged({ openRoomId: testOpenRoomId, view: someView }),
     changeToRoom(roomB),
   );
 
-  expect(selectPaneView({ levelEditor: state }, testPaneId)).toBeUndefined();
+  expect(
+    selectOpenRoomView(
+      { levelEditor: state1 },
+      selectFrontOpenRoomId({ levelEditor: state1 }),
+    ),
+  ).toBeUndefined();
 });
 
 test("switching back to a tab restores its view", () => {
-  const state = reduceLevelEditorActions(
-    baseState,
-    paneViewChanged({ paneId: testPaneId, view: someView }),
+  const state0 = baseState;
+  const state1OnRoomB = reduceLevelEditorActions(
+    state0,
+    openRoomViewChanged({ openRoomId: testOpenRoomId, view: someView }),
     changeToRoom(roomB),
-    paneViewChanged({
-      paneId: testPaneId,
+  );
+  const state2 = reduceLevelEditorActions(
+    state1OnRoomB,
+    openRoomViewChanged({
+      openRoomId: selectFrontOpenRoomId({ levelEditor: state1OnRoomB }),
       view: { zoom: 5, pan: { x: 0, y: 0 } },
     }),
     changeToRoom(testRoomId),
   );
 
   expect<EditorRoomView | undefined>(
-    selectPaneView({ levelEditor: state }, testPaneId),
+    selectOpenRoomView({ levelEditor: state2 }, testOpenRoomId),
   ).toEqual<EditorRoomView>(someView);
 });
 
-test("panning moves the pane's view", () => {
-  const state = reduceLevelEditorActions(
-    baseState,
-    paneViewChanged({ paneId: testPaneId, view: someView }),
-    paneViewPanned({ paneId: testPaneId, delta: { x: 1, y: -1 } }),
+test("panning moves the open room's view", () => {
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
+    openRoomViewChanged({ openRoomId: testOpenRoomId, view: someView }),
+    openRoomViewPanned({ openRoomId: testOpenRoomId, delta: { x: 1, y: -1 } }),
   );
 
   expect<EditorRoomView | undefined>(
-    selectPaneView({ levelEditor: state }, testPaneId),
+    selectOpenRoomView({ levelEditor: state1 }, testOpenRoomId),
   ).toEqual<EditorRoomView>({ zoom: 3, pan: { x: 11, y: 19 } });
 });
 
 test("panning a room not yet framed does nothing", () => {
-  const state = reduceLevelEditorActions(
-    baseState,
-    paneViewPanned({ paneId: testPaneId, delta: { x: 1, y: -1 } }),
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
+    openRoomViewPanned({ openRoomId: testOpenRoomId, delta: { x: 1, y: -1 } }),
   );
 
-  expect(selectPaneView({ levelEditor: state }, testPaneId)).toBeUndefined();
+  expect(
+    selectOpenRoomView({ levelEditor: state1 }, testOpenRoomId),
+  ).toBeUndefined();
 });
 
 test("rotating drops the view, so the room is fitted afresh", () => {
-  const state = reduceLevelEditorActions(
-    baseState,
-    paneViewChanged({ paneId: testPaneId, view: someView }),
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
+    openRoomViewChanged({ openRoomId: testOpenRoomId, view: someView }),
     rotateViewClockwise(),
   );
 
-  expect(selectPaneView({ levelEditor: state }, testPaneId)).toBeUndefined();
+  expect(
+    selectOpenRoomView({ levelEditor: state1 }, testOpenRoomId),
+  ).toBeUndefined();
 });

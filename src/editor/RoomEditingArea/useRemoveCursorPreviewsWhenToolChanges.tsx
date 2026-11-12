@@ -8,14 +8,14 @@ import {
   setTool,
   togglePointerTool,
 } from "../slice/levelEditorSlice";
-import { useEditorPane } from "./pane/EditorPaneProvider";
+import { useOpenRoomPane } from "./useOpenRoomPane";
 
 const isToolChoice = isAnyOf(setTool, resetTool, togglePointerTool);
 
 export const useRemoveCursorPreviewsWhenToolChanges = () => {
-  const { editable } = useEditorPane();
+  const { editable } = useOpenRoomPane();
   useEffect(() => {
-    // only an editing pane has tools:
+    // only an editable open room has tools:
     if (!editable) {
       return;
     }

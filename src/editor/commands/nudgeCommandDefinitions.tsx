@@ -12,7 +12,7 @@ import {
 } from "../../utils/vectors/vectors";
 import { type EditorJsonItemUnion } from "../editorTypes";
 import { type RotationSense } from "../itemRotation";
-import { activePaneLoadedRoom } from "../paneLoadedRooms";
+import { activeOpenRoomLoadedRoom } from "../loadedRoomCache/loadedRoomCaches";
 import {
   type NudgeKind,
   nudgeKinds,
@@ -104,12 +104,12 @@ const nudgeCommand = (
   shortcutKeys,
   selectIsAvailable,
   action: () => (dispatch, getState) => {
-    const loadedRoom = activePaneLoadedRoom();
-    if (loadedRoom !== undefined) {
+    const activeLoadedOpenRoom = activeOpenRoomLoadedRoom();
+    if (activeLoadedOpenRoom !== undefined) {
       dispatch(
         nudgeSelectedItemsThunk(
           nudgeArgs(getState()),
-          loadedRoom.getRoomState(),
+          activeLoadedOpenRoom.getRoomState(),
         ),
       );
     }
@@ -154,13 +154,13 @@ const multiplyCommand = (
       )
     : selectCanShrinkAlong(state, worldDirection(state)),
   action: () => (dispatch, getState) => {
-    const loadedRoom = activePaneLoadedRoom();
-    if (loadedRoom !== undefined) {
+    const activeLoadedOpenRoom = activeOpenRoomLoadedRoom();
+    if (activeLoadedOpenRoom !== undefined) {
       dispatch(
         multiplySelectedItemsThunk(
           worldDirection(getState()),
           multiplyType,
-          loadedRoom.getRoomState(),
+          activeLoadedOpenRoom.getRoomState(),
         ),
       );
     }

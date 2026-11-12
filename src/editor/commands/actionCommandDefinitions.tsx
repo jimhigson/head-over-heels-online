@@ -6,9 +6,8 @@ import { copySelectedItemsToClipboard } from "../clipboard/copySelectedItemsToCl
 import { pasteItemsFromClipboard } from "../clipboard/pasteItemsFromClipboard";
 import { campaignIsNamed } from "../editorTypes";
 import { playtest } from "../playtest";
-import { activePaneThunk } from "../RoomEditingArea/pane/activePaneThunk";
-import { fitPaneRoomInViewThunk } from "../RoomEditingArea/viewport/fitPaneRoomInViewThunk";
-import { stepPaneZoomThunk } from "../RoomEditingArea/viewport/stepPaneZoomThunk";
+import { fitOpenRoomInViewThunk } from "../RoomEditingArea/viewport/fitOpenRoomInViewThunk";
+import { stepOpenRoomZoomThunk } from "../RoomEditingArea/viewport/stepOpenRoomZoomThunk";
 import {
   openCampaignDialogShown,
   saveAsDialogShown,
@@ -20,6 +19,7 @@ import {
   resetTool,
   roomBack,
   roomForward,
+  selectActiveOpenRoomId,
   selectBackRooms,
   selectCampaignHasUnsavedChanges,
   selectCurrentCampaignInProgress,
@@ -385,7 +385,10 @@ Give anyone the link to your game
     menuIcon: <MenuItemGlyphIcon glyph="-" />,
     shortcutKeys: ["-"],
     tooltipContent: `## zoom ⬇\n\nmakes things look *smaller*`,
-    action: () => activePaneThunk((paneId) => stepPaneZoomThunk(paneId, "out")),
+    action: () => (dispatch, getState) =>
+      dispatch(
+        stepOpenRoomZoomThunk(selectActiveOpenRoomId(getState()), "out"),
+      ),
   },
   zoomIn: {
     type: "action",
@@ -394,7 +397,8 @@ Give anyone the link to your game
     menuIcon: <MenuItemGlyphIcon glyph="+" />,
     shortcutKeys: ["⇧+", "="],
     tooltipContent: `## zoom ⬆\n\nmakes things look *bigger*`,
-    action: () => activePaneThunk((paneId) => stepPaneZoomThunk(paneId, "in")),
+    action: () => (dispatch, getState) =>
+      dispatch(stepOpenRoomZoomThunk(selectActiveOpenRoomId(getState()), "in")),
   },
   fitRoomInView: {
     type: "action",
@@ -404,7 +408,8 @@ Give anyone the link to your game
     shortcutKeys: ["0"],
     tooltipContent: `## fit\n\nzoom and pan the room to exactly fit the pane`,
     toolbarClass: "bg-moss px-2",
-    action: () => activePaneThunk(fitPaneRoomInViewThunk),
+    action: () => (dispatch, getState) =>
+      dispatch(fitOpenRoomInViewThunk(selectActiveOpenRoomId(getState()))),
   },
 } as const satisfies {
   [s in string]: EditorCommandDefinition;

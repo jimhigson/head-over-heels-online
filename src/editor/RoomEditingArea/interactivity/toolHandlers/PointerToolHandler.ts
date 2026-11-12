@@ -34,7 +34,6 @@ import {
   type EditorRoomItemId,
   type EditorRoomState,
 } from "../../../editorTypes";
-import { type EditorPaneId } from "../../../slice/EditorPane";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../../../slice/levelEditorSelectors";
 import {
   changeDragInProgress,
@@ -43,11 +42,12 @@ import {
   moveOrResizeItemAsPreview,
   openItemContextMenu,
   selectItem,
-  selectPaneSelectedJsonItemIds,
+  selectOpenRoomSelectedJsonItemIds,
   setHoveredItemInRoom,
   setSelectedItemsInRoom,
   toggleSelectedItemInRoom,
 } from "../../../slice/levelEditorSlice";
+import { existingOpenRoom, type OpenRoomId } from "../../../slice/OpenRoom";
 import { type ItemsDrag } from "../../../slice/reducers/dragToMoveReducers";
 import { getMovableVector } from "../../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import { moveOrResizeOutcome } from "../../../slice/reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
@@ -83,7 +83,7 @@ const { dispatch } = store;
  */
 const getJsonItemIdsToUseForPointingAt = (
   storeState: EditorRootState,
-  paneId: EditorPaneId,
+  openRoomId: OpenRoomId,
   roomState: EditorRoomState,
   mouseDownPointingAt: MaybePointingAtSomething | undefined,
 ): EditorRoomItemId[] => {
@@ -104,7 +104,10 @@ const getJsonItemIdsToUseForPointingAt = (
     return emptyArray;
   }
 
-  const selectedJsonItemIds = selectPaneSelectedJsonItemIds(storeState, paneId);
+  const selectedJsonItemIds = selectOpenRoomSelectedJsonItemIds(
+    storeState,
+    openRoomId,
+  );
 
   return selectedJsonItemIds.includes(mouseDownJsonItemId) ?
       // interacted with an already selected item - use all selected items:
@@ -294,7 +297,7 @@ export class PointerToolHandler implements ToolHandler<
   Extract<Tool, { type: "pointer" }>
 > {
   handleMouseMove({
-    paneId,
+    openRoomId,
     editable,
     roomState,
     pointingAt,
@@ -311,16 +314,21 @@ export class PointerToolHandler implements ToolHandler<
       editable ?
         getJsonItemIdsToUseForPointingAt(
           storeState,
-          paneId,
+          openRoomId,
           roomState,
           mouseDownPointingAtRef.current,
         )
-        // a pane that doesn't edit never drags items:
+        // a non-editable open room never drags items:
       : emptyArray;
 
     if (jsonItemIds.length === 0) {
       // can't be pointing without mouse going down on an item
-      dispatchHoveredOnChangedIfNeeded(paneId, editable, roomState, pointingAt);
+      dispatchHoveredOnChangedIfNeeded(
+        openRoomId,
+        editable,
+        roomState,
+        pointingAt,
+      );
       return;
     }
 
@@ -355,13 +363,18 @@ export class PointerToolHandler implements ToolHandler<
 
     if (!dragDeltaVec) {
       // not dragging so the most moving the pointer can do is change the hover status of items:
-      dispatchHoveredOnChangedIfNeeded(paneId, editable, roomState, pointingAt);
+      dispatchHoveredOnChangedIfNeeded(
+        openRoomId,
+        editable,
+        roomState,
+        pointingAt,
+      );
       return;
     }
 
     if (
       jsonItemIds.length === 1 &&
-      !selectPaneSelectedJsonItemIds(storeState, paneId).includes(
+      !selectOpenRoomSelectedJsonItemIds(storeState, openRoomId).includes(
         jsonItemIds[0],
       )
     ) {
@@ -484,8 +497,11 @@ export class PointerToolHandler implements ToolHandler<
       // nowhere near the drag can be moved to, so keep the last valid preview
       return;
     }
-    if (levelEditorState.panes[paneId].dragInProgress !== itemsDrag) {
-      dispatch(changeDragInProgress({ paneId, dragInProgress: itemsDrag }));
+    if (
+      existingOpenRoom(levelEditorState, openRoomId).dragInProgress !==
+      itemsDrag
+    ) {
+      dispatch(changeDragInProgress({ openRoomId, dragInProgress: itemsDrag }));
     }
     dispatch(
       moveOrResizeItemAsPreview({
@@ -498,7 +514,7 @@ export class PointerToolHandler implements ToolHandler<
   }
 
   handleMouseUp({
-    paneId,
+    openRoomId,
     editable,
     roomState,
     pointingAt,
@@ -526,18 +542,18 @@ export class PointerToolHandler implements ToolHandler<
         return;
       }
 
-      // a pane that doesn't edit has no context menu:
+      // a non-editable open room has no context menu:
       const isRightClick = editable && mouseEvent.button === 2;
       // right-clicking within the selection opens the menu for all of it:
       const keepsSelection =
         isRightClick &&
-        selectPaneSelectedJsonItemIds(storeState, paneId).includes(
+        selectOpenRoomSelectedJsonItemIds(storeState, openRoomId).includes(
           clickedOnItem.jsonItemId,
         );
 
       if (!keepsSelection) {
         dispatch(
-          // a pane that doesn't edit picks a single item:
+          // a non-editable open room picks a single item:
           editable && (mouseEvent.ctrlKey || mouseEvent.metaKey) ?
             toggleSelectedItemInRoom({
               jsonItemId: clickedOnItem.jsonItemId,
@@ -553,7 +569,7 @@ export class PointerToolHandler implements ToolHandler<
         // a right-click selects the item the same way a left-click does (above),
         // unless it is already selected, then additionally opens the context
         // menu for the resulting selection
-        dispatch(openItemContextMenu({ paneId, scrXy: pointingAt.scrXy }));
+        dispatch(openItemContextMenu({ openRoomId, scrXy: pointingAt.scrXy }));
       }
     } else if (isDragEnd) {
       dispatch(commitCurrentPreviewedEdits());
@@ -568,7 +584,7 @@ export class PointerToolHandler implements ToolHandler<
   }
 
   claimsDrag({
-    paneId,
+    openRoomId,
     editable,
     pointingAt,
     roomState,
@@ -581,7 +597,7 @@ export class PointerToolHandler implements ToolHandler<
     // the same conditions handleMouseMove bails on:
     const jsonItemIds = getJsonItemIdsToUseForPointingAt(
       storeState,
-      paneId,
+      openRoomId,
       roomState,
       pointingAt,
     );
@@ -593,8 +609,8 @@ export class PointerToolHandler implements ToolHandler<
   }
 
   handleMouseLeave({
-    paneId,
+    openRoomId,
   }: MouseLeaveParams<Extract<Tool, { type: "pointer" }>>) {
-    dispatch(setHoveredItemInRoom({ paneId, hoveredItem: undefined }));
+    dispatch(setHoveredItemInRoom({ openRoomId, hoveredItem: undefined }));
   }
 }

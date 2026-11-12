@@ -18,7 +18,7 @@ import {
   testRoomId,
 } from "./__test__/storeStates";
 
-const twoAdjacentBlocks = produce(
+const state0WithTwoAdjacentBlocks = produce(
   editorStateWithOneRoomWithNoItems,
   (draft) => {
     const { items } = draft.campaignInProgress.rooms[testRoomId];
@@ -37,14 +37,14 @@ const twoAdjacentBlocks = produce(
 
 const coalesceBothBlocks = (): LevelEditorState =>
   reduceLevelEditorActions(
-    twoAdjacentBlocks,
+    state0WithTwoAdjacentBlocks,
     setSelectedItemsInRoom({ jsonItemIds: ["b0", "b1"] as EditorRoomItemId[] }),
     coalesceSelectedItems({ timestamp: 0 }),
   );
 
 test("coalesces two adjacent matching blocks into a single multiplied item", () => {
-  const { items } =
-    selectCurrentCommittedRoomJsonFromLevelEditorState(coalesceBothBlocks());
+  const state1 = coalesceBothBlocks();
+  const { items } = selectCurrentCommittedRoomJsonFromLevelEditorState(state1);
 
   expect(Object.values(items)).toEqual([
     {
@@ -56,19 +56,22 @@ test("coalesces two adjacent matching blocks into a single multiplied item", () 
 });
 
 test("selects the resulting coalesced item", () => {
+  const state1 = coalesceBothBlocks();
+
   expect(
-    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(
-      coalesceBothBlocks(),
-    ),
+    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state1),
   ).toHaveLength(1);
 });
 
 test("coalescing is undoable", () => {
-  const undone = reduceLevelEditorActions(coalesceBothBlocks(), undo());
+  const state1 = coalesceBothBlocks();
+  const state2Undone = reduceLevelEditorActions(state1, undo());
 
   expect(
-    selectCurrentCommittedRoomJsonFromLevelEditorState(undone).items,
+    selectCurrentCommittedRoomJsonFromLevelEditorState(state2Undone).items,
   ).toEqual(
-    selectCurrentCommittedRoomJsonFromLevelEditorState(twoAdjacentBlocks).items,
+    selectCurrentCommittedRoomJsonFromLevelEditorState(
+      state0WithTwoAdjacentBlocks,
+    ).items,
   );
 });

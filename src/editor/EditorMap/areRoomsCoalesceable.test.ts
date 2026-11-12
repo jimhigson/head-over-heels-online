@@ -14,18 +14,19 @@ test("two rooms side by side are coalesceable", () => {
   const startRoomId = selectCursorRoomIdFromLevelEditorState(
     initialLevelEditorSliceState,
   );
-  const state = reduceLevelEditorActions(
-    initialLevelEditorSliceState,
+  const state0 = initialLevelEditorSliceState;
+  const state1 = reduceLevelEditorActions(
+    state0,
     insertRoomInDirectionThunk("right"),
   );
-  const rightRoomId = selectCursorRoomIdFromLevelEditorState(state);
+  const rightRoomId = selectCursorRoomIdFromLevelEditorState(state1);
 
   expect(
     areRoomsCoalesceable(
       [startRoomId, rightRoomId],
       sortRoomGridPositions(
         roomGridPositions({
-          campaign: state.campaignInProgress,
+          campaign: state1.campaignInProgress,
           roomId: startRoomId,
         }).nodes,
       ),
@@ -37,19 +38,20 @@ test("two rooms with a room between them are not coalesceable", () => {
   const startRoomId = selectCursorRoomIdFromLevelEditorState(
     initialLevelEditorSliceState,
   );
-  const state = reduceLevelEditorActions(
-    initialLevelEditorSliceState,
+  const state0 = initialLevelEditorSliceState;
+  const state1 = reduceLevelEditorActions(
+    state0,
     insertRoomInDirectionThunk("right"),
     insertRoomInDirectionThunk("right"),
   );
-  const furthestRoomId = selectCursorRoomIdFromLevelEditorState(state);
+  const furthestRoomId = selectCursorRoomIdFromLevelEditorState(state1);
 
   expect(
     areRoomsCoalesceable(
       [startRoomId, furthestRoomId],
       sortRoomGridPositions(
         roomGridPositions({
-          campaign: state.campaignInProgress,
+          campaign: state1.campaignInProgress,
           roomId: startRoomId,
         }).nodes,
       ),
@@ -61,16 +63,18 @@ test("two rooms side by side above the start room are coalesceable", () => {
   const startRoomId = selectCursorRoomIdFromLevelEditorState(
     initialLevelEditorSliceState,
   );
-  const withRoomAbove = reduceLevelEditorActions(
-    initialLevelEditorSliceState,
+  const state0 = initialLevelEditorSliceState;
+  const state1WithRoomAbove = reduceLevelEditorActions(
+    state0,
     insertRoomInDirectionThunk("up"),
   );
-  const aboveRoomId = selectCursorRoomIdFromLevelEditorState(withRoomAbove);
-  const state = reduceLevelEditorActions(
-    withRoomAbove,
+  const aboveRoomId =
+    selectCursorRoomIdFromLevelEditorState(state1WithRoomAbove);
+  const state2 = reduceLevelEditorActions(
+    state1WithRoomAbove,
     insertRoomInDirectionThunk("right"),
   );
-  const aboveRightRoomId = selectCursorRoomIdFromLevelEditorState(state);
+  const aboveRightRoomId = selectCursorRoomIdFromLevelEditorState(state2);
 
   expect(
     areRoomsCoalesceable(
@@ -78,7 +82,7 @@ test("two rooms side by side above the start room are coalesceable", () => {
       // laid out from the start room, so the area's first cell is below them:
       sortRoomGridPositions(
         roomGridPositions({
-          campaign: state.campaignInProgress,
+          campaign: state2.campaignInProgress,
           roomId: startRoomId,
         }).nodes,
       ),
@@ -90,19 +94,20 @@ test("rooms next to each other on the plan, but on different levels, are not coa
   const startRoomId = selectCursorRoomIdFromLevelEditorState(
     initialLevelEditorSliceState,
   );
-  const state = reduceLevelEditorActions(
-    initialLevelEditorSliceState,
+  const state0 = initialLevelEditorSliceState;
+  const state1 = reduceLevelEditorActions(
+    state0,
     insertRoomInDirectionThunk("up"),
     insertRoomInDirectionThunk("right"),
   );
-  const aboveRightRoomId = selectCursorRoomIdFromLevelEditorState(state);
+  const aboveRightRoomId = selectCursorRoomIdFromLevelEditorState(state1);
 
   expect(
     areRoomsCoalesceable(
       [startRoomId, aboveRightRoomId],
       sortRoomGridPositions(
         roomGridPositions({
-          campaign: state.campaignInProgress,
+          campaign: state1.campaignInProgress,
           roomId: startRoomId,
         }).nodes,
       ),
