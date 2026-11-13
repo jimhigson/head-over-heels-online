@@ -6,7 +6,7 @@ import {
 } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { type EditorRootState } from "../../store/store";
 import { emptyArray, emptyObject } from "../../utils/empty";
-import { twClass } from "../../utils/twClass" with { type: "macro" };
+import { twClass } from "../../utils/twClass.tsx" with { type: "macro" };
 import { doorItemTool } from "../RoomEditingArea/interactivity/doorItemTool";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../slice/levelEditorSelectors";
 import {

@@ -1,4 +1,4 @@
-import { twClass } from "../../../utils/twClass" with { type: "macro" };
+import { twClass } from "../../../utils/twClass.tsx" with { type: "macro" };
 import { optionsDialogColourClasses } from "./menuDialog/dialogs/optionsDialogColourClasses";
 
 export const optionsDialogClasses =

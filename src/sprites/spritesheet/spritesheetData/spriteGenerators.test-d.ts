@@ -1,6 +1,6 @@
 import { expectTypeOf, test } from "vitest";
 
-import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
 import {
   type FrameNumbers,
   type NumberedTextureName,

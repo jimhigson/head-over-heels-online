@@ -1,4 +1,5 @@
 import { imageSize } from "image-size";
+import { readFileSync } from "node:fs";
 import plugin from "tailwindcss/plugin";
 import { type CSSRuleObject } from "tailwindcss/types/config";
 
@@ -10,7 +11,7 @@ import {
 } from "../../sprites/palette/spritesheetPalette";
 import { halfbriteHex } from "../../utils/colour/halfbrite";
 
-const spritesheetSize = imageSize("gfx/spritesBlockstack.webp");
+const spritesheetSize = imageSize(readFileSync("gfx/spritesBlockstack.webp"));
 
 // https://tailwindcss.com/docs/plugins
 export const spritesTailwindPlugin = plugin(

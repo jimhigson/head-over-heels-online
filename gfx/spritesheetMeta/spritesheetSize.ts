@@ -1,4 +1,5 @@
 import { imageSize } from "image-size";
+import { readFileSync } from "node:fs";
 
 /** every sheet the game draws from - all square, all the same size */
 const sheetPaths = [
@@ -6,7 +7,7 @@ const sheetPaths = [
   "gfx/spritesToppy.webp",
   "gfx/spritesDebug.webp",
   "gfx/spritesBlockstack.borders.png",
-];
+] as const;
 
 /**
  * The side length, in pixels, of the game's spritesheets on-disk.
@@ -15,7 +16,7 @@ const sheetPaths = [
  */
 export const spritesheetSideLength = (): number => {
   const sizes = sheetPaths.map((path) => {
-    const { width, height } = imageSize(path);
+    const { width, height } = imageSize(readFileSync(path));
     if (width === undefined || height === undefined || width !== height) {
       throw new Error(`${path} is ${width}x${height}, not a square sheet`);
     }

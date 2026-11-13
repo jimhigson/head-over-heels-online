@@ -31,94 +31,32 @@ const roomUndo = (state: LevelEditorState) =>
 const roomRedo = (state: LevelEditorState) =>
   state.history[selectCursorRoomIdFromLevelEditorState(state)]?.redo ?? [];
 
-describe(// concerns of the slice that don't fit into any particular *Reducers.test.ts file
-"cross-cutting concerns", () => {
-  // but that was found - test confirms the fix
-  test("can create a block, select it, and undo without errors", () => {
-    const state0 = initialLevelEditorSliceState;
+describe(
+  // concerns of the slice that don't fit into any particular *Reducers.test.ts file
+  "cross-cutting concerns",
+  () => {
+    // but that was found - test confirms the fix
+    test("can create a block, select it, and undo without errors", () => {
+      const state0 = initialLevelEditorSliceState;
 
-    const a0 = setTool({
-      type: "item",
-      item: {
-        type: "block",
-        config: { style: "organic" },
-      },
-    });
-
-    const state1 = reduce(state0, a0);
-
-    expect(roomUndo(state1).length).toBe(0);
-
-    const a1 = applyItemTool({
-      blockPosition: { x: 4, y: 4, z: 4 },
-      pointedAtItemJson: {
-        type: "floor",
-        // middle of the floor:
-        position: { x: 4, y: 4, z: 4 },
-        config: {
-          floorType: "standable",
-          scenery: "blacktooth",
-          times: { x: 8, y: 8 },
-        },
-      },
-      preview: false,
-      timestamp: 0,
-    });
-
-    const state2 = reduce(state1, a1);
-
-    // should now have something to undo:
-    expect(roomUndo(state2).length).toBe(1);
-
-    // find the item we just added:
-    const [addedBlockId] = iterateRoomJsonItemsWithIds(
-      selectCurrentCommittedRoomJson({ levelEditor: state2 }).items,
-    ).find(([, item]) => item.type === "block")!;
-
-    const a2 = setSelectedItemsInRoom({
-      jsonItemIds: [addedBlockId],
-    });
-
-    const state3 = reduce(state2, a2);
-
-    // should have selected that item:
-    expect(
-      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state3),
-    ).toEqual([addedBlockId]);
-
-    const a3 = undo();
-
-    const state4 = reduce(state3, a3);
-
-    const state4HasBlock = iterateRoomJsonItemsWithIds(
-      selectCurrentCommittedRoomJson({ levelEditor: state4 }).items,
-    ).some(([, item]) => item.type === "block")!;
-
-    expect(state4HasBlock).toBe(false);
-
-    expect(
-      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state4),
-    ).toEqual([]);
-  });
-
-  test("undo entry has a label describing the action", () => {
-    const state0 = initialLevelEditorSliceState;
-
-    const state1 = reduce(
-      state0,
-      setTool({
+      const a0 = setTool({
         type: "item",
-        item: { type: "block", config: { style: "organic" } },
-      }),
-    );
+        item: {
+          type: "block",
+          config: { style: "organic" },
+        },
+      });
 
-    const state2 = reduce(
-      state1,
-      applyItemTool({
+      const state1 = reduce(state0, a0);
+
+      expect(roomUndo(state1).length).toBe(0);
+
+      const a1 = applyItemTool({
         blockPosition: { x: 4, y: 4, z: 4 },
         pointedAtItemJson: {
           type: "floor",
-          position: { x: 0, y: 0, z: 0 },
+          // middle of the floor:
+          position: { x: 4, y: 4, z: 4 },
           config: {
             floorType: "standable",
             scenery: "blacktooth",
@@ -127,147 +65,214 @@ describe(// concerns of the slice that don't fit into any particular *Reducers.t
         },
         preview: false,
         timestamp: 0,
-      }),
-    );
+      });
 
-    expect(roomUndo(state2)).toHaveLength(1);
-    const [{ description }] = roomUndo(state2);
-    expect(description.kind).toBe("itemAction");
-    if (description.kind === "itemAction") {
-      expect(description.verb).toBe("Add");
-      expect(description.items).toHaveLength(1);
-      const [[, addedItem]] = description.items;
-      expect(addedItem.type).toBe("block");
-    }
-  });
+      const state2 = reduce(state1, a1);
 
-  test("multi-step undo pops multiple entries", () => {
-    const state0 = initialLevelEditorSliceState;
+      // should now have something to undo:
+      expect(roomUndo(state2).length).toBe(1);
 
-    const state1 = reduce(
-      state0,
-      changeRoomColour({ colour: { hue: "magenta" }, timestamp: 0 }),
-    );
-    const state2 = reduce(
-      state1,
-      changeRoomColour({ colour: { hue: "cyan" }, timestamp: 0 }),
-    );
-    const state3 = reduce(
-      state2,
-      changeRoomColour({ colour: { shade: "dimmed" }, timestamp: 0 }),
-    );
+      // find the item we just added:
+      const [addedBlockId] = iterateRoomJsonItemsWithIds(
+        selectCurrentCommittedRoomJson({ levelEditor: state2 }).items,
+      ).find(([, item]) => item.type === "block")!;
 
-    expect(roomUndo(state3)).toHaveLength(3);
+      const a2 = setSelectedItemsInRoom({
+        jsonItemIds: [addedBlockId],
+      });
 
-    const state4 = reduce(state3, undo({ steps: 2 }));
+      const state3 = reduce(state2, a2);
 
-    expect(roomUndo(state4)).toHaveLength(1);
-    expect(roomRedo(state4)).toHaveLength(2);
-  });
+      // should have selected that item:
+      expect(
+        selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state3),
+      ).toEqual([addedBlockId]);
 
-  test("multi-step redo pops multiple entries", () => {
-    const state0 = initialLevelEditorSliceState;
+      const a3 = undo();
 
-    const state1 = reduce(
-      state0,
-      changeRoomColour({ colour: { hue: "magenta" }, timestamp: 0 }),
-    );
-    const state2 = reduce(
-      state1,
-      changeRoomColour({ colour: { hue: "cyan" }, timestamp: 0 }),
-    );
-    const state3 = reduce(state2, undo({ steps: 2 }));
+      const state4 = reduce(state3, a3);
 
-    expect(roomRedo(state3)).toHaveLength(2);
+      const state4HasBlock = iterateRoomJsonItemsWithIds(
+        selectCurrentCommittedRoomJson({ levelEditor: state4 }).items,
+      ).some(([, item]) => item.type === "block")!;
 
-    const state4 = reduce(state3, redo({ steps: 2 }));
+      expect(state4HasBlock).toBe(false);
 
-    expect(roomUndo(state4)).toHaveLength(2);
-    expect(roomRedo(state4)).toHaveLength(0);
-  });
+      expect(
+        selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state4),
+      ).toEqual([]);
+    });
 
-  test("delete generates label with item type and id", () => {
-    const state0 = initialLevelEditorSliceState;
+    test("undo entry has a label describing the action", () => {
+      const state0 = initialLevelEditorSliceState;
 
-    const state1 = reduce(
-      state0,
-      setTool({
-        type: "item",
-        item: { type: "block", config: { style: "organic" } },
-      }),
-    );
+      const state1 = reduce(
+        state0,
+        setTool({
+          type: "item",
+          item: { type: "block", config: { style: "organic" } },
+        }),
+      );
 
-    const state2 = reduce(
-      state1,
-      applyItemTool({
-        blockPosition: { x: 4, y: 4, z: 4 },
-        pointedAtItemJson: {
-          type: "floor",
-          position: { x: 0, y: 0, z: 0 },
-          config: {
-            floorType: "standable",
-            scenery: "blacktooth",
-            times: { x: 8, y: 8 },
+      const state2 = reduce(
+        state1,
+        applyItemTool({
+          blockPosition: { x: 4, y: 4, z: 4 },
+          pointedAtItemJson: {
+            type: "floor",
+            position: { x: 0, y: 0, z: 0 },
+            config: {
+              floorType: "standable",
+              scenery: "blacktooth",
+              times: { x: 8, y: 8 },
+            },
           },
-        },
-        preview: false,
-        timestamp: 0,
-      }),
-    );
+          preview: false,
+          timestamp: 0,
+        }),
+      );
 
-    const [addedBlockId] = iterateRoomJsonItemsWithIds(
-      selectCurrentCommittedRoomJson({ levelEditor: state2 }).items,
-    ).find(([, item]) => item.type === "block")!;
+      expect(roomUndo(state2)).toHaveLength(1);
+      const [{ description }] = roomUndo(state2);
+      expect(description.kind).toBe("itemAction");
+      if (description.kind === "itemAction") {
+        expect(description.verb).toBe("Add");
+        expect(description.items).toHaveLength(1);
+        const [[, addedItem]] = description.items;
+        expect(addedItem.type).toBe("block");
+      }
+    });
 
-    const state3 = reduce(
-      state2,
-      setSelectedItemsInRoom({ jsonItemIds: [addedBlockId] }),
-    );
-    const state4 = reduce(state3, deleteSelected({ timestamp: 0 }));
+    test("multi-step undo pops multiple entries", () => {
+      const state0 = initialLevelEditorSliceState;
 
-    expect(roomUndo(state4)).toHaveLength(2);
-    const desc = roomUndo(state4)[1].description;
-    expect(desc.kind).toBe("itemAction");
-    if (desc.kind === "itemAction") {
-      expect(desc.verb).toBe("Delete");
-      expect(desc.items).toHaveLength(1);
-      const [[deletedId, deletedItem]] = desc.items;
-      expect(deletedId).toBe(addedBlockId);
-      expect(deletedItem.type).toBe("block");
-    }
-  });
+      const state1 = reduce(
+        state0,
+        changeRoomColour({ colour: { hue: "magenta" }, timestamp: 0 }),
+      );
+      const state2 = reduce(
+        state1,
+        changeRoomColour({ colour: { hue: "cyan" }, timestamp: 0 }),
+      );
+      const state3 = reduce(
+        state2,
+        changeRoomColour({ colour: { shade: "dimmed" }, timestamp: 0 }),
+      );
 
-  test("renaming a room via JSON edit can be undone", () => {
-    const state0 = initialLevelEditorSliceState;
-    const originalRoomId = selectCursorRoomIdFromLevelEditorState(state0);
-    const newRoomId = "renamedRoom" as EditorRoomId;
+      expect(roomUndo(state3)).toHaveLength(3);
 
-    const currentRoom = state0.campaignInProgress.rooms[
-      originalRoomId
-    ] as EditorRoomJson;
+      const state4 = reduce(state3, undo({ steps: 2 }));
 
-    const state1 = reduce(
-      state0,
-      roomJsonEdited({
-        roomJson: { ...currentRoom, id: newRoomId },
-        timestamp: 0,
-      }),
-    );
+      expect(roomUndo(state4)).toHaveLength(1);
+      expect(roomRedo(state4)).toHaveLength(2);
+    });
 
-    expect(selectCursorRoomIdFromLevelEditorState(state1)).toBe(newRoomId);
-    expect(state1.campaignInProgress.rooms[newRoomId]).toBeDefined();
-    expect(state1.campaignInProgress.rooms[originalRoomId]).toBeUndefined();
+    test("multi-step redo pops multiple entries", () => {
+      const state0 = initialLevelEditorSliceState;
 
-    const state2 = reduce(state1, undo());
+      const state1 = reduce(
+        state0,
+        changeRoomColour({ colour: { hue: "magenta" }, timestamp: 0 }),
+      );
+      const state2 = reduce(
+        state1,
+        changeRoomColour({ colour: { hue: "cyan" }, timestamp: 0 }),
+      );
+      const state3 = reduce(state2, undo({ steps: 2 }));
 
-    expect(selectCursorRoomIdFromLevelEditorState(state2)).toBe(originalRoomId);
-    expect(state2.campaignInProgress.rooms[originalRoomId]).toBeDefined();
-    expect(state2.campaignInProgress.rooms[newRoomId]).toBeUndefined();
+      expect(roomRedo(state3)).toHaveLength(2);
 
-    const state3 = reduce(state2, redo());
+      const state4 = reduce(state3, redo({ steps: 2 }));
 
-    expect(selectCursorRoomIdFromLevelEditorState(state3)).toBe(newRoomId);
-    expect(state3.campaignInProgress.rooms[newRoomId]).toBeDefined();
-    expect(state3.campaignInProgress.rooms[originalRoomId]).toBeUndefined();
-  });
-});
+      expect(roomUndo(state4)).toHaveLength(2);
+      expect(roomRedo(state4)).toHaveLength(0);
+    });
+
+    test("delete generates label with item type and id", () => {
+      const state0 = initialLevelEditorSliceState;
+
+      const state1 = reduce(
+        state0,
+        setTool({
+          type: "item",
+          item: { type: "block", config: { style: "organic" } },
+        }),
+      );
+
+      const state2 = reduce(
+        state1,
+        applyItemTool({
+          blockPosition: { x: 4, y: 4, z: 4 },
+          pointedAtItemJson: {
+            type: "floor",
+            position: { x: 0, y: 0, z: 0 },
+            config: {
+              floorType: "standable",
+              scenery: "blacktooth",
+              times: { x: 8, y: 8 },
+            },
+          },
+          preview: false,
+          timestamp: 0,
+        }),
+      );
+
+      const [addedBlockId] = iterateRoomJsonItemsWithIds(
+        selectCurrentCommittedRoomJson({ levelEditor: state2 }).items,
+      ).find(([, item]) => item.type === "block")!;
+
+      const state3 = reduce(
+        state2,
+        setSelectedItemsInRoom({ jsonItemIds: [addedBlockId] }),
+      );
+      const state4 = reduce(state3, deleteSelected({ timestamp: 0 }));
+
+      expect(roomUndo(state4)).toHaveLength(2);
+      const desc = roomUndo(state4)[1].description;
+      expect(desc.kind).toBe("itemAction");
+      if (desc.kind === "itemAction") {
+        expect(desc.verb).toBe("Delete");
+        expect(desc.items).toHaveLength(1);
+        const [[deletedId, deletedItem]] = desc.items;
+        expect(deletedId).toBe(addedBlockId);
+        expect(deletedItem.type).toBe("block");
+      }
+    });
+
+    test("renaming a room via JSON edit can be undone", () => {
+      const state0 = initialLevelEditorSliceState;
+      const originalRoomId = selectCursorRoomIdFromLevelEditorState(state0);
+      const newRoomId = "renamedRoom" as EditorRoomId;
+
+      const currentRoom = state0.campaignInProgress.rooms[
+        originalRoomId
+      ] as EditorRoomJson;
+
+      const state1 = reduce(
+        state0,
+        roomJsonEdited({
+          roomJson: { ...currentRoom, id: newRoomId },
+          timestamp: 0,
+        }),
+      );
+
+      expect(selectCursorRoomIdFromLevelEditorState(state1)).toBe(newRoomId);
+      expect(state1.campaignInProgress.rooms[newRoomId]).toBeDefined();
+      expect(state1.campaignInProgress.rooms[originalRoomId]).toBeUndefined();
+
+      const state2 = reduce(state1, undo());
+
+      expect(selectCursorRoomIdFromLevelEditorState(state2)).toBe(
+        originalRoomId,
+      );
+      expect(state2.campaignInProgress.rooms[originalRoomId]).toBeDefined();
+      expect(state2.campaignInProgress.rooms[newRoomId]).toBeUndefined();
+
+      const state3 = reduce(state2, redo());
+
+      expect(selectCursorRoomIdFromLevelEditorState(state3)).toBe(newRoomId);
+      expect(state3.campaignInProgress.rooms[newRoomId]).toBeDefined();
+      expect(state3.campaignInProgress.rooms[originalRoomId]).toBeUndefined();
+    });
+  },
+);

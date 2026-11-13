@@ -1,4 +1,4 @@
-import { twClass } from "../../../utils/twClass" with { type: "macro" };
+import { twClass } from "../../../utils/twClass.tsx" with { type: "macro" };
 import { CommandToolbarButton } from "../../commands/CommandToolbarButton";
 import { nudgeCommandDefinitions } from "../../commands/nudgeCommandDefinitions";
 

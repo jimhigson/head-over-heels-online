@@ -3,7 +3,7 @@ import {
   type ToppyPaletteColourName,
 } from "../../src/sprites/palette/spritesheetPalette";
 import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { octantIndexOfDirection } from "../../src/utils/vectors/octantIndexOfDirection" with { type: "macro" };
+import { octantIndexOfDirection } from "../../src/utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
 import { itemRenderExtents } from "./itemRenderExtents";
 
 export const toppySpritesheetMeta: SpritesheetMetadata<

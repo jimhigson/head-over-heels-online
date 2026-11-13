@@ -1,6 +1,6 @@
 import { type SpritesheetData } from "pixi.js";
 
-import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
 import {
   fourDirections,
   fourDirectionsOfNumberedTextures,

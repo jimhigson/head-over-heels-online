@@ -1,4 +1,4 @@
-import { bench, describe } from "vitest";
+import { describe, test } from "vitest";
 
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";
@@ -130,8 +130,10 @@ for (const scenario of scenarios) {
   const { itemCount, roomBlocks, label } = scenario;
 
   describe(`${itemCount} items in ${label}`, () => {
-    bench("populate from empty", () => {
-      populatedBroadPhase(makeItems(scenario));
+    test("populate from empty", async ({ bench }) => {
+      await bench("populate from empty", () => {
+        populatedBroadPhase(makeItems(scenario));
+      }).run();
     });
 
     // per-frame workload state, reused across bench iterations (the broadPhase is
@@ -144,32 +146,36 @@ for (const scenario of scenarios) {
     const movedStride = Math.round(1 / movedFractionPerFrame);
     let frame = 0;
 
-    bench(
-      `${framesPerRun} frames, ${movedFractionPerFrame * 100}% items moving`,
-      () => {
-        for (let f = 0; f < framesPerRun; f++, frame++) {
-          // move every 10th item, the selection rotating so all items take
-          // turns at moving:
-          for (
-            let i = frame % movedStride;
-            i < itemsArray.length;
-            i += movedStride
-          ) {
-            const item = itemsArray[i];
-            // walk to a new spot on the floor grid (height level kept):
-            item.state.box.x =
-              Math.floor(random() * (roomBlocks.x - 1)) * blockSizePx.x;
-            item.state.box.y =
-              Math.floor(random() * (roomBlocks.y - 1)) * blockSizePx.y;
+    test(`${framesPerRun} frames, ${movedFractionPerFrame * 100}% items moving`, async ({
+      bench,
+    }) => {
+      await bench(
+        `${framesPerRun} frames, ${movedFractionPerFrame * 100}% items moving`,
+        () => {
+          for (let f = 0; f < framesPerRun; f++, frame++) {
+            // move every 10th item, the selection rotating so all items take
+            // turns at moving:
+            for (
+              let i = frame % movedStride;
+              i < itemsArray.length;
+              i += movedStride
+            ) {
+              const item = itemsArray[i];
+              // walk to a new spot on the floor grid (height level kept):
+              item.state.box.x =
+                Math.floor(random() * (roomBlocks.x - 1)) * blockSizePx.x;
+              item.state.box.y =
+                Math.floor(random() * (roomBlocks.y - 1)) * blockSizePx.y;
+            }
+
+            broadPhase.updateManyItems(items, noRenderBoxes, cameraAngleBase);
+
+            // updateZEdges consumes every candidate pair:
+            consumeCandidatePairs(broadPhase);
           }
-
-          broadPhase.updateManyItems(items, noRenderBoxes, cameraAngleBase);
-
-          // updateZEdges consumes every candidate pair:
-          consumeCandidatePairs(broadPhase);
-        }
-      },
-    );
+        },
+      ).run();
+    });
 
     // the camera-turn scenario: nothing moves in-world, θ sweeps ~1.5°/frame,
     // every item re-projects every frame: the persistent broadPhase is given the
@@ -180,18 +186,22 @@ for (const scenario of scenarios) {
     const turnBroadPhase = populatedBroadPhase(turnItems, turnRenderBoxes);
     let turnFrame = 0;
 
-    bench(
-      `camera turn: ${framesPerRun} frames, θ sweeping, all items re-projected`,
-      () => {
-        for (let f = 0; f < framesPerRun; f++, turnFrame++) {
-          turnBroadPhase.updateManyItems(
-            turnItems,
-            turnRenderBoxes,
-            sweptCameraAngleForFrame(turnFrame),
-          );
-          consumeCandidatePairs(turnBroadPhase);
-        }
-      },
-    );
+    test(`camera turn: ${framesPerRun} frames, θ sweeping, all items re-projected`, async ({
+      bench,
+    }) => {
+      await bench(
+        `camera turn: ${framesPerRun} frames, θ sweeping, all items re-projected`,
+        () => {
+          for (let f = 0; f < framesPerRun; f++, turnFrame++) {
+            turnBroadPhase.updateManyItems(
+              turnItems,
+              turnRenderBoxes,
+              sweptCameraAngleForFrame(turnFrame),
+            );
+            consumeCandidatePairs(turnBroadPhase);
+          }
+        },
+      ).run();
+    });
   });
 }

@@ -1,5 +1,5 @@
 import { CssVariables } from "../../game/components/CssVariables";
-import { twClass } from "../../utils/twClass" with { type: "macro" };
+import { twClass } from "../../utils/twClass.tsx" with { type: "macro" };
 
 const emSpace = "\u2003";
 

@@ -1,6 +1,6 @@
 const store = new Map<string, string>();
 
-globalThis.localStorage = {
+const stubLocalStorage = {
   getItem(key: string) {
     return store.get(key) ?? null;
   },
@@ -20,3 +20,9 @@ globalThis.localStorage = {
     return [...store.keys()][index] ?? null;
   },
 } satisfies Storage;
+
+// defined rather than assigned: dom environments expose localStorage as a getter
+Object.defineProperty(globalThis, "localStorage", {
+  value: stubLocalStorage,
+  configurable: true,
+});

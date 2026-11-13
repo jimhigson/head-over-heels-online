@@ -1,4 +1,4 @@
-import { bench } from "vitest";
+import { test } from "vitest";
 
 import { blockstackPixiPalettes } from "../../../../sprites/palette/spritesheetPixiPalettes";
 import { resolveSwops } from "../../../../utils/palette/palette";
@@ -13,12 +13,10 @@ import { voronoiLut } from "./voronoiLut";
    · voronoiLut (palette + halfbrite)  305.93  2.8776  4.4816  3.2688  3.2075  4.2281  4.3240  4.4816  ±0.75%      500
 
  */
-bench(
-  "voronoiLut (palette + halfbrite)",
-  () => {
+test("voronoiLut (palette + halfbrite)", async ({ bench }) => {
+  await bench("voronoiLut (palette + halfbrite)", () => {
     voronoiLut(
       resolveSwops(blockstackPixiPalettes.basic, blockstackPixiPalettes.basic),
     );
-  },
-  { iterations: 500 },
-);
+  }).run({ iterations: 500 });
+});

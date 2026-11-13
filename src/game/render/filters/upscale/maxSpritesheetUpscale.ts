@@ -1,4 +1,4 @@
-import { spritesheetSideLength } from "../../../../../gfx/spritesheetMeta/spritesheetSize" with { type: "macro" };
+import { spritesheetSideLength } from "../../../../../gfx/spritesheetMeta/spritesheetSize.ts" with { type: "macro" };
 
 /**
  * what to assume where the hardware cannot be asked - server-side rendering,

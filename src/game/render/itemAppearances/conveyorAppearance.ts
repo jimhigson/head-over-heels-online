@@ -6,7 +6,7 @@ import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId"
 import { neverTime } from "../../../utils/neverTime";
 import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/bakeContainerToSprite";
 import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
-import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
 import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { rotateXy } from "../../../utils/vectors/rotateXy";
 import {

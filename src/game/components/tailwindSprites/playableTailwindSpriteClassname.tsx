@@ -9,7 +9,7 @@ import {
 } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppSelector } from "../../../store/hooks";
 import { selectSpritesheetName } from "../../../store/slices/gameMenus/gameMenusSelectors";
-import { twClass } from "../../../utils/twClass" with { type: "macro" };
+import { twClass } from "../../../utils/twClass.tsx" with { type: "macro" };
 import { type DirectionXy8 } from "../../../utils/vectors/vectors";
 
 const idleHeadClass = (

@@ -182,7 +182,8 @@ const runInterleaved = async () => {
       const result = await child;
       // one server stopping (or failing to start) takes the other down too
       for (const other of children) {
-        if (other !== child && other.exitCode === null) {
+        // kill() is a no-op on a server that has already exited
+        if (other !== child) {
           other.kill();
         }
       }
