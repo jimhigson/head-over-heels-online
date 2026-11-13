@@ -8,15 +8,14 @@ import { useOpenRoomPane } from "./useOpenRoomPane";
 
 /**
  * resizing the renderer is relatively expensive, so while the pane is being
- * resized the (css-stretched) canvas is left alone and the renderer resize
- * lands on the trailing edge
+ * resized the canvas is left as it is and the renderer resize lands on the
+ * trailing edge
  */
-const resizeDebounceMs = 200;
+const resizeDebounceMs = 500;
 
 /**
  * keeps the renderer's logical size matched to the pane element's css size,
- * and the store told of it. The canvas element itself is styled to fill the
- * pane, so between debounced resizes it stretches, then sharpens.
+ * and the store told of it
  */
 export const useResizePixiApplicationToPane = (
   /** the pane element the canvas fills */

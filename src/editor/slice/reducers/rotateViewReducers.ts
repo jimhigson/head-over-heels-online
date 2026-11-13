@@ -15,11 +15,11 @@ import {
 } from "../../../utils/vectors/rotateXy";
 import { type DirectionXy4, type Xy } from "../../../utils/vectors/vectors";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { type OpenRoom, type OpenRoomId } from "../OpenRoom";
 import {
-  type OpenRoom,
-  type OpenRoomId,
+  findLayoutNode,
   selectActiveOpenRoomFromLevelEditorState,
-} from "../OpenRoom";
+} from "../PaneLayout";
 
 /**
  * turn an open room's view to a new angle; its framing no longer fits, so it
@@ -80,7 +80,7 @@ export const rotateViewSelectors = {
    * the angle an open room is viewed from
    */
   selectOpenRoomCameraAngle(state: LevelEditorState, openRoomId: OpenRoomId) {
-    const openRoom = state.openRooms[openRoomId];
+    const openRoom = findLayoutNode(state.layout, openRoomId);
     // check the room wasn't closed (in case we have a stale openRoomId reference)
     if (openRoom === undefined) {
       return cameraAngleBase;

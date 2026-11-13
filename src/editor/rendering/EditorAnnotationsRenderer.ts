@@ -42,6 +42,7 @@ import {
   setClickableAnnotationHovered,
 } from "../slice/levelEditorSlice";
 import { type OpenRoomId } from "../slice/OpenRoom";
+import { findLayoutNode } from "../slice/PaneLayout";
 
 const selectionColour = blockstackPixiPalettes.basic.pastelBlue;
 const monsterWakesColour = blockstackPixiPalettes.basic.lightBeige;
@@ -536,7 +537,7 @@ class EditorAnnotationsRenderer<
     const { jsonItemId } = item;
 
     const state = editorStore.getState();
-    const openRoom = state.levelEditor.openRooms[this.#openRoomId];
+    const openRoom = findLayoutNode(state.levelEditor.layout, this.#openRoomId);
     // check the room wasn't closed (in case we have a stale openRoomId
     // reference) - eg a frame drawn after its tab closed but before its pane
     // unmounts:

@@ -88,12 +88,7 @@ export const addReturnDoorInPlace = <
     config: {
       toRoom: fromRoomJson.id,
       direction: returnDoorDirection,
-      meta:
-        fromDoorSubroom === "*" ? undefined : (
-          {
-            toSubRoom: fromDoorSubroom,
-          }
-        ),
+      ...(fromDoorSubroom !== "*" && { meta: { toSubRoom: fromDoorSubroom } }),
     },
     position: returnDoorPosition,
   };

@@ -1,5 +1,5 @@
 import { type EditorThunk } from "../../../store/store";
-import { loadedRoomCaches } from "../../loadedRoomCache/loadedRoomCaches";
+import { findLoadedRoomCache } from "../../loadedRoomCache/loadedRoomCaches";
 import { fitEditorRoomView } from "../../slice/EditorRoomView";
 import {
   openRoomViewChanged,
@@ -22,7 +22,7 @@ export const fitOpenRoomInViewThunk =
   (openRoomId: OpenRoomId): EditorThunk =>
   (dispatch, getState) => {
     const state = getState();
-    const loadedRoom = loadedRoomCaches.get(openRoomId);
+    const loadedRoom = findLoadedRoomCache(openRoomId);
     const paneSize = selectOpenRoomPaneSize(state, openRoomId);
     // check the open room wasn't closed (in case we have a stale openRoomId reference)
     if (loadedRoom === undefined || paneSize === undefined) {

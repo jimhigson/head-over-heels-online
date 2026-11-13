@@ -18,21 +18,25 @@ import {
   type EditorRoomState,
   type EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
+import { selectRoomJsonWithPreviews } from "../slice/levelEditorSelectors";
+import { selectRoom } from "../slice/levelEditorSlice";
 import { loadEditorRoom } from "../slice/loadEditorRoom";
+import { type OpenRoomId } from "../slice/OpenRoom";
+import { findLayoutNode } from "../slice/PaneLayout";
 
 /**
- * which room json a {@link LoadedRoomCache} follows. Both must be caching
+ * the json an open room's loaded room follows. Both come from caching
  * selectors - a changed identity is taken to mean a changed room
  */
-export type LoadedRoomJsonSelectors = {
+type RoomJsons = {
   /**
-   * the json to load, previews included
+   * the json to load - previews included, if the open room edits its room
    */
-  selectRoomJsonWithPreviews: (state: EditorRootState) => EditorRoomJson;
+  roomJsonWithPreviews: EditorRoomJson;
   /**
    * the committed json of the same room
    */
-  selectCommittedRoomJson: (state: EditorRootState) => EditorRoomJson;
+  committedRoomJson: EditorRoomJson;
 };
 
 type LoadedRoom = {
@@ -52,8 +56,8 @@ type LoadedRoom = {
 };
 
 /**
- * a loaded room that follows the store: the authoritative record of the room
- * as it is currently rendered, previews included, in the same in-play format
+ * an open room's loaded room, following the store: the authoritative record of
+ * the room as it is currently rendered, previews included, in the same in-play format
  * used during gameplay. Everything that needs the loaded room - the renderer,
  * pointer picking, the render extents, nudging - reads the one instance, so
  * they all see the same items (by identity, not just by id), which is what
@@ -78,23 +82,48 @@ export class LoadedRoomCache {
   #failedRoomJsonWithPreviews: EditorRoomJson | undefined = undefined;
   #revision = 0;
   readonly #store: EditorAppStore;
-  readonly #roomJsonSelectors: LoadedRoomJsonSelectors;
+  readonly #openRoomId: OpenRoomId;
   readonly #listeners = new Set<() => void>();
   readonly #unsubscribeFromStore: () => void;
 
   constructor(
-    /** the store to follow */
+    /**
+     * the store to follow
+     */
     store: EditorAppStore,
-    roomJsonSelectors: LoadedRoomJsonSelectors,
+    /**
+     * the open room whose room it loads - in the store as it is made
+     */
+    openRoomId: OpenRoomId,
   ) {
     this.#store = store;
-    this.#roomJsonSelectors = roomJsonSelectors;
-    const state = store.getState();
-    this.#loaded = this.#tryLoad(
-      roomJsonSelectors.selectRoomJsonWithPreviews(state),
-      roomJsonSelectors.selectCommittedRoomJson(state),
-    );
+    this.#openRoomId = openRoomId;
+    const maybeRoomJsons = this.#roomJsons(store.getState());
+    if (import.meta.env.DEV && maybeRoomJsons === undefined) {
+      throw new Error(`open room ${openRoomId} is not in the store`);
+    }
+    const { roomJsonWithPreviews, committedRoomJson } = maybeRoomJsons!;
+    this.#loaded = this.#tryLoad(roomJsonWithPreviews, committedRoomJson);
     this.#unsubscribeFromStore = store.subscribe(() => this.#bringUpToDate());
+  }
+
+  /**
+   * undefined once the open room (or its room) has left the store - it is
+   * disposed of soon after
+   */
+  #roomJsons(state: EditorRootState): RoomJsons | undefined {
+    const openRoom = findLayoutNode(state.levelEditor.layout, this.#openRoomId);
+    if (openRoom === undefined) {
+      return undefined;
+    }
+    const { roomId, editable } = openRoom;
+    const committedRoomJson = selectRoom(state, roomId);
+    const roomJsonWithPreviews =
+      editable ? selectRoomJsonWithPreviews(state, roomId) : committedRoomJson;
+    if (committedRoomJson === undefined || roomJsonWithPreviews === undefined) {
+      return undefined;
+    }
+    return { roomJsonWithPreviews, committedRoomJson };
   }
 
   /** stop following the store */
@@ -134,11 +163,12 @@ export class LoadedRoomCache {
    * either by patching or full reload, or leave it be if nothing has changed
    */
   #bringUpToDate() {
-    const state = this.#store.getState();
-    const { selectRoomJsonWithPreviews, selectCommittedRoomJson } =
-      this.#roomJsonSelectors;
-    const roomJsonWithPreviews = selectRoomJsonWithPreviews(state);
-    const committedRoomJson = selectCommittedRoomJson(state);
+    const roomJsons = this.#roomJsons(this.#store.getState());
+    // closed, so nothing left to follow:
+    if (roomJsons === undefined) {
+      return;
+    }
+    const { roomJsonWithPreviews, committedRoomJson } = roomJsons;
     const loaded = this.#loaded;
 
     if (loaded === undefined) {

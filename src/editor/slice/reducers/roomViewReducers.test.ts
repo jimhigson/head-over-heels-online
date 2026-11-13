@@ -7,6 +7,7 @@ import { type EditorRoomId } from "../../editorTypes";
 import { type EditorRoomView } from "../EditorRoomView";
 import {
   changeToRoom,
+  openRoomPaneResized,
   openRoomViewChanged,
   openRoomViewPanned,
   rotateViewClockwise,
@@ -145,4 +146,44 @@ test("a room browsed to is viewed from the angle of the room browsed from", () =
   ).toEqual<Xy>(
     selectOpenRoomCameraAngle({ levelEditor: state1 }, testOpenRoomId),
   );
+});
+
+test("resizing an open room's pane drops its view, to be fitted again", () => {
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
+    openRoomPaneResized({
+      openRoomId: testOpenRoomId,
+      paneSize: { x: 800, y: 600 },
+    }),
+    openRoomViewChanged({ openRoomId: testOpenRoomId, view: someView }),
+    openRoomPaneResized({
+      openRoomId: testOpenRoomId,
+      paneSize: { x: 400, y: 600 },
+    }),
+  );
+
+  expect(
+    selectOpenRoomView({ levelEditor: state1 }, testOpenRoomId),
+  ).toBeUndefined();
+});
+
+test("a pane reporting the size it already had keeps its view", () => {
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
+    openRoomPaneResized({
+      openRoomId: testOpenRoomId,
+      paneSize: { x: 800, y: 600 },
+    }),
+    openRoomViewChanged({ openRoomId: testOpenRoomId, view: someView }),
+    openRoomPaneResized({
+      openRoomId: testOpenRoomId,
+      paneSize: { x: 800, y: 600 },
+    }),
+  );
+
+  expect<EditorRoomView | undefined>(
+    selectOpenRoomView({ levelEditor: state1 }, testOpenRoomId),
+  ).toEqual<EditorRoomView>(someView);
 });

@@ -9,11 +9,11 @@ import {
 } from "../../../utils/vectors/vectors";
 import {
   type EditorJsonItem,
+  type EditorRoomId,
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../../editorTypes";
 import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
-import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { addItemInPlace } from "./addItemInPlace";
 import { addNewRoomInPlace } from "./addNewRoomInPlace";
@@ -67,13 +67,13 @@ const getDestinationRoom = ({
 
 export const addDoorInPlace = (
   state: LevelEditorState,
+  roomId: EditorRoomId,
   blockPosition: Xyz,
   wallDirection: DirectionXy4,
   toolItem: ItemTool<"door">,
   isPreview: boolean,
 ): [EditorRoomItemId, EditorJsonItem<"door">] => {
-  const fromRoomJson =
-    selectCurrentCommittedRoomJsonFromLevelEditorState(state);
+  const fromRoomJson = state.campaignInProgress.rooms[roomId] as EditorRoomJson;
 
   const doorDirection = wallDirection;
   // for doors, trim walls around where the door was placed:
@@ -104,6 +104,7 @@ export const addDoorInPlace = (
 
   const [doorId, doorJsonItem] = addItemInPlace(
     state,
+    roomId,
     {
       type: "door",
       config: {

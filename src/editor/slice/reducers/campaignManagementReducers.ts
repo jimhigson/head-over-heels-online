@@ -5,7 +5,7 @@ import { type EditorCampaign } from "../../editorTypes";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { levelEditorSliceCampaignTransientFields } from "../levelEditorSliceTransientFields";
-import { closeRoomsNotInCampaignInPlace } from "../OpenRoom";
+import { closeRoomsNotInCampaignInPlace } from "../PaneLayout";
 
 export const campaignManagementReducers = {
   /**
@@ -40,9 +40,9 @@ export const campaignManagementReducers = {
         ...levelEditorSliceCampaignTransientFields,
         "campaignInProgress",
         "selectedRoomIds",
-        "openRooms",
-        "tabs",
-        "cursorRoomId",
+        "dialogOpenRoomIds",
+        "layout",
+        "focusedTabGroupId",
         "nextIdNumber",
         "remoteCampaign",
         "history",

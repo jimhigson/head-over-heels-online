@@ -1,6 +1,6 @@
 import { type EditorRoomId } from "../../editorTypes";
 import { type LevelEditorState } from "../levelEditorSlice";
-import { closeRoomsNotInCampaignInPlace } from "../OpenRoom";
+import { closeRoomsNotInCampaignInPlace } from "../PaneLayout";
 
 /**
  * remove rooms from the campaign, with the editor state kept about them: undo

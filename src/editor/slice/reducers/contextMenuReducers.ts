@@ -4,21 +4,22 @@ import {
   type SliceSelectors,
 } from "@reduxjs/toolkit";
 
-import { valuesIter } from "../../../utils/entries";
 import { type Xy } from "../../../utils/vectors/vectors";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { type OpenRoomId } from "../OpenRoom";
 import {
-  existingOpenRoom,
-  type OpenRoomId,
+  existingLayoutNode,
+  findLayoutNode,
+  layoutNodesOfType,
   selectOpenRoomSelectedJsonItemIdsFromLevelEditorState,
-} from "../OpenRoom";
+} from "../PaneLayout";
 
 /**
  * Clear any open item context menu, in every open room. Guarded so that immer does
  * not register a state change when there is nothing to clear.
  */
 export const clearContextMenuXyInPlace = (state: LevelEditorState) => {
-  for (const openRoom of valuesIter(state.openRooms)) {
+  for (const openRoom of layoutNodesOfType(state.layout, "openRoom")) {
     if (openRoom.contextMenuXy !== undefined) {
       openRoom.contextMenuXy = undefined;
     }
@@ -37,7 +38,7 @@ export const contextMenuReducers = {
       payload: { openRoomId, scrXy },
     }: PayloadAction<{ openRoomId: OpenRoomId; scrXy: Xy }>,
   ) {
-    const openRoom = existingOpenRoom(state, openRoomId);
+    const openRoom = existingLayoutNode(state.layout, openRoomId);
     // only show a context menu when there is a selection to provide context for:
     if (
       selectOpenRoomSelectedJsonItemIdsFromLevelEditorState(state, openRoomId)
@@ -53,7 +54,7 @@ export const contextMenuReducers = {
 
 export const contextMenuSelectors = {
   selectOpenRoomContextMenuXy(state: LevelEditorState, openRoomId: OpenRoomId) {
-    const openRoom = state.openRooms[openRoomId];
+    const openRoom = findLayoutNode(state.layout, openRoomId);
     // check the room wasn't closed (in case we have a stale openRoomId reference)
     if (openRoom === undefined) {
       return undefined;
