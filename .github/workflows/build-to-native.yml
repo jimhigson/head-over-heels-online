@@ -33,7 +33,8 @@ jobs:
             # but may help with Windows Defender AV
             toolchain: "mingw"
             rust-target: x86_64-pc-windows-gnu
-            rust-toolchain: stable-x86_64-pc-windows-gnu
+            # rust 1.100.0 fails to build the app's windows resources (os error 3)
+            rust-toolchain: 1.99.1-x86_64-pc-windows-gnu
             tauri-build-args: "--target x86_64-pc-windows-gnu"
 
     runs-on: ${{ matrix.platform }}
