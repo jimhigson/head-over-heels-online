@@ -55,6 +55,15 @@ class EmptyIterator implements IteratorObject<never, undefined, unknown> {
   flatMap(): EmptyIterator {
     return this;
   }
+  chunks(): EmptyIterator {
+    return this;
+  }
+  join(): string {
+    return "";
+  }
+  includes(): boolean {
+    return false;
+  }
   reduce(callbackfn: unknown): never;
   reduce<U>(callbackfn: unknown, initialValue: U): U;
   reduce<U>(_callbackfn: unknown, ...initialValue: [] | [U]): U {
