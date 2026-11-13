@@ -9,3 +9,8 @@ declare module "node:child_process" {
 declare module "node:process" {
   export const env: Partial<Record<string, string>>;
 }
+
+declare module "node:fs" {
+  // narrowed to the repo's gfx files so it never shadows node's own typing
+  export function readFileSync(path: `gfx/${string}`): Uint8Array;
+}

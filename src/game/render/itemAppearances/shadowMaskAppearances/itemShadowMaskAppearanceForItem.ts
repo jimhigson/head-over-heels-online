@@ -17,7 +17,7 @@ import {
 } from "../../../../utils/pixi/bakeContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
 import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
-import { octantIndexOfDirection } from "../../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
+import { octantIndexOfDirection } from "../../../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
 import {
   dominantAxisXy,
   rotateAxisXyByCameraAngle,

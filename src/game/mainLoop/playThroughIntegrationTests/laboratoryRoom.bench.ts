@@ -1,4 +1,4 @@
-import { bench } from "vitest";
+import { test } from "vitest";
 
 import { setupGameForCampaign } from "../../../_testUtils/basicRoom";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
@@ -102,17 +102,20 @@ console.log(
   findStartingRoomsInCampaign(laboratoryCampaign),
 );
 
-bench(
-  "load and play the laboratory room for 60 simulated seconds",
-  () => {
-    // the store would otherwise still have the previous iteration's game running:
-    resetStore();
-    const gameState = setupGameForCampaign(laboratoryCampaign);
-    const ticker = progressWithSubTicks(progressGameState, maxSubTickDeltaMs);
-    for (let frame = 0; frame < simulatedSeconds * fps; frame++) {
-      ticker(gameState, 1_000 / fps);
-      gameState.inputStateTracker.mockTick();
-    }
-  },
-  { iterations: 10, time: 0, warmupIterations: 2, warmupTime: 0 },
-);
+test("load and play the laboratory room for 60 simulated seconds", async ({
+  bench,
+}) => {
+  await bench(
+    "load and play the laboratory room for 60 simulated seconds",
+    () => {
+      // the store would otherwise still have the previous iteration's game running:
+      resetStore();
+      const gameState = setupGameForCampaign(laboratoryCampaign);
+      const ticker = progressWithSubTicks(progressGameState, maxSubTickDeltaMs);
+      for (let frame = 0; frame < simulatedSeconds * fps; frame++) {
+        ticker(gameState, 1_000 / fps);
+        gameState.inputStateTracker.mockTick();
+      }
+    },
+  ).run({ iterations: 10, time: 0, warmupIterations: 2, warmupTime: 0 });
+});

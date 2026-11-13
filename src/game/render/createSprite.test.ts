@@ -3,7 +3,7 @@ import { beforeAll, describe, expect, expectTypeOf, test } from "vitest";
 
 import { type AppSpritesheetWithVariants } from "../../sprites/spritesheet/AppSpritesheet";
 import { type TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { octantIndexOfDirection } from "../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
+import { octantIndexOfDirection } from "../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
 import { type Xyz } from "../../utils/vectors/vectors";
 import { createSprite, type CreateSpriteOptions } from "./createSprite";
 

@@ -1,4 +1,4 @@
-import { bench } from "vitest";
+import { test } from "vitest";
 
 import {
   frameCount,
@@ -31,27 +31,33 @@ with indexing (10/9/2025):
    name                                         hz      min      max     mean      p75      p99     p995     p999     rme  samples
  · 20% items moved (100 items) 100 frames  26.0379  36.7890  48.7942  38.4056  38.1655  48.7942  48.7942  48.7942  ±2.35%       30
 */
-bench(
-  `${movePercentage * 100}% items moved (${itemCount} items) ${frameCount} frames`,
-  () => {
-    runTest();
-  },
-  {
+test(`${movePercentage * 100}% items moved (${itemCount} items) ${frameCount} frames`, async ({
+  bench,
+}) => {
+  await bench(
+    `${movePercentage * 100}% items moved (${itemCount} items) ${frameCount} frames`,
+    () => {
+      runTest();
+    },
+  ).run({
     iterations: 30, // increase number of iterations (default is 10)
-  },
-);
+  });
+});
 
 // the camera-turn scenario: nothing moves in-world, θ sweeps ~1.5°/frame so
 // every item re-projects and the whole graph is re-derived from scratch each
 // frame - the per-frame workload of a live mid-turn sort
-bench(
-  `camera turn: all ${itemCount} items re-sorted, θ sweeping, ${frameCount} frames`,
-  () => {
-    runTest({
-      angleForFrame: sweptCameraAngleForFrame,
-    });
-  },
-  {
+test(`camera turn: all ${itemCount} items re-sorted, θ sweeping, ${frameCount} frames`, async ({
+  bench,
+}) => {
+  await bench(
+    `camera turn: all ${itemCount} items re-sorted, θ sweeping, ${frameCount} frames`,
+    () => {
+      runTest({
+        angleForFrame: sweptCameraAngleForFrame,
+      });
+    },
+  ).run({
     iterations: 30,
-  },
-);
+  });
+});

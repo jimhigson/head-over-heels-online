@@ -1,6 +1,6 @@
 import { isConsolidatable } from "../../consolidateItems/ConsolidatableJsonItem";
 import { type EditorRootState, useEditorAppSelector } from "../../store/store";
-import { twClass } from "../../utils/twClass" with { type: "macro" };
+import { twClass } from "../../utils/twClass.tsx" with { type: "macro" };
 import {
   selectCursorRoomSelectedJsonItemIds,
   selectItem,

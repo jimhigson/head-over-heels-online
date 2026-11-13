@@ -16,7 +16,7 @@ import {
   type PartialNamedColours,
   resolveSwops,
 } from "../../utils/palette/palette";
-import { octantIndexOfDirection } from "../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
+import { octantIndexOfDirection } from "../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
 import { type AxisXy } from "../../utils/vectors/vectors";
 import { maybeDimPixiPalette } from "../palette/pixiPalette";
 import { type BlockstackPaletteColourName } from "../palette/spritesheetPalette";

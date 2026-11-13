@@ -2,6 +2,7 @@ import preact from "@preact/preset-vite";
 import path from "node:path";
 import { visualizer } from "rollup-plugin-visualizer";
 import tailwindcss from "tailwindcss";
+import { unrunRunner } from "unplugin-macros";
 import Macros from "unplugin-macros/vite";
 import { defineConfig, loadEnv, type PluginOption } from "vite";
 import glsl from "vite-plugin-glsl";
@@ -91,7 +92,7 @@ export default defineConfig(({ mode: _mode }) => {
     },
 
     plugins: [
-      Macros(),
+      Macros({ runner: unrunRunner() }),
       hmrOnlyPreact(),
       preact({
         devtoolsInProd: false,

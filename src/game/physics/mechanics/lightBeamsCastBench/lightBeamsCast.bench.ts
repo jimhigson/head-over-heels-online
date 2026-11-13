@@ -1,4 +1,4 @@
-import { bench } from "vitest";
+import { test } from "vitest";
 
 import {
   buildBeamScenario,
@@ -26,10 +26,13 @@ after dropping the per-row merge + generator and packing cell keys as ints (18/6
 
 const scenario = buildBeamScenario(await loadBeamScenarioRoomJson());
 
-bench(
-  "cast beams (3 reflections + split) through a room of 48 monsters",
-  () => {
-    castOnce(scenario);
-  },
-  { iterations: 30 },
-);
+test("cast beams (3 reflections + split) through a room of 48 monsters", async ({
+  bench,
+}) => {
+  await bench(
+    "cast beams (3 reflections + split) through a room of 48 monsters",
+    () => {
+      castOnce(scenario);
+    },
+  ).run({ iterations: 30 });
+});

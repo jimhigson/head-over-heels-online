@@ -2,7 +2,7 @@ import { type SpritesheetFrameData } from "pixi.js";
 
 import { type SpriteSize } from "../../../model/modelTypes";
 import { range } from "../../../utils/iterators/range";
-import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
 import {
   addXy,
   type DirectionIndexXy4,

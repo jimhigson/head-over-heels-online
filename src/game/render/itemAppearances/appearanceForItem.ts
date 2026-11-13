@@ -9,7 +9,7 @@ import {
   maybeRenderContainerToSprite,
 } from "../../../utils/pixi/bakeContainerToSprite";
 import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
-import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
 import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { axisIndexXy8 } from "../../../utils/vectors/vectors";
 import { createSprite, type CreateSpriteOptions } from "../createSprite";

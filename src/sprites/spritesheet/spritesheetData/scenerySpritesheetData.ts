@@ -1,7 +1,7 @@
 import { type SpritesheetData, type SpritesheetFrameData } from "pixi.js";
 
 import { fromAllEntries } from "../../../utils/entries";
-import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
 import { type Xy } from "../../../utils/vectors/vectors";
 import { type SceneryName, type Wall, wallTiles } from "../../planets";
 import { type AnimationsOfFrames } from "./AnimationsOfFrames";

@@ -1,6 +1,6 @@
 import { playableTailwindSpriteClassname } from "../game/components/tailwindSprites/playableTailwindSpriteClassname";
 import { type JsonItemUnion } from "../model/json/JsonItem";
-import { twClass } from "../utils/twClass" with { type: "macro" };
+import { twClass } from "../utils/twClass.tsx" with { type: "macro" };
 import { type SceneryName } from "./planets";
 import {
   type AnimatedTextureTailwindClass,

@@ -12,7 +12,7 @@ import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import {
   octantIndexOfDirection,
   type OctantIndexOfDirection,
-} from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
+} from "../../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
 import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { type Xy } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
