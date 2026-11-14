@@ -14,7 +14,7 @@ export const charHeight = hudCharTextureSize.h;
  * - allow the controller/keyboard eto be used to
  * scroll up or down
  */
-export const useScrollingFromInput = () => {
+export const useScrollingFromInputRef = () => {
   const scaleFactor = useTotalUpscale();
   const contentRef = useRef<HTMLDivElement>(null);
   const scrollContent = useCallback(

@@ -14,7 +14,7 @@ import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { type DialogId } from "../../DialogId";
 import { DialogTitleBar } from "../DialogTitleBar";
 import { markdownDialogColourClasses } from "../markdownDialogColourClasses";
-import { useScrollingFromInput } from "../useScrollingFromInput";
+import { useScrollingFromInputRef } from "../useScrollingFromInputRef";
 
 const MarkdownDialog = (
   props: (
@@ -32,7 +32,7 @@ const MarkdownDialog = (
 ) => {
   const markdown =
     props.source === "manual" ? markdownPages[props.pageName] : props.markdown;
-  const contentRef = useScrollingFromInput();
+  const scrollingContentRef = useScrollingFromInputRef();
   const isSubmenuFromManual = useAppSelector((state) => {
     const { openMenus } = state.gameMenus;
     return openMenus.some((menu) => menu.menuId === "readTheManual");
@@ -75,7 +75,7 @@ const MarkdownDialog = (
               "toppy:scrollbar-thumb-toppyCool3 toppy:scrollbar-track-toppyCool1 " +
               "mobile:px-3",
           )}
-          ref={contentRef}
+          ref={scrollingContentRef}
           // although we have a back button, you can actually click/tap anywhere to exit
           onClick={goBackCallback}
         >

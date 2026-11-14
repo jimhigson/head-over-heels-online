@@ -13,7 +13,7 @@ import {
   vectorClosestDirectionXy8,
   type Xy,
 } from "../../../../utils/vectors/vectors";
-import { charHeight } from "../../../components/dialogs/menuDialog/dialogs/useScrollingFromInput";
+import { charHeight } from "../../../components/dialogs/menuDialog/dialogs/useScrollingFromInputRef";
 import { selectCurrentRoomState } from "../../../gameState/gameStateSelectors/selectCurrentRoomState";
 import {
   lightlySnapXy4,

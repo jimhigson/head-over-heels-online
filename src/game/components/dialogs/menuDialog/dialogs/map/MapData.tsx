@@ -1,5 +1,4 @@
 import { type SortedObjectOfRoomGridPositionSpecs } from "../../../../../../model/map/sortRoomGridPositions";
-import { type TeleporterLink } from "../../../../../../model/map/teleporterLinks";
 import { type SceneryName } from "../../../../../../sprites/planets";
 import { type Bounds } from "./Map.svg";
 
@@ -35,12 +34,6 @@ export type MapData<RoomId extends string> = {
   curRoomId: RoomId | undefined;
   curSubRoomId: string | undefined;
   curRoomScenery?: SceneryName;
-
-  /**
-   * teleporter links between rooms on the map, scraped while resolving geometry.
-   * optional since only the editor populates it
-   */
-  teleporterLinks?: TeleporterLink<RoomId>[];
 
   areas: Array<MapArea<RoomId>>;
 };

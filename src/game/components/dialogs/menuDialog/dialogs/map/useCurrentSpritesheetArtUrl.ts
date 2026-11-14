@@ -13,18 +13,18 @@ import { selectSpritesheetOverrideBlobUrl } from "../../../../../../store/slices
  * which cannot read CSS custom properties.
  */
 export const useCurrentSpritesheetArtUrl = (): string => {
-  const selectedSpritesheetArtName = useSpritesheetArtName();
+  const spritesheetArtName = useSpritesheetArtName();
   const overrideBlobUrl =
     import.meta.env.VITE_APP === "editor" ?
       undefined
       // oxlint-disable-next-line react-hooks/rules-of-hooks -- build-time macro, not run-time conditional
     : useAppSelector((state) =>
-        selectSpritesheetOverrideBlobUrl(state, selectedSpritesheetArtName),
+        selectSpritesheetOverrideBlobUrl(state, spritesheetArtName),
       );
 
   return (
     overrideBlobUrl ??
-    (selectedSpritesheetArtName === "toppy" ?
+    (spritesheetArtName === "toppy" ?
       toppySpritesheetArtUrl
     : blockstackSpritesheetArtUrl)
   );

@@ -1,7 +1,9 @@
+import { notableItemSlotPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/ItemsInRoomLayout";
 import { useMapContext } from "../../game/components/dialogs/menuDialog/dialogs/map/MapContext";
 import { type RoomDecoratorProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
 import { roomWorldPosition } from "../../game/components/dialogs/menuDialog/dialogs/map/roomWorldPosition";
 import { translateXyz } from "../../game/components/dialogs/menuDialog/dialogs/map/svgHelpers";
+import { useRoomNode } from "../../game/components/dialogs/menuDialog/dialogs/map/useRoomNode";
 import { blockSizePx } from "../../game/physics/mechanicsConstants";
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
 import {
@@ -46,9 +48,6 @@ const cellKey = ({
   subRoomId,
 }: TeleporterCell<EditorRoomId>): GridPositionKey => `${roomId}/${subRoomId}`;
 
-const linkId = (link: TeleporterLink<EditorRoomId>) =>
-  `${cellKey(link.from)}->${cellKey(link.to)}`;
-
 /**
  * a single closed arrow silhouette from `from` to `to` (unit direction `dir`),
  * with a head at `to` - and also at `from` when `doubleHeaded`
@@ -91,98 +90,83 @@ const arrowPath = (
   ]);
 };
 
-const EditorMapTeleporterLinkDecorator = ({
+/**
+ * the icon position of a teleporter in a cell, if it's shown on the map
+ */
+const useTeleporterAnchor = ({
   roomId,
   subRoomId,
-  allGridPositions: gridPositions,
-  teleporterLinks,
-}: RoomDecoratorProps<EditorRoomId>) => {
-  const notableItemsByCell =
-    useMapContext<EditorRoomId>().useNotableItemsByCell();
+  itemId,
+}: TeleporterCell<EditorRoomId>): undefined | Xy => {
+  const { useRoomJson, useNotableItems } = useMapContext<EditorRoomId>();
+  const roomJson = useRoomJson(roomId);
+  const notableItems = useNotableItems(roomId, subRoomId);
+  const slot =
+    itemId === undefined ? undefined : (
+      notableItemSlotPositions(notableItems, roomJson, subRoomId)[itemId]
+    );
+  return slot === undefined ? undefined : slotToScreen(slot);
+};
 
-  if (teleporterLinks === undefined) {
-    return null;
-  }
+type TeleporterLinkArrowProps = {
+  link: TeleporterLink<EditorRoomId>;
+  /**
+   * where the link's target room is drawn, relative to its source room
+   */
+  targetDelta: Xy;
+  /**
+   * unique among the map's arrows, for its gradient
+   */
+  gradientId: string;
+};
 
-  const fromKey: GridPositionKey = `${roomId}/${subRoomId}`;
-  const sourceSpec = gridPositions[fromKey];
-  if (sourceSpec === undefined) {
-    return null;
-  }
-  const sourceScreen = projectWorldXyzToScreenXy(
-    roomWorldPosition(sourceSpec.gridPosition),
+const TeleporterLinkArrow = ({
+  link: { from, to },
+  targetDelta,
+  gradientId,
+}: TeleporterLinkArrowProps) => {
+  const fromAnchor = useTeleporterAnchor(from);
+  const toAnchor = useTeleporterAnchor(to);
+  // the links leaving the target, to find any partner coming back:
+  const teleporterLinksFrom =
+    useMapContext<EditorRoomId>().useTeleporterLinksFrom(
+      to.roomId,
+      to.subRoomId,
+    );
+
+  const fromKey = cellKey(from);
+  const toKey = cellKey(to);
+  // a partner going back the other way is drawn with this one, as one
+  // double-headed arrow
+  const isMutual = teleporterLinksFrom.some(
+    (targetLink) => cellKey(targetLink.to) === fromKey,
   );
+  if (isMutual && fromKey > toKey) {
+    // a mutual pair is drawn once, by its canonical (smaller-key) end
+    return null;
+  }
 
-  const allLinkIds = new Set(teleporterLinks.map(linkId));
+  // point at the actual teleporter icons when shown, else the room centres
+  const p1 = fromAnchor ?? roomCentreScreen;
+  const p2 = addXy(targetDelta, toAnchor ?? roomCentreScreen);
 
-  /** the icon position of a teleporter, if it's shown on the map, else undefined */
-  const anchorFor = (
-    cell: GridPositionKey,
-    itemId: string | undefined,
-  ): undefined | Xy => {
-    if (itemId === undefined) {
-      return undefined;
-    }
-    const slot = notableItemsByCell?.[cell]?.positions[itemId];
-    return slot === undefined ? undefined : slotToScreen(slot);
-  };
+  const between = subXy(p2, p1);
+  const length = lengthXy(between);
+  if (length === 0) {
+    return null;
+  }
+  const dir = scaleXy(between, 1 / length);
 
-  const arrows = teleporterLinks.flatMap((link, index) => {
-    if (cellKey(link.from) !== fromKey) {
-      // only this cell's outgoing links are drawn here
-      return [];
-    }
-    if (link.from.roomId === link.to.roomId) {
-      // same-room teleporter - nothing to draw across the map
-      return [];
-    }
+  const d = arrowPath(p1, p2, dir, isMutual);
 
-    const toKey = cellKey(link.to);
-    const targetSpec = gridPositions[toKey];
-    if (targetSpec === undefined) {
-      // target room is not placed on this map
-      return [];
-    }
+  if (isMutual) {
+    return <path d={d} />;
+  }
 
-    const mutual = allLinkIds.has(`${toKey}->${fromKey}`);
-    if (mutual && fromKey > toKey) {
-      // a mutual pair is drawn once, by its canonical (smaller-key) end
-      return [];
-    }
-
-    const targetScreen = projectWorldXyzToScreenXy(
-      roomWorldPosition(targetSpec.gridPosition),
-    );
-    const delta = subXy(targetScreen, sourceScreen);
-
-    // point at the actual teleporter icons when shown, else the room centres
-    const p1 = anchorFor(fromKey, link.from.itemId) ?? roomCentreScreen;
-    const p2 = addXy(
-      delta,
-      anchorFor(toKey, link.to.itemId) ?? roomCentreScreen,
-    );
-
-    const between = subXy(p2, p1);
-    const length = lengthXy(between);
-    if (length === 0) {
-      return [];
-    }
-    const dir = scaleXy(between, 1 / length);
-
-    const d = arrowPath(p1, p2, dir, mutual);
-
-    if (mutual) {
-      return [<path key={index} d={d} />];
-    }
-
-    // one-way arrows fade light-gray at the source to white at the destination
-    const gradientId = `teleporterArrow-${fromKey}-${index}`.replace(
-      /[^\w-]/g,
-      "_",
-    );
-    return [
+  // one-way arrows fade light-gray at the source to white at the destination
+  return (
+    <>
       <linearGradient
-        key={`${index}-gradient`}
         id={gradientId}
         gradientUnits="userSpaceOnUse"
         x1={p1.x}
@@ -192,8 +176,53 @@ const EditorMapTeleporterLinkDecorator = ({
       >
         <stop offset={0} stopColor="lightgray" />
         <stop offset={1} stopColor="white" />
-      </linearGradient>,
-      <path key={index} d={d} fill={`url(#${gradientId})`} />,
+      </linearGradient>
+      <path d={d} fill={`url(#${gradientId})`} />
+    </>
+  );
+};
+
+const EditorMapTeleporterLinkDecorator = ({
+  roomId,
+  subRoomId,
+}: RoomDecoratorProps<EditorRoomId>) => {
+  const { useShownArea, useTeleporterLinksFrom } =
+    useMapContext<EditorRoomId>();
+  const { gridPositions } = useShownArea();
+  const roomNode = useRoomNode(roomId, subRoomId);
+  const teleporterLinksFrom = useTeleporterLinksFrom(roomId, subRoomId);
+
+  const fromKey: GridPositionKey = `${roomId}/${subRoomId}`;
+  const sourceScreen = projectWorldXyzToScreenXy(
+    roomWorldPosition(roomNode.gridPosition),
+  );
+
+  const arrows = teleporterLinksFrom.flatMap((link, index) => {
+    if (link.from.roomId === link.to.roomId) {
+      // same-room teleporter - nothing to draw across the map
+      return [];
+    }
+
+    const targetSpec = gridPositions[cellKey(link.to)];
+    if (targetSpec === undefined) {
+      // target room is not placed on this map
+      return [];
+    }
+
+    const targetScreen = projectWorldXyzToScreenXy(
+      roomWorldPosition(targetSpec.gridPosition),
+    );
+
+    return [
+      <TeleporterLinkArrow
+        key={index}
+        link={link}
+        targetDelta={subXy(targetScreen, sourceScreen)}
+        gradientId={`teleporterArrow-${fromKey}-${index}`.replace(
+          /[^\w-]/g,
+          "_",
+        )}
+      />,
     ];
   });
 
@@ -204,7 +233,7 @@ const EditorMapTeleporterLinkDecorator = ({
 
   return (
     <g
-      transform={translateXyz(roomWorldPosition(sourceSpec.gridPosition))}
+      transform={translateXyz(roomWorldPosition(roomNode.gridPosition))}
       style={{ pointerEvents: "none" }}
       fill="white"
       stroke="black"

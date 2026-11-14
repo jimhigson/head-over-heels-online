@@ -10,22 +10,22 @@ import { selectCursorRoomFromLevelEditorState } from "../slice/levelEditorSelect
 import { coalesceSelectedRooms } from "../slice/levelEditorSlice";
 import { areRoomsCoalesceable } from "./areRoomsCoalesceable";
 import { mapAreaIndexOfRoom } from "./mapAreaIndexOfRoom";
-import { selectEditorMapData } from "./useEditorMapData";
+import { selectEditorMapAreas } from "./useEditorMapData";
 
 export const selectIsCoalesceable = createSelector(
   [
-    selectEditorMapData,
+    selectEditorMapAreas,
     (state: EditorRootState) => state.levelEditor.selectedRoomIds,
     (state: EditorRootState) =>
       selectCursorRoomFromLevelEditorState(state.levelEditor).roomId,
   ],
-  (mapData, selectedRoomIds, cursorRoomId) => {
-    if (mapData.isError) {
+  (mapAreas, selectedRoomIds, cursorRoomId) => {
+    if (mapAreas.isError) {
       return false;
     }
     // only rooms in the shown area can be next to each other:
     const shownArea =
-      mapData.areas[mapAreaIndexOfRoom(mapData.areas, cursorRoomId)];
+      mapAreas.areas[mapAreaIndexOfRoom(mapAreas.areas, cursorRoomId)];
     return areRoomsCoalesceable(selectedRoomIds, shownArea.gridPositions)
       .coalesceable;
   },
