@@ -150,7 +150,7 @@ export const ChooseRoomMap = ({
         </div>
         {!mapAreas.isError && (
           <MapAreaSwitcher
-            areas={mapAreas.areas}
+            firstRoomIds={mapAreas.areas.map(({ firstRoomId }) => firstRoomId)}
             shownAreaIndex={shownAreaIndex}
             onSwitchToRoom={setShownAreaRoomId}
           />
