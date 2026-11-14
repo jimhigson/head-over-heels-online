@@ -7,6 +7,7 @@ import {
 } from "../../../model/RoomJson";
 import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
 import { type LevelEditorState, removeRoom } from "../levelEditorSlice";
+import { existingLayoutNode } from "../PaneLayout";
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,
@@ -34,8 +35,7 @@ const addRooms = (draft: LevelEditorState) => {
     items: {},
   };
   draft.selectedRoomIds = [roomA];
-  draft.openRooms[testOpenRoomId].roomId = roomA;
-  draft.cursorRoomId = roomA;
+  existingLayoutNode(draft.layout, testOpenRoomId).roomId = roomA;
 };
 
 test("removeRoom filters the deleted room from editingRoomIdHistory", () => {

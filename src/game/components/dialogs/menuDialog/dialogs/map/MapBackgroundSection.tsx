@@ -13,9 +13,9 @@ export const MapBackgroundSection = ({
   class: string;
   textOnly?: boolean;
 }) => {
-  const scale = useTotalUpscale();
+  const totalUpscale = useTotalUpscale();
   // the font's em maps to the 8px design grid, so font-size is grid * scale
-  const fontSize = hudCharTextureSize.h * scale;
+  const fontSize = hudCharTextureSize.h * totalUpscale;
   // section titles render at double height: the baseline sits below the cap row
   // by the doubled height so the scaleY grows the text up to the same top
   const baselineY = y + 16 + 2 * fontSize;

@@ -58,11 +58,17 @@ export const migrateRoomVerticalLinks = (
 
     const above =
       roomAbove === undefined ? undefined : (
-        { room: roomAbove, subRoom: subRoomAbove }
+        {
+          room: roomAbove,
+          ...(subRoomAbove !== undefined && { subRoom: subRoomAbove }),
+        }
       );
     const below =
       roomBelow === undefined ? undefined : (
-        { room: roomBelow, subRoom: subRoomBelow }
+        {
+          room: roomBelow,
+          ...(subRoomBelow !== undefined && { subRoom: subRoomBelow }),
+        }
       );
 
     const subRooms = room.meta?.subRooms;
@@ -74,7 +80,12 @@ export const migrateRoomVerticalLinks = (
     } else {
       // an undivided room: hold the link on the whole-room ('*') form
       room.meta ??= {};
-      room.meta.subRooms = { "*": { above, below } };
+      room.meta.subRooms = {
+        "*": {
+          ...(above !== undefined && { above }),
+          ...(below !== undefined && { below }),
+        },
+      };
     }
   }
   return migrated;

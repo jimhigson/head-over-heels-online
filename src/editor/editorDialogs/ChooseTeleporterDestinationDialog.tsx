@@ -20,7 +20,7 @@ import {
   type EditorRoomId,
   type EditorRoomItemId,
 } from "../editorTypes";
-import { LazyRoomEditingArea } from "../RoomEditingArea/RoomEditingArea.lazy";
+import { LazyDialogRoomArea } from "../RoomEditingArea/DialogRoomArea.lazy";
 import {
   dialogRoomClosed,
   dialogRoomOpened,
@@ -55,14 +55,18 @@ export type ChooseTeleporterDestinationDialogProps = {
 
 export type RoomItemPickerProps = {
   openRoomId: OpenRoomId;
+  /**
+   * a link in the room (eg a door's annotation) was followed to another room
+   */
+  onFollowLink: (roomId: EditorRoomId) => void;
 };
 
 /**
  * a rendering of the open room, where clicking an item picks it
  */
-const RoomItemPicker = ({ openRoomId }: RoomItemPickerProps) => (
+const RoomItemPicker = ({ openRoomId, onFollowLink }: RoomItemPickerProps) => (
   <Suspense fallback={<SpinnerHeels loadingBorder />}>
-    <LazyRoomEditingArea openRoomId={openRoomId} />
+    <LazyDialogRoomArea openRoomId={openRoomId} onFollowLink={onFollowLink} />
   </Suspense>
 );
 
@@ -167,60 +171,56 @@ export const ChooseTeleporterDestinationDialog = ({
           class="scale-editor p-1 flex flex-col gap-1"
         >
           <DialogHeader>Teleport to</DialogHeader>
-          <TabBar tabLabels={destinationTabs} label="Destination">
-            {destinationTabs.map((destinationTab) => (
-              <Tab
-                key={destinationTab}
-                label={destinationTab}
-                shortLabel={destinationTab}
-                isActive={tab === destinationTab}
-                onSelect={() => setTab(destinationTab)}
-                class={`${buttonSmallHeightClassNames} pr-1`}
-              />
-            ))}
-          </TabBar>
-          <div class="relative flex-1 min-h-0">
-            <div class={tab === "map" ? "h-full" : "hidden"}>
-              <ChooseRoomMap
-                campaign={campaign}
-                mapRoomId={fromRoomId}
-                chosenRoomId={toRoom}
-                onChoose={chooseRoom}
-              />
-            </div>
-            {/* kept mounted while the map is shown, so its pixi app isn't rebuilt: */}
-            <div
-              class={tab === "room" ? "h-full flex flex-col gap-1" : "hidden"}
-            >
-              {toRoom === undefined ?
-                <span class="text-multi-line text-lightGrey">
-                  Choose a room on the map
-                </span>
-              : <>
-                  <span class="text-multi-line text-lightGrey">
-                    {defaultLandingItemId === undefined ?
-                      "Pick an item to land on"
-                    : `Lands on teleporter ‘${defaultLandingItemId}’ by default — no item needed`
-                    }
-                  </span>
-                  <div class="relative flex-1 min-h-0">
-                    {pickerOpenRoomId !== undefined && (
-                      <RoomItemPicker
-                        key={pickerOpenRoomId}
-                        openRoomId={pickerOpenRoomId}
-                      />
-                    )}
-                  </div>
-                </>
-              }
+          {/* the tabs and what they show, with no gap between: */}
+          <div class="flex flex-col flex-1 min-h-0">
+            <TabBar tabLabels={destinationTabs} label="Destination">
+              {destinationTabs.map((destinationTab) => (
+                <Tab
+                  key={destinationTab}
+                  label={destinationTab}
+                  shortLabel={destinationTab}
+                  isActive={tab === destinationTab}
+                  // a room's items can be picked only once there is a room:
+                  disabled={destinationTab === "room" && toRoom === undefined}
+                  onSelect={() => setTab(destinationTab)}
+                  class={`${buttonSmallHeightClassNames} pr-1`}
+                />
+              ))}
+            </TabBar>
+            <div class="relative flex-1 min-h-0 grow-1">
+              <div class={tab === "map" ? "h-full" : "hidden"}>
+                <ChooseRoomMap
+                  campaign={campaign}
+                  mapRoomId={fromRoomId}
+                  chosenRoomId={toRoom}
+                  onChoose={chooseRoom}
+                />
+              </div>
+              {/* kept mounted while the map is shown, so its pixi app isn't rebuilt: */}
+              <div
+                class={tab === "room" ? "h-full flex flex-col gap-1" : "hidden"}
+              >
+                <div class="relative flex-1 min-h-0">
+                  {pickerOpenRoomId !== undefined && (
+                    <RoomItemPicker
+                      key={pickerOpenRoomId}
+                      openRoomId={pickerOpenRoomId}
+                      // following a link picks from that room instead:
+                      onFollowLink={chooseRoom}
+                    />
+                  )}
+                </div>
+              </div>
             </div>
           </div>
           <span class="text-single-line text-lightGrey self-end">
             {toRoom === undefined ?
               "no room chosen"
             : landingItemId === undefined ?
-              `lands in room ‘${toRoom}’`
-            : `lands in room ‘${toRoom}’ item ‘${landingItemId}’`}
+              `lands in room ‘${toRoom}’ — no item to land on`
+            : landingItemId === defaultLandingItemId ?
+              `lands in room ‘${toRoom}’ on teleporter ‘${landingItemId}’ (by default)`
+            : `lands in room ‘${toRoom}’ on item ‘${landingItemId}’`}
           </span>
           <div class="flex flex-wrap gap-1 text-white items-center">
             <Button

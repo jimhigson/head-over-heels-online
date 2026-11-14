@@ -1,4 +1,5 @@
-import { createSelector } from "@reduxjs/toolkit";
+import { createSelector, lruMemoize } from "@reduxjs/toolkit";
+import nanoEqual from "nano-equal";
 import { capitalize } from "string-transform";
 
 import { findMapBounds } from "../../game/components/dialogs/menuDialog/dialogs/map/findMapBounds";
@@ -9,41 +10,28 @@ import {
   type MapDataError,
 } from "../../game/components/dialogs/menuDialog/dialogs/map/MapData";
 import {
-  computeNotableItemsByCell,
-  type NotableItemsByCell,
-} from "../../game/components/dialogs/menuDialog/dialogs/map/notableItemsByCell";
-import { type PickupsCollected } from "../../game/gameState/GameState";
-import {
   roomGridPositions,
   type RoomNode,
 } from "../../model/map/roomGridPositions";
 import { sortRoomGridPositions } from "../../model/map/sortRoomGridPositions";
-import { type TeleporterLink } from "../../model/map/teleporterLinks";
 import { type CharacterName } from "../../model/modelTypes";
 import { type RoomHues } from "../../model/roomHues";
+import { type RoomJson } from "../../model/RoomJson";
 import { iterateRoomJsonItemsWithIds } from "../../model/RoomJsonItemIterators";
-import { type SceneryName } from "../../sprites/planets";
-import { type EditorRootState, useEditorAppSelector } from "../../store/store";
-import { emptyObject } from "../../utils/empty";
+import { type EditorRootState } from "../../store/store";
+import { emptyArray, emptyObject } from "../../utils/empty";
 import { fromAllEntries, keys, valuesIter } from "../../utils/entries";
 import { naturalCompare } from "../../utils/naturalCompare";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import { createShallowStableSelector } from "../../utils/redux/createShallowStableSelector";
-import { createStructurallySharedSelector } from "../../utils/redux/createStructurallySharedSelector";
 import { type EditorCampaign, type EditorRoomId } from "../editorTypes";
-import {
-  selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomFromLevelEditorState,
-} from "../slice/levelEditorSelectors";
+import { selectCursorRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 import { selectRoomHues } from "../slice/selectRoomHues";
 
 /** the parts of the map that depend only on the campaign, not the cursor */
-export type EditorMapAreas = Pick<
-  MapData<EditorRoomId>,
-  "areas" | "teleporterLinks"
-> & { isError: false };
-
-const noPickupsCollected = emptyObject as PickupsCollected<EditorRoomId>;
+export type EditorMapAreas = Pick<MapData<EditorRoomId>, "areas"> & {
+  isError: false;
+};
 
 /**
  * every room in the campaign, split into areas of rooms positioned relative to
@@ -53,7 +41,9 @@ const noPickupsCollected = emptyObject as PickupsCollected<EditorRoomId>;
  * the room the map is built out from: head's starting room, else heels' if
  * there is no head, else the lowest room id
  */
-const mapSeedRoomId = (campaign: EditorCampaign): EditorRoomId => {
+const mapSeedRoomId = (
+  campaign: Pick<EditorCampaign, "rooms">,
+): EditorRoomId => {
   const roomIds = keys(campaign.rooms).sort(naturalCompare);
   const startingRoomOf = (characterNames: CharacterName[]) =>
     roomIds.find((roomId) =>
@@ -70,7 +60,7 @@ const mapSeedRoomId = (campaign: EditorCampaign): EditorRoomId => {
 };
 
 export const editorMapAreas = (
-  campaign: EditorCampaign,
+  campaign: Pick<EditorCampaign, "rooms">,
 ): EditorMapAreas | MapDataError => {
   const seedRoomId = mapSeedRoomId(campaign);
   try {
@@ -106,24 +96,7 @@ export const editorMapAreas = (
         : naturalCompare(areaA.firstRoomId, areaB.firstRoomId),
       );
 
-    const teleporterLinks: TeleporterLink<EditorRoomId>[] = graph
-      .iterateAnnotatedEdges()
-      .filter(({ annotation }) => annotation.kind === "teleporter")
-      .map(({ from, to, annotation }) => ({
-        from: {
-          roomId: from.roomId,
-          subRoomId: from.subRoomId,
-          itemId: annotation.viaItemId,
-        },
-        to: {
-          roomId: to.roomId,
-          subRoomId: to.subRoomId,
-          itemId: annotation.toItemId,
-        },
-      }))
-      .toArray();
-
-    return { areas, teleporterLinks, isError: false };
+    return { areas, isError: false };
   } catch (e) {
     console.error(Error("error getting map data", { cause: e }));
     const errors = createSerialisableErrors(e)
@@ -133,64 +106,109 @@ export const editorMapAreas = (
   }
 };
 
-/**
- * every placed cell's notable items, across all of the map's areas
- */
-export const editorNotableItemsByCell = (
-  campaign: EditorCampaign,
-  mapAreas: EditorMapAreas | MapDataError,
-): NotableItemsByCell<EditorRoomId> =>
-  mapAreas.isError ? emptyObject : (
-    Object.assign(
-      {},
-      ...mapAreas.areas.map(({ gridPositions }) =>
-        computeNotableItemsByCell(gridPositions, campaign, noPickupsCollected),
-      ),
-    )
-  );
-
-/** the editor's map, with the given room as the current one */
-export const editorMapData = (
-  mapAreas: EditorMapAreas | MapDataError,
-  roomId: EditorRoomId,
-  subRoomId: string,
-  /**
-   * the scenery of the current room
-   */
-  curRoomScenery: SceneryName,
-): MapData<EditorRoomId> | MapDataError =>
-  mapAreas.isError ? mapAreas : (
-    {
-      ...mapAreas,
-      curRoomId: roomId,
-      curSubRoomId: subRoomId,
-      curRoomScenery,
-    }
-  );
-
 const selectCampaignInProgress = (state: EditorRootState) =>
   state.levelEditor.campaignInProgress;
 
-// rebuilt for any change to the campaign, so shares what is unchanged - an
-// edit inside a room then leaves the rest of the map's parts as they were:
-const selectEditorMapAreas = createStructurallySharedSelector(
-  [selectCampaignInProgress],
-  editorMapAreas,
+/**
+ * the items of a room its place on the map depends on: doors (linking rooms)
+ * and players (choosing the room the map is built out from)
+ */
+const layoutItemsOfRoom = (room: RoomJson<EditorRoomId, string>) =>
+  iterateRoomJsonItemsWithIds(room.items, "door", "player").toArray();
+
+/**
+ * every room is laid out alike in both: unchanged, or with the same sub-rooms
+ * (and other `meta`), doors and players
+ */
+const areRoomsLaidOutAlike = (
+  roomsA: EditorCampaign["rooms"],
+  roomsB: EditorCampaign["rooms"],
+): boolean => {
+  const roomIds = keys(roomsA);
+  return (
+    roomIds.length === keys(roomsB).length &&
+    roomIds.every((roomId) => {
+      const roomA = roomsA[roomId];
+      const roomB = roomsB[roomId];
+      return (
+        roomA === roomB ||
+        // the same number of rooms, but not necessarily the same ones:
+        (roomId in roomsB &&
+          nanoEqual(roomA.meta, roomB.meta) &&
+          nanoEqual(layoutItemsOfRoom(roomA), layoutItemsOfRoom(roomB)))
+      );
+    })
+  );
+};
+
+/**
+ * the whole map laid out. Recomputed only when rooms' places on it may have
+ * changed: an edit that leaves every room laid out alike keeps the last
+ * layout. Read through the narrower selectors below, which each keep their
+ * result while what they give is unchanged
+ */
+const selectEditorMapLayout = createSelector(
+  [(state: EditorRootState) => state.levelEditor.campaignInProgress.rooms],
+  (rooms) => editorMapAreas({ rooms }),
+  {
+    memoize: lruMemoize,
+    memoizeOptions: { equalityCheck: areRoomsLaidOutAlike },
+  },
 );
 
-// depends on the campaign only through its parts that edits inside rooms
-// leave alone, so is unchanged by them:
-export const selectEditorMapData = createSelector(
-  [
-    selectEditorMapAreas,
-    (state: EditorRootState) =>
-      selectCursorRoomFromLevelEditorState(state.levelEditor),
-    (state: EditorRootState) =>
-      selectCurrentCommittedRoomJsonFromLevelEditorState(state.levelEditor)
-        .planet,
-  ],
-  (mapAreas, { roomId, subRoomId }, curRoomScenery) =>
-    editorMapData(mapAreas, roomId, subRoomId, curRoomScenery),
+/**
+ * why the map couldn't be laid out, if it couldn't
+ */
+export const selectEditorMapErrors = createSelector(
+  [selectEditorMapLayout],
+  (mapLayout) => (mapLayout.isError ? mapLayout.errors : undefined),
+);
+
+/**
+ * which of the map's areas each room is in
+ */
+const selectEditorMapAreaIndexByRoomId = createSelector(
+  [selectEditorMapLayout],
+  (mapLayout): Map<EditorRoomId, number> =>
+    mapLayout.isError ?
+      new Map()
+    : new Map(
+        mapLayout.areas.flatMap(({ gridPositions }, areaIndex) =>
+          valuesIter<RoomNode<EditorRoomId>>(gridPositions)
+            .map(({ roomId }) => [roomId, areaIndex] as const)
+            .toArray(),
+        ),
+      ),
+);
+
+/**
+ * which of the map's areas is shown: the one with the cursor room
+ */
+export const selectEditorShownMapAreaIndex = (state: EditorRootState) =>
+  selectEditorMapAreaIndexByRoomId(state).get(
+    selectCursorRoomFromLevelEditorState(state.levelEditor).roomId,
+  ) ?? 0;
+
+/**
+ * the one of the map's areas shown, unless the map couldn't be laid out -
+ * unchanged by edits that only move rooms in other areas
+ */
+export const selectEditorShownMapArea = createSelector(
+  [selectEditorMapLayout, selectEditorShownMapAreaIndex],
+  (mapLayout, shownAreaIndex) =>
+    mapLayout.isError ? undefined : mapLayout.areas[shownAreaIndex],
+  { memoizeOptions: { resultEqualityCheck: nanoEqual } },
+);
+
+/**
+ * the first room of each of the map's areas, which stands for it
+ */
+export const selectEditorMapAreaFirstRoomIds = createShallowStableSelector(
+  [selectEditorMapLayout],
+  (mapLayout): EditorRoomId[] =>
+    mapLayout.isError ? emptyArray : (
+      mapLayout.areas.map(({ firstRoomId }) => firstRoomId)
+    ),
 );
 
 /**
@@ -198,15 +216,12 @@ export const selectEditorMapData = createSelector(
  * edits that don't add, remove or recolour an area's first room
  */
 export const selectEditorMapAreaFirstRoomHues = createShallowStableSelector(
-  [selectEditorMapAreas, selectRoomHues],
-  (mapAreas, campaignRoomHues): RoomHues<EditorRoomId> =>
-    mapAreas.isError ? emptyObject : (
-      fromAllEntries(
-        mapAreas.areas.map(
-          ({ firstRoomId }) =>
-            [firstRoomId, campaignRoomHues[firstRoomId]] as const,
-        ),
-      )
+  [selectEditorMapAreaFirstRoomIds, selectRoomHues],
+  (firstRoomIds, campaignRoomHues): RoomHues<EditorRoomId> =>
+    fromAllEntries(
+      firstRoomIds.map(
+        (firstRoomId) => [firstRoomId, campaignRoomHues[firstRoomId]] as const,
+      ),
     ),
 );
 
@@ -249,7 +264,7 @@ const editorMapAreaLabels = (
 };
 
 export const selectEditorMapAreaLabels = createShallowStableSelector(
-  [selectCampaignInProgress, selectEditorMapAreas],
+  [selectCampaignInProgress, selectEditorMapLayout],
   editorMapAreaLabels,
 );
 
@@ -258,7 +273,7 @@ export const selectEditorMapAreaLabels = createShallowStableSelector(
  * room
  */
 export const selectEditorMapAreaRoomCounts = createShallowStableSelector(
-  [selectEditorMapAreas],
+  [selectEditorMapLayout],
   (mapAreas): Partial<Record<EditorRoomId, number>> =>
     mapAreas.isError ? emptyObject : (
       fromAllEntries(
@@ -273,15 +288,3 @@ export const selectEditorMapAreaRoomCounts = createShallowStableSelector(
       )
     ),
 );
-
-/**
- * shares what is unchanged, so that an edit to the notable items of one cell
- * leaves every other cell's as they were
- */
-export const selectEditorNotableItemsByCell = createStructurallySharedSelector(
-  [selectCampaignInProgress, selectEditorMapAreas],
-  editorNotableItemsByCell,
-);
-
-export const useEditorMapData = (): MapData<EditorRoomId> | MapDataError =>
-  useEditorAppSelector(selectEditorMapData);

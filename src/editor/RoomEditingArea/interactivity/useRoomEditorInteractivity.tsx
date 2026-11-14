@@ -18,7 +18,8 @@ import {
   selectOpenRoomView,
   selectTool,
 } from "../../slice/levelEditorSlice";
-import { existingOpenRoom, type OpenRoomId } from "../../slice/OpenRoom";
+import { type OpenRoomId } from "../../slice/OpenRoom";
+import { existingLayoutNode } from "../../slice/PaneLayout";
 import { findPointerPointingAt } from "../cursor/findPointerPointingAt";
 import { type MaybePointingAtSomething } from "../cursor/PointingAt";
 import { viewportMousePosition } from "../cursor/viewportMouse";
@@ -277,10 +278,15 @@ export const useRoomEditorInteractivity = (
         room: roomState,
         tool,
         gridResolution: storeState.levelEditor.gridResolution,
-        cameraAngle: existingOpenRoom(storeState.levelEditor, openRoomId)
-          .cameraAngle,
+        cameraAngle: existingLayoutNode(
+          storeState.levelEditor.layout,
+          openRoomId,
+        ).cameraAngle,
         roomRenderer: roomRendererRef.current,
-        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
+        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(
+          storeState,
+          roomState.id,
+        ),
       });
 
       // we don't care if just the xy of the mouse changed (if it didn't point at anything new),
@@ -333,7 +339,7 @@ export const useRoomEditorInteractivity = (
 
       if (
         roomState.id !==
-        existingOpenRoom(storeState.levelEditor, openRoomId).roomId
+        existingLayoutNode(storeState.levelEditor.layout, openRoomId).roomId
       ) {
         return;
       }
@@ -350,10 +356,15 @@ export const useRoomEditorInteractivity = (
         room: roomState,
         tool,
         gridResolution: storeState.levelEditor.gridResolution,
-        cameraAngle: existingOpenRoom(storeState.levelEditor, openRoomId)
-          .cameraAngle,
+        cameraAngle: existingLayoutNode(
+          storeState.levelEditor.layout,
+          openRoomId,
+        ).cameraAngle,
         roomRenderer: roomRendererRef.current,
-        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
+        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(
+          storeState,
+          roomState.id,
+        ),
       });
 
       const isDragEnd = dragAccVec.current !== undefined;
@@ -460,10 +471,15 @@ export const useRoomEditorInteractivity = (
         room: roomState,
         tool,
         gridResolution: storeState.levelEditor.gridResolution,
-        cameraAngle: existingOpenRoom(storeState.levelEditor, openRoomId)
-          .cameraAngle,
+        cameraAngle: existingLayoutNode(
+          storeState.levelEditor.layout,
+          openRoomId,
+        ).cameraAngle,
         roomRenderer: roomRendererRef.current,
-        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
+        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(
+          storeState,
+          roomState.id,
+        ),
       });
       mouseDownPointingAtRef.current = pointingAt;
 

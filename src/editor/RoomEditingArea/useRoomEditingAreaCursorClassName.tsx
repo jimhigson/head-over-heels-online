@@ -6,6 +6,7 @@ import {
   selectOpenRoomSelectedJsonItemIds,
 } from "../slice/levelEditorSlice";
 import { type OpenRoomId } from "../slice/OpenRoom";
+import { findLayoutNode } from "../slice/PaneLayout";
 import { resizeCursorForPointingAt } from "./cursor/resizeCursorForPointingAt";
 import { useOpenRoomPane } from "./useOpenRoomPane";
 
@@ -13,8 +14,7 @@ const selectCursor = (
   editorState: EditorRootState,
   openRoomId: OpenRoomId,
 ): `cursor-${string}` => {
-  const { openRooms } = editorState.levelEditor;
-  const openRoom = openRooms[openRoomId];
+  const openRoom = findLayoutNode(editorState.levelEditor.layout, openRoomId);
   // check the room wasn't closed (in case we have a stale openRoomId reference)
   if (openRoom === undefined) {
     return twClass("cursor-default");

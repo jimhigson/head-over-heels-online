@@ -15,6 +15,7 @@ import {
   type RoomState,
 } from "../../model/RoomState";
 import { typedURLSearchParams } from "../../options/queryParams";
+import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { store } from "../../store/store";
 import { badJsonClone } from "../../utils/badJsonClone";
 import { emptyObject } from "../../utils/empty";
@@ -231,6 +232,8 @@ const _loadGameState = <RoomId extends string>({
   > = {
     roomPickupsCollected: emptyObject,
     scrollsRead: emptyObject,
+    // a new game, so none yet:
+    planetsLiberated: noPlanetsLiberated,
     isNewGame: true,
     userSettings,
   };

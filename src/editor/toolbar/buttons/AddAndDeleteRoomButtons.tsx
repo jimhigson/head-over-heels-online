@@ -1,6 +1,6 @@
 import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useDispatchActionCallback } from "../../../store/useDispatchActionCallback";
-import { twClass } from "../../../utils/twClass";
+import { twClass } from "../../../utils/twClass.tsx";
 import { type Xy } from "../../../utils/vectors/vectors";
 import { actionCommandDefinitions } from "../../commands/actionCommandDefinitions";
 import { CommandToolbarButton } from "../../commands/CommandToolbarButton";

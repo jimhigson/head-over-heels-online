@@ -5,11 +5,11 @@ import {
 } from "@reduxjs/toolkit";
 
 import { type LevelEditorState } from "../levelEditorSlice";
+import { type OpenRoomId } from "../OpenRoom";
 import {
-  existingOpenRoom,
-  type OpenRoomId,
+  existingLayoutNode,
   selectActiveOpenRoomFromLevelEditorState,
-} from "../OpenRoom";
+} from "../PaneLayout";
 
 /** a drag of the selected items, rather than of the view */
 export type ItemsDrag = "moveItems" | "resizeItems";
@@ -30,7 +30,7 @@ export const dragToMoveReducers = {
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we
     // assigned to the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed
     // anyway
-    const openRoom = existingOpenRoom(state as LevelEditorState, openRoomId);
+    const openRoom = existingLayoutNode(state.layout, openRoomId);
     openRoom.dragInProgress = dragInProgress;
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
@@ -40,7 +40,7 @@ export const dragToMoveSelectors = {
     state: LevelEditorState,
     openRoomId: OpenRoomId,
   ) {
-    return existingOpenRoom(state, openRoomId).dragInProgress;
+    return existingLayoutNode(state.layout, openRoomId).dragInProgress;
   },
   selectActiveOpenRoomDragInProgress: (state: LevelEditorState) =>
     selectActiveOpenRoomFromLevelEditorState(state)?.dragInProgress,

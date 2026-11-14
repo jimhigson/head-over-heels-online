@@ -11,6 +11,7 @@ import {
   openItemContextMenu,
   setSelectedItemsInRoom,
 } from "../levelEditorSlice";
+import { existingLayoutNode } from "../PaneLayout";
 import {
   editorStateWithOneRoomWithNoItems,
   editorStateWithOneRoomWithOneAwayWall,
@@ -72,7 +73,8 @@ test("selects the exploded parts", () => {
 
 test("closes the context menu", () => {
   expect(
-    state1ExplodedBlock.openRooms[testOpenRoomId].contextMenuXy,
+    existingLayoutNode(state1ExplodedBlock.layout, testOpenRoomId)
+      .contextMenuXy,
   ).toBeUndefined();
 });
 

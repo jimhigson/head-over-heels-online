@@ -21,6 +21,7 @@ import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { isFreeItem } from "../../../model/ItemInPlayNarrowedUnions";
 import { type JsonItemUnion } from "../../../model/json/JsonItem";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
+import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { store } from "../../../store/store";
 import { keysIter } from "../../../utils/entries";
 import { lengthXy, originXyz, subXy } from "../../../utils/vectors/vectors";
@@ -52,6 +53,7 @@ const giveHeelsCarriedCube = (gameState: GameStateWithMockInput) => {
       position: { x: 0, y: 0, z: 0 },
     },
     room.roomJson,
+    noPlanetsLiberated,
   );
   const heels = heelsState(gameState);
   heels.hasBag = true;
@@ -71,6 +73,7 @@ const giveHeelsCarriedPuck = (gameState: GameStateWithMockInput) => {
       position: { x: 0, y: 0, z: 0 },
     },
     room.roomJson,
+    noPlanetsLiberated,
   );
   const heels = heelsState(gameState);
   heels.hasBag = true;

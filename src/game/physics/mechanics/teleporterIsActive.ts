@@ -1,6 +1,6 @@
 import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
-import { type PlanetName } from "../../../sprites/planets";
+import { type PlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 
 /** whether the item is a teleporter, fixed or portable - whether active or not */
 export const isTeleporter = <RoomId extends string, RoomItemId extends string>(
@@ -17,7 +17,7 @@ export const teleporterIsActive = <
   /**
    * which planets have been liberated so far
    */
-  planetsLiberated: Readonly<Record<PlanetName, boolean>>,
+  planetsLiberated: PlanetsLiberated,
 ): boolean =>
   activatedIfPlanetLiberated === undefined ||
   planetsLiberated[activatedIfPlanetLiberated];

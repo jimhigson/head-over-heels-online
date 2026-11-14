@@ -30,6 +30,11 @@ export type FreeCharacters = {
 };
 
 /**
+ * which planets have been liberated (their crowns collected)
+ */
+export type PlanetsLiberated = Readonly<Record<PlanetName, boolean>>;
+
+/**
  * The parts of a game-in-play state that are kept in the store. Not everything
  * goes in the store because in-play rooms etc. need to be mutated in-place for
  * performance.
@@ -40,7 +45,7 @@ export type FreeCharacters = {
  *  * for reincarnation fish save points
  */
 export type GameInPlayStoreState = {
-  planetsLiberated: Record<PlanetName, boolean>;
+  planetsLiberated: PlanetsLiberated;
   roomsExplored: Record<string, true>;
   /**
    * we don't want to show the same scroll twice, even if it is in a different room
@@ -74,7 +79,7 @@ type GameInPlaySliceState = {
   gameRunning: boolean;
 };
 
-export const noPlanetsLiberated = {
+export const noPlanetsLiberated: PlanetsLiberated = {
   blacktooth: false,
   bookworld: false,
   egyptus: false,

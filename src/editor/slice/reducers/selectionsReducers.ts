@@ -4,17 +4,17 @@ import {
   type SliceSelectors,
 } from "@reduxjs/toolkit";
 
-import { valuesIter } from "../../../utils/entries";
 import { type EditorRoomItemId } from "../../editorTypes";
 import { commitPendingNudgeInPlace } from "../inPlaceMutators/commitPendingNudgeInPlace";
 import { selectCursorRoomSelectedJsonItemIdsFromLevelEditorState } from "../levelEditorSelectors";
 import { type HoveredItem, type LevelEditorState } from "../levelEditorSlice";
+import { type OpenRoomId } from "../OpenRoom";
 import {
-  existingOpenRoom,
-  type OpenRoomId,
+  existingLayoutNode,
+  layoutNodesOfType,
   selectActiveOpenRoomFromLevelEditorState,
   selectOpenRoomSelectedJsonItemIdsFromLevelEditorState,
-} from "../OpenRoom";
+} from "../PaneLayout";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 
 /**
@@ -28,7 +28,7 @@ export const removeNonExistingItemsFromSelection = (
   // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
   const state = _state as LevelEditorState;
 
-  for (const openRoom of valuesIter(state.openRooms)) {
+  for (const openRoom of layoutNodesOfType(state.layout, "openRoom")) {
     const roomItems = state.campaignInProgress.rooms[openRoom.roomId].items;
     if (
       openRoom.selectedJsonItemIds.some(
@@ -121,7 +121,7 @@ export const selectionsReducers = {
       hoveredItem: HoveredItem | undefined;
     }>,
   ) {
-    const openRoom = existingOpenRoom(state, openRoomId);
+    const openRoom = existingLayoutNode(state.layout, openRoomId);
     openRoom.hoveredItem = hoveredItem;
   },
   setClickableAnnotationHovered(
@@ -130,7 +130,7 @@ export const selectionsReducers = {
       payload: { openRoomId, hovered },
     }: PayloadAction<{ openRoomId: OpenRoomId; hovered: boolean }>,
   ) {
-    const openRoom = existingOpenRoom(state, openRoomId);
+    const openRoom = existingLayoutNode(state.layout, openRoomId);
     openRoom.clickableAnnotationHovered = hovered;
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
@@ -141,6 +141,6 @@ export const selectionsSelectors = {
   selectOpenRoomSelectedJsonItemIds:
     selectOpenRoomSelectedJsonItemIdsFromLevelEditorState,
   selectOpenRoomHoveredItem(state: LevelEditorState, openRoomId: OpenRoomId) {
-    return existingOpenRoom(state, openRoomId).hoveredItem;
+    return existingLayoutNode(state.layout, openRoomId).hoveredItem;
   },
 } satisfies SliceSelectors<LevelEditorState>;

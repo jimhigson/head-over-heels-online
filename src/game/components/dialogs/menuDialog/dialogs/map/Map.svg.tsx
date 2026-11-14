@@ -3,20 +3,17 @@ import { memo, Suspense } from "preact/compat";
 import { useMemo } from "preact/hooks";
 import { type ValueOf } from "type-fest";
 
-import { type TeleporterLink } from "../../../../../../model/map/teleporterLinks";
 import { MapBackground } from "./MapBackground";
 import { mapSvgMarginX, mapSvgMarginY } from "./mapConstants";
 import { useMapContext } from "./MapContext";
-import { type MapArea, type MapData } from "./MapData";
+import { type MapArea } from "./MapData";
 import { RoomSvg } from "./Room.svg";
 import { type RoomDecoratorProps } from "./RoomDecoratorProps";
 import { roomWorldPosition } from "./roomWorldPosition";
 import { ScrollIntoView } from "./ScrollIntoView";
 import { translateXyz } from "./svgHelpers";
 
-export type MapSvgProps<RoomId extends string> = MapData<RoomId> & {
-  /** which of the map's areas to draw */
-  areaIndex?: number;
+export type MapSvgProps = {
   containerWidth?: number;
 };
 
@@ -31,10 +28,6 @@ type MapDecoratorLayerProps<RoomId extends string> = {
   decorators: FunctionComponent<RoomDecoratorProps<RoomId>>[];
   transform: string;
   orderedPositions: ValueOf<MapArea<RoomId>["gridPositions"]>[];
-  gridPositions: MapArea<RoomId>["gridPositions"];
-  curRoomId: RoomId | undefined;
-  curSubRoomId: string | undefined;
-  teleporterLinks: TeleporterLink<RoomId>[] | undefined;
 };
 
 /**
@@ -45,27 +38,13 @@ const MapDecoratorLayerUnmemoised = <RoomId extends string>({
   decorators,
   transform,
   orderedPositions,
-  gridPositions,
-  curRoomId,
-  curSubRoomId,
-  teleporterLinks,
 }: MapDecoratorLayerProps<RoomId>) => (
   <>
     {decorators.map((Decorator, decoratorIndex) => (
       <g key={decoratorIndex} transform={transform}>
-        {orderedPositions.map(({ roomId, subRoomId, boundaries }) => (
+        {orderedPositions.map(({ roomId, subRoomId }) => (
           <Suspense key={`${roomId}/${subRoomId}`} fallback={null}>
-            <Decorator
-              roomId={roomId}
-              subRoomId={subRoomId}
-              boundaries={boundaries}
-              isCurrentRoom={curRoomId === roomId}
-              isCurrentSubRoom={
-                curRoomId === roomId && curSubRoomId === subRoomId
-              }
-              allGridPositions={gridPositions}
-              teleporterLinks={teleporterLinks}
-            />
+            <Decorator roomId={roomId} subRoomId={subRoomId} />
           </Suspense>
         ))}
       </g>
@@ -82,17 +61,13 @@ const MapDecoratorLayer = memo(MapDecoratorLayerUnmemoised);
  * it must be inside a `MapContextProvider`
  */
 export const MapSvg = <RoomId extends string>({
-  areas,
-  areaIndex = 0,
   containerWidth,
-  curRoomId,
-  curSubRoomId,
-  curRoomScenery,
-  teleporterLinks,
-}: MapSvgProps<RoomId>) => {
-  const { prefixDecorators, postfixDecorators } = useMapContext<RoomId>();
-  const area = areas[areaIndex];
-  const { gridPositions, mapBounds } = area;
+}: MapSvgProps) => {
+  const { prefixDecorators, postfixDecorators, useCurRoomId, useShownArea } =
+    useMapContext<RoomId>();
+  const curRoomId = useCurRoomId();
+  const shownArea = useShownArea();
+  const { gridPositions, mapBounds } = shownArea;
 
   const orderedPositions = useMemo(
     () => Object.values(gridPositions) as ValueOf<typeof gridPositions>[],
@@ -118,15 +93,11 @@ export const MapSvg = <RoomId extends string>({
   const backgroundRoomId =
     curRoomId === undefined ? undefined
     : orderedPositions.some(({ roomId }) => roomId === curRoomId) ? curRoomId
-    : area.firstRoomId;
+    : shownArea.firstRoomId;
 
   const decoratorLayerProps = {
     transform: gridTransform,
     orderedPositions,
-    gridPositions,
-    curRoomId,
-    curSubRoomId,
-    teleporterLinks,
   };
 
   return (
@@ -141,9 +112,8 @@ export const MapSvg = <RoomId extends string>({
     >
       {backgroundRoomId === undefined ? null : (
         <MapBackground<RoomId>
-          area={area}
+          area={shownArea}
           backgroundRoomId={backgroundRoomId}
-          curRoomScenery={curRoomScenery}
           containerWidth={containerWidth}
         />
       )}
@@ -154,8 +124,7 @@ export const MapSvg = <RoomId extends string>({
         />
       )}
       <g transform={gridTransform}>
-        {orderedPositions.map((gridPositionSpec) => {
-          const { roomId, subRoomId, gridPosition } = gridPositionSpec;
+        {orderedPositions.map(({ roomId, subRoomId, gridPosition }) => {
           const roomRenderingId: `${RoomId}/${string}` = `${roomId}/${subRoomId}`;
           const isCurrentRoom = curRoomId === roomId;
 
@@ -165,10 +134,7 @@ export const MapSvg = <RoomId extends string>({
               data-id={roomRenderingId}
               transform={translateXyz(roomWorldPosition(gridPosition))}
             >
-              <RoomSvg
-                roomGridPositionSpec={gridPositionSpec}
-                isCurrentRoom={isCurrentRoom}
-              />
+              <RoomSvg roomId={roomId} subRoomId={subRoomId} />
               {isCurrentRoom ?
                 <ScrollIntoView svg smooth />
               : null}

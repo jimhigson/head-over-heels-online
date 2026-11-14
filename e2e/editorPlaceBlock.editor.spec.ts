@@ -3,7 +3,7 @@ import { expect } from "@playwright/test";
 import { blockSizePx } from "../src/game/physics/mechanicsConstants";
 import { entries, keys } from "../src/utils/entries";
 import {
-  editorCurrentRoomJson,
+  editorCursorRoomJson,
   openEditor,
   placeItemAtWorldPosition,
 } from "./testUtils/editorInteractions";
@@ -24,7 +24,7 @@ test.describe("placing an item with the item tool", () => {
   test("clicking the floor at block (1,1) adds a block there to the room json", async ({
     page,
   }) => {
-    const roomJsonBefore = await editorCurrentRoomJson(page);
+    const roomJsonBefore = await editorCursorRoomJson(page);
 
     await placeItemAtWorldPosition(
       page,
@@ -32,7 +32,7 @@ test.describe("placing an item with the item tool", () => {
       centreOfFloorTile1x1,
     );
 
-    const roomJsonAfter = await editorCurrentRoomJson(page);
+    const roomJsonAfter = await editorCursorRoomJson(page);
 
     const addedIds = keys(roomJsonAfter.items).filter(
       (itemId) => roomJsonBefore.items[itemId] === undefined,

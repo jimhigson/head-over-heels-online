@@ -32,7 +32,10 @@ import {
 } from "../model/modelTypes";
 import { type RoomState } from "../model/RoomState";
 import { startAppListening } from "../store/listenerMiddleware";
-import { gameOver } from "../store/slices/gameInPlay/gameInPlaySlice";
+import {
+  gameOver,
+  noPlanetsLiberated,
+} from "../store/slices/gameInPlay/gameInPlaySlice";
 import { valuesIter } from "../utils/entries";
 import { addXyz } from "../utils/vectors/vectors";
 import { gameStartedWithCampaign } from "./initStoreForTests";
@@ -396,6 +399,7 @@ export const mutatorsTestHarness = () => {
             position: { x: 0, y: 0, z: 0 },
           },
           room!.roomJson,
+          noPlanetsLiberated,
         );
         heelsAbilities.carrying = carrying;
       }

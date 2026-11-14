@@ -25,13 +25,14 @@ import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import {
   applyItemTool,
+  changeToRoom,
   deleteSelected,
   type LevelEditorState,
   setAutoCoalesce,
   setSelectedItemsInRoom,
   setTool,
 } from "../levelEditorSlice";
-import { openRoomDefaults } from "../OpenRoom";
+import { existingLayoutNode } from "../PaneLayout";
 import {
   doorItemToolWithAutoAddRooms,
   doorItemToolWithoutAutoAddRooms,
@@ -50,6 +51,7 @@ describe("applying tools", () => {
       const itemPosition = { x: 3, y: 3, z: 0 };
 
       const actionPayload: ApplyToolToRoomJsonPayload = {
+        roomId: testRoomId,
         blockPosition: itemPosition,
         pointedAtItemJson: {
           type: "floor",
@@ -120,6 +122,7 @@ describe("applying tools", () => {
         "clicking on a volcano adds a normal cyberman",
         ({ activated, style, deadlyBlockPosition }) => {
           const actionPayload: ApplyToolToRoomJsonPayload = {
+            roomId: testRoomId,
             blockPosition: { x: 1, y: 2, z: 1 },
             pointedAtItemJson: {
               type: "deadlyBlock",
@@ -179,6 +182,7 @@ describe("applying tools", () => {
       test("can cut a hole in a wall, making it into two walls", () => {
         const doorPosition = { x: 2, y: 5, z: 0 };
         const actionPayload: ApplyToolToRoomJsonPayload = {
+          roomId: testRoomId,
           blockPosition: doorPosition,
           pointedAtItemJson: editorStateWithOneRoomWithOneAwayWall
             .campaignInProgress.rooms[testRoomId].items[
@@ -235,6 +239,7 @@ describe("applying tools", () => {
       test("move the start of a wall", () => {
         const doorPosition = { x: 0, y: 5, z: 0 };
         const actionPayload: ApplyToolToRoomJsonPayload = {
+          roomId: testRoomId,
           blockPosition: doorPosition,
           pointedAtItemJson: editorStateWithOneRoomWithOneAwayWall
             .campaignInProgress.rooms[testRoomId].items[
@@ -287,6 +292,7 @@ describe("applying tools", () => {
       test("move the end of a wall", () => {
         const doorPosition = { x: 3, y: 5, z: 0 };
         const actionPayload: ApplyToolToRoomJsonPayload = {
+          roomId: testRoomId,
           blockPosition: doorPosition,
           pointedAtItemJson: editorStateWithOneRoomWithOneAwayWall
             .campaignInProgress.rooms[testRoomId].items[
@@ -347,6 +353,7 @@ describe("applying tools", () => {
             wallItemId
           ].position;
         const actionPayload: ApplyToolToRoomJsonPayload = {
+          roomId: testRoomId,
           blockPosition:
             // placing at the wall's position:
             wallPosition,
@@ -384,6 +391,7 @@ describe("applying tools", () => {
       test("creates a new room with a door for the reverse direction if auto-add is on in the tool", () => {
         const doorPosition = { x: 3, y: 5, z: 0 };
         const actionPayload: ApplyToolToRoomJsonPayload = {
+          roomId: testRoomId,
           blockPosition: doorPosition,
           pointedAtItemJson: editorStateWithOneRoomWithOneAwayWall
             .campaignInProgress.rooms[testRoomId].items[
@@ -436,6 +444,7 @@ describe("applying tools", () => {
       test("does not creates a new room with a door for the reverse direction if auto-add is off in the tool", () => {
         const doorPosition = { x: 3, y: 5, z: 0 };
         const actionPayload: ApplyToolToRoomJsonPayload = {
+          roomId: testRoomId,
           blockPosition: doorPosition,
           pointedAtItemJson: editorStateWithOneRoomWithOneAwayWall
             .campaignInProgress.rooms[testRoomId].items[
@@ -488,6 +497,7 @@ describe("applying tools", () => {
         (dispatch, getState) => {
           dispatch(
             applyItemTool({
+              roomId: selectCursorRoomIdFromLevelEditorState(state0),
               blockPosition: { x: 0, y: 0, z: 0 },
               pointedAtItemJson: findFloor(getState().levelEditor),
               preview: false,
@@ -498,6 +508,7 @@ describe("applying tools", () => {
         (dispatch, getState) => {
           dispatch(
             applyItemTool({
+              roomId: selectCursorRoomIdFromLevelEditorState(state0),
               blockPosition: { x: 1, y: 0, z: 0 },
               pointedAtItemJson: findFloor(getState().levelEditor),
               preview: false,
@@ -533,6 +544,7 @@ describe("applying tools", () => {
           },
         }),
         applyItemTool({
+          roomId: selectCursorRoomIdFromLevelEditorState(state0),
           blockPosition: { x: 0, y: 0, z: 1 },
           pointedAtItemJson: toasters[0] as EditorJsonItemUnion,
           preview: false,
@@ -584,6 +596,7 @@ describe("applying tools", () => {
       (dispatch, getState) => {
         dispatch(
           applyItemTool({
+            roomId: selectCursorRoomIdFromLevelEditorState(state0),
             blockPosition: { x: 0, y: 0, z: 0 },
             pointedAtItemJson: findFloor(getState().levelEditor),
             preview: false,
@@ -594,6 +607,7 @@ describe("applying tools", () => {
       (dispatch, getState) => {
         dispatch(
           applyItemTool({
+            roomId: selectCursorRoomIdFromLevelEditorState(state0),
             blockPosition: { x: 1, y: 0, z: 0 },
             pointedAtItemJson: findFloor(getState().levelEditor),
             preview: false,
@@ -627,25 +641,24 @@ test("a door adding a room beside one sub-room of a divided room adds no verific
   const [[, awayWall]] = iterateRoomJsonItemsWithIds(room.items, "wall")
     .filter(([, wall]) => wall.config.direction === "away")
     .toArray();
-  const state0: LevelEditorState = {
-    ...editorStateWithOneRoomWithNoItems,
-    selectedRoomIds: [roomId],
-    openRooms: {
-      [testOpenRoomId]: {
-        ...openRoomDefaults,
-        roomId,
-        subRoomId: "2",
-        editable: true,
+  const state0: LevelEditorState = produce(
+    {
+      ...editorStateWithOneRoomWithNoItems,
+      selectedRoomIds: [roomId],
+      campaignInProgress: {
+        ...editorStateWithOneRoomWithNoItems.campaignInProgress,
+        rooms: {
+          [roomId]: room,
+        } as LevelEditorState["campaignInProgress"]["rooms"],
       },
     },
-    cursorRoomId: roomId,
-    campaignInProgress: {
-      ...editorStateWithOneRoomWithNoItems.campaignInProgress,
-      rooms: {
-        [roomId]: room,
-      } as LevelEditorState["campaignInProgress"]["rooms"],
+    (draft) => {
+      Object.assign(existingLayoutNode(draft.layout, testOpenRoomId), {
+        roomId,
+        subRoomId: "2",
+      });
     },
-  };
+  );
   const issueMessages = (state: LevelEditorState) =>
     verifyCampaign(state.campaignInProgress as VerificationCampaign).map(
       ({ msg }) => msg,
@@ -655,6 +668,7 @@ test("a door adding a room beside one sub-room of a divided room adds no verific
     state0,
     setTool(doorItemToolWithAutoAddRooms),
     applyItemTool({
+      roomId,
       // on the away wall of sub-room 2:
       blockPosition: { x: 3, y: 16, z: 0 },
       pointedAtItemJson: awayWall as EditorJsonItemUnion,
@@ -664,4 +678,39 @@ test("a door adding a room beside one sub-room of a divided room adds no verific
   );
 
   expect(issueMessages(state1)).toEqual(issueMessages(state0));
+});
+
+test("previewing an item in a room other than the cursor room previews it there, leaving the cursor room as it is", () => {
+  const roomB = "roomB" as EditorRoomId;
+  const state0 = produce(editorStateWithOneRoomWithNoItems, (draft) => {
+    const { rooms } = draft.campaignInProgress;
+    rooms[roomB] = { ...rooms[testRoomId], id: roomB };
+  });
+  const state1 = reduceLevelEditorActions(
+    state0,
+    changeToRoom(roomB),
+    setTool({
+      type: "item",
+      item: { type: "block", config: { style: "organic" } },
+    }),
+    applyItemTool({
+      roomId: testRoomId,
+      blockPosition: { x: 3, y: 3, z: 0 },
+      pointedAtItemJson: {
+        type: "floor",
+        config: {
+          floorType: "standable",
+          scenery: "blacktooth",
+          times: { x: 8, y: 8 },
+        },
+        position: originXyz,
+      },
+      preview: true,
+      timestamp: 0,
+    }),
+  );
+  expect({
+    previewRoomId: state1.pendingEdits?.roomId,
+    cursorRoomId: selectCursorRoomIdFromLevelEditorState(state1),
+  }).toEqual({ previewRoomId: testRoomId, cursorRoomId: roomB });
 });

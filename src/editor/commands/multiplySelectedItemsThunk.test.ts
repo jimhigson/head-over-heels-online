@@ -15,6 +15,7 @@ import {
 } from "../slice/levelEditorSlice";
 import { loadEditorRoom } from "../slice/loadEditorRoom";
 import { type MultiplyType } from "../slice/multiplyPlan";
+import { existingLayoutNode } from "../slice/PaneLayout";
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,
@@ -50,7 +51,9 @@ const stateWithSelectedMonkeyOnFloor: LevelEditorState = produce(
       },
     };
     room.items[monkeyId] = monkey;
-    draft.openRooms[testOpenRoomId].selectedJsonItemIds = [monkeyId];
+    existingLayoutNode(draft.layout, testOpenRoomId).selectedJsonItemIds = [
+      monkeyId,
+    ];
   },
 );
 
@@ -113,7 +116,9 @@ test("multiplying selects the copies along with the originals", () => {
     ...multiplyPresses([unitVectors.left]),
   );
 
-  expect(state1.openRooms[testOpenRoomId].selectedJsonItemIds).toHaveLength(2);
+  expect(
+    existingLayoutNode(state1.layout, testOpenRoomId).selectedJsonItemIds,
+  ).toHaveLength(2);
 });
 
 test("each of several scattered selected items gets its own copy", () => {
@@ -125,7 +130,7 @@ test("each of several scattered selected items gets its own copy", () => {
         ...monkey,
         position: { x: 5, y: 4, z: 0 },
       };
-      draft.openRooms[testOpenRoomId].selectedJsonItemIds = [
+      existingLayoutNode(draft.layout, testOpenRoomId).selectedJsonItemIds = [
         monkeyId,
         otherMonkeyId,
       ];
@@ -157,7 +162,7 @@ test("a copy that would collide is left out, while the others are still made", (
         position: { x: 5, y: 5, z: 0 },
         config: { style: "organic" },
       };
-      draft.openRooms[testOpenRoomId].selectedJsonItemIds = [
+      existingLayoutNode(draft.layout, testOpenRoomId).selectedJsonItemIds = [
         monkeyId,
         otherMonkeyId,
       ];
@@ -225,7 +230,10 @@ test("multiplying a block and a monster together grows the block and copies the 
         position: { x: 1, y: 4, z: 0 },
         config: { style: "organic" },
       };
-      draft.openRooms[testOpenRoomId].selectedJsonItemIds = [monkeyId, blockId];
+      existingLayoutNode(draft.layout, testOpenRoomId).selectedJsonItemIds = [
+        monkeyId,
+        blockId,
+      ];
       draft.autoCoalesce = false;
     },
   );

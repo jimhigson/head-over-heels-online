@@ -20,6 +20,7 @@ import {
 import { isMovableBetweenRooms } from "../isMovableBetweenRooms";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { layoutNodesOfType } from "../PaneLayout";
 import { pushUndoForRoomInPlace } from "../reducers/undoReducers";
 import { commitPendingNudgeInPlace } from "./commitPendingNudgeInPlace";
 
@@ -128,7 +129,7 @@ export const moveItemsToRoomInPlace = (
   commitPendingNudgeInPlace(state);
   // the drag's preview is replaced by the move:
   state.pendingEdits = undefined;
-  for (const openRoom of valuesIter(state.openRooms)) {
+  for (const openRoom of layoutNodesOfType(state.layout, "openRoom")) {
     openRoom.dragInProgress = undefined;
   }
 

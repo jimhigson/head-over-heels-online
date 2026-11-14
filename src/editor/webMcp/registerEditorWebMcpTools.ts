@@ -43,14 +43,20 @@ import {
   selectCursorRoomId,
   selectCursorRoomSelectedJsonItemIds,
   selectCursorSubRoomId,
+  selectFocusedTabGroupId,
   selectItem,
-  selectOpenRoomCameraAngle,
   selectPlaytestOptions,
   selectRoom,
-  selectTabRoomIds,
-  selectTabs,
+  selectTabGroupRoomIds,
+  selectTabGroups,
   selectTool,
 } from "../slice/levelEditorSlice";
+import {
+  findLayoutNode,
+  tabGroupTabs,
+  type TabInGroup,
+  tabOpenRoom,
+} from "../slice/PaneLayout";
 import {
   loadCampaignIntoEditor,
   revertPressed,
@@ -192,11 +198,37 @@ const requestedCampaignLocator = async (
   return { userId, campaignName };
 };
 
-/** a tool that dispatches one room-tab action, returning the tabs after */
+/**
+ * the panes in layout order, each with its tabs in order, as the tools report
+ * them
+ */
+const panesForTools = (editorState: EditorRootState) => {
+  const focusedTabGroupId = selectFocusedTabGroupId(editorState);
+  const {
+    levelEditor: { layout },
+  } = editorState;
+  return selectTabGroups(editorState).map((tabGroup) => ({
+    isFocused: tabGroup.id === focusedTabGroupId,
+    tabs: tabGroupTabs(layout, tabGroup).map((tab) => {
+      const { roomId, cameraAngle } = tabOpenRoom(layout, tab);
+      return {
+        roomId,
+        isPreview: tab.isPreview,
+        isFront: tab.id === tabGroup.frontTabId,
+        cameraAngle,
+      };
+    }),
+  }));
+};
+
+/**
+ * a tool that dispatches one room-tab action on a room's tab in the focused
+ * pane, returning the panes after
+ */
 const roomTabTool = (
   name: string,
   description: string,
-  roomTabAction: (roomId: EditorRoomId) => LevelEditorSliceAction,
+  roomTabAction: (tabInGroup: TabInGroup) => LevelEditorSliceAction,
 ): WebMCP.ModelContextTool => ({
   name,
   description,
@@ -209,24 +241,20 @@ const roomTabTool = (
     if (typeof roomId !== "string") {
       return jsonResult("roomId must be a string");
     }
-    editorStore.dispatch(roomTabAction(roomId as EditorRoomId));
-    return jsonResult({
-      openRoomTabs: roomTabsForTools(editorStore.getState()),
-    });
+    const editorState = editorStore.getState();
+    const tabGroupId = selectFocusedTabGroupId(editorState);
+    const tabIndex = selectTabGroupRoomIds(editorState, tabGroupId).indexOf(
+      roomId as EditorRoomId,
+    );
+    const tabId = findLayoutNode(editorState.levelEditor.layout, tabGroupId)
+      ?.children[tabIndex];
+    if (tabId === undefined) {
+      return jsonResult(`room ${roomId} has no tab in the focused pane`);
+    }
+    editorStore.dispatch(roomTabAction({ tabGroupId, tabId }));
+    return jsonResult({ panes: panesForTools(editorStore.getState()) });
   },
 });
-
-/**
- * the rooms open in tabs, in order, as the tools report them
- */
-const roomTabsForTools = (editorState: EditorRootState) => {
-  const tabRoomIds = selectTabRoomIds(editorState);
-  return selectTabs(editorState).map(({ isPreview, openRoomId }, tabIndex) => ({
-    roomId: tabRoomIds[tabIndex],
-    isPreview,
-    cameraAngle: selectOpenRoomCameraAngle(editorState, openRoomId),
-  }));
-};
 
 const editorWebMcpTools: WebMCP.ModelContextTool[] = [
   {
@@ -332,7 +360,7 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
   {
     name: "getEditorView",
     description:
-      "the editor's ui state: current tool, current sub-room, grid resolution and the rooms open in tabs (in order, each with the camera angle it is viewed from; isPreview tabs are replaced by the next room browsed to)",
+      "the editor's ui state: current tool, current sub-room, grid resolution and its panes (in layout order, each with its tabs in order; each tab's room is viewed from its own camera angle; isPreview tabs are replaced by the next room browsed to; the focused pane's front tab is the current room)",
     inputSchema: { type: "object", properties: {} },
     async execute() {
       const editorState = editorStore.getState();
@@ -340,7 +368,7 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
         tool: selectTool(editorState),
         subRoomId: selectCursorSubRoomId(editorState),
         gridResolution: editorState.levelEditor.gridResolution,
-        openRoomTabs: roomTabsForTools(editorState),
+        panes: panesForTools(editorState),
       });
     },
   },
@@ -386,17 +414,17 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
   },
   roomTabTool(
     "closeRoomTab",
-    "close a room's tab, as its x does; the last tab can't be closed. Closing the current room's tab moves to the next tab",
+    "close a room's tab in the focused pane, as its x does; the last tab can't be closed. Closing the current room's tab moves to the next tab, or another pane if it was its pane's only tab",
     closeRoomTab,
   ),
   roomTabTool(
     "closeOtherRoomTabs",
-    "close every tab but the room's own, as its tab's context menu does; the room becomes current",
+    "close every tab in the focused pane but the room's own, as its tab's context menu does; the room becomes current",
     closeOtherRoomTabs,
   ),
   roomTabTool(
     "pinRoomTab",
-    "keep a room's preview tab open when other rooms are browsed to, as double-clicking it does",
+    "keep a room's preview tab in the focused pane open when other rooms are browsed to, as double-clicking it does",
     pinRoomTab,
   ),
   {

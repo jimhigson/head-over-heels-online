@@ -47,7 +47,8 @@ import {
   setSelectedItemsInRoom,
   toggleSelectedItemInRoom,
 } from "../../../slice/levelEditorSlice";
-import { existingOpenRoom, type OpenRoomId } from "../../../slice/OpenRoom";
+import { type OpenRoomId } from "../../../slice/OpenRoom";
+import { existingLayoutNode } from "../../../slice/PaneLayout";
 import { type ItemsDrag } from "../../../slice/reducers/dragToMoveReducers";
 import { getMovableVector } from "../../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import { moveOrResizeOutcome } from "../../../slice/reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
@@ -356,7 +357,8 @@ export class PointerToolHandler implements ToolHandler<
           mouseEvent.metaKey || mouseEvent.shiftKey,
           dragAccVec.current !== undefined,
           jsonItems,
-          existingOpenRoom(storeState.levelEditor, openRoomId).cameraAngle,
+          existingLayoutNode(storeState.levelEditor.layout, openRoomId)
+            .cameraAngle,
         )
         // ignore dragging if it started in a different room:
       : undefined;
@@ -466,7 +468,8 @@ export class PointerToolHandler implements ToolHandler<
         dragMovesToTry(
           positionDelta,
           dragGridResolution,
-          existingOpenRoom(storeState.levelEditor, openRoomId).cameraAngle,
+          existingLayoutNode(storeState.levelEditor.layout, openRoomId)
+            .cameraAngle,
         )
       : [positionDelta];
 
@@ -498,7 +501,7 @@ export class PointerToolHandler implements ToolHandler<
       return;
     }
     if (
-      existingOpenRoom(levelEditorState, openRoomId).dragInProgress !==
+      existingLayoutNode(levelEditorState.layout, openRoomId).dragInProgress !==
       itemsDrag
     ) {
       dispatch(changeDragInProgress({ openRoomId, dragInProgress: itemsDrag }));

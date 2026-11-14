@@ -52,6 +52,7 @@ describe(
       expect(roomUndo(state1).length).toBe(0);
 
       const a1 = applyItemTool({
+        roomId: selectCursorRoomIdFromLevelEditorState(state0),
         blockPosition: { x: 4, y: 4, z: 4 },
         pointedAtItemJson: {
           type: "floor",
@@ -117,6 +118,7 @@ describe(
       const state2 = reduce(
         state1,
         applyItemTool({
+          roomId: selectCursorRoomIdFromLevelEditorState(state0),
           blockPosition: { x: 4, y: 4, z: 4 },
           pointedAtItemJson: {
             type: "floor",
@@ -202,6 +204,7 @@ describe(
       const state2 = reduce(
         state1,
         applyItemTool({
+          roomId: selectCursorRoomIdFromLevelEditorState(state0),
           blockPosition: { x: 4, y: 4, z: 4 },
           pointedAtItemJson: {
             type: "floor",

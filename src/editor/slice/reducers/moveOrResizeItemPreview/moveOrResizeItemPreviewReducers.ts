@@ -48,6 +48,7 @@ import { generateWallHealingInPlaceOfDoor } from "../../inPlaceMutators/generate
 import { jsonItemsWithEdits } from "../../jsonItemsWithEdits";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
+  selectCursorRoomIdFromLevelEditorState,
   selectItemInLevelEditorState,
 } from "../../levelEditorSelectors";
 import {
@@ -428,7 +429,7 @@ export type MoveOrResizeOutcome =
   | { type: "unchanged" }
   | {
       type: "valid";
-      pendingEdits: Omit<PendingEdits, "madeBy">;
+      pendingEdits: Omit<PendingEdits, "madeBy" | "roomId">;
     };
 
 /**
@@ -597,6 +598,7 @@ export const moveOrResizeItemPreviewReducers = {
       case "valid":
         state.pendingEdits = {
           ...outcome.pendingEdits,
+          roomId: selectCursorRoomIdFromLevelEditorState(state),
           madeBy: { type: "drag" },
         };
         return;

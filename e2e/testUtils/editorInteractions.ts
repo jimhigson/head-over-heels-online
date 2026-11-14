@@ -70,12 +70,32 @@ const editorSliceState = (page: Page) =>
     () => (window._e2e_store!.getState() as EditorRootState).levelEditor,
   );
 
-/** the room json for the room being edited, as it would be saved */
-export const editorCurrentRoomJson = async (
+/**
+ * get the room json for the room being edited, as it would be saved
+ */
+export const editorCursorRoomJson = async (
   page: Page,
 ): Promise<EditorRoomJson> => {
-  const { campaignInProgress, cursorRoomId } = await editorSliceState(page);
-  return campaignInProgress.rooms[cursorRoomId] as EditorRoomJson;
+  const {
+    campaignInProgress,
+    layout: { nodes },
+    focusedTabGroupId,
+  } = await editorSliceState(page);
+  // the cursor room is the one in front of the focused pane:
+  const focusedTabGroup = nodes[focusedTabGroupId];
+  if (focusedTabGroup.type !== "tabGroup") {
+    throw new Error("the focused pane is not in the layout");
+  }
+  const frontTab = nodes[focusedTabGroup.frontTabId];
+  if (frontTab.type !== "tab") {
+    throw new Error("the focused pane has no front tab");
+  }
+  const frontOpenRoom = nodes[frontTab.children[0]];
+  if (frontOpenRoom.type !== "openRoom") {
+    throw new Error("the front tab has no open room");
+  }
+  const { roomId: frontTabRoomId } = frontOpenRoom;
+  return campaignInProgress.rooms[frontTabRoomId] as EditorRoomJson;
 };
 
 export const editorItems = async (page: Page): Promise<Array<EditorE2eItem>> =>

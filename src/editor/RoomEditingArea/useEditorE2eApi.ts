@@ -3,14 +3,17 @@ import { useEffect } from "preact/hooks";
 
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
 import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
-import { editorStore } from "../../store/store";
+import { editorStore, useEditorAppSelector } from "../../store/store";
 import { type Xy, type Xyz, type XyzBox } from "../../utils/vectors/vectors";
 import {
   type EditorRoomItemId,
   type EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
 import { type LoadedRoomCache } from "../loadedRoomCache/LoadedRoomCache";
-import { selectOpenRoomCameraAngle } from "../slice/levelEditorSlice";
+import {
+  selectFrontOpenRoomId,
+  selectOpenRoomCameraAngle,
+} from "../slice/levelEditorSlice";
 import { type OpenRoomId } from "../slice/OpenRoom";
 import { type MaybePointingAtSomething } from "./cursor/PointingAt";
 import { type EditorViewport } from "./viewport/EditorViewport";
@@ -64,8 +67,8 @@ export type UseEditorE2eApiParams = {
   pointingAtRef: RefObject<MaybePointingAtSomething | undefined>;
   loadedRoom: LoadedRoomCache;
   /**
-   * whether the open room is editable - only an editable one is driven by the
-   * tests
+   * whether the open room is editable - only an editable one, in front of the
+   * focused pane, is driven by the tests
    */
   editable: boolean;
 };
@@ -83,11 +86,15 @@ export const useEditorE2eApi = ({
   loadedRoom,
   editable,
 }: UseEditorE2eApiParams): void => {
+  const isFocusedFront = useEditorAppSelector(
+    (state) => selectFrontOpenRoomId(state) === openRoomId,
+  );
   useEffect(() => {
     if (
       import.meta.env.MODE !== "visual-regression" ||
       renderArea === null ||
-      !editable
+      !editable ||
+      !isFocusedFront
     ) {
       return;
     }
@@ -119,5 +126,13 @@ export const useEditorE2eApi = ({
     return () => {
       window._e2e_editor = undefined;
     };
-  }, [openRoomId, renderArea, viewport, pointingAtRef, loadedRoom, editable]);
+  }, [
+    openRoomId,
+    renderArea,
+    viewport,
+    pointingAtRef,
+    loadedRoom,
+    editable,
+    isFocusedFront,
+  ]);
 };

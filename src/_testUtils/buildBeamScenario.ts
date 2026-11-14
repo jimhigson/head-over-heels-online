@@ -10,6 +10,7 @@ import { type ItemInPlay } from "../model/ItemInPlay";
 import { roomItemsIterable } from "../model/roomItemsInPlayIterators";
 import { type RoomJson } from "../model/RoomJson";
 import { type RoomState } from "../model/RoomState";
+import { noPlanetsLiberated } from "../store/slices/gameInPlay/gameInPlaySlice";
 
 /**
  * the "laboratory" campaign's room for benchmarking beam casting: a tall lamp
@@ -53,6 +54,7 @@ export const buildBeamScenario = (
   const room = loadRoom({
     roomJson,
     scrollsRead: {},
+    planetsLiberated: noPlanetsLiberated,
     roomPickupsCollected: {},
     userSettings: {
       soundSettings: {},

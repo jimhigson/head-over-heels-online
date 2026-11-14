@@ -5,7 +5,7 @@ import {
   type MonsterJsonConfig,
 } from "../../../model/json/MonsterJsonConfig";
 import { type Xyz } from "../../../utils/vectors/vectors";
-import { type EditorJsonItemUnion } from "../../editorTypes";
+import { type EditorJsonItemUnion, type EditorRoomId } from "../../editorTypes";
 import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import { addDoorInPlace } from "../inPlaceMutators/addDoorInPlace";
 import { addItemInPlace } from "../inPlaceMutators/addItemInPlace";
@@ -30,6 +30,11 @@ const isCybermanTool = (
 };
 
 export type ApplyToolToRoomJsonPayload = {
+  /**
+   * the room the tool is used in - previewed in any pane's room, but only
+   * applied in the cursor room
+   */
+  roomId: EditorRoomId;
   blockPosition: Xyz;
   /**
    * the item (in play, not in json) in the room-in-play preview that the
@@ -46,7 +51,7 @@ export const applyItemToolReducers = {
   applyItemTool(
     _state,
     {
-      payload: { blockPosition, pointedAtItemJson, preview, timestamp },
+      payload: { roomId, blockPosition, pointedAtItemJson, preview, timestamp },
     }: PayloadAction<ApplyToolToRoomJsonPayload>,
   ) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
@@ -63,19 +68,30 @@ export const applyItemToolReducers = {
       );
     }
 
+    const isCursorRoom =
+      roomId === selectCursorRoomIdFromLevelEditorState(state);
+    if (import.meta.env.DEV && !preview && !isCursorRoom) {
+      throw new Error(
+        `item tool applied in room ${roomId}, which isn't the cursor room`,
+      );
+    }
+
     const roomSnapshot = !preview ? snapshotRoomForUndo(state) : undefined;
 
     if (!preview) {
       state.pendingEdits = undefined;
     } else {
       state.pendingEdits = {
+        roomId,
         edits: {},
         description: { kind: "editRoomJson" },
         timestamp,
         madeBy: { type: "itemTool" },
       };
     }
-    setSelectedJsonItemIdsOnCursorRoomInPlace(state, []);
+    if (isCursorRoom) {
+      setSelectedJsonItemIdsOnCursorRoomInPlace(state, []);
+    }
 
     let addedEntry: UndoItemEntry;
 
@@ -87,6 +103,7 @@ export const applyItemToolReducers = {
 
         addedEntry = addDoorInPlace(
           state,
+          roomId,
           blockPosition,
           pointedAtItemJson.config.direction,
           tool.item,
@@ -103,6 +120,7 @@ export const applyItemToolReducers = {
         pointedAtItemJson.position.z + 1 === blockPosition.z: {
         addedEntry = addItemInPlace(
           state,
+          roomId,
           {
             ...tool.item,
             config: {
@@ -121,6 +139,7 @@ export const applyItemToolReducers = {
         // add any other item:
         addedEntry = addItemInPlace(
           state,
+          roomId,
           tool.item,
           blockPosition,
           preview,
@@ -136,13 +155,13 @@ export const applyItemToolReducers = {
     };
 
     if (!preview) {
-      const roomId = selectCursorRoomIdFromLevelEditorState(state);
       state.history[roomId] ??= { undo: [], redo: [] };
       const { undo, redo } = state.history[roomId];
       redo.length = 0;
       undo.push({ room: roomSnapshot!, description, timestamp });
     } else {
       state.pendingEdits = {
+        roomId,
         edits: state.pendingEdits!.edits,
         description,
         timestamp,

@@ -23,21 +23,18 @@ export type MapBackgroundProps<RoomId extends string> = {
   area: MapArea<RoomId>;
   /** the room whose planet the background shows */
   backgroundRoomId: RoomId;
-  /**
-   * the scenery of the current room, for the map's colours
-   */
-  curRoomScenery: SceneryName | undefined;
   containerWidth: number;
 };
 
 export const MapBackground = <RoomId extends string>({
   area,
   backgroundRoomId,
-  curRoomScenery,
   containerWidth,
 }: MapBackgroundProps<RoomId>) => {
-  const { isOriginalCampaign, useRoomJson } = useMapContext<RoomId>();
+  const { isOriginalCampaign, useRoomJson, useCurRoomScenery } =
+    useMapContext<RoomId>();
   const { planet } = useRoomJson(backgroundRoomId);
+  const curRoomScenery = useCurRoomScenery();
 
   const isMainMapForOriginalCampaign =
     isOriginalCampaign &&
