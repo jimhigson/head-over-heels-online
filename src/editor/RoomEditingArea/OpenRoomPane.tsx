@@ -5,7 +5,7 @@ import { type RoomRendererDecorators } from "../../game/render/room/RoomRenderer
 import { subRoomBoundariesDecorateRoomRenderer } from "../../game/render/room/subRoomBoundariesDecorateRoomRenderer";
 import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import { useEditorAppSelector } from "../../store/store";
-import { type EditorRoomRenderer } from "../editorTypes";
+import { type EditorRoomId, type EditorRoomRenderer } from "../editorTypes";
 import { useLoadedRoomCache } from "../loadedRoomCache/useLoadedRoomCache";
 import { makeEditorAnnotationsDecorateItemRenderer } from "../rendering/EditorAnnotationsRenderer";
 import { type OpenRoomId } from "../slice/OpenRoom";
@@ -39,7 +39,7 @@ const editorRoomDecorators = [subRoomBoundariesDecorateRoomRenderer];
  */
 const useEditorRoomRendererDecorators = (): RoomRendererDecorators => {
   const viewport = useEditorViewport();
-  const { openRoomId, editable } = useOpenRoomPane();
+  const { openRoomId, editable, onFollowLink } = useOpenRoomPane();
   return useMemo(
     () => ({
       itemDecorators: [
@@ -47,12 +47,13 @@ const useEditorRoomRendererDecorators = (): RoomRendererDecorators => {
           viewport,
           openRoomId,
           editable,
+          onFollowLink,
         ),
         boundingBoxDecorateItemRenderer,
       ],
       roomDecorators: editorRoomDecorators,
     }),
-    [viewport, openRoomId, editable],
+    [viewport, openRoomId, editable, onFollowLink],
   );
 };
 
@@ -134,6 +135,11 @@ export type OpenRoomPaneProps = {
    * shared by the panes of one area, so a new pane needn't bake them again
    */
   spritesheets: Spritesheets;
+  /**
+   * a link in the room (eg a door's annotation) was followed to another room -
+   * the pane's owner decides where that goes
+   */
+  onFollowLink: (roomId: EditorRoomId) => void;
 };
 
 /**
@@ -145,6 +151,7 @@ export const OpenRoomPane = ({
   openRoomId,
   tabGroupId,
   spritesheets,
+  onFollowLink,
 }: OpenRoomPaneProps) => {
   const loadedRoom = useLoadedRoomCache(openRoomId);
   // an open room keeps its editability for its whole life:
@@ -155,9 +162,9 @@ export const OpenRoomPane = ({
   const paneContextValue = useMemo(
     (): OpenRoomPaneContextValue | undefined =>
       loadedRoom === undefined ? undefined : (
-        { openRoomId, editable, loadedRoom }
+        { openRoomId, editable, onFollowLink, loadedRoom }
       ),
-    [openRoomId, editable, loadedRoom],
+    [openRoomId, editable, onFollowLink, loadedRoom],
   );
 
   if (paneContextValue === undefined) {

@@ -1,4 +1,3 @@
-import { type UnknownAction } from "@reduxjs/toolkit";
 import { type Color, Container } from "pixi.js";
 
 import { OutlineFilter } from "../../game/render/filters/OutlineFilter";
@@ -36,7 +35,6 @@ import {
 import { editorUiScale } from "../editorUiScale";
 import { type EditorViewport } from "../RoomEditingArea/viewport/EditorViewport";
 import {
-  changeToRoom,
   selectOpenRoomSelectedJsonItemIds,
   selectTool,
   setClickableAnnotationHovered,
@@ -206,6 +204,7 @@ class EditorAnnotationsRenderer<
   #viewport: EditorViewport;
   #openRoomId: OpenRoomId;
   #editable: boolean;
+  #onFollowLink: (roomId: EditorRoomId) => void;
   #outlineFilters: EditorOutlineFilters;
   /** text annotations, counter-scaled so they read at a constant size under zoom */
   #annotations: TextContainer[] = [];
@@ -219,9 +218,13 @@ class EditorAnnotationsRenderer<
      */
     openRoomId: OpenRoomId,
     /**
-     * whether that open room is editable - only then are annotations clickable
+     * whether that open room is editable, or only picked from
      */
     editable: boolean,
+    /**
+     * a link annotation (eg a door's room) was clicked
+     */
+    onFollowLink: (roomId: EditorRoomId) => void,
     editorOutlineFilters: EditorOutlineFilters,
   ) {
     this.renderContext = renderContext;
@@ -229,6 +232,7 @@ class EditorAnnotationsRenderer<
     this.#viewport = viewport;
     this.#openRoomId = openRoomId;
     this.#editable = editable;
+    this.#onFollowLink = onFollowLink;
     this.#outlineFilters = editorOutlineFilters;
     this.output.addChild(childRenderer.output);
 
@@ -298,10 +302,7 @@ class EditorAnnotationsRenderer<
                 toRoomExists ?
                   textAnnotationNormalColour
                 : textAnnotationErrorColour,
-              clickDispatch:
-                toRoomExists ?
-                  () => changeToRoom(toRoom as EditorRoomId)
-                : undefined,
+              linkedRoomId: toRoomExists ? toRoom : undefined,
             });
           }
         }
@@ -331,9 +332,14 @@ class EditorAnnotationsRenderer<
               toRoomExists ?
                 textAnnotationNormalColour
               : textAnnotationErrorColour,
-            clickDispatch:
-              toRoomExists ?
-                () => changeToRoom(toRoom as EditorRoomId)
+            // a link only to another room in the campaign:
+            linkedRoomId:
+              (
+                toRoom !== undefined &&
+                toRoom !== exitGameRoomId &&
+                toRoomExists
+              ) ?
+                toRoom
               : undefined,
           });
         }
@@ -416,12 +422,15 @@ class EditorAnnotationsRenderer<
     annotationText,
     yAdj = 0,
     tint = textAnnotationNormalColour,
-    clickDispatch,
+    linkedRoomId,
   }: {
     annotationText: string;
     yAdj?: number;
     tint?: Color;
-    clickDispatch?: () => UnknownAction;
+    /**
+     * the room the annotation links to - clicking it follows the link
+     */
+    linkedRoomId?: EditorRoomId;
   }) {
     // this needs pixi 8.10, but that had some regressions when I tried it:
     // function renderJSXToDOM(jsx: ReactElement): HTMLDivElement {
@@ -452,7 +461,9 @@ class EditorAnnotationsRenderer<
       y: yAdj,
     });
 
-    if (clickDispatch !== undefined && this.#editable) {
+    // following a link navigates, so is allowed whether or not the room is
+    // editable:
+    if (linkedRoomId !== undefined) {
       const openRoomId = this.#openRoomId;
 
       annotationContainer.eventMode = "static";
@@ -460,10 +471,14 @@ class EditorAnnotationsRenderer<
       annotationContainer.on("click", () => {
         // ⬇️ doesn't work (won't stop click getting to the div wrapping the canvas that the editor is listening to)
         // e.nativeEvent.stopPropagation();
-        store.dispatch(clickDispatch());
+        this.#onFollowLink(linkedRoomId);
       });
       annotationContainer.on("mouseover", () => {
-        if (editorStore.getState().levelEditor.tool.type !== "pointer") {
+        // an editable room's links are followed only with the pointer tool:
+        if (
+          this.#editable &&
+          editorStore.getState().levelEditor.tool.type !== "pointer"
+        ) {
           return;
         }
         // TODO: this is over-dispatching - need some way to
@@ -625,6 +640,10 @@ export const makeEditorAnnotationsDecorateItemRenderer = (
    */
   openRoomId: OpenRoomId,
   editable: boolean,
+  /**
+   * a link annotation was clicked
+   */
+  onFollowLink: (roomId: EditorRoomId) => void,
 ): DecorateItemMaybeRenderer => {
   const editorOutlineFilters = makeEditorOutlineFilters(viewport);
   return (itemRenderContext, childRenderer) =>
@@ -635,6 +654,7 @@ export const makeEditorAnnotationsDecorateItemRenderer = (
         viewport,
         openRoomId,
         editable,
+        onFollowLink,
         editorOutlineFilters,
       )
     : undefined;

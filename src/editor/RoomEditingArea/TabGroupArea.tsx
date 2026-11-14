@@ -1,6 +1,8 @@
 import { store, useEditorAppSelector } from "../../store/store";
 import { PaneDropZones } from "../../ui/PaneDropZones";
+import { type EditorRoomId } from "../editorTypes";
 import {
+  changeToRoom,
   roomTabDroppedBesidePane,
   roomTabMoved,
   selectFocusedTabGroupId,
@@ -18,6 +20,12 @@ export type TabGroupAreaContentProps = {
   tabGroupId: TabGroupId;
 };
 
+/**
+ * in the editor's panes, a followed link goes to that room
+ */
+const followLinkToRoom = (roomId: EditorRoomId) =>
+  store.dispatch(changeToRoom(roomId));
+
 const TabGroupAreaContent = ({ tabGroupId }: TabGroupAreaContentProps) => {
   // one set for the pane's life, whichever tab is in front:
   const spritesheets = useSpritesheets();
@@ -34,6 +42,7 @@ const TabGroupAreaContent = ({ tabGroupId }: TabGroupAreaContentProps) => {
       openRoomId={frontOpenRoomId}
       tabGroupId={tabGroupId}
       spritesheets={spritesheets}
+      onFollowLink={followLinkToRoom}
     />
   );
 };

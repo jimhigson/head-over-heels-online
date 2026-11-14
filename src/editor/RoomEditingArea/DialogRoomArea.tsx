@@ -1,3 +1,4 @@
+import { type EditorRoomId } from "../editorTypes";
 import { type OpenRoomId } from "../slice/OpenRoom";
 import { OpenRoomPane } from "./OpenRoomPane";
 import { PixiApplicationProvider } from "./PixiApplicationProvider";
@@ -5,11 +6,15 @@ import { useSpritesheets } from "./useSpritesheets";
 
 export type DialogRoomAreaProps = {
   openRoomId: OpenRoomId;
+  /**
+   * a link in the room (eg a door's annotation) was followed to another room
+   */
+  onFollowLink: (roomId: EditorRoomId) => void;
 };
 
 type DialogRoomPaneProps = DialogRoomAreaProps;
 
-const DialogRoomPane = ({ openRoomId }: DialogRoomPaneProps) => {
+const DialogRoomPane = ({ openRoomId, onFollowLink }: DialogRoomPaneProps) => {
   const spritesheets = useSpritesheets();
   return (
     <OpenRoomPane
@@ -17,6 +22,7 @@ const DialogRoomPane = ({ openRoomId }: DialogRoomPaneProps) => {
       openRoomId={openRoomId}
       tabGroupId={undefined}
       spritesheets={spritesheets}
+      onFollowLink={onFollowLink}
     />
   );
 };
@@ -25,9 +31,9 @@ const DialogRoomPane = ({ openRoomId }: DialogRoomPaneProps) => {
  * one open room shown by itself, outside the panes, only for picking items
  * from - for a dialog
  */
-const DialogRoomArea = ({ openRoomId }: DialogRoomAreaProps) => (
+const DialogRoomArea = ({ openRoomId, onFollowLink }: DialogRoomAreaProps) => (
   <PixiApplicationProvider>
-    <DialogRoomPane openRoomId={openRoomId} />
+    <DialogRoomPane openRoomId={openRoomId} onFollowLink={onFollowLink} />
   </PixiApplicationProvider>
 );
 
