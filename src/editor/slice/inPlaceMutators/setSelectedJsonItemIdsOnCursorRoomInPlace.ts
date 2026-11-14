@@ -1,20 +1,18 @@
 import { type EditorRoomItemId } from "../../editorTypes";
-import { selectActiveCursorRoomEditingPaneFromLevelEditorState } from "../EditorPane";
-import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { selectActiveCursorRoomEditingOpenRoomFromLevelEditorState } from "../OpenRoom";
 
 /**
- * set which items are selected in the cursor room, by the active pane - a
- * no-op unless the active pane edits the cursor room
+ * set which items are selected in the cursor room - a no-op unless the active
+ * open room is the front tab's (eg not while a dialog's is active)
  */
 export const setSelectedJsonItemIdsOnCursorRoomInPlace = (
   state: LevelEditorState,
   jsonItemIds: EditorRoomItemId[],
 ) => {
-  const pane = selectActiveCursorRoomEditingPaneFromLevelEditorState(state);
-  if (pane !== undefined) {
-    pane.selectedJsonItemIdsByRoom[
-      selectCursorRoomIdFromLevelEditorState(state)
-    ] = jsonItemIds;
+  const openRoom =
+    selectActiveCursorRoomEditingOpenRoomFromLevelEditorState(state);
+  if (openRoom !== undefined) {
+    openRoom.selectedJsonItemIds = jsonItemIds;
   }
 };

@@ -9,8 +9,11 @@ import {
   type EditorRoomJson,
 } from "../editorTypes";
 import { type LevelEditorState } from "./levelEditorSlice";
+import { newOpenRoom, type OpenRoomId, type TabId } from "./OpenRoom";
 
 const initialRoomId = "room_0" as EditorRoomId;
+const initialOpenRoomId = "initialOpenRoom" as OpenRoomId;
+const initialTabId = "initialTab" as TabId;
 const initialRoom = produce(
   starterRoom({ x: 8, y: 8 }) as EditorRoomJson,
   (starterRoomDraft) => {
@@ -51,8 +54,12 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   // showing a 'new campaign' placeholder that has never been saved:
   remoteCampaign: undefined,
   selectedRoomIds: [initialRoomId],
-  cursorRoom: { roomId: initialRoomId, subRoomId: "*" },
-  openRoomTabs: [{ roomId: initialRoomId, isPreview: false, view: undefined }],
+  openRooms: {
+    [initialOpenRoomId]: newOpenRoom(initialRoomId, "*", true),
+  },
+  tabs: [{ id: initialTabId, isPreview: false, openRoomId: initialOpenRoomId }],
+  cursorRoomId: initialRoomId,
+  nextIdNumber: 0,
   editingRoomIdHistory: {
     back: [],
     forward: [],
@@ -61,8 +68,6 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   tool: { type: "pointer" },
   lastItemTool: undefined,
   cmdKSearch: "",
-  panes: {},
-  activePaneId: undefined,
   gridResolution: 1,
   cameraAngle: cameraAngleBase,
   autoCoalesce: true,

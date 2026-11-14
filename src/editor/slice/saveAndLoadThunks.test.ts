@@ -64,7 +64,7 @@ const runThunk = async <T>(
   return { result, dispatched, finalState: () => sliceState };
 };
 
-const stateAtVersion7 = produce(editorStateWithOneRoomWithNoItems, (draft) => {
+const state0AtVersion7 = produce(editorStateWithOneRoomWithNoItems, (draft) => {
   draft.campaignInProgress.locator.version = 7;
 });
 
@@ -76,7 +76,7 @@ test("save-as a never-saved name saves without a lease (the original false-confl
     ReturnType<typeof saveCampaignViaApi>
   >);
 
-  const { result } = await runThunk(stateAtVersion7, (dispatch, getState) =>
+  const { result } = await runThunk(state0AtVersion7, (dispatch, getState) =>
     saveCampaignAs({ campaignName: "aFreshName", publish: false })(
       dispatch as Parameters<ReturnType<typeof saveCampaignAs>>[0],
       getState,
@@ -106,7 +106,7 @@ test("save-as onto an existing name asks for confirmation without mutating state
   mockSave.mockClear();
 
   const { result, dispatched } = await runThunk(
-    stateAtVersion7,
+    state0AtVersion7,
     (dispatch, getState) =>
       saveCampaignAs({ campaignName: "existingName", publish: false })(
         dispatch as Parameters<ReturnType<typeof saveCampaignAs>>[0],
@@ -128,7 +128,7 @@ test("confirmed save-as onto an existing name leases against the fetched latest"
     ReturnType<typeof saveCampaignViaApi>
   >);
 
-  const { result } = await runThunk(stateAtVersion7, (dispatch, getState) =>
+  const { result } = await runThunk(state0AtVersion7, (dispatch, getState) =>
     saveCampaignAs({
       campaignName: "existingName",
       publish: false,
@@ -156,7 +156,7 @@ test("save-as with the name unchanged is a plain save keeping the existing lease
     ReturnType<typeof saveCampaignViaApi>
   >);
 
-  const { result } = await runThunk(stateAtVersion7, (dispatch, getState) =>
+  const { result } = await runThunk(state0AtVersion7, (dispatch, getState) =>
     saveCampaignAs({ campaignName: "testCampaign", publish: true })(
       dispatch as Parameters<ReturnType<typeof saveCampaignAs>>[0],
       getState,

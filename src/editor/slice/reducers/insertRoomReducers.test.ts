@@ -26,6 +26,7 @@ import {
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,
+  testOpenRoomId,
   testRoomId,
 } from "./__test__/storeStates";
 
@@ -76,23 +77,25 @@ const stateWithFloorAndRoomB: LevelEditorState = produce(
 
 describe("insertRoom with no existing doors", () => {
   test("creates a new room in the campaign", () => {
-    const result = reduceLevelEditorActions(
-      stateWithFloor,
+    const state0 = stateWithFloor;
+    const state1 = reduceLevelEditorActions(
+      state0,
       insertRoom({ direction: "left" }),
     );
 
-    const roomIds = Object.keys(result.campaignInProgress.rooms);
+    const roomIds = Object.keys(state1.campaignInProgress.rooms);
     expect(roomIds).toHaveLength(2);
   });
 
   test("adds a door in the given direction to the current room", () => {
-    const result = reduceLevelEditorActions(
-      stateWithFloor,
+    const state0 = stateWithFloor;
+    const state1 = reduceLevelEditorActions(
+      state0,
       insertRoom({ direction: "left" }),
     );
 
     const currentRoomItems = Object.values(
-      result.campaignInProgress.rooms[testRoomId].items,
+      state1.campaignInProgress.rooms[testRoomId].items,
     );
     const doors = currentRoomItems.filter(
       (item): item is EditorJsonItem<"door"> => item.type === "door",
@@ -103,37 +106,39 @@ describe("insertRoom with no existing doors", () => {
   });
 
   test("the new door points to the newly created room", () => {
-    const result = reduceLevelEditorActions(
-      stateWithFloor,
+    const state0 = stateWithFloor;
+    const state1 = reduceLevelEditorActions(
+      state0,
       insertRoom({ direction: "left" }),
     );
 
     const currentRoomItems = Object.values(
-      result.campaignInProgress.rooms[testRoomId].items,
+      state1.campaignInProgress.rooms[testRoomId].items,
     );
     const [door] = currentRoomItems.filter(
       (item): item is EditorJsonItem<"door"> => item.type === "door",
     );
     const newRoomId = door.config.toRoom as EditorRoomId;
 
-    expect(result.campaignInProgress.rooms[newRoomId]).toBeDefined();
+    expect(state1.campaignInProgress.rooms[newRoomId]).toBeDefined();
   });
 
   test("the new room has a return door pointing back", () => {
-    const result = reduceLevelEditorActions(
-      stateWithFloor,
+    const state0 = stateWithFloor;
+    const state1 = reduceLevelEditorActions(
+      state0,
       insertRoom({ direction: "left" }),
     );
 
     const currentRoomItems = Object.values(
-      result.campaignInProgress.rooms[testRoomId].items,
+      state1.campaignInProgress.rooms[testRoomId].items,
     );
     const [door] = currentRoomItems.filter(
       (item): item is EditorJsonItem<"door"> => item.type === "door",
     );
     const newRoomId = door.config.toRoom as EditorRoomId;
     const newRoomItems = Object.values(
-      result.campaignInProgress.rooms[newRoomId].items,
+      state1.campaignInProgress.rooms[newRoomId].items,
     );
     const returnDoors = newRoomItems.filter(
       (item): item is EditorJsonItem<"door"> =>
@@ -145,19 +150,20 @@ describe("insertRoom with no existing doors", () => {
   });
 
   test("a single door link is made without a redundant toDoor", () => {
-    const result = reduceLevelEditorActions(
-      stateWithFloor,
+    const state0 = stateWithFloor;
+    const state1 = reduceLevelEditorActions(
+      state0,
       insertRoom({ direction: "left" }),
     );
 
-    const currentRoom = result.campaignInProgress.rooms[testRoomId];
+    const currentRoom = state1.campaignInProgress.rooms[testRoomId];
     const [[, outDoorRaw]] = Object.entries(currentRoom.items).filter(
       ([, item]) => item.type === "door",
     );
     const outDoor = outDoorRaw as DoorItem;
 
     const newRoomId = outDoor.config.toRoom as EditorRoomId;
-    const newRoom = result.campaignInProgress.rooms[newRoomId];
+    const newRoom = state1.campaignInProgress.rooms[newRoomId];
     const [returnDoor] = Object.values(newRoom.items).filter(
       (item): item is DoorItem =>
         item.type === "door" && item.config.toRoom === testRoomId,
@@ -171,13 +177,14 @@ describe("insertRoom with no existing doors", () => {
   });
 
   test("centres the door on an 8-unit wall with 3 units on each side", () => {
-    const result = reduceLevelEditorActions(
-      stateWithFloor,
+    const state0 = stateWithFloor;
+    const state1 = reduceLevelEditorActions(
+      state0,
       insertRoom({ direction: "left" }),
     );
 
     const currentRoomItems = Object.values(
-      result.campaignInProgress.rooms[testRoomId].items,
+      state1.campaignInProgress.rooms[testRoomId].items,
     );
     const [door] = currentRoomItems.filter(
       (item): item is EditorJsonItem<"door"> => item.type === "door",
@@ -187,22 +194,23 @@ describe("insertRoom with no existing doors", () => {
   });
 
   test("navigates to the newly created room after insertion", () => {
-    const result = reduceLevelEditorActions(
-      stateWithFloor,
+    const state0 = stateWithFloor;
+    const state1 = reduceLevelEditorActions(
+      state0,
       insertRoom({ direction: "away" }),
     );
 
-    expect(selectCursorRoomIdFromLevelEditorState(result)).not.toBe(testRoomId);
+    expect(selectCursorRoomIdFromLevelEditorState(state1)).not.toBe(testRoomId);
     expect(
-      result.campaignInProgress.rooms[
-        selectCursorRoomIdFromLevelEditorState(result)
+      state1.campaignInProgress.rooms[
+        selectCursorRoomIdFromLevelEditorState(state1)
       ],
     ).toBeDefined();
   });
 });
 
 describe("insertRoom with existing door in that direction", () => {
-  const stateWithDoorToB: LevelEditorState = produce(
+  const state0WithDoorToB: LevelEditorState = produce(
     stateWithFloorAndRoomB,
     (draft) => {
       draft.campaignInProgress.rooms[testRoomId].items[door1] = {
@@ -222,47 +230,47 @@ describe("insertRoom with existing door in that direction", () => {
   );
 
   test("re-points the current room door to the new room", () => {
-    const result = reduceLevelEditorActions(
-      stateWithDoorToB,
+    const state1 = reduceLevelEditorActions(
+      state0WithDoorToB,
       insertRoom({ direction: "left" }),
     );
 
-    const currentDoor = result.campaignInProgress.rooms[testRoomId].items[
+    const currentDoor = state1.campaignInProgress.rooms[testRoomId].items[
       door1
     ] as DoorItem;
     expect(currentDoor.config.toRoom).not.toBe(roomB);
 
     const newRoomId = currentDoor.config.toRoom as EditorRoomId;
-    expect(result.campaignInProgress.rooms[newRoomId]).toBeDefined();
+    expect(state1.campaignInProgress.rooms[newRoomId]).toBeDefined();
   });
 
   test("re-points the inbound door from roomB to the new room", () => {
-    const result = reduceLevelEditorActions(
-      stateWithDoorToB,
+    const state1 = reduceLevelEditorActions(
+      state0WithDoorToB,
       insertRoom({ direction: "left" }),
     );
 
-    const roomBDoor = result.campaignInProgress.rooms[roomB].items[
+    const roomBDoor = state1.campaignInProgress.rooms[roomB].items[
       door2
     ] as DoorItem;
     expect(roomBDoor.config.toRoom).not.toBe(testRoomId);
 
     const newRoomId = roomBDoor.config.toRoom as EditorRoomId;
-    expect(result.campaignInProgress.rooms[newRoomId]).toBeDefined();
+    expect(state1.campaignInProgress.rooms[newRoomId]).toBeDefined();
   });
 
   test("the new room has a return door to the current room and a forward door to roomB", () => {
-    const result = reduceLevelEditorActions(
-      stateWithDoorToB,
+    const state1 = reduceLevelEditorActions(
+      state0WithDoorToB,
       insertRoom({ direction: "left" }),
     );
 
-    const currentDoor = result.campaignInProgress.rooms[testRoomId].items[
+    const currentDoor = state1.campaignInProgress.rooms[testRoomId].items[
       door1
     ] as DoorItem;
     const newRoomId = currentDoor.config.toRoom as EditorRoomId;
     const newRoomItems = Object.values(
-      result.campaignInProgress.rooms[newRoomId].items,
+      state1.campaignInProgress.rooms[newRoomId].items,
     );
     const newRoomDoors = newRoomItems.filter(
       (item): item is EditorJsonItem<"door"> => item.type === "door",
@@ -280,17 +288,17 @@ describe("insertRoom with existing door in that direction", () => {
   });
 
   test("splicing into a chain links by toRoom and clears now-redundant toDoors", () => {
-    const result = reduceLevelEditorActions(
-      stateWithDoorToB,
+    const state1 = reduceLevelEditorActions(
+      state0WithDoorToB,
       insertRoom({ direction: "left" }),
     );
 
-    const currentDoor = result.campaignInProgress.rooms[testRoomId].items[
+    const currentDoor = state1.campaignInProgress.rooms[testRoomId].items[
       door1
     ] as DoorItem;
     const newRoomId = currentDoor.config.toRoom as EditorRoomId;
-    const newRoom = result.campaignInProgress.rooms[newRoomId];
-    const roomBDoor = result.campaignInProgress.rooms[roomB].items[
+    const newRoom = state1.campaignInProgress.rooms[newRoomId];
+    const roomBDoor = state1.campaignInProgress.rooms[roomB].items[
       door2
     ] as DoorItem;
 
@@ -312,7 +320,7 @@ describe("insertRoom with existing door in that direction", () => {
 });
 
 describe("insertRoom with door to $$final", () => {
-  const stateWithFinalDoor: LevelEditorState = produce(
+  const state0WithFinalDoor: LevelEditorState = produce(
     stateWithFloor,
     (draft) => {
       draft.campaignInProgress.rooms[testRoomId].items[door1] = {
@@ -324,29 +332,29 @@ describe("insertRoom with door to $$final", () => {
   );
 
   test("re-points the current room door to the new room", () => {
-    const result = reduceLevelEditorActions(
-      stateWithFinalDoor,
+    const state1 = reduceLevelEditorActions(
+      state0WithFinalDoor,
       insertRoom({ direction: "away" }),
     );
 
-    const currentDoor = result.campaignInProgress.rooms[testRoomId].items[
+    const currentDoor = state1.campaignInProgress.rooms[testRoomId].items[
       door1
     ] as DoorItem;
     expect(currentDoor.config.toRoom).not.toBe(exitGameRoomId);
   });
 
   test("the new room gets a door pointing to $$final", () => {
-    const result = reduceLevelEditorActions(
-      stateWithFinalDoor,
+    const state1 = reduceLevelEditorActions(
+      state0WithFinalDoor,
       insertRoom({ direction: "away" }),
     );
 
-    const currentDoor = result.campaignInProgress.rooms[testRoomId].items[
+    const currentDoor = state1.campaignInProgress.rooms[testRoomId].items[
       door1
     ] as DoorItem;
     const newRoomId = currentDoor.config.toRoom as EditorRoomId;
     const newRoomItems = Object.values(
-      result.campaignInProgress.rooms[newRoomId].items,
+      state1.campaignInProgress.rooms[newRoomId].items,
     );
     const finalDoor = newRoomItems.find(
       (item): item is EditorJsonItem<"door"> =>
@@ -359,7 +367,7 @@ describe("insertRoom with door to $$final", () => {
 });
 
 describe("insertRoom with multiple doors in same direction", () => {
-  const stateWithTwoDoors: LevelEditorState = produce(
+  const state0WithTwoDoors: LevelEditorState = produce(
     stateWithFloorAndRoomB,
     (draft) => {
       draft.campaignInProgress.rooms[testRoomId].items[door1] = {
@@ -376,17 +384,17 @@ describe("insertRoom with multiple doors in same direction", () => {
   );
 
   test("creates return doors for each outgoing door", () => {
-    const result = reduceLevelEditorActions(
-      stateWithTwoDoors,
+    const state1 = reduceLevelEditorActions(
+      state0WithTwoDoors,
       insertRoom({ direction: "towards" }),
     );
 
-    const d1 = result.campaignInProgress.rooms[testRoomId].items[
+    const d1 = state1.campaignInProgress.rooms[testRoomId].items[
       door1
     ] as DoorItem;
     const newRoomId = d1.config.toRoom as EditorRoomId;
     const newRoomItems = Object.values(
-      result.campaignInProgress.rooms[newRoomId].items,
+      state1.campaignInProgress.rooms[newRoomId].items,
     );
     const returnDoors = newRoomItems.filter(
       (item): item is EditorJsonItem<"door"> =>
@@ -411,7 +419,7 @@ describe("insertRoom when unconnected room already exists at target grid positio
       position: { x: 0, y: 0, z: 0 },
     }) as const;
 
-  const stateWithAdjacentUnconnectedRoom: LevelEditorState = produce(
+  const state0WithAdjacentUnconnectedRoom: LevelEditorState = produce(
     stateWithFloorAndRoomB,
     (draft) => {
       draft.campaignInProgress.rooms[roomC] = {
@@ -461,19 +469,19 @@ describe("insertRoom when unconnected room already exists at target grid positio
 
   test("connects to the existing room instead of creating a new one", () => {
     const before = Object.keys(
-      stateWithAdjacentUnconnectedRoom.campaignInProgress.rooms,
+      state0WithAdjacentUnconnectedRoom.campaignInProgress.rooms,
     ).length;
 
-    const result = reduceLevelEditorActions(
-      stateWithAdjacentUnconnectedRoom,
+    const state1 = reduceLevelEditorActions(
+      state0WithAdjacentUnconnectedRoom,
       insertRoom({ direction: "away" }),
     );
 
-    const after = Object.keys(result.campaignInProgress.rooms).length;
+    const after = Object.keys(state1.campaignInProgress.rooms).length;
     expect(after).toBe(before);
 
     const currentRoomDoors = Object.values(
-      result.campaignInProgress.rooms[testRoomId].items,
+      state1.campaignInProgress.rooms[testRoomId].items,
     ).filter((item): item is EditorJsonItem<"door"> => item.type === "door");
     const doorToD = currentRoomDoors.find((d) => d.config.toRoom === roomD);
     expect(doorToD).toBeDefined();
@@ -481,17 +489,17 @@ describe("insertRoom when unconnected room already exists at target grid positio
   });
 
   test("navigates to the existing room after connecting", () => {
-    const result = reduceLevelEditorActions(
-      stateWithAdjacentUnconnectedRoom,
+    const state1 = reduceLevelEditorActions(
+      state0WithAdjacentUnconnectedRoom,
       insertRoom({ direction: "away" }),
     );
 
-    expect(selectCursorRoomIdFromLevelEditorState(result)).toBe(roomD);
+    expect(selectCursorRoomIdFromLevelEditorState(state1)).toBe(roomD);
   });
 });
 
 describe("insertRoom from a subroom of a multi-chunk room", () => {
-  const stateWithTwoChunkRoom: LevelEditorState = produce(
+  const state0WithTwoChunkRoom: LevelEditorState = produce(
     editorStateWithOneRoomWithNoItems,
     (draft) => {
       draft.campaignInProgress.rooms[testRoomId] = {
@@ -526,18 +534,18 @@ describe("insertRoom from a subroom of a multi-chunk room", () => {
         },
       };
       draft.selectedRoomIds = [testRoomId];
-      draft.cursorRoom = { roomId: testRoomId, subRoomId: "0" };
+      draft.openRooms[testOpenRoomId].subRoomId = "0";
     },
   );
 
   test("door is centred on the subroom, not the whole room", () => {
-    const result = reduceLevelEditorActions(
-      stateWithTwoChunkRoom,
+    const state1 = reduceLevelEditorActions(
+      state0WithTwoChunkRoom,
       insertRoom({ direction: "away" }),
     );
 
     const doors = Object.values(
-      result.campaignInProgress.rooms[testRoomId].items,
+      state1.campaignInProgress.rooms[testRoomId].items,
     ).filter((item): item is EditorJsonItem<"door"> => item.type === "door");
 
     expect(doors).toHaveLength(1);
@@ -546,18 +554,18 @@ describe("insertRoom from a subroom of a multi-chunk room", () => {
   });
 
   test("inserting from subroom 1 centres the door on subroom 1", () => {
-    const stateOnSubRoom1 = produce(stateWithTwoChunkRoom, (draft) => {
+    const state0OnSubRoom1 = produce(state0WithTwoChunkRoom, (draft) => {
       draft.selectedRoomIds = [testRoomId];
-      draft.cursorRoom = { roomId: testRoomId, subRoomId: "1" };
+      draft.openRooms[testOpenRoomId].subRoomId = "1";
     });
 
-    const result = reduceLevelEditorActions(
-      stateOnSubRoom1,
+    const state1 = reduceLevelEditorActions(
+      state0OnSubRoom1,
       insertRoom({ direction: "away" }),
     );
 
     const doors = Object.values(
-      result.campaignInProgress.rooms[testRoomId].items,
+      state1.campaignInProgress.rooms[testRoomId].items,
     ).filter((item): item is EditorJsonItem<"door"> => item.type === "door");
 
     expect(doors).toHaveLength(1);
@@ -567,7 +575,7 @@ describe("insertRoom from a subroom of a multi-chunk room", () => {
 });
 
 describe("insertRoom from a subroom where floor extends beyond subroom bounds", () => {
-  const stateWithIrregularChunks: LevelEditorState = produce(
+  const state0WithIrregularChunks: LevelEditorState = produce(
     editorStateWithOneRoomWithNoItems,
     (draft) => {
       draft.campaignInProgress.rooms[testRoomId] = {
@@ -605,18 +613,18 @@ describe("insertRoom from a subroom where floor extends beyond subroom bounds", 
         },
       };
       draft.selectedRoomIds = [testRoomId];
-      draft.cursorRoom = { roomId: testRoomId, subRoomId: "left" };
+      draft.openRooms[testOpenRoomId].subRoomId = "left";
     },
   );
 
   test("door is placed at the room wall edge, not at subroom boundary", () => {
-    const result = reduceLevelEditorActions(
-      stateWithIrregularChunks,
+    const state1 = reduceLevelEditorActions(
+      state0WithIrregularChunks,
       insertRoom({ direction: "away" }),
     );
 
     const doors = Object.values(
-      result.campaignInProgress.rooms[testRoomId].items,
+      state1.campaignInProgress.rooms[testRoomId].items,
     ).filter((item): item is EditorJsonItem<"door"> => item.type === "door");
 
     expect(doors).toHaveLength(1);
@@ -624,13 +632,13 @@ describe("insertRoom from a subroom where floor extends beyond subroom bounds", 
   });
 
   test("door is centred within the subroom x range", () => {
-    const result = reduceLevelEditorActions(
-      stateWithIrregularChunks,
+    const state1 = reduceLevelEditorActions(
+      state0WithIrregularChunks,
       insertRoom({ direction: "away" }),
     );
 
     const doors = Object.values(
-      result.campaignInProgress.rooms[testRoomId].items,
+      state1.campaignInProgress.rooms[testRoomId].items,
     ).filter((item): item is EditorJsonItem<"door"> => item.type === "door");
 
     expect(doors).toHaveLength(1);
@@ -638,17 +646,17 @@ describe("insertRoom from a subroom where floor extends beyond subroom bounds", 
   });
 
   test("the new room has a return door", () => {
-    const result = reduceLevelEditorActions(
-      stateWithIrregularChunks,
+    const state1 = reduceLevelEditorActions(
+      state0WithIrregularChunks,
       insertRoom({ direction: "away" }),
     );
 
     const doors = Object.values(
-      result.campaignInProgress.rooms[testRoomId].items,
+      state1.campaignInProgress.rooms[testRoomId].items,
     ).filter((item): item is EditorJsonItem<"door"> => item.type === "door");
 
     const newRoomId = doors[0].config.toRoom as EditorRoomId;
-    const newRoom = result.campaignInProgress.rooms[newRoomId];
+    const newRoom = state1.campaignInProgress.rooms[newRoomId];
     const returnDoors = Object.values(newRoom.items).filter(
       (item): item is EditorJsonItem<"door"> =>
         item.type === "door" && item.config.direction === "towards",
@@ -661,7 +669,7 @@ describe("insertRoom from a subroom where floor extends beyond subroom bounds", 
 });
 
 describe("insertRoom from a subroom that does not touch the room outer wall", () => {
-  const stateWithFourChunks: LevelEditorState = produce(
+  const state0WithFourChunks: LevelEditorState = produce(
     editorStateWithOneRoomWithNoItems,
     (draft) => {
       draft.campaignInProgress.rooms[testRoomId] = {
@@ -722,18 +730,18 @@ describe("insertRoom from a subroom that does not touch the room outer wall", ()
         },
       };
       draft.selectedRoomIds = [testRoomId];
-      draft.cursorRoom = { roomId: testRoomId, subRoomId: "3" };
+      draft.openRooms[testOpenRoomId].subRoomId = "3";
     },
   );
 
   test("door is placed at the subroom boundary, not the room outer wall", () => {
-    const result = reduceLevelEditorActions(
-      stateWithFourChunks,
+    const state1 = reduceLevelEditorActions(
+      state0WithFourChunks,
       insertRoom({ direction: "right" }),
     );
 
     const doors = Object.values(
-      result.campaignInProgress.rooms[testRoomId].items,
+      state1.campaignInProgress.rooms[testRoomId].items,
     ).filter((item): item is EditorJsonItem<"door"> => item.type === "door");
 
     expect(doors).toHaveLength(1);
@@ -741,18 +749,18 @@ describe("insertRoom from a subroom that does not touch the room outer wall", ()
   });
 
   test("door from subroom 'left' going left is at subroom boundary, not room outer wall", () => {
-    const stateOnLeft = produce(stateWithFourChunks, (draft) => {
+    const state0OnLeft = produce(state0WithFourChunks, (draft) => {
       draft.selectedRoomIds = [testRoomId];
-      draft.cursorRoom = { roomId: testRoomId, subRoomId: "left" };
+      draft.openRooms[testOpenRoomId].subRoomId = "left";
     });
 
-    const result = reduceLevelEditorActions(
-      stateOnLeft,
+    const state1 = reduceLevelEditorActions(
+      state0OnLeft,
       insertRoom({ direction: "left" }),
     );
 
     const doors = Object.values(
-      result.campaignInProgress.rooms[testRoomId].items,
+      state1.campaignInProgress.rooms[testRoomId].items,
     ).filter((item): item is EditorJsonItem<"door"> => item.type === "door");
 
     expect(doors).toHaveLength(1);
@@ -760,18 +768,18 @@ describe("insertRoom from a subroom that does not touch the room outer wall", ()
   });
 
   test("door from subroom 'right' going towards is at subroom boundary, not room outer wall", () => {
-    const stateOnRight = produce(stateWithFourChunks, (draft) => {
+    const state0OnRight = produce(state0WithFourChunks, (draft) => {
       draft.selectedRoomIds = [testRoomId];
-      draft.cursorRoom = { roomId: testRoomId, subRoomId: "right" };
+      draft.openRooms[testOpenRoomId].subRoomId = "right";
     });
 
-    const result = reduceLevelEditorActions(
-      stateOnRight,
+    const state1 = reduceLevelEditorActions(
+      state0OnRight,
       insertRoom({ direction: "towards" }),
     );
 
     const doors = Object.values(
-      result.campaignInProgress.rooms[testRoomId].items,
+      state1.campaignInProgress.rooms[testRoomId].items,
     ).filter((item): item is EditorJsonItem<"door"> => item.type === "door");
 
     expect(doors).toHaveLength(1);
@@ -810,11 +818,11 @@ describe("adding a door from a single-chunk room back to a multi-chunk room", ()
     );
 
   test("does not crash when roomGridPositions traverses the result", () => {
-    const result = buildState();
-    const { roomId, subRoomId } = selectCursorRoomFromLevelEditorState(result);
+    const state0 = buildState();
+    const { roomId, subRoomId } = selectCursorRoomFromLevelEditorState(state0);
 
     const positions = roomGridPositions({
-      campaign: result.campaignInProgress,
+      campaign: state0.campaignInProgress,
       roomId,
       subRoomId,
     }).nodes;
@@ -823,8 +831,8 @@ describe("adding a door from a single-chunk room back to a multi-chunk room", ()
   });
 
   test("return door in the multi-chunk room is within the target subroom bounds", () => {
-    const result = buildState();
-    const multiChunkRoom = result.campaignInProgress.rooms[multiChunkRoomId];
+    const state0 = buildState();
+    const multiChunkRoom = state0.campaignInProgress.rooms[multiChunkRoomId];
 
     const subRoom2 = subRoomById(multiChunkRoom, "2")!;
 
@@ -884,12 +892,12 @@ describe("placing a door tool in a non-origin subroom of a multi-chunk room", ()
     );
 
   test("return door in the new room has x within [0, 8)", () => {
-    const result = buildState();
+    const state0 = buildState();
 
-    const newRoomId = Object.keys(result.campaignInProgress.rooms).find(
+    const newRoomId = Object.keys(state0.campaignInProgress.rooms).find(
       (id) => id !== testRoomId && id !== multiChunkRoomId,
     ) as EditorRoomId;
-    const newRoom = result.campaignInProgress.rooms[newRoomId];
+    const newRoom = state0.campaignInProgress.rooms[newRoomId];
 
     const returnDoors = Object.values(newRoom.items).filter(
       (item): item is EditorJsonItem<"door"> => item.type === "door",
@@ -904,7 +912,7 @@ describe("placing a door tool in a non-origin subroom of a multi-chunk room", ()
 });
 
 describe("insertRoom between a room and a non-origin subroom of a multi-chunk room", () => {
-  const stateWithDoorToSubRoom1: LevelEditorState = produce(
+  const state0WithDoorToSubRoom1: LevelEditorState = produce(
     stateWithFloorAndRoomB,
     (draft) => {
       const roomBJson = draft.campaignInProgress.rooms[roomB];
@@ -943,16 +951,16 @@ describe("insertRoom between a room and a non-origin subroom of a multi-chunk ro
   );
 
   test("the new room's door to the subroom is at the same offset along the wall as the subroom's door", () => {
-    const result = reduceLevelEditorActions(
-      stateWithDoorToSubRoom1,
+    const state1 = reduceLevelEditorActions(
+      state0WithDoorToSubRoom1,
       insertRoom({ direction: "away" }),
     );
 
     const newRoomId = (
-      result.campaignInProgress.rooms[testRoomId].items[door1] as DoorItem
+      state1.campaignInProgress.rooms[testRoomId].items[door1] as DoorItem
     ).config.toRoom as EditorRoomId;
     const doorToRoomB = Object.values(
-      result.campaignInProgress.rooms[newRoomId].items,
+      state1.campaignInProgress.rooms[newRoomId].items,
     ).find(
       (item): item is DoorItem =>
         item.type === "door" && item.config.toRoom === roomB,
@@ -965,22 +973,23 @@ describe("insertRoom between a room and a non-origin subroom of a multi-chunk ro
 describe("removeRoom cleans up doors and heals walls", () => {
   const roomWithWallsId = "room_0" as EditorRoomId;
 
-  const stateWithWalledRoom = reduceLevelEditorActions(
+  const state0WithWalledRoom = reduceLevelEditorActions(
     editorStateWithOneRoomWithNoItems,
     addRoom({ roomSize: { x: 8, y: 8 } }),
   );
 
   test("inserting then removing a room restores the original room to its prior state", () => {
     const originalRoom =
-      stateWithWalledRoom.campaignInProgress.rooms[roomWithWallsId];
+      state0WithWalledRoom.campaignInProgress.rooms[roomWithWallsId];
 
-    const afterRemove = reduceLevelEditorActions(
-      stateWithWalledRoom,
+    const state1AfterRemove = reduceLevelEditorActions(
+      state0WithWalledRoom,
       insertRoom({ direction: "left" }),
       removeRoom(),
     );
 
-    const restoredRoom = afterRemove.campaignInProgress.rooms[roomWithWallsId];
+    const restoredRoom =
+      state1AfterRemove.campaignInProgress.rooms[roomWithWallsId];
 
     const doors = Object.values(restoredRoom.items).filter(
       (item) => item.type === "door",
@@ -1000,55 +1009,59 @@ describe("removeRoom cleans up doors and heals walls", () => {
 });
 
 test("inserting beside one room of a square of four is refused, but with the room beside it selected too makes a rectangle of six", () => {
+  const state0 = stateWithFloor;
   // each insert moves the cursor to the room it adds (or links), which names it:
-  const nearLeftRoomId = selectCursorRoomIdFromLevelEditorState(stateWithFloor);
-  const withNearRight = reduceLevelEditorActions(
-    stateWithFloor,
+  const nearLeftRoomId = selectCursorRoomIdFromLevelEditorState(state0);
+  const state1WithNearRight = reduceLevelEditorActions(
+    state0,
     insertRoom({ direction: "right" }),
   );
-  const nearRightRoomId = selectCursorRoomIdFromLevelEditorState(withNearRight);
-  const withFarRight = reduceLevelEditorActions(
-    withNearRight,
+  const nearRightRoomId =
+    selectCursorRoomIdFromLevelEditorState(state1WithNearRight);
+  const state2WithFarRight = reduceLevelEditorActions(
+    state1WithNearRight,
     insertRoom({ direction: "away" }),
   );
-  const farRightRoomId = selectCursorRoomIdFromLevelEditorState(withFarRight);
-  const withFarLeft = reduceLevelEditorActions(
-    withFarRight,
+  const farRightRoomId =
+    selectCursorRoomIdFromLevelEditorState(state2WithFarRight);
+  const state3WithFarLeft = reduceLevelEditorActions(
+    state2WithFarRight,
     changeToRoom({ roomId: nearLeftRoomId }),
     insertRoom({ direction: "away" }),
   );
-  const farLeftRoomId = selectCursorRoomIdFromLevelEditorState(withFarLeft);
+  const farLeftRoomId =
+    selectCursorRoomIdFromLevelEditorState(state3WithFarLeft);
   // a door between the two far rooms closes the square into a loop:
-  const square = reduceLevelEditorActions(
-    withFarLeft,
+  const state4Square = reduceLevelEditorActions(
+    state3WithFarLeft,
     insertRoom({ direction: "right" }),
   );
   const startingRoomIds = roomGridPositions({
-    campaign: square.campaignInProgress,
+    campaign: state4Square.campaignInProgress,
     roomId: nearLeftRoomId,
     skipMissingRooms: true,
   }).nodes.map(({ roomId }) => roomId);
 
   // alone, the near-left room can't be split from the right column, which the
   // far rooms tie back round to it:
-  const afterInsertBesideOneRoom = reduceLevelEditorActions(
-    square,
+  const state5AfterInsertBesideOneRoom = reduceLevelEditorActions(
+    state4Square,
     changeToRoom({ roomId: nearLeftRoomId }),
     insertRoom({ direction: "right" }),
   );
-  expect(afterInsertBesideOneRoom.campaignInProgress).toBe(
-    square.campaignInProgress,
+  expect(state5AfterInsertBesideOneRoom.campaignInProgress).toBe(
+    state4Square.campaignInProgress,
   );
 
-  const insertedBesideLeftColumn = reduceLevelEditorActions(
-    afterInsertBesideOneRoom,
+  const state6InsertedBesideLeftColumn = reduceLevelEditorActions(
+    state5AfterInsertBesideOneRoom,
     addRoomToSelection({ roomId: farLeftRoomId, subRoomId: "*" }),
     insertRoom({ direction: "right" }),
   );
 
   expect(
     roomGridPositions({
-      campaign: insertedBesideLeftColumn.campaignInProgress,
+      campaign: state6InsertedBesideLeftColumn.campaignInProgress,
       roomId: nearLeftRoomId,
       skipMissingRooms: true,
     })
@@ -1071,31 +1084,35 @@ test("inserting beside one room of a square of four is refused, but with the roo
 });
 
 test("inserting with two rooms of a square of four selected along the direction leaves the square unchanged, since the loop can't be split", () => {
+  const state0 = stateWithFloor;
   // each insert moves the cursor to the room it adds (or links), which names it:
-  const nearLeftRoomId = selectCursorRoomIdFromLevelEditorState(stateWithFloor);
-  const withNearRight = reduceLevelEditorActions(
-    stateWithFloor,
+  const nearLeftRoomId = selectCursorRoomIdFromLevelEditorState(state0);
+  const state1WithNearRight = reduceLevelEditorActions(
+    state0,
     insertRoom({ direction: "right" }),
   );
-  const nearRightRoomId = selectCursorRoomIdFromLevelEditorState(withNearRight);
-  const withFarLeft = reduceLevelEditorActions(
-    withNearRight,
+  const nearRightRoomId =
+    selectCursorRoomIdFromLevelEditorState(state1WithNearRight);
+  const state2WithFarLeft = reduceLevelEditorActions(
+    state1WithNearRight,
     insertRoom({ direction: "away" }),
     changeToRoom({ roomId: nearLeftRoomId }),
     insertRoom({ direction: "away" }),
   );
   // a door between the two far rooms closes the square into a loop:
-  const square = reduceLevelEditorActions(
-    withFarLeft,
+  const state3Square = reduceLevelEditorActions(
+    state2WithFarLeft,
     insertRoom({ direction: "right" }),
   );
 
-  const afterInsert = reduceLevelEditorActions(
-    square,
+  const state4AfterInsert = reduceLevelEditorActions(
+    state3Square,
     changeToRoom({ roomId: nearLeftRoomId }),
     addRoomToSelection({ roomId: nearRightRoomId, subRoomId: "*" }),
     insertRoom({ direction: "right" }),
   );
 
-  expect(afterInsert.campaignInProgress).toBe(square.campaignInProgress);
+  expect(state4AfterInsert.campaignInProgress).toBe(
+    state3Square.campaignInProgress,
+  );
 });

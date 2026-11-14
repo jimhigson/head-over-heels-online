@@ -3340,7 +3340,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
 
   describe("pendingEdits lifecycle", () => {
     const blockId = "b1" as EditorRoomItemId;
-    const stateWithBlock: LevelEditorState = produce(
+    const state0WithBlock: LevelEditorState = produce(
       editorStateWithOneRoomWithNoItems,
       (draft) => {
         draft.campaignInProgress.rooms[testRoomId].items[blockId] = {
@@ -3352,8 +3352,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
     );
 
     test("moveOrResizeItemAsPreview sets pendingEdits description for a move", () => {
-      const result = reduceLevelEditorActions(
-        stateWithBlock,
+      const state1 = reduceLevelEditorActions(
+        state0WithBlock,
         moveOrResizeItemAsPreview({
           jsonItemIds: [blockId],
           positionDelta: { x: 1, y: 0, z: 0 },
@@ -3361,7 +3361,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         }),
       );
 
-      const desc = result.pendingEdits?.description;
+      const desc = state1.pendingEdits?.description;
       expect(desc?.kind).toBe("itemAction");
       if (desc?.kind === "itemAction") {
         expect(desc.verb).toBe("↖ Move");
@@ -3373,8 +3373,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
     });
 
     test("moveOrResizeItemAsPreview sets pendingEdits description for a resize", () => {
-      const result = reduceLevelEditorActions(
-        stateWithBlock,
+      const state1 = reduceLevelEditorActions(
+        state0WithBlock,
         moveOrResizeItemAsPreview({
           jsonItemIds: [blockId],
           positionDelta: { x: 0, y: 0, z: 0 },
@@ -3383,7 +3383,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         }),
       );
 
-      const desc = result.pendingEdits?.description;
+      const desc = state1.pendingEdits?.description;
       expect(desc?.kind).toBe("itemAction");
       if (desc?.kind === "itemAction") {
         expect(desc.verb).toBe("Resize");
@@ -3394,8 +3394,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
     });
 
     test("zero timesDelta produces a move verb, not resize", () => {
-      const result = reduceLevelEditorActions(
-        stateWithBlock,
+      const state1 = reduceLevelEditorActions(
+        state0WithBlock,
         moveOrResizeItemAsPreview({
           jsonItemIds: [blockId],
           positionDelta: { x: 0, y: -1, z: 0 },
@@ -3404,7 +3404,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         }),
       );
 
-      const desc = result.pendingEdits?.description;
+      const desc = state1.pendingEdits?.description;
       expect(desc?.kind).toBe("itemAction");
       if (desc?.kind === "itemAction") {
         expect(desc.verb).toBe("↙ Move");
@@ -3414,8 +3414,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
     });
 
     test("commitCurrentPreviewedEdits consumes pendingEdits", () => {
-      const result = reduceLevelEditorActions(
-        stateWithBlock,
+      const state1 = reduceLevelEditorActions(
+        state0WithBlock,
         moveOrResizeItemAsPreview({
           jsonItemIds: [blockId],
           positionDelta: { x: 1, y: 0, z: 0 },
@@ -3424,20 +3424,20 @@ describe("changeWallsForFloorChangeInPlace", () => {
         commitCurrentPreviewedEdits(),
       );
 
-      expect(result.history[testRoomId]!.undo).toHaveLength(1);
-      const desc = result.history[testRoomId]!.undo[0].description;
+      expect(state1.history[testRoomId]!.undo).toHaveLength(1);
+      const desc = state1.history[testRoomId]!.undo[0].description;
       expect(desc.kind).toBe("itemAction");
       if (desc.kind === "itemAction") {
         expect(desc.verb).toBe("↖ Move");
         const [[movedId]] = desc.items;
         expect(movedId).toBe(blockId);
       }
-      expect(result.pendingEdits).toBeUndefined();
+      expect(state1.pendingEdits).toBeUndefined();
     });
 
     test("resetPreviewedEdits clears pendingEdits", () => {
-      const result = reduceLevelEditorActions(
-        stateWithBlock,
+      const state1 = reduceLevelEditorActions(
+        state0WithBlock,
         moveOrResizeItemAsPreview({
           jsonItemIds: [blockId],
           positionDelta: { x: 1, y: 0, z: 0 },
@@ -3446,7 +3446,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         resetPreviewedEdits(),
       );
 
-      expect(result.pendingEdits).toBeUndefined();
+      expect(state1.pendingEdits).toBeUndefined();
     });
   });
 });

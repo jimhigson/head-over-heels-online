@@ -10,6 +10,7 @@ import { type LevelEditorState, removeRoom } from "../levelEditorSlice";
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,
+  testOpenRoomId,
   testRoomId,
 } from "./__test__/storeStates";
 import { type UndoDescription } from "./undoDescription";
@@ -33,11 +34,12 @@ const addRooms = (draft: LevelEditorState) => {
     items: {},
   };
   draft.selectedRoomIds = [roomA];
-  draft.cursorRoom = { roomId: roomA, subRoomId: "*" };
+  draft.openRooms[testOpenRoomId].roomId = roomA;
+  draft.cursorRoomId = roomA;
 };
 
 test("removeRoom filters the deleted room from editingRoomIdHistory", () => {
-  const state: LevelEditorState = structuredClone(
+  const state0: LevelEditorState = structuredClone(
     produce(editorStateWithOneRoomWithNoItems, (draft) => {
       addRooms(draft);
       draft.editingRoomIdHistory = {
@@ -47,15 +49,15 @@ test("removeRoom filters the deleted room from editingRoomIdHistory", () => {
     }),
   );
 
-  const result = reduceLevelEditorActions(state, removeRoom());
+  const state1 = reduceLevelEditorActions(state0, removeRoom());
 
-  expect(result.campaignInProgress.rooms[roomA]).toBeUndefined();
-  expect(result.editingRoomIdHistory.back).not.toContain(roomA);
-  expect(result.editingRoomIdHistory.forward).not.toContain(roomA);
+  expect(state1.campaignInProgress.rooms[roomA]).toBeUndefined();
+  expect(state1.editingRoomIdHistory.back).not.toContain(roomA);
+  expect(state1.editingRoomIdHistory.forward).not.toContain(roomA);
 });
 
 test("removeRoom deletes the deleted room's undo/redo history", () => {
-  const state: LevelEditorState = structuredClone(
+  const state0: LevelEditorState = structuredClone(
     produce(editorStateWithOneRoomWithNoItems, (draft) => {
       addRooms(draft);
       draft.history[roomA] = {
@@ -76,13 +78,13 @@ test("removeRoom deletes the deleted room's undo/redo history", () => {
     }),
   );
 
-  const result = reduceLevelEditorActions(state, removeRoom());
+  const state1 = reduceLevelEditorActions(state0, removeRoom());
 
-  expect(result.history[roomA]).toBeUndefined();
+  expect(state1.history[roomA]).toBeUndefined();
 });
 
 test("removeRoom deletes doors referencing deleted room", () => {
-  const state: LevelEditorState = structuredClone(
+  const state0: LevelEditorState = structuredClone(
     produce(editorStateWithOneRoomWithNoItems, (draft) => {
       addRooms(draft);
       draft.campaignInProgress.rooms[roomB].items[door1] = {
@@ -93,13 +95,13 @@ test("removeRoom deletes doors referencing deleted room", () => {
     }),
   );
 
-  const result = reduceLevelEditorActions(state, removeRoom());
+  const state1 = reduceLevelEditorActions(state0, removeRoom());
 
-  expect(result.campaignInProgress.rooms[roomB].items[door1]).toBeUndefined();
+  expect(state1.campaignInProgress.rooms[roomB].items[door1]).toBeUndefined();
 });
 
 test("removeRoom removes toRoom from teleporters referencing deleted room", () => {
-  const state: LevelEditorState = structuredClone(
+  const state0: LevelEditorState = structuredClone(
     produce(editorStateWithOneRoomWithNoItems, (draft) => {
       addRooms(draft);
       draft.campaignInProgress.rooms[roomB].items[teleporter1] = {
@@ -110,14 +112,14 @@ test("removeRoom removes toRoom from teleporters referencing deleted room", () =
     }),
   );
 
-  const result = reduceLevelEditorActions(state, removeRoom());
+  const state1 = reduceLevelEditorActions(state0, removeRoom());
 
-  const teleporter = result.campaignInProgress.rooms[roomB].items[teleporter1];
+  const teleporter = state1.campaignInProgress.rooms[roomB].items[teleporter1];
   expect(teleporter.config).not.toHaveProperty("toRoom");
 });
 
 test("removeRoom clears roomAbove/roomBelow referencing deleted room", () => {
-  const state: LevelEditorState = structuredClone(
+  const state0: LevelEditorState = structuredClone(
     produce(editorStateWithOneRoomWithNoItems, (draft) => {
       addRooms(draft);
       draft.campaignInProgress.rooms[roomB].meta = {
@@ -128,16 +130,16 @@ test("removeRoom clears roomAbove/roomBelow referencing deleted room", () => {
     }),
   );
 
-  const result = reduceLevelEditorActions(state, removeRoom());
+  const state1 = reduceLevelEditorActions(state0, removeRoom());
 
   const remainingLinks = roomVerticalLinkHolders(
-    result.campaignInProgress.rooms[roomB],
+    state1.campaignInProgress.rooms[roomB],
   ).some((holder) => holder.above !== undefined || holder.below !== undefined);
   expect(remainingLinks).toBe(false);
 });
 
 test("removeRoom deletes NCR referencing deleted room, keeping other meta fields", () => {
-  const state: LevelEditorState = structuredClone(
+  const state0: LevelEditorState = structuredClone(
     produce(editorStateWithOneRoomWithNoItems, (draft) => {
       addRooms(draft);
       draft.campaignInProgress.rooms[roomB].meta = {
@@ -154,16 +156,16 @@ test("removeRoom deletes NCR referencing deleted room, keeping other meta fields
     }),
   );
 
-  const result = reduceLevelEditorActions(state, removeRoom());
+  const state1 = reduceLevelEditorActions(state0, removeRoom());
 
   expect(
-    roomNonContiguousRelationship(result.campaignInProgress.rooms[roomB]),
+    roomNonContiguousRelationship(state1.campaignInProgress.rooms[roomB]),
   ).toBeUndefined();
-  expect(result.campaignInProgress.rooms[roomB].meta).toHaveProperty("label");
+  expect(state1.campaignInProgress.rooms[roomB].meta).toHaveProperty("label");
 });
 
 test("removeRoom removes the NCR referencing the deleted room", () => {
-  const state: LevelEditorState = structuredClone(
+  const state0: LevelEditorState = structuredClone(
     produce(editorStateWithOneRoomWithNoItems, (draft) => {
       addRooms(draft);
       draft.campaignInProgress.rooms[roomB].meta = {
@@ -179,9 +181,9 @@ test("removeRoom removes the NCR referencing the deleted room", () => {
     }),
   );
 
-  const result = reduceLevelEditorActions(state, removeRoom());
+  const state1 = reduceLevelEditorActions(state0, removeRoom());
 
   expect(
-    roomNonContiguousRelationship(result.campaignInProgress.rooms[roomB]),
+    roomNonContiguousRelationship(state1.campaignInProgress.rooms[roomB]),
   ).toBeUndefined();
 });

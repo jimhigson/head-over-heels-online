@@ -13,7 +13,7 @@ import {
   testRoomId,
 } from "./__test__/storeStates";
 
-const platformPlayerAndBlock = produce(
+const state0PlatformPlayerAndBlock = produce(
   editorStateWithOneRoomWithNoItems,
   (draft) => {
     const { items } = draft.campaignInProgress.rooms[testRoomId];
@@ -39,15 +39,16 @@ const platformPlayerAndBlock = produce(
   },
 );
 
-const setDirection = selectCurrentCommittedRoomJsonFromLevelEditorState(
-  reduceLevelEditorActions(
-    platformPlayerAndBlock,
-    setSelectedItemsInRoom({
-      jsonItemIds: ["platform", "player", "block"] as EditorRoomItemId[],
-    }),
-    setSelectedItemsStartDirection({ startDirection: "left", timestamp: 0 }),
-  ),
-).items;
+const state1DirectionSet = reduceLevelEditorActions(
+  state0PlatformPlayerAndBlock,
+  setSelectedItemsInRoom({
+    jsonItemIds: ["platform", "player", "block"] as EditorRoomItemId[],
+  }),
+  setSelectedItemsStartDirection({ startDirection: "left", timestamp: 0 }),
+);
+
+const setDirection =
+  selectCurrentCommittedRoomJsonFromLevelEditorState(state1DirectionSet).items;
 
 test("sets the start direction on a movingPlatform", () => {
   expect(setDirection["platform" as EditorRoomItemId]).toEqual({
@@ -73,20 +74,23 @@ test("leaves items without a start direction untouched", () => {
   });
 });
 
+const state0Lamp = produce(editorStateWithOneRoomWithNoItems, (draft) => {
+  draft.campaignInProgress.rooms[testRoomId].items["lamp" as EditorRoomItemId] =
+    {
+      type: "lamp",
+      config: { direction: "towards", activated: true },
+      position: { x: 0, y: 0, z: 0 },
+    };
+});
+
+const state1LampDirectionSet = reduceLevelEditorActions(
+  state0Lamp,
+  setSelectedItemsInRoom({ jsonItemIds: ["lamp"] as EditorRoomItemId[] }),
+  setSelectedItemsStartDirection({ startDirection: "left", timestamp: 0 }),
+);
+
 const lampSetDirection = selectCurrentCommittedRoomJsonFromLevelEditorState(
-  reduceLevelEditorActions(
-    produce(editorStateWithOneRoomWithNoItems, (draft) => {
-      draft.campaignInProgress.rooms[testRoomId].items[
-        "lamp" as EditorRoomItemId
-      ] = {
-        type: "lamp",
-        config: { direction: "towards", activated: true },
-        position: { x: 0, y: 0, z: 0 },
-      };
-    }),
-    setSelectedItemsInRoom({ jsonItemIds: ["lamp"] as EditorRoomItemId[] }),
-    setSelectedItemsStartDirection({ startDirection: "left", timestamp: 0 }),
-  ),
+  state1LampDirectionSet,
 ).items;
 
 test("sets a lamp's beam direction (its `direction` field, not startDirection)", () => {

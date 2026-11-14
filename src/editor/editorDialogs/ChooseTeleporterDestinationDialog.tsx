@@ -1,5 +1,5 @@
 import { Suspense } from "preact/compat";
-import { useCallback, useMemo, useState } from "preact/hooks";
+import { useCallback, useLayoutEffect, useState } from "preact/hooks";
 
 import { useAppDispatch } from "../../store/hooks";
 import { useEditorAppSelector } from "../../store/store";
@@ -22,15 +22,14 @@ import {
 } from "../editorTypes";
 import { LazyRoomEditingArea } from "../RoomEditingArea/RoomEditingArea.lazy";
 import {
-  type EditorPaneId,
-  type EditorPaneRoomSource,
-  generateEditorPaneId,
-} from "../slice/EditorPane";
-import {
-  selectPaneSelectedJsonItemIds,
+  dialogRoomClosed,
+  dialogRoomOpened,
+  selectOpenRoomSelectedJsonItemIds,
   selectRoom,
   setSelectedItemsInRoom,
 } from "../slice/levelEditorSlice";
+import { type OpenRoomId } from "../slice/OpenRoom";
+import { type DialogRoom } from "../slice/reducers/openRoomsReducers";
 import { buttonSmallHeightClassNames } from "../toolbar/buttonSizeClassNames";
 import { ChooseRoomMap } from "./ChooseRoomMap";
 import { type TeleporterDestination } from "./chooseTeleporterDestination";
@@ -55,36 +54,17 @@ export type ChooseTeleporterDestinationDialogProps = {
 };
 
 export type RoomItemPickerProps = {
-  roomId: EditorRoomId;
-  initialItemId: EditorRoomItemId | undefined;
-  paneId: EditorPaneId;
+  openRoomId: OpenRoomId;
 };
 
-/** a rendering of the room, where clicking an item picks it */
-const RoomItemPicker = ({
-  roomId,
-  initialItemId,
-  paneId,
-}: RoomItemPickerProps) => {
-  const roomSource = useMemo(
-    (): EditorPaneRoomSource => ({ type: "room", roomId }),
-    [roomId],
-  );
-  const [initialSelectedJsonItemIds] = useState(() =>
-    initialItemId === undefined ? [] : [initialItemId],
-  );
-  return (
-    <Suspense fallback={<SpinnerHeels loadingBorder />}>
-      <LazyRoomEditingArea
-        paneId={paneId}
-        roomSource={roomSource}
-        pickOnly
-        activateOnMount
-        initialSelectedJsonItemIds={initialSelectedJsonItemIds}
-      />
-    </Suspense>
-  );
-};
+/**
+ * a rendering of the open room, where clicking an item picks it
+ */
+const RoomItemPicker = ({ openRoomId }: RoomItemPickerProps) => (
+  <Suspense fallback={<SpinnerHeels loadingBorder />}>
+    <LazyRoomEditingArea openRoomId={openRoomId} />
+  </Suspense>
+);
 
 /**
  * choose where teleporters lead: a room from the map, and the item in it to
@@ -103,24 +83,48 @@ export const ChooseTeleporterDestinationDialog = ({
   const [tab, setTab] = useState<DestinationTab>(
     initialDestination === undefined ? "map" : "room",
   );
-  const [toRoom, setToRoom] = useState(initialDestination?.toRoom);
-  // a new pane for each room, so changing room clears the item picked:
-  const [picker, setPicker] = useState(() => ({
-    paneId: generateEditorPaneId(),
-    initialItemId: initialDestination?.toItemId,
-  }));
+  // the room picked from, and the items selected in it when it opens:
+  const [pickerRoom, setPickerRoom] = useState<DialogRoom | undefined>(
+    initialDestination === undefined ? undefined : (
+      {
+        roomId: initialDestination.toRoom,
+        selectedJsonItemIds:
+          initialDestination.toItemId === undefined ?
+            []
+          : [initialDestination.toItemId],
+      }
+    ),
+  );
+  const toRoom = pickerRoom?.roomId;
+  // the dialog's open room on the picker room, for as long as it is shown:
+  const [pickerOpenRoomId, setPickerOpenRoomId] = useState<
+    OpenRoomId | undefined
+  >(undefined);
+  useLayoutEffect(() => {
+    if (pickerRoom === undefined) {
+      return;
+    }
+    const opening = dialogRoomOpened(pickerRoom);
+    dispatch(opening);
+    setPickerOpenRoomId(opening.payload.openRoomId);
+    return () => {
+      dispatch(dialogRoomClosed(opening.payload.openRoomId));
+    };
+  }, [dispatch, pickerRoom]);
+  // a new open room for each room, so changing room clears the item picked:
   const chooseRoom = useCallback(
     (roomId: EditorRoomId) => {
       if (roomId !== toRoom) {
-        setToRoom(roomId);
-        setPicker({ paneId: generateEditorPaneId(), initialItemId: undefined });
+        setPickerRoom({ roomId, selectedJsonItemIds: [] });
       }
     },
     [toRoom],
   );
 
-  const [pickedItemId] = useEditorAppSelector((state) =>
-    selectPaneSelectedJsonItemIds(state, picker.paneId),
+  const pickedItemId = useEditorAppSelector((state) =>
+    pickerOpenRoomId === undefined ? undefined : (
+      selectOpenRoomSelectedJsonItemIds(state, pickerOpenRoomId)[0]
+    ),
   );
   const roomJson = useEditorAppSelector((state) =>
     toRoom === undefined ? undefined : selectRoom(state, toRoom),
@@ -184,7 +188,7 @@ export const ChooseTeleporterDestinationDialog = ({
                 onChoose={chooseRoom}
               />
             </div>
-            {/* kept mounted while the map is shown, so the item picked stays picked: */}
+            {/* kept mounted while the map is shown, so its pixi app isn't rebuilt: */}
             <div
               class={tab === "room" ? "h-full flex flex-col gap-1" : "hidden"}
             >
@@ -200,12 +204,12 @@ export const ChooseTeleporterDestinationDialog = ({
                     }
                   </span>
                   <div class="relative flex-1 min-h-0">
-                    <RoomItemPicker
-                      key={picker.paneId}
-                      roomId={toRoom}
-                      initialItemId={picker.initialItemId}
-                      paneId={picker.paneId}
-                    />
+                    {pickerOpenRoomId !== undefined && (
+                      <RoomItemPicker
+                        key={pickerOpenRoomId}
+                        openRoomId={pickerOpenRoomId}
+                      />
+                    )}
                   </div>
                 </>
               }

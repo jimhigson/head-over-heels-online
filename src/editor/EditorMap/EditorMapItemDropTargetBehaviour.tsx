@@ -8,7 +8,7 @@ import { type EditorRoomId } from "../editorTypes";
 import { dropItemsOnRoomThunk } from "../slice/dropItemsOnRoomThunk";
 import { findItemsDropPlacement } from "../slice/findItemsDropPlacement";
 import {
-  selectActivePaneDragInProgress,
+  selectActiveOpenRoomDragInProgress,
   selectCursorRoomId,
   selectCursorRoomSelectedJsonItemIds,
 } from "../slice/levelEditorSlice";
@@ -21,7 +21,7 @@ const dropHighlightClasses = twClass([
 ]);
 
 /**
- * lets items being dragged out of the room editing pane be dropped on this
+ * lets items being dragged out of the room editing area be dropped on this
  * room's area of the map, moving them here
  */
 const useEditorMapItemDropTarget = ({
@@ -45,7 +45,7 @@ const useEditorMapItemDropTarget = ({
     const isDraggingItemsFromAnotherRoom = () => {
       const editorState = editorStore.getState();
       return (
-        selectActivePaneDragInProgress(editorState) === "moveItems" &&
+        selectActiveOpenRoomDragInProgress(editorState) === "moveItems" &&
         selectCursorRoomId(editorState) !== roomId
       );
     };

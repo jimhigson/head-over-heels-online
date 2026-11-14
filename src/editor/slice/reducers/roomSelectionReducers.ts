@@ -2,9 +2,10 @@ import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { keys } from "../../../utils/entries";
 import { type EditorRoomId } from "../../editorTypes";
-import { firstSubRoomId } from "../inPlaceMutators/changeCurrentRoomInPlace";
-import { openRoomTabInPlace } from "../inPlaceMutators/openRoomTabInPlace";
+import { firstSubRoomId } from "../inPlaceMutators/firstSubRoomId";
+import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { showRoomInFrontTabInPlace } from "../OpenRoom";
 
 export const roomSelectionReducers = {
   toggleRoomInSelection(
@@ -19,20 +20,19 @@ export const roomSelectionReducers = {
     if (existingIndex !== -1) {
       if (state.selectedRoomIds.length > 1) {
         state.selectedRoomIds.splice(existingIndex, 1);
-        if (state.cursorRoom.roomId === roomId) {
+        if (selectCursorRoomIdFromLevelEditorState(state) === roomId) {
           const newCursorRoomId = state.selectedRoomIds.at(-1)!;
           const newCursorRoom = state.campaignInProgress.rooms[newCursorRoomId];
-          openRoomTabInPlace(state, newCursorRoomId);
-          state.cursorRoom = {
-            roomId: newCursorRoomId,
-            subRoomId: firstSubRoomId(newCursorRoom),
-          };
+          showRoomInFrontTabInPlace(
+            state,
+            newCursorRoomId,
+            firstSubRoomId(newCursorRoom),
+          );
         }
       }
     } else {
       state.selectedRoomIds.push(roomId);
-      openRoomTabInPlace(state, roomId);
-      state.cursorRoom = { roomId, subRoomId };
+      showRoomInFrontTabInPlace(state, roomId, subRoomId);
     }
   },
 
@@ -46,8 +46,7 @@ export const roomSelectionReducers = {
     if (!state.selectedRoomIds.includes(roomId)) {
       state.selectedRoomIds.push(roomId);
     }
-    openRoomTabInPlace(state, roomId);
-    state.cursorRoom = { roomId, subRoomId };
+    showRoomInFrontTabInPlace(state, roomId, subRoomId);
   },
 
   selectAllRooms(_state) {

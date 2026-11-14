@@ -1,15 +1,15 @@
-import { buildRoomJsonDirectionalIndex } from "../game/gameState/loadRoom/buildRoomJsonDirectionalIndex";
-import { loadItemFromJson } from "../game/gameState/loadRoom/loadItemFromJson";
-import { addItemToRoom } from "../game/gameState/mutators/addItemToRoom";
-import { deleteItemFromRoom } from "../game/gameState/mutators/deleteItemFromRoom";
-import { roomItemsIterable } from "../model/roomItemsInPlayIterators";
+import { buildRoomJsonDirectionalIndex } from "../../game/gameState/loadRoom/buildRoomJsonDirectionalIndex";
+import { loadItemFromJson } from "../../game/gameState/loadRoom/loadItemFromJson";
+import { addItemToRoom } from "../../game/gameState/mutators/addItemToRoom";
+import { deleteItemFromRoom } from "../../game/gameState/mutators/deleteItemFromRoom";
+import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
 import {
   roomJsonItemsEntriesIterable,
   roomJsonItemsIterable,
-} from "../model/RoomJsonItemIterators";
-import { errorCaught } from "../store/slices/errors/errorsSlice";
-import { type EditorAppStore, type EditorRootState } from "../store/store";
-import { createSerialisableErrors } from "../utils/redux/createSerialisableErrors";
+} from "../../model/RoomJsonItemIterators";
+import { errorCaught } from "../../store/slices/errors/errorsSlice";
+import { type EditorAppStore, type EditorRootState } from "../../store/store";
+import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import {
   type EditorJsonItemUnion,
   type EditorRoomId,
@@ -17,8 +17,8 @@ import {
   type EditorRoomJson,
   type EditorRoomState,
   type EditorUnionOfAllItemInPlayTypes,
-} from "./editorTypes";
-import { loadEditorRoom } from "./slice/loadEditorRoom";
+} from "../editorTypes";
+import { loadEditorRoom } from "../slice/loadEditorRoom";
 
 /**
  * which room json a {@link LoadedRoomCache} follows. Both must be caching
