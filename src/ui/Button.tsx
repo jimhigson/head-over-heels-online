@@ -50,8 +50,10 @@ export const Button = ({
   children,
   ...props
 }: ButtonProps) => {
+  // with no tooltip of its own, a button with shortcut keys gets one of just
+  // the keys:
   const finalTooltipContent =
-    typeof tooltipContent === "string" ?
+    tooltipContent === undefined || typeof tooltipContent === "string" ?
       enhanceTooltipWithHotkeys(tooltipContent, shortcutKeys)
     : tooltipContent !== undefined && shortcutKeys ?
       <>
