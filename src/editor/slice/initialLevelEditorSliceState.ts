@@ -1,7 +1,6 @@
 import { produce } from "immer";
 
 import { starterRoom } from "../../model/inPlaceMutators/starterRoom";
-import { cameraAngleBase } from "../../utils/vectors/cameraAngleVectors";
 import {
   type EditorCampaign,
   type EditorRoomId,
@@ -9,7 +8,7 @@ import {
   type EditorRoomJson,
 } from "../editorTypes";
 import { type LevelEditorState } from "./levelEditorSlice";
-import { newOpenRoom, type OpenRoomId, type TabId } from "./OpenRoom";
+import { openRoomDefaults, type OpenRoomId, type TabId } from "./OpenRoom";
 
 const initialRoomId = "room_0" as EditorRoomId;
 const initialOpenRoomId = "initialOpenRoom" as OpenRoomId;
@@ -55,7 +54,12 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   remoteCampaign: undefined,
   selectedRoomIds: [initialRoomId],
   openRooms: {
-    [initialOpenRoomId]: newOpenRoom(initialRoomId, "*", true),
+    [initialOpenRoomId]: {
+      ...openRoomDefaults,
+      roomId: initialRoomId,
+      subRoomId: "*",
+      editable: true,
+    },
   },
   tabs: [{ id: initialTabId, isPreview: false, openRoomId: initialOpenRoomId }],
   cursorRoomId: initialRoomId,
@@ -69,7 +73,6 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   lastItemTool: undefined,
   cmdKSearch: "",
   gridResolution: 1,
-  cameraAngle: cameraAngleBase,
   autoCoalesce: true,
   wallsFloorsLocked: true,
   doorAutoAddsRoom: true,

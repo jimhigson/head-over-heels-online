@@ -19,7 +19,7 @@ The level editor registers webmcp tools in every build, dev and production. This
 | `setRoomItemValues` | `pattern`, `value` | sets `value` everywhere the [pattern](#item-patterns) picks out in the current room's items, as one undoable edit. A last part naming one key (`config.toRoom`) inserts it if absent; any other last part replaces only existing values. Returns the paths set |
 | `listRooms` | - | every room in the campaign, as `{id, planet}` |
 | `getOpenCampaign` | - | the open campaign's `locator` and `meta` |
-| `getEditorView` | - | camera angle, tool, current sub-room, grid resolution, and `openRoomTabs` (in order, each `{roomId, isPreview}` - a preview tab is replaced by the next room browsed to) |
+| `getEditorView` | - | tool, current sub-room, grid resolution, and `openRoomTabs` (in order, each `{roomId, isPreview, cameraAngle}` - each room is viewed from its own angle; a preview tab is replaced by the next room browsed to) |
 | `dispatchAction` | `type`, `payload?` | dispatches a plain redux action |
 | `getActionLog` | `typePrefix?` | last 50 actions - **dev builds only** (empty in production) |
 | `getVerificationIssues` | - | the same errors/warnings as the toolbar's verify button, each with `fixable`, `fixText` and `issueData` |

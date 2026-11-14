@@ -23,7 +23,7 @@ import {
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../../editorTypes";
-import { newOpenRoom } from "../OpenRoom";
+import { openRoomDefaults } from "../OpenRoom";
 
 /** the room id linked above/below a room's primary sub-room */
 const roomAboveOf = <RoomId extends string>(room: {
@@ -602,7 +602,14 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
     const state0: LevelEditorState = {
       ...editorStateWithOneRoomWithNoItems,
       selectedRoomIds: [roomA],
-      openRooms: { [testOpenRoomId]: newOpenRoom(roomA, "*", true) },
+      openRooms: {
+        [testOpenRoomId]: {
+          ...openRoomDefaults,
+          roomId: roomA,
+          subRoomId: "*",
+          editable: true,
+        },
+      },
       cursorRoomId: roomA,
       campaignInProgress: {
         ...editorStateWithOneRoomWithNoItems.campaignInProgress,
@@ -1124,12 +1131,13 @@ describe("makeHoleInSelectedFloor leaves the campaign without verification issue
         } as LevelEditorState["campaignInProgress"]["rooms"],
       },
       openRooms: {
-        [testOpenRoomId]: newOpenRoom(
+        [testOpenRoomId]: {
+          ...openRoomDefaults,
           roomId,
-          Object.keys(room.meta?.subRooms ?? { "*": {} })[0],
-          true,
-          [floorId],
-        ),
+          subRoomId: Object.keys(room.meta?.subRooms ?? { "*": {} })[0],
+          editable: true,
+          selectedJsonItemIds: [floorId],
+        },
       },
       cursorRoomId: roomId,
     };

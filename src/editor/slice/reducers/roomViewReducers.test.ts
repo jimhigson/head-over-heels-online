@@ -1,6 +1,8 @@
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
+import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";
+import { type Xy } from "../../../utils/vectors/vectors";
 import { type EditorRoomId } from "../../editorTypes";
 import { type EditorRoomView } from "../EditorRoomView";
 import {
@@ -9,6 +11,7 @@ import {
   openRoomViewPanned,
   rotateViewClockwise,
   selectFrontOpenRoomId,
+  selectOpenRoomCameraAngle,
   selectOpenRoomView,
 } from "../levelEditorSlice";
 import {
@@ -100,4 +103,46 @@ test("rotating drops the view, so the room is fitted afresh", () => {
   expect(
     selectOpenRoomView({ levelEditor: state1 }, testOpenRoomId),
   ).toBeUndefined();
+});
+
+test("rotating leaves other open rooms' views as they were", () => {
+  const state0 = baseState;
+  const state1OnRoomB = reduceLevelEditorActions(
+    state0,
+    openRoomViewChanged({ openRoomId: testOpenRoomId, view: someView }),
+    changeToRoom(roomB),
+  );
+  const state2 = reduceLevelEditorActions(state1OnRoomB, rotateViewClockwise());
+
+  expect<EditorRoomView | undefined>(
+    selectOpenRoomView({ levelEditor: state2 }, testOpenRoomId),
+  ).toEqual<EditorRoomView>(someView);
+});
+
+test("rotating turns only the active open room", () => {
+  const state0 = baseState;
+  const state1OnRoomB = reduceLevelEditorActions(state0, changeToRoom(roomB));
+  const state2 = reduceLevelEditorActions(state1OnRoomB, rotateViewClockwise());
+
+  expect<Xy>(
+    selectOpenRoomCameraAngle({ levelEditor: state2 }, testOpenRoomId),
+  ).toEqual<Xy>(cameraAngleBase);
+});
+
+test("a room browsed to is viewed from the angle of the room browsed from", () => {
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
+    rotateViewClockwise(),
+    changeToRoom(roomB),
+  );
+
+  expect<Xy>(
+    selectOpenRoomCameraAngle(
+      { levelEditor: state1 },
+      selectFrontOpenRoomId({ levelEditor: state1 }),
+    ),
+  ).toEqual<Xy>(
+    selectOpenRoomCameraAngle({ levelEditor: state1 }, testOpenRoomId),
+  );
 });

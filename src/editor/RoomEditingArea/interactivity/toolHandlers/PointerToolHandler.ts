@@ -356,7 +356,7 @@ export class PointerToolHandler implements ToolHandler<
           mouseEvent.metaKey || mouseEvent.shiftKey,
           dragAccVec.current !== undefined,
           jsonItems,
-          storeState.levelEditor.cameraAngle,
+          existingOpenRoom(storeState.levelEditor, openRoomId).cameraAngle,
         )
         // ignore dragging if it started in a different room:
       : undefined;
@@ -466,7 +466,7 @@ export class PointerToolHandler implements ToolHandler<
         dragMovesToTry(
           positionDelta,
           dragGridResolution,
-          storeState.levelEditor.cameraAngle,
+          existingOpenRoom(storeState.levelEditor, openRoomId).cameraAngle,
         )
       : [positionDelta];
 
