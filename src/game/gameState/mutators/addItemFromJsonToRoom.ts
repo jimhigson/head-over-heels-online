@@ -6,6 +6,7 @@ import {
 } from "../../../model/json/JsonItem";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { type RoomState } from "../../../model/RoomState";
+import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { originXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { type GameState } from "../GameState";
@@ -46,6 +47,7 @@ export const addItemFromJsonToRoom = <
     itemId,
     itemJson as JsonItemUnion<RoomId>,
     room.roomJson,
+    store.getState().gameInPlay.gameInPlay.planetsLiberated,
     buildRoomJsonDirectionalIndex(roomJsonItemsIterable(room.roomJson)),
     gameState.pickupsCollected[room.id] ?? emptyObject,
   );

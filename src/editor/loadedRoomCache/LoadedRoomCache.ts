@@ -8,6 +8,7 @@ import {
   roomJsonItemsIterable,
 } from "../../model/RoomJsonItemIterators";
 import { errorCaught } from "../../store/slices/errors/errorsSlice";
+import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { type EditorAppStore, type EditorRootState } from "../../store/store";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import {
@@ -280,6 +281,8 @@ const patchLoadedRoomInPlace = (
       jsonItemId,
       jsonItem,
       roomJsonWithPreviews,
+      // the editor plays no game, so has liberated no planets:
+      noPlanetsLiberated,
       directionalIndex,
     )) {
       addItemToRoom({

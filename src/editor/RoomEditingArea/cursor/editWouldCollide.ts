@@ -7,6 +7,7 @@ import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { type JsonItemType } from "../../../model/json/JsonItem";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
+import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import {
@@ -102,6 +103,7 @@ export const itemMoveOrResizeWouldCollide = ({
         jsonItemId,
         modifiedJsonItem,
         roomJson,
+        noPlanetsLiberated,
         directionalIndex,
       )) {
         yield [jsonItemId, modifiedJsonItem, loadedItem] as [
@@ -181,6 +183,7 @@ export const addingItemWouldCollide = ({
       position: blockPosition,
     } as EditorJsonItemUnion,
     roomState.roomJson,
+    noPlanetsLiberated,
     directionalIndex,
   )
     // our new item may have some non-solid items, which are fine to collide (eg, stopAutowalk doors)

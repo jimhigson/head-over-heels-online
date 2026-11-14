@@ -3,6 +3,7 @@ import { describe, expect, test } from "vitest";
 import { basicEmptyRoom } from "../../_testUtils/basicRoom";
 import { type FreeItem } from "../../model/ItemInPlayNarrowedUnions";
 import { roomJsonItemsIterable } from "../../model/RoomJsonItemIterators";
+import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { boxAt, originXyz } from "../../utils/vectors/vectors";
 import { buildRoomJsonDirectionalIndex } from "../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
@@ -23,6 +24,7 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
         position: { x: 2.1, y: 0, z: 1 },
       },
       roomJson,
+      noPlanetsLiberated,
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
     const result = findStandingOnWithHighestPriorityAndMostOverlap(
@@ -38,6 +40,7 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
             position: { x: 2, y: 0, z: 0 },
           },
           roomJson,
+          noPlanetsLiberated,
           buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
         ),
 
@@ -51,6 +54,7 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
             position: { x: 3, y: 0, z: 0 },
           },
           roomJson,
+          noPlanetsLiberated,
           buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
         ),
       ],
@@ -69,6 +73,7 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
         position: { x: 2.2, y: 0, z: 1 },
       },
       roomJson,
+      noPlanetsLiberated,
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
     const result = findStandingOnWithHighestPriorityAndMostOverlap(
@@ -84,6 +89,7 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
             position: { x: 2, y: 0, z: 0 },
           },
           roomJson,
+          noPlanetsLiberated,
           buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
         ),
 
@@ -97,6 +103,7 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
             position: { x: 3, y: 0, z: 0 },
           },
           roomJson,
+          noPlanetsLiberated,
           buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
         ),
       ],
@@ -117,6 +124,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: { x: 2, y: 0, z: 1 },
       },
       roomJson,
+      noPlanetsLiberated,
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
@@ -128,6 +136,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: { x: 2, y: 0, z: 0 },
       },
       roomJson,
+      noPlanetsLiberated,
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
@@ -154,6 +163,7 @@ describe("spatiallyCheckStandingOn", () => {
         },
       },
       roomJson,
+      noPlanetsLiberated,
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
@@ -165,6 +175,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: { x: 2, y: 0, z: 0 },
       },
       roomJson,
+      noPlanetsLiberated,
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
@@ -192,6 +203,7 @@ describe("spatiallyCheckStandingOn", () => {
         },
       },
       roomJson,
+      noPlanetsLiberated,
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
@@ -203,6 +215,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: { x: 2, y: 0, z: 0 },
       },
       roomJson,
+      noPlanetsLiberated,
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
@@ -225,6 +238,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: { x: 3, y: 0, z: 0.99 },
       },
       roomJson,
+      noPlanetsLiberated,
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
@@ -236,6 +250,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: { x: 2, y: 0, z: 0 },
       },
       roomJson,
+      noPlanetsLiberated,
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
@@ -257,6 +272,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: originXyz, // <- doesn't matter, will be overwritten soon
       },
       roomJson,
+      noPlanetsLiberated,
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
@@ -268,6 +284,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: originXyz, // <- doesn't matter, will be overwritten soon
       },
       roomJson,
+      noPlanetsLiberated,
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
@@ -295,6 +312,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: originXyz, // <- doesn't matter, will be overwritten soon
       },
       roomJson,
+      noPlanetsLiberated,
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
@@ -306,6 +324,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: originXyz, // <- doesn't matter, will be overwritten soon
       },
       roomJson,
+      noPlanetsLiberated,
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 

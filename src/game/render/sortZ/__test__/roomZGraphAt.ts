@@ -3,6 +3,7 @@ import { itemBehaviourKey } from "../../../../model/ItemInPlay";
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import { type RoomJson } from "../../../../model/RoomJson";
 import { type RoomState } from "../../../../model/RoomState";
+import { noPlanetsLiberated } from "../../../../store/slices/gameInPlay/gameInPlaySlice";
 import { Graph } from "../../../../utils/graph/Graph";
 import { type Xy } from "../../../../utils/vectors/vectors";
 import { loadRoom } from "../../../gameState/loadRoom/loadRoom";
@@ -28,6 +29,7 @@ export const roomZGraphAt = (
     roomJson,
     scrollsRead: {},
     roomPickupsCollected: {},
+    planetsLiberated: noPlanetsLiberated,
     isNewGame: false,
     userSettings: {
       soundSettings: {},
