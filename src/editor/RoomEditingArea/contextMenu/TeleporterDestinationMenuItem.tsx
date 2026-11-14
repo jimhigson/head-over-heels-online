@@ -1,7 +1,10 @@
 import { useEditorAppSelector } from "../../../store/store";
-import { keys } from "../../../utils/entries";
 import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
-import { chooseRoom } from "../../editorDialogs/chooseRoom";
+import {
+  chooseTeleporterDestination,
+  type TeleporterDestination,
+} from "../../editorDialogs/chooseTeleporterDestination";
+import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
 import {
   closeItemContextMenu,
   selectCurrentCampaignInProgress,
@@ -17,47 +20,59 @@ export const TeleporterDestinationMenuItem = () => {
   );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
   const campaign = useEditorAppSelector(selectCurrentCampaignInProgress);
+  const isCampaignRoomId = (roomId: string): roomId is EditorRoomId =>
+    roomId in campaign.rooms;
+  const isItemIdInRoom = (
+    roomId: EditorRoomId,
+    itemId: string,
+  ): itemId is EditorRoomItemId => itemId in campaign.rooms[roomId].items;
 
-  const teleporterDestinations = new Set<string | undefined>();
+  const destinationKeys = new Set<string>();
+  let sharedDestination: TeleporterDestination | undefined;
   for (const id of selectedJsonItemIds) {
     const item = roomJson.items[id];
     if (item?.type !== "teleporter") {
       return null;
     }
-    teleporterDestinations.add(item.config.toRoom);
+    const { toRoom } = item.config;
+    const toItemId =
+      "toItemId" in item.config ? item.config.toItemId : undefined;
+    destinationKeys.add(`${toRoom}/${toItemId}`);
+    // only preselect a destination that is a real room (and item):
+    sharedDestination =
+      toRoom !== undefined && isCampaignRoomId(toRoom) ?
+        {
+          toRoom,
+          toItemId:
+            toItemId !== undefined && isItemIdInRoom(toRoom, toItemId) ?
+              toItemId
+            : undefined,
+        }
+      : undefined;
   }
-  if (teleporterDestinations.size === 0) {
+  if (destinationKeys.size === 0) {
     return null;
   }
-
-  // only preselect a destination they all share, which is a real room:
-  const [sharedDestination] =
-    teleporterDestinations.size === 1 ? teleporterDestinations : [];
-  const initialRoomId = keys(campaign.rooms).find(
-    (roomId) => roomId === sharedDestination,
-  );
 
   return (
     <CommandContextMenuItem
       command={{
         type: "action",
-        label: "Destination room…",
+        label: "Destination…",
         action: () => async (dispatch) => {
           dispatch(closeItemContextMenu());
-          const toRoom = await chooseRoom({
-            heading: "Teleport to",
+          const destination = await chooseTeleporterDestination({
             campaign,
-            initialRoomId,
-            mapRoomId: roomJson.id,
-            chooseText: (roomId) =>
-              roomId === undefined ? "Set destination" : (
-                `Set destination to ${roomId}`
-              ),
+            fromRoomId: roomJson.id,
+            teleporterIds: selectedJsonItemIds,
+            // only one they all share:
+            initialDestination:
+              destinationKeys.size === 1 ? sharedDestination : undefined,
           });
-          if (toRoom !== undefined) {
+          if (destination !== undefined) {
             dispatch(
               setSelectedTeleportersDestination({
-                toRoom,
+                ...destination,
                 timestamp: Date.now(),
               }),
             );

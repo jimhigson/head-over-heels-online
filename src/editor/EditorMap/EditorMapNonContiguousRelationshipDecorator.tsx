@@ -3,6 +3,7 @@ import { roomWorldPosition } from "../../game/components/dialogs/menuDialog/dial
 import { translateXyz } from "../../game/components/dialogs/menuDialog/dialogs/map/svgHelpers";
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
 import { roomNonContiguousRelationship } from "../../model/RoomJson";
+import { useEditorAppSelector } from "../../store/store";
 import {
   addXy,
   addXyz,
@@ -20,22 +21,36 @@ import {
 /** the key under which a cell's grid position is stored in `gridPositions` */
 type GridPositionKey = `${EditorRoomId}/${string}`;
 
+/**
+ * a sub-room's non-contiguous relationship, from the campaign being edited
+ */
+const useNonContiguousRelationship = (
+  roomId: EditorRoomId | undefined,
+  subRoomId: string | undefined,
+) =>
+  useEditorAppSelector((state) => {
+    const room =
+      roomId === undefined ? undefined : (
+        state.levelEditor.campaignInProgress.rooms[roomId]
+      );
+    return room === undefined ? undefined : (
+        roomNonContiguousRelationship(room, subRoomId)
+      );
+  });
+
 /** twice the width of the teleporter arrow's shaft */
 const lineWidth = arrowShaftWidth * 2;
 
 const EditorMapNonContiguousRelationshipDecorator = ({
   roomId,
   subRoomId,
-  mapData,
-  areaIndex,
+  allGridPositions: gridPositions,
 }: RoomDecoratorProps<EditorRoomId>) => {
-  const { campaign } = mapData;
-  const { gridPositions } = mapData.areas[areaIndex];
-
   // the relationship lives on the sub-room, so only the cell that owns it draws
-  const relationship = roomNonContiguousRelationship(
-    campaign.rooms[roomId],
-    subRoomId,
+  const relationship = useNonContiguousRelationship(roomId, subRoomId);
+  const targetRelationship = useNonContiguousRelationship(
+    relationship?.with.room,
+    relationship?.with.subRoom,
   );
   if (relationship === undefined) {
     return null;
@@ -62,10 +77,6 @@ const EditorMapNonContiguousRelationshipDecorator = ({
 
   // a reciprocal relationship (the target cell points back at this one with the
   // opposite offset) is drawn once, from its canonical (smaller-key) end
-  const targetRelationship = roomNonContiguousRelationship(
-    campaign.rooms[withRoom],
-    withSubRoom,
-  );
   const reciprocal =
     targetRelationship?.with.room === roomId &&
     (targetRelationship.with.subRoom ?? "*") === subRoomId &&

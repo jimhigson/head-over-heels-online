@@ -3,6 +3,7 @@ import { type Xy } from "../../utils/vectors/vectors";
 import { blockSizePx } from "../blockSizePx";
 import { type JsonItemUnion } from "../json/JsonItem";
 import { isWholeRoomSubRooms, type RoomJson, type SubRooms } from "../RoomJson";
+import { getJsonItemTimes } from "../times";
 
 export type MaybeDividedRoom = {
   id: string;
@@ -140,4 +141,32 @@ export const findSubRoomForItem = (
   }
 
   return closestSubRoom;
+};
+
+/**
+ * every sub-room that any part of the json item's footprint (its position,
+ * repeated by its `times`) lies in - `'*'` alone for an undivided room
+ */
+export const subRoomsIntersectingJsonItem = <RoomId extends string>(
+  item: JsonItemUnion,
+  room: RoomJson<RoomId, string>,
+): string[] => {
+  const subRooms = room.meta?.subRooms;
+  if (subRooms === undefined || isWholeRoomSubRooms(subRooms)) {
+    return ["*"];
+  }
+
+  const { position } = item;
+  const times = getJsonItemTimes(item);
+  return keysIter(subRooms)
+    .filter((subRoomId) => {
+      const { from, to } = subRooms[subRoomId].physicalPosition;
+      return (
+        position.x < to.x &&
+        position.x + times.x > from.x &&
+        position.y < to.y &&
+        position.y + times.y > from.y
+      );
+    })
+    .toArray();
 };

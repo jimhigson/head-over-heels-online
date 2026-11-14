@@ -5,11 +5,11 @@ import { projectWorldXyzToScreenXy } from "../../game/render/projections";
 import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
 import { editorStore } from "../../store/store";
 import { type Xy, type Xyz, type XyzBox } from "../../utils/vectors/vectors";
-import { editorLoadedRoom } from "../editorLoadedRoom";
 import {
   type EditorRoomItemId,
   type EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
+import { type LoadedRoomCache } from "../LoadedRoomCache";
 import { selectEditorCameraAngle } from "../slice/levelEditorSlice";
 import { type MaybePointingAtSomething } from "./cursor/PointingAt";
 import { type EditorViewport } from "./viewport/EditorViewport";
@@ -60,6 +60,13 @@ export type UseEditorE2eApiParams = {
   renderArea: HTMLElement | null;
   viewport: EditorViewport;
   pointingAtRef: RefObject<MaybePointingAtSomething | undefined>;
+  /** the pane's loaded room */
+  loadedRoom: LoadedRoomCache;
+  /**
+   * whether the pane edits its room - only the editing pane is driven by the
+   * tests
+   */
+  editable: boolean;
 };
 
 /**
@@ -71,9 +78,15 @@ export const useEditorE2eApi = ({
   renderArea,
   viewport,
   pointingAtRef,
+  loadedRoom,
+  editable,
 }: UseEditorE2eApiParams): void => {
   useEffect(() => {
-    if (import.meta.env.MODE !== "visual-regression" || renderArea === null) {
+    if (
+      import.meta.env.MODE !== "visual-regression" ||
+      renderArea === null ||
+      !editable
+    ) {
       return;
     }
 
@@ -92,7 +105,7 @@ export const useEditorE2eApi = ({
         };
       },
       items() {
-        return roomItemsIterable(editorLoadedRoom.getRoomState().items)
+        return roomItemsIterable(loadedRoom.getRoomState().items)
           .map(editorE2eItem)
           .toArray();
       },
@@ -104,5 +117,5 @@ export const useEditorE2eApi = ({
     return () => {
       window._e2e_editor = undefined;
     };
-  }, [renderArea, viewport, pointingAtRef]);
+  }, [renderArea, viewport, pointingAtRef, loadedRoom, editable]);
 };

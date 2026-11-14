@@ -97,8 +97,17 @@ export const itemToolPutDownLocation = (
     return fineXyzToBlockXyz(clampedPosition);
   }
 
-  // for pointing at vertical surfaces, move the location out of the item being pointed at
-  // by adding the normal of the face. Since the normal of the face points out of the item
-  // being pointed at, this prevents putting down inside the item we are pointing at
-  return addXyz(fineXyzToBlockXyz(pointingAtPosition), pointingAtFace);
+  // item locations are based on their origin (not their centre) which means we have a bias
+  // for the positions where we want to put them down relative to the surfaces being pointed
+  // at which changes with the surface orientation.
+  // Most of the time we will point at 'negative faces' (whose outward normal points along
+  // -x or -y, 'towards' or 'right') since these are visible at default camera angle.
+  // Since pointingAtFace is AA unit vector, can use it to displace pointing by one block
+  // for 'negative' faces.
+  // 'positive' faces need no adjustment.
+  const anchorOffsetForFace = {
+    x: Math.min(pointingAtFace.x, 0),
+    y: Math.min(pointingAtFace.y, 0),
+  };
+  return addXyz(fineXyzToBlockXyz(pointingAtPosition), anchorOffsetForFace);
 };

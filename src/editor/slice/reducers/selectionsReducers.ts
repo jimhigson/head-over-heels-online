@@ -1,14 +1,28 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
-
-import { type EditorRoomItemId } from "../../editorTypes";
-import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "../inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
 import {
-  selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
-} from "../levelEditorSelectors";
+  type PayloadAction,
+  type SliceCaseReducers,
+  type SliceSelectors,
+} from "@reduxjs/toolkit";
+
+import { entries } from "../../../utils/entries";
+import { type EditorRoomItemId } from "../../editorTypes";
+import {
+  type EditorPaneId,
+  paneRoomId,
+  panesIter,
+  requirePane,
+  selectActivePaneFromLevelEditorState,
+  selectPaneSelectedJsonItemIdsFromLevelEditorState,
+} from "../EditorPane";
+import { commitPendingNudgeInPlace } from "../inPlaceMutators/commitPendingNudgeInPlace";
+import { selectCursorRoomSelectedJsonItemIdsFromLevelEditorState } from "../levelEditorSelectors";
 import { type HoveredItem, type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 
+/**
+ * drop, from every pane's selection, the items no longer in the room they are
+ * selected in
+ */
 export const removeNonExistingItemsFromSelection = (
   _state: LevelEditorState,
 ) => {
@@ -17,21 +31,43 @@ export const removeNonExistingItemsFromSelection = (
   // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
   const state = _state as LevelEditorState;
 
-  const roomItems =
-    selectCurrentCommittedRoomJsonFromLevelEditorState(state).items;
+  for (const pane of panesIter(state)) {
+    for (const [roomId, selectedJsonItemIds] of entries(
+      pane.selectedJsonItemIdsByRoom,
+    )) {
+      const roomItems = state.campaignInProgress.rooms[roomId]?.items;
+      if (
+        selectedJsonItemIds !== undefined &&
+        roomItems !== undefined &&
+        selectedJsonItemIds.some((jsonItemId) => !(jsonItemId in roomItems))
+      ) {
+        pane.selectedJsonItemIdsByRoom[roomId] = selectedJsonItemIds.filter(
+          (jsonItemId) => jsonItemId in roomItems,
+        );
+      }
+    }
+  }
+};
 
-  setSelectedJsonItemIdsOnCursorRoomInPlace(
-    state,
-    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state).filter(
-      (jsonItemId) => jsonItemId in roomItems,
-    ),
-  );
+/**
+ * set the active pane's selection, in the room it shows. Every pane can
+ * select, editable or not
+ */
+const setActivePaneSelectionInPlace = (
+  state: LevelEditorState,
+  jsonItemIds: EditorRoomItemId[],
+) => {
+  const activePane = selectActivePaneFromLevelEditorState(state);
+  if (activePane !== undefined) {
+    activePane.selectedJsonItemIdsByRoom[paneRoomId(state, activePane)] =
+      jsonItemIds;
+  }
 };
 
 export const selectionsReducers = {
-  /** set (or unset) the selection */
+  /** set (or unset) the active pane's selection */
   setSelectedItemsInRoom(
-    state,
+    _state,
     {
       payload: { jsonItemIds },
     }: PayloadAction<{
@@ -39,23 +75,33 @@ export const selectionsReducers = {
       jsonItemIds: EditorRoomItemId[];
     }>,
   ) {
-    const roomItems =
-      selectCurrentCommittedRoomJsonFromLevelEditorState(state).items;
+    // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
+    // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
+    // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
+    const state = _state as LevelEditorState;
+    const activePane = selectActivePaneFromLevelEditorState(state);
+    if (activePane === undefined) {
+      return;
+    }
+    // nudges act on the selection, so a new one ends them:
+    commitPendingNudgeInPlace(state);
+    const roomId = paneRoomId(state, activePane);
+    const roomItems = state.campaignInProgress.rooms[roomId]?.items ?? {};
     for (const jsonItemId of jsonItemIds) {
       if (!roomItems[jsonItemId]) {
         throw new Error(
-          `Item with json item id "${jsonItemId}" is not in the current room`,
+          `Item with json item id "${jsonItemId}" is not in the active pane's room "${roomId}"`,
         );
       }
     }
 
-    setSelectedJsonItemIdsOnCursorRoomInPlace(state, jsonItemIds);
+    setActivePaneSelectionInPlace(state, jsonItemIds);
     clearContextMenuXyInPlace(state);
   },
 
-  /** toggle the selection of a single item */
+  /** toggle the selection of a single item, in the active pane */
   toggleSelectedItemInRoom(
-    state,
+    _state,
     {
       payload: { jsonItemId, onlySelect = false },
     }: PayloadAction<{
@@ -67,17 +113,29 @@ export const selectionsReducers = {
       onlySelect?: boolean;
     }>,
   ) {
+    // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
+    // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
+    // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
+    const state = _state as LevelEditorState;
+    if (state.activePaneId === undefined) {
+      return;
+    }
+    // nudges act on the selection, so a new one ends them:
+    commitPendingNudgeInPlace(state);
     const selectedJsonItemIds =
-      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state);
+      selectPaneSelectedJsonItemIdsFromLevelEditorState(
+        state,
+        state.activePaneId,
+      );
     if (!selectedJsonItemIds.includes(jsonItemId)) {
       // not selected, add it
-      setSelectedJsonItemIdsOnCursorRoomInPlace(state, [
+      setActivePaneSelectionInPlace(state, [
         ...selectedJsonItemIds,
         jsonItemId,
       ]);
     } else if (!onlySelect) {
       // already selected, remove it
-      setSelectedJsonItemIdsOnCursorRoomInPlace(
+      setActivePaneSelectionInPlace(
         state,
         selectedJsonItemIds.filter(
           (selectedJsonItemId) => selectedJsonItemId !== jsonItemId,
@@ -87,10 +145,35 @@ export const selectionsReducers = {
     clearContextMenuXyInPlace(state);
   },
 
-  setHoveredItemInRoom(state, action: PayloadAction<HoveredItem | undefined>) {
-    state.hoveredItem = action.payload;
+  setHoveredItemInRoom(
+    state,
+    {
+      payload: { paneId, hoveredItem },
+    }: PayloadAction<{
+      paneId: EditorPaneId;
+      hoveredItem: HoveredItem | undefined;
+    }>,
+  ) {
+    const pane = requirePane(state, paneId);
+    pane.hoveredItem = hoveredItem;
   },
-  setClickableAnnotationHovered(state, action: PayloadAction<boolean>) {
-    state.clickableAnnotationHovered = action.payload;
+  setClickableAnnotationHovered(
+    state,
+    {
+      payload: { paneId, hovered },
+    }: PayloadAction<{ paneId: EditorPaneId; hovered: boolean }>,
+  ) {
+    const pane = requirePane(state, paneId);
+    pane.clickableAnnotationHovered = hovered;
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
+
+export const selectionsSelectors = {
+  selectCursorRoomSelectedJsonItemIds:
+    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+  selectPaneSelectedJsonItemIds:
+    selectPaneSelectedJsonItemIdsFromLevelEditorState,
+  selectPaneHoveredItem(state: LevelEditorState, paneId: EditorPaneId) {
+    return requirePane(state, paneId).hoveredItem;
+  },
+} satisfies SliceSelectors<LevelEditorState>;

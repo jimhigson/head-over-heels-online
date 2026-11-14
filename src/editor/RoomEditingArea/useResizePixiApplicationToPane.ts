@@ -2,7 +2,8 @@ import { debounce } from "@github/mini-throttle";
 import { useEffect } from "preact/hooks";
 
 import { editorStore } from "../../store/store";
-import { roomPaneResized } from "../slice/levelEditorSlice";
+import { paneResized } from "../slice/levelEditorSlice";
+import { useEditorPane } from "./pane/EditorPaneProvider";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 
 /**
@@ -22,6 +23,7 @@ export const useResizePixiApplicationToPane = (
   paneElement: HTMLElement | null,
 ): void => {
   const application = useProvidedPixiApplication();
+  const { paneId } = useEditorPane();
 
   useEffect(() => {
     if (paneElement === null) {
@@ -32,7 +34,7 @@ export const useResizePixiApplicationToPane = (
       const { clientWidth, clientHeight } = paneElement;
       application.renderer.resize(clientWidth, clientHeight);
       editorStore.dispatch(
-        roomPaneResized({ x: clientWidth, y: clientHeight }),
+        paneResized({ paneId, paneSize: { x: clientWidth, y: clientHeight } }),
       );
     };
 
@@ -45,6 +47,8 @@ export const useResizePixiApplicationToPane = (
     resizeObserver.observe(paneElement);
     return () => {
       resizeObserver.disconnect();
+      // the app may be destroyed before a pending resize would land:
+      debouncedResize.cancel();
     };
-  }, [application, paneElement]);
+  }, [application, paneElement, paneId]);
 };

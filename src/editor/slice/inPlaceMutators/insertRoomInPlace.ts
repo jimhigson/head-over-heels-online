@@ -2,6 +2,7 @@ import { addReturnDoorInPlace } from "../../../model/inPlaceMutators/addReturnDo
 import { nextItemId } from "../../../model/inPlaceMutators/nextItemId";
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
 import { typePrefix } from "../../../model/json/typePrefix";
+import { doorTargetSubRoomId } from "../../../model/map/doorTargetSubRoomId";
 import { findSubRoomForItem } from "../../../model/map/itemIsInSubRoom";
 import { roomGridPositions } from "../../../model/map/roomGridPositions";
 import {
@@ -79,6 +80,184 @@ const wallCentreMidpoint = (bounds: FloorBounds): Xyz => ({
   z: 0,
 });
 
+/**
+ * a cell's doors that cross its side in `direction`: its own doors that way,
+ * and the doors of other rooms coming in to it from that side
+ */
+export const doorsAcrossCell = (
+  state: LevelEditorState,
+  room: EditorRoomJson,
+  subRoomId: string,
+  direction: DirectionXy4,
+) => {
+  const oppositeDir = oppositeDirection(direction);
+
+  const outDoors = iterateRoomJsonItemsWithIds(room.items, "door")
+    .filter(([, door]) => door.config.direction === direction)
+    .filter(
+      ([, door]) =>
+        findSubRoomForItem(door.position, "block", room) === subRoomId,
+    )
+    .toArray();
+
+  const inboundDoors: Array<{
+    doorId: EditorRoomItemId;
+    door: EditorJsonItem<"door">;
+    room: EditorRoomJson;
+  }> = [];
+
+  for (const otherRoom of valuesIter(state.campaignInProgress.rooms)) {
+    if (otherRoom.id === room.id) {
+      continue;
+    }
+    for (const [doorId, door] of iterateRoomJsonItemsWithIds(
+      otherRoom.items,
+      "door",
+    )) {
+      if (
+        door.config.toRoom === room.id &&
+        door.config.direction === oppositeDir &&
+        doorTargetSubRoomId(
+          state.campaignInProgress.rooms,
+          otherRoom.id,
+          door,
+        ) === subRoomId
+      ) {
+        inboundDoors.push({
+          doorId: doorId as EditorRoomItemId,
+          door: door as EditorJsonItem<"door">,
+          room: otherRoom as EditorRoomJson,
+        });
+      }
+    }
+  }
+
+  return { outDoors, inboundDoors };
+};
+
+export type CellDoorsAcross = ReturnType<typeof doorsAcrossCell>;
+
+/**
+ * add a new room beside a cell, in `direction`: spliced into the doors that
+ * cross that side if there are any, otherwise joined to the cell by a new door
+ */
+export const spliceNewRoomIntoCellInPlace = (
+  state: LevelEditorState,
+  room: EditorRoomJson,
+  subRoomId: string,
+  direction: DirectionXy4,
+  { outDoors, inboundDoors }: CellDoorsAcross,
+  roomSize?: Xy,
+): EditorRoomJson => {
+  const hasDoors = outDoors.length > 0 || inboundDoors.length > 0;
+  const cellBounds = getSubRoomFloorBounds(room, subRoomId);
+
+  const newRoom = addNewRoomInPlace({
+    state,
+    scenery: room.planet,
+    roomSize,
+  });
+
+  if (hasDoors) {
+    for (const [outDoorId, outDoor] of outDoors) {
+      const oldToRoom = outDoor.config.toRoom;
+
+      addReturnDoorInPlace({
+        rooms: state.campaignInProgress.rooms,
+        fromRoomJson: room,
+        toRoomJson: newRoom,
+        outgoingDoorEntry: [
+          outDoorId as EditorRoomItemId,
+          outDoor as EditorJsonItem<"door">,
+        ],
+      });
+
+      outDoor.config.toRoom = newRoom.id;
+      delete outDoor.config.meta;
+
+      if (
+        oldToRoom === exitGameRoomId ||
+        !state.campaignInProgress.rooms[oldToRoom as EditorRoomId]
+      ) {
+        const fwdDoorId = nextItemId(keys(newRoom.items), typePrefix.door);
+        const fwdDoorPosition = doorPositionOnWall(
+          roomFloorBounds(newRoom),
+          direction,
+          outDoor.position,
+        );
+
+        const fwdDoor: EditorJsonItem<"door"> = {
+          type: "door",
+          config: {
+            toRoom: oldToRoom,
+            direction,
+          },
+          position: fwdDoorPosition,
+        };
+        newRoom.items[fwdDoorId] = fwdDoor;
+
+        cutHoleInWallsForDoorsInPlace(
+          state,
+          newRoom.id,
+          direction,
+          fwdDoorPosition,
+          false,
+        );
+      }
+    }
+
+    for (const {
+      doorId: inDoorId,
+      door: inDoor,
+      room: inRoom,
+    } of inboundDoors) {
+      addReturnDoorInPlace({
+        rooms: state.campaignInProgress.rooms,
+        fromRoomJson: inRoom,
+        toRoomJson: newRoom,
+        outgoingDoorEntry: [inDoorId, inDoor],
+      });
+
+      inDoor.config.toRoom = newRoom.id;
+      delete inDoor.config.meta;
+    }
+  } else {
+    const centrePosition = doorPositionOnWall(
+      cellBounds,
+      direction,
+      wallCentreMidpoint(cellBounds),
+    );
+
+    const outDoorId = nextItemId(
+      keys(room.items),
+      typePrefix.door,
+    ) as EditorRoomItemId;
+    const outDoor: EditorJsonItem<"door"> = {
+      type: "door",
+      config: { toRoom: newRoom.id, direction },
+      position: centrePosition,
+    };
+    room.items[outDoorId] = outDoor;
+
+    cutHoleInWallsForDoorsInPlace(
+      state,
+      room.id,
+      direction,
+      centrePosition,
+      false,
+    );
+
+    addReturnDoorInPlace({
+      rooms: state.campaignInProgress.rooms,
+      fromRoomJson: room,
+      toRoomJson: newRoom,
+      outgoingDoorEntry: [outDoorId, outDoor],
+    });
+  }
+
+  return newRoom;
+};
+
 export const insertRoomInPlace = (
   state: LevelEditorState,
   direction: DirectionXy4,
@@ -90,44 +269,10 @@ export const insertRoomInPlace = (
   const subRoomId = selectCursorSubRoomIdFromLevelEditorState(state);
   const currentSubRoomBounds = getSubRoomFloorBounds(currentRoom, subRoomId);
 
-  const currentRoomDoorsInDirection = iterateRoomJsonItemsWithIds(
-    currentRoom.items,
-    "door",
-  )
-    .filter(([, door]) => door.config.direction === direction)
-    .filter(
-      ([, door]) =>
-        findSubRoomForItem(door.position, "block", currentRoom) === subRoomId,
-    )
-    .toArray();
-
-  const inboundDoorsFromOppositeDirection: Array<{
-    doorId: EditorRoomItemId;
-    door: EditorJsonItem<"door">;
-    room: EditorRoomJson;
-  }> = [];
-
-  for (const room of valuesIter(state.campaignInProgress.rooms)) {
-    if (room.id === currentRoom.id) {
-      continue;
-    }
-    for (const [doorId, door] of iterateRoomJsonItemsWithIds(
-      room.items,
-      "door",
-    )) {
-      if (
-        door.config.toRoom === currentRoom.id &&
-        door.config.direction === oppositeDir &&
-        (door.config.meta?.toSubRoom ?? "*") === subRoomId
-      ) {
-        inboundDoorsFromOppositeDirection.push({
-          doorId: doorId as EditorRoomItemId,
-          door: door as EditorJsonItem<"door">,
-          room: room as EditorRoomJson,
-        });
-      }
-    }
-  }
+  const {
+    outDoors: currentRoomDoorsInDirection,
+    inboundDoors: inboundDoorsFromOppositeDirection,
+  } = doorsAcrossCell(state, currentRoom, subRoomId, direction);
 
   const gridPositions = roomGridPositions({
     campaign: state.campaignInProgress,
@@ -266,108 +411,17 @@ export const insertRoomInPlace = (
     }
   }
 
-  const newRoom = addNewRoomInPlace({
+  const newRoom = spliceNewRoomIntoCellInPlace(
     state,
-    scenery: currentRoom.planet,
+    currentRoom,
+    subRoomId,
+    direction,
+    {
+      outDoors: currentRoomDoorsInDirection,
+      inboundDoors: inboundDoorsFromOppositeDirection,
+    },
     roomSize,
-  });
-
-  if (hasDoors) {
-    for (const [outDoorId, outDoor] of currentRoomDoorsInDirection) {
-      const oldToRoom = outDoor.config.toRoom;
-
-      addReturnDoorInPlace({
-        rooms: state.campaignInProgress.rooms,
-        fromRoomJson: currentRoom,
-        toRoomJson: newRoom,
-        outgoingDoorEntry: [
-          outDoorId as EditorRoomItemId,
-          outDoor as EditorJsonItem<"door">,
-        ],
-      });
-
-      outDoor.config.toRoom = newRoom.id;
-      delete outDoor.config.meta;
-
-      if (
-        oldToRoom === exitGameRoomId ||
-        !state.campaignInProgress.rooms[oldToRoom as EditorRoomId]
-      ) {
-        const fwdDoorId = nextItemId(keys(newRoom.items), typePrefix.door);
-        const fwdDoorPosition = doorPositionOnWall(
-          roomFloorBounds(newRoom),
-          direction,
-          outDoor.position,
-        );
-
-        const fwdDoor: EditorJsonItem<"door"> = {
-          type: "door",
-          config: {
-            toRoom: oldToRoom,
-            direction,
-          },
-          position: fwdDoorPosition,
-        };
-        newRoom.items[fwdDoorId] = fwdDoor;
-
-        cutHoleInWallsForDoorsInPlace(
-          state,
-          newRoom.id,
-          direction,
-          fwdDoorPosition,
-          false,
-        );
-      }
-    }
-
-    for (const {
-      doorId: inDoorId,
-      door: inDoor,
-      room: inRoom,
-    } of inboundDoorsFromOppositeDirection) {
-      addReturnDoorInPlace({
-        rooms: state.campaignInProgress.rooms,
-        fromRoomJson: inRoom,
-        toRoomJson: newRoom,
-        outgoingDoorEntry: [inDoorId, inDoor],
-      });
-
-      inDoor.config.toRoom = newRoom.id;
-      delete inDoor.config.meta;
-    }
-  } else {
-    const centrePosition = doorPositionOnWall(
-      currentSubRoomBounds,
-      direction,
-      wallCentreMidpoint(currentSubRoomBounds),
-    );
-
-    const outDoorId = nextItemId(
-      keys(currentRoom.items),
-      typePrefix.door,
-    ) as EditorRoomItemId;
-    const outDoor: EditorJsonItem<"door"> = {
-      type: "door",
-      config: { toRoom: newRoom.id, direction },
-      position: centrePosition,
-    };
-    currentRoom.items[outDoorId] = outDoor;
-
-    cutHoleInWallsForDoorsInPlace(
-      state,
-      currentRoom.id,
-      direction,
-      centrePosition,
-      false,
-    );
-
-    addReturnDoorInPlace({
-      rooms: state.campaignInProgress.rooms,
-      fromRoomJson: currentRoom,
-      toRoomJson: newRoom,
-      outgoingDoorEntry: [outDoorId, outDoor],
-    });
-  }
+  );
 
   changeCurrentRoomInPlace(state, newRoom.id);
 };

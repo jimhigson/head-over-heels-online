@@ -6,6 +6,7 @@ import { type LevelEditorState } from "../../../editor/slice/levelEditorSlice";
 import { roomVerticalLinkHolders } from "../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { valuesIter } from "../../../utils/entries";
+import { panesIter } from "../EditorPane";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomIdFromLevelEditorState,
@@ -66,10 +67,16 @@ export const changeIdOfCurrentRoomInPlace = (
       roomTab.roomId = newRoomId;
     }
   }
-  if (state.selectedJsonItemIdsByRoom[prevRoomId] !== undefined) {
-    state.selectedJsonItemIdsByRoom[newRoomId] =
-      state.selectedJsonItemIdsByRoom[prevRoomId];
-    delete state.selectedJsonItemIdsByRoom[prevRoomId];
+  for (const pane of panesIter(state)) {
+    const { selectedJsonItemIdsByRoom, roomSource } = pane;
+    if (selectedJsonItemIdsByRoom[prevRoomId] !== undefined) {
+      selectedJsonItemIdsByRoom[newRoomId] =
+        selectedJsonItemIdsByRoom[prevRoomId];
+      delete selectedJsonItemIdsByRoom[prevRoomId];
+    }
+    if (roomSource.type === "room" && roomSource.roomId === prevRoomId) {
+      roomSource.roomId = newRoomId;
+    }
   }
 
   state.editingRoomIdHistory.back = state.editingRoomIdHistory.back.map((id) =>

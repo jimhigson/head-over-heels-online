@@ -2,6 +2,7 @@ import { describe, expect, test } from "vitest";
 
 import { iterateRoomJsonItemsWithIds } from "../../model/RoomJsonItemIterators";
 import { type EditorRoomId, type EditorRoomJson } from "../editorTypes";
+import { type EditorPaneId } from "./EditorPane";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
   selectCursorRoomIdFromLevelEditorState,
@@ -11,6 +12,7 @@ import {
   applyItemTool,
   changeRoomColour,
   deleteSelected,
+  editorPaneMounted,
   levelEditorSlice,
   type LevelEditorSliceAction,
   type LevelEditorState,
@@ -26,6 +28,18 @@ const reduce = (state: LevelEditorState, action: LevelEditorSliceAction) => {
   return levelEditorSlice.reducer(state, action);
 };
 
+/**
+ * the initial state, with an editing pane mounted to select items with
+ */
+const initialStateWithPane = reduce(
+  initialLevelEditorSliceState,
+  editorPaneMounted({
+    paneId: "testPane" as EditorPaneId,
+    roomSource: { type: "cursorRoom" },
+    editable: true,
+  }),
+);
+
 const roomUndo = (state: LevelEditorState) =>
   state.history[selectCursorRoomIdFromLevelEditorState(state)]?.undo ?? [];
 const roomRedo = (state: LevelEditorState) =>
@@ -37,7 +51,7 @@ describe(
   () => {
     // but that was found - test confirms the fix
     test("can create a block, select it, and undo without errors", () => {
-      const state0 = initialLevelEditorSliceState;
+      const state0 = initialStateWithPane;
 
       const a0 = setTool({
         type: "item",
@@ -189,7 +203,7 @@ describe(
     });
 
     test("delete generates label with item type and id", () => {
-      const state0 = initialLevelEditorSliceState;
+      const state0 = initialStateWithPane;
 
       const state1 = reduce(
         state0,

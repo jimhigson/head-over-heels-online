@@ -20,12 +20,18 @@ export const PixiApplicationProvider = ({
   );
 
   useEffect(() => {
-    //let unmounted = false;
+    let unmounted = false;
+    let initialised = false;
     // before init, which reads Ticker.shared and would otherwise create pixi's
     // own ticker rather than taking ours:
     installAppTickerAsPixiShared();
 
     const appThisEffect = new Application();
+
+    // after everything inside has cleaned up its pixi objects (children clean
+    // up after their parents):
+    const destroyAppAfterChildrenUnmount = () =>
+      queueMicrotask(() => appThisEffect.destroy());
 
     appThisEffect
       .init({
@@ -42,31 +48,27 @@ export const PixiApplicationProvider = ({
         useBackBuffer: true,
       })
       .then(() => {
+        initialised = true;
+        if (unmounted) {
+          // an app can only be destroyed once it has finished initialising:
+          appThisEffect.destroy();
+          return;
+        }
         // the canvas always fills its pane; between debounced renderer resizes
         // it stretches, then sharpens once the resize lands:
         const canvasStyle = appThisEffect.canvas.style;
         canvasStyle.width = "100%";
         canvasStyle.height = "100%";
         canvasStyle.display = "block";
-        // don't ever destroy the app - this is forever once it is made
-        // if (unmounted) {
-        //   //appThisEffect.destroy();
-        //   setInitialisedApp(null);
-        // } else {
         stopAppAutoRendering(appThisEffect);
         setInitialisedApp(appThisEffect);
-        // }
       });
 
     return () => {
-      //if (appThisEffect.renderer) {
-      // destroying an app fails if it can't call .destroy on its renderer,
-      // but if component is unmounted before app has finished init'ing,
-      // we can't destroy it yet
-      //appThisEffect.destroy();
-      //setInitialisedApp(null);
-      //}
-      //unmounted = true;
+      unmounted = true;
+      if (initialised) {
+        destroyAppAfterChildrenUnmount();
+      }
     };
   }, []);
 

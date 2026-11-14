@@ -1,7 +1,9 @@
+import { memo } from "preact/compat";
 import { useEffect } from "preact/hooks";
 
 import { createClickableRoomBehaviour } from "../../game/components/dialogs/menuDialog/dialogs/map/createClickableRoomBehaviour";
 import { MapSvg } from "../../game/components/dialogs/menuDialog/dialogs/map/Map.svg";
+import { MapContextProvider } from "../../game/components/dialogs/menuDialog/dialogs/map/MapContext";
 import { type RoomBehaviourComponent } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
 import { type Key } from "../../game/input/keys";
 import { type SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRoomGridPositions";
@@ -35,6 +37,7 @@ import { LazyEditorMapNonContiguousRelationshipDecorator } from "./LazyEditorMap
 import { LazyEditorMapTeleporterLinkDecorator } from "./LazyEditorMapTeleporterLinkDecorator";
 import { mapAreaIndexOfRoom } from "./mapAreaIndexOfRoom";
 import { MapAreaSwitcher } from "./MapAreaSwitcher";
+import { useEditorMapContextValue } from "./useEditorMapContextValue";
 import { useEditorMapData } from "./useEditorMapData";
 
 const editorClickableRoomBehaviour = createClickableRoomBehaviour<EditorRoomId>(
@@ -57,14 +60,21 @@ const editorBehaviours: RoomBehaviourComponent<EditorRoomId>[] = [
   EditorMapItemDropTargetBehaviour,
 ];
 
+// memoised so each room's decorations redraw only when their own props change:
 const editorPrefixDecorators = [
-  LazyEditorMapNonContiguousRelationshipDecorator,
+  memo(LazyEditorMapNonContiguousRelationshipDecorator),
 ];
 
 const editorPostfixDecorators = [
-  LazyEditorMapTeleporterLinkDecorator,
-  LazyEditorMapInsertButtonDecorator,
+  memo(LazyEditorMapTeleporterLinkDecorator),
+  memo(LazyEditorMapInsertButtonDecorator),
 ];
+
+const editorMapContextOptions = {
+  behaviours: editorBehaviours,
+  prefixDecorators: editorPrefixDecorators,
+  postfixDecorators: editorPostfixDecorators,
+};
 
 const keyToDirectionXyz4 = {
   ArrowLeft: "left",
@@ -169,6 +179,9 @@ const roomsChanged = (
   (previousState as { levelEditor: { campaignInProgress: { rooms: unknown } } })
     .levelEditor.campaignInProgress.rooms;
 
+const switchToRoom = (roomId: EditorRoomId) =>
+  store.dispatch(changeToRoom({ roomId }));
+
 export const EditorMapWithErrorBoundary = () => (
   <EditorErrorBoundary
     resetPredicate={roomsChanged}
@@ -186,9 +199,7 @@ const EditorMap = () => {
     height: mapContainerHeight,
   } = useElementSize<HTMLDivElement>();
   const mapData = useEditorMapData();
-  const selectedRoomIds = useEditorAppSelector(
-    (state) => state.levelEditor.selectedRoomIds,
-  );
+  const mapContext = useEditorMapContextValue(editorMapContextOptions);
   const { roomId: cursorRoomId } = useEditorAppSelector((state) =>
     selectCursorRoomFromLevelEditorState(state.levelEditor),
   );
@@ -219,7 +230,7 @@ const EditorMap = () => {
     // preview, not just help text
     <div class="relative h-full scale-editor" style={{ "--tipDelay": "50ms" }}>
       <div
-        class={`h-full overflow-y-auto bg-shadowHalfbrite scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue outline-none`}
+        class={`h-full flex flex-col overflow-y-auto bg-shadowHalfbrite scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue outline-none`}
         ref={mapContainerRef}
         tabIndex={0}
         onKeyDown={(e: KeyboardEvent) => {
@@ -243,22 +254,30 @@ const EditorMap = () => {
           }
         }}
       >
-        <MapSvg<EditorRoomId>
-          containerWidth={mapContainerWidth}
-          behaviours={editorBehaviours}
-          prefixDecorators={editorPrefixDecorators}
-          postfixDecorators={editorPostfixDecorators}
-          selectedRoomIds={selectedRoomIds}
-          {...mapData}
-          areaIndex={shownAreaIndex}
-        />
+        <div class="shrink-0">
+          <MapContextProvider value={mapContext}>
+            <MapSvg<EditorRoomId>
+              containerWidth={mapContainerWidth}
+              {...mapData}
+              areaIndex={shownAreaIndex}
+            />
+          </MapContextProvider>
+        </div>
+        {/* stuck to the bottom-right of the visible map, inside any scrollbar,
+            and at the bottom even when the map is shorter than its pane: */}
+        <div
+          class="sticky bottom-0 left-0 mt-auto flex h-0 shrink-0 items-end justify-end pointer-events-none"
+          // keys typed into the switcher aren't for navigating the map:
+          onKeyDown={(e: KeyboardEvent) => e.stopPropagation()}
+        >
+          <MapAreaSwitcher
+            areas={mapData.areas}
+            shownAreaIndex={shownAreaIndex}
+            onSwitchToRoom={switchToRoom}
+          />
+        </div>
       </div>
       <CoalesceButton />
-      <MapAreaSwitcher
-        areas={mapData.areas}
-        shownAreaIndex={shownAreaIndex}
-        onSwitchToRoom={(roomId) => store.dispatch(changeToRoom({ roomId }))}
-      />
     </div>
   );
 };

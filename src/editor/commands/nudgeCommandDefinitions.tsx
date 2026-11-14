@@ -1,30 +1,38 @@
-import { getConsolidatableVector } from "../../consolidateItems/ConsolidatableJsonItem";
-import { getJsonItemTimes } from "../../model/times";
 import { type EditorRootState } from "../../store/store";
 import { fromAllEntries } from "../../utils/entries";
+import { twClass } from "../../utils/twClass.tsx" with { type: "macro" };
+import { directionXyz4Glyphs } from "../../utils/vectors/directionGlyphs";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
-  type DirectionXy4,
+  directionsXyz4,
+  type DirectionXyz4,
   elementWiseProductXyz,
   originXyz,
-  unitXyz,
   type Xyz,
 } from "../../utils/vectors/vectors";
 import { type EditorJsonItemUnion } from "../editorTypes";
+import { type RotationSense } from "../itemRotation";
+import { activePaneLoadedRoom } from "../paneLoadedRooms";
 import {
+  type NudgeKind,
+  nudgeKinds,
   selectCurrentCommittedRoomJson,
   selectCursorRoomSelectedJsonItemIds,
   selectEditorCameraAngle,
 } from "../slice/levelEditorSlice";
+import {
+  canMultiplyAlong,
+  multiplyPlan,
+  type MultiplyType,
+} from "../slice/multiplyPlan";
 import { getMovableVector } from "../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import {
-  apparentGrowArgs,
   apparentMoveVector,
-  apparentNudgeAxis,
-  apparentShrinkArgs,
+  directionAxis,
   type NudgeArgs,
 } from "../toolbar/buttons/nudgeDirections";
 import { type ActionCommand } from "./EditorCommand";
+import { multiplySelectedItemsThunk } from "./multiplySelectedItemsThunk";
 import { nudgeSelectedItemsThunk } from "./nudgeSelectedItemsThunk";
 import {
   rotateSelectionOrToolItemThunk,
@@ -48,174 +56,160 @@ const selectMovableAxes = (state: EditorRootState): Xyz => {
     : originXyz;
 };
 
-/** the axes every selected item can be resized along (1) or not (0) */
-const selectConsolidatableAxes = (state: EditorRootState): Xyz => {
-  const selectedItems = selectSelectedJsonItems(state);
-  return selectedItems.length > 0 ?
-      elementWiseProductXyz(...selectedItems.map(getConsolidatableVector))
-    : originXyz;
-};
-
-/** the largest size of any selected item, along each axis */
-const selectLargestSize = (state: EditorRootState): Xyz => {
-  const selectedItems = selectSelectedJsonItems(state);
-  return selectedItems.length > 0 ?
-      selectedItems.map(getJsonItemTimes).reduce(
-        (largest, times) => ({
-          x: Math.max(largest.x, times.x),
-          y: Math.max(largest.y, times.y),
-          z: Math.max(largest.z, times.z),
-        }),
-        unitXyz,
-      )
-    : originXyz;
-};
-
-/** the world axis a screen direction acts on, at the camera's angle now */
-const selectApparentAxis = (
+/**
+ * the world direction a nudge goes in, at the camera's angle now: the four
+ * screen directions turn with the camera, up and down never do
+ */
+const selectNudgeWorldVector = (
   state: EditorRootState,
-  apparentDirection: DirectionXy4,
-) => apparentNudgeAxis(apparentDirection, selectEditorCameraAngle(state));
+  direction: DirectionXyz4,
+): Xyz =>
+  direction === "up" || direction === "down" ?
+    unitVectors[direction]
+  : apparentMoveVector(direction, selectEditorCameraAngle(state));
 
-// the buttons and arrow keys are labelled with screen directions; which world
-// axis each acts on follows the camera angle, so is worked out when run:
-const apparentDirections = [
-  { direction: "left", arrowKey: "ArrowLeft", glyph: "↖" },
-  { direction: "right", arrowKey: "ArrowRight", glyph: "↘" },
-  { direction: "away", arrowKey: "ArrowUp", glyph: "↗" },
-  { direction: "towards", arrowKey: "ArrowDown", glyph: "↙" },
-] as const satisfies {
-  direction: DirectionXy4;
-  arrowKey: string;
-  glyph: string;
-}[];
+/** each nudge direction's key - each kind of nudge adds its own modifiers */
+const nudgeDirectionKeys = {
+  left: "ArrowLeft",
+  right: "ArrowRight",
+  away: "ArrowUp",
+  towards: "ArrowDown",
+  up: "PageUp",
+  down: "PageDown",
+} as const satisfies Record<DirectionXyz4, string>;
 
-const glyphIcon = (glyph: string) => (
-  <span class="relative text-single-line">{glyph}</span>
-);
+const nudgeKindShortcutsAndLabels = {
+  move: { modifiers: "", verb: "Move" },
+  multiplyOrGrow: { modifiers: "⌥", verb: "Multiply" },
+  removeOrShrink: { modifiers: "⌥⇧", verb: "Shrink" },
+} as const satisfies Record<NudgeKind, { modifiers: string; verb: string }>;
+
+const glyphIconClassName = twClass("relative text-single-line");
 
 const nudgeCommand = (
   label: string,
-  glyph: string,
+  /**
+   * the direction shown as the command's icon
+   */
+  iconDirection: DirectionXyz4,
   shortcutKeys: ActionCommand["shortcutKeys"],
   selectIsAvailable: (state: EditorRootState) => boolean,
   nudgeArgs: (state: EditorRootState) => NudgeArgs,
 ): ActionCommand => ({
   type: "action",
   label,
-  icon: glyphIcon(glyph),
+  icon: (
+    <span class={glyphIconClassName}>{directionXyz4Glyphs[iconDirection]}</span>
+  ),
   shortcutKeys,
   selectIsAvailable,
-  action: () => (dispatch, getState) =>
-    dispatch(nudgeSelectedItemsThunk(nudgeArgs(getState()))),
+  action: () => (dispatch, getState) => {
+    const loadedRoom = activePaneLoadedRoom();
+    if (loadedRoom !== undefined) {
+      dispatch(
+        nudgeSelectedItemsThunk(
+          nudgeArgs(getState()),
+          loadedRoom.getRoomState(),
+        ),
+      );
+    }
+  },
 });
 
-/** moving, growing, shrinking and rotating the selected items */
-export const nudgeCommandDefinitions = {
-  ...fromAllEntries(
-    apparentDirections.flatMap(
-      ({
-        direction,
-        arrowKey,
-        glyph,
-      }): Array<
-        [`${"grow" | "move" | "shrink"}.${typeof direction}`, ActionCommand]
-      > => [
-        [
-          `move.${direction}`,
+const selectCanShrinkAlong = (state: EditorRootState, direction: Xyz) => {
+  const { resizedItemIds, deletedItemIds } = multiplyPlan(
+    selectCurrentCommittedRoomJson(state),
+    selectCursorRoomSelectedJsonItemIds(state),
+    direction,
+    "removeOrShrink",
+  );
+  return resizedItemIds.length > 0 || deletedItemIds.length > 0;
+};
+
+const multiplyCommand = (
+  label: string,
+  /**
+   * the direction shown as the command's icon
+   */
+  iconDirection: DirectionXyz4,
+  shortcutKeys: ActionCommand["shortcutKeys"],
+  multiplyType: MultiplyType,
+  /**
+   * the world direction to multiply or shrink in
+   */
+  worldDirection: (state: EditorRootState) => Xyz,
+): ActionCommand => ({
+  type: "action",
+  label,
+  icon: (
+    <span class={glyphIconClassName}>{directionXyz4Glyphs[iconDirection]}</span>
+  ),
+  shortcutKeys,
+  selectIsAvailable: (state) =>
+    multiplyType === "multiplyOrGrow" ?
+      canMultiplyAlong(
+        selectCurrentCommittedRoomJson(state),
+        selectCursorRoomSelectedJsonItemIds(state),
+        worldDirection(state),
+      )
+    : selectCanShrinkAlong(state, worldDirection(state)),
+  action: () => (dispatch, getState) => {
+    const loadedRoom = activePaneLoadedRoom();
+    if (loadedRoom !== undefined) {
+      dispatch(
+        multiplySelectedItemsThunk(
+          worldDirection(getState()),
+          multiplyType,
+          loadedRoom.getRoomState(),
+        ),
+      );
+    }
+  },
+});
+
+/** a move, multiply and shrink command for every nudge direction */
+function* nudgeCommandEntries(): Generator<[NudgeCommandId, ActionCommand]> {
+  for (const direction of directionsXyz4) {
+    for (const nudgeKind of nudgeKinds) {
+      const { modifiers, verb } = nudgeKindShortcutsAndLabels[nudgeKind];
+      const label = `${verb} ${direction}`;
+      const shortcutKeys: ActionCommand["shortcutKeys"] = [
+        `${modifiers}${nudgeDirectionKeys[direction]}`,
+      ];
+      yield [
+        `${nudgeKind}.${direction}`,
+        nudgeKind === "move" ?
           nudgeCommand(
-            `Move ${direction}`,
-            glyph,
-            [arrowKey],
+            label,
+            direction,
+            shortcutKeys,
             (state) =>
-              selectMovableAxes(state)[selectApparentAxis(state, direction)] !==
-              0,
-            (state) => ({
-              posVector: apparentMoveVector(
-                direction,
-                selectEditorCameraAngle(state),
-              ),
-            }),
-          ),
-        ],
-        [
-          `grow.${direction}`,
-          nudgeCommand(
-            `Grow ${direction}`,
-            glyph,
-            [`⌥${arrowKey}`],
-            (state) =>
-              selectConsolidatableAxes(state)[
-                selectApparentAxis(state, direction)
+              selectMovableAxes(state)[
+                directionAxis(selectNudgeWorldVector(state, direction))
               ] !== 0,
-            (state) =>
-              apparentGrowArgs(direction, selectEditorCameraAngle(state)),
+            (state) => ({
+              posVector: selectNudgeWorldVector(state, direction),
+            }),
+          )
+        : multiplyCommand(label, direction, shortcutKeys, nudgeKind, (state) =>
+            selectNudgeWorldVector(state, direction),
           ),
-        ],
-        [
-          `shrink.${direction}`,
-          nudgeCommand(
-            `Shrink ${direction}`,
-            glyph,
-            [`⌥⇧${arrowKey}`],
-            (state) =>
-              selectLargestSize(state)[selectApparentAxis(state, direction)] >
-              1,
-            (state) =>
-              apparentShrinkArgs(direction, selectEditorCameraAngle(state)),
-          ),
-        ],
-      ],
-    ),
-  ),
-  "move.up": nudgeCommand(
-    "Move up",
-    "⬆",
-    // also the plain arrow key while moving away isn't possible (see
-    // useCommandShortcuts, which runs the first available match):
-    ["PageUp", "⇧ArrowUp", "ArrowUp"],
-    (state) => selectMovableAxes(state).z !== 0,
-    () => ({ posVector: unitVectors.up }),
-  ),
-  "move.down": nudgeCommand(
-    "Move down",
-    "⬇",
-    ["PageDown", "⇧ArrowDown", "ArrowDown"],
-    (state) => selectMovableAxes(state).z !== 0,
-    () => ({ posVector: unitVectors.down }),
-  ),
-  "grow.up": nudgeCommand(
-    "Grow up",
-    "⬆",
-    ["⌥PageUp"],
-    (state) => selectConsolidatableAxes(state).z !== 0,
-    () => ({ timesDelta: { z: 1 } }),
-  ),
-  "grow.down": nudgeCommand(
-    "Grow down",
-    "⬇",
-    ["⌥PageDown"],
-    (state) => selectConsolidatableAxes(state).z !== 0,
-    () => ({ posVector: { x: 0, y: 0, z: -1 }, timesDelta: { z: 1 } }),
-  ),
-  "shrink.up": nudgeCommand(
-    "Shrink up",
-    "⬆",
-    ["⌥⇧PageUp"],
-    (state) => selectLargestSize(state).z > 1,
-    () => ({ posVector: { x: 0, y: 0, z: 1 }, timesDelta: { z: -1 } }),
-  ),
-  "shrink.down": nudgeCommand(
-    "Shrink down",
-    "⬇",
-    ["⌥⇧PageDown"],
-    (state) => selectLargestSize(state).z > 1,
-    () => ({ timesDelta: { z: -1 } }),
-  ),
+      ];
+    }
+  }
+}
+
+/** the id of a command that moves, multiplies, shrinks or rotates the selection */
+export type NudgeCommandId =
+  `${NudgeKind}.${DirectionXyz4}` | `rotate.${RotationSense}`;
+
+/** moving, multiplying, shrinking and rotating the selected items */
+export const nudgeCommandDefinitions: Record<NudgeCommandId, ActionCommand> = {
+  ...fromAllEntries(nudgeCommandEntries()),
   "rotate.anticlockwise": {
     type: "action",
     label: "Rotate anti-clockwise",
-    icon: glyphIcon("↺"),
+    icon: <span class={glyphIconClassName}>↺</span>,
     shortcutKeys: ["["],
     tooltipContent: `## Rotate anti-clockwise\n\nTurn the selected item(s) - or the item the current tool will place - a quarter-turn anti-clockwise`,
     selectIsAvailable: selectSelectionOrToolItemIsRotatable,
@@ -224,10 +218,10 @@ export const nudgeCommandDefinitions = {
   "rotate.clockwise": {
     type: "action",
     label: "Rotate clockwise",
-    icon: glyphIcon("↻"),
+    icon: <span class={glyphIconClassName}>↻</span>,
     shortcutKeys: ["]"],
     tooltipContent: `## Rotate clockwise\n\nTurn the selected item(s) - or the item the current tool will place - a quarter-turn clockwise`,
     selectIsAvailable: selectSelectionOrToolItemIsRotatable,
     action: () => rotateSelectionOrToolItemThunk("clockwise"),
   },
-} satisfies Record<string, ActionCommand>;
+};

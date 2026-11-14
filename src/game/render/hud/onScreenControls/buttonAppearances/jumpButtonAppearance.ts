@@ -65,7 +65,13 @@ export const jumpButtonAppearance: ButtonAppearance<
   renderContext: {
     button,
     inputStateTracker,
-    general: { spritesheetMeta, spritesheets, pixiRenderer, paused },
+    general: {
+      spritesheetMeta,
+      spritesheets,
+      pixiRenderer,
+      paused,
+      planetsLiberated,
+    },
   },
   tickContext: { room, currentPlayable },
   currentRendering,
@@ -80,7 +86,8 @@ export const jumpButtonAppearance: ButtonAppearance<
     : room.items[standingOnId];
   const isStandingOnActiveTeleporter =
     standingOn === null ? false : (
-      standingOn.type === "teleporter" && teleporterIsActive(standingOn)
+      standingOn.type === "teleporter" &&
+      teleporterIsActive(standingOn, planetsLiberated)
     );
 
   const pressed = buttonActionsPressed(button.actions, inputStateTracker);

@@ -1,6 +1,11 @@
 import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
 import { nextItemIdSet } from "../../../model/inPlaceMutators/nextItemId";
+import {
+  candidatePartnerDoors,
+  doorLinkNeedsToDoor,
+} from "../../../model/json/candidatePartnerDoors";
 import { roomGridPositions } from "../../../model/map/roomGridPositions";
+import { dropRedundantToSubRoomInPlace } from "../../../model/map/toSubRoomRedundancy";
 import {
   type FloorBounds,
   roomFloorBounds,
@@ -13,13 +18,16 @@ import {
   writeRoomNonContiguousRelationship,
 } from "../../../model/RoomJson";
 import {
+  iterateRoomJsonItemsWithIds,
   roomJsonItemsEntriesIterable,
   roomJsonItemsIterable,
 } from "../../../model/RoomJsonItemIterators";
 import { wallTimes } from "../../../model/times";
+import { emptyArray } from "../../../utils/empty";
 import { keys, objectEntriesIter, valuesIter } from "../../../utils/entries";
 import {
   type DirectionXy4,
+  oppositeDirection,
   perpendicularAxisXy,
   tangentAxis,
   type Xy,
@@ -168,17 +176,123 @@ const computeOffsets = (
   }
 };
 
+/**
+ * for each room merged in, the items whose ids clashed and so were renamed -
+ * kept per room, since the same id can be in more than one of them
+ */
+type ReIdMaps = Map<EditorRoomId, Map<EditorRoomItemId, EditorRoomItemId>>;
+
+/**
+ * a door of a room being merged that leads out of the merge, and the door in
+ * the room it leads to that it pairs with
+ */
+type OutwardDoorLink = {
+  fromRoomId: EditorRoomId;
+  doorId: EditorRoomItemId;
+  direction: DirectionXy4;
+  toRoomId: EditorRoomId;
+  partnerDoorId: EditorRoomItemId;
+};
+
+/**
+ * every door link leading out of the rooms being merged, paired before the
+ * merge, while each is still unambiguous (or named by a `toDoor`)
+ */
+const outwardDoorLinks = (
+  state: LevelEditorState,
+  layout: RoomLayoutEntry[],
+): OutwardDoorLink[] => {
+  const { rooms } = state.campaignInProgress;
+  const layoutRoomIds = new Set<string>(layout.map(({ roomId }) => roomId));
+  return layout.flatMap(({ roomId, room }) =>
+    iterateRoomJsonItemsWithIds(room.items, "door")
+      .flatMap(([doorId, door]): OutwardDoorLink[] => {
+        const { toRoom, toDoor, direction } = door.config;
+        if (layoutRoomIds.has(toRoom) || !(toRoom in rooms)) {
+          return emptyArray;
+        }
+        const candidates = candidatePartnerDoors(
+          rooms,
+          roomId,
+          toRoom as EditorRoomId,
+          direction,
+        );
+        const partnerDoorId =
+          toDoor ??
+          (candidates.length === 1 ? candidates[0].doorId : undefined);
+        return partnerDoorId === undefined ? emptyArray : (
+            [
+              {
+                fromRoomId: roomId,
+                doorId: doorId as EditorRoomItemId,
+                direction,
+                toRoomId: toRoom as EditorRoomId,
+                partnerDoorId: partnerDoorId as EditorRoomItemId,
+              },
+            ]
+          );
+      })
+      .toArray(),
+  );
+};
+
+/**
+ * merging rooms that each linked once to the same room leaves several links
+ * between the merged room and it - so name each pair's partners with `toDoor`
+ * wherever more than one door now comes back, then drop any `toSubRoom` that
+ * names no more than the partner door already implies
+ */
+const disambiguateOutwardDoorLinksInPlace = (
+  state: LevelEditorState,
+  mergedRoom: EditorRoomJson,
+  links: ReadonlyArray<OutwardDoorLink>,
+  reIdMaps: ReIdMaps,
+): void => {
+  const { rooms } = state.campaignInProgress;
+  for (const {
+    fromRoomId,
+    doorId,
+    direction,
+    toRoomId,
+    partnerDoorId,
+  } of links) {
+    const mergedDoorId = reIdMaps.get(fromRoomId)?.get(doorId) ?? doorId;
+    const door = mergedRoom.items[mergedDoorId];
+    const partnerDoor = rooms[toRoomId].items[partnerDoorId];
+    if (door?.type !== "door" || partnerDoor?.type !== "door") {
+      continue;
+    }
+    if (doorLinkNeedsToDoor(rooms, mergedRoom.id, toRoomId, direction)) {
+      door.config.toDoor = partnerDoorId;
+    }
+    if (
+      doorLinkNeedsToDoor(
+        rooms,
+        toRoomId,
+        mergedRoom.id,
+        oppositeDirection(direction),
+      )
+    ) {
+      partnerDoor.config.toDoor = mergedDoorId;
+    }
+    // with its partner named, a door may imply its sub-room by itself:
+    dropRedundantToSubRoomInPlace(rooms, mergedRoom.id, door);
+    dropRedundantToSubRoomInPlace(rooms, toRoomId, partnerDoor);
+  }
+};
+
 const mergeItems = (
   cursorRoom: EditorRoomJson,
   layout: RoomLayoutEntry[],
-): Map<EditorRoomItemId, EditorRoomItemId> => {
+): ReIdMaps => {
   const existingIds = new Set(keys(cursorRoom.items) as EditorRoomItemId[]);
-  const reIdMap = new Map<EditorRoomItemId, EditorRoomItemId>();
+  const reIdMaps: ReIdMaps = new Map();
 
   for (const entry of layout) {
     if (entry.gridPosition.x === 0 && entry.gridPosition.y === 0) {
       continue;
     }
+    const reIdMap = reIdMaps.getOrInsertComputed(entry.roomId, () => new Map());
 
     for (const [originalId, item] of roomJsonItemsEntriesIterable(
       entry.room.items,
@@ -209,13 +323,13 @@ const mergeItems = (
     }
   }
 
-  return reIdMap;
+  return reIdMaps;
 };
 
 const removeInternalDoorsAndUpdateExternal = (
   cursorRoom: EditorRoomJson,
   mergedRoomIds: Set<EditorRoomId>,
-  reIdMap: Map<EditorRoomItemId, EditorRoomItemId>,
+  reIdMaps: ReIdMaps,
   roomIdToSubRoom: Map<EditorRoomId, string>,
   state: LevelEditorState,
 ): void => {
@@ -238,18 +352,8 @@ const removeInternalDoorsAndUpdateExternal = (
     delete cursorRoom.items[doorId];
   }
 
-  for (const [, item] of roomJsonItemsEntriesIterable(cursorRoom.items)) {
-    if (item.type !== "door") {
-      continue;
-    }
-
-    if (item.config.toDoor) {
-      const remapped = reIdMap.get(item.config.toDoor as EditorRoomItemId);
-      if (remapped) {
-        item.config.toDoor = remapped;
-      }
-    }
-  }
+  // the merged room's own doors keep their toDoor: those name doors in the
+  // rooms they lead to, none of which were merged (those doors were removed)
 
   for (const room of valuesIter(state.campaignInProgress.rooms)) {
     if (room.id === cursorRoom.id) {
@@ -257,7 +361,8 @@ const removeInternalDoorsAndUpdateExternal = (
     }
 
     for (const item of roomJsonItemsIterable(room, "door")) {
-      if (mergedRoomIds.has(item.config.toRoom as EditorRoomId)) {
+      const leadsToRoomId = item.config.toRoom as EditorRoomId;
+      if (mergedRoomIds.has(leadsToRoomId)) {
         const subRoom = roomIdToSubRoom.get(item.config.toRoom as EditorRoomId);
         item.config.toRoom = cursorRoom.id;
         if (subRoom !== undefined) {
@@ -272,11 +377,16 @@ const removeInternalDoorsAndUpdateExternal = (
         }
       }
 
-      if (item.config.toDoor) {
-        const remapped = reIdMap.get(item.config.toDoor as EditorRoomItemId);
-        if (remapped) {
-          item.config.toDoor = remapped;
-        }
+      // only a door into a merged room needs its toDoor following, by that
+      // room's renames - a door to anywhere else names a door that stayed put:
+      const remapped =
+        item.config.toDoor === undefined ?
+          undefined
+        : reIdMaps
+            .get(leadsToRoomId)
+            ?.get(item.config.toDoor as EditorRoomItemId);
+      if (remapped !== undefined) {
+        item.config.toDoor = remapped;
       }
     }
   }
@@ -617,7 +727,8 @@ export const coalesceRoomsInPlace = (state: LevelEditorState): void => {
       .map((e) => e.roomId),
   );
 
-  const reIdMap = mergeItems(cursorRoom, layout);
+  const doorLinksOut = outwardDoorLinks(state, layout);
+  const reIdMaps = mergeItems(cursorRoom, layout);
 
   const cells = expandToGridCells(layout);
 
@@ -636,7 +747,7 @@ export const coalesceRoomsInPlace = (state: LevelEditorState): void => {
   removeInternalDoorsAndUpdateExternal(
     cursorRoom,
     mergedRoomIds,
-    reIdMap,
+    reIdMaps,
     roomIdToSubRoom,
     state,
   );
@@ -663,6 +774,12 @@ export const coalesceRoomsInPlace = (state: LevelEditorState): void => {
   transferMeta(cursorRoom, layout);
 
   deleteRoomsInPlace(state, mergedRoomIds);
+  disambiguateOutwardDoorLinksInPlace(
+    state,
+    cursorRoom,
+    doorLinksOut,
+    reIdMaps,
+  );
 
   // repoint any room whose vertical link or non-contiguous relationship pointed
   // at a merged room (or at the survivor) onto the survivor's specific sub-room

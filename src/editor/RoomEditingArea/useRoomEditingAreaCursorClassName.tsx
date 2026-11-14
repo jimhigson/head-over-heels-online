@@ -1,20 +1,26 @@
 import { isConsolidatable } from "../../consolidateItems/ConsolidatableJsonItem";
 import { type EditorRootState, useEditorAppSelector } from "../../store/store";
 import { twClass } from "../../utils/twClass.tsx" with { type: "macro" };
+import { type EditorPaneId } from "../slice/EditorPane";
 import {
-  selectCursorRoomSelectedJsonItemIds,
   selectItem,
+  selectPaneSelectedJsonItemIds,
 } from "../slice/levelEditorSlice";
 import { resizeCursorForPointingAt } from "./cursor/resizeCursorForPointingAt";
+import { useEditorPane } from "./pane/EditorPaneProvider";
 
-const selectCursor = (editorState: EditorRootState): `cursor-${string}` => {
-  const {
-    dragInProgress,
-    clickableAnnotationHovered,
-    hoveredItem,
-    cameraAngle,
-  } = editorState.levelEditor;
-  const selectedJsonItemIds = selectCursorRoomSelectedJsonItemIds(editorState);
+const selectCursor = (
+  editorState: EditorRootState,
+  paneId: EditorPaneId,
+): `cursor-${string}` => {
+  const { panes, cameraAngle } = editorState.levelEditor;
+  const pane = panes[paneId];
+  // check pane wasn't closed (in case we have a stale paneId reference)
+  if (pane === undefined) {
+    return twClass("cursor-default");
+  }
+  const { dragInProgress, clickableAnnotationHovered, hoveredItem, editable } =
+    pane;
 
   if (dragInProgress) {
     return twClass("cursor-grabbing");
@@ -22,6 +28,13 @@ const selectCursor = (editorState: EditorRootState): `cursor-${string}` => {
 
   if (clickableAnnotationHovered) {
     return twClass("cursor-pointer");
+  }
+
+  if (!editable) {
+    // a pane that doesn't edit only picks items:
+    return hoveredItem === undefined ?
+        twClass("cursor-default")
+      : twClass("cursor-pointer");
   }
 
   if (hoveredItem) {
@@ -39,7 +52,11 @@ const selectCursor = (editorState: EditorRootState): `cursor-${string}` => {
 
     // if hovering on the selected item, use grab cursor to suggest can
     // move it
-    if (selectedJsonItemIds.includes(hoveredItem.jsonItemId)) {
+    if (
+      selectPaneSelectedJsonItemIds(editorState, paneId).includes(
+        hoveredItem.jsonItemId,
+      )
+    ) {
       return twClass("cursor-grab");
     }
 
@@ -50,5 +67,8 @@ const selectCursor = (editorState: EditorRootState): `cursor-${string}` => {
 };
 
 export const useRoomEditingAreaCursorClassName = () => {
-  return useEditorAppSelector(selectCursor);
+  const { paneId } = useEditorPane();
+  return useEditorAppSelector((editorState) =>
+    selectCursor(editorState, paneId),
+  );
 };

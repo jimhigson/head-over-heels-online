@@ -7,6 +7,7 @@ import {
   testRoomId,
 } from "../__test__/storeStates";
 import { nowhereRoomId } from "../../../../model/json/ItemConfigMap";
+import { uncoveredPerimeterEdges } from "../../../../model/json/verification/helpers/roomPerimeter";
 import { type WallJsonConfig } from "../../../../model/json/WallJsonConfig";
 import { wallTimes } from "../../../../model/times";
 import { type SceneryName } from "../../../../sprites/planets";
@@ -1040,13 +1041,14 @@ describe("changeWallsForFloorChangeInPlace", () => {
         },
       });
 
-      // Away wall should move to new floor edge and stay same size
+      // Away wall should move to new floor edge, and grow to cover the edge
+      // as far as the floor now goes, so no gap opens beyond its old end
       expect(room.items[awayWallId]).toEqual({
         type: "wall",
         position: { x: 1, y: 5, z: 0 }, // moved from y:3 to y:5
         config: {
           direction: "away",
-          tiles: [expect.any(String), expect.any(String)], // still 2 units
+          tiles: Array(4).fill(expect.any(String)),
         },
       });
     });
@@ -1199,11 +1201,11 @@ describe("changeWallsForFloorChangeInPlace", () => {
         commitCurrentPreviewedEdits(),
       );
 
-      // Door should move but maintain its 2-unit width
+      // Door should move with its edge, and stay where it was along it since it is still on the floor
       const room = state1.campaignInProgress.rooms[testRoomId];
       expect(room.items[doorId]).toEqual({
         type: "door",
-        position: { x: 2, y: 2, z: 0 },
+        position: { x: 1, y: 2, z: 0 },
         config: {
           direction: "towards",
           toRoom: "otherRoom",
@@ -1316,6 +1318,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
         (draft) => {
           const room = draft.campaignInProgress.rooms[testRoomId];
 
+          room.items["floor" as EditorRoomItemId] = {
+            type: "floor",
+            position: { x: 0, y: 0, z: 0 },
+            config: {
+              floorType: "standable",
+              scenery: "blacktooth",
+              times: { x: 8, y: 11 },
+            },
+          };
           // layout along y: wall(3) - door1(2) - wall(1) - door2(2) - wall(3)
           room.items[wallBeforeId] = {
             type: "wall",
@@ -1399,6 +1410,865 @@ describe("changeWallsForFloorChangeInPlace", () => {
         "wall tiles should cover all non-door y positions",
       ).toEqual([0, 1, 2, 3, 6, 9, 10]);
     });
+
+    test("growing the floor towards leaves no gaps in the perimeter", () => {
+      const floorId = "floor" as EditorRoomItemId;
+      const towardsWallId = "towardsWall" as EditorRoomItemId;
+      const awayWallId = "awayWall" as EditorRoomItemId;
+      const rightWallId = "rightWall" as EditorRoomItemId;
+      const rightDoorId = "rightDoor" as EditorRoomItemId;
+      const leftWallBeforeDoorId = "leftWallBeforeDoor" as EditorRoomItemId;
+      const leftDoorId = "leftDoor" as EditorRoomItemId;
+      const leftWallAfterDoorId = "leftWallAfterDoor" as EditorRoomItemId;
+
+      const state0: LevelEditorState = produce(
+        editorStateWithOneRoomWithNoItems,
+        (draft) => {
+          // an 8x5 room with a door at the far end of its right wall and one
+          // near the start of its left wall:
+          draft.campaignInProgress.rooms[testRoomId].items = {
+            [floorId]: {
+              type: "floor",
+              position: { x: 0, y: 0, z: 0 },
+              config: {
+                floorType: "standable",
+                scenery: "blacktooth",
+                times: { x: 8, y: 5 },
+              },
+            },
+            [towardsWallId]: {
+              type: "wall",
+              position: { x: 0, y: 0, z: 0 },
+              config: { direction: "towards", tiles: Array(8).fill("plain") },
+            },
+            [awayWallId]: {
+              type: "wall",
+              position: { x: 0, y: 5, z: 0 },
+              config: { direction: "away", tiles: Array(8).fill("plain") },
+            },
+            [rightWallId]: {
+              type: "wall",
+              position: { x: 0, y: 0, z: 0 },
+              config: { direction: "right", tiles: Array(3).fill("plain") },
+            },
+            [rightDoorId]: {
+              type: "door",
+              position: { x: 0, y: 3, z: 0 },
+              config: {
+                direction: "right",
+                toRoom: nowhereRoomId as EditorRoomId,
+              },
+            },
+            [leftWallBeforeDoorId]: {
+              type: "wall",
+              position: { x: 8, y: 0, z: 0 },
+              config: { direction: "left", tiles: ["plain"] },
+            },
+            [leftDoorId]: {
+              type: "door",
+              position: { x: 8, y: 1, z: 0 },
+              config: {
+                direction: "left",
+                toRoom: nowhereRoomId as EditorRoomId,
+              },
+            },
+            [leftWallAfterDoorId]: {
+              type: "wall",
+              position: { x: 8, y: 3, z: 0 },
+              config: { direction: "left", tiles: Array(2).fill("plain") },
+            },
+          };
+        },
+      );
+
+      // grow the floor one block towards, keeping its away edge put:
+      const state1 = reduceLevelEditorActions(
+        state0,
+        moveOrResizeItemAsPreview({
+          jsonItemIds: [floorId],
+          positionDelta: { x: 0, y: -1, z: 0 },
+          timesDelta: { x: 0, y: 1, z: 0 },
+          timestamp: 0,
+        }),
+        commitCurrentPreviewedEdits(),
+      );
+
+      expect(
+        uncoveredPerimeterEdges(state1.campaignInProgress.rooms[testRoomId]),
+      ).toEqual([]);
+    });
+
+    test("growing the floor towards leaves the doors where they are", () => {
+      const floorId = "floor" as EditorRoomItemId;
+      const towardsWallId = "towardsWall" as EditorRoomItemId;
+      const awayWallId = "awayWall" as EditorRoomItemId;
+      const rightWallId = "rightWall" as EditorRoomItemId;
+      const rightDoorId = "rightDoor" as EditorRoomItemId;
+      const leftWallBeforeDoorId = "leftWallBeforeDoor" as EditorRoomItemId;
+      const leftDoorId = "leftDoor" as EditorRoomItemId;
+      const leftWallAfterDoorId = "leftWallAfterDoor" as EditorRoomItemId;
+
+      const state0: LevelEditorState = produce(
+        editorStateWithOneRoomWithNoItems,
+        (draft) => {
+          // an 8x5 room with a door at the far end of its right wall and one
+          // near the start of its left wall:
+          draft.campaignInProgress.rooms[testRoomId].items = {
+            [floorId]: {
+              type: "floor",
+              position: { x: 0, y: 0, z: 0 },
+              config: {
+                floorType: "standable",
+                scenery: "blacktooth",
+                times: { x: 8, y: 5 },
+              },
+            },
+            [towardsWallId]: {
+              type: "wall",
+              position: { x: 0, y: 0, z: 0 },
+              config: { direction: "towards", tiles: Array(8).fill("plain") },
+            },
+            [awayWallId]: {
+              type: "wall",
+              position: { x: 0, y: 5, z: 0 },
+              config: { direction: "away", tiles: Array(8).fill("plain") },
+            },
+            [rightWallId]: {
+              type: "wall",
+              position: { x: 0, y: 0, z: 0 },
+              config: { direction: "right", tiles: Array(3).fill("plain") },
+            },
+            [rightDoorId]: {
+              type: "door",
+              position: { x: 0, y: 3, z: 0 },
+              config: {
+                direction: "right",
+                toRoom: nowhereRoomId as EditorRoomId,
+              },
+            },
+            [leftWallBeforeDoorId]: {
+              type: "wall",
+              position: { x: 8, y: 0, z: 0 },
+              config: { direction: "left", tiles: ["plain"] },
+            },
+            [leftDoorId]: {
+              type: "door",
+              position: { x: 8, y: 1, z: 0 },
+              config: {
+                direction: "left",
+                toRoom: nowhereRoomId as EditorRoomId,
+              },
+            },
+            [leftWallAfterDoorId]: {
+              type: "wall",
+              position: { x: 8, y: 3, z: 0 },
+              config: { direction: "left", tiles: Array(2).fill("plain") },
+            },
+          };
+        },
+      );
+
+      // grow the floor one block towards, keeping its away edge put:
+      const state1 = reduceLevelEditorActions(
+        state0,
+        moveOrResizeItemAsPreview({
+          jsonItemIds: [floorId],
+          positionDelta: { x: 0, y: -1, z: 0 },
+          timesDelta: { x: 0, y: 1, z: 0 },
+          timestamp: 0,
+        }),
+        commitCurrentPreviewedEdits(),
+      );
+
+      const { items } = state1.campaignInProgress.rooms[testRoomId];
+      expect
+        .soft(items[rightDoorId]?.position, "right door position")
+        .toEqual<Xyz>({ x: 0, y: 3, z: 0 });
+      expect
+        .soft(items[leftDoorId]?.position, "left door position")
+        .toEqual<Xyz>({ x: 8, y: 1, z: 0 });
+    });
+
+    test("shrinking the floor while the doors stay on it leaves the doors where they are", () => {
+      const floorId = "floor" as EditorRoomItemId;
+      const towardsWallId = "towardsWall" as EditorRoomItemId;
+      const awayWallId = "awayWall" as EditorRoomItemId;
+      const rightWallId = "rightWall" as EditorRoomItemId;
+      const rightDoorId = "rightDoor" as EditorRoomItemId;
+      const leftWallBeforeDoorId = "leftWallBeforeDoor" as EditorRoomItemId;
+      const leftDoorId = "leftDoor" as EditorRoomItemId;
+      const leftWallAfterDoorId = "leftWallAfterDoor" as EditorRoomItemId;
+
+      const state0: LevelEditorState = produce(
+        editorStateWithOneRoomWithNoItems,
+        (draft) => {
+          // an 8x5 room with a door at the far end of its right wall and one
+          // near the start of its left wall:
+          draft.campaignInProgress.rooms[testRoomId].items = {
+            [floorId]: {
+              type: "floor",
+              position: { x: 0, y: 0, z: 0 },
+              config: {
+                floorType: "standable",
+                scenery: "blacktooth",
+                times: { x: 8, y: 5 },
+              },
+            },
+            [towardsWallId]: {
+              type: "wall",
+              position: { x: 0, y: 0, z: 0 },
+              config: { direction: "towards", tiles: Array(8).fill("plain") },
+            },
+            [awayWallId]: {
+              type: "wall",
+              position: { x: 0, y: 5, z: 0 },
+              config: { direction: "away", tiles: Array(8).fill("plain") },
+            },
+            [rightWallId]: {
+              type: "wall",
+              position: { x: 0, y: 0, z: 0 },
+              config: { direction: "right", tiles: Array(3).fill("plain") },
+            },
+            [rightDoorId]: {
+              type: "door",
+              position: { x: 0, y: 3, z: 0 },
+              config: {
+                direction: "right",
+                toRoom: nowhereRoomId as EditorRoomId,
+              },
+            },
+            [leftWallBeforeDoorId]: {
+              type: "wall",
+              position: { x: 8, y: 0, z: 0 },
+              config: { direction: "left", tiles: ["plain"] },
+            },
+            [leftDoorId]: {
+              type: "door",
+              position: { x: 8, y: 1, z: 0 },
+              config: {
+                direction: "left",
+                toRoom: nowhereRoomId as EditorRoomId,
+              },
+            },
+            [leftWallAfterDoorId]: {
+              type: "wall",
+              position: { x: 8, y: 3, z: 0 },
+              config: { direction: "left", tiles: Array(2).fill("plain") },
+            },
+          };
+        },
+      );
+
+      // shrink the floor 1 block from its towards edge, keeping its away edge put:
+      const state1 = reduceLevelEditorActions(
+        state0,
+        moveOrResizeItemAsPreview({
+          jsonItemIds: [floorId],
+          positionDelta: { x: 0, y: 1, z: 0 },
+          timesDelta: { x: 0, y: -1, z: 0 },
+          timestamp: 0,
+        }),
+        commitCurrentPreviewedEdits(),
+      );
+
+      const { items } = state1.campaignInProgress.rooms[testRoomId];
+      expect
+        .soft(items[rightDoorId]?.position, "right door position")
+        .toEqual<Xyz>({ x: 0, y: 3, z: 0 });
+      expect
+        .soft(items[leftDoorId]?.position, "left door position")
+        .toEqual<Xyz>({ x: 8, y: 1, z: 0 });
+    });
+
+    test("shrinking the floor past a door pushes the door along with the floor's edge", () => {
+      const floorId = "floor" as EditorRoomItemId;
+      const towardsWallId = "towardsWall" as EditorRoomItemId;
+      const awayWallId = "awayWall" as EditorRoomItemId;
+      const rightWallId = "rightWall" as EditorRoomItemId;
+      const rightDoorId = "rightDoor" as EditorRoomItemId;
+      const leftWallBeforeDoorId = "leftWallBeforeDoor" as EditorRoomItemId;
+      const leftDoorId = "leftDoor" as EditorRoomItemId;
+      const leftWallAfterDoorId = "leftWallAfterDoor" as EditorRoomItemId;
+
+      const state0: LevelEditorState = produce(
+        editorStateWithOneRoomWithNoItems,
+        (draft) => {
+          // an 8x5 room with a door at the far end of its right wall and one
+          // near the start of its left wall:
+          draft.campaignInProgress.rooms[testRoomId].items = {
+            [floorId]: {
+              type: "floor",
+              position: { x: 0, y: 0, z: 0 },
+              config: {
+                floorType: "standable",
+                scenery: "blacktooth",
+                times: { x: 8, y: 5 },
+              },
+            },
+            [towardsWallId]: {
+              type: "wall",
+              position: { x: 0, y: 0, z: 0 },
+              config: { direction: "towards", tiles: Array(8).fill("plain") },
+            },
+            [awayWallId]: {
+              type: "wall",
+              position: { x: 0, y: 5, z: 0 },
+              config: { direction: "away", tiles: Array(8).fill("plain") },
+            },
+            [rightWallId]: {
+              type: "wall",
+              position: { x: 0, y: 0, z: 0 },
+              config: { direction: "right", tiles: Array(3).fill("plain") },
+            },
+            [rightDoorId]: {
+              type: "door",
+              position: { x: 0, y: 3, z: 0 },
+              config: {
+                direction: "right",
+                toRoom: nowhereRoomId as EditorRoomId,
+              },
+            },
+            [leftWallBeforeDoorId]: {
+              type: "wall",
+              position: { x: 8, y: 0, z: 0 },
+              config: { direction: "left", tiles: ["plain"] },
+            },
+            [leftDoorId]: {
+              type: "door",
+              position: { x: 8, y: 1, z: 0 },
+              config: {
+                direction: "left",
+                toRoom: nowhereRoomId as EditorRoomId,
+              },
+            },
+            [leftWallAfterDoorId]: {
+              type: "wall",
+              position: { x: 8, y: 3, z: 0 },
+              config: { direction: "left", tiles: Array(2).fill("plain") },
+            },
+          };
+        },
+      );
+
+      // shrink the floor 2 blocks from its towards edge, keeping its away edge put:
+      const state1 = reduceLevelEditorActions(
+        state0,
+        moveOrResizeItemAsPreview({
+          jsonItemIds: [floorId],
+          positionDelta: { x: 0, y: 2, z: 0 },
+          timesDelta: { x: 0, y: -2, z: 0 },
+          timestamp: 0,
+        }),
+        commitCurrentPreviewedEdits(),
+      );
+
+      const { items } = state1.campaignInProgress.rooms[testRoomId];
+      expect
+        .soft(items[rightDoorId]?.position, "right door position")
+        .toEqual<Xyz>({ x: 0, y: 3, z: 0 });
+      expect
+        .soft(items[leftDoorId]?.position, "left door position")
+        .toEqual<Xyz>({ x: 8, y: 2, z: 0 });
+    });
+
+    test("shrinking the floor past a door leaves no gaps in the perimeter", () => {
+      const floorId = "floor" as EditorRoomItemId;
+      const towardsWallId = "towardsWall" as EditorRoomItemId;
+      const awayWallId = "awayWall" as EditorRoomItemId;
+      const rightWallId = "rightWall" as EditorRoomItemId;
+      const rightDoorId = "rightDoor" as EditorRoomItemId;
+      const leftWallBeforeDoorId = "leftWallBeforeDoor" as EditorRoomItemId;
+      const leftDoorId = "leftDoor" as EditorRoomItemId;
+      const leftWallAfterDoorId = "leftWallAfterDoor" as EditorRoomItemId;
+
+      const state0: LevelEditorState = produce(
+        editorStateWithOneRoomWithNoItems,
+        (draft) => {
+          // an 8x5 room with a door at the far end of its right wall and one
+          // near the start of its left wall:
+          draft.campaignInProgress.rooms[testRoomId].items = {
+            [floorId]: {
+              type: "floor",
+              position: { x: 0, y: 0, z: 0 },
+              config: {
+                floorType: "standable",
+                scenery: "blacktooth",
+                times: { x: 8, y: 5 },
+              },
+            },
+            [towardsWallId]: {
+              type: "wall",
+              position: { x: 0, y: 0, z: 0 },
+              config: { direction: "towards", tiles: Array(8).fill("plain") },
+            },
+            [awayWallId]: {
+              type: "wall",
+              position: { x: 0, y: 5, z: 0 },
+              config: { direction: "away", tiles: Array(8).fill("plain") },
+            },
+            [rightWallId]: {
+              type: "wall",
+              position: { x: 0, y: 0, z: 0 },
+              config: { direction: "right", tiles: Array(3).fill("plain") },
+            },
+            [rightDoorId]: {
+              type: "door",
+              position: { x: 0, y: 3, z: 0 },
+              config: {
+                direction: "right",
+                toRoom: nowhereRoomId as EditorRoomId,
+              },
+            },
+            [leftWallBeforeDoorId]: {
+              type: "wall",
+              position: { x: 8, y: 0, z: 0 },
+              config: { direction: "left", tiles: ["plain"] },
+            },
+            [leftDoorId]: {
+              type: "door",
+              position: { x: 8, y: 1, z: 0 },
+              config: {
+                direction: "left",
+                toRoom: nowhereRoomId as EditorRoomId,
+              },
+            },
+            [leftWallAfterDoorId]: {
+              type: "wall",
+              position: { x: 8, y: 3, z: 0 },
+              config: { direction: "left", tiles: Array(2).fill("plain") },
+            },
+          };
+        },
+      );
+
+      // shrink the floor 2 blocks from its towards edge, keeping its away edge put:
+      const state1 = reduceLevelEditorActions(
+        state0,
+        moveOrResizeItemAsPreview({
+          jsonItemIds: [floorId],
+          positionDelta: { x: 0, y: 2, z: 0 },
+          timesDelta: { x: 0, y: -2, z: 0 },
+          timestamp: 0,
+        }),
+        commitCurrentPreviewedEdits(),
+      );
+
+      expect(
+        uncoveredPerimeterEdges(state1.campaignInProgress.rooms[testRoomId]),
+      ).toEqual([]);
+    });
+
+    test("shrinking the floor until a door would fall off the other end is not a valid edit", () => {
+      const floorId = "floor" as EditorRoomItemId;
+      const towardsWallId = "towardsWall" as EditorRoomItemId;
+      const awayWallId = "awayWall" as EditorRoomItemId;
+      const rightWallId = "rightWall" as EditorRoomItemId;
+      const rightDoorId = "rightDoor" as EditorRoomItemId;
+      const leftWallBeforeDoorId = "leftWallBeforeDoor" as EditorRoomItemId;
+      const leftDoorId = "leftDoor" as EditorRoomItemId;
+      const leftWallAfterDoorId = "leftWallAfterDoor" as EditorRoomItemId;
+
+      const state0: LevelEditorState = produce(
+        editorStateWithOneRoomWithNoItems,
+        (draft) => {
+          // an 8x5 room with a door at the far end of its right wall and one
+          // near the start of its left wall:
+          draft.campaignInProgress.rooms[testRoomId].items = {
+            [floorId]: {
+              type: "floor",
+              position: { x: 0, y: 0, z: 0 },
+              config: {
+                floorType: "standable",
+                scenery: "blacktooth",
+                times: { x: 8, y: 5 },
+              },
+            },
+            [towardsWallId]: {
+              type: "wall",
+              position: { x: 0, y: 0, z: 0 },
+              config: { direction: "towards", tiles: Array(8).fill("plain") },
+            },
+            [awayWallId]: {
+              type: "wall",
+              position: { x: 0, y: 5, z: 0 },
+              config: { direction: "away", tiles: Array(8).fill("plain") },
+            },
+            [rightWallId]: {
+              type: "wall",
+              position: { x: 0, y: 0, z: 0 },
+              config: { direction: "right", tiles: Array(3).fill("plain") },
+            },
+            [rightDoorId]: {
+              type: "door",
+              position: { x: 0, y: 3, z: 0 },
+              config: {
+                direction: "right",
+                toRoom: nowhereRoomId as EditorRoomId,
+              },
+            },
+            [leftWallBeforeDoorId]: {
+              type: "wall",
+              position: { x: 8, y: 0, z: 0 },
+              config: { direction: "left", tiles: ["plain"] },
+            },
+            [leftDoorId]: {
+              type: "door",
+              position: { x: 8, y: 1, z: 0 },
+              config: {
+                direction: "left",
+                toRoom: nowhereRoomId as EditorRoomId,
+              },
+            },
+            [leftWallAfterDoorId]: {
+              type: "wall",
+              position: { x: 8, y: 3, z: 0 },
+              config: { direction: "left", tiles: Array(2).fill("plain") },
+            },
+          };
+        },
+      );
+
+      // shrink the floor 4 blocks from its towards edge, keeping its away edge put:
+      const state1 = reduceLevelEditorActions(
+        state0,
+        moveOrResizeItemAsPreview({
+          jsonItemIds: [floorId],
+          positionDelta: { x: 0, y: 4, z: 0 },
+          timesDelta: { x: 0, y: -4, z: 0 },
+          timestamp: 0,
+        }),
+        commitCurrentPreviewedEdits(),
+      );
+
+      expect(state1.campaignInProgress.rooms[testRoomId]).toEqual(
+        state0.campaignInProgress.rooms[testRoomId],
+      );
+    });
+  });
+
+  test("a door can't be moved off the end of the floor", () => {
+    const doorId = "door" as EditorRoomItemId;
+
+    const state0: LevelEditorState = produce(
+      editorStateWithOneRoomWithNoItems,
+      (draft) => {
+        const room = draft.campaignInProgress.rooms[testRoomId];
+        room.items["floor" as EditorRoomItemId] = {
+          type: "floor",
+          position: { x: 0, y: 0, z: 0 },
+          config: {
+            floorType: "standable",
+            scenery: "blacktooth",
+            times: { x: 8, y: 5 },
+          },
+        };
+        room.items[doorId] = {
+          type: "door",
+          position: { x: 8, y: 2, z: 0 },
+          config: {
+            direction: "left",
+            toRoom: nowhereRoomId as EditorRoomId,
+          },
+        };
+      },
+    );
+
+    // the floor ends at y=5, so a door at y=4 would hang half off it:
+    const state1 = reduceLevelEditorActions(
+      state0,
+      moveOrResizeItemAsPreview({
+        jsonItemIds: [doorId],
+        positionDelta: { x: 0, y: 2, z: 0 },
+        timestamp: 0,
+      }),
+      commitCurrentPreviewedEdits(),
+    );
+
+    expect(state1.campaignInProgress.rooms[testRoomId]).toEqual(
+      state0.campaignInProgress.rooms[testRoomId],
+    );
+  });
+
+  test.for([
+    { name: "along its edge", positionDelta: { x: -1, y: 0, z: 0 } },
+    {
+      name: "along its edge and towards",
+      positionDelta: { x: -1, y: -1, z: 0 },
+    },
+  ])("a wall can't be moved $name onto a door", ({ positionDelta }) => {
+    const wallBeforeDoorId = "wallBeforeDoor" as EditorRoomItemId;
+    const doorId = "door" as EditorRoomItemId;
+    const wallAfterDoorId = "wallAfterDoor" as EditorRoomItemId;
+
+    const state0: LevelEditorState = produce(
+      editorStateWithOneRoomWithNoItems,
+      (draft) => {
+        const room = draft.campaignInProgress.rooms[testRoomId];
+        room.items["floor" as EditorRoomItemId] = {
+          type: "floor",
+          position: { x: 0, y: 0, z: 0 },
+          config: {
+            floorType: "standable",
+            scenery: "blacktooth",
+            times: { x: 11, y: 8 },
+          },
+        };
+        // along the away edge: wall(6) - raised door(2) - wall(3), to the corner
+        room.items[wallBeforeDoorId] = {
+          type: "wall",
+          position: { x: 0, y: 8, z: 0 },
+          config: { direction: "away", tiles: Array(6).fill("plain") },
+        };
+        room.items[doorId] = {
+          type: "door",
+          position: { x: 6, y: 8, z: 4 },
+          config: {
+            direction: "away",
+            toRoom: nowhereRoomId as EditorRoomId,
+          },
+        };
+        room.items[wallAfterDoorId] = {
+          type: "wall",
+          position: { x: 8, y: 8, z: 0 },
+          config: { direction: "away", tiles: Array(3).fill("plain") },
+        };
+      },
+    );
+
+    const state1 = reduceLevelEditorActions(
+      state0,
+      moveOrResizeItemAsPreview({
+        jsonItemIds: [wallAfterDoorId],
+        positionDelta,
+        timestamp: 0,
+      }),
+      commitCurrentPreviewedEdits(),
+    );
+
+    expect(state1.campaignInProgress.rooms[testRoomId]).toEqual(
+      state0.campaignInProgress.rooms[testRoomId],
+    );
+  });
+
+  test("a wall can't be moved past the things in the room, leaving them off the floor", () => {
+    const floorId = "floor" as EditorRoomItemId;
+    const awayWallId = "awayWall" as EditorRoomItemId;
+    const blockId = "block" as EditorRoomItemId;
+
+    const state0: LevelEditorState = produce(
+      editorStateWithOneRoomWithNoItems,
+      (draft) => {
+        const room = draft.campaignInProgress.rooms[testRoomId];
+        room.items[floorId] = {
+          type: "floor",
+          position: { x: 0, y: 0, z: 0 },
+          config: {
+            floorType: "standable",
+            scenery: "blacktooth",
+            times: { x: 8, y: 8 },
+          },
+        };
+        room.items[awayWallId] = {
+          type: "wall",
+          position: { x: 0, y: 8, z: 0 },
+          config: { direction: "away", tiles: Array(8).fill("plain") },
+        };
+        // in the last row of the floor before the away wall:
+        room.items[blockId] = {
+          type: "block",
+          position: { x: 3, y: 7, z: 0 },
+          config: { style: "organic" },
+        };
+      },
+    );
+
+    // moving the away wall towards by one shrinks the floor out from under the block:
+    const state1 = reduceLevelEditorActions(
+      state0,
+      moveOrResizeItemAsPreview({
+        jsonItemIds: [awayWallId],
+        positionDelta: { x: 0, y: -1, z: 0 },
+        timestamp: 0,
+      }),
+      commitCurrentPreviewedEdits(),
+    );
+
+    expect(state1.campaignInProgress.rooms[testRoomId]).toEqual(
+      state0.campaignInProgress.rooms[testRoomId],
+    );
+  });
+
+  describe("moving a wall keeps the room's perimeter closed", () => {
+    test("moving a wall at the corner of the floor diagonally, away and left, leaves no gaps", () => {
+      const floorId = "floor" as EditorRoomItemId;
+      const towardsWallId = "towardsWall" as EditorRoomItemId;
+      const rightWallId = "rightWall" as EditorRoomItemId;
+      const awayWallBeforeDoorId = "awayWallBeforeDoor" as EditorRoomItemId;
+      const awayDoorId = "awayDoor" as EditorRoomItemId;
+      const awayWallAfterDoorId = "awayWallAfterDoor" as EditorRoomItemId;
+      const leftWallBeforeDoorId = "leftWallBeforeDoor" as EditorRoomItemId;
+      const leftDoorId = "leftDoor" as EditorRoomItemId;
+      const leftWallAfterDoorId = "leftWallAfterDoor" as EditorRoomItemId;
+
+      const state0: LevelEditorState = produce(
+        editorStateWithOneRoomWithNoItems,
+        (draft) => {
+          // a 12x8 room with raised doors part-way along its away and left walls:
+          draft.campaignInProgress.rooms[testRoomId].items = {
+            [floorId]: {
+              type: "floor",
+              position: { x: -1, y: 0, z: 0 },
+              config: {
+                floorType: "standable",
+                scenery: "blacktooth",
+                times: { x: 12, y: 8 },
+              },
+            },
+            [towardsWallId]: {
+              type: "wall",
+              position: { x: -1, y: 0, z: 0 },
+              config: { direction: "towards", tiles: Array(12).fill("plain") },
+            },
+            [rightWallId]: {
+              type: "wall",
+              position: { x: -1, y: 0, z: 0 },
+              config: { direction: "right", tiles: Array(8).fill("plain") },
+            },
+            [awayWallBeforeDoorId]: {
+              type: "wall",
+              position: { x: -1, y: 8, z: 0 },
+              config: { direction: "away", tiles: Array(7).fill("plain") },
+            },
+            [awayDoorId]: {
+              type: "door",
+              position: { x: 6, y: 8, z: 4 },
+              config: {
+                direction: "away",
+                toRoom: nowhereRoomId as EditorRoomId,
+              },
+            },
+            [awayWallAfterDoorId]: {
+              type: "wall",
+              position: { x: 8, y: 8, z: 0 },
+              config: { direction: "away", tiles: Array(3).fill("plain") },
+            },
+            [leftWallBeforeDoorId]: {
+              type: "wall",
+              position: { x: 11, y: 0, z: 0 },
+              config: { direction: "left", tiles: Array(2).fill("plain") },
+            },
+            [leftDoorId]: {
+              type: "door",
+              position: { x: 11, y: 2, z: 3 },
+              config: {
+                direction: "left",
+                toRoom: nowhereRoomId as EditorRoomId,
+              },
+            },
+            [leftWallAfterDoorId]: {
+              type: "wall",
+              position: { x: 11, y: 4, z: 0 },
+              config: { direction: "left", tiles: Array(4).fill("plain") },
+            },
+          };
+        },
+      );
+
+      const state1 = reduceLevelEditorActions(
+        state0,
+        moveOrResizeItemAsPreview({
+          jsonItemIds: [awayWallAfterDoorId],
+          positionDelta: { x: 1, y: 1, z: 0 },
+          timestamp: 0,
+        }),
+        commitCurrentPreviewedEdits(),
+      );
+
+      expect(
+        uncoveredPerimeterEdges(state1.campaignInProgress.rooms[testRoomId]),
+      ).toEqual([]);
+    });
+
+    test.for([
+      { direction: "towards", positionDelta: { x: 0, y: -1, z: 0 } },
+      { direction: "towards by two", positionDelta: { x: 0, y: -2, z: 0 } },
+    ])(
+      "moving a wall at the start of its edge $direction fills in behind it",
+      ({ positionDelta }) => {
+        const floorId = "floor" as EditorRoomItemId;
+        const towardsWallId = "towardsWall" as EditorRoomItemId;
+        const awayWallId = "awayWall" as EditorRoomItemId;
+        const rightWallId = "rightWall" as EditorRoomItemId;
+        const leftWallBeforeDoorId = "leftWallBeforeDoor" as EditorRoomItemId;
+        const leftDoorId = "leftDoor" as EditorRoomItemId;
+        const leftWallAfterDoorId = "leftWallAfterDoor" as EditorRoomItemId;
+
+        const state0: LevelEditorState = produce(
+          editorStateWithOneRoomWithNoItems,
+          (draft) => {
+            // an 8x5 room with a raised door part-way along its left wall:
+            draft.campaignInProgress.rooms[testRoomId].items = {
+              [floorId]: {
+                type: "floor",
+                position: { x: 0, y: 0, z: 0 },
+                config: {
+                  floorType: "standable",
+                  scenery: "blacktooth",
+                  times: { x: 8, y: 5 },
+                },
+              },
+              [towardsWallId]: {
+                type: "wall",
+                position: { x: 0, y: 0, z: 0 },
+                config: { direction: "towards", tiles: Array(8).fill("plain") },
+              },
+              [awayWallId]: {
+                type: "wall",
+                position: { x: 0, y: 5, z: 0 },
+                config: { direction: "away", tiles: Array(8).fill("plain") },
+              },
+              [rightWallId]: {
+                type: "wall",
+                position: { x: 0, y: 0, z: 0 },
+                config: { direction: "right", tiles: Array(5).fill("plain") },
+              },
+              [leftWallBeforeDoorId]: {
+                type: "wall",
+                position: { x: 8, y: 0, z: 0 },
+                config: { direction: "left", tiles: Array(2).fill("plain") },
+              },
+              [leftDoorId]: {
+                type: "door",
+                position: { x: 8, y: 2, z: 1 },
+                config: {
+                  direction: "left",
+                  toRoom: nowhereRoomId as EditorRoomId,
+                },
+              },
+              [leftWallAfterDoorId]: {
+                type: "wall",
+                position: { x: 8, y: 4, z: 0 },
+                config: { direction: "left", tiles: ["plain"] },
+              },
+            };
+          },
+        );
+
+        const state1 = reduceLevelEditorActions(
+          state0,
+          moveOrResizeItemAsPreview({
+            jsonItemIds: [leftWallBeforeDoorId],
+            positionDelta,
+            timestamp: 0,
+          }),
+          commitCurrentPreviewedEdits(),
+        );
+
+        expect(
+          uncoveredPerimeterEdges(state1.campaignInProgress.rooms[testRoomId]),
+        ).toEqual([]);
+      },
+    );
   });
 
   describe("wall removal", () => {
@@ -2273,7 +3143,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
   });
 
   describe("floor growth with partial walls that need extending", () => {
-    test("should handle walls that need to extend when floor grows from one side", () => {
+    test("walls away from the corner that grows stay where they are when the floor grows from its lower x edge", () => {
       const floorId = "floor1" as EditorRoomItemId;
       const awayWallId = "awayWall" as EditorRoomItemId;
       const towardsWallId = "towardsWall" as EditorRoomItemId;
@@ -2344,35 +3214,24 @@ describe("changeWallsForFloorChangeInPlace", () => {
         },
       });
 
-      // Away wall should have moved and extended to fill the gap
+      // Away wall stays where it is, at the corner that didn't move:
       // It was at x:6-8, floor was x:0-8, now floor is x:-2 to 8
-      // The wall should now be at x:4 (6-2) and extend to x:8 (4 tiles)
       expect(room.items[awayWallId]).toEqual({
         type: "wall",
-        position: { x: 4, y: 8, z: 0 },
+        position: { x: 6, y: 8, z: 0 },
         config: {
           direction: "away",
-          tiles: [
-            expect.any(String),
-            expect.any(String),
-            expect.any(String),
-            expect.any(String),
-          ],
+          tiles: [expect.any(String), expect.any(String)],
         },
       });
-      const awayWall = room.items[awayWallId];
-      expect(awayWall?.type).toBe("wall");
-      if (awayWall?.type === "wall" && "tiles" in awayWall.config) {
-        expect(awayWall.config.tiles).toHaveLength(4);
-      }
 
-      // Towards wall should have moved and extended similarly
+      // Towards wall stays where it is too:
       expect(room.items[towardsWallId]).toEqual({
         type: "wall",
-        position: { x: 4, y: 0, z: 0 },
+        position: { x: 6, y: 0, z: 0 },
         config: {
           direction: "towards",
-          tiles: Array(4).fill(expect.any(String)),
+          tiles: Array(2).fill(expect.any(String)),
         },
       });
     });

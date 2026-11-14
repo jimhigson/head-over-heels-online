@@ -2,6 +2,7 @@ import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import { type CharacterName } from "../../../model/modelTypes";
 import { type RoomState } from "../../../model/RoomState";
+import { store } from "../../../store/store";
 import { type GameState } from "../../gameState/GameState";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import { type PressStatus } from "../../input/InputStateTracker";
@@ -43,7 +44,10 @@ export const teleporting: Mechanic<CharacterName> = <
   const standingOnActivatedTeleporter =
     standingOn !== null &&
     isTeleporter(standingOn) &&
-    teleporterIsActive(standingOn);
+    teleporterIsActive(
+      standingOn,
+      store.getState().gameInPlay.gameInPlay.planetsLiberated,
+    );
 
   if (teleporting === null) {
     // not already teleporting - see if we should start:

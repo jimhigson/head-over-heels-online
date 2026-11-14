@@ -14,6 +14,7 @@ import { installE2eAdvanceTimeHandle } from "../game/mainLoop/installE2eAdvanceT
 import { store } from "../store/store";
 import { LevelEditorLoader } from "./LevelEditorLoader";
 import { registerRoomPreviewSnapshotListeners } from "./roomPreview/roomPreviewListeners";
+import { registerNudgeCommitListeners } from "./slice/registerNudgeCommitListeners";
 import { registerEditorWebMcpTools } from "./webMcp/registerEditorWebMcpTools";
 
 if (import.meta.env.MODE === "visual-regression") {
@@ -28,6 +29,7 @@ installAppTickerAsPixiShared();
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
 registerRoomPreviewSnapshotListeners();
+registerNudgeCommitListeners();
 registerEditorWebMcpTools();
 
 render(
