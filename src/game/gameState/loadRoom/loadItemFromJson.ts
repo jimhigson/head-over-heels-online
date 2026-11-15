@@ -7,7 +7,10 @@ import { type RoomJson } from "../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { getJsonItemTimes } from "../../../model/times";
 import { type PlanetName } from "../../../sprites/planets";
-import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import {
+  type RoomPickupsCollected,
+  type ScrollsRead,
+} from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
 import { hashXyzToNumber0to1 } from "../../../utils/maths/hashing";
@@ -21,7 +24,6 @@ import {
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
 import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
-import { type RoomPickupsCollected } from "../GameState";
 import {
   buildRoomJsonDirectionalIndex,
   type RoomDirectionalIndex,

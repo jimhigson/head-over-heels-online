@@ -73,7 +73,7 @@ describe("reincarnation", () => {
 
     // the fish should be marked as collected in the reincarnation point it created:
     expect(
-      reincarnationPoint.gameState.pickupsCollected[firstRoomId]!["fish"],
+      reincarnationPoint.gameInPlay.pickupsCollected[firstRoomId]!["fish"],
     ).toBe(true);
   });
 

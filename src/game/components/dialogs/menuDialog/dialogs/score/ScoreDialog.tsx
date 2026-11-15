@@ -5,6 +5,7 @@ import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectPlanetsLiberatedCount,
   useCurrentCampaign,
+  usePickupsCollected,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { type GameRootState } from "../../../../../../store/store";
@@ -19,49 +20,37 @@ import { MenuItems } from "../../MenuItems";
 import { mainMenuCycle } from "../mainMenu/mainMenuCycle";
 import { mainMenuDialogColourClasses } from "../mainMenu/mainMenuDialogColourClasses";
 import { MainMenuHeading } from "../mainMenu/MainMenuHeading";
+import { countCampaignPickups } from "./countCampaignPickups";
+import { countCollectedPickups } from "./countCollectedPickups";
+import { scoreThresholds } from "./scoreThresholds.ts" with { type: "macro" };
 
-const ORIGINAL_GAME_MAX_SCORE = 94_000;
+const scoreThresholdsBuiltIn = scoreThresholds();
 
 const calculateScore = (
   roomsExploredCount: number,
   planetsLiberatedCount: number,
   playersFree: number,
+  pickupsCollectedCount: number,
 ) => {
   // source: https://github.com/dougmencken/HeadOverHeels/blob/0babd055e91dee980bedce403ef53a35c8c526ef/source/guiactions/CreateGameOverSlide.cpp#L74
   return (
     roomsExploredCount * 160 +
     planetsLiberatedCount * 10_000 +
-    playersFree * 10_000
+    playersFree * 10_000 +
+    // pickups are not in the original game's scoring, scored here like rooms:
+    pickupsCollectedCount * 160
   );
 };
-
-type ScoreThreshold = {
-  /** Proportion of max score (0-1), exclusice of the upper limit */
-  upToProportion: number;
-  label: string;
-};
-
-// Thresholds from original game as proportions of the original game's max score
-const scoreThresholds: ScoreThreshold[] = [
-  { upToProportion: 8_000 / ORIGINAL_GAME_MAX_SCORE, label: "beginner" }, // ~0.085
-  { upToProportion: 20_000 / ORIGINAL_GAME_MAX_SCORE, label: "novice" }, // ~0.213
-  { upToProportion: 30_000 / ORIGINAL_GAME_MAX_SCORE, label: "spy" }, // ~0.319
-  { upToProportion: 55_000 / ORIGINAL_GAME_MAX_SCORE, label: "master-spy" }, // ~0.585
-  { upToProportion: 84_000 / ORIGINAL_GAME_MAX_SCORE, label: "hero" }, // ~0.894
-  { upToProportion: 1.0, label: "liberator" },
-  { upToProportion: Infinity, label: "completionist" },
-];
 
 const getScoreLabel = (score: number, maxScore: number): string => {
   const proportion = score / maxScore;
 
-  for (const { upToProportion, label } of scoreThresholds) {
+  for (const { upToProportion, label } of scoreThresholdsBuiltIn) {
     if (proportion < upToProportion) {
       return label;
     }
   }
-  // This should never be reached due to Infinity threshold
-  return "completionist";
+  return proportion < 1 ? "liberator" : "completionist";
 };
 
 const selectFreeCharacters = createSelector(
@@ -111,14 +100,21 @@ export const ScoreDialog = () => {
 
   const freeCharacters = useAppSelector(selectFreeCharacters);
 
+  const pickupsCollectedCount = countCollectedPickups(
+    campaign,
+    usePickupsCollected(),
+  );
+  const pickupsCount = countCampaignPickups(campaign);
+
   const score = calculateScore(
     roomsExploredCount,
     planetsLiberatedCount,
     freeCharacters.length,
+    pickupsCollectedCount,
   );
 
   const roomCount = objectSize(campaign.rooms);
-  const maxScore = calculateScore(roomCount, 5, 2);
+  const maxScore = calculateScore(roomCount, 5, 2, pickupsCount);
 
   const scoreLabel = getScoreLabel(score, maxScore);
 
@@ -158,6 +154,17 @@ export const ScoreDialog = () => {
               {`(${asPercentage(roomsExploredCount, roomCount)})`}
             </span>
           </span>
+          {pickupsCount > 0 && (
+            <span
+              data-test-id="pickups-collected-summary"
+              data-pickups-collected={pickupsCollectedCount}
+              data-pickups-total={pickupsCount}
+              class="mt-1 block text-center mx-auto text-metallicBlue zx:text-zxGreen toppy:text-toppyCool2"
+            >
+              Collected {pickupsCollectedCount} / {pickupsCount} items{" "}
+              {`(${asPercentage(pickupsCollectedCount, pickupsCount)})`}
+            </span>
+          )}
           <span class="mt-1 block text-center mx-auto text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1">
             Liberated {planetsLiberatedCount} planets
           </span>

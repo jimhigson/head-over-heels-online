@@ -5,10 +5,8 @@ import {
   type OptionallyNamedCampaign,
 } from "../../../../../../model/modelTypes";
 import { type SceneryName } from "../../../../../../sprites/planets";
-import {
-  type CharacterRooms,
-  type PickupsCollected,
-} from "../../../../../gameState/GameState";
+import { type PickupsCollected } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
+import { type CharacterRooms } from "../../../../../gameState/GameState";
 import { type Bounds } from "./Map.svg";
 import { type NotableItemsByCell } from "./notableItemsByCell";
 

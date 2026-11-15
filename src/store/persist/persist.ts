@@ -13,6 +13,10 @@ import {
   userSettingsSlice,
   type UserSettingsState,
 } from "../slices/userSettings/userSettingsSlice";
+import {
+  type LegacyPickupsSavedGame,
+  movePickupsCollectedToGameInPlayInPlace,
+} from "./movePickupsCollectedToGameInPlayInPlace";
 import storage from "./storage";
 
 /**
@@ -111,6 +115,19 @@ const savedGamesMigrations = createMigrate({
         save.gameInPlay = legacyInner;
         delete save.store;
       }
+    }
+    return state;
+  },
+  // v28: pickupsCollected moved from each save's gameState to its gameInPlay
+  28(state) {
+    if (!state) {
+      return state;
+    }
+    const { saves } = state as unknown as {
+      saves: Record<string, LegacyPickupsSavedGame>;
+    };
+    for (const save of Object.values(saves)) {
+      movePickupsCollectedToGameInPlayInPlace(save);
     }
     return state;
   },

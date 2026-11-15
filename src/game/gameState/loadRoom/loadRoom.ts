@@ -13,12 +13,14 @@ import {
   type RoomStateItems,
 } from "../../../model/RoomState";
 import { type PlanetName, type SceneryName } from "../../../sprites/planets";
-import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import {
+  type RoomPickupsCollected,
+  type ScrollsRead,
+} from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { type UserSettings } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { SpatialIndex } from "../../physics/gridSpace/SpatialIndex";
-import { type RoomPickupsCollected } from "../GameState";
 import { setStandingOnWithoutRemovingOldFirst } from "../mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { buildRoomJsonDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { loadItems } from "./loadItems";

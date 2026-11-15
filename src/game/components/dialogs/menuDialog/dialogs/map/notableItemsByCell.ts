@@ -1,9 +1,9 @@
 import { type SortedObjectOfRoomGridPositionSpecs } from "../../../../../../model/map/sortRoomGridPositions";
 import { type Campaign } from "../../../../../../model/modelTypes";
+import { type PickupsCollected } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
 import { emptyObject } from "../../../../../../utils/empty";
 import { entries } from "../../../../../../utils/entries";
 import { type Xy } from "../../../../../../utils/vectors/vectors";
-import { type PickupsCollected } from "../../../../../gameState/GameState";
 import { notableItemSlotPositions } from "./ItemsInRoomLayout";
 import { type NotableItem } from "./NotableItem";
 import { selectNotableItems } from "./selectNotableItems";

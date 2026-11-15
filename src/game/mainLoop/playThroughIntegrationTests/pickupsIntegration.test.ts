@@ -12,6 +12,8 @@ import {
 } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
+import { selectPickupsCollected } from "../../../store/slices/gameMenus/gameMenusSelectors";
+import { store } from "../../../store/store";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 
 beforeEach(() => {
@@ -56,7 +58,9 @@ test("character walks into pickup", () => {
 
   // should have recorded collecting the pickup:
   expect(
-    gameState.pickupsCollected[firstRoomId]?.["pickupTwoSquaresFromHead"],
+    selectPickupsCollected(store.getState())[firstRoomId]?.[
+      "pickupTwoSquaresFromHead"
+    ],
   ).toBe(true);
   // the pickup should have disappeared:
   expect(
@@ -66,7 +70,7 @@ test("character walks into pickup", () => {
 
   // but not this one (included as a control):
   expect(
-    gameState.pickupsCollected[firstRoomId]?.[
+    selectPickupsCollected(store.getState())[firstRoomId]?.[
       "pickupCharactersWillNotGetInThisTest"
     ],
   ).toBeFalsy();
@@ -108,7 +112,9 @@ test("when character walks into pickup that they are not eligible to collect, th
   });
 
   // should *not* have recorded collecting the pickup:
-  expect(gameState.pickupsCollected[firstRoomId]?.["bag"]).toBeUndefined();
+  expect(
+    selectPickupsCollected(store.getState())[firstRoomId]?.["bag"],
+  ).toBeUndefined();
   // the pickup should *not* have disappeared:
   expect(selectCurrentRoomState(gameState)?.items["bag"]).toBeDefined();
 
@@ -170,9 +176,9 @@ test("character stand on pickup by walking off adjacent block", () => {
   });
 
   // should have recorded collecting the pickup:
-  expect(gameState.pickupsCollected[firstRoomId]?.["pickupOnTheFloor"]).toBe(
-    true,
-  );
+  expect(
+    selectPickupsCollected(store.getState())[firstRoomId]?.["pickupOnTheFloor"],
+  ).toBe(true);
   // the pickup should have disappeared:
   expect(
     selectCurrentRoomState(gameState)?.items["pickupOnTheFloor"],
@@ -204,9 +210,9 @@ test("pickup can land on character", () => {
   playGameThrough(gameState);
 
   // should have collected the pickup:
-  expect(gameState.pickupsCollected[firstRoomId]?.["pickupAboveHeels"]).toBe(
-    true,
-  );
+  expect(
+    selectPickupsCollected(store.getState())[firstRoomId]?.["pickupAboveHeels"],
+  ).toBe(true);
   expect(heelsState(gameState).lives).toBe(10);
   // the pickup should have disappeared:
   expect(
@@ -308,9 +314,9 @@ test.todo(
       },
     });
 
-    expect(gameState.pickupsCollected[firstRoomId]?.["pickupOnFloor"]).toBe(
-      true,
-    );
+    expect(
+      selectPickupsCollected(store.getState())[firstRoomId]?.["pickupOnFloor"],
+    ).toBe(true);
     expect(gameState.characterRooms.heels?.id).toBe("firstRoom");
     expect(gameState.characterRooms.heels?.items.pickupOnFloor).toBeUndefined();
   },

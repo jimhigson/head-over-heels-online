@@ -5,6 +5,7 @@ import { roomGridPositions } from "../../../../../../model/map/roomGridPositions
 import { sortRoomGridPositions } from "../../../../../../model/map/sortRoomGridPositions";
 import {
   useCurrentCampaign,
+  usePickupsCollected,
   useRoomsExplored,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { selectCurrentRoomState } from "../../../../../gameState/gameStateSelectors/selectCurrentRoomState";
@@ -26,6 +27,7 @@ export const useMapDataForCurrentGame = <
   const currentCharacterName = useTickingCurrentCharacterName();
 
   const roomsExplored = useRoomsExplored<RoomId>();
+  const pickupsCollected = usePickupsCollected<RoomId>();
 
   const { gameState } = useGameApi<RoomId>();
   const campaign = useCurrentCampaign<RoomId>();
@@ -79,12 +81,12 @@ export const useMapDataForCurrentGame = <
             notableItemsByCell: computeNotableItemsByCell(
               sortedPositions,
               campaign,
-              gameState.pickupsCollected,
+              pickupsCollected,
             ),
           } satisfies MapArea<RoomId>,
         ],
         currentCharacterName,
-        pickupsCollected: gameState.pickupsCollected,
+        pickupsCollected,
         characterRooms: gameState.characterRooms,
         campaign,
         roomsExplored,
@@ -94,5 +96,11 @@ export const useMapDataForCurrentGame = <
     } catch (e) {
       throw new Error("error getting map data", { cause: e });
     }
-  }, [campaign, currentCharacterName, gameState, roomsExplored]);
+  }, [
+    campaign,
+    currentCharacterName,
+    gameState,
+    pickupsCollected,
+    roomsExplored,
+  ]);
 };

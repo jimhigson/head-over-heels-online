@@ -6,9 +6,9 @@ import {
 } from "../../../model/json/JsonItem";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { type RoomState } from "../../../model/RoomState";
-import { emptyObject } from "../../../utils/empty";
+import { selectRoomPickupsCollected } from "../../../store/slices/gameMenus/gameMenusSelectors";
+import { store } from "../../../store/store";
 import { originXyz, type Xyz } from "../../../utils/vectors/vectors";
-import { type GameState } from "../GameState";
 import { buildRoomJsonDirectionalIndex } from "../loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../loadRoom/loadItemFromJson";
 import { addItemToRoom } from "./addItemToRoom";
@@ -18,14 +18,12 @@ export const addItemFromJsonToRoom = <
   RoomId extends string,
   RoomItemId extends string,
 >({
-  gameState,
   room,
   itemType,
   config,
   position,
   additionalIdPart,
 }: {
-  gameState: GameState<RoomId>;
   room: RoomState<RoomId, RoomItemId>;
   itemType: T;
   config: JsonItemConfig<T, RoomId, RoomItemId>;
@@ -47,7 +45,7 @@ export const addItemFromJsonToRoom = <
     itemJson as JsonItemUnion<RoomId>,
     room.roomJson,
     buildRoomJsonDirectionalIndex(roomJsonItemsIterable(room.roomJson)),
-    gameState.pickupsCollected[room.id] ?? emptyObject,
+    selectRoomPickupsCollected(store.getState(), room.id),
   );
   if (item === undefined) {
     console.error("failed to generate any items for json", itemId, itemJson);

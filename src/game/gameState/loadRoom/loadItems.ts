@@ -2,10 +2,12 @@ import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowe
 import { type JsonItemUnion } from "../../../model/json/JsonItem";
 import { type RoomJson } from "../../../model/RoomJson";
 import { type PlanetName } from "../../../sprites/planets";
-import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import {
+  type RoomPickupsCollected,
+  type ScrollsRead,
+} from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { entries } from "../../../utils/entries";
-import { type RoomPickupsCollected } from "../GameState";
 import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "./loadItemFromJson";
 

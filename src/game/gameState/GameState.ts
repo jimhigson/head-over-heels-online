@@ -7,16 +7,6 @@ import { type Xy } from "../../utils/vectors/vectors";
 import { type InputStateTrackerInterface } from "../input/InputStateTracker";
 import { type PlayableEntryState } from "./PlayableEntryState";
 
-export type RoomPickupsCollected = Record<string, true>;
-
-export type PickupsCollected<RoomId extends string> = {
-  /**
-   * optional for each room - if no entry for the room, is considered that nothing is
-   * picked up (keeps the save state size a bit more manageable)
-   */
-  [R in RoomId]?: RoomPickupsCollected;
-};
-
 /**
  * which room each character is in
  */
@@ -49,10 +39,6 @@ export type GameState<RoomId extends string = string> = {
   entryState: Partial<{
     [C in CharacterName]: PlayableEntryState;
   }>;
-
-  // pickups don't respawn, so we keep track of which ones have been picked up
-  // outside of the room's state
-  pickupsCollected: PickupsCollected<RoomId>;
 
   /**
    * How many ms has this game been played for? For most purposes the room time

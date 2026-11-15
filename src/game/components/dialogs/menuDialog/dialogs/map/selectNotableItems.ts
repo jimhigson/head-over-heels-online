@@ -1,7 +1,7 @@
 import { type RoomJson } from "../../../../../../model/RoomJson";
 import { roomJsonItemsEntriesIterable } from "../../../../../../model/RoomJsonItemIterators";
+import { type RoomPickupsCollected } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
 import { fromAllEntries } from "../../../../../../utils/entries";
-import { type RoomPickupsCollected } from "../../../../../gameState/GameState";
 import { jsonItemIsNotable } from "./jsonItemIsNotable";
 import { type NotableItem } from "./NotableItem";
 import { restrictItemsToShowInRoomCount } from "./restrictItemsToShowInRoomCount";

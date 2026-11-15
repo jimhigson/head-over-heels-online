@@ -8,16 +8,14 @@ import {
   type MapDataError,
 } from "../../game/components/dialogs/menuDialog/dialogs/map/MapData";
 import { computeNotableItemsByCell } from "../../game/components/dialogs/menuDialog/dialogs/map/notableItemsByCell";
-import {
-  type CharacterRooms,
-  type PickupsCollected,
-} from "../../game/gameState/GameState";
+import { type CharacterRooms } from "../../game/gameState/GameState";
 import {
   roomGridPositions,
   type RoomNode,
 } from "../../model/map/roomGridPositions";
 import { sortRoomGridPositions } from "../../model/map/sortRoomGridPositions";
 import { type TeleporterLink } from "../../model/map/teleporterLinks";
+import { type PickupsCollected } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { type EditorRootState, useEditorAppSelector } from "../../store/store";
 import { emptyObject } from "../../utils/empty";
 import { keys } from "../../utils/entries";

@@ -27,11 +27,7 @@ import {
 import { type InputStateTrackerInterface } from "../input/InputStateTracker";
 import { attachBehaviourToItem } from "../itemBehaviours/attachBehaviourToItem";
 import { SpatialIndex } from "../physics/gridSpace/SpatialIndex";
-import {
-  type CharacterRooms,
-  type GameState,
-  type PickupsCollected,
-} from "./GameState";
+import { type CharacterRooms, type GameState } from "./GameState";
 import { selectHeelsAbilities } from "./gameStateSelectors/selectPlayableItem";
 import { loadRoom, type LoadRoomOptions } from "./loadRoom/loadRoom";
 import { changeCharacterRoom } from "./mutators/changeCharacterRoom";
@@ -274,8 +270,6 @@ const _loadGameState = <RoomId extends string>({
       heels: heelsItem === undefined ? undefined : entryState(heelsItem),
       // no headOverHeels: if loading from cold (not at save)
     },
-    // new game - nothing picked up:
-    pickupsCollected: {} as PickupsCollected<RoomId>,
     gameTime: 0,
     freeCharacters: {},
 
