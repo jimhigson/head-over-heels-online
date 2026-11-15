@@ -18,6 +18,7 @@ import {
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { type GameStateWithMockInput } from "../../../_testUtils/MockInputStateTracker";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
+import { currentRoomIs } from "../../../_testUtils/playThroughUntilHelpers";
 import { isFreeItem } from "../../../model/ItemInPlayNarrowedUnions";
 import { type JsonItemUnion } from "../../../model/json/JsonItem";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
@@ -573,10 +574,8 @@ test("carrying an item through a door drops it in the room", () => {
       mockInputStateTracker.mockNotPressing("carry");
       mockInputStateTracker.mockDirectionPressed = "right";
     },
-    until() {
-      // wait until heels is in the next room:
-      return selectCurrentRoomState(gameState)?.id === "secondRoom";
-    },
+    // wait until heels is in the next room:
+    until: currentRoomIs("secondRoom"),
   });
 
   // switch back to head:

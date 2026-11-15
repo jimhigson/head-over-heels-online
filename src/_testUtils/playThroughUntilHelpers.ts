@@ -71,6 +71,15 @@ export const isStandingOn =
     return stander.state.standingOnItemId === standingOnId;
   };
 
+/**
+ * for playGameThrough's `until`: whether the current character is in the given room
+ * call like until(currentRoomIs("someRoomId"))
+ */
+export const currentRoomIs =
+  (roomId: string): UntilFunction =>
+  (gameState) =>
+    selectCurrentRoomState(gameState)?.id === roomId;
+
 /** for playGameThrough's `until`: whether the given condition does not hold */
 export const not =
   (untilFunction: UntilFunction): UntilFunction =>

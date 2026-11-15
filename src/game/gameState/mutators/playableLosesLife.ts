@@ -11,9 +11,11 @@ import {
 } from "../../../model/modelTypes";
 import { type RoomState } from "../../../model/RoomState";
 import { lostAllLives } from "../../../store/slices/gameInPlay/gameInPlaySlice";
-import { selectCurrentCampaign } from "../../../store/slices/gameMenus/gameMenusSelectors";
+import {
+  selectCurrentCampaign,
+  selectRoomPickupsCollected,
+} from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
-import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { collision2Items } from "../../collision/aabbCollision";
 import { type GameState } from "../GameState";
@@ -155,7 +157,6 @@ const combinedPlayableLosesLife = <RoomId extends string>(
       uncombinePlayablesFromSymbiosis(headOverHeels)[survivingCharacterName];
 
     const reloadedRoom = reloadRoomWithCharacterInIt({
-      gameState,
       playableItems: [survivingCharacter],
       roomId: room.id,
     });
@@ -176,7 +177,6 @@ const combinedPlayableLosesLife = <RoomId extends string>(
     // fairly straightforward case of restoring in symbiosis:
     resetPlayableToEntryState(gameState, headOverHeels);
     const reloadedRoom = reloadRoomWithCharacterInIt({
-      gameState,
       playableItems: [headOverHeels],
       roomId: room.id,
     });
@@ -197,7 +197,6 @@ const combinedPlayableLosesLife = <RoomId extends string>(
     // give headOverHeels heels' entry state:
     resetPlayableToEntryState(gameState, rejoined, "heels");
     const reloadedRoom = reloadRoomWithCharacterInIt({
-      gameState,
       playableItems: [rejoined],
       roomId: room.id,
     });
@@ -207,7 +206,6 @@ const combinedPlayableLosesLife = <RoomId extends string>(
   }
   // can put back separate and at their own locations - is likely they entered via different doors/teleporters:
   const reloadedRoom = reloadRoomWithCharacterInIt({
-    gameState,
     playableItems: [head, heels],
     roomId: room.id,
   });
@@ -216,11 +214,9 @@ const combinedPlayableLosesLife = <RoomId extends string>(
 };
 
 const reloadRoomWithCharacterInIt = <RoomId extends string>({
-  gameState,
   playableItems,
   roomId,
 }: {
-  gameState: GameState<RoomId>;
   playableItems: Array<PlayableItem<CharacterName, NoInfer<RoomId>>>;
   roomId: RoomId;
 }) => {
@@ -236,7 +232,7 @@ const reloadRoomWithCharacterInIt = <RoomId extends string>({
   const reloadedRoom = loadRoom({
     roomId,
     roomJson: campaign.rooms[roomId],
-    roomPickupsCollected: gameState.pickupsCollected[roomId] ?? emptyObject,
+    roomPickupsCollected: selectRoomPickupsCollected(state, roomId),
     scrollsRead,
     planetsLiberated: state.gameInPlay.gameInPlay.planetsLiberated,
     userSettings,
@@ -366,7 +362,6 @@ const individualPlayableLosesLife = <
       resetPlayableToEntryState(gameState, headOverHeels);
 
       const reloadedRoom = reloadRoomWithCharacterInIt({
-        gameState,
         playableItems: [headOverHeels],
         roomId: roomWithCharacterLosingLife.id,
       });
@@ -388,7 +383,6 @@ const individualPlayableLosesLife = <
   }
   // the other player isn't in the same room as us:
   const reloadedRoom = reloadRoomWithCharacterInIt({
-    gameState,
     playableItems: [characterLosingLife],
     roomId: roomWithCharacterLosingLife.id,
   });

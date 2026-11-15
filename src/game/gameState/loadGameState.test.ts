@@ -70,6 +70,7 @@ test("if there is a saved game with both characters in the same room, only load 
         planetsLiberated: noPlanetsLiberated,
         scrollsRead: {},
         roomsExplored: {},
+        pickupsCollected: {},
         campaignLocator: {
           campaignName: "original",
           userId: "@@original",
@@ -81,7 +82,6 @@ test("if there is a saved game with both characters in the same room, only load 
       gameState: {
         gameTime: 0,
         currentCharacterName: "heels",
-        pickupsCollected: {},
         entryState: {},
         characterRooms: {
           // both characters in the same room:

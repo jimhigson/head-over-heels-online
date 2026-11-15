@@ -8,6 +8,7 @@ import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { getJsonItemTimes } from "../../../model/times";
 import {
   type PlanetsLiberated,
+  type RoomPickupsCollected,
   type ScrollsRead,
 } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
@@ -23,7 +24,6 @@ import {
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
 import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
-import { type RoomPickupsCollected } from "../GameState";
 import {
   buildRoomJsonDirectionalIndex,
   type RoomDirectionalIndex,

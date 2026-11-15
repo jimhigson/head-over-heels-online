@@ -8,6 +8,8 @@ import {
 } from "../../../model/ItemInPlayNarrowedUnions";
 import { type CharacterName } from "../../../model/modelTypes";
 import { type RoomState } from "../../../model/RoomState";
+import { pickupCollected } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import { selectRoomPickupsCollected } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { addXyz, boxWithSize, originXyz } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
@@ -105,12 +107,8 @@ export abstract class PickupBehaviour extends FreeItemBehaviour {
     }: RoomState<RoomId, RoomItemId>,
     gameState: GameState<RoomId>,
   ): void {
-    const { pickupsCollected } = gameState;
     if (roomJsonItems[pickupId]) {
-      if (pickupsCollected[roomId] === undefined) {
-        pickupsCollected[roomId] = {};
-      }
-      pickupsCollected[roomId][pickupId] = true;
+      store.dispatch(pickupCollected({ roomId, pickupId }));
     }
 
     // probably a good time to save the game:
@@ -173,7 +171,9 @@ export abstract class PickupBehaviour extends FreeItemBehaviour {
     room: RoomState<RoomId, RoomItemId>,
     gameState: GameState<RoomId>,
   ): void {
-    if (gameState.pickupsCollected[room.id]?.[pickup.id] === true) {
+    if (
+      selectRoomPickupsCollected(store.getState(), room.id)[pickup.id] === true
+    ) {
       // ignore already picked up items
       return;
     }

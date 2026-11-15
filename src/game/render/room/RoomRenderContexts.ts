@@ -26,13 +26,8 @@ export type GeneralRenderContext<RoomId extends string> = {
    *
    * GameState is undefined if there isn't a current game in progress
    * - this would mean that the rendering is for the level editor.
-   *
-   * The Omit is a workaround for generic variance: pickupsCollected
-   * has deeply nested RoomId that makes GameState<RoomId> invariant,
-   * causing errors where renderers pass GameState<string>. Removing
-   * the Omit requires fixing the variance in GameState/pickupsCollected.
    */
-  gameState?: Omit<GameState<RoomId>, "pickupsCollected">;
+  gameState?: GameState<RoomId>;
   paused: boolean;
   spritesheetMeta: SpritesheetMetadata;
   upscale: Upscale;

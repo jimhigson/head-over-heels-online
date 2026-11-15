@@ -15,6 +15,7 @@ import {
   spritesheetArtName,
   spritesheetMetas,
 } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { emptyObject } from "../../../utils/empty";
 import { objectEntriesIter, valuesIter } from "../../../utils/entries";
 import { getAtPath } from "../../../utils/getAtPath";
 import { size } from "../../../utils/iterators/size";
@@ -22,6 +23,10 @@ import { selectorHook } from "../../../utils/preact/selectorHook";
 import { useAppSelector } from "../../hooks";
 import { type GameRootState } from "../../store";
 import { selectMaybeLoadedCampaignData } from "../campaigns/gameCampaignsApiSlice";
+import {
+  type PickupsCollected,
+  type RoomPickupsCollected,
+} from "../gameInPlay/gameInPlaySlice";
 import { defaultUserSettings } from "../userSettings/defaultUserSettings";
 import {
   type InputDirectionMode,
@@ -238,6 +243,19 @@ export const selectBooleanUserSetting = (
     false
   );
 };
+
+export const selectPickupsCollected = <RoomId extends string>(
+  state: GameRootState,
+) => state.gameInPlay.gameInPlay.pickupsCollected as PickupsCollected<RoomId>;
+
+export const selectRoomPickupsCollected = (
+  state: GameRootState,
+  roomId: string,
+): RoomPickupsCollected =>
+  state.gameInPlay.gameInPlay.pickupsCollected[roomId] ?? emptyObject;
+
+export const usePickupsCollected = <RoomId extends string>() =>
+  useAppSelector(selectPickupsCollected<RoomId>);
 
 export const useRoomsExplored = <RoomId extends string>() => {
   return useAppSelector(

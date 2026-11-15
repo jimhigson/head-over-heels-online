@@ -31,7 +31,6 @@ export const summonItemAbovePlayable = <
     return;
   }
   addItemFromJsonToRoom({
-    gameState,
     room,
     itemType,
     config,

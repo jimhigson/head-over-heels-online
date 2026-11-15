@@ -25,6 +25,19 @@ export type ScrollsRead = {
   [m in MarkdownPageName]?: true;
 };
 
+/**
+ * which pickups have been collected in one room, by item id
+ */
+export type RoomPickupsCollected = Record<string, true>;
+
+export type PickupsCollected<RoomId extends string> = {
+  /**
+   * optional for each room - if no entry for the room, is considered that nothing is
+   * picked up (keeps the save state size a bit more manageable)
+   */
+  [R in RoomId]?: RoomPickupsCollected;
+};
+
 export type FreeCharacters = {
   [C in IndividualCharacterName]?: true;
 };
@@ -47,6 +60,11 @@ export type PlanetsLiberated = Readonly<Record<PlanetName, boolean>>;
 export type GameInPlayStoreState = {
   planetsLiberated: PlanetsLiberated;
   roomsExplored: Record<string, true>;
+  /**
+   * pickups don't respawn, so which ones have been picked up is kept outside
+   * of the rooms' state
+   */
+  pickupsCollected: PickupsCollected<string>;
   /**
    * we don't want to show the same scroll twice, even if it is in a different room
    * so record what we've read:
@@ -90,6 +108,7 @@ export const noPlanetsLiberated: PlanetsLiberated = {
 const initialGameInPlayStoreState = {
   planetsLiberated: noPlanetsLiberated,
   roomsExplored: {},
+  pickupsCollected: {},
   scrollsRead: {},
   reincarnationPoint: undefined,
   freeCharacters: {},
@@ -144,6 +163,14 @@ export const gameInPlaySlice = createSlice({
   reducers: {
     roomExplored(state, { payload: roomId }: PayloadAction<string>) {
       state.gameInPlay.roomsExplored[roomId] = true;
+    },
+    pickupCollected(
+      state,
+      {
+        payload: { roomId, pickupId },
+      }: PayloadAction<{ roomId: string; pickupId: string }>,
+    ) {
+      (state.gameInPlay.pickupsCollected[roomId] ??= {})[pickupId] = true;
     },
     reincarnationFishEaten(state, { payload }: PayloadAction<SavedGame>) {
       state.gameInPlay.reincarnationPoint = payload;
@@ -237,6 +264,7 @@ export const {
   gameOver,
   gameRestoreFromSave,
   gameStarted,
+  pickupCollected,
   reincarnationFishEaten,
   roomExplored,
   scrollRead,
