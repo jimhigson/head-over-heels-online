@@ -12,7 +12,7 @@ import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItems } from "../../MenuItems";
 import { FiveCrownsDisplay } from "./FiveCrownsDisplay";
 
-export const CrownsDialog = ({
+const CrownsDialog = ({
   /**
    * Should we play intro music? (if sound muted ignores this value and never plays)
    */
@@ -51,3 +51,5 @@ export const CrownsDialog = ({
     </DialogPortal>
   );
 };
+
+export default CrownsDialog;

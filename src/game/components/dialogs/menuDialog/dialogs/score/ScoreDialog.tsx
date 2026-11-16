@@ -86,7 +86,7 @@ const FreeCharacterText = ({
   </span>
 );
 
-export const ScoreDialog = () => {
+const ScoreDialog = () => {
   const campaign = useCurrentCampaign();
 
   const planetsLiberatedCount = useAppSelector(selectPlanetsLiberatedCount);

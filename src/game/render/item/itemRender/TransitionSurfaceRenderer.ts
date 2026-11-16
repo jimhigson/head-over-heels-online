@@ -620,9 +620,10 @@ export class TransitionSurfaceRenderer<
           try {
             this.#destroyMaskingContainer(previousFront, maskingContainer);
           } catch (e) {
+            // full scene-graph dumps are dev-only, so prod builds don't ship the stringifier
             throw new Error(
-              `error while destroying masking container ${pixiContainerToString(maskingContainer)}
-              for our rendering: ${pixiContainerToString(this.output)}`,
+              `error while destroying masking container ${import.meta.env.DEV ? pixiContainerToString(maskingContainer) : maskingContainer.label}
+              for our rendering: ${import.meta.env.DEV ? pixiContainerToString(this.output) : this.output.label}`,
               { cause: e },
             );
           }

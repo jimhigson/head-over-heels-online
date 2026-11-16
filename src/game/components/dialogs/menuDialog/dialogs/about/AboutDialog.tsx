@@ -16,7 +16,7 @@ import { useCustomTextLeader } from "../CustomTextLeader";
 import { DialogTitleBar } from "../DialogTitleBar";
 import { mainMenuDialogColourClasses } from "../mainMenu/mainMenuDialogColourClasses";
 
-export const AboutDialog = (_emptyProps: EmptyObject) => {
+const AboutDialog = (_emptyProps: EmptyObject) => {
   return (
     <DialogPortal>
       <Border class="bg-metallicBlue zx:bg-zxRed toppy:bg-toppyCool3" />

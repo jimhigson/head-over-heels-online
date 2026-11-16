@@ -8,7 +8,7 @@ import { SpritesPageToolbar } from "./SpritesPageToolbar";
 
 const defaultScale = 2;
 
-export const SpritesPage = () => {
+const SpritesPage = () => {
   // so display shortcuts (eg toggle smooth sprites, CRT) can be tried
   // directly from this page while previewing their effect:
   useUniversalKeys();

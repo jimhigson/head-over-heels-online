@@ -12,15 +12,17 @@ import { SpinnerHead } from "../../ui/Spinner.tsx";
 import { handleGameBoot } from "../handleGameBoot.ts";
 import { InputStateProvider } from "../input/InputStateProvider.tsx";
 import { CssVariables } from "./CssVariables.tsx";
-import { NotFound404Page } from "./NotFound404Page.tsx";
+import { importNotFound404Page } from "./NotFound404Page.import.ts";
 import { Route } from "./router/Route.tsx";
 import { Switch } from "./router/Switch.tsx";
 import { useUpscaledSpritesAndSmoothFontInCss } from "./upscaledSpritesUi/useUpscaledSpritesAndSmoothFontInCss.ts";
-import { WantedEditor404 } from "./WantedEditor404.tsx";
+import { importWantedEditor404 } from "./WantedEditor404.import.ts";
 
 const LazyLutPage = lazy(importLutPage);
 const LazyMapPage = lazy(importMapPage);
 const LazySpritesPage = lazy(importSpritesPage);
+const LazyWantedEditor404 = lazy(importWantedEditor404);
+const LazyNotFound404Page = lazy(importNotFound404Page);
 
 // the map page only shows a campaign's map - it starts no game:
 if (window.location.pathname !== "/map") {
@@ -65,12 +67,16 @@ const AppInner = () => {
       </Route>
       <Route path="/editor">
         <CssVariables>
-          <WantedEditor404 />
+          <Suspense fallback={<SpinnerHead loadingBorder />}>
+            <LazyWantedEditor404 />
+          </Suspense>
         </CssVariables>
       </Route>
       <Route>
         <CssVariables>
-          <NotFound404Page />
+          <Suspense fallback={<SpinnerHead loadingBorder />}>
+            <LazyNotFound404Page />
+          </Suspense>
         </CssVariables>
       </Route>
     </Switch>

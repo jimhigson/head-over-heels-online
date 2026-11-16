@@ -48,7 +48,7 @@ const QuitGameHint = () => {
   }
 };
 
-export const QuitGameConfirmDialog = () => {
+const QuitGameConfirmDialog = () => {
   const spriteClassname = usePlayableTailwindSpriteClassname();
   const noUnselectedTextureClass = spriteClassname({
     character: "head",

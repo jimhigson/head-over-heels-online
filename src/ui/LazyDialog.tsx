@@ -40,3 +40,17 @@ export const LazyDialogHoc =
       </LazyDialog>
     );
   };
+
+/**
+ * for dialogs overlaid on the running game: renders null (nothing) while loading,
+ * so the game shows through rather than a loading screen flashing over it
+ */
+export const LazyOverlayDialogHoc =
+  <P extends object>(LazyComponent: FC<P>) =>
+  (p: P) => {
+    return (
+      <Suspense fallback={null}>
+        <LazyComponent {...p} />
+      </Suspense>
+    );
+  };

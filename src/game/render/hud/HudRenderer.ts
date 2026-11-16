@@ -53,6 +53,9 @@ import { type ItemLeafPixiRenderer } from "../item/itemRender/ItemPixiRenderer";
 import { zxSpectrumPixiColor } from "../palette/zxSpectrumPixiColours";
 import { type Renderer } from "../Renderer";
 import { TextContainer } from "../text/TextContainer";
+import { mapButtonAppearance } from "./buttonAppearances/mapButtonAppearance";
+import { menuButtonAppearance } from "./buttonAppearances/menuButtonAppearance";
+import { rotateButtonAppearance } from "./buttonAppearances/rotateButtonAppearance";
 import { FpsRenderer } from "./FpsRenderer";
 import { HudButtonRenderer } from "./HudButtonRenderer";
 import {
@@ -60,10 +63,8 @@ import {
   type HudRendererTickContext,
   type HudRendererTickContextWithRoom,
 } from "./hudRendererContexts";
-import { mapButtonAppearance } from "./onScreenControls/buttonAppearances/mapButtonAppearance";
-import { menuButtonAppearance } from "./onScreenControls/buttonAppearances/menuButtonAppearance";
-import { rotateButtonAppearance } from "./onScreenControls/buttonAppearances/rotateButtonAppearance";
-import { OnScreenControls } from "./onScreenControls/OnScreenControls";
+import { type OnScreenControls } from "./onScreenControls/OnScreenControls";
+import { type OnScreenControlsModule } from "./onScreenControls/OnScreenControls.import";
 import {
   tintForHud,
   tintForHudIfUncolourised,
@@ -194,7 +195,13 @@ export class HudRenderer<
 
   readonly renderContext: HudRenderContext<RoomId>;
 
-  constructor(renderContext: HudRenderContext<RoomId>) {
+  constructor(
+    renderContext: HudRenderContext<RoomId>,
+    /**
+     * loaded on demand; present whenever `general.onScreenControls` is on
+     */
+    maybeOnScreenControlsModule: OnScreenControlsModule | undefined,
+  ) {
     this.renderContext = renderContext;
     const { general } = renderContext;
 
@@ -283,6 +290,12 @@ export class HudRenderer<
     this.#initSwopCharacterInteractivity();
 
     if (general.onScreenControls) {
+      if (import.meta.env.DEV && maybeOnScreenControlsModule === undefined) {
+        throw new Error(
+          "on-screen controls are on but their module was not loaded",
+        );
+      }
+      const { OnScreenControls } = maybeOnScreenControlsModule!;
       this.#onScreenControls = new OnScreenControls({
         general: renderContext.general,
         inputDirectionMode: renderContext.inputDirectionMode,

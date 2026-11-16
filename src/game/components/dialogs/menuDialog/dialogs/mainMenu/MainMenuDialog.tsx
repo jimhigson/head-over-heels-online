@@ -85,7 +85,7 @@ const LevelEditorMenuItem = () => {
       id="levelEditor"
       label="Level Editor"
       doubleHeightWhenFocussed
-      subMenuId="sureWantEditor"
+      href={import.meta.env.VITE_EDITOR_URL}
     />
   );
 };

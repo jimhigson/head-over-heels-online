@@ -10,7 +10,7 @@ import { DialogTitleBar } from "../DialogTitleBar";
 import { mainMenuDialogColourClasses } from "../mainMenu/mainMenuDialogColourClasses";
 import { CampaignListContent } from "./CampaignListContent";
 
-export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
+const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
   const { data, error, isLoading, refetch } =
     useGetAllUsersLatestCampaignsQuery({ publishedOnly: true });
 

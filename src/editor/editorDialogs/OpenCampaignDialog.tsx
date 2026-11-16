@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "preact/hooks";
 
-import { type CampaignDirectory } from "../../db/campaign";
+import { type CampaignDirectory } from "../../db/getAllUsersLatestCampaigns";
 import { type CampaignLocator } from "../../model/modelTypes";
 import { useGetAllUsersLatestCampaignsQuery } from "../../store/slices/campaigns/editorCampaignsApiSlice";
 import { Border } from "../../ui/Border";

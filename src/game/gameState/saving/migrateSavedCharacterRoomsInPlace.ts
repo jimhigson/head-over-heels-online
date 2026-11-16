@@ -204,7 +204,7 @@ const migrateItemBoxInPlace = (item: LegacyBoxCarrier): void => {
  * version that wrote them loaded them, so a save from an old version can
  * carry formats the current code no longer loads - eg walls without tiles
  * (pre-v25), or direction names where the in-play model now holds unit
- * vectors; this normalises them before the save is brought into play.
+ * vectors; this normalises them, once, as stored saves are migrated.
  */
 export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
   savedCharacterRooms: SavedCharacterRooms<RoomId>,

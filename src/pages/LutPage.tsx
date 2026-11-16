@@ -87,7 +87,7 @@ const SingleLutDisplay = ({ texture }: SingleLutDisplayProps) => {
 /**
  * Debug page to visualize all LUT textures for palette swapping
  */
-export const LutPage = () => {
+const LutPage = () => {
   return (
     <>
       <div class="e2e-snapshot-target">

@@ -1,5 +1,5 @@
 import { type CampaignDbClient } from "./CampaignDbClient";
-import { importPostgrestDb } from "./postgrestDb.import";
+import { importPostgrestDbClient } from "./postgrestDbClient.import";
 import { importSupabaseDb } from "./supabaseDb.import";
 
 /**
@@ -15,4 +15,4 @@ import { importSupabaseDb } from "./supabaseDb.import";
 export const importCampaignDbClient = async (): Promise<CampaignDbClient> =>
   import.meta.env.VITE_APP === "editor" ?
     (await importSupabaseDb()).supabaseDb
-  : (await importPostgrestDb()).postgrestDb;
+  : (await importPostgrestDbClient()).postgrestDbClient;

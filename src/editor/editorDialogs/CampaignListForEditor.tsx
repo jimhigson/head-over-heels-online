@@ -3,7 +3,7 @@ import { Fragment } from "preact";
 import {
   type CampaignDirectory,
   type CampaignInfoInDirectory,
-} from "../../db/campaign";
+} from "../../db/getAllUsersLatestCampaigns";
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import {
   originalCampaignLocator,

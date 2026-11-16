@@ -42,6 +42,10 @@ import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffe
 import { selectSpritesheetUpscale } from "../render/filters/upscale/selectSpritesheetUpscale";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { needsNewHudRenderer } from "../render/hud/needsNewHudRenderer";
+import {
+  importOnScreenControlsOnce,
+  type OnScreenControlsModule,
+} from "../render/hud/onScreenControls/OnScreenControls.import";
 import { SoftwarePointerPixiRenderer } from "../render/pointer/SoftwarePointerPixiRenderer";
 import { needsNewRoomRenderer } from "../render/room/needsNewRoomRenderer";
 import {
@@ -79,6 +83,13 @@ const quarterTurnClockwise = Math.PI / 2;
 const pausedDimTint = 0x99_99_99;
 const noTint = 0xff_ff_ff;
 
+type HeldLoadName =
+  | "hudFont"
+  | "onScreenControlsModule"
+  | "roomSounds"
+  | "spritesheet"
+  | "upscaleBakeModule";
+
 export class MainLoop<RoomId extends string> {
   #hudRenderer: HudRenderer<RoomId, string> | undefined;
   /**
@@ -92,30 +103,13 @@ export class MainLoop<RoomId extends string> {
   #worldSound: AudioNode = audioCtx.createGain();
   #physicsTicker = progressWithSubTicks(progressGameState, maxSubTickDeltaMs);
   /**
-   * promise - if any async spritesheet generation is currently happening, the main loop should
-   * hold up ticking until this is resolved. Once resolved this goes back to undefined and rendering
-   * resumes on the next tick
+   * async loads in flight that rendering waits on: while any is held, ticks
+   * skip rendering; each is released once it settles, and rendering resumes on
+   * the next tick
    */
-  #spritesheetLoadPromise: Promise<void> | undefined;
+  #heldLoads = new Set<HeldLoadName>();
 
-  /**
-   * the hud rasterises its text synchronously from a web font, so the variant
-   * this tick's baked upscale factor calls for must be registered before any renderer
-   * is built. Held like the spritesheet load: rendering pauses until it lands
-   */
-  #hudFontLoadPromise: Promise<void> | undefined;
-
-  /**
-   * the upscale bake is fetched only once a tick actually asks for an
-   * upscaled sheet. Held like the spritesheet load: the rebuild waits for the
-   * next tick rather than the sheet being built unsmoothed in the meantime
-   */
-  #upscaleSpritesBakeModuleLoadPromise: Promise<void> | undefined;
-
-  /**
-   * any load-sound-on-room-load sounds that are in the room:
-   */
-  #roomSoundsLoadPromise: Promise<void> | undefined;
+  #onScreenControlsModule: OnScreenControlsModule | undefined;
 
   #mainContainer = new Container({
     label: "MainLoop/mainContainer",
@@ -181,6 +175,24 @@ export class MainLoop<RoomId extends string> {
     store.dispatch(errorCaught(createSerialisableErrors(thrown)));
   }
 
+  /**
+   * skip rendering until the load settles, then resume on the next tick
+   */
+  #holdRenderingFor(heldLoadName: HeldLoadName, loadPromise: Promise<unknown>) {
+    this.#heldLoads.add(heldLoadName);
+    loadPromise
+      .finally(() => {
+        this.#heldLoads.delete(heldLoadName);
+        if (import.meta.env.MODE === "visual-regression") {
+          this.#__e2e_announceRenderingSuspension!();
+        }
+      })
+      .catch((e: unknown) => this.#handleError(e));
+    if (import.meta.env.MODE === "visual-regression") {
+      this.#__e2e_announceRenderingSuspension!();
+    }
+  }
+
   #firstFrameMarked = false;
 
   // set when the canvas regains its WebGL context after a loss; the next tick
@@ -218,11 +230,7 @@ export class MainLoop<RoomId extends string> {
   #__e2e_announceRenderingSuspension =
     import.meta.env.MODE === "visual-regression" ?
       () => {
-        const suspended =
-          this.#spritesheetLoadPromise !== undefined ||
-          this.#hudFontLoadPromise !== undefined ||
-          this.#upscaleSpritesBakeModuleLoadPromise !== undefined ||
-          this.#roomSoundsLoadPromise !== undefined;
+        const suspended = this.#heldLoads.size > 0;
 
         if (suspended === this.#renderingSuspended) {
           return;
@@ -407,25 +415,11 @@ export class MainLoop<RoomId extends string> {
     );
     if (
       !isUiFontLoaded(tickHudFontVariant) &&
-      this.#hudFontLoadPromise === undefined
+      !this.#heldLoads.has("hudFont")
     ) {
-      this.#hudFontLoadPromise = loadHudFont(tickHudFontVariant)
-        .then(() => {
-          this.#hudFontLoadPromise = undefined;
-          // oxlint-disable-next-line no-unused-expressions
-          import.meta.env.MODE === "visual-regression" &&
-            this.#__e2e_announceRenderingSuspension!();
-        })
-        .catch((e) => {
-          this.#hudFontLoadPromise = undefined;
-          // oxlint-disable-next-line no-unused-expressions
-          import.meta.env.MODE === "visual-regression" &&
-            this.#__e2e_announceRenderingSuspension!();
-          this.#handleError(e);
-        });
-      // oxlint-disable-next-line no-unused-expressions
-      import.meta.env.MODE === "visual-regression" &&
-        this.#__e2e_announceRenderingSuspension!();
+      // the hud rasterises its text synchronously from a web font, so the
+      // variant for this tick's baked upscale factor must be registered first
+      this.#holdRenderingFor("hudFont", loadHudFont(tickHudFontVariant));
     }
 
     // the rotation advances on the game-speed-scaled clock, so slow-motion
@@ -470,52 +464,29 @@ export class MainLoop<RoomId extends string> {
           tickSpritesheetMeta !==
             this.#roomRenderer.renderContext.general.spritesheetMeta)) &&
       tickEndRoom !== undefined &&
-      this.#spritesheetLoadPromise === undefined &&
-      this.#upscaleSpritesBakeModuleLoadPromise === undefined;
+      !this.#heldLoads.has("spritesheet") &&
+      !this.#heldLoads.has("upscaleBakeModule");
 
     if (spritesheetVariantsStale) {
       const tickSpritesheetArtName = spritesheetArtName(tickSpritesheetMeta);
       if (!this.#spritesheets.isTextureLoaded(tickSpritesheetArtName)) {
-        this.#spritesheetLoadPromise = this.#spritesheets
-          .loadImage(this.#app.renderer, tickSpritesheetArtName)
-          .then(() => {
-            this.#spritesheetLoadPromise = undefined;
-            // oxlint-disable-next-line no-unused-expressions
-            import.meta.env.MODE === "visual-regression" &&
-              this.#__e2e_announceRenderingSuspension!();
-          })
-          .catch((e) => {
-            this.#spritesheetLoadPromise = undefined;
-            // oxlint-disable-next-line no-unused-expressions
-            import.meta.env.MODE === "visual-regression" &&
-              this.#__e2e_announceRenderingSuspension!();
-            this.#handleError(e);
-          });
-        // oxlint-disable-next-line no-unused-expressions
-        import.meta.env.MODE === "visual-regression" &&
-          this.#__e2e_announceRenderingSuspension!();
+        this.#holdRenderingFor(
+          "spritesheet",
+          this.#spritesheets.loadImage(
+            this.#app.renderer,
+            tickSpritesheetArtName,
+          ),
+        );
       } else if (
         tickBakedUpscaleFactor !== 1 &&
         !this.#spritesheets.isUpscaleBakeModuleLoaded
       ) {
-        this.#upscaleSpritesBakeModuleLoadPromise = this.#spritesheets
-          .loadUpscaleBakeModule()
-          .then(() => {
-            this.#upscaleSpritesBakeModuleLoadPromise = undefined;
-            // oxlint-disable-next-line no-unused-expressions
-            import.meta.env.MODE === "visual-regression" &&
-              this.#__e2e_announceRenderingSuspension!();
-          })
-          .catch((e) => {
-            this.#upscaleSpritesBakeModuleLoadPromise = undefined;
-            // oxlint-disable-next-line no-unused-expressions
-            import.meta.env.MODE === "visual-regression" &&
-              this.#__e2e_announceRenderingSuspension!();
-            this.#handleError(e);
-          });
-        // oxlint-disable-next-line no-unused-expressions
-        import.meta.env.MODE === "visual-regression" &&
-          this.#__e2e_announceRenderingSuspension!();
+        // fetched only once a tick asks for an upscaled sheet; the rebuild
+        // waits for it rather than building the sheet unsmoothed meanwhile
+        this.#holdRenderingFor(
+          "upscaleBakeModule",
+          this.#spritesheets.loadUpscaleBakeModule(),
+        );
       } else {
         const rebuildStartMs = performance.now();
         this.#originalSheetRebuilt ||= this.#spritesheets.rebuild(
@@ -534,7 +505,7 @@ export class MainLoop<RoomId extends string> {
     if (
       roomChanged &&
       tickEndRoom !== undefined &&
-      this.#roomSoundsLoadPromise === undefined
+      !this.#heldLoads.has("roomSounds")
     ) {
       // sounds excluded from the initial sound load (eg, room entry tunes) - if
       // this room's items need one that isn't loaded yet, hold off rendering
@@ -544,40 +515,32 @@ export class MainLoop<RoomId extends string> {
         selectCurrentCampaign<RoomId>(tickState),
       );
       if (roomSoundsPromise !== undefined) {
-        this.#roomSoundsLoadPromise = roomSoundsPromise
-          .then(() => {
-            this.#roomSoundsLoadPromise = undefined;
-            // oxlint-disable-next-line no-unused-expressions
-            import.meta.env.MODE === "visual-regression" &&
-              this.#__e2e_announceRenderingSuspension!();
-          })
-          .catch((e) => {
-            this.#roomSoundsLoadPromise = undefined;
-            // oxlint-disable-next-line no-unused-expressions
-            import.meta.env.MODE === "visual-regression" &&
-              this.#__e2e_announceRenderingSuspension!();
-            this.#handleError(e);
-          });
-        // oxlint-disable-next-line no-unused-expressions
-        import.meta.env.MODE === "visual-regression" &&
-          this.#__e2e_announceRenderingSuspension!();
+        this.#holdRenderingFor("roomSounds", roomSoundsPromise);
       }
     }
 
+    const tickOnScreenControls = selectShouldRenderOnScreenControls(tickState);
     if (
-      this.#spritesheetLoadPromise !== undefined ||
-      this.#hudFontLoadPromise !== undefined ||
-      this.#upscaleSpritesBakeModuleLoadPromise !== undefined ||
-      this.#roomSoundsLoadPromise !== undefined
+      tickOnScreenControls &&
+      this.#onScreenControlsModule === undefined &&
+      !this.#heldLoads.has("onScreenControlsModule")
     ) {
-      // still loading a spritesheet, the hud font, the upscale bake or the
-      // room's sounds — skip rendering
+      // fetched only once a tick asks for them; the hud is built after
+      this.#holdRenderingFor(
+        "onScreenControlsModule",
+        importOnScreenControlsOnce().then((onScreenControlsModule) => {
+          this.#onScreenControlsModule = onScreenControlsModule;
+        }),
+      );
+    }
+
+    if (this.#heldLoads.size > 0) {
+      // still loading something rendering needs — skip rendering
       return;
     }
 
     // render hud start
     timingRecord?.startHudUpdate();
-    const tickOnScreenControls = selectShouldRenderOnScreenControls(tickState);
     const tickInputDirectionMode = selectInputDirectionMode(tickState);
 
     const createNewHudRenderer = needsNewHudRenderer(
@@ -643,10 +606,13 @@ export class MainLoop<RoomId extends string> {
 
     if (createNewHudRenderer) {
       this.#hudRenderer?.destroy();
-      this.#hudRenderer = new HudRenderer({
-        general,
-        inputDirectionMode: tickInputDirectionMode,
-      });
+      this.#hudRenderer = new HudRenderer(
+        {
+          general,
+          inputDirectionMode: tickInputDirectionMode,
+        },
+        this.#onScreenControlsModule,
+      );
       this.#mainContainer.addChild(this.#hudRenderer.output);
     }
 

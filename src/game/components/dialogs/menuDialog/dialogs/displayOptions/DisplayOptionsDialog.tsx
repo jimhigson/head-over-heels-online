@@ -26,7 +26,7 @@ const crtEffectMarkdown = `Your fancy new screen like 1987 again.`;
 
 const upscaledSpritesMarkdown = `Upscale the pixel art so it looks smoother`;
 
-export const DisplayOptionsDialog = () => {
+const DisplayOptionsDialog = () => {
   return (
     <Dialog fullScreen class={optionsDialogClasses} dialogId="displayOptions">
       <DialogTitleBar path={["Options", "Display"]} class={titleBarClasses} />

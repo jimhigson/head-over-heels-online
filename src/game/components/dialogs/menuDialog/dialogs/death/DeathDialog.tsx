@@ -166,7 +166,7 @@ const actionText = (outcome: DeathOutcome): string => {
 
 export type DeathDialogProps = DeathMenuParam;
 
-export const DeathDialog = (props: DeathDialogProps) => {
+const DeathDialog = (props: DeathDialogProps) => {
   const dismiss = useDispatchActionCallback(backToParentMenu);
   const outcome = deathOutcome(props);
   const action = actionText(outcome);
@@ -215,3 +215,5 @@ export const DeathDialog = (props: DeathDialogProps) => {
     </DialogPortal>
   );
 };
+
+export default DeathDialog;

@@ -3,7 +3,7 @@ import { test } from "vitest";
 import { setupGameForCampaign } from "../../../_testUtils/basicRoom";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { loadCampaignFromDb } from "../../../db/campaign";
-import { postgrestDb } from "../../../db/postgrestDb";
+import { postgrestDbClient } from "../../../db/postgrestDbClient";
 import { jimAtBlockstackingUserId } from "../../../gameInfo";
 import { findStartingRoomsInCampaign } from "../../gameState/loadGameState";
 import { maxSubTickDeltaMs } from "../../physics/mechanicsConstants";
@@ -91,7 +91,7 @@ v27 against "laboratory" v14
 const fps = 60;
 const simulatedSeconds = 60;
 
-const laboratoryCampaign = await loadCampaignFromDb(postgrestDb, {
+const laboratoryCampaign = await loadCampaignFromDb(postgrestDbClient, {
   userId: jimAtBlockstackingUserId,
   campaignName: "laboratory",
 });
