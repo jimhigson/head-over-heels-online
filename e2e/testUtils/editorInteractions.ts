@@ -3,10 +3,12 @@ import { expect, type Page } from "@playwright/test";
 import { type ButtonMode } from "../../src/editor/EditorMap/EditorMapInsertButtonDecorator";
 import { type EditorRoomJson } from "../../src/editor/editorTypes";
 import { type EditorE2eItem } from "../../src/editor/RoomEditingArea/useEditorE2eApi";
+import { type OpenRoomId } from "../../src/editor/slice/OpenRoom";
 import { type EditorRootState } from "../../src/store/store";
 import {
   type DirectionXy4,
   type DirectionXyz4,
+  type Xy,
   type Xyz,
 } from "../../src/utils/vectors/vectors";
 
@@ -36,7 +38,7 @@ export const openEditor = async (page: Page): Promise<void> => {
   // the e2e api appears once the (lazily loaded) room editing area has mounted,
   // and the room has items once it has loaded:
   await page.waitForFunction(
-    () => (window._e2e_editor?.items().length ?? 0) > 0,
+    () => (window._e2e_editor?.openRoom()?.items().length ?? 0) > 0,
   );
   await fitRoomInView(page);
 };
@@ -78,8 +80,32 @@ export const editorCurrentRoomJson = async (
   return campaignInProgress.rooms[cursorRoomId] as EditorRoomJson;
 };
 
-export const editorItems = async (page: Page): Promise<Array<EditorE2eItem>> =>
-  page.evaluate(() => window._e2e_editor!.items());
+/**
+ * an open room's items, as picking sees them
+ */
+export const editorItems = async (
+  page: Page,
+  /**
+   * which open room - the active one if not given
+   */
+  openRoomId?: OpenRoomId,
+): Promise<Array<EditorE2eItem>> =>
+  page.evaluate((id) => window._e2e_editor!.openRoom(id)!.items(), openRoomId);
+
+/**
+ * the angle an open room is viewed from
+ */
+export const editorCameraAngle = async (
+  page: Page,
+  /**
+   * which open room - the active one if not given
+   */
+  openRoomId?: OpenRoomId,
+): Promise<Xy> =>
+  page.evaluate(
+    (id) => window._e2e_editor!.openRoom(id)!.cameraAngle(),
+    openRoomId,
+  );
 
 /**
  * the one item in the room of the given type - fails the test if the room does
@@ -88,22 +114,31 @@ export const editorItems = async (page: Page): Promise<Array<EditorE2eItem>> =>
 export const soleEditorItemOfType = async (
   page: Page,
   type: EditorE2eItem["type"],
+  /**
+   * which open room - the active one if not given
+   */
+  openRoomId?: OpenRoomId,
 ): Promise<EditorE2eItem> => {
-  const matching = (await editorItems(page)).filter(
+  const matching = (await editorItems(page, openRoomId)).filter(
     (item) => item.type === type,
   );
   expect(matching, `expected exactly one ${type} in the room`).toHaveLength(1);
   return matching[0];
 };
 
-/** put the mouse over the given world position in the room */
+/** put the mouse over the given world position in an open room's pane */
 export const pointAtWorldPosition = async (
   page: Page,
   worldPosition: Xyz,
+  /**
+   * which open room - the active one if not given
+   */
+  openRoomId?: OpenRoomId,
 ): Promise<void> => {
   const clientXy = await page.evaluate(
-    (position) => window._e2e_editor!.worldToClient(position),
-    worldPosition,
+    ({ position, id }) =>
+      window._e2e_editor!.openRoom(id)!.worldToClient(position),
+    { position: worldPosition, id: openRoomId },
   );
   await page.mouse.move(clientXy.x, clientXy.y);
   // what the pointer resolved to is worked out as the editor draws, so the
@@ -137,9 +172,21 @@ export const placeItemAtWorldPosition = async (
   await paintEditorFrame(page);
 };
 
-/** what the editor's pointer resolved to, as of the last mouse move */
-export const editorPointingAt = async (page: Page) =>
-  page.evaluate(() => window._e2e_editor!.pointingAt());
+/**
+ * what the pointer resolved to in an open room's pane, as of the last mouse
+ * move
+ */
+export const editorPointingAt = async (
+  page: Page,
+  /**
+   * which open room - the active one if not given
+   */
+  openRoomId?: OpenRoomId,
+) =>
+  page.evaluate(
+    (id) => window._e2e_editor!.openRoom(id)!.pointingAt(),
+    openRoomId,
+  );
 
 /** the world-space centre of one face (a unit ± axis normal) of an item */
 export const faceCentreWorld = (

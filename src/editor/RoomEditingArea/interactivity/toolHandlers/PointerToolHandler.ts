@@ -340,6 +340,13 @@ export class PointerToolHandler implements ToolHandler<
       return;
     }
 
+    const openRoom = maybeOpenRoom(storeState.levelEditor, openRoomId);
+    // the open room may have been closed or replaced (its pane is going):
+    if (openRoom === undefined) {
+      return;
+    }
+    const { cameraAngle } = openRoom;
+
     const mouseWhenDownInSameRoom =
       pointingAt.roomId === mouseDownPointingAtRef.current?.roomId;
 
@@ -356,7 +363,7 @@ export class PointerToolHandler implements ToolHandler<
           mouseEvent.metaKey || mouseEvent.shiftKey,
           dragAccVec.current !== undefined,
           jsonItems,
-          existingOpenRoom(storeState.levelEditor, openRoomId).cameraAngle,
+          cameraAngle,
         )
         // ignore dragging if it started in a different room:
       : undefined;
@@ -463,11 +470,7 @@ export class PointerToolHandler implements ToolHandler<
     }
     const movesToTry =
       resizeEdge === undefined ?
-        dragMovesToTry(
-          positionDelta,
-          dragGridResolution,
-          existingOpenRoom(storeState.levelEditor, openRoomId).cameraAngle,
-        )
+        dragMovesToTry(positionDelta, dragGridResolution, cameraAngle)
       : [positionDelta];
 
     const { levelEditor: levelEditorState } = editorStore.getState();

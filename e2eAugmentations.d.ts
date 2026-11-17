@@ -16,8 +16,9 @@ declare global {
     _e2e_store?: AppStore;
     // put the gameApi on the window for e2e tests to use
     _e2e_gamePageGameAi?: GameApi<string>;
-    // the level editor's handle for e2e tests: converts world positions to page
-    // coordinates, and reports what the pointer resolved to
+    // the level editor's handle for e2e tests: for each open room in a pane,
+    // converts world positions to page coordinates, and reports what the
+    // pointer resolved to
     _e2e_editor?: EditorE2eApi;
     // put the pixi application on the window for e2e tests to use
     _e2e_pixiApplication?: Application;

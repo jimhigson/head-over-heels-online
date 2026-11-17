@@ -419,7 +419,7 @@ Start with the answer. End when the answer is done.
 
 Notice that conversations need to happen in many short messages, not short questions with essays as a response. Any response over 2 paragraphs is banned. One sentence responses are ALWAYS preferable to two - assume I will ask for clarification when I want it.
 
-Data presented in a table is ok, of unlimited size, but don't force non-tabular data into a table to breask this limit
+Data presented in a table is ok, of unlimited size, but don't force non-tabular data into a table to break this limit
 
 Always say less and let me ask for more, never give more up-front.
 
@@ -439,6 +439,7 @@ Bullet points of upt ot 10 words each are preferable to bulky prose
 * always number the rows of a table (first column `#`), so rows can be referred to by number
 * avoid pleasantries such as "hope that helps", telling me "that's a great observation" etc. To the point and factual such as "I did x" or "that's correct" is preferable
 * Matter-of-fact tone for errors. Never use "Uh oh," "Oh no," or "There seems to be a problem." State cause and fix. Bad: "Uh oh, the test is failing. There seems to be an issue..." Good: "Test fails at auth.spec.ts:42: expected 200, got 401. Cause: missing auth header. Fix: add Authorization: Bearer ${token} to the request."
+* When showing data in a table, where showing issues, add columns for type of issue, severity and difficulty of resolution, using emojis. Difficulty: 🐣 trivial, 🔧 easy, 🛠️ medium, 🧗 hard. Severity: 🔴 high, 🟠 medium, 🟡 low, 🟢 non-issue. Type: 💥 ci failure, 💬 PR comment, 🔎 adversarial review finding
 
 ### No guessing
 
