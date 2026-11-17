@@ -3,7 +3,7 @@ import { type RefObject } from "preact";
 import { type EditorRootState } from "../../../../store/store";
 import { type Xy, type Xyz } from "../../../../utils/vectors/vectors";
 import { type EditorRoomState } from "../../../editorTypes";
-import { type EditorPaneId } from "../../../slice/EditorPane";
+import { type OpenRoomId } from "../../../slice/OpenRoom";
 import { type MaybePointingAtSomething } from "../../cursor/PointingAt";
 import { type EditorViewport } from "../../viewport/EditorViewport";
 import { type Tool } from "../Tool";
@@ -22,10 +22,12 @@ export interface ToolHandler<T extends Tool> {
 
 // Base type containing common fields
 type BaseMouseParams<T extends Tool> = {
-  /** the pane the pointer is in */
-  paneId: EditorPaneId;
   /**
-   * whether the pane edits its room - a pane that doesn't only selects, with
+   * the open room the pointer is in
+   */
+  openRoomId: OpenRoomId;
+  /**
+   * whether the open room is editable - one that isn't only selects, with
    * nothing locked against selection
    */
   editable: boolean;

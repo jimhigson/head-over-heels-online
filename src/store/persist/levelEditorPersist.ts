@@ -5,17 +5,19 @@ import {
   levelEditorSlice,
   type LevelEditorState,
 } from "../../editor/slice/levelEditorSlice";
-import { levelEditorSliceNonPersistedFields } from "../../editor/slice/levelEditorSliceTransientFields";
+import { levelEditorSliceCampaignTransientFields } from "../../editor/slice/levelEditorSliceTransientFields";
 import { levelEditorCampaignMigrationTransform } from "./levelEditorCampaignMigrationTransform";
 import { levelEditorHistoryTransform } from "./levelEditorHistoryTransform";
 import { persistVersion } from "./persist";
 import storage from "./storage";
 
+export const levelEditorPersistKey = "hohol/levelEditor";
+
 const levelEditorPersistConfig: PersistConfig<LevelEditorState> = {
-  key: "hohol/levelEditor",
+  key: levelEditorPersistKey,
   version: persistVersion,
   storage,
-  blacklist: levelEditorSliceNonPersistedFields,
+  blacklist: levelEditorSliceCampaignTransientFields,
   transforms: [
     levelEditorHistoryTransform,
     levelEditorCampaignMigrationTransform,

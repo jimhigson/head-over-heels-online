@@ -9,7 +9,7 @@ import {
   type EditorRoomItemId,
   type EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
-import { type LoadedRoomCache } from "../LoadedRoomCache";
+import { type LoadedRoomCache } from "../loadedRoomCache/LoadedRoomCache";
 import { selectEditorCameraAngle } from "../slice/levelEditorSlice";
 import { type MaybePointingAtSomething } from "./cursor/PointingAt";
 import { type EditorViewport } from "./viewport/EditorViewport";
@@ -60,10 +60,9 @@ export type UseEditorE2eApiParams = {
   renderArea: HTMLElement | null;
   viewport: EditorViewport;
   pointingAtRef: RefObject<MaybePointingAtSomething | undefined>;
-  /** the pane's loaded room */
   loadedRoom: LoadedRoomCache;
   /**
-   * whether the pane edits its room - only the editing pane is driven by the
+   * whether the open room is editable - only an editable one is driven by the
    * tests
    */
   editable: boolean;

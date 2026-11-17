@@ -45,22 +45,21 @@ const expectValidMapData: ReducibleAction = (_dispatch, getState) => {
 };
 
 test("insert room right, select both, coalesce", () => {
-  const originalRoomId = selectCursorRoomIdFromLevelEditorState(
-    initialLevelEditorSliceState,
-  );
+  const state0 = initialLevelEditorSliceState;
+  const originalRoomId = selectCursorRoomIdFromLevelEditorState(state0);
 
-  const result = reduceLevelEditorActions(
-    initialLevelEditorSliceState,
+  const state1 = reduceLevelEditorActions(
+    state0,
     insertRoom({ direction: "right" }),
     toggleRoomInSelection({ roomId: originalRoomId, subRoomId: "*" }),
     expectCoalesceable,
     coalesceSelectedRooms(),
     expectValidMapData,
   );
-  const roomIds = keys(result.campaignInProgress.rooms);
+  const roomIds = keys(state1.campaignInProgress.rooms);
   expect(roomIds).toEqual([originalRoomId]);
 
-  const room = result.campaignInProgress.rooms[
+  const room = state1.campaignInProgress.rooms[
     originalRoomId
   ] as EditorRoomJson;
   const floors = iterateRoomJsonItemsWithIds(room.items, "floor").toArray();
@@ -75,11 +74,11 @@ test("insert room right, select both, coalesce", () => {
   expect.soft(doors).toHaveLength(0);
 
   const { subRoomId: cursorSubRoomId } =
-    selectCursorRoomFromLevelEditorState(result);
+    selectCursorRoomFromLevelEditorState(state1);
   expect
     .soft(() =>
       roomGridPositions({
-        campaign: result.campaignInProgress,
+        campaign: state1.campaignInProgress,
         roomId: originalRoomId,
         subRoomId: cursorSubRoomId,
       }),
@@ -101,12 +100,11 @@ const selectFirstNNonCursorRoomsThunk =
   };
 
 test("in a line", () => {
-  const originalRoomId = selectCursorRoomIdFromLevelEditorState(
-    initialLevelEditorSliceState,
-  );
+  const state0 = initialLevelEditorSliceState;
+  const originalRoomId = selectCursorRoomIdFromLevelEditorState(state0);
 
-  const result = reduceLevelEditorActions(
-    initialLevelEditorSliceState,
+  const state1 = reduceLevelEditorActions(
+    state0,
     insertRoom({ direction: "right" }),
     insertRoom({ direction: "right" }),
     insertRoom({ direction: "right" }),
@@ -129,11 +127,11 @@ test("in a line", () => {
     expectValidMapData,
   );
 
-  const roomIds = keys(result.campaignInProgress.rooms);
+  const roomIds = keys(state1.campaignInProgress.rooms);
   expect(roomIds).toHaveLength(1);
 
   const [roomId] = roomIds;
-  const room = result.campaignInProgress.rooms[roomId] as EditorRoomJson;
+  const room = state1.campaignInProgress.rooms[roomId] as EditorRoomJson;
   expect(room).toHaveCompletePerimeter();
 });
 
@@ -213,16 +211,14 @@ test.for<{
     ],
   },
 ])("$name", ({ doors, walls, floors, dispatch }) => {
-  const result = reduceLevelEditorActions(
-    initialLevelEditorSliceState,
-    ...dispatch,
-  );
+  const state0 = initialLevelEditorSliceState;
+  const state1 = reduceLevelEditorActions(state0, ...dispatch);
 
-  const roomIds = keys(result.campaignInProgress.rooms);
+  const roomIds = keys(state1.campaignInProgress.rooms);
   expect.soft(roomIds).toHaveLength(1);
 
   const [cursorRoomId] = roomIds;
-  const room = result.campaignInProgress.rooms[cursorRoomId] as EditorRoomJson;
+  const room = state1.campaignInProgress.rooms[cursorRoomId] as EditorRoomJson;
   const floorItems = iterateRoomJsonItemsWithIds(room.items, "floor").toArray();
   const doorItems = iterateRoomJsonItemsWithIds(room.items, "door").toArray();
   const wallItems = iterateRoomJsonItemsWithIds(room.items, "wall").toArray();
@@ -234,12 +230,12 @@ test.for<{
   expect.soft(room).toHaveCompletePerimeter();
 
   const { subRoomId: cursorSubRoomId } =
-    selectCursorRoomFromLevelEditorState(result);
+    selectCursorRoomFromLevelEditorState(state1);
   expect
     .soft(
       () =>
         roomGridPositions({
-          campaign: result.campaignInProgress,
+          campaign: state1.campaignInProgress,
           roomId: cursorRoomId,
           subRoomId: cursorSubRoomId,
         }).nodes,
@@ -248,8 +244,9 @@ test.for<{
 });
 
 test("coalescing rooms below a room that has a room above does not break map geometry", () => {
-  const result = reduceLevelEditorActions(
-    initialLevelEditorSliceState,
+  const state0 = initialLevelEditorSliceState;
+  const state1 = reduceLevelEditorActions(
+    state0,
     // two rooms going away from the start room, on the ground floor
     insertRoom({ direction: "away" }),
     insertRoom({ direction: "away" }),
@@ -268,10 +265,10 @@ test("coalescing rooms below a room that has a room above does not break map geo
     coalesceSelectedRooms(),
   );
 
-  const { roomId, subRoomId } = selectCursorRoomFromLevelEditorState(result);
+  const { roomId, subRoomId } = selectCursorRoomFromLevelEditorState(state1);
 
   const specs = roomGridPositions({
-    campaign: result.campaignInProgress,
+    campaign: state1.campaignInProgress,
     roomId,
     subRoomId,
   }).nodes;
@@ -291,7 +288,7 @@ test("coalescing rooms below a room that has a room above does not break map geo
 
   for (const spec of specs) {
     const subRooms =
-      result.campaignInProgress.rooms[spec.roomId]?.meta?.subRooms;
+      state1.campaignInProgress.rooms[spec.roomId]?.meta?.subRooms;
     const holder =
       subRooms === undefined ? undefined
       : isWholeRoomSubRooms(subRooms) ? subRooms["*"]
@@ -313,8 +310,9 @@ test("coalescing rooms below a room that has a room above does not break map geo
 });
 
 test("merging two rooms below a room that is above one of them does not break map geometry", () => {
-  const result = reduceLevelEditorActions(
-    initialLevelEditorSliceState,
+  const state0 = initialLevelEditorSliceState;
+  const state1 = reduceLevelEditorActions(
+    state0,
     // one room going away from the start room
     insertRoom({ direction: "away" }),
     // a room above it, back up at z=0 + 1
@@ -326,12 +324,12 @@ test("merging two rooms below a room that is above one of them does not break ma
     coalesceSelectedRooms(),
   );
 
-  const { roomId, subRoomId } = selectCursorRoomFromLevelEditorState(result);
+  const { roomId, subRoomId } = selectCursorRoomFromLevelEditorState(state1);
 
   expect(
     () =>
       roomGridPositions({
-        campaign: result.campaignInProgress,
+        campaign: state1.campaignInProgress,
         roomId,
         subRoomId,
       }).nodes,
@@ -340,27 +338,28 @@ test("merging two rooms below a room that is above one of them does not break ma
 
 test("coalescing rooms leaves the links of doors in unrelated rooms alone", () => {
   // two rooms side by side, made from the same template so they share item ids:
-  const twoRooms = reduceLevelEditorActions(
+  const state0TwoRooms = reduceLevelEditorActions(
     initialLevelEditorSliceState,
     insertRoom({ direction: "right" }),
   );
-  const cursorRoomId = selectCursorRoomIdFromLevelEditorState(twoRooms);
-  const [otherRoomId] = keys(twoRooms.campaignInProgress.rooms).filter(
+  const cursorRoomId = selectCursorRoomIdFromLevelEditorState(state0TwoRooms);
+  const [otherRoomId] = keys(state0TwoRooms.campaignInProgress.rooms).filter(
     (id) => id !== cursorRoomId,
   );
   // an id both rooms have, so merging must rename the other room's copy:
   const [sharedItemId] = keys(
-    twoRooms.campaignInProgress.rooms[otherRoomId].items,
+    state0TwoRooms.campaignInProgress.rooms[otherRoomId].items,
   ).filter(
     (id) =>
-      twoRooms.campaignInProgress.rooms[cursorRoomId].items[id] !== undefined,
+      state0TwoRooms.campaignInProgress.rooms[cursorRoomId].items[id] !==
+      undefined,
   );
 
   // a door elsewhere, leading to an unrelated room's door that happens to
   // have that same id:
   const unrelatedRoomId = "unrelated" as EditorRoomId;
   const unrelatedDoorId = "unrelatedDoor" as EditorRoomItemId;
-  const withUnrelatedRoom = produce(twoRooms, (draft) => {
+  const state1WithUnrelatedRoom = produce(state0TwoRooms, (draft) => {
     draft.campaignInProgress.rooms[unrelatedRoomId] = {
       id: unrelatedRoomId,
       planet: "blacktooth",
@@ -379,15 +378,15 @@ test("coalescing rooms leaves the links of doors in unrelated rooms alone", () =
     };
   });
 
-  const result = reduceLevelEditorActions(
-    withUnrelatedRoom,
+  const state2 = reduceLevelEditorActions(
+    state1WithUnrelatedRoom,
     toggleRoomInSelection({ roomId: otherRoomId, subRoomId: "*" }),
     expectCoalesceable,
     coalesceSelectedRooms(),
   );
 
   const unrelatedDoor =
-    result.campaignInProgress.rooms[unrelatedRoomId].items[unrelatedDoorId];
+    state2.campaignInProgress.rooms[unrelatedRoomId].items[unrelatedDoorId];
   expect(unrelatedDoor?.type === "door" && unrelatedDoor.config.toDoor).toBe(
     sharedItemId,
   );
@@ -395,7 +394,7 @@ test("coalescing rooms leaves the links of doors in unrelated rooms alone", () =
 
 test("merging two rooms that each have a door to the same room leaves those links unambiguous", () => {
   // a two-cell room, from merging a room and the one inserted beside it:
-  const twoCellRoom = reduceLevelEditorActions(
+  const state0TwoCellRoom = reduceLevelEditorActions(
     initialLevelEditorSliceState,
     insertRoom({ direction: "right" }),
     toggleRoomInSelection({
@@ -406,28 +405,30 @@ test("merging two rooms that each have a door to the same room leaves those link
     }),
     coalesceSelectedRooms(),
   );
-  const twoCellRoomId = selectCursorRoomIdFromLevelEditorState(twoCellRoom);
+  const twoCellRoomId =
+    selectCursorRoomIdFromLevelEditorState(state0TwoCellRoom);
   const [firstCellId, secondCellId] = keys(
-    twoCellRoom.campaignInProgress.rooms[twoCellRoomId].meta?.subRooms ?? {},
+    state0TwoCellRoom.campaignInProgress.rooms[twoCellRoomId].meta?.subRooms ??
+      {},
   );
 
   // a room inserted away from each of its cells, so each links to it once:
-  const withRoomAwayFromFirstCell = reduceLevelEditorActions(
-    twoCellRoom,
+  const state1WithRoomAwayFromFirstCell = reduceLevelEditorActions(
+    state0TwoCellRoom,
     changeToRoom({ roomId: twoCellRoomId, subRoomId: firstCellId }),
     insertRoom({ direction: "away" }),
   );
   const awayFromFirstCellRoomId = selectCursorRoomIdFromLevelEditorState(
-    withRoomAwayFromFirstCell,
+    state1WithRoomAwayFromFirstCell,
   );
-  const beforeMerge = reduceLevelEditorActions(
-    withRoomAwayFromFirstCell,
+  const state2BeforeMerge = reduceLevelEditorActions(
+    state1WithRoomAwayFromFirstCell,
     changeToRoom({ roomId: twoCellRoomId, subRoomId: secondCellId }),
     insertRoom({ direction: "away" }),
   );
 
-  const afterMerge = reduceLevelEditorActions(
-    beforeMerge,
+  const state3AfterMerge = reduceLevelEditorActions(
+    state2BeforeMerge,
     toggleRoomInSelection({ roomId: awayFromFirstCellRoomId, subRoomId: "*" }),
     coalesceSelectedRooms(),
   );
@@ -436,5 +437,7 @@ test("merging two rooms that each have a door to the same room leaves those link
     verifyCampaign(state.campaignInProgress as VerificationCampaign).map(
       ({ msg }) => msg,
     );
-  expect(issueMessages(afterMerge)).toEqual(issueMessages(beforeMerge));
+  expect(issueMessages(state3AfterMerge)).toEqual(
+    issueMessages(state2BeforeMerge),
+  );
 });

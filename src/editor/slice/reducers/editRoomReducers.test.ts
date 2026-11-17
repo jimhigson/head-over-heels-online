@@ -23,6 +23,7 @@ import {
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../../editorTypes";
+import { newOpenRoom } from "../OpenRoom";
 
 /** the room id linked above/below a room's primary sub-room */
 const roomAboveOf = <RoomId extends string>(room: {
@@ -31,7 +32,6 @@ const roomAboveOf = <RoomId extends string>(room: {
 const roomBelowOf = <RoomId extends string>(room: {
   meta?: { subRooms?: SubRooms<RoomId> };
 }): RoomId | undefined => roomVerticalLink(room, "below")?.room;
-import { newEditorPane } from "../EditorPane";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import {
   applyItemTool,
@@ -49,7 +49,7 @@ import {
   editorStateWithOneRoomWithNoItems,
   editorStateWithOneRoomWithOneAwayWall,
   reduceLevelEditorActions,
-  testPaneId,
+  testOpenRoomId,
   testRoomId,
   wallItemId,
 } from "./__test__/storeStates";
@@ -109,7 +109,7 @@ describe("changing the id of the current room updates all references to that roo
   const otherRoomId = "otherRoom" as EditorRoomId;
   const newRoomId = "renamedRoom" as EditorRoomId;
 
-  const stateWithTwoRooms: LevelEditorState = produce(
+  const state0WithTwoRooms: LevelEditorState = produce(
     editorStateWithOneRoomWithNoItems,
     (draft) => {
       draft.campaignInProgress.rooms[otherRoomId] = {
@@ -122,24 +122,24 @@ describe("changing the id of the current room updates all references to that roo
   );
 
   test("the renamed room's own json id", () => {
-    const currentRoom = stateWithTwoRooms.campaignInProgress.rooms[
+    const currentRoom = state0WithTwoRooms.campaignInProgress.rooms[
       testRoomId
     ] as EditorRoomJson;
 
-    const state = reduceLevelEditorActions(
-      stateWithTwoRooms,
+    const state1 = reduceLevelEditorActions(
+      state0WithTwoRooms,
       roomJsonEdited({
         roomJson: { ...currentRoom, id: newRoomId },
         timestamp: 0,
       }),
     );
 
-    expect(state.campaignInProgress.rooms[newRoomId].id).toBe(newRoomId);
+    expect(state1.campaignInProgress.rooms[newRoomId].id).toBe(newRoomId);
   });
 
   test("doors that reference the old room id in their config", () => {
     // add a door to our editor state linking back to the test room:
-    const state1 = produce(stateWithTwoRooms, (draft) => {
+    const state1 = produce(state0WithTwoRooms, (draft) => {
       draft.campaignInProgress.rooms[otherRoomId].items[
         "door1" as EditorRoomItemId
       ] = {
@@ -170,7 +170,7 @@ describe("changing the id of the current room updates all references to that roo
     expect(doorItem && doorItem[1].config.toRoom).toBe(newRoomId);
   });
   test("teleporters that reference the old room id in their config", () => {
-    const state1 = produce(stateWithTwoRooms, (draft) => {
+    const state1 = produce(state0WithTwoRooms, (draft) => {
       draft.campaignInProgress.rooms[otherRoomId].items[
         "teleporter1" as EditorRoomItemId
       ] = {
@@ -204,7 +204,7 @@ describe("changing the id of the current room updates all references to that roo
   });
 
   test("portableTeleporters that reference the old room id in their config", () => {
-    const state1 = produce(stateWithTwoRooms, (draft) => {
+    const state1 = produce(state0WithTwoRooms, (draft) => {
       draft.campaignInProgress.rooms[otherRoomId].items[
         "portableTeleporter1" as EditorRoomItemId
       ] = {
@@ -240,7 +240,7 @@ describe("changing the id of the current room updates all references to that roo
   });
 
   test("above/below room references that reference the old room id", () => {
-    const state1 = produce(stateWithTwoRooms, (draft) => {
+    const state1 = produce(state0WithTwoRooms, (draft) => {
       draft.campaignInProgress.rooms[otherRoomId].meta = {
         subRooms: {
           "*": { above: { room: testRoomId }, below: { room: testRoomId } },
@@ -267,7 +267,7 @@ describe("changing the id of the current room updates all references to that roo
   });
 
   test("non-contiguous relationships that reference the old room id", () => {
-    const state1 = produce(stateWithTwoRooms, (draft) => {
+    const state1 = produce(state0WithTwoRooms, (draft) => {
       draft.campaignInProgress.rooms[otherRoomId].meta = {
         subRooms: {
           "*": {
@@ -298,8 +298,8 @@ describe("changing the id of the current room updates all references to that roo
   });
 
   test("undo history migrates from old room id to new room id", () => {
-    const stateWithHistory: LevelEditorState = produce(
-      stateWithTwoRooms,
+    const state1WithHistory: LevelEditorState = produce(
+      state0WithTwoRooms,
       (draft) => {
         draft.history[testRoomId] = {
           undo: [
@@ -330,32 +330,32 @@ describe("changing the id of the current room updates all references to that roo
       },
     );
 
-    const currentRoom = stateWithHistory.campaignInProgress.rooms[
+    const currentRoom = state1WithHistory.campaignInProgress.rooms[
       testRoomId
     ] as EditorRoomJson;
 
-    const result = reduceLevelEditorActions(
-      stateWithHistory,
+    const state2 = reduceLevelEditorActions(
+      state1WithHistory,
       roomJsonEdited({
         roomJson: { ...currentRoom, id: newRoomId },
         timestamp: 0,
       }),
     );
 
-    expect(result.history[testRoomId]).toBeUndefined();
-    expect(result.history[newRoomId]).toBeDefined();
-    expect(result.history[newRoomId]!.undo.length).toBeGreaterThanOrEqual(1);
-    expect(result.history[newRoomId]!.undo[0].description.kind).toBe(
+    expect(state2.history[testRoomId]).toBeUndefined();
+    expect(state2.history[newRoomId]).toBeDefined();
+    expect(state2.history[newRoomId]!.undo.length).toBeGreaterThanOrEqual(1);
+    expect(state2.history[newRoomId]!.undo[0].description.kind).toBe(
       "changeColour",
     );
-    expect(result.history[newRoomId]!.redo).toHaveLength(0);
+    expect(state2.history[newRoomId]!.redo).toHaveLength(0);
   });
 });
 
 describe('editing a door\'s "toRoom" config provides convenience methods to maintain symmetry', () => {
   const otherRoomId = "otherRoom" as EditorRoomId;
 
-  const stateWithTwoRooms: LevelEditorState = produce(
+  const state0WithTwoRooms: LevelEditorState = produce(
     editorStateWithOneRoomWithNoItems,
     (draft) => {
       // add a door in the test room pointing to nowhere:
@@ -382,7 +382,7 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
   test("changing toRoom to an existing room creates a return door in that room", () => {
     const editedRoom = structuredClone(
       produce(
-        stateWithTwoRooms.campaignInProgress.rooms[
+        state0WithTwoRooms.campaignInProgress.rooms[
           testRoomId
         ] as EditorRoomJson,
         (draft) => {
@@ -395,15 +395,15 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
       ),
     );
 
-    const result = reduceLevelEditorActions(
-      stateWithTwoRooms,
+    const state1 = reduceLevelEditorActions(
+      state0WithTwoRooms,
       roomJsonEdited({
         roomJson: editedRoom,
         timestamp: 0,
       }),
     );
 
-    const otherRoom = result.campaignInProgress.rooms[otherRoomId];
+    const otherRoom = state1.campaignInProgress.rooms[otherRoomId];
     const returnDoors = roomJsonItemsIterable(otherRoom)
       .filter(
         (item): item is EditorJsonItem<"door"> =>
@@ -417,15 +417,15 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
     // only one door links the two rooms, so neither end needs a toDoor (it
     // would be redundant and the verifier would just strip it)
     expect(returnDoor.config.toDoor).toBeUndefined();
-    const outgoingDoor = result.campaignInProgress.rooms[testRoomId].items[
+    const outgoingDoor = state1.campaignInProgress.rooms[testRoomId].items[
       "door1" as EditorRoomItemId
     ] as EditorJsonItem<"door">;
     expect(outgoingDoor.config.toDoor).toBeUndefined();
   });
 
   test("adds a toDoor to disambiguate when more than one door links the two rooms", () => {
-    const twoDoorState: LevelEditorState = produce(
-      stateWithTwoRooms,
+    const state1WithTwoDoors: LevelEditorState = produce(
+      state0WithTwoRooms,
       (draft) => {
         const room = draft.campaignInProgress.rooms[testRoomId];
         // two doors from this room both lead to the other room, so a return
@@ -443,16 +443,16 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
       },
     );
 
-    const currentRoom = twoDoorState.campaignInProgress.rooms[
+    const currentRoom = state1WithTwoDoors.campaignInProgress.rooms[
       testRoomId
     ] as EditorRoomJson;
 
-    const result = reduceLevelEditorActions(
-      twoDoorState,
+    const state2 = reduceLevelEditorActions(
+      state1WithTwoDoors,
       roomJsonEdited({ roomJson: structuredClone(currentRoom), timestamp: 0 }),
     );
 
-    const otherRoom = result.campaignInProgress.rooms[otherRoomId];
+    const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
     const returnDoors = roomJsonItemsIterable(otherRoom)
       .filter(
         (item): item is EditorJsonItem<"door"> =>
@@ -470,8 +470,8 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
   test("changing toRoom repurposes an existing opposite-direction door in the target room", () => {
     const existingReturnDoorId = "existingReturnDoor" as EditorRoomItemId;
 
-    const stateWithExistingDoor: LevelEditorState = produce(
-      stateWithTwoRooms,
+    const state1WithExistingDoor: LevelEditorState = produce(
+      state0WithTwoRooms,
       (draft) => {
         draft.campaignInProgress.rooms[otherRoomId].items[
           existingReturnDoorId
@@ -488,7 +488,7 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
 
     const editedRoom = structuredClone(
       produce(
-        stateWithExistingDoor.campaignInProgress.rooms[
+        state1WithExistingDoor.campaignInProgress.rooms[
           testRoomId
         ] as EditorRoomJson,
         (draft) => {
@@ -501,15 +501,15 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
       ),
     );
 
-    const result = reduceLevelEditorActions(
-      stateWithExistingDoor,
+    const state2 = reduceLevelEditorActions(
+      state1WithExistingDoor,
       roomJsonEdited({
         roomJson: editedRoom,
         timestamp: 0,
       }),
     );
 
-    const otherRoom = result.campaignInProgress.rooms[otherRoomId];
+    const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
     const returnDoor = otherRoom.items[
       existingReturnDoorId
     ] as EditorJsonItem<"door">;
@@ -523,8 +523,8 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
   test("does not repurpose a door that is not in the opposite direction", () => {
     const sameDirDoorId = "sameDirDoor" as EditorRoomItemId;
 
-    const stateWithSameDirDoor: LevelEditorState = produce(
-      stateWithTwoRooms,
+    const state1WithSameDirDoor: LevelEditorState = produce(
+      state0WithTwoRooms,
       (draft) => {
         draft.campaignInProgress.rooms[otherRoomId].items[sameDirDoorId] = {
           type: "door",
@@ -539,7 +539,7 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
 
     const editedRoom = structuredClone(
       produce(
-        stateWithSameDirDoor.campaignInProgress.rooms[
+        state1WithSameDirDoor.campaignInProgress.rooms[
           testRoomId
         ] as EditorRoomJson,
         (draft) => {
@@ -552,12 +552,12 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
       ),
     );
 
-    const result = reduceLevelEditorActions(
-      stateWithSameDirDoor,
+    const state2 = reduceLevelEditorActions(
+      state1WithSameDirDoor,
       roomJsonEdited({ roomJson: editedRoom, timestamp: 0 }),
     );
 
-    const otherRoom = result.campaignInProgress.rooms[otherRoomId];
+    const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
     const sameDirDoor = otherRoom.items[
       sameDirDoorId
     ] as EditorJsonItem<"door">;
@@ -599,10 +599,11 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
     const bLeftDoorId = "bLeftDoor" as EditorRoomItemId;
     const cRightDoorId = "cRightDoor" as EditorRoomItemId;
 
-    const state: LevelEditorState = {
+    const state0: LevelEditorState = {
       ...editorStateWithOneRoomWithNoItems,
       selectedRoomIds: [roomA],
-      cursorRoom: { roomId: roomA, subRoomId: "*" },
+      openRooms: { [testOpenRoomId]: newOpenRoom(roomA, "*", true) },
+      cursorRoomId: roomA,
       campaignInProgress: {
         ...editorStateWithOneRoomWithNoItems.campaignInProgress,
         rooms: {
@@ -657,7 +658,7 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
 
     const editedRoomA = structuredClone(
       produce(
-        state.campaignInProgress.rooms[roomA] as EditorRoomJson,
+        state0.campaignInProgress.rooms[roomA] as EditorRoomJson,
         (draft) => {
           (
             draft.items[aLeftDoorId] as {
@@ -668,19 +669,19 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
       ),
     );
 
-    const result = reduceLevelEditorActions(
-      state,
+    const state1 = reduceLevelEditorActions(
+      state0,
       roomJsonEdited({ roomJson: editedRoomA, timestamp: 0 }),
     );
 
-    const resultA = result.campaignInProgress.rooms[roomA];
+    const resultA = state1.campaignInProgress.rooms[roomA];
     const aLeftDoor = resultA.items[aLeftDoorId] as EditorJsonItem<"door">;
 
-    const resultB = result.campaignInProgress.rooms[roomB];
+    const resultB = state1.campaignInProgress.rooms[roomB];
     const bRightDoor = resultB.items[bRightDoorId] as EditorJsonItem<"door">;
     const bLeftDoor = resultB.items[bLeftDoorId] as EditorJsonItem<"door">;
 
-    const resultC = result.campaignInProgress.rooms[roomC];
+    const resultC = state1.campaignInProgress.rooms[roomC];
     const cRightDoor = resultC.items[cRightDoorId] as EditorJsonItem<"door">;
 
     // A's left door should now point to B (the user's edit):
@@ -706,35 +707,37 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
 
 describe("setRoomAboveOrBelow", () => {
   test("createNew with no existing room above creates and links bidirectionally", () => {
-    const result = reduceLevelEditorActions(
-      editorStateWithOneRoomWithNoItems,
+    const state0 = editorStateWithOneRoomWithNoItems;
+    const state1 = reduceLevelEditorActions(
+      state0,
       setRoomAboveOrBelow({ direction: "above", createNew: true }),
     );
 
-    const originalRoom = result.campaignInProgress.rooms[testRoomId];
+    const originalRoom = state1.campaignInProgress.rooms[testRoomId];
     const newRoomId = roomAboveOf(originalRoom)!;
-    const newRoom = result.campaignInProgress.rooms[newRoomId];
+    const newRoom = state1.campaignInProgress.rooms[newRoomId];
 
     expect(newRoom).toBeDefined();
     expect(roomBelowOf(newRoom)).toBe(testRoomId);
   });
 
   test("createNew navigates to the newly created room", () => {
-    const result = reduceLevelEditorActions(
-      editorStateWithOneRoomWithNoItems,
+    const state0 = editorStateWithOneRoomWithNoItems;
+    const state1 = reduceLevelEditorActions(
+      state0,
       setRoomAboveOrBelow({ direction: "above", createNew: true }),
     );
 
-    expect(selectCursorRoomIdFromLevelEditorState(result)).not.toBe(testRoomId);
-    const originalRoom = result.campaignInProgress.rooms[testRoomId];
-    expect(selectCursorRoomIdFromLevelEditorState(result)).toBe(
+    expect(selectCursorRoomIdFromLevelEditorState(state1)).not.toBe(testRoomId);
+    const originalRoom = state1.campaignInProgress.rooms[testRoomId];
+    expect(selectCursorRoomIdFromLevelEditorState(state1)).toBe(
       roomAboveOf(originalRoom),
     );
   });
 
   test("createNew splices between existing rooms", () => {
     const roomB = "roomB" as EditorRoomId;
-    const stateWithRoomAbove: LevelEditorState = produce(
+    const state0WithRoomAbove: LevelEditorState = produce(
       editorStateWithOneRoomWithNoItems,
       (draft) => {
         draft.campaignInProgress.rooms[roomB] = {
@@ -750,15 +753,15 @@ describe("setRoomAboveOrBelow", () => {
       },
     );
 
-    const result = reduceLevelEditorActions(
-      stateWithRoomAbove,
+    const state1 = reduceLevelEditorActions(
+      state0WithRoomAbove,
       setRoomAboveOrBelow({ direction: "above", createNew: true }),
     );
 
-    const originalRoom = result.campaignInProgress.rooms[testRoomId];
+    const originalRoom = state1.campaignInProgress.rooms[testRoomId];
     const newRoomId = roomAboveOf(originalRoom)!;
-    const newRoom = result.campaignInProgress.rooms[newRoomId];
-    const roomBResult = result.campaignInProgress.rooms[roomB];
+    const newRoom = state1.campaignInProgress.rooms[newRoomId];
+    const roomBResult = state1.campaignInProgress.rooms[roomB];
 
     expect.soft(roomBelowOf(newRoom)).toBe(testRoomId);
     expect.soft(roomAboveOf(newRoom)).toBe(roomB);
@@ -766,12 +769,13 @@ describe("setRoomAboveOrBelow", () => {
   });
 
   test("createNew gives the new sandwiched room a 'none' floor", () => {
-    const result = reduceLevelEditorActions(
-      editorStateWithOneRoomWithNoItems,
+    const state0 = editorStateWithOneRoomWithNoItems;
+    const state1 = reduceLevelEditorActions(
+      state0,
       setRoomAboveOrBelow({ direction: "below", createNew: true }),
     );
 
-    const originalRoom = result.campaignInProgress.rooms[testRoomId];
+    const originalRoom = state1.campaignInProgress.rooms[testRoomId];
     const floors = [...roomJsonItemsIterable(originalRoom)].filter(
       (item) => item.type === "floor",
     );
@@ -784,7 +788,7 @@ describe("undo descriptions for JSON edits", () => {
   const pickupId = "pi1" as EditorRoomItemId;
   const monsterId = "m1" as EditorRoomItemId;
 
-  const stateWithItems: LevelEditorState = produce(
+  const state0WithItems: LevelEditorState = produce(
     editorStateWithOneRoomWithNoItems,
     (draft) => {
       const room = draft.campaignInProgress.rooms[testRoomId];
@@ -806,7 +810,7 @@ describe("undo descriptions for JSON edits", () => {
   );
 
   test("editing a single item produces editItems with that item", () => {
-    const currentRoom = stateWithItems.campaignInProgress.rooms[
+    const currentRoom = state0WithItems.campaignInProgress.rooms[
       testRoomId
     ] as EditorRoomJson;
 
@@ -815,13 +819,13 @@ describe("undo descriptions for JSON edits", () => {
         "hooter";
     });
 
-    const result = reduceLevelEditorActions(
-      stateWithItems,
+    const state1 = reduceLevelEditorActions(
+      state0WithItems,
       roomJsonEdited({ roomJson: structuredClone(editedRoom), timestamp: 0 }),
     );
 
-    expect(result.history[testRoomId]!.undo).toHaveLength(1);
-    const [{ description }] = result.history[testRoomId]!.undo;
+    expect(state1.history[testRoomId]!.undo).toHaveLength(1);
+    const [{ description }] = state1.history[testRoomId]!.undo;
     expect(description.kind).toBe("editItems");
     if (description.kind === "editItems") {
       expect(description.items).toHaveLength(1);
@@ -832,7 +836,7 @@ describe("undo descriptions for JSON edits", () => {
   });
 
   test("editing multiple items produces editItems with all affected items", () => {
-    const currentRoom = stateWithItems.campaignInProgress.rooms[
+    const currentRoom = state0WithItems.campaignInProgress.rooms[
       testRoomId
     ] as EditorRoomJson;
 
@@ -843,12 +847,12 @@ describe("undo descriptions for JSON edits", () => {
         "elephant";
     });
 
-    const result = reduceLevelEditorActions(
-      stateWithItems,
+    const state1 = reduceLevelEditorActions(
+      state0WithItems,
       roomJsonEdited({ roomJson: structuredClone(editedRoom), timestamp: 0 }),
     );
 
-    const [{ description }] = result.history[testRoomId]!.undo;
+    const [{ description }] = state1.history[testRoomId]!.undo;
     expect(description.kind).toBe("editItems");
     if (description.kind === "editItems") {
       expect(description.items).toHaveLength(2);
@@ -859,7 +863,7 @@ describe("undo descriptions for JSON edits", () => {
   });
 
   test("editing room colour produces editRoomProperty", () => {
-    const currentRoom = stateWithItems.campaignInProgress.rooms[
+    const currentRoom = state0WithItems.campaignInProgress.rooms[
       testRoomId
     ] as EditorRoomJson;
 
@@ -868,12 +872,12 @@ describe("undo descriptions for JSON edits", () => {
       color: { hue: "magenta" as const, shade: "basic" as const },
     };
 
-    const result = reduceLevelEditorActions(
-      stateWithItems,
+    const state1 = reduceLevelEditorActions(
+      state0WithItems,
       roomJsonEdited({ roomJson: structuredClone(editedRoom), timestamp: 0 }),
     );
 
-    const [{ description }] = result.history[testRoomId]!.undo;
+    const [{ description }] = state1.history[testRoomId]!.undo;
     expect(description).toEqual({
       kind: "editRoomProperty",
       property: "color",
@@ -881,7 +885,7 @@ describe("undo descriptions for JSON edits", () => {
   });
 
   test("editing multiple top-level keys produces editRoomJson", () => {
-    const currentRoom = stateWithItems.campaignInProgress.rooms[
+    const currentRoom = state0WithItems.campaignInProgress.rooms[
       testRoomId
     ] as EditorRoomJson;
 
@@ -891,19 +895,19 @@ describe("undo descriptions for JSON edits", () => {
       color: { hue: "magenta" as const, shade: "basic" as const },
     };
 
-    const result = reduceLevelEditorActions(
-      stateWithItems,
+    const state1 = reduceLevelEditorActions(
+      state0WithItems,
       roomJsonEdited({ roomJson: structuredClone(editedRoom), timestamp: 0 }),
     );
 
-    const [{ description }] = result.history[testRoomId]!.undo;
+    const [{ description }] = state1.history[testRoomId]!.undo;
     expect(description).toEqual({ kind: "editRoomJson" });
   });
 });
 
 describe("makeHoleInSelectedFloor", () => {
   const floorId = "f" as EditorRoomItemId;
-  const stateWithSelectedFloor: LevelEditorState = produce(
+  const state0WithSelectedFloor: LevelEditorState = produce(
     editorStateWithOneRoomWithNoItems,
     (draft) => {
       draft.campaignInProgress.rooms[testRoomId].items[floorId] = {
@@ -915,20 +919,18 @@ describe("makeHoleInSelectedFloor", () => {
           times: { x: 6, y: 7 },
         },
       };
-      draft.panes[testPaneId]!.selectedJsonItemIdsByRoom[testRoomId] = [
-        floorId,
-      ];
+      draft.openRooms[testOpenRoomId].selectedJsonItemIds = [floorId];
     },
   );
 
   test("splits the floor into a 2×2 'none' floor at its centre and the floors around it", () => {
-    const result = reduceLevelEditorActions(
-      stateWithSelectedFloor,
+    const state1 = reduceLevelEditorActions(
+      state0WithSelectedFloor,
       makeHoleInSelectedFloor({ timestamp: 0 }),
     );
 
     const floors = roomJsonItemsIterable(
-      result.campaignInProgress.rooms[testRoomId],
+      state1.campaignInProgress.rooms[testRoomId],
     )
       .filter((item) => item.type === "floor")
       .map(({ position, config }) => ({
@@ -971,30 +973,30 @@ describe("makeHoleInSelectedFloor", () => {
   });
 
   test("links a newly created room below, both ways", () => {
-    const result = reduceLevelEditorActions(
-      stateWithSelectedFloor,
+    const state1 = reduceLevelEditorActions(
+      state0WithSelectedFloor,
       makeHoleInSelectedFloor({ timestamp: 0 }),
     );
 
     const roomBelowId = roomBelowOf(
-      result.campaignInProgress.rooms[testRoomId],
+      state1.campaignInProgress.rooms[testRoomId],
     )!;
-    expect(roomAboveOf(result.campaignInProgress.rooms[roomBelowId])).toBe(
+    expect(roomAboveOf(state1.campaignInProgress.rooms[roomBelowId])).toBe(
       testRoomId,
     );
   });
 
   test("the room created below has a floor the same size as the room", () => {
-    const result = reduceLevelEditorActions(
-      stateWithSelectedFloor,
+    const state1 = reduceLevelEditorActions(
+      state0WithSelectedFloor,
       makeHoleInSelectedFloor({ timestamp: 0 }),
     );
 
     const roomBelowId = roomBelowOf(
-      result.campaignInProgress.rooms[testRoomId],
+      state1.campaignInProgress.rooms[testRoomId],
     )!;
     const floorsBelowTimes = roomJsonItemsIterable(
-      result.campaignInProgress.rooms[roomBelowId],
+      state1.campaignInProgress.rooms[roomBelowId],
     )
       .filter((item) => item.type === "floor")
       .map(({ config }) => config.times)
@@ -1010,7 +1012,7 @@ describe("makeHoleInSelectedFloor", () => {
         to: { x: (x + 1) * 8, y: (y + 1) * 8 },
       },
     });
-    const stateWithDividedRoom: LevelEditorState = produce(
+    const state0WithDividedRoom: LevelEditorState = produce(
       editorStateWithOneRoomWithNoItems,
       (draft) => {
         const room = draft.campaignInProgress.rooms[testRoomId];
@@ -1031,22 +1033,20 @@ describe("makeHoleInSelectedFloor", () => {
             d: cell(0, 0),
           },
         };
-        draft.cursorRoom = { roomId: testRoomId, subRoomId: "a" };
-        draft.panes[testPaneId]!.selectedJsonItemIdsByRoom[testRoomId] = [
-          floorId,
-        ];
+        draft.openRooms[testOpenRoomId].subRoomId = "a";
+        draft.openRooms[testOpenRoomId].selectedJsonItemIds = [floorId];
       },
     );
 
-    const result = reduceLevelEditorActions(
-      stateWithDividedRoom,
+    const state1 = reduceLevelEditorActions(
+      state0WithDividedRoom,
       makeHoleInSelectedFloor({ timestamp: 0 }),
     );
 
-    const room = result.campaignInProgress.rooms[testRoomId];
+    const room = state1.campaignInProgress.rooms[testRoomId];
     const linkedBelow = ["a", "b", "c", "d"].map((subRoomId) => {
       const below = roomVerticalLink(room, "below", subRoomId)!;
-      const roomBelow = result.campaignInProgress.rooms[below.room];
+      const roomBelow = state1.campaignInProgress.rooms[below.room];
       return {
         room: below.room,
         gridPosition: subRoomById(roomBelow, below.subRoom!)?.gridPosition,
@@ -1063,8 +1063,8 @@ describe("makeHoleInSelectedFloor", () => {
 
   test("keeps an existing room below rather than creating another", () => {
     const roomB = "roomB" as EditorRoomId;
-    const stateWithRoomBelow: LevelEditorState = produce(
-      stateWithSelectedFloor,
+    const state1WithRoomBelow: LevelEditorState = produce(
+      state0WithSelectedFloor,
       (draft) => {
         draft.campaignInProgress.rooms[roomB] = {
           id: roomB,
@@ -1079,12 +1079,12 @@ describe("makeHoleInSelectedFloor", () => {
       },
     );
 
-    const result = reduceLevelEditorActions(
-      stateWithRoomBelow,
+    const state2 = reduceLevelEditorActions(
+      state1WithRoomBelow,
       makeHoleInSelectedFloor({ timestamp: 0 }),
     );
 
-    expect(keys(result.campaignInProgress.rooms)).toEqual([testRoomId, roomB]);
+    expect(keys(state2.campaignInProgress.rooms)).toEqual([testRoomId, roomB]);
   });
 });
 
@@ -1116,34 +1116,33 @@ describe("makeHoleInSelectedFloor leaves the campaign without verification issue
     const state0: LevelEditorState = {
       ...editorStateWithOneRoomWithNoItems,
       selectedRoomIds: [roomId],
-      cursorRoom: {
-        roomId,
-        subRoomId: Object.keys(room.meta?.subRooms ?? { "*": {} })[0],
-      },
-      openRoomTabs: [{ roomId, isPreview: false, view: undefined }],
+
       campaignInProgress: {
         ...editorStateWithOneRoomWithNoItems.campaignInProgress,
         rooms: {
           [roomId]: room,
         } as LevelEditorState["campaignInProgress"]["rooms"],
       },
-      panes: {
-        [testPaneId]: {
-          ...newEditorPane({ type: "cursorRoom" }, true),
-          selectedJsonItemIdsByRoom: { [roomId]: [floorId] },
-        },
+      openRooms: {
+        [testOpenRoomId]: newOpenRoom(
+          roomId,
+          Object.keys(room.meta?.subRooms ?? { "*": {} })[0],
+          true,
+          [floorId],
+        ),
       },
+      cursorRoomId: roomId,
     };
     const issueMessages = (state: LevelEditorState) =>
       verifyCampaign(state.campaignInProgress as VerificationCampaign).map(
         ({ msg }) => msg,
       );
-    const result = reduceLevelEditorActions(
+    const state1 = reduceLevelEditorActions(
       state0,
       makeHoleInSelectedFloor({ timestamp: 0 }),
     );
 
     // only the campaign-wide issues of a one-room campaign, from before:
-    expect(issueMessages(result)).toEqual(issueMessages(state0));
+    expect(issueMessages(state1)).toEqual(issueMessages(state0));
   });
 });

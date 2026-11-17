@@ -5,13 +5,13 @@ import { nowhereRoomId } from "../../../../model/json/ItemConfigMap";
 import { type EditorThunk } from "../../../../store/store";
 import { type EditorRoomId, type EditorRoomItemId } from "../../../editorTypes";
 import { type Tool } from "../../../RoomEditingArea/interactivity/Tool";
-import { type EditorPaneId, newEditorPane } from "../../EditorPane";
 import { initialLevelEditorSliceState } from "../../initialLevelEditorSliceState";
 import {
   levelEditorSlice,
   type LevelEditorSliceAction,
   type LevelEditorState,
 } from "../../levelEditorSlice";
+import { newOpenRoom, type OpenRoomId, type TabId } from "../../OpenRoom";
 
 export const doorItemToolWithAutoAddRooms: Tool = {
   type: "item",
@@ -32,18 +32,17 @@ export const testRoomId = "testRoomId" as EditorRoomId;
 export const wallItemId = "testWall" as EditorRoomItemId;
 
 /**
- * the one pane the test states have mounted - editing the cursor room, and
- * active
+ * the open room the test states show in their one tab
  */
-export const testPaneId = "testPane" as EditorPaneId;
+export const testOpenRoomId = "testOpenRoom" as OpenRoomId;
+const testTabId = "testTab" as TabId;
 
 export const editorStateWithOneRoomWithNoItems: LevelEditorState = {
   ...initialLevelEditorSliceState,
-  panes: { [testPaneId]: newEditorPane({ type: "cursorRoom" }, true) },
-  activePaneId: testPaneId,
   selectedRoomIds: [testRoomId],
-  cursorRoom: { roomId: testRoomId, subRoomId: "*" },
-  openRoomTabs: [{ roomId: testRoomId, isPreview: false, view: undefined }],
+  openRooms: { [testOpenRoomId]: newOpenRoom(testRoomId, "*", true) },
+  tabs: [{ id: testTabId, isPreview: false, openRoomId: testOpenRoomId }],
+  cursorRoomId: testRoomId,
   campaignInProgress: {
     locator: {
       campaignName: "testCampaign",

@@ -2,9 +2,9 @@ import { debounce } from "@github/mini-throttle";
 import { useEffect } from "preact/hooks";
 
 import { editorStore } from "../../store/store";
-import { paneResized } from "../slice/levelEditorSlice";
-import { useEditorPane } from "./pane/EditorPaneProvider";
+import { openRoomPaneResized } from "../slice/levelEditorSlice";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
+import { useOpenRoomPane } from "./useOpenRoomPane";
 
 /**
  * resizing the renderer is relatively expensive, so while the pane is being
@@ -23,7 +23,7 @@ export const useResizePixiApplicationToPane = (
   paneElement: HTMLElement | null,
 ): void => {
   const application = useProvidedPixiApplication();
-  const { paneId } = useEditorPane();
+  const { openRoomId } = useOpenRoomPane();
 
   useEffect(() => {
     if (paneElement === null) {
@@ -34,7 +34,10 @@ export const useResizePixiApplicationToPane = (
       const { clientWidth, clientHeight } = paneElement;
       application.renderer.resize(clientWidth, clientHeight);
       editorStore.dispatch(
-        paneResized({ paneId, paneSize: { x: clientWidth, y: clientHeight } }),
+        openRoomPaneResized({
+          openRoomId,
+          paneSize: { x: clientWidth, y: clientHeight },
+        }),
       );
     };
 
@@ -50,5 +53,5 @@ export const useResizePixiApplicationToPane = (
       // the app may be destroyed before a pending resize would land:
       debouncedResize.cancel();
     };
-  }, [application, paneElement, paneId]);
+  }, [application, paneElement, openRoomId]);
 };

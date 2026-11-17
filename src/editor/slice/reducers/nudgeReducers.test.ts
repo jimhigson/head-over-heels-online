@@ -15,7 +15,7 @@ import {
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,
-  testPaneId,
+  testOpenRoomId,
   testRoomId,
 } from "./__test__/storeStates";
 
@@ -50,7 +50,7 @@ const stateWithSelectedMonkey: LevelEditorState = produce(
         },
       };
     }
-    draft.panes[testPaneId]!.selectedJsonItemIdsByRoom[testRoomId] = [monkeyId];
+    draft.openRooms[testOpenRoomId].selectedJsonItemIds = [monkeyId];
   },
 );
 
@@ -61,8 +61,9 @@ const monkeyPosition = (state: LevelEditorState) =>
   state.campaignInProgress.rooms[testRoomId].items[monkeyId]?.position;
 
 test("nudges are previewed, and committed as one edit once they pause", () => {
-  const result = reduceLevelEditorActions(
-    stateWithSelectedMonkey,
+  const state0 = stateWithSelectedMonkey;
+  const state1 = reduceLevelEditorActions(
+    state0,
     nudge(unitVectors.left),
     nudge(unitVectors.left),
     nudge(unitVectors.left),
@@ -70,65 +71,70 @@ test("nudges are previewed, and committed as one edit once they pause", () => {
   );
 
   expect({
-    position: monkeyPosition(result),
-    undoEntries: result.history[testRoomId]?.undo.length,
+    position: monkeyPosition(state1),
+    undoEntries: state1.history[testRoomId]?.undo.length,
   }).toEqual({ position: { x: 4, y: 1, z: 0 }, undoEntries: 1 });
 });
 
 test("nudges aren't committed while they are still being previewed", () => {
-  const result = reduceLevelEditorActions(
-    stateWithSelectedMonkey,
+  const state0 = stateWithSelectedMonkey;
+  const state1 = reduceLevelEditorActions(
+    state0,
     nudge(unitVectors.left),
     nudge(unitVectors.left),
   );
 
-  expect(monkeyPosition(result)).toEqual<Xyz>({ x: 1, y: 1, z: 0 });
+  expect(monkeyPosition(state1)).toEqual<Xyz>({ x: 1, y: 1, z: 0 });
 });
 
 test("changing the selection commits the nudges", () => {
-  const result = reduceLevelEditorActions(
-    stateWithSelectedMonkey,
+  const state0 = stateWithSelectedMonkey;
+  const state1 = reduceLevelEditorActions(
+    state0,
     nudge(unitVectors.left),
     nudge(unitVectors.left),
     setSelectedItemsInRoom({ jsonItemIds: [otherMonkeyId] }),
   );
 
   expect({
-    position: monkeyPosition(result),
-    pendingEdits: result.pendingEdits,
+    position: monkeyPosition(state1),
+    pendingEdits: state1.pendingEdits,
   }).toEqual({ position: { x: 3, y: 1, z: 0 }, pendingEdits: undefined });
 });
 
 test("undoing while nudges are previewed undoes the nudges", () => {
-  const result = reduceLevelEditorActions(
-    stateWithSelectedMonkey,
+  const state0 = stateWithSelectedMonkey;
+  const state1 = reduceLevelEditorActions(
+    state0,
     nudge(unitVectors.left),
     nudge(unitVectors.left),
     undo(),
     commitPendingNudge(),
   );
 
-  expect(monkeyPosition(result)).toEqual<Xyz>({ x: 1, y: 1, z: 0 });
+  expect(monkeyPosition(state1)).toEqual<Xyz>({ x: 1, y: 1, z: 0 });
 });
 
 test("deleting while nudges are previewed deletes the nudged item for good", () => {
-  const result = reduceLevelEditorActions(
-    stateWithSelectedMonkey,
+  const state0 = stateWithSelectedMonkey;
+  const state1 = reduceLevelEditorActions(
+    state0,
     nudge(unitVectors.left),
     deleteSelected({ timestamp: 0 }),
     commitPendingNudge(),
   );
 
-  expect(monkeyPosition(result)).toBeUndefined();
+  expect(monkeyPosition(state1)).toBeUndefined();
 });
 
 test("nudging back to where the item started leaves no edit", () => {
-  const result = reduceLevelEditorActions(
-    stateWithSelectedMonkey,
+  const state0 = stateWithSelectedMonkey;
+  const state1 = reduceLevelEditorActions(
+    state0,
     nudge(unitVectors.left),
     nudge(unitVectors.right),
     commitPendingNudge(),
   );
 
-  expect(result.history[testRoomId]?.undo ?? []).toHaveLength(0);
+  expect(state1.history[testRoomId]?.undo ?? []).toHaveLength(0);
 });

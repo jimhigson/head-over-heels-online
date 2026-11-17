@@ -13,7 +13,7 @@ import { loadEditorRoom } from "../slice/loadEditorRoom";
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,
-  testPaneId,
+  testOpenRoomId,
   testRoomId,
 } from "../slice/reducers/__test__/storeStates";
 import { nudgeSelectedItemsThunk } from "./nudgeSelectedItemsThunk";
@@ -27,7 +27,7 @@ test("nudging a door at a fine grid resolution moves it by a whole block", () =>
     editorStateWithOneRoomWithNoItems,
     (draft) => {
       draft.gridResolution = 0.125;
-      draft.panes[testPaneId]!.selectedJsonItemIdsByRoom[testRoomId] = [doorId];
+      draft.openRooms[testOpenRoomId].selectedJsonItemIds = [doorId];
       const room = draft.campaignInProgress.rooms[testRoomId];
       room.items["floor" as EditorRoomItemId] = {
         type: "floor",
@@ -94,9 +94,7 @@ test.for([
       editorStateWithOneRoomWithNoItems,
       (draft) => {
         draft.gridResolution = 0.5;
-        draft.panes[testPaneId]!.selectedJsonItemIdsByRoom[testRoomId] = [
-          monkeyId,
-        ];
+        draft.openRooms[testOpenRoomId].selectedJsonItemIds = [monkeyId];
         const room = draft.campaignInProgress.rooms[testRoomId];
         room.items["floor" as EditorRoomItemId] = {
           type: "floor",

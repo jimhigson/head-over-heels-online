@@ -17,7 +17,6 @@ import {
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../../editorTypes";
-import { panesIter } from "../EditorPane";
 import { isMovableBetweenRooms } from "../isMovableBetweenRooms";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
@@ -129,8 +128,8 @@ export const moveItemsToRoomInPlace = (
   commitPendingNudgeInPlace(state);
   // the drag's preview is replaced by the move:
   state.pendingEdits = undefined;
-  for (const pane of panesIter(state)) {
-    pane.dragInProgress = undefined;
+  for (const openRoom of valuesIter(state.openRooms)) {
+    openRoom.dragInProgress = undefined;
   }
 
   const { rooms } = state.campaignInProgress;

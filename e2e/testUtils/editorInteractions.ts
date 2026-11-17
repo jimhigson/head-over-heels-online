@@ -78,8 +78,8 @@ export const editorCameraAngle = async (page: Page): Promise<Xy> =>
 export const editorCurrentRoomJson = async (
   page: Page,
 ): Promise<EditorRoomJson> => {
-  const { campaignInProgress, cursorRoom } = await editorSliceState(page);
-  return campaignInProgress.rooms[cursorRoom.roomId] as EditorRoomJson;
+  const { campaignInProgress, cursorRoomId } = await editorSliceState(page);
+  return campaignInProgress.rooms[cursorRoomId] as EditorRoomJson;
 };
 
 export const editorItems = async (page: Page): Promise<Array<EditorE2eItem>> =>

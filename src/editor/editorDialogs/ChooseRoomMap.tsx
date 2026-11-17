@@ -19,7 +19,7 @@ import {
 } from "../EditorMap/useEditorMapData";
 import { type EditorCampaign, type EditorRoomId } from "../editorTypes";
 import { EditorMapRoomTooltipBehaviour } from "../roomPreview/EditorMapRoomTooltipBehaviour";
-import { firstSubRoomId } from "../slice/inPlaceMutators/changeCurrentRoomInPlace";
+import { firstSubRoomId } from "../slice/inPlaceMutators/firstSubRoomId";
 
 /**
  * the map with the given room as current, and the context its rooms draw from
