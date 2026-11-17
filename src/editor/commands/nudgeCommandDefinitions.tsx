@@ -267,7 +267,11 @@ export const nudgeCommandDefinitions: Record<NudgeCommandId, ActionCommand> = {
     shortcutKeys: ["["],
     tooltipContent: `## Rotate anti-clockwise\n\nTurn the selected item(s) - or the item the current tool will place - a quarter-turn anti-clockwise`,
     selectIsAvailable: selectSelectionOrToolItemIsRotatable,
-    action: () => rotateSelectionOrToolItemThunk("anticlockwise"),
+    action: () =>
+      rotateSelectionOrToolItemThunk(
+        "anticlockwise",
+        activeOpenRoomLoadedRoom()?.getRoomState(),
+      ),
   },
   "rotate.clockwise": {
     type: "action",
@@ -276,6 +280,10 @@ export const nudgeCommandDefinitions: Record<NudgeCommandId, ActionCommand> = {
     shortcutKeys: ["]"],
     tooltipContent: `## Rotate clockwise\n\nTurn the selected item(s) - or the item the current tool will place - a quarter-turn clockwise`,
     selectIsAvailable: selectSelectionOrToolItemIsRotatable,
-    action: () => rotateSelectionOrToolItemThunk("clockwise"),
+    action: () =>
+      rotateSelectionOrToolItemThunk(
+        "clockwise",
+        activeOpenRoomLoadedRoom()?.getRoomState(),
+      ),
   },
 };
