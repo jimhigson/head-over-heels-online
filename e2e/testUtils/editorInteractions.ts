@@ -186,6 +186,12 @@ export const hoverMapRoom = async (
   page: Page,
   roomId: string,
 ): Promise<void> => {
+  // if a tooltip is still open from where the pointer was (eg a map button
+  // just clicked), the room's tooltip can lose interest and close again soon
+  // after opening - so move off and let every tooltip close first:
+  await page.mouse.move(0, 0);
+  await expect(page.locator("[popover]:popover-open")).toHaveCount(0);
+
   const roomFloor = page.locator(`[data-room-click^="${roomId}/"]`);
   const floorBox = await roomFloor.boundingBox();
   if (floorBox === null) {
