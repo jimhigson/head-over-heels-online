@@ -1,5 +1,3 @@
-import { type AllUnionFields } from "type-fest";
-
 import { keysIter, objectEntriesIter } from "../../utils/entries";
 import { Graph } from "../../utils/graph/Graph";
 import { unitVectors } from "../../utils/vectors/unitVectors";
@@ -16,15 +14,12 @@ import {
 } from "../../utils/vectors/vectors";
 import { exitGameRoomId, nowhereRoomId } from "../json/ItemConfigMap";
 import { type JsonItem } from "../json/JsonItem";
-import { resolveTeleporterLanding } from "../json/resolveTeleporterLanding";
 import { type Campaign } from "../modelTypes";
-import { isWholeRoomSubRooms, type RoomJson, type SubRooms } from "../RoomJson";
-import {
-  iterateRoomJsonItemIds,
-  iterateRoomJsonItemsWithIds,
-} from "../RoomJsonItemIterators";
+import { isWholeRoomSubRooms, type SubRooms } from "../RoomJson";
+import { iterateRoomJsonItemsWithIds } from "../RoomJsonItemIterators";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { partnerDoorSubRoomId } from "./partnerDoorSubRoomId";
+import { teleporterLinksFromCell } from "./teleporterLinksFromCell";
 
 type RoomGridPositionsOptions<RoomId extends string> = {
   /** the room to seed the traversal from */
@@ -77,51 +72,6 @@ export type RoomGraph<RoomId extends string> = Graph<
   RoomNode<RoomId>,
   RoomEdge
 >;
-
-/** the teleporter config with all the union branches' fields flattened to optional */
-type FlatTeleporterConfig<RoomId extends string> = AllUnionFields<
-  JsonItem<"teleporter", RoomId>["config"]
->;
-
-/** where a teleporter lands: the destination (sub-)room and item, when known */
-type TeleporterTargetEndpoint = { subRoomId: string; itemId?: string };
-
-/**
- * which sub-room (and which item) of the target room does this teleporter
- * land on? Undefined when it has nowhere to land
- */
-const findTargetEndpoint = <RoomId extends string>(
-  config: FlatTeleporterConfig<RoomId>,
-  targetRoom: RoomJson<RoomId, string>,
-  /** the teleporter being used, when it lands in its own room */
-  sourceItemIdInTarget: string | undefined,
-): TeleporterTargetEndpoint | undefined => {
-  const landing = resolveTeleporterLanding(
-    config,
-    iterateRoomJsonItemIds(
-      targetRoom.items,
-      "teleporter",
-      "portableTeleporter",
-    ),
-    (itemId): itemId is string => itemId in targetRoom.items,
-    sourceItemIdInTarget,
-  );
-  switch (landing.type) {
-    case "item":
-      return {
-        subRoomId: findSubRoomForItem(
-          targetRoom.items[landing.itemId].position,
-          "block",
-          targetRoom,
-        ),
-        itemId: landing.itemId,
-      };
-    case "unresolvable":
-      return undefined;
-    default:
-      landing satisfies never;
-  }
-};
 
 const getBoundary = (
   direction: DirectionXy4,
@@ -268,7 +218,7 @@ const visit = <RoomId extends string>(
     subgraph,
   });
 
-  const record = (to: string, edge: RoomEdge): void => {
+  const queueEdge = (to: string, edge: RoomEdge): void => {
     state.rawEdges.push({ from: fromKey, to, edge });
   };
 
@@ -285,7 +235,7 @@ const visit = <RoomId extends string>(
         { ...nextSubroomGridPosition, z: 0 },
         currentSubRoomGridPosition!,
       );
-      record(cellKey(roomIdIn, nextSubRoomId), { kind: "subRoom", vector });
+      queueEdge(cellKey(roomIdIn, nextSubRoomId), { kind: "subRoom", vector });
       visit(state, roomIdIn, nextSubRoomId, vector, gridPosition, subgraph);
     }
   }
@@ -299,7 +249,7 @@ const visit = <RoomId extends string>(
     if (link === undefined) {
       continue;
     }
-    record(
+    queueEdge(
       cellKey(
         link.room,
         resolveTargetSubRoomId(campaign, link.room, link.subRoom),
@@ -319,7 +269,7 @@ const visit = <RoomId extends string>(
     const toSubRoomId =
       doorItem.config.meta?.toSubRoom ??
       partnerDoorSubRoomId(campaign.rooms, roomIdIn, doorItem, toRoom);
-    record(
+    queueEdge(
       cellKey(toRoom, resolveTargetSubRoomId(campaign, toRoom, toSubRoomId)),
       { kind: "door", vector, viaItemId: doorId },
     );
@@ -340,7 +290,7 @@ const visit = <RoomId extends string>(
       with: { room: withRoom, subRoom: withSubRoom },
       gridOffset,
     } = ncr;
-    record(
+    queueEdge(
       cellKey(
         withRoom,
         resolveTargetSubRoomId(campaign, withRoom, withSubRoom),
@@ -358,35 +308,15 @@ const visit = <RoomId extends string>(
   }
 
   // teleporters - recorded as edges, never traversed for position
-  for (const [teleporterId, teleporter] of iterateRoomJsonItemsWithIds(
-    room.items,
-    "teleporter",
-    "portableTeleporter",
+  for (const { from, to } of teleporterLinksFromCell(
+    campaign,
+    roomIdIn,
+    subRoomId,
   )) {
-    if (findSubRoomForItem(teleporter.position, "block", room) !== subRoomId) {
-      continue;
-    }
-    const config = teleporter.config as FlatTeleporterConfig<RoomId>;
-    const targetRoomId = config.toRoom ?? roomIdIn;
-    if (targetRoomId === exitGameRoomId) {
-      continue;
-    }
-    const targetRoom = campaign.rooms[targetRoomId];
-    if (targetRoom === undefined) {
-      continue;
-    }
-    const target = findTargetEndpoint(
-      config,
-      targetRoom,
-      targetRoomId === roomIdIn ? teleporterId : undefined,
-    );
-    if (target === undefined) {
-      continue;
-    }
-    record(cellKey(targetRoomId, target.subRoomId), {
+    queueEdge(cellKey(to.roomId, to.subRoomId), {
       kind: "teleporter",
-      viaItemId: teleporterId,
-      toItemId: target.itemId,
+      viaItemId: from.itemId,
+      toItemId: to.itemId,
     });
   }
 };

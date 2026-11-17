@@ -27,7 +27,7 @@ import {
 import { blockSizePx } from "../../../../../physics/mechanicsConstants";
 import { roomGridSizeXY } from "./mapConstants";
 import {
-  type NotableItem,
+  type NotableItemsInCell,
   NotableItemSvg,
   PlayableItemInRoom,
 } from "./NotableItem";
@@ -103,7 +103,7 @@ export const notableItemSlotPositions = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  items: Record<RoomItemId, NotableItem<RoomId>>,
+  items: NotableItemsInCell<RoomId, RoomItemId>,
   roomJson: RoomJson<RoomId, RoomItemId>,
   subRoomId: string,
 ): Record<RoomItemId, Xy> => {
@@ -137,7 +137,7 @@ export const NotableJsonItemsInRoomLayout = <
   items,
   positions,
 }: {
-  items: Record<RoomItemId, NotableItem<RoomId>>;
+  items: NotableItemsInCell<RoomId, RoomItemId>;
   positions: Record<RoomItemId, Xy>;
 }) => (
   <ItemsInRoomLayout

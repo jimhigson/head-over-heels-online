@@ -3,7 +3,7 @@ import { roomJsonItemsEntriesIterable } from "../../../../../../model/RoomJsonIt
 import { fromAllEntries } from "../../../../../../utils/entries";
 import { type RoomPickupsCollected } from "../../../../../gameState/GameState";
 import { jsonItemIsNotable } from "./jsonItemIsNotable";
-import { type NotableItem } from "./NotableItem";
+import { type NotableItem, type NotableItemsInCell } from "./NotableItem";
 import { restrictItemsToShowInRoomCount } from "./restrictItemsToShowInRoomCount";
 import { maximumItemsForRoomLayoutOnMap } from "./roomItemPositions";
 
@@ -15,7 +15,7 @@ export const selectNotableItems = <
   roomJson: RoomJson<RoomId, RoomItemId>,
   roomPickupsCollected: RoomPickupsCollected,
   subRoomId: string,
-): Record<RoomItemId, NotableItem<RoomId>> => {
+): NotableItemsInCell<RoomId, RoomItemId> => {
   let foundHushPuppy = false;
   let foundCrown = false;
 

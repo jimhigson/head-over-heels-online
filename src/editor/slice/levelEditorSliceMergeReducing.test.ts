@@ -21,7 +21,7 @@ import {
 
 expect.extend(roomJsonMatchers);
 import { selectIsCoalesceable } from "../EditorMap/CoalesceButton";
-import { selectEditorMapData } from "../EditorMap/useEditorMapData";
+import { selectEditorMapAreas } from "../EditorMap/useEditorMapData";
 import {
   changeToRoom,
   coalesceSelectedRooms,
@@ -40,8 +40,8 @@ const expectCoalesceable: ReducibleAction = (_dispatch, getState) => {
 };
 
 const expectValidMapData: ReducibleAction = (_dispatch, getState) => {
-  const mapData = selectEditorMapData(getState());
-  expect(mapData.isError).toBe(false);
+  const mapAreas = selectEditorMapAreas(getState());
+  expect(mapAreas.isError).toBe(false);
 };
 
 test("insert room right, select both, coalesce", () => {

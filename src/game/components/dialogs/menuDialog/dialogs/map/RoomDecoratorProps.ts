@@ -1,20 +1,8 @@
 import { type FunctionComponent, type RefObject } from "preact";
 
-import { type Boundaries } from "../../../../../../model/map/roomGridPositions";
-import { type SortedObjectOfRoomGridPositionSpecs } from "../../../../../../model/map/sortRoomGridPositions";
-import { type TeleporterLink } from "../../../../../../model/map/teleporterLinks";
-
 export type RoomDecoratorProps<RoomId extends string> = {
   roomId: RoomId;
   subRoomId: string;
-  boundaries: Boundaries;
-  isCurrentRoom: boolean;
-  isCurrentSubRoom: boolean;
-  allGridPositions: SortedObjectOfRoomGridPositionSpecs<RoomId>;
-  /**
-   * teleporter links between rooms on the map, for maps that have them
-   */
-  teleporterLinks: TeleporterLink<RoomId>[] | undefined;
 };
 
 export type RoomBehaviourProps<RoomId extends string> = {
@@ -27,7 +15,6 @@ export type RoomBehaviourProps<RoomId extends string> = {
   tipId: string;
   roomId: RoomId;
   subRoomId: string;
-  isCurrentRoom: boolean;
 };
 
 /** special component that is put into every room's <g> element, to add special behaviours, given a ref pointing to the room's <path> element */

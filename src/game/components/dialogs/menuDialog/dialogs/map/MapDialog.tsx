@@ -10,14 +10,14 @@ import { emptyArray } from "../../../../../../utils/empty";
 import { useElementSize } from "../../../../../../utils/preact/useElementSize";
 import { swopPlayables } from "../../../../../gameState/mutators/swopPlayables";
 import { useGameApi } from "../../../../GameApiContext";
-import { useScrollingFromInput } from "../useScrollingFromInput";
+import { useScrollingFromInputRef } from "../useScrollingFromInputRef";
 import { createClickableRoomBehaviour } from "./createClickableRoomBehaviour";
 import { MapSvg } from "./Map.svg";
 import { getMapColoursClass } from "./mapColours";
 import { MapContextProvider } from "./MapContext";
 import { mapDialogColourClasses } from "./mapDialogColourClasses";
 import { MapRoomTooltipBehaviour } from "./MapRoomTooltipBehaviour";
-import { useMapDataForCurrentGame } from "./useMapDataForCurrentGame";
+import { useMapContextForCurrentGame } from "./useMapContextForCurrentGame";
 import { useAllowCharacterSwopping } from "./useTickingCurrentCharacterName";
 
 const useGameMapBehaviours = <RoomId extends string>() => {
@@ -40,7 +40,7 @@ const useGameMapBehaviours = <RoomId extends string>() => {
 const MapDialog = <RoomId extends string>() => {
   const { ref: mapContainerRef, width: mapContainerWidth } =
     useElementSize<HTMLDialogElement>();
-  const scrollingContentRef = useScrollingFromInput();
+  const scrollingFromInputRef = useScrollingFromInputRef();
 
   const gameApi = useGameApi<RoomId>();
 
@@ -55,15 +55,15 @@ const MapDialog = <RoomId extends string>() => {
     (name: IndividualCharacterName) => swopPlayables(gameApi.gameState, name),
     [gameApi],
   );
-  const { mapData, mapContext } = useMapDataForCurrentGame<RoomId>(
+  const mapContext = useMapContextForCurrentGame<RoomId>(
     useGameMapBehaviours<RoomId>(),
     onPlayableClick,
   );
-  const mapColourClasses = getMapColoursClass(mapData.curRoomScenery);
+  const mapColourClasses = getMapColoursClass(mapContext.useCurRoomScenery());
 
   const mapSvg = (
     <MapContextProvider value={mapContext}>
-      <MapSvg<RoomId> containerWidth={mapContainerWidth} {...mapData} />
+      <MapSvg<RoomId> containerWidth={mapContainerWidth} />
     </MapContextProvider>
   );
 
@@ -78,7 +78,7 @@ const MapDialog = <RoomId extends string>() => {
       >
         <div
           class="overflow-y-scroll scrollbar scrollbar-w-1 h-min"
-          ref={scrollingContentRef}
+          ref={scrollingFromInputRef}
         >
           {mapSvg}
         </div>

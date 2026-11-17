@@ -8,42 +8,39 @@ import {
   noCellPlayables,
 } from "../../game/components/dialogs/menuDialog/dialogs/map/MapContext";
 import { type RoomBehaviourComponent } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
+import { selectNotableItems } from "../../game/components/dialogs/menuDialog/dialogs/map/selectNotableItems";
 import { originalUserId } from "../../gameInfo";
+import { teleporterLinksFromCell } from "../../model/map/teleporterLinksFromCell";
+import { emptyObject } from "../../utils/empty";
 import { useElementSize } from "../../utils/preact/useElementSize";
 import { mapAreaIndexOfRoom } from "../EditorMap/mapAreaIndexOfRoom";
 import { MapAreaSwitcher } from "../EditorMap/MapAreaSwitcher";
-import {
-  editorMapAreas,
-  editorMapData,
-  editorNotableItemsByCell,
-} from "../EditorMap/useEditorMapData";
+import { editorMapAreas } from "../EditorMap/useEditorMapData";
 import { type EditorCampaign, type EditorRoomId } from "../editorTypes";
 import { EditorMapRoomTooltipBehaviour } from "../roomPreview/EditorMapRoomTooltipBehaviour";
 import { firstSubRoomId } from "../slice/inPlaceMutators/firstSubRoomId";
 
 /**
- * the map with the given room as current, and the context its rooms draw from
+ * the map's areas, and the context its rooms draw from with the given room
+ * as current
  */
 const useMapForRoom = (
   campaign: EditorCampaign,
   roomId: EditorRoomId,
   behaviours: RoomBehaviourComponent<EditorRoomId>[],
   chosenRoomId: EditorRoomId | undefined,
+  /**
+   * any room of the area to show
+   */
+  shownAreaRoomId: EditorRoomId,
 ) => {
   const mapAreas = useMemo(() => editorMapAreas(campaign), [campaign]);
-  const mapData = useMemo(
-    () =>
-      editorMapData(
-        mapAreas,
-        roomId,
-        firstSubRoomId(campaign.rooms[roomId]),
-        campaign.rooms[roomId].planet,
-      ),
-    [mapAreas, campaign, roomId],
-  );
-  const mapContext = useMemo((): MapContextValue<EditorRoomId> => {
-    const notableItemsByCell = editorNotableItemsByCell(campaign, mapAreas);
-    return {
+  const shownAreaIndex =
+    mapAreas.isError ? 0 : mapAreaIndexOfRoom(mapAreas.areas, shownAreaRoomId);
+  const maybeShownArea =
+    mapAreas.isError ? undefined : mapAreas.areas[shownAreaIndex];
+  const mapContext = useMemo(
+    (): MapContextValue<EditorRoomId> => ({
       isOriginalCampaign: campaign.locator.userId === originalUserId,
       currentCharacterName: "head",
       onPlayableClick: undefined,
@@ -52,15 +49,29 @@ const useMapForRoom = (
       postfixDecorators: [],
       // none of these call any hooks, so are fine to swap for others when
       // the campaign or choice changes:
+      useShownArea() {
+        // the map is only drawn when its geometry could be solved:
+        if (import.meta.env.DEV && maybeShownArea === undefined) {
+          throw new Error("the map was drawn without its geometry solved");
+        }
+        return maybeShownArea!;
+      },
+      useCurRoomId: () => roomId,
+      useCurSubRoomId: () => firstSubRoomId(campaign.rooms[roomId]),
+      useCurRoomScenery: () => campaign.rooms[roomId].planet,
+      useTeleporterLinksFrom: (mapRoomId, subRoomId) =>
+        teleporterLinksFromCell(campaign, mapRoomId, subRoomId),
       useRoomJson: (mapRoomId) => campaign.rooms[mapRoomId],
-      useNotableItemsInCell: (cellKey) => notableItemsByCell[cellKey],
-      useNotableItemsByCell: () => notableItemsByCell,
+      // the editor collects no pickups:
+      useNotableItems: (mapRoomId, subRoomId) =>
+        selectNotableItems(campaign.rooms[mapRoomId], emptyObject, subRoomId),
       useCellPlayables: () => noCellPlayables,
       useRoomVisited: () => false,
       useIsRoomSelected: (mapRoomId) => mapRoomId === chosenRoomId,
-    };
-  }, [campaign, mapAreas, behaviours, chosenRoomId]);
-  return { mapData, mapContext };
+    }),
+    [campaign, maybeShownArea, roomId, behaviours, chosenRoomId],
+  );
+  return { mapAreas, shownAreaIndex, mapContext };
 };
 
 /**
@@ -110,15 +121,14 @@ export const ChooseRoomMap = ({
     height: mapContainerHeight,
   } = useElementSize<HTMLDivElement>();
 
-  const behaviours = useChooseOnClickBehaviours(choose);
-  const { mapData, mapContext } = useMapForRoom(
+  const chooseOnClickBehaviours = useChooseOnClickBehaviours(choose);
+  const { mapAreas, shownAreaIndex, mapContext } = useMapForRoom(
     campaign,
     mapRoomId,
-    behaviours,
+    chooseOnClickBehaviours,
     chosenRoomId,
+    shownAreaRoomId,
   );
-  const shownAreaIndex =
-    mapData.isError ? 0 : mapAreaIndexOfRoom(mapData.areas, shownAreaRoomId);
 
   return (
     <div class="flex flex-col gap-1 h-full">
@@ -127,24 +137,20 @@ export const ChooseRoomMap = ({
           class="h-full overflow-y-auto bg-editor-checkerboard scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue"
           ref={mapContainerRef}
         >
-          {mapData.isError ?
+          {mapAreas.isError ?
             <span class="text-multi-line text-lightGrey">
-              {`Could not draw the map:\n${mapData.errors.join("\n")}`}
+              {`Could not draw the map:\n${mapAreas.errors.join("\n")}`}
             </span>
           : mapContainerHeight !== 0 && (
               <MapContextProvider value={mapContext}>
-                <MapSvg<EditorRoomId>
-                  containerWidth={mapContainerWidth}
-                  {...mapData}
-                  areaIndex={shownAreaIndex}
-                />
+                <MapSvg<EditorRoomId> containerWidth={mapContainerWidth} />
               </MapContextProvider>
             )
           }
         </div>
-        {!mapData.isError && (
+        {!mapAreas.isError && (
           <MapAreaSwitcher
-            areas={mapData.areas}
+            areas={mapAreas.areas}
             shownAreaIndex={shownAreaIndex}
             onSwitchToRoom={setShownAreaRoomId}
           />

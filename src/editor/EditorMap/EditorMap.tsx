@@ -34,10 +34,12 @@ import { EditorMapItemDropTargetBehaviour } from "./EditorMapItemDropTargetBehav
 import { LazyEditorMapInsertButtonDecorator } from "./LazyEditorMapInsertButtonDecorator";
 import { LazyEditorMapNonContiguousRelationshipDecorator } from "./LazyEditorMapNonContiguousRelationshipDecorator";
 import { LazyEditorMapTeleporterLinkDecorator } from "./LazyEditorMapTeleporterLinkDecorator";
-import { mapAreaIndexOfRoom } from "./mapAreaIndexOfRoom";
 import { MapAreaSwitcher } from "./MapAreaSwitcher";
 import { useEditorMapContextValue } from "./useEditorMapContextValue";
-import { useEditorMapData } from "./useEditorMapData";
+import {
+  selectEditorMapAreas,
+  selectEditorShownMapAreaIndex,
+} from "./useEditorMapData";
 
 const editorClickableRoomBehaviour = createClickableRoomBehaviour<EditorRoomId>(
   (roomId, subRoomId, { metaKey, ctrlKey }) => {
@@ -193,13 +195,11 @@ const EditorMap = () => {
     width: mapContainerWidth,
     height: mapContainerHeight,
   } = useElementSize<HTMLDivElement>();
-  const mapData = useEditorMapData();
+  const mapAreas = useEditorAppSelector(selectEditorMapAreas);
   const mapContext = useEditorMapContextValue(editorMapContextOptions);
-  const { roomId: cursorRoomId } = useEditorAppSelector((state) =>
-    selectCursorRoomFromLevelEditorState(state.levelEditor),
-  );
+  const shownAreaIndex = useEditorAppSelector(selectEditorShownMapAreaIndex);
 
-  const mapRendering = mapContainerHeight !== 0 && !mapData.isError;
+  const mapRendering = mapContainerHeight !== 0 && !mapAreas.isError;
   useEffect(() => {
     if (mapRendering) {
       // readiness signal for network-cost measurement (true-site-size)
@@ -207,14 +207,13 @@ const EditorMap = () => {
     }
   }, [mapRendering]);
 
-  if (mapData.isError) {
+  if (mapAreas.isError) {
     throw new Error(
-      `Could not solve map geometry:\n${mapData.errors.join("\n")}`,
+      `Could not solve map geometry:\n${mapAreas.errors.join("\n")}`,
     );
   }
 
-  const shownAreaIndex = mapAreaIndexOfRoom(mapData.areas, cursorRoomId);
-  const shownArea = mapData.areas[shownAreaIndex];
+  const shownArea = mapAreas.areas[shownAreaIndex];
 
   if (mapContainerHeight === 0) {
     return null;
@@ -251,11 +250,7 @@ const EditorMap = () => {
       >
         <div class="shrink-0">
           <MapContextProvider value={mapContext}>
-            <MapSvg<EditorRoomId>
-              containerWidth={mapContainerWidth}
-              {...mapData}
-              areaIndex={shownAreaIndex}
-            />
+            <MapSvg<EditorRoomId> containerWidth={mapContainerWidth} />
           </MapContextProvider>
         </div>
         {/* stuck to the bottom-right of the visible map, inside any scrollbar,
@@ -266,7 +261,7 @@ const EditorMap = () => {
           onKeyDown={(e: KeyboardEvent) => e.stopPropagation()}
         >
           <MapAreaSwitcher
-            areas={mapData.areas}
+            areas={mapAreas.areas}
             shownAreaIndex={shownAreaIndex}
             onSwitchToRoom={switchToRoom}
           />

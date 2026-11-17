@@ -1,10 +1,7 @@
 import { memo } from "preact/compat";
 import { useMemo, useRef } from "preact/hooks";
 
-import {
-  type Boundaries,
-  type RoomNode,
-} from "../../../../../../model/map/roomGridPositions";
+import { type Boundaries } from "../../../../../../model/map/roomGridPositions";
 import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
 import { hudCharTextureSize } from "../../../../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { range } from "../../../../../../utils/iterators/range";
@@ -19,6 +16,7 @@ import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
 import { floorFillPathD } from "./floorFillPathD";
 import {
   InPlayItemsInRoomLayout,
+  notableItemSlotPositions,
   NotableJsonItemsInRoomLayout,
 } from "./ItemsInRoomLayout";
 import { type MapCellOutline, mapCellOutline } from "./mapCellOutline";
@@ -36,6 +34,8 @@ import { PlayableItemInRoom } from "./NotableItem";
 import { RoomDecoration } from "./RoomDecoration";
 import { roomWorldPosition } from "./roomWorldPosition";
 import { project, roundForSvg, translateXyz } from "./svgHelpers";
+import { useIsCurrentCell } from "./useIsCurrentCell";
+import { useRoomNode } from "./useRoomNode";
 import { VisitedFootprint } from "./VisitedFootprint";
 
 const boundaryLineLength = lengthXy(
@@ -190,39 +190,45 @@ const labelLayoutByDirection = {
 };
 
 type RoomSvgProps<RoomId extends string> = {
-  roomGridPositionSpec: RoomNode<RoomId>;
-  isCurrentRoom: boolean;
+  roomId: RoomId;
+  subRoomId: string;
 };
 
 const RoomSvgUnmemoised = <RoomId extends string>({
-  roomGridPositionSpec,
-  isCurrentRoom,
+  roomId,
+  subRoomId,
 }: RoomSvgProps<RoomId>) => {
-  const { boundaries, roomId, subRoomId } = roomGridPositionSpec;
+  const roomNode = useRoomNode(roomId, subRoomId);
+  const { boundaries } = roomNode;
+  const { isCurrentRoom } = useIsCurrentCell(roomId, subRoomId);
   const {
     behaviours,
     currentCharacterName,
     onPlayableClick,
     useRoomJson,
-    useNotableItemsInCell,
+    useNotableItems,
     useCellPlayables,
     useRoomVisited,
     useIsRoomSelected,
   } = useMapContext<RoomId>();
   const roomJson = useRoomJson(roomId);
-  const notableItemsInCell = useNotableItemsInCell(`${roomId}/${subRoomId}`);
+  const notableItems = useNotableItems(roomId, subRoomId);
+  const notableItemPositions = useMemo(
+    () => notableItemSlotPositions(notableItems, roomJson, subRoomId),
+    [notableItems, roomJson, subRoomId],
+  );
   const {
     head: headItemInRoom,
     heels: heelsItemInRoom,
     headOverHeels: headOverHeelsItemInRoom,
   } = useCellPlayables(roomId, subRoomId);
   const roomVisited = useRoomVisited(roomId);
-  const isSelected = useIsRoomSelected(roomId);
+  const isRoomSelected = useIsRoomSelected(roomId);
 
   const { id, color } = roomJson;
   const outline = useMemo(
-    () => mapCellOutline(roomJson, roomGridPositionSpec),
-    [roomJson, roomGridPositionSpec],
+    () => mapCellOutline(roomJson, roomNode),
+    [roomJson, roomNode],
   );
   const label = roomJson.meta?.label;
   const labelLayout = label && labelLayoutByDirection[label.direction];
@@ -239,7 +245,7 @@ const RoomSvgUnmemoised = <RoomId extends string>({
         ${
           isCurrentRoom ?
             `[--floorColor:theme(colors.shadow)] zx:[--floorColor:theme(colors.zxBlack)] toppy:[--floorColor:theme(colors.toppyGrey3)]`
-          : isSelected ?
+          : isRoomSelected ?
             `[--floorColor:theme(colors.midGrey)] zx:[--floorColor:theme(colors.zxBlueDimmed)] toppy:[--floorColor:theme(colors.toppyCool3)]`
           : `[--floorColor:theme(colors.white)]`
         }
@@ -405,12 +411,11 @@ const RoomSvgUnmemoised = <RoomId extends string>({
             yAdjust={-36}
           />
         </>
-      : notableItemsInCell ?
-        <NotableJsonItemsInRoomLayout
-          items={notableItemsInCell.items}
-          positions={notableItemsInCell.positions}
+      : <NotableJsonItemsInRoomLayout
+          items={notableItems}
+          positions={notableItemPositions}
         />
-      : null}
+      }
       {outline.high && (
         // vertical lines
         <path
@@ -461,7 +466,6 @@ const RoomSvgUnmemoised = <RoomId extends string>({
               tipId={tipId}
               roomId={id}
               subRoomId={subRoomId}
-              isCurrentRoom={isCurrentRoom}
             />
           ))}
         </>

@@ -1,6 +1,8 @@
+import { useMapContext } from "../../game/components/dialogs/menuDialog/dialogs/map/MapContext";
 import { type RoomDecoratorProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
 import { roomWorldPosition } from "../../game/components/dialogs/menuDialog/dialogs/map/roomWorldPosition";
 import { translateXyz } from "../../game/components/dialogs/menuDialog/dialogs/map/svgHelpers";
+import { useRoomNode } from "../../game/components/dialogs/menuDialog/dialogs/map/useRoomNode";
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
 import { roomNonContiguousRelationship } from "../../model/RoomJson";
 import { useEditorAppSelector } from "../../store/store";
@@ -44,8 +46,9 @@ const lineWidth = arrowShaftWidth * 2;
 const EditorMapNonContiguousRelationshipDecorator = ({
   roomId,
   subRoomId,
-  allGridPositions: gridPositions,
 }: RoomDecoratorProps<EditorRoomId>) => {
+  const { gridPositions } = useMapContext<EditorRoomId>().useShownArea();
+  const roomNode = useRoomNode(roomId, subRoomId);
   // the relationship lives on the sub-room, so only the cell that owns it draws
   const relationship = useNonContiguousRelationship(roomId, subRoomId);
   const targetRelationship = useNonContiguousRelationship(
@@ -61,10 +64,6 @@ const EditorMapNonContiguousRelationshipDecorator = ({
   } = relationship;
 
   const fromKey: GridPositionKey = `${roomId}/${subRoomId}`;
-  const sourceSpec = gridPositions[fromKey];
-  if (sourceSpec === undefined) {
-    return null;
-  }
 
   // resolve the target by identity - the relationship names the room and
   // optionally the sub-room it links to
@@ -86,7 +85,7 @@ const EditorMapNonContiguousRelationshipDecorator = ({
   }
 
   const sourceScreen = projectWorldXyzToScreenXy(
-    roomWorldPosition(sourceSpec.gridPosition),
+    roomWorldPosition(roomNode.gridPosition),
   );
   const targetScreen = projectWorldXyzToScreenXy(
     roomWorldPosition(targetSpec.gridPosition),
@@ -107,7 +106,7 @@ const EditorMapNonContiguousRelationshipDecorator = ({
   // usual semi-transparent black
   return (
     <g
-      transform={translateXyz(roomWorldPosition(sourceSpec.gridPosition))}
+      transform={translateXyz(roomWorldPosition(roomNode.gridPosition))}
       style={{ pointerEvents: "none" }}
       fill={reciprocal ? "black" : "red"}
       fillOpacity={reciprocal ? 0.5 : 1}

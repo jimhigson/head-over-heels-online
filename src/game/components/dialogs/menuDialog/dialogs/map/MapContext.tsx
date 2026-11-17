@@ -3,15 +3,15 @@ import { type PropsWithChildren } from "preact/compat";
 import { useContext } from "preact/hooks";
 
 import { type PlayableItem } from "../../../../../../model/ItemInPlayNarrowedUnions";
+import { type TeleporterLink } from "../../../../../../model/map/teleporterLinks";
 import {
   type CharacterName,
   type IndividualCharacterName,
 } from "../../../../../../model/modelTypes";
 import { type RoomJson } from "../../../../../../model/RoomJson";
-import {
-  type NotableItemsByCell,
-  type NotableItemsInCell,
-} from "./notableItemsByCell";
+import { type SceneryName } from "../../../../../../sprites/planets";
+import { type MapArea } from "./MapData";
+import { type NotableItemsInCell } from "./NotableItem";
 import {
   type PostfixRoomDecoratorComponent,
   type PrefixRoomDecoratorComponent,
@@ -53,14 +53,29 @@ export type MapContextValue<RoomId extends string> = {
   prefixDecorators: PrefixRoomDecoratorComponent<RoomId>[];
   postfixDecorators: PostfixRoomDecoratorComponent<RoomId>[];
 
-  useRoomJson: (roomId: RoomId) => RoomJson<RoomId, string>;
-  useNotableItemsInCell: (
-    cellKey: MapCellKey<RoomId>,
-  ) => NotableItemsInCell<RoomId> | undefined;
   /**
-   * every cell's notable items - for parts of the map drawn between cells
+   * the one of the map's areas being drawn, its rooms laid out relative to
+   * each other
    */
-  useNotableItemsByCell: () => NotableItemsByCell<RoomId>;
+  useShownArea: () => MapArea<RoomId>;
+  useCurRoomId: () => RoomId | undefined;
+  useCurSubRoomId: () => string | undefined;
+  useCurRoomScenery: () => SceneryName | undefined;
+  /**
+   * the teleporter links leaving one cell
+   */
+  useTeleporterLinksFrom: (
+    roomId: RoomId,
+    subRoomId: string,
+  ) => TeleporterLink<RoomId>[];
+  useRoomJson: (roomId: RoomId) => RoomJson<RoomId, string>;
+  /**
+   * the items of one cell to draw as icons on the map
+   */
+  useNotableItems: (
+    roomId: RoomId,
+    subRoomId: string,
+  ) => NotableItemsInCell<RoomId, string>;
   useCellPlayables: (
     roomId: RoomId,
     subRoomId: string,
