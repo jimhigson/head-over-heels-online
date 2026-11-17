@@ -15,24 +15,35 @@ export type TabDrag<Payload> = {
   dropped: (dragEvent: DragEvent) => Payload | undefined;
 };
 
+/**
+ * identifies this page - a drag's payload means nothing to another page (eg
+ * the same app open in another browser tab), whose ids are its own
+ */
+const pageToken = crypto.randomUUID();
+
 export const tabDrag = <Payload>(
   /**
    * the type it is carried under - a mime type of its own
    */
   dragType: string,
-): TabDrag<Payload> => ({
-  start(dragEvent, payload) {
-    const { dataTransfer } = dragEvent;
-    if (dataTransfer === null) {
-      return;
-    }
-    dataTransfer.setData(dragType, JSON.stringify(payload));
-    dataTransfer.effectAllowed = "move";
-  },
-  carries: (dragEvent) =>
-    dragEvent.dataTransfer?.types.includes(dragType) ?? false,
-  dropped(dragEvent) {
-    const payloadJson = dragEvent.dataTransfer?.getData(dragType);
-    return payloadJson ? (JSON.parse(payloadJson) as Payload) : undefined;
-  },
-});
+): TabDrag<Payload> => {
+  // only the types can be read while a drag is over a target, so this page's
+  // token goes in the type, to turn away drags from other pages there:
+  const pageDragType = `${dragType}+${pageToken}`;
+  return {
+    start(dragEvent, payload) {
+      const { dataTransfer } = dragEvent;
+      if (dataTransfer === null) {
+        return;
+      }
+      dataTransfer.setData(pageDragType, JSON.stringify(payload));
+      dataTransfer.effectAllowed = "move";
+    },
+    carries: (dragEvent) =>
+      dragEvent.dataTransfer?.types.includes(pageDragType) ?? false,
+    dropped(dragEvent) {
+      const payloadJson = dragEvent.dataTransfer?.getData(pageDragType);
+      return payloadJson ? (JSON.parse(payloadJson) as Payload) : undefined;
+    },
+  };
+};
