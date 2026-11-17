@@ -59,12 +59,11 @@ import { editRoomReducers } from "./reducers/editRoomReducers";
 import { explodeItemsReducers } from "./reducers/explodeItemsReducers";
 import { floorReducers } from "./reducers/floorReducers";
 import { itemActivationReducers } from "./reducers/itemActivationReducers";
-import { type ItemDrag, itemDragReducers } from "./reducers/itemDragReducers";
+import { type ItemGrab, itemGrabReducers } from "./reducers/itemGrabReducers";
 import { itemPreviewReducers } from "./reducers/itemPreviewReducers";
 import { mirrorOrientationReducers } from "./reducers/mirrorOrientationReducers";
 import { monsterMovementReducers } from "./reducers/monsterMovementReducers";
 import { moveItemsToRoomReducers } from "./reducers/moveItemsToRoomReducers";
-import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
 import { multiplyItemsReducers } from "./reducers/multiplyItemsReducers";
 import { nudgeReducers } from "./reducers/nudgeReducers";
 import {
@@ -201,7 +200,7 @@ export type LevelEditorState = {
   /**
    * the pointer pressed on items in an open room, to drag them
    */
-  itemDrag: ItemDrag | undefined;
+  itemGrab: ItemGrab | undefined;
   tool: Tool;
   /**
    * the item tool most recently chosen, so we can switch to the pointer and later switch back
@@ -247,7 +246,6 @@ export const levelEditorSlice = createSlice({
     ...dragToMoveReducers,
     ...selectionsReducers,
     ...editRoomReducers,
-    ...moveOrResizeItemPreviewReducers,
     ...itemPreviewReducers,
     ...saveAndLoadReducers,
     ...addOrRemoveRoomReducers,
@@ -261,7 +259,7 @@ export const levelEditorSlice = createSlice({
     ...itemActivationReducers,
     ...disappearingReducers,
     ...floorReducers,
-    ...itemDragReducers,
+    ...itemGrabReducers,
     ...monsterMovementReducers,
     ...moveItemsToRoomReducers,
     ...multiplyItemsReducers,
@@ -357,7 +355,6 @@ export const {
   insertRoom,
   loadCampaign,
   moveItemsToRoom,
-  moveOrResizeItemAsPreview,
   multiplyCurrentToolItem,
   multiplySelectedItems,
   nudgeSelectedItems,
@@ -396,11 +393,14 @@ export const {
   setSelectedItemsDisappearing,
   setSelectedFloorsScenery,
   setSelectedFloorsType,
-  itemDragEnded,
-  itemDragOverOpenRoom,
-  itemDragPlaneChanged,
-  itemDragPointerDown,
-  itemDragRounded,
+  itemGrabDropped,
+  itemGrabAbandoned,
+  itemGrabOverOpenRoom,
+  itemGrabPlaneChanged,
+  itemGrabPointerDown,
+  itemGrabPreviewedInto,
+  itemGrabDragStarted,
+  itemGrabRounded,
   setSelectedItemsInRoom,
   setSelectedItemsMirrorOrientation,
   setSelectedItemsStartDirection,

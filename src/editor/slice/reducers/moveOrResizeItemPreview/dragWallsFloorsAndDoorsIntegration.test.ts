@@ -1,9 +1,10 @@
+// @vitest-environment happy-dom
 import { produce } from "immer";
 import { describe, expect, test } from "vitest";
 
+import { simulatePointerToolDragWithMouse } from "../__test__/simulatePointerToolDragWithMouse";
 import {
   editorStateWithOneRoomWithNoItems,
-  reduceLevelEditorActions,
   testRoomId,
 } from "../__test__/storeStates";
 import { nowhereRoomId } from "../../../../model/json/ItemConfigMap";
@@ -11,6 +12,7 @@ import { uncoveredPerimeterEdges } from "../../../../model/json/verification/hel
 import { type WallJsonConfig } from "../../../../model/json/WallJsonConfig";
 import { wallTimes } from "../../../../model/times";
 import { type SceneryName } from "../../../../sprites/planets";
+import { type EditorRootState } from "../../../../store/store";
 import { type Xyz } from "../../../../utils/vectors/vectors";
 import {
   type EditorJsonItem,
@@ -19,10 +21,9 @@ import {
   type EditorRoomJson,
 } from "../../../editorTypes";
 import {
-  commitCurrentPreviewedEdits,
   type LevelEditorState,
-  moveOrResizeItemAsPreview,
-  resetPreviewedEdits,
+  selectCurrentCommittedRoomJson,
+  selectUndoHistory,
 } from "../../levelEditorSlice";
 
 // Custom assertion to check walls and doors are contiguous around floor
@@ -187,37 +188,20 @@ expect.extend({
   },
 });
 
-// Helper to test wall movement with preview/commit pattern
+/**
+ * the room once a user has dragged a wall by `positionDelta` blocks
+ */
 const testWallMovement = (
   state0: LevelEditorState,
   wallId: EditorRoomItemId,
   positionDelta: Xyz,
-  timesDelta?: Xyz,
-) => {
-  // Apply preview
-  const state1 = reduceLevelEditorActions(
-    state0,
-    moveOrResizeItemAsPreview({
+) =>
+  selectCurrentCommittedRoomJson({
+    levelEditor: simulatePointerToolDragWithMouse(state0, {
       jsonItemIds: [wallId],
-      positionDelta,
-      timesDelta,
-      timestamp: 0,
+      moves: [positionDelta],
     }),
-  );
-
-  // Room should not have changed yet
-  expect(state1.campaignInProgress.rooms[testRoomId]).toEqual(
-    state0.campaignInProgress.rooms[testRoomId],
-  );
-
-  // Commit the preview
-  const state2 = reduceLevelEditorActions(
-    state1,
-    commitCurrentPreviewedEdits(),
-  );
-
-  return state2;
-};
+  } as EditorRootState);
 
 describe("changeWallsForFloorChangeInPlace", () => {
   describe("floor with walls on all sides - resize scenarios", () => {
@@ -284,18 +268,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Increase floor size in y by 2 (8x8 -> 8x10)
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 0, y: 0, z: 0 },
-          timesDelta: { x: 0, y: 2, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: 0, y: 1, z: 0 },
+          moves: [{ x: 0, y: 2, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
-      const room = state1.campaignInProgress.rooms[testRoomId];
+      const room = room1;
 
       // Floor should be 8x10
       expect(room.items[floorId]).toEqual({
@@ -445,18 +426,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Decrease floor size in y by 3 (10x10 -> 10x7)
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 0, y: 0, z: 0 },
-          timesDelta: { x: 0, y: -3, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: 0, y: 1, z: 0 },
+          moves: [{ x: 0, y: -3, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
-      const room = state1.campaignInProgress.rooms[testRoomId];
+      const room = room1;
 
       // Floor should be 10x7
       expect(room.items[floorId]).toEqual({
@@ -605,18 +583,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Increase floor size in x by 4 (6x6 -> 10x6)
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 0, y: 0, z: 0 },
-          timesDelta: { x: 4, y: 0, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: 1, y: 0, z: 0 },
+          moves: [{ x: 4, y: 0, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
-      const room = state1.campaignInProgress.rooms[testRoomId];
+      const room = room1;
 
       // Floor should be 10x6
       expect(room.items[floorId]).toEqual({
@@ -766,18 +741,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Move floor by (1, 1, 0)
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 1, y: 1, z: 0 },
-          timestamp: 0,
+          moves: [{ x: 1, y: 1, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
       // Check that all walls moved with the floor in the actual room
-      const room = state1.campaignInProgress.rooms[testRoomId];
+      const room = room1;
 
       expect(room.items[towardsWallId]).toEqual({
         type: "wall",
@@ -827,19 +799,16 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Resize floor to 4x3
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 0, y: 0, z: 0 },
-          timesDelta: { x: 2, y: 1, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: 1, y: 1, z: 0 },
+          moves: [{ x: 2, y: 1, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
       // Check that towards wall resized in the actual room
-      const room = state1.campaignInProgress.rooms[testRoomId];
+      const room = room1;
       expect(room.items[towardsWallId]).toEqual({
         type: "wall",
         position: { x: 1, y: 1, z: 0 },
@@ -883,18 +852,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Move floor
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 2, y: 1, z: 0 },
-          timestamp: 0,
+          moves: [{ x: 2, y: 1, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
       // Partial wall should move with the floor
-      const room = state1.campaignInProgress.rooms[testRoomId];
+      const room = room1;
       expect(room.items[partialWallId]).toEqual({
         type: "wall",
         position: { x: 3, y: 1, z: 0 },
@@ -949,18 +915,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Shrink floor from right (reduce x size by 2)
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 0, y: 0, z: 0 },
-          timesDelta: { x: -2, y: 0, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: 1, y: 0, z: 0 },
+          moves: [{ x: -2, y: 0, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
-      const room = state1.campaignInProgress.rooms[testRoomId];
+      const room = room1;
 
       // Wall at end should be removed since it's now outside the floor bounds (floor extends from x:0 to x:2)
       expect(room.items[partialWallAtEndId]).toBeUndefined();
@@ -1019,18 +982,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Expand floor by 2 in both directions
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 0, y: 0, z: 0 },
-          timesDelta: { x: 2, y: 2, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: 1, y: 1, z: 0 },
+          moves: [{ x: 2, y: 2, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
-      const room = state1.campaignInProgress.rooms[testRoomId];
+      const room = room1;
       // Right wall should grow to match new floor height
       expect(room.items[rightWallId]).toEqual({
         type: "wall",
@@ -1109,18 +1069,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Shrink floor from bottom (reduce y size by 3)
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 0, y: 0, z: 0 },
-          timesDelta: { x: 0, y: -3, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: 0, y: 1, z: 0 },
+          moves: [{ x: 0, y: -3, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
-      const room = state1.campaignInProgress.rooms[testRoomId];
+      const room = room1;
       // Top wall should remain unchanged
       expect(room.items[leftWallTopId]).toEqual({
         type: "wall",
@@ -1189,20 +1146,17 @@ describe("changeWallsForFloorChangeInPlace", () => {
         },
       );
 
-      // Move and resize floor
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      // drag the floor's towards edge away by two, shrinking it from that side:
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 1, y: 2, z: 0 },
-          timesDelta: { x: 2, y: 0, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: 0, y: -1, z: 0 },
+          moves: [{ x: 0, y: 2, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
       // Door should move with its edge, and stay where it was along it since it is still on the floor
-      const room = state1.campaignInProgress.rooms[testRoomId];
+      const room = room1;
       expect(room.items[doorId]).toEqual({
         type: "door",
         position: { x: 1, y: 2, z: 0 },
@@ -1251,29 +1205,21 @@ describe("changeWallsForFloorChangeInPlace", () => {
         },
       );
 
-      // Move, move back, and commit:
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      // dragged away by one, then back to where it started:
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [doorId],
-          positionDelta: { x: 0, y: 1, z: 0 },
-          timestamp: 0,
+          moves: [
+            { x: 0, y: 1, z: 0 },
+            { x: 0, y: 0, z: 0 },
+          ],
         }),
-        moveOrResizeItemAsPreview({
-          jsonItemIds: [doorId],
-          // back to where it started (position delta zero)
-          positionDelta: { x: 0, y: 0, z: 0 },
-          timestamp: 0,
-        }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
       // check all 3 items individually match to get shorter error messages if they don't match
       expect
         .soft(
-          state1.campaignInProgress.rooms[testRoomId].items[
-            awayWallBeforeDoorId
-          ],
+          room1.items[awayWallBeforeDoorId],
           "wall before door should match original",
         )
         .toMatchObject(
@@ -1282,18 +1228,13 @@ describe("changeWallsForFloorChangeInPlace", () => {
           ],
         );
       expect
-        .soft(
-          state1.campaignInProgress.rooms[testRoomId].items[doorId],
-          "door should match original",
-        )
+        .soft(room1.items[doorId], "door should match original")
         .toMatchObject(
           state0.campaignInProgress.rooms[testRoomId].items[doorId],
         );
       expect
         .soft(
-          state1.campaignInProgress.rooms[testRoomId].items[
-            awayWallAfterDoorId
-          ],
+          room1.items[awayWallAfterDoorId],
           "wall after door should match original",
         )
         .toMatchObject(
@@ -1301,9 +1242,6 @@ describe("changeWallsForFloorChangeInPlace", () => {
             awayWallAfterDoorId
           ],
         );
-
-      expect(state1.pendingEdits).toBeUndefined();
-      expect(state1.history[testRoomId]?.undo ?? []).toHaveLength(0);
     });
 
     test("moving two doors by one block should adapt walls around them", () => {
@@ -1372,17 +1310,14 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Move both doors by +1 in y and commit:
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [door1Id, door2Id],
-          positionDelta: { x: 0, y: 1, z: 0 },
-          timestamp: 0,
+          moves: [{ x: 0, y: 1, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
-      const { items } = state1.campaignInProgress.rooms[testRoomId];
+      const { items } = room1;
 
       // doors should have moved by 1 in y
       expect
@@ -1482,20 +1417,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // grow the floor one block towards, keeping its away edge put:
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 0, y: -1, z: 0 },
-          timesDelta: { x: 0, y: 1, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: 0, y: -1, z: 0 },
+          moves: [{ x: 0, y: -1, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
-      expect(
-        uncoveredPerimeterEdges(state1.campaignInProgress.rooms[testRoomId]),
-      ).toEqual([]);
+      expect(uncoveredPerimeterEdges(room1)).toEqual([]);
     });
 
     test("growing the floor towards leaves the doors where they are", () => {
@@ -1569,18 +1499,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // grow the floor one block towards, keeping its away edge put:
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 0, y: -1, z: 0 },
-          timesDelta: { x: 0, y: 1, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: 0, y: -1, z: 0 },
+          moves: [{ x: 0, y: -1, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
-      const { items } = state1.campaignInProgress.rooms[testRoomId];
+      const { items } = room1;
       expect
         .soft(items[rightDoorId]?.position, "right door position")
         .toEqual<Xyz>({ x: 0, y: 3, z: 0 });
@@ -1660,18 +1587,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // shrink the floor 1 block from its towards edge, keeping its away edge put:
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 0, y: 1, z: 0 },
-          timesDelta: { x: 0, y: -1, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: 0, y: -1, z: 0 },
+          moves: [{ x: 0, y: 1, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
-      const { items } = state1.campaignInProgress.rooms[testRoomId];
+      const { items } = room1;
       expect
         .soft(items[rightDoorId]?.position, "right door position")
         .toEqual<Xyz>({ x: 0, y: 3, z: 0 });
@@ -1751,18 +1675,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // shrink the floor 2 blocks from its towards edge, keeping its away edge put:
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 0, y: 2, z: 0 },
-          timesDelta: { x: 0, y: -2, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: 0, y: -1, z: 0 },
+          moves: [{ x: 0, y: 2, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
-      const { items } = state1.campaignInProgress.rooms[testRoomId];
+      const { items } = room1;
       expect
         .soft(items[rightDoorId]?.position, "right door position")
         .toEqual<Xyz>({ x: 0, y: 3, z: 0 });
@@ -1842,20 +1763,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // shrink the floor 2 blocks from its towards edge, keeping its away edge put:
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 0, y: 2, z: 0 },
-          timesDelta: { x: 0, y: -2, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: 0, y: -1, z: 0 },
+          moves: [{ x: 0, y: 2, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
-      expect(
-        uncoveredPerimeterEdges(state1.campaignInProgress.rooms[testRoomId]),
-      ).toEqual([]);
+      expect(uncoveredPerimeterEdges(room1)).toEqual([]);
     });
 
     test("shrinking the floor until a door would fall off the other end is not a valid edit", () => {
@@ -1929,24 +1845,19 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // shrink the floor 4 blocks from its towards edge, keeping its away edge put:
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 0, y: 4, z: 0 },
-          timesDelta: { x: 0, y: -4, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: 0, y: -1, z: 0 },
+          moves: [{ x: 0, y: 4, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
-      expect(state1.campaignInProgress.rooms[testRoomId]).toEqual(
-        state0.campaignInProgress.rooms[testRoomId],
-      );
+      expect(room1).toEqual(state0.campaignInProgress.rooms[testRoomId]);
     });
   });
 
-  test("a door can't be moved off the end of the floor", () => {
+  test("a door dragged off the end of the floor stops at its end", () => {
     const doorId = "door" as EditorRoomItemId;
 
     const state0: LevelEditorState = produce(
@@ -1974,19 +1885,19 @@ describe("changeWallsForFloorChangeInPlace", () => {
     );
 
     // the floor ends at y=5, so a door at y=4 would hang half off it:
-    const state1 = reduceLevelEditorActions(
-      state0,
-      moveOrResizeItemAsPreview({
+    const room1 = selectCurrentCommittedRoomJson({
+      levelEditor: simulatePointerToolDragWithMouse(state0, {
         jsonItemIds: [doorId],
-        positionDelta: { x: 0, y: 2, z: 0 },
-        timestamp: 0,
+        moves: [{ x: 0, y: 2, z: 0 }],
       }),
-      commitCurrentPreviewedEdits(),
-    );
+    } as EditorRootState);
 
-    expect(state1.campaignInProgress.rooms[testRoomId]).toEqual(
-      state0.campaignInProgress.rooms[testRoomId],
-    );
+    // two long, it goes only as far as y=3:
+    expect<Xyz>(room1.items[doorId].position).toEqual<Xyz>({
+      x: 8,
+      y: 3,
+      z: 0,
+    });
   });
 
   test.for([
@@ -1995,60 +1906,62 @@ describe("changeWallsForFloorChangeInPlace", () => {
       name: "along its edge and towards",
       positionDelta: { x: -1, y: -1, z: 0 },
     },
-  ])("a wall can't be moved $name onto a door", ({ positionDelta }) => {
-    const wallBeforeDoorId = "wallBeforeDoor" as EditorRoomItemId;
-    const doorId = "door" as EditorRoomItemId;
-    const wallAfterDoorId = "wallAfterDoor" as EditorRoomItemId;
+  ])(
+    "a wall dragged $name onto a door doesn't go onto it",
+    ({ positionDelta }) => {
+      const wallBeforeDoorId = "wallBeforeDoor" as EditorRoomItemId;
+      const doorId = "door" as EditorRoomItemId;
+      const wallAfterDoorId = "wallAfterDoor" as EditorRoomItemId;
 
-    const state0: LevelEditorState = produce(
-      editorStateWithOneRoomWithNoItems,
-      (draft) => {
-        const room = draft.campaignInProgress.rooms[testRoomId];
-        room.items["floor" as EditorRoomItemId] = {
-          type: "floor",
-          position: { x: 0, y: 0, z: 0 },
-          config: {
-            floorType: "standable",
-            scenery: "blacktooth",
-            times: { x: 11, y: 8 },
-          },
-        };
-        // along the away edge: wall(6) - raised door(2) - wall(3), to the corner
-        room.items[wallBeforeDoorId] = {
-          type: "wall",
-          position: { x: 0, y: 8, z: 0 },
-          config: { direction: "away", tiles: Array(6).fill("plain") },
-        };
-        room.items[doorId] = {
-          type: "door",
-          position: { x: 6, y: 8, z: 4 },
-          config: {
-            direction: "away",
-            toRoom: nowhereRoomId as EditorRoomId,
-          },
-        };
-        room.items[wallAfterDoorId] = {
-          type: "wall",
-          position: { x: 8, y: 8, z: 0 },
-          config: { direction: "away", tiles: Array(3).fill("plain") },
-        };
-      },
-    );
+      const state0: LevelEditorState = produce(
+        editorStateWithOneRoomWithNoItems,
+        (draft) => {
+          const room = draft.campaignInProgress.rooms[testRoomId];
+          room.items["floor" as EditorRoomItemId] = {
+            type: "floor",
+            position: { x: 0, y: 0, z: 0 },
+            config: {
+              floorType: "standable",
+              scenery: "blacktooth",
+              times: { x: 11, y: 8 },
+            },
+          };
+          // along the away edge: wall(6) - raised door(2) - wall(3), to the corner
+          room.items[wallBeforeDoorId] = {
+            type: "wall",
+            position: { x: 0, y: 8, z: 0 },
+            config: { direction: "away", tiles: Array(6).fill("plain") },
+          };
+          room.items[doorId] = {
+            type: "door",
+            position: { x: 6, y: 8, z: 4 },
+            config: {
+              direction: "away",
+              toRoom: nowhereRoomId as EditorRoomId,
+            },
+          };
+          room.items[wallAfterDoorId] = {
+            type: "wall",
+            position: { x: 8, y: 8, z: 0 },
+            config: { direction: "away", tiles: Array(3).fill("plain") },
+          };
+        },
+      );
 
-    const state1 = reduceLevelEditorActions(
-      state0,
-      moveOrResizeItemAsPreview({
-        jsonItemIds: [wallAfterDoorId],
-        positionDelta,
-        timestamp: 0,
-      }),
-      commitCurrentPreviewedEdits(),
-    );
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
+          jsonItemIds: [wallAfterDoorId],
+          moves: [positionDelta],
+        }),
+      } as EditorRootState);
 
-    expect(state1.campaignInProgress.rooms[testRoomId]).toEqual(
-      state0.campaignInProgress.rooms[testRoomId],
-    );
-  });
+      // wherever the drag goes instead, the wall and door stay side by side:
+      expect([
+        room1.items[doorId].position.x,
+        room1.items[wallAfterDoorId].position.x,
+      ]).toEqual([6, 8]);
+    },
+  );
 
   test("a wall can't be moved past the things in the room, leaving them off the floor", () => {
     const floorId = "floor" as EditorRoomItemId;
@@ -2083,19 +1996,14 @@ describe("changeWallsForFloorChangeInPlace", () => {
     );
 
     // moving the away wall towards by one shrinks the floor out from under the block:
-    const state1 = reduceLevelEditorActions(
-      state0,
-      moveOrResizeItemAsPreview({
+    const room1 = selectCurrentCommittedRoomJson({
+      levelEditor: simulatePointerToolDragWithMouse(state0, {
         jsonItemIds: [awayWallId],
-        positionDelta: { x: 0, y: -1, z: 0 },
-        timestamp: 0,
+        moves: [{ x: 0, y: -1, z: 0 }],
       }),
-      commitCurrentPreviewedEdits(),
-    );
+    } as EditorRootState);
 
-    expect(state1.campaignInProgress.rooms[testRoomId]).toEqual(
-      state0.campaignInProgress.rooms[testRoomId],
-    );
+    expect(room1).toEqual(state0.campaignInProgress.rooms[testRoomId]);
   });
 
   describe("moving a wall keeps the room's perimeter closed", () => {
@@ -2174,19 +2082,14 @@ describe("changeWallsForFloorChangeInPlace", () => {
         },
       );
 
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [awayWallAfterDoorId],
-          positionDelta: { x: 1, y: 1, z: 0 },
-          timestamp: 0,
+          moves: [{ x: 1, y: 1, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
-      expect(
-        uncoveredPerimeterEdges(state1.campaignInProgress.rooms[testRoomId]),
-      ).toEqual([]);
+      expect(uncoveredPerimeterEdges(room1)).toEqual([]);
     });
 
     test.for([
@@ -2254,19 +2157,14 @@ describe("changeWallsForFloorChangeInPlace", () => {
           },
         );
 
-        const state1 = reduceLevelEditorActions(
-          state0,
-          moveOrResizeItemAsPreview({
+        const room1 = selectCurrentCommittedRoomJson({
+          levelEditor: simulatePointerToolDragWithMouse(state0, {
             jsonItemIds: [leftWallBeforeDoorId],
-            positionDelta,
-            timestamp: 0,
+            moves: [positionDelta],
           }),
-          commitCurrentPreviewedEdits(),
-        );
+        } as EditorRootState);
 
-        expect(
-          uncoveredPerimeterEdges(state1.campaignInProgress.rooms[testRoomId]),
-        ).toEqual([]);
+        expect(uncoveredPerimeterEdges(room1)).toEqual([]);
       },
     );
   });
@@ -2305,19 +2203,16 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Shrink floor to 2x2
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 0, y: 0, z: 0 },
-          timesDelta: { x: -1, y: -1, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: 1, y: 1, z: 0 },
+          moves: [{ x: -1, y: -1, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
       // Wall should be removed or resized
-      const room = state1.campaignInProgress.rooms[testRoomId];
+      const room = room1;
       const wall = room.items[wallId];
       // The wall at x:2 should be removed since floor now only extends to x:2
       expect(wall).toBeUndefined();
@@ -2358,18 +2253,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Move floor
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 1, y: 1, z: 0 },
-          timestamp: 0,
+          moves: [{ x: 1, y: 1, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
       // Distant wall should not be affected
-      const room = state1.campaignInProgress.rooms[testRoomId];
+      const room = room1;
       expect(room.items[distantWallId]).toEqual({
         type: "wall",
         position: { x: 10, y: 10, z: 0 },
@@ -2413,18 +2305,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Move floor
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 1, y: 1, z: 0 },
-          timestamp: 0,
+          moves: [{ x: 1, y: 1, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
       // Wall on different z-level should not be affected
-      const room = state1.campaignInProgress.rooms[testRoomId];
+      const room = room1;
       expect(room.items[wallAboveId]).toEqual({
         type: "wall",
         position: { x: 0, y: 0, z: 1 },
@@ -2471,8 +2360,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
         );
 
         // Move wall right by 2
-        const state2 = testWallMovement(state0, wallId, { x: 2, y: 0, z: 0 });
-        const room = state2.campaignInProgress.rooms[testRoomId];
+        const room2 = testWallMovement(state0, wallId, { x: 2, y: 0, z: 0 });
+        const room = room2;
 
         // Wall should have moved and resized to match floor
         expect(room.items[wallId]).toEqual({
@@ -2529,8 +2418,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
         );
 
         // Move wall left by 3
-        const state2 = testWallMovement(state0, wallId, { x: -3, y: 0, z: 0 });
-        const room = state2.campaignInProgress.rooms[testRoomId];
+        const room2 = testWallMovement(state0, wallId, { x: -3, y: 0, z: 0 });
+        const room = room2;
 
         // Wall should have moved and resized to match floor
         expect(room.items[wallId]).toEqual({
@@ -2587,8 +2476,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
         );
 
         // Move wall forward by 2
-        const state2 = testWallMovement(state0, wallId, { x: 0, y: 2, z: 0 });
-        const room = state2.campaignInProgress.rooms[testRoomId];
+        const room2 = testWallMovement(state0, wallId, { x: 0, y: 2, z: 0 });
+        const room = room2;
 
         // Wall should have moved
         expect(room.items[wallId]).toEqual({
@@ -2645,8 +2534,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
         );
 
         // Move wall away by 3
-        const state2 = testWallMovement(state0, wallId, { x: 0, y: 3, z: 0 });
-        const room = state2.campaignInProgress.rooms[testRoomId];
+        const room2 = testWallMovement(state0, wallId, { x: 0, y: 3, z: 0 });
+        const room = room2;
 
         // Wall should have moved
         expect(room.items[wallId]).toEqual({
@@ -2703,8 +2592,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
         );
 
         // Move wall right by 2
-        const state2 = testWallMovement(state0, wallId, { x: 2, y: 0, z: 0 });
-        const room = state2.campaignInProgress.rooms[testRoomId];
+        const room2 = testWallMovement(state0, wallId, { x: 2, y: 0, z: 0 });
+        const room = room2;
 
         // Wall should have moved
         expect(room.items[wallId]).toEqual({
@@ -2761,8 +2650,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
         );
 
         // Move wall right by 3
-        const state2 = testWallMovement(state0, wallId, { x: 3, y: 0, z: 0 });
-        const room = state2.campaignInProgress.rooms[testRoomId];
+        const room2 = testWallMovement(state0, wallId, { x: 3, y: 0, z: 0 });
+        const room = room2;
 
         // Wall should have moved
         expect(room.items[wallId]).toEqual({
@@ -2821,8 +2710,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
         );
 
         // Move wall right by 2
-        const state2 = testWallMovement(state0, wallId, { x: 2, y: 0, z: 0 });
-        const room = state2.campaignInProgress.rooms[testRoomId];
+        const room2 = testWallMovement(state0, wallId, { x: 2, y: 0, z: 0 });
+        const room = room2;
 
         // Wall should have moved
         expect(room.items[wallId]).toEqual({
@@ -2879,8 +2768,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
         );
 
         // Move wall forward by 2
-        const state2 = testWallMovement(state0, wallId, { x: 0, y: 2, z: 0 });
-        const room = state2.campaignInProgress.rooms[testRoomId];
+        const room2 = testWallMovement(state0, wallId, { x: 0, y: 2, z: 0 });
+        const room = room2;
 
         // Wall should have moved
         expect(room.items[wallId]).toEqual({
@@ -2939,8 +2828,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
         );
 
         // Move wall right by 2
-        const state2 = testWallMovement(state0, wallId, { x: 2, y: 0, z: 0 });
-        const room = state2.campaignInProgress.rooms[testRoomId];
+        const room2 = testWallMovement(state0, wallId, { x: 2, y: 0, z: 0 });
+        const room = room2;
 
         // Wall should have moved and extended to maintain connection with floor edge
         expect(room.items[wallId]).toEqual({
@@ -2997,8 +2886,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
         );
 
         // Move wall forward by 2
-        const state2 = testWallMovement(state0, wallId, { x: 0, y: 2, z: 0 });
-        const room = state2.campaignInProgress.rooms[testRoomId];
+        const room2 = testWallMovement(state0, wallId, { x: 0, y: 2, z: 0 });
+        const room = room2;
 
         // Wall should have moved
         expect(room.items[wallId]).toEqual({
@@ -3057,8 +2946,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
         );
 
         // Move wall right by 2
-        const state2 = testWallMovement(state0, wallId, { x: 2, y: 0, z: 0 });
-        const room = state2.campaignInProgress.rooms[testRoomId];
+        const room2 = testWallMovement(state0, wallId, { x: 2, y: 0, z: 0 });
+        const room = room2;
 
         // Wall should not have moved (floor didn't change)
         expect(room.items[wallId]).toEqual({
@@ -3115,8 +3004,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
         );
 
         // Move wall forward by 2
-        const state2 = testWallMovement(state0, wallId, { x: 0, y: 2, z: 0 });
-        const room = state2.campaignInProgress.rooms[testRoomId];
+        const room2 = testWallMovement(state0, wallId, { x: 0, y: 2, z: 0 });
+        const room = room2;
 
         // Wall should have moved
         expect(room.items[wallId]).toEqual({
@@ -3190,18 +3079,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Extend floor from lower edge in x: position moves to (-2,0) and size becomes 10x8
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: -2, y: 0, z: 0 },
-          timesDelta: { x: 2, y: 0, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: -1, y: 0, z: 0 },
+          moves: [{ x: -2, y: 0, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
-      const room = state1.campaignInProgress.rooms[testRoomId];
+      const room = room1;
 
       // Floor should be at (-2,0) with size 10x8
       expect(room.items[floorId]).toEqual({
@@ -3280,18 +3166,15 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Extend floor from higher edge in x: size becomes 10x8 (still at 0,0)
-      const state1 = reduceLevelEditorActions(
-        state0,
-        moveOrResizeItemAsPreview({
+      const room1 = selectCurrentCommittedRoomJson({
+        levelEditor: simulatePointerToolDragWithMouse(state0, {
           jsonItemIds: [floorId],
-          positionDelta: { x: 0, y: 0, z: 0 },
-          timesDelta: { x: 2, y: 0, z: 0 },
-          timestamp: 0,
+          edgeDirection: { x: 1, y: 0, z: 0 },
+          moves: [{ x: 2, y: 0, z: 0 }],
         }),
-        commitCurrentPreviewedEdits(),
-      );
+      } as EditorRootState);
 
-      const room = state1.campaignInProgress.rooms[testRoomId];
+      const room = room1;
 
       // Floor should be at (0,0) with size 10x8
       expect(room.items[floorId]).toEqual({
@@ -3338,7 +3221,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
     });
   });
 
-  describe("pendingEdits lifecycle", () => {
+  describe("undo descriptions", () => {
     const blockId = "b1" as EditorRoomItemId;
     const state0WithBlock: LevelEditorState = produce(
       editorStateWithOneRoomWithNoItems,
@@ -3351,102 +3234,42 @@ describe("changeWallsForFloorChangeInPlace", () => {
       },
     );
 
-    test("moveOrResizeItemAsPreview sets pendingEdits description for a move", () => {
-      const state1 = reduceLevelEditorActions(
-        state0WithBlock,
-        moveOrResizeItemAsPreview({
-          jsonItemIds: [blockId],
-          positionDelta: { x: 1, y: 0, z: 0 },
-          timestamp: 0,
-        }),
-      );
+    test.for([
+      {
+        name: "a move along x as a move up and left",
+        journey: { moves: [{ x: 1, y: 0, z: 0 }] },
+        verb: "↖ Move",
+      },
+      {
+        name: "a move towards as a move down and left",
+        journey: { moves: [{ x: 0, y: -1, z: 0 }] },
+        verb: "↙ Move",
+      },
+      {
+        name: "a resize as a resize",
+        journey: {
+          edgeDirection: { x: 1, y: 0, z: 0 },
+          moves: [{ x: 1, y: 0, z: 0 }],
+        },
+        verb: "Resize",
+      },
+    ])("dragging the block records $name", ({ journey, verb }) => {
+      const state1 = simulatePointerToolDragWithMouse(state0WithBlock, {
+        jsonItemIds: [blockId],
+        ...journey,
+      });
 
-      const desc = state1.pendingEdits?.description;
-      expect(desc?.kind).toBe("itemAction");
-      if (desc?.kind === "itemAction") {
-        expect(desc.verb).toBe("↖ Move");
-        expect(desc.items).toHaveLength(1);
-        const [[movedId, movedItem]] = desc.items;
-        expect(movedId).toBe(blockId);
-        expect(movedItem.type).toBe("block");
-      }
-    });
-
-    test("moveOrResizeItemAsPreview sets pendingEdits description for a resize", () => {
-      const state1 = reduceLevelEditorActions(
-        state0WithBlock,
-        moveOrResizeItemAsPreview({
-          jsonItemIds: [blockId],
-          positionDelta: { x: 0, y: 0, z: 0 },
-          timesDelta: { x: 1, y: 0, z: 0 },
-          timestamp: 0,
-        }),
-      );
-
-      const desc = state1.pendingEdits?.description;
-      expect(desc?.kind).toBe("itemAction");
-      if (desc?.kind === "itemAction") {
-        expect(desc.verb).toBe("Resize");
-        expect(desc.items).toHaveLength(1);
-        const [[resizedId]] = desc.items;
-        expect(resizedId).toBe(blockId);
-      }
-    });
-
-    test("zero timesDelta produces a move verb, not resize", () => {
-      const state1 = reduceLevelEditorActions(
-        state0WithBlock,
-        moveOrResizeItemAsPreview({
-          jsonItemIds: [blockId],
-          positionDelta: { x: 0, y: -1, z: 0 },
-          timesDelta: { x: 0, y: 0, z: 0 },
-          timestamp: 0,
-        }),
-      );
-
-      const desc = state1.pendingEdits?.description;
-      expect(desc?.kind).toBe("itemAction");
-      if (desc?.kind === "itemAction") {
-        expect(desc.verb).toBe("↙ Move");
-        const [[movedId]] = desc.items;
-        expect(movedId).toBe(blockId);
-      }
-    });
-
-    test("commitCurrentPreviewedEdits consumes pendingEdits", () => {
-      const state1 = reduceLevelEditorActions(
-        state0WithBlock,
-        moveOrResizeItemAsPreview({
-          jsonItemIds: [blockId],
-          positionDelta: { x: 1, y: 0, z: 0 },
-          timestamp: 0,
-        }),
-        commitCurrentPreviewedEdits(),
-      );
-
-      expect(state1.history[testRoomId]!.undo).toHaveLength(1);
-      const desc = state1.history[testRoomId]!.undo[0].description;
-      expect(desc.kind).toBe("itemAction");
-      if (desc.kind === "itemAction") {
-        expect(desc.verb).toBe("↖ Move");
-        const [[movedId]] = desc.items;
-        expect(movedId).toBe(blockId);
-      }
-      expect(state1.pendingEdits).toBeUndefined();
-    });
-
-    test("resetPreviewedEdits clears pendingEdits", () => {
-      const state1 = reduceLevelEditorActions(
-        state0WithBlock,
-        moveOrResizeItemAsPreview({
-          jsonItemIds: [blockId],
-          positionDelta: { x: 1, y: 0, z: 0 },
-          timestamp: 0,
-        }),
-        resetPreviewedEdits(),
-      );
-
-      expect(state1.pendingEdits).toBeUndefined();
+      expect(
+        selectUndoHistory({ levelEditor: state1 } as EditorRootState).map(
+          ({ description }) =>
+            description.kind === "itemAction" ?
+              {
+                verb: description.verb,
+                itemIds: description.items.map(([itemId]) => itemId),
+              }
+            : description.kind,
+        ),
+      ).toEqual([{ verb, itemIds: [blockId] }]);
     });
   });
 });

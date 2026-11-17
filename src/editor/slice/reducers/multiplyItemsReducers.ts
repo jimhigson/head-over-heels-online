@@ -23,7 +23,7 @@ import { previewedItemsIter } from "../previewedItemsIter";
 import {
   addTimesDeltaToJsonItemInPlace,
   moveOrResizeOutcome,
-} from "./moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
+} from "./moveOrResizeItemPreview/moveOrResizeOutcome";
 
 export type MultiplySelectedItemsPayload = {
   /**

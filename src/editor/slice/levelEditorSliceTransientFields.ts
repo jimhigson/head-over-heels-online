@@ -7,7 +7,7 @@ import { type LevelEditorState } from "./levelEditorSlice";
 export const levelEditorSliceCampaignTransientFields: (keyof LevelEditorState)[] =
   [
     "pendingEdits",
-    "itemDrag",
+    "itemGrab",
     "hoveredUndoIndex",
     "editingRoomIdHistory",
     "cmdKSearch",

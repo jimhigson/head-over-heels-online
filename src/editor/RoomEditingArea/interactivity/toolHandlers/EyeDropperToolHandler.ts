@@ -1,7 +1,7 @@
 import { type EditorThunk } from "../../../../store/store";
 import { noopFunction } from "../../../../utils/empty";
 import { setTool } from "../../../slice/levelEditorSlice";
-import { existingLayoutNode } from "../../../slice/PaneLayout";
+import { maybeLayoutNode } from "../../../slice/PaneLayout";
 import { itemsAreLocked } from "../itemsAreLocked";
 import { jsonItemAndIdForInPlayItem } from "../jsonItemAndIdForInPlayItem";
 import { setHoveredItemIfChangedThunk } from "../setHoveredItemIfChangedThunk";
@@ -20,14 +20,18 @@ export class EyeDropperToolHandler implements ToolHandler {
     pointingAt,
   }: MouseMoveParams): EditorThunk {
     return (dispatch, getState) => {
-      const { editable } = existingLayoutNode(
+      const openRoom = maybeLayoutNode(
         getState().levelEditor.layout,
         openRoomId,
       );
+      // the open room may have been closed or replaced (its pane is going):
+      if (openRoom === undefined) {
+        return;
+      }
       dispatch(
         setHoveredItemIfChangedThunk(
           openRoomId,
-          editable,
+          openRoom.editable,
           roomState,
           pointingAt,
         ),

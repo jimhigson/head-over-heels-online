@@ -1,3 +1,4 @@
+// @vitest-environment happy-dom
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
@@ -23,14 +24,13 @@ import {
 } from "../levelEditorSelectors";
 import {
   applyItemTool,
-  commitCurrentPreviewedEdits,
   type LevelEditorState,
-  moveOrResizeItemAsPreview,
   rotateCurrentToolItem,
   rotateSelectedItems,
   setSelectedItemsInRoom,
   setTool,
 } from "../levelEditorSlice";
+import { simulatePointerToolDragWithMouse } from "./__test__/simulatePointerToolDragWithMouse";
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,
@@ -304,17 +304,14 @@ test("a multi-block conveyor turns about its middle and back, but not into an it
     "conveyor",
   ).toArray();
 
-  // made 3 long:
-  const state2ConveyorResized = reduceLevelEditorActions(
+  // made 3 long, by dragging its edge 2 blocks along x:
+  const state2ConveyorResized = simulatePointerToolDragWithMouse(
     state1ConveyorAdded,
-    setSelectedItemsInRoom({ jsonItemIds: [conveyorId] }),
-    moveOrResizeItemAsPreview({
+    {
       jsonItemIds: [conveyorId],
-      positionDelta: originXyz,
-      timesDelta: { x: 2, y: 0, z: 0 },
-      timestamp: 0,
-    }),
-    commitCurrentPreviewedEdits(),
+      edgeDirection: { x: 1, y: 0, z: 0 },
+      moves: [{ x: 2, y: 0, z: 0 }],
+    },
   );
   expect(
     selectItemInLevelEditorState(state2ConveyorResized, conveyorId),

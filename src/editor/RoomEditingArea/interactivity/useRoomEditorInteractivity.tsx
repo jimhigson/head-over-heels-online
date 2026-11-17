@@ -11,11 +11,10 @@ import { type EditorRoomRenderer } from "../../editorTypes";
 import { selectPreviewOnlyJsonItemIds } from "../../slice/levelEditorSelectors";
 import {
   changeDragInProgress,
-  itemDragEnded,
-  itemDragOverOpenRoom,
+  itemGrabAbandoned,
+  itemGrabOverOpenRoom,
   openRoomViewPanned,
   openRoomViewZoomed,
-  resetPreviewedEdits,
   selectOpenRoomDragInProgress,
   selectOpenRoomView,
   selectTool,
@@ -160,28 +159,21 @@ export const useRoomEditorInteractivity = (
     };
 
     /**
+     * the item drag this open room started, if there is one
+     */
+    const ownItemGrab = () => {
+      const { itemGrab } = editorStore.getState().levelEditor;
+      return itemGrab?.sourceOpenRoomId === openRoomId ? itemGrab : undefined;
+    };
+
+    /**
      * abandon any in-flight tool drag without committing: the previewed
      * (uncommitted) edit is discarded from the store so the dragged item
      * returns to where it started
      */
-    /**
-     * the item drag this open room started, if there is one
-     */
-    const ownItemDrag = () => {
-      const { itemDrag } = editorStore.getState().levelEditor;
-      return itemDrag?.sourceOpenRoomId === openRoomId ? itemDrag : undefined;
-    };
-
     const abandonToolDrag = () => {
-      const itemDrag = ownItemDrag();
-      if (itemDrag !== undefined) {
-        if (itemDrag.plane !== undefined) {
-          store.dispatch(resetPreviewedEdits());
-          store.dispatch(
-            changeDragInProgress({ openRoomId, dragInProgress: undefined }),
-          );
-        }
-        store.dispatch(itemDragEnded());
+      if (ownItemGrab() !== undefined) {
+        store.dispatch(itemGrabAbandoned());
       }
       mouseDownPointingAtRef.current = undefined;
     };
@@ -198,18 +190,15 @@ export const useRoomEditorInteractivity = (
 
     /**
      * an item drag (from this or another open room) moving over this pane
-     * makes it where the drag would drop. Returns true if the drag is from
-     * another open room, so this pane has nothing more to do with the move
+     * makes it where the drag would drop
      */
-    const followItemDragOver = (): boolean => {
-      const { itemDrag } = editorStore.getState().levelEditor;
-      if (itemDrag === undefined) {
-        return false;
+    const followItemDragOver = () => {
+      const { itemGrab } = editorStore.getState().levelEditor;
+      if (itemGrab !== undefined && itemGrab.overOpenRoomId !== openRoomId) {
+        store.dispatch(
+          itemGrabOverOpenRoom({ openRoomId, timestamp: Date.now() }),
+        );
       }
-      if (itemDrag.overOpenRoomId !== openRoomId) {
-        store.dispatch(itemDragOverOpenRoom(openRoomId));
-      }
-      return itemDrag.sourceOpenRoomId !== openRoomId;
     };
 
     /**
@@ -254,9 +243,7 @@ export const useRoomEditorInteractivity = (
         }
       }
 
-      if (followItemDragOver()) {
-        return;
-      }
+      followItemDragOver();
 
       // no point in re-running this effect when it changes so select it 'live':
       const storeState = editorStore.getState();
@@ -310,12 +297,7 @@ export const useRoomEditorInteractivity = (
     };
 
     const handleMouseUp = (mouseEvent: MouseEvent) => {
-      const { itemDrag } = editorStore.getState().levelEditor;
-      if (itemDrag !== undefined && itemDrag.sourceOpenRoomId !== openRoomId) {
-        // another open room's drag - not dropped here yet, so the open room
-        // it is from abandons it:
-        return;
-      }
+      const { itemGrab } = editorStore.getState().levelEditor;
 
       const wasPanning = panSessionRef.current?.active === true;
       const wasMiddleButton = mouseEvent.button === 1;
@@ -372,7 +354,7 @@ export const useRoomEditorInteractivity = (
         ),
       });
 
-      const isDragEnd = itemDrag?.plane !== undefined;
+      const isDragEnd = itemGrab?.dragging !== undefined;
 
       const isClick =
         !isDragEnd &&
@@ -404,8 +386,9 @@ export const useRoomEditorInteractivity = (
         console.log("mouseUp - not a click or drag end - skipping");
       }
 
-      if (itemDrag !== undefined) {
-        store.dispatch(itemDragEnded());
+      if (editorStore.getState().levelEditor.itemGrab !== undefined) {
+        // the handler didn't drop it:
+        store.dispatch(itemGrabAbandoned());
       }
       store.dispatch(
         changeDragInProgress({ openRoomId, dragInProgress: undefined }),
@@ -413,11 +396,16 @@ export const useRoomEditorInteractivity = (
     };
 
     const handleMouseLeave = (mouseEvent: MouseEvent) => {
-      const { itemDrag } = editorStore.getState().levelEditor;
-      if (itemDrag?.overOpenRoomId === openRoomId) {
-        store.dispatch(itemDragOverOpenRoom(undefined));
+      const { itemGrab } = editorStore.getState().levelEditor;
+      if (itemGrab?.overOpenRoomId === openRoomId) {
+        store.dispatch(
+          itemGrabOverOpenRoom({
+            openRoomId: undefined,
+            timestamp: Date.now(),
+          }),
+        );
       }
-      if (itemDrag !== undefined || panSessionRef.current !== undefined) {
+      if (itemGrab !== undefined || panSessionRef.current !== undefined) {
         // the gesture continues outside the pane:
         return;
       }
@@ -531,7 +519,7 @@ export const useRoomEditorInteractivity = (
       if (keyEvent.key !== "Escape") {
         return;
       }
-      if (ownItemDrag() === undefined && panSessionRef.current === undefined) {
+      if (ownItemGrab() === undefined && panSessionRef.current === undefined) {
         return;
       }
       endPanSession();
@@ -542,7 +530,7 @@ export const useRoomEditorInteractivity = (
     // capture - by now (bubbling to window) any drop target under the pointer
     // has had it:
     const handleWindowPointerUp = () => {
-      if (ownItemDrag() !== undefined) {
+      if (ownItemGrab() !== undefined) {
         abandonToolDrag();
       }
     };

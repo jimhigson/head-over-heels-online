@@ -1,9 +1,3 @@
-import {
-  current,
-  type PayloadAction,
-  type SliceCaseReducers,
-} from "@reduxjs/toolkit";
-
 import { getConsolidatableVector } from "../../../../consolidateItems/ConsolidatableJsonItem";
 import { generateHoleInWallsForDoor } from "../../../../model/inPlaceMutators/generateHoleInWallsForDoor";
 import { isRoomStructureItemType } from "../../../../model/json/isRoomStructureItemType";
@@ -43,12 +37,10 @@ import {
   type EditorRoomJsonItems,
 } from "../../../editorTypes";
 import { movesOnlyInWholeBlocks } from "../../../snapGridResolution";
-import { commitPendingNudgeInPlace } from "../../inPlaceMutators/commitPendingNudgeInPlace";
 import { generateWallHealingInPlaceOfDoor } from "../../inPlaceMutators/generateWallHealingInPlaceOfDoor";
 import { jsonItemsWithEdits } from "../../jsonItemsWithEdits";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomIdFromLevelEditorState,
   selectItemInLevelEditorState,
 } from "../../levelEditorSelectors";
 import {
@@ -578,41 +570,6 @@ export const moveOrResizeOutcome = (
     timestamp,
   };
 };
-
-export const moveOrResizeItemPreviewReducers = {
-  /**
-   * preview moving or resizing items - or, if that isn't a valid edit, keep
-   * the last valid preview
-   */
-  moveOrResizeItemAsPreview(
-    _state,
-    { payload }: PayloadAction<MoveOrResizeItems>,
-  ) {
-    const state = _state as LevelEditorState;
-    commitPendingNudgeInPlace(state);
-    // worked out on a snapshot of the state rather than on the draft of it:
-    const outcome = moveOrResizeOutcome(current(_state), payload);
-    switch (outcome.type) {
-      case "unchanged":
-        state.pendingEdits = undefined;
-        return;
-      case "invalid":
-        return;
-      case "valid":
-        state.pendingEdits = {
-          edits: {
-            [selectCursorRoomIdFromLevelEditorState(state)]: outcome.edits,
-          },
-          description: outcome.description,
-          timestamp: outcome.timestamp,
-          madeBy: { type: "drag" },
-        };
-        return;
-      default:
-        outcome satisfies never;
-    }
-  },
-} satisfies SliceCaseReducers<LevelEditorState>;
 
 /**
  * adds to an item's times, taking into account the axes it can be extended in and the minimum
