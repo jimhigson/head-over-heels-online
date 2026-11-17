@@ -2,7 +2,6 @@ import { produce } from "immer";
 import { expect, test } from "vitest";
 
 import { blockSizePx } from "../../../../game/physics/mechanicsConstants";
-import { type EditorRootState } from "../../../../store/store";
 import {
   type EditorRoomItemId,
   type EditorRoomJson,
@@ -69,19 +68,12 @@ test("hovering the item tool where its item would collide previews nothing", () 
     state0,
     new ItemToolHandler().handleMouseMove({
       openRoomId: testOpenRoomId,
-      editable: true,
       roomState,
-      tool: blockTool,
-      // the handler only reads the level editor's state:
-      storeState: { levelEditor: state0 } as EditorRootState,
       // neither is read by the item tool:
       mouseEvent: {} as MouseEvent,
       viewport: {} as EditorViewport,
       pointingAt: pointingAtFloorBesideBlock,
       pointingAtChanged: true,
-      clientMovement: { x: 0, y: 0 },
-      mouseDownPointingAtRef: { current: undefined },
-      dragAccVec: { current: undefined },
     }),
   );
 

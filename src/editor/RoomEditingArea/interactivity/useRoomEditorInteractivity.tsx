@@ -6,11 +6,13 @@ import { useAppDispatch } from "../../../store/hooks";
 import { type EditorRootState, editorStore, store } from "../../../store/store";
 import { usePanZoomWheel } from "../../../ui/usePanZoomWheel";
 import { catchErrors } from "../../../utils/errors/errors";
-import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
+import { type Xy } from "../../../utils/vectors/vectors";
 import { type EditorRoomRenderer } from "../../editorTypes";
 import { selectPreviewOnlyJsonItemIds } from "../../slice/levelEditorSelectors";
 import {
   changeDragInProgress,
+  itemDragEnded,
+  itemDragOverOpenRoom,
   openRoomViewPanned,
   openRoomViewZoomed,
   resetPreviewedEdits,
@@ -42,9 +44,7 @@ const pointerTool: Tool = { type: "pointer" };
 const openRoomTool = (storeState: EditorRootState, editable: boolean): Tool =>
   editable ? selectTool(storeState) : pointerTool;
 
-const toolHandlers: {
-  [T in Tool["type"]]: ToolHandler<Extract<Tool, { type: T }>>;
-} = {
+const toolHandlers: Record<Tool["type"], ToolHandler> = {
   item: new ItemToolHandler(),
   pointer: new PointerToolHandler(),
   eyeDropper: new EyeDropperToolHandler(),
@@ -100,16 +100,8 @@ export const useRoomEditorInteractivity = (
   const mouseDownPointingAtRef = useRef<MaybePointingAtSomething | undefined>(
     undefined,
   );
-  /* while dragging to move/resize, set to the current drag vector, otherwise will be undefined */
-  const dragAccVec = useRef<undefined | Xyz>(undefined);
   /* while a pan gesture is possible/happening, otherwise undefined */
   const panSessionRef = useRef<PanSession | undefined>(undefined);
-  /**
-   * where (in client px) an item drag left the pane, which released pointer
-   * capture so the map (or anything else) sees the pointer under normal hit
-   * testing. Undefined while the pane has the drag
-   */
-  const itemDragLeftPaneAtRef = useRef<undefined | Xy>(undefined);
 
   useEditorE2eApi({
     openRoomId,
@@ -172,16 +164,26 @@ export const useRoomEditorInteractivity = (
      * (uncommitted) edit is discarded from the store so the dragged item
      * returns to where it started
      */
+    /**
+     * the item drag this open room started, if there is one
+     */
+    const ownItemDrag = () => {
+      const { itemDrag } = editorStore.getState().levelEditor;
+      return itemDrag?.sourceOpenRoomId === openRoomId ? itemDrag : undefined;
+    };
+
     const abandonToolDrag = () => {
-      if (dragAccVec.current !== undefined) {
-        store.dispatch(resetPreviewedEdits());
-        store.dispatch(
-          changeDragInProgress({ openRoomId, dragInProgress: undefined }),
-        );
+      const itemDrag = ownItemDrag();
+      if (itemDrag !== undefined) {
+        if (itemDrag.plane !== undefined) {
+          store.dispatch(resetPreviewedEdits());
+          store.dispatch(
+            changeDragInProgress({ openRoomId, dragInProgress: undefined }),
+          );
+        }
+        store.dispatch(itemDragEnded());
       }
-      dragAccVec.current = undefined;
       mouseDownPointingAtRef.current = undefined;
-      itemDragLeftPaneAtRef.current = undefined;
     };
 
     const isInsidePane = ({ clientX, clientY }: MouseEvent) => {
@@ -195,43 +197,34 @@ export const useRoomEditorInteractivity = (
     };
 
     /**
-     * an item drag leaving the pane gives up pointer capture, so whatever is
-     * under the pointer (eg a map room to drop on) gets its events; coming
-     * back takes capture again. Returns this move's movement in client px, or
-     * undefined if the drag was abandoned
+     * an item drag (from this or another open room) moving over this pane
+     * makes it where the drag would drop. Returns true if the drag is from
+     * another open room, so this pane has nothing more to do with the move
      */
-    const trackItemDragAcrossPaneEdge = (
-      mouseEvent: PointerEvent,
-    ): undefined | Xy => {
-      const leftPaneAt = itemDragLeftPaneAtRef.current;
-      if (leftPaneAt !== undefined) {
-        // only seen again once back over the pane:
-        if (mouseEvent.buttons === 0) {
-          // released somewhere its pointerup never reached us:
-          abandonToolDrag();
-          return undefined;
-        }
-        pixiApplication.canvas.setPointerCapture(mouseEvent.pointerId);
-        itemDragLeftPaneAtRef.current = undefined;
-        // the moves made outside were never seen - catch up in one jump, so
-        // the items come back under the pointer:
-        return {
-          x: mouseEvent.clientX - leftPaneAt.x,
-          y: mouseEvent.clientY - leftPaneAt.y,
-        };
+    const followItemDragOver = (): boolean => {
+      const { itemDrag } = editorStore.getState().levelEditor;
+      if (itemDrag === undefined) {
+        return false;
       }
+      if (itemDrag.overOpenRoomId !== openRoomId) {
+        store.dispatch(itemDragOverOpenRoom(openRoomId));
+      }
+      return itemDrag.sourceOpenRoomId !== openRoomId;
+    };
+
+    /**
+     * once items are being moved, other panes (and the map) need the
+     * pointer's events, so the pane gives up capture - including a touch's
+     * implicit capture
+     */
+    const releaseCaptureForMovingItems = (mouseEvent: PointerEvent) => {
       if (
         selectOpenRoomDragInProgress(editorStore.getState(), openRoomId) ===
           "moveItems" &&
-        !isInsidePane(mouseEvent)
+        pixiApplication.canvas.hasPointerCapture(mouseEvent.pointerId)
       ) {
         pixiApplication.canvas.releasePointerCapture(mouseEvent.pointerId);
-        itemDragLeftPaneAtRef.current = {
-          x: mouseEvent.clientX,
-          y: mouseEvent.clientY,
-        };
       }
-      return { x: mouseEvent.movementX, y: mouseEvent.movementY };
     };
 
     const handleMouseMove = (mouseEvent: PointerEvent) => {
@@ -261,8 +254,7 @@ export const useRoomEditorInteractivity = (
         }
       }
 
-      const clientMovement = trackItemDragAcrossPaneEdge(mouseEvent);
-      if (clientMovement === undefined) {
+      if (followItemDragOver()) {
         return;
       }
 
@@ -301,34 +293,35 @@ export const useRoomEditorInteractivity = (
         pointingAtRef.current?.world,
       );
 
-      const handler = toolHandlers[tool.type] as ToolHandler<Tool>;
+      const handler = toolHandlers[tool.type];
       store.dispatch(
         handler.handleMouseMove({
           openRoomId,
-          editable,
           pointingAtChanged,
           roomState,
           pointingAt,
-          tool,
-          storeState,
-          mouseDownPointingAtRef,
           mouseEvent,
-          clientMovement,
           viewport,
-          dragAccVec,
         }),
       );
+      releaseCaptureForMovingItems(mouseEvent);
 
       pointingAtRef.current = pointingAt;
     };
 
     const handleMouseUp = (mouseEvent: MouseEvent) => {
+      const { itemDrag } = editorStore.getState().levelEditor;
+      if (itemDrag !== undefined && itemDrag.sourceOpenRoomId !== openRoomId) {
+        // another open room's drag - not dropped here yet, so the open room
+        // it is from abandons it:
+        return;
+      }
+
       const wasPanning = panSessionRef.current?.active === true;
       const wasMiddleButton = mouseEvent.button === 1;
       endPanSession();
       if (wasPanning || wasMiddleButton) {
         // a pan is not a click or a tool drag:
-        dragAccVec.current = undefined;
         mouseDownPointingAtRef.current = undefined;
         return;
       }
@@ -355,6 +348,7 @@ export const useRoomEditorInteractivity = (
         return;
       }
       if (roomState.id !== openRoom.roomId) {
+        abandonToolDrag();
         return;
       }
 
@@ -378,7 +372,7 @@ export const useRoomEditorInteractivity = (
         ),
       });
 
-      const isDragEnd = dragAccVec.current !== undefined;
+      const isDragEnd = itemDrag?.plane !== undefined;
 
       const isClick =
         !isDragEnd &&
@@ -390,47 +384,41 @@ export const useRoomEditorInteractivity = (
         pointingAt.world?.itemId ===
           mouseDownPointingAtRef.current?.world?.itemId;
 
-      // Store the mouseDownPointingAt before clearing
-      const mouseDownPointingAt = mouseDownPointingAtRef.current;
-
       // clear some state now no longer mouse down:;
-      dragAccVec.current = undefined;
       mouseDownPointingAtRef.current = undefined;
 
-      store.dispatch(
-        changeDragInProgress({ openRoomId, dragInProgress: undefined }),
-      );
-
-      if (!isClick && !isDragEnd) {
+      if (isClick || isDragEnd) {
+        const handler = toolHandlers[tool.type];
+        // before the drag is ended, so the handler can see it:
+        store.dispatch(
+          handler.handleMouseUp({
+            openRoomId,
+            roomState,
+            pointingAt,
+            mouseEvent,
+            viewport,
+            isClick,
+          }),
+        );
+      } else {
         console.log("mouseUp - not a click or drag end - skipping");
-        return;
       }
 
-      const handler = toolHandlers[tool.type] as ToolHandler<Tool>;
+      if (itemDrag !== undefined) {
+        store.dispatch(itemDragEnded());
+      }
       store.dispatch(
-        handler.handleMouseUp({
-          openRoomId,
-          editable,
-          roomState,
-          pointingAt,
-          tool,
-          storeState,
-          mouseDownPointingAt,
-          mouseEvent,
-          viewport,
-          isClick,
-          isDragEnd,
-        }),
+        changeDragInProgress({ openRoomId, dragInProgress: undefined }),
       );
     };
 
     const handleMouseLeave = (mouseEvent: MouseEvent) => {
-      if (
-        dragAccVec.current !== undefined ||
-        panSessionRef.current !== undefined
-      ) {
-        // the gesture continues outside the pane (an item drag leaving
-        // releases capture, which fires this):
+      const { itemDrag } = editorStore.getState().levelEditor;
+      if (itemDrag?.overOpenRoomId === openRoomId) {
+        store.dispatch(itemDragOverOpenRoom(undefined));
+      }
+      if (itemDrag !== undefined || panSessionRef.current !== undefined) {
+        // the gesture continues outside the pane:
         return;
       }
 
@@ -438,14 +426,11 @@ export const useRoomEditorInteractivity = (
       const roomState = loadedRoom.getRoomState();
       const tool = openRoomTool(storeState, editable);
 
-      const handler = toolHandlers[tool.type] as ToolHandler<Tool>;
+      const handler = toolHandlers[tool.type];
       store.dispatch(
         handler.handleMouseLeave({
           openRoomId,
-          editable,
           roomState,
-          tool,
-          storeState,
           mouseEvent,
         }),
       );
@@ -455,8 +440,8 @@ export const useRoomEditorInteractivity = (
       if (mouseEvent.button === 0 || mouseEvent.button === 1) {
         // capture so drags/pans keep receiving pointer events after the
         // cursor leaves the pane - dragging out and back in continues the
-        // gesture, and the release is seen wherever it happens (except item
-        // drags, which give capture up outside the pane). Captured on
+        // gesture, and the release is seen wherever it happens (except moving
+        // items, which gives capture up). Captured on
         // pixi's canvas so pixi still sees the release as on its canvas, and
         // fires clicks on its own objects (eg annotations):
         pixiApplication.canvas.setPointerCapture(mouseEvent.pointerId);
@@ -503,20 +488,20 @@ export const useRoomEditorInteractivity = (
       });
       mouseDownPointingAtRef.current = pointingAt;
 
-      const handler = toolHandlers[tool.type] as ToolHandler<Tool>;
+      const handler = toolHandlers[tool.type];
 
       const mouseDownParams = {
         openRoomId,
-        editable,
         roomState,
         pointingAt,
-        tool,
-        storeState,
         mouseEvent,
         viewport,
       };
 
-      if (mouseEvent.button === 0 && !handler.claimsDrag(mouseDownParams)) {
+      if (
+        mouseEvent.button === 0 &&
+        !handler.claimsDrag(mouseDownParams, storeState)
+      ) {
         // no tool wants this drag - if the mouse moves far enough while down,
         // it pans the view instead:
         panSessionRef.current = {
@@ -546,20 +531,18 @@ export const useRoomEditorInteractivity = (
       if (keyEvent.key !== "Escape") {
         return;
       }
-      if (
-        dragAccVec.current === undefined &&
-        panSessionRef.current === undefined
-      ) {
+      if (ownItemDrag() === undefined && panSessionRef.current === undefined) {
         return;
       }
       endPanSession();
       abandonToolDrag();
     };
 
-    // an item drag released outside the pane, after giving up capture - by
-    // now (bubbling to window) any drop target under the pointer has had it:
+    // this open room's item drag released outside its pane, after giving up
+    // capture - by now (bubbling to window) any drop target under the pointer
+    // has had it:
     const handleWindowPointerUp = () => {
-      if (itemDragLeftPaneAtRef.current !== undefined) {
+      if (ownItemDrag() !== undefined) {
         abandonToolDrag();
       }
     };

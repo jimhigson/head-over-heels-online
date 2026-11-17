@@ -1,9 +1,10 @@
 import { type EditorThunk } from "../../../../store/store";
+import { noopFunction } from "../../../../utils/empty";
 import { setTool } from "../../../slice/levelEditorSlice";
+import { existingLayoutNode } from "../../../slice/PaneLayout";
 import { itemsAreLocked } from "../itemsAreLocked";
 import { jsonItemAndIdForInPlayItem } from "../jsonItemAndIdForInPlayItem";
 import { setHoveredItemIfChangedThunk } from "../setHoveredItemIfChangedThunk";
-import { type Tool } from "../Tool";
 import {
   type MouseDownParams,
   type MouseLeaveParams,
@@ -12,16 +13,17 @@ import {
   type ToolHandler,
 } from "./ToolHandler";
 
-export class EyeDropperToolHandler implements ToolHandler<
-  Extract<Tool, { type: "eyeDropper" }>
-> {
+export class EyeDropperToolHandler implements ToolHandler {
   handleMouseMove({
     openRoomId,
-    editable,
     roomState,
     pointingAt,
-  }: MouseMoveParams<Extract<Tool, { type: "eyeDropper" }>>): EditorThunk {
-    return (dispatch) => {
+  }: MouseMoveParams): EditorThunk {
+    return (dispatch, getState) => {
+      const { editable } = existingLayoutNode(
+        getState().levelEditor.layout,
+        openRoomId,
+      );
       dispatch(
         setHoveredItemIfChangedThunk(
           openRoomId,
@@ -36,13 +38,13 @@ export class EyeDropperToolHandler implements ToolHandler<
   handleMouseUp({
     roomState,
     pointingAt,
-    storeState,
     isClick,
-  }: MouseUpParams<Extract<Tool, { type: "eyeDropper" }>>): EditorThunk {
-    return (dispatch) => {
-      if (!isClick) {
-        return;
-      }
+  }: MouseUpParams): EditorThunk {
+    if (!isClick) {
+      return noopFunction;
+    }
+    return (dispatch, getState) => {
+      const storeState = getState();
 
       const itemId = pointingAt.world?.itemId;
 
@@ -75,24 +77,18 @@ export class EyeDropperToolHandler implements ToolHandler<
     };
   }
 
-  handleMouseDown(
-    _params: MouseDownParams<Extract<Tool, { type: "eyeDropper" }>>,
-  ): EditorThunk {
-    return () => {
-      // EyeDropper tool doesn't need to do anything on mouse down
-    };
+  handleMouseDown(_params: MouseDownParams): EditorThunk {
+    // EyeDropper tool doesn't need to do anything on mouse down:
+    return noopFunction;
   }
 
-  claimsDrag(_params: MouseDownParams<Extract<Tool, { type: "eyeDropper" }>>) {
+  claimsDrag(_params: MouseDownParams) {
     // the eye dropper picks on click, not drag:
     return false;
   }
 
-  handleMouseLeave(
-    _params: MouseLeaveParams<Extract<Tool, { type: "eyeDropper" }>>,
-  ): EditorThunk {
-    return () => {
-      // EyeDropper tool doesn't need to do anything on mouse leave
-    };
+  handleMouseLeave(_params: MouseLeaveParams): EditorThunk {
+    // EyeDropper tool doesn't need to do anything on mouse leave:
+    return noopFunction;
   }
 }

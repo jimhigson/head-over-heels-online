@@ -1,7 +1,11 @@
 import { produce } from "immer";
 
 import { type DoorConfig } from "../../../../model/json/ItemConfigMap";
-import { type EditorThunk } from "../../../../store/store";
+import {
+  type EditorRootState,
+  type EditorThunk,
+} from "../../../../store/store";
+import { noopFunction } from "../../../../utils/empty";
 import { nonZeroVectorClosestDirectionXy4 } from "../../../../utils/vectors/vectors";
 import {
   type EditorItemInPlayUnion,
@@ -15,6 +19,7 @@ import {
   applyItemTool,
   resetPreviewedEdits,
   resetTool,
+  selectTool,
 } from "../../../slice/levelEditorSlice";
 import { addingItemWouldCollide } from "../../cursor/editWouldCollide";
 import { itemToolPutDownLocation } from "../../cursor/itemToolPutDownLocation";
@@ -28,20 +33,33 @@ import {
   type ToolHandler,
 } from "./ToolHandler";
 
-export class ItemToolHandler implements ToolHandler<
-  Extract<Tool, { type: "item" }>
-> {
+/**
+ * the selected tool, which is the item tool whenever this handler is used
+ */
+const selectItemTool = (
+  storeState: EditorRootState,
+): Extract<Tool, { type: "item" }> => {
+  const tool = selectTool(storeState);
+  if (tool.type !== "item") {
+    throw new Error(
+      `the item tool handler was used with the ${tool.type} tool`,
+    );
+  }
+  return tool;
+};
+
+export class ItemToolHandler implements ToolHandler {
   handleMouseMove({
     pointingAtChanged,
     roomState,
     pointingAt,
-    tool,
-    storeState,
-  }: MouseMoveParams<Extract<Tool, { type: "item" }>>): EditorThunk {
-    return (dispatch) => {
-      if (!pointingAtChanged) {
-        return;
-      }
+  }: MouseMoveParams): EditorThunk {
+    if (!pointingAtChanged) {
+      return noopFunction;
+    }
+    return (dispatch, getState) => {
+      const storeState = getState();
+      const tool = selectItemTool(storeState);
 
       // remove old previews
       dispatch(resetPreviewedEdits());
@@ -113,14 +131,14 @@ export class ItemToolHandler implements ToolHandler<
   handleMouseUp({
     roomState,
     pointingAt,
-    tool,
-    storeState,
     isClick,
-  }: MouseUpParams<Extract<Tool, { type: "item" }>>): EditorThunk {
-    return (dispatch) => {
-      if (!isClick) {
-        return;
-      }
+  }: MouseUpParams): EditorThunk {
+    if (!isClick) {
+      return noopFunction;
+    }
+    return (dispatch, getState) => {
+      const storeState = getState();
+      const tool = selectItemTool(storeState);
 
       if (pointingAt.world === undefined) {
         // if using item tool, clicking on nothing is a quick way to go back to
@@ -161,22 +179,17 @@ export class ItemToolHandler implements ToolHandler<
     };
   }
 
-  handleMouseDown(
-    _params: MouseDownParams<Extract<Tool, { type: "item" }>>,
-  ): EditorThunk {
-    return () => {
-      // Item tool doesn't need to do anything on mouse down
-    };
+  handleMouseDown(_params: MouseDownParams): EditorThunk {
+    // Item tool doesn't need to do anything on mouse down:
+    return noopFunction;
   }
 
-  claimsDrag(_params: MouseDownParams<Extract<Tool, { type: "item" }>>) {
+  claimsDrag(_params: MouseDownParams) {
     // the item tool places on click, not drag:
     return false;
   }
 
-  handleMouseLeave(
-    _params: MouseLeaveParams<Extract<Tool, { type: "item" }>>,
-  ): EditorThunk {
+  handleMouseLeave(_params: MouseLeaveParams): EditorThunk {
     return (dispatch) => {
       dispatch(resetPreviewedEdits());
     };

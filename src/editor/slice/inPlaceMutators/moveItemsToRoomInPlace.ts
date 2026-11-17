@@ -129,6 +129,7 @@ export const moveItemsToRoomInPlace = (
   commitPendingNudgeInPlace(state);
   // the drag's preview is replaced by the move:
   state.pendingEdits = undefined;
+  state.itemDrag = undefined;
   for (const openRoom of layoutNodesOfType(state.layout, "openRoom")) {
     openRoom.dragInProgress = undefined;
   }

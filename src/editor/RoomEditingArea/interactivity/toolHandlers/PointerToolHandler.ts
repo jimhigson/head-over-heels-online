@@ -38,6 +38,9 @@ import {
   changeDragInProgress,
   commitCurrentPreviewedEdits,
   type GridResolution,
+  itemDragPlaneChanged,
+  itemDragPointerDown,
+  itemDragRounded,
   moveOrResizeItemAsPreview,
   openItemContextMenu,
   selectItem,
@@ -47,8 +50,12 @@ import {
   toggleSelectedItemInRoom,
 } from "../../../slice/levelEditorSlice";
 import { type OpenRoomId } from "../../../slice/OpenRoom";
-import { maybeLayoutNode } from "../../../slice/PaneLayout";
+import { existingLayoutNode, maybeLayoutNode } from "../../../slice/PaneLayout";
 import { type ItemsDrag } from "../../../slice/reducers/dragToMoveReducers";
+import {
+  type ItemDrag,
+  type ItemDragPlane,
+} from "../../../slice/reducers/itemDragReducers";
 import { getMovableVector } from "../../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import { moveOrResizeOutcome } from "../../../slice/reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
 import { snapGridResolution } from "../../../snapGridResolution";
@@ -58,15 +65,11 @@ import {
 } from "../../cursor/editWouldCollide";
 import { roundXyzProjection } from "../../cursor/findPointerPointingAt";
 import { type MaybePointingAtSomething } from "../../cursor/PointingAt";
-import {
-  viewportMouseMovement,
-  viewportMousePosition,
-} from "../../cursor/viewportMouse";
+import { viewportMousePosition } from "../../cursor/viewportMouse";
 import { resizeTimesAndPosition } from "../../resizeTimesAndPosition";
 import { itemsAreLocked } from "../itemsAreLocked";
 import { jsonItemAndIdForInPlayItem } from "../jsonItemAndIdForInPlayItem";
 import { setHoveredItemIfChangedThunk } from "../setHoveredItemIfChangedThunk";
-import { type Tool } from "../Tool";
 import { findItemInPlayForPicking } from "./ItemToolHandler";
 import {
   type MouseDownParams,
@@ -181,52 +184,62 @@ const getDragPlaneNormal = (
   }
 };
 
-const getDragVector = (
-  /** undefined if the mouse is not down */
-  mouseDownPointingAt: MaybePointingAtSomething | undefined,
+/**
+ * the (unrounded) drag vector with the pointer at `mousePosition` - worked out
+ * from where the pointer is, not from its movements, so it is right however
+ * many of the pointer's moves were seen
+ */
+const dragVectorOnPlane = (
+  { normal, modifierPressed, startScrXy, startDragVector }: ItemDragPlane,
   mousePosition: Xy,
-  mouseMove: Xy,
-  modifierPressed: boolean,
-  draggingAlready: boolean,
-  jsonItem: Iterable<EditorJsonItemUnion>,
   cameraAngle: Xy,
-): undefined | Xyz => {
-  if (mouseDownPointingAt === undefined) {
-    return undefined;
-  }
-
-  const dragVectorScrPx = subXy(mousePosition, mouseDownPointingAt.scrXy);
-  const dragDistancePx = lengthXy(dragVectorScrPx);
-  const isDragging = draggingAlready || dragDistancePx > dragMinimumDistance;
-
-  if (!isDragging) {
-    return undefined;
-  }
-
-  const plane = getDragPlaneNormal(
-    mouseDownPointingAt,
-    modifierPressed,
-    jsonItem,
-  );
-
-  if (plane === undefined) {
-    // can't move in any direction
-    return undefined;
-  }
-
-  const dragVectorWorld = unprojectScreenXyToWorldXyz(
-    plane,
-    mouseMove,
+): Xyz => {
+  const onPlane = unprojectScreenXyToWorldXyz(
+    normal,
+    subXy(mousePosition, startScrXy),
     cameraAngle,
   );
+  return addXyz(
+    startDragVector,
+    modifierPressed ? { x: 0, y: 0, z: onPlane.z } : onPlane,
+  );
+};
 
-  return modifierPressed ?
-      {
-        x: 0,
-        y: 0,
-        z: dragVectorWorld.z,
-      }
-    : dragVectorWorld;
+/**
+ * the plane the drag is on with the pointer at `mousePosition`, or undefined
+ * if the pointer hasn't yet moved far enough to drag
+ */
+const dragPlaneNow = (
+  itemDrag: ItemDrag,
+  normal: Xyz,
+  modifierPressed: boolean,
+  mousePosition: Xy,
+  cameraAngle: Xy,
+): ItemDragPlane | undefined => {
+  const { plane, mouseDownPointingAt } = itemDrag;
+  if (plane === undefined) {
+    return (
+        lengthXy(subXy(mousePosition, mouseDownPointingAt.scrXy)) >
+          dragMinimumDistance
+      ) ?
+        {
+          normal,
+          modifierPressed,
+          startScrXy: mouseDownPointingAt.scrXy,
+          startDragVector: originXyz,
+        }
+      : undefined;
+  }
+  if (plane.modifierPressed === modifierPressed) {
+    return plane;
+  }
+  // the modifier changed - carry on from here, on the other plane:
+  return {
+    normal,
+    modifierPressed,
+    startScrXy: mousePosition,
+    startDragVector: dragVectorOnPlane(plane, mousePosition, cameraAngle),
+  };
 };
 
 const roundDragVector = (dragVector: Xyz, gridResolution: GridResolution) =>
@@ -294,55 +307,59 @@ const dragMovesToTry = (
     .map(({ move }) => move);
 };
 
-export class PointerToolHandler implements ToolHandler<
-  Extract<Tool, { type: "pointer" }>
-> {
+export class PointerToolHandler implements ToolHandler {
   handleMouseMove({
     openRoomId,
-    editable,
     roomState,
     pointingAt,
-    storeState,
-    mouseDownPointingAtRef,
     mouseEvent,
-    clientMovement,
     viewport,
-    dragAccVec,
-  }: MouseMoveParams<Extract<Tool, { type: "pointer" }>>): EditorThunk {
+  }: MouseMoveParams): EditorThunk {
     return (dispatch, getState) => {
-      const mouseMoveXy = viewportMouseMovement(viewport, clientMovement);
-
-      const jsonItemIds: EditorRoomItemId[] =
-        editable ?
-          getJsonItemIdsToUseForPointingAt(
-            storeState,
-            openRoomId,
-            roomState,
-            mouseDownPointingAtRef.current,
-          )
-          // a non-editable open room never drags items:
-        : emptyArray;
-
-      if (jsonItemIds.length === 0) {
-        // can't be pointing without mouse going down on an item
+      const storeState = getState();
+      // not dragging, so the most moving the pointer can do is change the
+      // hover status of items:
+      const hover = () =>
         dispatch(
           setHoveredItemIfChangedThunk(
             openRoomId,
-            editable,
+            existingLayoutNode(storeState.levelEditor.layout, openRoomId)
+              .editable,
             roomState,
             pointingAt,
           ),
         );
+
+      const { itemDrag } = storeState.levelEditor;
+      if (
+        itemDrag === undefined ||
+        itemDrag.sourceOpenRoomId !== openRoomId ||
+        // ignore dragging if it started in a different room:
+        pointingAt.roomId !== itemDrag.mouseDownPointingAt.roomId
+      ) {
+        hover();
         return;
       }
 
-      // we are dragging - resize/move items
+      const { jsonItemIds, mouseDownPointingAt } = itemDrag;
       const jsonItems = jsonItemIds.map((jiid) =>
         selectItem(storeState, jiid)!,
       );
 
       if (itemsAreLocked(storeState, ...jsonItems)) {
         // if item isn't in the json (or is locked) we can't drag it
+        return;
+      }
+
+      const modifierPressed = mouseEvent.metaKey || mouseEvent.shiftKey;
+      const normal = getDragPlaneNormal(
+        mouseDownPointingAt,
+        modifierPressed,
+        jsonItems,
+      );
+      if (normal === undefined) {
+        // can't move in any direction
+        hover();
         return;
       }
 
@@ -355,39 +372,20 @@ export class PointerToolHandler implements ToolHandler<
         return;
       }
       const { cameraAngle } = openRoom;
-
-      const mouseWhenDownInSameRoom =
-        pointingAt.roomId === mouseDownPointingAtRef.current?.roomId;
-
-      /**
-       * get the (unrounded) drag delta vector since the last frame
-       * (if there is one)
-       */
-      const dragDeltaVec: undefined | Xyz =
-        mouseWhenDownInSameRoom ?
-          getDragVector(
-            mouseDownPointingAtRef.current,
-            viewportMousePosition(viewport, mouseEvent),
-            mouseMoveXy,
-            mouseEvent.metaKey || mouseEvent.shiftKey,
-            dragAccVec.current !== undefined,
-            jsonItems,
-            cameraAngle,
-          )
-          // ignore dragging if it started in a different room:
-        : undefined;
-
-      if (!dragDeltaVec) {
-        // not dragging so the most moving the pointer can do is change the hover status of items:
-        dispatch(
-          setHoveredItemIfChangedThunk(
-            openRoomId,
-            editable,
-            roomState,
-            pointingAt,
-          ),
-        );
+      const mousePosition = viewportMousePosition(viewport, mouseEvent);
+      const plane = dragPlaneNow(
+        itemDrag,
+        normal,
+        modifierPressed,
+        mousePosition,
+        cameraAngle,
+      );
+      if (plane === undefined) {
+        hover();
         return;
+      }
+      if (plane !== itemDrag.plane) {
+        dispatch(itemDragPlaneChanged(plane));
       }
 
       if (
@@ -405,7 +403,7 @@ export class PointerToolHandler implements ToolHandler<
       }
 
       const mouseDownEdge: Plane | undefined =
-        mouseDownPointingAtRef.current?.world?.onItem.edge;
+        mouseDownPointingAt.world.onItem.edge;
       // grabbing an edge resizes, if every item can be resized:
       const resizeEdge =
         jsonItems.every((jsonItem) => isConsolidatable(jsonItem)) ?
@@ -414,7 +412,6 @@ export class PointerToolHandler implements ToolHandler<
       const itemsDrag: ItemsDrag =
         resizeEdge === undefined ? "moveItems" : "resizeItems";
 
-      const prevDragAccVec: Xyz = dragAccVec.current ?? originXyz;
       const dragGridResolution =
         // sizes are always whole blocks:
         itemsDrag === "resizeItems" ? 1 : (
@@ -424,27 +421,18 @@ export class PointerToolHandler implements ToolHandler<
           )
         );
 
-      // accumulate some more on the drag vector:
-      const nextDragAccVec = addXyz(prevDragAccVec, dragDeltaVec);
-      const nextDragAccVecRound = roundDragVector(
-        nextDragAccVec,
+      const roundedDragVector = roundDragVector(
+        dragVectorOnPlane(plane, mousePosition, cameraAngle),
         dragGridResolution,
       );
 
-      // store for the next frame:
-      dragAccVec.current = nextDragAccVec;
-
-      if (
-        xyzEqual(
-          roundDragVector(prevDragAccVec, dragGridResolution),
-          nextDragAccVecRound,
-        )
-      ) {
-        // rounded acc drag vector didn't change - nothing to do
+      if (xyzEqual(itemDrag.lastRoundedDragVector, roundedDragVector)) {
+        // rounded drag vector didn't change - nothing to do
         return;
       }
+      dispatch(itemDragRounded(roundedDragVector));
 
-      const blockDragAccVec = fineXyzToBlockXyz(nextDragAccVecRound);
+      const blockDragAccVec = fineXyzToBlockXyz(roundedDragVector);
 
       let positionDelta: Xyz;
       let timesDelta: undefined | Xyz = undefined;
@@ -458,10 +446,7 @@ export class PointerToolHandler implements ToolHandler<
         //
         const [, mouseDownJsonItem] = jsonItemAndIdForInPlayItem(
           storeState,
-          findItemInPlayForPicking(
-            roomState,
-            mouseDownPointingAtRef.current!.world!.itemId,
-          ),
+          findItemInPlayForPicking(roomState, mouseDownPointingAt.world.itemId),
         )!;
         ({ timesDelta, positionDelta } = resizeTimesAndPosition({
           // in case there are multiple, the changes are calculated on the item the (single) item
@@ -534,16 +519,18 @@ export class PointerToolHandler implements ToolHandler<
 
   handleMouseUp({
     openRoomId,
-    editable,
     roomState,
     pointingAt,
-    storeState,
     mouseEvent,
     isClick,
-    isDragEnd,
-  }: MouseUpParams<Extract<Tool, { type: "pointer" }>>): EditorThunk {
-    return (dispatch) => {
+  }: MouseUpParams): EditorThunk {
+    return (dispatch, getState) => {
+      const storeState = getState();
       if (isClick) {
+        const { editable } = existingLayoutNode(
+          storeState.levelEditor.layout,
+          openRoomId,
+        );
         const clickedOnItem =
           pointingAt.world === undefined ?
             undefined
@@ -593,28 +580,47 @@ export class PointerToolHandler implements ToolHandler<
             openItemContextMenu({ openRoomId, scrXy: pointingAt.scrXy }),
           );
         }
-      } else if (isDragEnd) {
+      } else if (storeState.levelEditor.itemDrag?.plane !== undefined) {
+        // a drag ended:
         dispatch(commitCurrentPreviewedEdits());
       }
     };
   }
 
-  handleMouseDown(
-    _params: MouseDownParams<Extract<Tool, { type: "pointer" }>>,
-  ): EditorThunk {
-    return () => {
-      // Pointer tool doesn't need to do anything special on mouse down
-      // The main logic handles setting mouseDownPointingAtRef
+  handleMouseDown(params: MouseDownParams): EditorThunk {
+    return (dispatch, getState) => {
+      const { openRoomId, roomState, pointingAt, mouseEvent } = params;
+      if (mouseEvent.button !== 0 || pointingAt.world === undefined) {
+        return;
+      }
+      const storeState = getState();
+      if (!this.claimsDrag(params, storeState)) {
+        return;
+      }
+      // the items a drag from here would drag, if the pointer moves far enough:
+      dispatch(
+        itemDragPointerDown({
+          sourceOpenRoomId: openRoomId,
+          mouseDownPointingAt: pointingAt,
+          jsonItemIds: getJsonItemIdsToUseForPointingAt(
+            storeState,
+            openRoomId,
+            roomState,
+            pointingAt,
+          ),
+        }),
+      );
     };
   }
 
-  claimsDrag({
-    openRoomId,
-    editable,
-    pointingAt,
-    roomState,
-    storeState,
-  }: MouseDownParams<Extract<Tool, { type: "pointer" }>>): boolean {
+  claimsDrag(
+    { openRoomId, pointingAt, roomState }: MouseDownParams,
+    storeState: EditorRootState,
+  ): boolean {
+    const { editable } = existingLayoutNode(
+      storeState.levelEditor.layout,
+      openRoomId,
+    );
     if (!editable) {
       return false;
     }
@@ -633,9 +639,7 @@ export class PointerToolHandler implements ToolHandler<
     return !itemsAreLocked(storeState, ...jsonItems);
   }
 
-  handleMouseLeave({
-    openRoomId,
-  }: MouseLeaveParams<Extract<Tool, { type: "pointer" }>>): EditorThunk {
+  handleMouseLeave({ openRoomId }: MouseLeaveParams): EditorThunk {
     return (dispatch) => {
       dispatch(setHoveredItemInRoom({ openRoomId, hoveredItem: undefined }));
     };

@@ -5,4 +5,10 @@ import { type LevelEditorState } from "./levelEditorSlice";
  * when another campaign is loaded
  */
 export const levelEditorSliceCampaignTransientFields: (keyof LevelEditorState)[] =
-  ["pendingEdits", "hoveredUndoIndex", "editingRoomIdHistory", "cmdKSearch"];
+  [
+    "pendingEdits",
+    "itemDrag",
+    "hoveredUndoIndex",
+    "editingRoomIdHistory",
+    "cmdKSearch",
+  ];

@@ -59,6 +59,7 @@ import { editRoomReducers } from "./reducers/editRoomReducers";
 import { explodeItemsReducers } from "./reducers/explodeItemsReducers";
 import { floorReducers } from "./reducers/floorReducers";
 import { itemActivationReducers } from "./reducers/itemActivationReducers";
+import { type ItemDrag, itemDragReducers } from "./reducers/itemDragReducers";
 import { itemPreviewReducers } from "./reducers/itemPreviewReducers";
 import { mirrorOrientationReducers } from "./reducers/mirrorOrientationReducers";
 import { monsterMovementReducers } from "./reducers/monsterMovementReducers";
@@ -197,6 +198,10 @@ export type LevelEditorState = {
    * the action are required together.
    */
   pendingEdits?: PendingEdits;
+  /**
+   * the pointer pressed on items in an open room, to drag them
+   */
+  itemDrag: ItemDrag | undefined;
   tool: Tool;
   /**
    * the item tool most recently chosen, so we can switch to the pointer and later switch back
@@ -256,6 +261,7 @@ export const levelEditorSlice = createSlice({
     ...itemActivationReducers,
     ...disappearingReducers,
     ...floorReducers,
+    ...itemDragReducers,
     ...monsterMovementReducers,
     ...moveItemsToRoomReducers,
     ...multiplyItemsReducers,
@@ -390,6 +396,11 @@ export const {
   setSelectedItemsDisappearing,
   setSelectedFloorsScenery,
   setSelectedFloorsType,
+  itemDragEnded,
+  itemDragOverOpenRoom,
+  itemDragPlaneChanged,
+  itemDragPointerDown,
+  itemDragRounded,
   setSelectedItemsInRoom,
   setSelectedItemsMirrorOrientation,
   setSelectedItemsStartDirection,

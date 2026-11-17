@@ -23,6 +23,11 @@ emptyMap.delete = () => {
 
 export const emptyObject = Object.freeze({});
 
+/**
+ * a function that does nothing
+ */
+export const noopFunction = (): void => {};
+
 const doneResult: IteratorReturnResult<undefined> = Object.freeze({
   done: true,
   value: undefined,

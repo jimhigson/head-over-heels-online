@@ -87,6 +87,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
     forward: [],
   },
   pendingEdits: undefined,
+  itemDrag: undefined,
   tool: { type: "pointer" },
   lastItemTool: undefined,
   cmdKSearch: "",
