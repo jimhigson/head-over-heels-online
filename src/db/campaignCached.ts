@@ -1,3 +1,4 @@
+import { migrateCampaignInPlace } from "../model/inPlaceMutators/migrateCampaignInPlace";
 import { withLocalStorageCache } from "../utils/io/withLocalStorageCache";
 import {
   type CampaignGetLocator,
@@ -46,6 +47,12 @@ export const loadCampaignFromDbCached = withLocalStorageCache(
       loadCampaignFromDb,
     )
   : loadCampaignFromDb,
+  (cachedCampaign) => {
+    // migrate here too if needed since code might have changed since the cache
+    // was written to:
+    migrateCampaignInPlace(cachedCampaign);
+    return cachedCampaign;
+  },
 );
 
 export const getAllUsersLatestCampaignsCached = withLocalStorageCache(

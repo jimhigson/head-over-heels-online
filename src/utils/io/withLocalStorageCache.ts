@@ -9,6 +9,11 @@ export const withLocalStorageCache =
     keyFn: (...args: Args) => string,
     /** the async function to wrap */
     fn: (...args: Args) => Promise<T>,
+    /**
+     * brings a value read back from the cache up to date - it can have been
+     * cached by an older version of the app
+     */
+    reviveCached: (cached: T) => T = (cached) => cached,
   ) =>
   (...args: Args) => {
     const key = keyFn(...args);
@@ -20,7 +25,7 @@ export const withLocalStorageCache =
       .catch((e) => {
         const cached = localStorage.getItem(key);
         if (cached !== null) {
-          return JSON.parse(cached) as T;
+          return reviveCached(JSON.parse(cached) as T);
         }
         throw e;
       });
