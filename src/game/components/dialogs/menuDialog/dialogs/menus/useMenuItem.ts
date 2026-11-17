@@ -37,6 +37,12 @@ export const useMenuItem = ({
     return state.gameMenus.openMenus.at(0)?.scrollableSelection ?? false;
   });
 
+  const menuHasFocus = useAppSelector(
+    (state) => state.gameMenus.openMenus.at(0)?.focussedItemId !== undefined,
+  );
+  // whether the menu had any item focussed as of the last render:
+  const menuHadFocus = useRef<boolean>(menuHasFocus);
+
   const focussed = useAppSelector(
     (state) => state.gameMenus.openMenus.at(0)?.focussedItemId === id,
   );
@@ -67,16 +73,19 @@ export const useMenuItem = ({
       if (focussed && scrollIntoView) {
         ele?.scrollIntoView({
           behavior:
-            isFirstRender.current ?
-              // instant: ie, if coming back to a menu from a child menu with an item half-way down
-              // already selected (ie, reading the manual and going back up to manual index)
-              //  - in this case we don't want to smoothly scroll
+            // instant on first render: ie, if coming back to a menu from a child menu with an item
+            // half-way down already selected (ie, reading the manual and going back up to manual
+            // index) - in this case we don't want to smoothly scroll. Instant too for the menu's
+            // first focus, given just after it opens: a smooth scroll still under way when the
+            // menu re-renders (eg on a change of scale) can be left stuck part-way
+            isFirstRender.current || !menuHadFocus.current ?
               "instant"
             : "smooth",
           block: "center",
         });
       }
       isFirstRender.current = false;
+      menuHadFocus.current = menuHasFocus;
     },
 
     focussed,
