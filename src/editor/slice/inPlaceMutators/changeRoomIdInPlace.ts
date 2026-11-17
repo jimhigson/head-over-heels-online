@@ -3,6 +3,7 @@ import {
   type EditorRoomId,
 } from "../../../editor/editorTypes";
 import { type LevelEditorState } from "../../../editor/slice/levelEditorSlice";
+import { firstUntakenRoomId } from "../../../model/firstUntakenRoomId";
 import { roomVerticalLinkHolders } from "../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { valuesIter } from "../../../utils/entries";
@@ -15,9 +16,20 @@ import { layoutNodesOfType } from "../PaneLayout";
 export const changeRoomIdInPlace = (
   state: LevelEditorState,
   prevRoomId: EditorRoomId,
-  newRoomId: EditorRoomId,
+  /**
+   * the id wanted - if another room has it, a free id is chosen instead, so
+   * no room is ever overwritten
+   */
+  wantedRoomId: EditorRoomId,
 ) => {
-  const prevRoom = state.campaignInProgress.rooms[prevRoomId];
+  if (wantedRoomId === prevRoomId) {
+    return;
+  }
+  const { rooms } = state.campaignInProgress;
+  const isWantedRoomIdTaken = rooms[wantedRoomId] !== undefined;
+  const newRoomId =
+    isWantedRoomIdTaken ? firstUntakenRoomId(rooms) : wantedRoomId;
+  const prevRoom = rooms[prevRoomId];
 
   for (const room of valuesIter(state.campaignInProgress.rooms)) {
     // update any doors and teleporters that reference the old room id

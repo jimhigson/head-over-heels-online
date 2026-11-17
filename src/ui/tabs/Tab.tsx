@@ -14,8 +14,11 @@ import { TabRenameInput } from "./TabRenameInput";
 export type TabRename = {
   /** the name as edited, before any marks the label adds */
   name: string;
-  /** whether the name can be taken - return does nothing while it can't */
-  isValid: (newName: string) => boolean;
+  /**
+   * validates a name: why it can't be taken, shown under the tab - undefined
+   * if it can. Return does nothing while there is a reason
+   */
+  validate: (newName: string) => string | undefined;
   /** editing the name has begun */
   onStart: () => void;
   onRename: (newName: string) => void;

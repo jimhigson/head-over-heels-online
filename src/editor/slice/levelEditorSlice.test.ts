@@ -8,8 +8,10 @@ import {
   selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
 } from "./levelEditorSelectors";
 import {
+  addRoom,
   applyItemTool,
   changeRoomColour,
+  changeToRoom,
   deleteSelected,
   levelEditorSlice,
   type LevelEditorSliceAction,
@@ -21,6 +23,7 @@ import {
   setTool,
   undo,
 } from "./levelEditorSlice";
+import { reduceLevelEditorActions } from "./reducers/__test__/storeStates";
 
 const reduce = (state: LevelEditorState, action: LevelEditorSliceAction) => {
   return levelEditorSlice.reducer(state, action);
@@ -273,6 +276,38 @@ describe(
       expect(selectCursorRoomIdFromLevelEditorState(state3)).toBe(newRoomId);
       expect(state3.campaignInProgress.rooms[newRoomId]).toBeDefined();
       expect(state3.campaignInProgress.rooms[originalRoomId]).toBeUndefined();
+    });
+
+    test("undoing a rename back to a name another room has since taken keeps both rooms", () => {
+      const state0Initial = initialLevelEditorSliceState;
+      const firstRoomId = selectCursorRoomIdFromLevelEditorState(state0Initial);
+      const renamedRoomId = "renamedRoom" as EditorRoomId;
+
+      // the first room renamed, then a second room added - which is given
+      // the first room's old id, as the first that is free:
+      const state1SecondRoomTookOldName = reduceLevelEditorActions(
+        state0Initial,
+        renameRoom({
+          fromRoomId: firstRoomId,
+          toRoomId: renamedRoomId,
+          timestamp: 0,
+        }),
+        addRoom({}),
+      );
+      expect(
+        selectCursorRoomIdFromLevelEditorState(state1SecondRoomTookOldName),
+      ).toBe(firstRoomId);
+
+      // back in the first room, its rename undone:
+      const state2RenameUndone = reduceLevelEditorActions(
+        state1SecondRoomTookOldName,
+        changeToRoom(renamedRoomId),
+        undo(),
+      );
+
+      expect(
+        Object.keys(state2RenameUndone.campaignInProgress.rooms),
+      ).toHaveLength(2);
     });
   },
 );
