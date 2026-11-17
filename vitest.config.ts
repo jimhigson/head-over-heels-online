@@ -19,7 +19,8 @@ export default defineConfig({
     include: ["**/*.test.ts", "**/*.test.tsx"],
     exclude: [
       "**/*.spec.ts",
-      "node_modules",
+      // at any depth, eg a skill's own install under .claude/skills:
+      "**/node_modules/**",
       "dist",
       "build",
       ".claude/worktrees",
