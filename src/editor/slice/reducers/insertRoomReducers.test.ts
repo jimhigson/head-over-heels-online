@@ -23,6 +23,7 @@ import {
   removeRoom,
   setTool,
 } from "../levelEditorSlice";
+import { existingLayoutNode } from "../PaneLayout";
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,
@@ -76,6 +77,31 @@ const stateWithFloorAndRoomB: LevelEditorState = produce(
 );
 
 describe("insertRoom with no existing doors", () => {
+  test("writes only what json can hold - no key is left undefined", () => {
+    const state0 = stateWithFloor;
+    const state1 = reduceLevelEditorActions(
+      state0,
+      insertRoom({ direction: "left" }),
+    );
+
+    const undefinedPaths: string[] = [];
+    const collectUndefinedPaths = (value: unknown, path: string) => {
+      if (typeof value !== "object" || value === null) {
+        return;
+      }
+      for (const [key, child] of Object.entries(value)) {
+        if (child === undefined) {
+          undefinedPaths.push(`${path}.${key}`);
+        } else {
+          collectUndefinedPaths(child, `${path}.${key}`);
+        }
+      }
+    };
+    collectUndefinedPaths(state1.campaignInProgress.rooms, "rooms");
+
+    expect(undefinedPaths).toEqual([]);
+  });
+
   test("creates a new room in the campaign", () => {
     const state0 = stateWithFloor;
     const state1 = reduceLevelEditorActions(
@@ -534,7 +560,7 @@ describe("insertRoom from a subroom of a multi-chunk room", () => {
         },
       };
       draft.selectedRoomIds = [testRoomId];
-      draft.openRooms[testOpenRoomId].subRoomId = "0";
+      existingLayoutNode(draft.layout, testOpenRoomId).subRoomId = "0";
     },
   );
 
@@ -556,7 +582,7 @@ describe("insertRoom from a subroom of a multi-chunk room", () => {
   test("inserting from subroom 1 centres the door on subroom 1", () => {
     const state0OnSubRoom1 = produce(state0WithTwoChunkRoom, (draft) => {
       draft.selectedRoomIds = [testRoomId];
-      draft.openRooms[testOpenRoomId].subRoomId = "1";
+      existingLayoutNode(draft.layout, testOpenRoomId).subRoomId = "1";
     });
 
     const state1 = reduceLevelEditorActions(
@@ -613,7 +639,7 @@ describe("insertRoom from a subroom where floor extends beyond subroom bounds", 
         },
       };
       draft.selectedRoomIds = [testRoomId];
-      draft.openRooms[testOpenRoomId].subRoomId = "left";
+      existingLayoutNode(draft.layout, testOpenRoomId).subRoomId = "left";
     },
   );
 
@@ -730,7 +756,7 @@ describe("insertRoom from a subroom that does not touch the room outer wall", ()
         },
       };
       draft.selectedRoomIds = [testRoomId];
-      draft.openRooms[testOpenRoomId].subRoomId = "3";
+      existingLayoutNode(draft.layout, testOpenRoomId).subRoomId = "3";
     },
   );
 
@@ -751,7 +777,7 @@ describe("insertRoom from a subroom that does not touch the room outer wall", ()
   test("door from subroom 'left' going left is at subroom boundary, not room outer wall", () => {
     const state0OnLeft = produce(state0WithFourChunks, (draft) => {
       draft.selectedRoomIds = [testRoomId];
-      draft.openRooms[testOpenRoomId].subRoomId = "left";
+      existingLayoutNode(draft.layout, testOpenRoomId).subRoomId = "left";
     });
 
     const state1 = reduceLevelEditorActions(
@@ -770,7 +796,7 @@ describe("insertRoom from a subroom that does not touch the room outer wall", ()
   test("door from subroom 'right' going towards is at subroom boundary, not room outer wall", () => {
     const state0OnRight = produce(state0WithFourChunks, (draft) => {
       draft.selectedRoomIds = [testRoomId];
-      draft.openRooms[testOpenRoomId].subRoomId = "right";
+      existingLayoutNode(draft.layout, testOpenRoomId).subRoomId = "right";
     });
 
     const state1 = reduceLevelEditorActions(
@@ -877,6 +903,7 @@ describe("placing a door tool in a non-origin subroom of a multi-chunk room", ()
         },
       }),
       applyItemTool({
+        roomId: multiChunkRoomId,
         blockPosition: { x: 11, y: 0, z: 1 },
         pointedAtItemJson: {
           type: "wall",

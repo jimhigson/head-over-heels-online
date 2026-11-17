@@ -4,7 +4,7 @@ import { type SceneryName } from "../../../sprites/planets";
 import { itemGlyph, textureForItem } from "../../../sprites/textureForItem";
 import { Timeago } from "../../../ui/Timeago";
 import { camelToSpaced } from "../../../utils/camelToSpaced";
-import { twClass } from "../../../utils/twClass";
+import { twClass } from "../../../utils/twClass.tsx";
 import { type EditorJsonItemUnion } from "../../editorTypes";
 import {
   describeItem,

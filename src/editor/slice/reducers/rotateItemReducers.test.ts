@@ -212,6 +212,7 @@ const state0LampToolHovering = produce(
       item: { type: "lamp", config: { direction: "towards" } },
     };
     draft.pendingEdits = {
+      roomId: testRoomId,
       edits: {
         ["preview" as EditorRoomItemId]: {
           type: "lamp",

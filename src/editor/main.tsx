@@ -13,9 +13,11 @@ import { installAppTickerAsPixiShared } from "../game/mainLoop/installAppTickerA
 import { installE2eAdvanceTimeHandle } from "../game/mainLoop/installE2eAdvanceTimeHandle";
 import { store } from "../store/store";
 import { LevelEditorLoader } from "./LevelEditorLoader";
+import { registerLoadedRoomCachesListener } from "./loadedRoomCache/loadedRoomCaches";
 import { registerRoomPreviewSnapshotListeners } from "./roomPreview/roomPreviewListeners";
 import { registerNudgeCommitListeners } from "./slice/registerNudgeCommitListeners";
 import { registerOpenRoomsRestoredListener } from "./slice/registerOpenRoomsRestoredListener";
+import { registerPinEditedRoomsTabsListener } from "./slice/registerPinEditedRoomsTabsListener";
 import { registerEditorWebMcpTools } from "./webMcp/registerEditorWebMcpTools";
 
 if (import.meta.env.MODE === "visual-regression") {
@@ -32,6 +34,8 @@ TextureStyle.defaultOptions.scaleMode = "nearest";
 registerRoomPreviewSnapshotListeners();
 registerNudgeCommitListeners();
 registerOpenRoomsRestoredListener();
+registerPinEditedRoomsTabsListener();
+registerLoadedRoomCachesListener();
 registerEditorWebMcpTools();
 
 render(

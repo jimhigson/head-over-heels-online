@@ -11,13 +11,11 @@ import {
   type EditorJsonItemUnion,
   type EditorRoomId,
   type EditorRoomItemId,
+  type EditorRoomJson,
   type EditorRoomJsonItems,
 } from "../../editorTypes";
 import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
-import {
-  selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomIdFromLevelEditorState,
-} from "../levelEditorSelectors";
+import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import {
   type LevelEditorState,
   type PreviewedRoomItemEdits,
@@ -47,14 +45,15 @@ export const nextItemIdForItemTool = <T extends JsonItemType = JsonItemType>(
 
 export const addItemInPlace = <T extends JsonItemType = JsonItemType>(
   state: LevelEditorState,
+  roomId: EditorRoomId,
   itemTool: ItemTool<T>,
   blockPosition: Xyz,
   isPreview: boolean,
 ): [EditorRoomItemId, EditorJsonItem<T>] => {
-  const room = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
+  const room = state.campaignInProgress.rooms[roomId] as EditorRoomJson;
   const id = nextItemIdForItemTool(keys(room.items), itemTool, isPreview);
 
-  const target = roomEditTarget(state, isPreview);
+  const target = roomEditTarget(state, isPreview, roomId);
 
   const itemJson = {
     type: itemTool.type,

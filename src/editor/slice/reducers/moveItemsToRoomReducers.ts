@@ -5,7 +5,6 @@ import {
   type MoveItemsToRoomArgs,
   moveItemsToRoomInPlace,
 } from "../inPlaceMutators/moveItemsToRoomInPlace";
-import { pinRoomTabInPlace } from "../inPlaceMutators/pinRoomTabInPlace";
 import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "../inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
 import { type LevelEditorState } from "../levelEditorSlice";
 
@@ -30,8 +29,6 @@ export const moveItemsToRoomReducers = {
     // the moved items were the selection here, and are gone:
     setSelectedJsonItemIdsOnCursorRoomInPlace(editorState, []);
     changeCurrentRoomInPlace(editorState, moveArgs.toRoomId, toSubRoomId);
-    // the destination was edited too:
-    pinRoomTabInPlace(editorState, moveArgs.toRoomId);
     setSelectedJsonItemIdsOnCursorRoomInPlace(editorState, movedItemIds);
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

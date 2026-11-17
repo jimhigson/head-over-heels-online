@@ -89,7 +89,10 @@ export class ItemToolHandler implements ToolHandler<
       roomState,
       blockPosition: putDownBlockPosition,
       itemTool: toolItem,
-      previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
+      previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(
+        storeState,
+        roomState.id,
+      ),
     });
 
     if (collides) {
@@ -98,6 +101,7 @@ export class ItemToolHandler implements ToolHandler<
 
     dispatch(
       applyItemTool({
+        roomId: roomState.id,
         blockPosition: putDownBlockPosition,
         pointedAtItemJson: jsonItem,
         preview: true,
@@ -146,6 +150,7 @@ export class ItemToolHandler implements ToolHandler<
 
     dispatch(
       applyItemTool({
+        roomId: roomState.id,
         blockPosition: putDownBlockPosition,
         pointedAtItemJson: jsonItem,
         preview: false,

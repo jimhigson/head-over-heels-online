@@ -11,7 +11,8 @@ import {
   zoomEditorRoomView,
 } from "../EditorRoomView";
 import { type LevelEditorState } from "../levelEditorSlice";
-import { maybeOpenRoom, type OpenRoomId } from "../OpenRoom";
+import { type OpenRoomId } from "../OpenRoom";
+import { maybeLayoutNode } from "../PaneLayout";
 
 export const roomViewReducers = {
   /**
@@ -27,7 +28,7 @@ export const roomViewReducers = {
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
-    const openRoom = maybeOpenRoom(state, openRoomId);
+    const openRoom = maybeLayoutNode(state.layout, openRoomId);
     if (openRoom !== undefined) {
       openRoom.view = view;
     }
@@ -46,7 +47,7 @@ export const roomViewReducers = {
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
-    const openRoom = maybeOpenRoom(state, openRoomId);
+    const openRoom = maybeLayoutNode(state.layout, openRoomId);
     if (openRoom?.view !== undefined) {
       openRoom.view = panEditorRoomView(openRoom.view, delta);
     }
@@ -70,14 +71,15 @@ export const roomViewReducers = {
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
-    const openRoom = maybeOpenRoom(state, openRoomId);
+    const openRoom = maybeLayoutNode(state.layout, openRoomId);
     if (openRoom?.view !== undefined) {
       openRoom.view = zoomEditorRoomView(openRoom.view, zoom, fixedPanePoint);
     }
   },
 
   /**
-   * the pane drawing an open room took a new size (css px)
+   * the pane drawing an open room took a new size (css px). Its view was
+   * framed for the old size, so it is dropped, to be fitted again
    */
   openRoomPaneResized(
     _state,
@@ -89,9 +91,16 @@ export const roomViewReducers = {
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
-    const openRoom = maybeOpenRoom(state, openRoomId);
-    if (openRoom !== undefined) {
+    const openRoom = maybeLayoutNode(state.layout, openRoomId);
+    if (openRoom === undefined) {
+      return;
+    }
+    if (
+      openRoom.paneSize.x !== paneSize.x ||
+      openRoom.paneSize.y !== paneSize.y
+    ) {
       openRoom.paneSize = paneSize;
+      openRoom.view = undefined;
     }
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
@@ -101,9 +110,19 @@ export const roomViewSelectors = {
    * undefined until the room has been framed
    */
   selectOpenRoomView(state: LevelEditorState, openRoomId: OpenRoomId) {
-    return maybeOpenRoom(state, openRoomId)?.view;
+    const openRoom = maybeLayoutNode(state.layout, openRoomId);
+    // check the room wasn't closed (in case we have a stale openRoomId reference)
+    if (openRoom === undefined) {
+      return undefined;
+    }
+    return openRoom.view;
   },
   selectOpenRoomPaneSize(state: LevelEditorState, openRoomId: OpenRoomId) {
-    return maybeOpenRoom(state, openRoomId)?.paneSize;
+    const openRoom = maybeLayoutNode(state.layout, openRoomId);
+    // check the room wasn't closed (in case we have a stale openRoomId reference)
+    if (openRoom === undefined) {
+      return undefined;
+    }
+    return openRoom.paneSize;
   },
 } satisfies SliceSelectors<LevelEditorState>;

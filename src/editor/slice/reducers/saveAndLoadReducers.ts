@@ -13,7 +13,7 @@ import { migrateRoomNonContiguousRelationships } from "../inPlaceMutators/migrat
 import { migrateRoomVerticalLinks } from "../inPlaceMutators/migrateRoomVerticalLinks";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { levelEditorSliceCampaignTransientFields } from "../levelEditorSliceTransientFields";
-import { openOnlyRoomInPlace } from "../OpenRoom";
+import { openOnlyRoomInPlace } from "../PaneLayout";
 import { startingRoomId } from "../startingRoomId";
 
 export const saveAndLoadReducers = {

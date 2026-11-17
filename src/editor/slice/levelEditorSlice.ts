@@ -26,7 +26,8 @@ import {
   selectRoomFromLevelEditorState,
   selectRoomHasUnsavedChangesFromLevelEditorState,
 } from "./levelEditorSelectors";
-import { type OpenRoom, type OpenRoomId, type Tab } from "./OpenRoom";
+import { type OpenRoomId } from "./OpenRoom";
+import { type PaneLayout, type TabGroupId } from "./PaneLayout";
 import { addOrRemoveRoomReducers } from "./reducers/addOrRemoveRoomReducers";
 import { applyItemToolReducers } from "./reducers/applyItemToolReducers";
 import { campaignManagementReducers } from "./reducers/campaignManagementReducers";
@@ -135,6 +136,12 @@ type PendingEditsMadeBy =
     };
 
 export type PendingEdits = {
+  /**
+   * the room the edits are to - not always the cursor room: the item tool
+   * previews in whichever pane the pointer is over, but having a preview isn't
+   * enough to make it the cursor room.
+   */
+  roomId: EditorRoomId;
   edits: PreviewedRoomItemEdits;
   description: UndoDescription;
   timestamp: number;
@@ -151,23 +158,23 @@ export type LevelEditorState = {
   remoteCampaign: EditorCampaign | undefined;
   selectedRoomIds: EditorRoomId[];
   /**
-   * the current room (must be one of the rooms in selectedRoomIds)
-   * - the map highlights it, and its tab is in front
+   * rooms open by themselves, outside the layout's tabs - for picking items in
+   * a dialog. The last opened is the active one
    */
-  cursorRoomId: EditorRoomId;
+  dialogOpenRoomIds: OpenRoomId[];
   /**
-   * the rooms open for viewing and editing, being rendered by the game engine
-   * embedded into the editor, in tabs or elsewhere (eg a dialog), by their own ids
+   * how the room editing area is divided into panes, each with its own tabs,
+   * and every open room - in a tab or by itself
    */
-  openRooms: Record<OpenRoomId, OpenRoom>;
+  layout: PaneLayout;
   /**
-   * the room editing area's tabs, in order. Currently, will correlate to an
-   * open room in `.openRooms`, since we only support open rooms in tabs
+   * the pane commands and browsing act in - its front tab's room is the
+   * current (cursor) room, which the map highlights
    */
-  tabs: Tab[];
+  focusedTabGroupId: TabGroupId;
 
   /**
-   * numbers the next open room or tab id. We never recycle id numbers to avoid
+   * numbers the next open room, tab, tab group or split id. We never recycle id numbers to avoid
    * remove-and-replace inside the same reduction
    */
   nextIdNumber: number;
@@ -312,6 +319,13 @@ export const {
   clearRoom,
   closeOtherRoomTabs,
   closeRoomTab,
+  editedRoomsTabsPinned,
+  paneSplitResized,
+  roomTabDroppedBesidePane,
+  roomTabMoved,
+  roomTabSelected,
+  roomTabSplit,
+  tabGroupFocused,
   closeItemContextMenu,
   dialogRoomClosed,
   dialogRoomOpened,
@@ -400,8 +414,12 @@ export const {
   selectOpenRoomHoveredItem,
   selectItem,
   selectFrontOpenRoomId,
-  selectTabs,
-  selectTabRoomIds,
+  selectIsOnlyPane,
+  selectPaneLayoutRootId,
+  selectFocusedTabGroupId,
+  selectTabGroupFrontOpenRoomId,
+  selectTabGroupRoomIds,
+  selectTabGroups,
   selectRedoHistory,
   selectCampaignHasUnsavedChanges,
   selectRoom,

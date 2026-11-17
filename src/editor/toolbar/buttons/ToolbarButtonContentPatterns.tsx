@@ -4,7 +4,7 @@ import {
   type AnimatedTextureTailwindClass,
   type TextureTailwindClass,
 } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import { twClass } from "../../../utils/twClass";
+import { twClass } from "../../../utils/twClass.tsx";
 import { buttonSpriteRevertColourClasses } from "../buttonSizeClassNames";
 
 /** a main icon, plus a small explanatory side-icon giving some attribute such as conveyor direction */

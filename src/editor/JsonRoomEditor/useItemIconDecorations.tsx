@@ -8,7 +8,7 @@ import { type SceneryName } from "../../sprites/planets";
 import { textureForItem } from "../../sprites/textureForItem";
 import { useEditorAppSelector } from "../../store/store";
 import { keys } from "../../utils/entries";
-import { twClass } from "../../utils/twClass";
+import { twClass } from "../../utils/twClass.tsx";
 import { type EditorRoomJsonItems } from "../editorTypes";
 import { selectCurrentCommittedRoomJson } from "../slice/levelEditorSlice";
 import { getParsedJsonFromEditor } from "./getParsedJsonFromEditor";

@@ -4,6 +4,13 @@ import { useContext } from "preact/hooks";
 import { type LoadedRoomCache } from "../loadedRoomCache/LoadedRoomCache";
 import { type OpenRoomId } from "../slice/OpenRoom";
 
+/**
+ * the open room a pane draws, for the many hooks and components inside the
+ * pane that act on it - given through context rather than props, which would
+ * otherwise be threaded through every level between. Its loaded room and
+ * editability could each be looked up by the id, but are given here once so
+ * every consumer needn't look them up for itself
+ */
 export type OpenRoomPaneContextValue = {
   openRoomId: OpenRoomId;
   /**

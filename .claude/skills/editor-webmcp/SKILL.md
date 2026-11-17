@@ -19,16 +19,16 @@ The level editor registers webmcp tools in every build, dev and production. This
 | `setRoomItemValues` | `pattern`, `value` | sets `value` everywhere the [pattern](#item-patterns) picks out in the current room's items, as one undoable edit. A last part naming one key (`config.toRoom`) inserts it if absent; any other last part replaces only existing values. Returns the paths set |
 | `listRooms` | - | every room in the campaign, as `{id, planet}` |
 | `getOpenCampaign` | - | the open campaign's `locator` and `meta` |
-| `getEditorView` | - | tool, current sub-room, grid resolution, and `openRoomTabs` (in order, each `{roomId, isPreview, cameraAngle}` - each room is viewed from its own angle; a preview tab is replaced by the next room browsed to) |
+| `getEditorView` | - | tool, current sub-room, grid resolution, and `panes` (in layout order, each `{isFocused, tabs}`, its tabs in order, each `{roomId, isPreview, isFront, cameraAngle}` - each room is viewed from its own angle; a preview tab is replaced by the next room browsed to; the focused pane's front tab is the current room) |
 | `dispatchAction` | `type`, `payload?` | dispatches a plain redux action |
 | `getActionLog` | `typePrefix?` | last 50 actions - **dev builds only** (empty in production) |
 | `getVerificationIssues` | - | the same errors/warnings as the toolbar's verify button, each with `fixable`, `fixText` and `issueData` |
 | `fixVerificationIssue` | `verifier`, `issueData` (both unchanged from `getVerificationIssues`) | auto-fixes that one issue, as the verify dialog's Fix button does; re-checks first, so stale or non-fixable issues are refused. Returns the issues remaining |
 | `fixAllVerificationIssues` | - | auto-fixes every fixable issue, as "Fix all" does. Returns the issues remaining - any a fix caused show here, to fix in turn |
 | `loadCampaign` | `username?`, `campaignName?`, `version?` | loads a campaign like the Open dialog (discards unsaved changes). No username/name = the sequel campaign |
-| `closeRoomTab` | `roomId` | closes a room's tab like its x (the last tab can't be closed; closing the current room's moves to the next tab); returns `openRoomTabs` |
-| `closeOtherRoomTabs` | `roomId` | closes every tab but that room's, which becomes current; returns `openRoomTabs` |
-| `pinRoomTab` | `roomId` | keeps a preview tab open when browsing on, like double-clicking it; returns `openRoomTabs` |
+| `closeRoomTab` | `roomId` | closes the room's tab in the focused pane like its x (the last tab can't be closed; closing the current room's moves to the next tab, or another pane); returns `panes` |
+| `closeOtherRoomTabs` | `roomId` | closes every tab in the focused pane but that room's, which becomes current; returns `panes` |
+| `pinRoomTab` | `roomId` | keeps the room's preview tab in the focused pane open when browsing on, like double-clicking it; returns `panes` |
 | `playtest` | `fromStart?`, `playAsHeels?` | plays the open campaign, unsaved, like the toolbar's play button: opens the game in a new tab (**one per call**) and returns its `url` |
 | `getPlaytestUrl` | `fromStart?`, `playAsHeels?` | the `url` `playtest` would open, opening nothing - use this when you only need the url, or want to open the game in a tab you control |
 | `revertCampaign` | - | reloads the open campaign as last saved, like the toolbar's revert button (discards unsaved changes) |

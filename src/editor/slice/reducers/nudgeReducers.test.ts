@@ -12,6 +12,7 @@ import {
   setSelectedItemsInRoom,
   undo,
 } from "../levelEditorSlice";
+import { existingLayoutNode } from "../PaneLayout";
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,
@@ -50,7 +51,9 @@ const stateWithSelectedMonkey: LevelEditorState = produce(
         },
       };
     }
-    draft.openRooms[testOpenRoomId].selectedJsonItemIds = [monkeyId];
+    existingLayoutNode(draft.layout, testOpenRoomId).selectedJsonItemIds = [
+      monkeyId,
+    ];
   },
 );
 

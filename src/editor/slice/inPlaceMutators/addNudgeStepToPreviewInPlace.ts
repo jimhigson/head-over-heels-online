@@ -154,6 +154,7 @@ export const addNudgeStepToPreviewInPlace = (
       );
 
   state.pendingEdits = {
+    roomId: selectCursorRoomIdFromLevelEditorState(state),
     edits,
     description: {
       kind: "itemAction",

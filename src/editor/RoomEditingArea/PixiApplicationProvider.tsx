@@ -38,9 +38,10 @@ export const PixiApplicationProvider = ({
         // transparent so the pane's background shows through as the void
         // around the room:
         backgroundAlpha: 0,
-        // render at device pixels for crispness; the canvas is styled to fill
-        // its pane in css pixels:
+        // render at device pixels for crispness, with the canvas sized in css
+        // pixels to the renderer:
         resolution: window.devicePixelRatio,
+        autoDensity: true,
         // the room editor ticks like any other pixi app, it doesn't just react to changes:
         sharedTicker: true,
 
@@ -54,11 +55,13 @@ export const PixiApplicationProvider = ({
           appThisEffect.destroy();
           return;
         }
-        // the canvas always fills its pane; between debounced renderer resizes
-        // it stretches, then sharpens once the resize lands:
+        // centred in its pane, unscaled - between debounced renderer resizes
+        // the pane crops or surrounds it, rather than stretching it:
         const canvasStyle = appThisEffect.canvas.style;
-        canvasStyle.width = "100%";
-        canvasStyle.height = "100%";
+        canvasStyle.position = "absolute";
+        canvasStyle.left = "50%";
+        canvasStyle.top = "50%";
+        canvasStyle.transform = "translate(-50%, -50%)";
         canvasStyle.display = "block";
         stopAppAutoRendering(appThisEffect);
         setInitialisedApp(appThisEffect);

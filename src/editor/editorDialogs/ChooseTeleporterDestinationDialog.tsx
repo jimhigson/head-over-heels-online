@@ -20,7 +20,7 @@ import {
   type EditorRoomId,
   type EditorRoomItemId,
 } from "../editorTypes";
-import { LazyRoomEditingArea } from "../RoomEditingArea/RoomEditingArea.lazy";
+import { LazyDialogRoomArea } from "../RoomEditingArea/DialogRoomArea.lazy";
 import {
   dialogRoomClosed,
   dialogRoomOpened,
@@ -62,7 +62,7 @@ export type RoomItemPickerProps = {
  */
 const RoomItemPicker = ({ openRoomId }: RoomItemPickerProps) => (
   <Suspense fallback={<SpinnerHeels loadingBorder />}>
-    <LazyRoomEditingArea openRoomId={openRoomId} />
+    <LazyDialogRoomArea openRoomId={openRoomId} />
   </Suspense>
 );
 
