@@ -8,7 +8,11 @@ import {
 } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { advanceUntil, whilePainting } from "./advanceGameTime";
 import { dispatchKeyPress } from "./gameInteractions";
-import { maximumWaitForStep, waitForGameState } from "./gameStateQueries";
+import {
+  maximumWaitForStep,
+  waitForGameReady,
+  waitForGameState,
+} from "./gameStateQueries";
 import {
   elapsed,
   formatDuration,
@@ -269,8 +273,12 @@ export const exitCrownsDialog = async (page: Page, logHeader: string) => {
       page,
       crownsDialog.waitFor({ state: "visible", timeout: longTimeout }),
     );
-    // the LOADING banner (role=status) is present only while the game loads;
-    // wait for it to leave so the dialog's onClick is wired up:
+    // the dialog can show for a moment before its LOADING banner (role=status)
+    // appears, so the banner's absence alone doesn't mean loading is done -
+    // wait for the game to be running first:
+    await waitForGameReady(page);
+    // the LOADING banner is present only while the game loads; wait for it to
+    // leave so the dialog's onClick is wired up:
     await whilePainting(
       page,
       crownsDialog
