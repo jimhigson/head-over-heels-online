@@ -17,14 +17,22 @@ import {
   selectRoomJsonWithPreviews,
 } from "../../../slice/levelEditorSelectors";
 import {
+  changeToRoom,
+  changeWallsFloorsLocked,
+  deleteSelected,
   itemGrabOverOpenRoom,
   type LevelEditorState,
+  redo,
+  setSelectedItemsInRoom,
+  undo,
+  undoHovered,
 } from "../../../slice/levelEditorSlice";
 import { loadEditorRoom } from "../../../slice/loadEditorRoom";
 import { openRoomDefaults, type OpenRoomId } from "../../../slice/OpenRoom";
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,
+  type ReducibleAction,
   testOpenRoomId,
   testRoomId,
 } from "../../../slice/reducers/__test__/storeStates";
@@ -866,3 +874,178 @@ test("releasing a drag records it as one undoable move", () => {
     ),
   ).toEqual([{ verb: "↖ Move", itemIds: [blockId] }]);
 });
+
+test.for([
+  {
+    name: "undoing it in either room undoes it in both",
+    afterDrop: [] as ReducibleAction[],
+    inSourceRoom: [undo()],
+    expectedBlockRooms: { source: true, other: false },
+  },
+  {
+    name: "hovering its undo entry in either room previews undoing it in both",
+    afterDrop: [],
+    // the only entry in the room's undo history:
+    inSourceRoom: [undoHovered(1)],
+    expectedBlockRooms: { source: true, other: false },
+  },
+  {
+    name: "undoing then redoing it in either room redoes it in both",
+    afterDrop: [],
+    inSourceRoom: [undo(), redo()],
+    expectedBlockRooms: { source: false, other: true },
+  },
+  {
+    name: "once the other room has changed since, undoing it in one room undoes it only there",
+    inSourceRoom: [undo()],
+    afterDrop: [
+      changeToRoom("otherRoomId" as EditorRoomId),
+      changeWallsFloorsLocked(false),
+      // anything done in the other room since:
+      setSelectedItemsInRoom({ jsonItemIds: ["floor" as EditorRoomItemId] }),
+      deleteSelected({ timestamp: 0 }),
+      changeToRoom(testRoomId),
+    ],
+    expectedBlockRooms: { source: true, other: true },
+  },
+])(
+  "after dragging a block into another room's pane, $name",
+  ({ afterDrop, inSourceRoom, expectedBlockRooms }) => {
+    const otherRoomId = "otherRoomId" as EditorRoomId;
+    const otherOpenRoomId = "openRoom-other" as OpenRoomId;
+    const blockId = "block" as EditorRoomItemId;
+    const floor: EditorRoomJson["items"][EditorRoomItemId] = {
+      type: "floor",
+      config: {
+        floorType: "standable",
+        scenery: "blacktooth",
+        times: { x: 8, y: 8 },
+      },
+      position: { x: 0, y: 0, z: 0 },
+    };
+    const state0: LevelEditorState = produce(
+      editorStateWithOneRoomWithNoItems,
+      (draft) => {
+        const { rooms } = draft.campaignInProgress;
+        rooms[testRoomId].items["floor" as EditorRoomItemId] = floor;
+        rooms[testRoomId].items[blockId] = {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 1, y: 2, z: 0 },
+        };
+        rooms[otherRoomId] = {
+          ...rooms[testRoomId],
+          id: otherRoomId,
+          items: { ["floor" as EditorRoomItemId]: floor },
+        };
+        draft.layout.nodes[otherOpenRoomId] = {
+          ...openRoomDefaults,
+          id: otherOpenRoomId,
+          roomId: otherRoomId,
+          subRoomId: "*",
+          editable: true,
+        };
+      },
+    );
+    const paneElement = document.createElement("div");
+    const viewport = new EditorViewport();
+    const grabbedAt: Xyz = {
+      x: 1.5 * blockSizePx.x,
+      y: 2.5 * blockSizePx.y,
+      z: 0,
+    };
+    const pointingAtBlock: PointingAtItem = {
+      roomId: testRoomId,
+      scrXy: { x: 0, y: 0 },
+      world: {
+        itemId: blockId,
+        position: grabbedAt,
+        onItem: { face: { x: 0, y: 0, z: 1 } },
+      },
+    };
+    const sourceRoomState = loadEditorRoom(
+      state0.campaignInProgress.rooms[testRoomId] as EditorRoomJson,
+    );
+    const otherRoomState = loadEditorRoom(
+      state0.campaignInProgress.rooms[otherRoomId] as EditorRoomJson,
+    );
+    const handler = new PointerToolHandler();
+    // two blocks along x and one along y from where it was grabbed:
+    const pointerInOtherPane = projectWorldXyzToScreenXy(
+      addXyz(grabbedAt, { x: 2 * blockSizePx.x, y: blockSizePx.y }),
+    );
+    const pointingAtNothingInOtherRoom = {
+      roomId: otherRoomId,
+      scrXy: pointerInOtherPane,
+      world: undefined,
+    };
+
+    const state1Undone = reduceLevelEditorActions(
+      state0,
+      // the pointer goes down on the block:
+      handler.handleMouseDown({
+        openRoomId: testOpenRoomId,
+        roomState: sourceRoomState,
+        mouseEvent: { button: 0 } as MouseEvent,
+        viewport,
+        pointingAt: pointingAtBlock,
+      }),
+      // drags it a block along x in its own pane:
+      handler.handleMouseMove({
+        openRoomId: testOpenRoomId,
+        roomState: sourceRoomState,
+        mouseEvent: {
+          clientX: -blockSizePx.x,
+          clientY: -blockSizePx.x / 2,
+          currentTarget: paneElement,
+          metaKey: false,
+          shiftKey: false,
+        } as Partial<MouseEvent> as MouseEvent,
+        viewport,
+        pointingAt: pointingAtBlock,
+        pointingAtChanged: true,
+      }),
+      // on over the other room's pane:
+      itemGrabOverOpenRoom({ openRoomId: otherOpenRoomId, timestamp: 0 }),
+      handler.handleMouseMove({
+        openRoomId: otherOpenRoomId,
+        roomState: otherRoomState,
+        mouseEvent: {
+          clientX: pointerInOtherPane.x,
+          clientY: pointerInOtherPane.y,
+          currentTarget: paneElement,
+          metaKey: false,
+          shiftKey: false,
+        } as Partial<MouseEvent> as MouseEvent,
+        viewport,
+        pointingAt: pointingAtNothingInOtherRoom,
+        pointingAtChanged: true,
+      }),
+      // where it is released:
+      handler.handleMouseUp({
+        openRoomId: otherOpenRoomId,
+        roomState: otherRoomState,
+        mouseEvent: { button: 0 } as MouseEvent,
+        viewport,
+        pointingAt: pointingAtNothingInOtherRoom,
+        isClick: false,
+      }),
+      ...afterDrop,
+      // then, in the room it came from:
+      ...inSourceRoom,
+    );
+
+    expect({
+      source:
+        selectRoomJsonWithPreviews(
+          { levelEditor: state1Undone } as EditorRootState,
+          testRoomId,
+        )?.items[blockId] !== undefined,
+      other:
+        selectRoomJsonWithPreviews(
+          { levelEditor: state1Undone } as EditorRootState,
+          otherRoomId,
+        )?.items[blockId] !== undefined,
+    }).toEqual(expectedBlockRooms);
+  },
+);

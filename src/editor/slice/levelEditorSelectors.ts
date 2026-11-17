@@ -167,6 +167,44 @@ const selectHoveredUndoRoom = (
 };
 
 /**
+ * another room, as hovering the cursor room's undo (or redo) history would
+ * leave it: stepped with each hovered step whose link is that room's next
+ * step, as undoing (or redoing) to there would. Undefined if none is
+ */
+const selectLinkedHoveredUndoRoom = (
+  state: EditorRootState,
+  roomId: EditorRoomId,
+): EditorRoomJson | undefined => {
+  const { hoveredUndoIndex, history } = state.levelEditor;
+  if (hoveredUndoIndex === 0) {
+    return undefined;
+  }
+  const direction = hoveredUndoIndex > 0 ? "undo" : "redo";
+  const cursorStack =
+    history[selectCursorRoomIdFromLevelEditorState(state.levelEditor)]?.[
+      direction
+    ] ?? emptyArray;
+  const roomStack = history[roomId]?.[direction] ?? emptyArray;
+
+  let roomNextIndex = roomStack.length - 1;
+  let previewedRoom: EditorRoomJson | undefined = undefined;
+  // the hovered entry is the oldest stepped through:
+  for (
+    let cursorIndex = cursorStack.length - 1;
+    cursorIndex >= Math.abs(hoveredUndoIndex) - 1;
+    cursorIndex--
+  ) {
+    const { link } = cursorStack[cursorIndex];
+    const roomEntry = roomStack.at(roomNextIndex);
+    if (link !== undefined && roomEntry?.link?.id === link.id) {
+      previewedRoom = roomEntry.room;
+      roomNextIndex--;
+    }
+  }
+  return previewedRoom;
+};
+
+/**
  * a room json with temporary previews on top of it: the undo history being
  * scrubbed to, if any, otherwise the pending edits
  */
@@ -209,9 +247,9 @@ export const selectCurrentEditingRoomJsonWithPreviews = createSelector(
 
 /**
  * any room's json with temporary previews on top of it - the pending edits
- * when they are to that room, and the undo history being scrubbed to when it
- * is the cursor room. Undefined for a room no longer in the campaign. Memoised
- * per room
+ * when they are to that room, and the undo history being scrubbed to: the
+ * cursor room's, and in any other room the steps linked to it. Undefined for
+ * a room no longer in the campaign. Memoised per room
  */
 export const selectRoomJsonWithPreviews = createSelector(
   [
@@ -222,7 +260,7 @@ export const selectRoomJsonWithPreviews = createSelector(
     (state: EditorRootState, roomId: EditorRoomId) =>
       roomId === selectCursorRoomIdFromLevelEditorState(state.levelEditor) ?
         selectHoveredUndoRoom(state)
-      : undefined,
+      : selectLinkedHoveredUndoRoom(state, roomId),
   ],
   (roomJson, pendingEdits, hoveredUndoRoom): EditorRoomJson | undefined =>
     roomJson === undefined ? undefined : (

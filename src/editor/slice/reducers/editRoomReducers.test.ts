@@ -313,6 +313,7 @@ describe("changing the id of the current room updates all references to that roo
               },
               description: { kind: "changeColour" },
               timestamp: 0,
+              link: undefined,
             },
           ],
           redo: [
@@ -325,6 +326,7 @@ describe("changing the id of the current room updates all references to that roo
               },
               description: { kind: "changeColour" },
               timestamp: 0,
+              link: undefined,
             },
           ],
         };

@@ -21,10 +21,87 @@ import { type LevelEditorState } from "../levelEditorSlice";
 import { removeNonExistingItemsFromSelection } from "./selectionsReducers";
 import { type UndoDescription } from "./undoDescription";
 
+/**
+ * ties together the undo entries one edit made in several rooms, so they undo
+ * and redo together while nothing else has been done in those rooms since
+ */
+export type UndoLink = {
+  /**
+   * undo items in different rooms with the same link.id are considered to be part of the
+   * same logical edit and should be undone/redone together so long as nothing else has been
+   * done in those rooms since
+   */
+  id: string;
+  /**
+   * every room the edit was to
+   */
+  roomIds: EditorRoomId[];
+};
+
 export type UndoEntry = {
   room: EditorRoomJson;
   description: UndoDescription;
   timestamp: number;
+  link: undefined | UndoLink;
+};
+
+export type HistoryDirection = keyof RoomUndoHistory;
+
+const oppositeDirection = {
+  undo: "redo",
+  redo: "undo",
+} as const satisfies Record<HistoryDirection, HistoryDirection>;
+
+/**
+ * undo or redo a room's newest step, keeping the room as it is now to go back
+ * to. Returns the entry stepped back or forward through
+ */
+const stepRoomHistoryInPlace = (
+  state: LevelEditorState,
+  roomId: EditorRoomId,
+  direction: HistoryDirection,
+): UndoEntry => {
+  const history = roomHistory(state, roomId);
+  const entry = history[direction].pop()!;
+  history[oppositeDirection[direction]].push({
+    ...entry,
+    room: state.campaignInProgress.rooms[roomId] as EditorRoomJson,
+  });
+  state.campaignInProgress.rooms[roomId] = entry.room;
+  return entry;
+};
+
+/**
+ * whether the room's next step in `direction` is the linked entry - nothing
+ * else has been done (or undone) in that room since
+ */
+export const isLinkedStepNext = (
+  history: RoomUndoHistory | undefined,
+  direction: HistoryDirection,
+  { id }: UndoLink,
+): boolean => history?.[direction].at(-1)?.link?.id === id;
+
+/**
+ * step the other rooms an entry is linked to as well, where their next step
+ * is the linked one
+ */
+const stepLinkedRoomsInPlace = (
+  state: LevelEditorState,
+  roomId: EditorRoomId,
+  { link }: UndoEntry,
+  direction: HistoryDirection,
+) => {
+  if (link === undefined) {
+    return;
+  }
+  for (const linkedRoomId of link.roomIds) {
+    if (
+      linkedRoomId !== roomId &&
+      isLinkedStepNext(state.history[linkedRoomId], direction, link)
+    ) {
+      stepRoomHistoryInPlace(state, linkedRoomId, direction);
+    }
+  }
 };
 
 export type RoomUndoHistory = {
@@ -54,7 +131,7 @@ export const pushUndoForRoomInPlace = (
   timestamp: number,
 ) => {
   commitPendingNudgeInPlace(state);
-  pushUndoEntryInPlace(state, roomId, description, timestamp);
+  pushUndoEntryInPlace(state, roomId, description, timestamp, undefined);
 };
 
 export const pushUndoToCursorRoomInPlace = (
@@ -99,28 +176,22 @@ export const undoReducers = {
     // be what's undone or redone from:
     commitPendingNudgeInPlace(state);
 
-    const { campaignInProgress } = state;
     const currentlyEditingRoomId =
       selectCursorRoomIdFromLevelEditorState(state);
-    const { undo, redo } = roomHistory(state);
+    const { undo } = roomHistory(state);
 
     for (let i = 0; i < n; i++) {
       if (undo.length === 0) {
         break;
       }
 
-      const entry = undo.pop()!;
-
-      // store the current state in case we want to redo later:
-      redo.push({
-        room: campaignInProgress.rooms[
-          currentlyEditingRoomId
-        ] as EditorRoomJson,
-        description: entry.description,
-        timestamp: entry.timestamp,
-      });
-
-      campaignInProgress.rooms[currentlyEditingRoomId] = entry.room;
+      // the room as it is now is kept, in case we want to redo later:
+      const entry = stepRoomHistoryInPlace(
+        state,
+        currentlyEditingRoomId,
+        "undo",
+      );
+      stepLinkedRoomsInPlace(state, currentlyEditingRoomId, entry, "undo");
 
       if (entry.room.id !== currentlyEditingRoomId) {
         changeIdOfCurrentRoomInPlace(state, entry.room.id as EditorRoomId);
@@ -147,27 +218,21 @@ export const undoReducers = {
     // be what's undone or redone from:
     commitPendingNudgeInPlace(state);
 
-    const { campaignInProgress } = state;
     const currentlyEditingRoomId =
       selectCursorRoomIdFromLevelEditorState(state);
-    const { undo, redo } = roomHistory(state);
+    const { redo } = roomHistory(state);
 
     for (let i = 0; i < n; i++) {
       if (redo.length === 0) {
         break;
       }
 
-      const entry = redo.pop()!;
-
-      undo.push({
-        room: campaignInProgress.rooms[
-          currentlyEditingRoomId
-        ] as EditorRoomJson,
-        description: entry.description,
-        timestamp: entry.timestamp,
-      });
-
-      campaignInProgress.rooms[currentlyEditingRoomId] = entry.room;
+      const entry = stepRoomHistoryInPlace(
+        state,
+        currentlyEditingRoomId,
+        "redo",
+      );
+      stepLinkedRoomsInPlace(state, currentlyEditingRoomId, entry, "redo");
 
       if (entry.room.id !== currentlyEditingRoomId) {
         changeIdOfCurrentRoomInPlace(state, entry.room.id as EditorRoomId);
@@ -181,7 +246,10 @@ export const undoReducers = {
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
 
-export type UndoHistoryItem = Pick<UndoEntry, "description" | "timestamp">;
+export type UndoHistoryItem = Pick<
+  UndoEntry,
+  "description" | "link" | "timestamp"
+>;
 
 const emptyUndoEntries: UndoEntry[] = [];
 

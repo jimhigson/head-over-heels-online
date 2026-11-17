@@ -6,6 +6,7 @@ import { directionXyz4Glyphs } from "../../../utils/vectors/directionGlyphs";
 import { type DirectionXyz4, type Xyz } from "../../../utils/vectors/vectors";
 import {
   type EditorJsonItemUnion,
+  type EditorRoomId,
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../../editorTypes";
@@ -20,6 +21,12 @@ export type UndoDescription =
   | { kind: "editRoomJson" }
   | { kind: "editRoomProperty"; property: string }
   | { kind: "itemAction"; verb: string; items: UndoItemEntry[] }
+  | {
+      kind: "moveBetweenRooms";
+      fromRoomId: EditorRoomId;
+      toRoomId: EditorRoomId;
+      items: UndoItemEntry[];
+    }
   | { kind: "pasteItems" };
 
 export const describeItem = (item: EditorJsonItemUnion): string => {

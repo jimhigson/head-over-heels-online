@@ -183,7 +183,7 @@ export type LevelEditorState = {
   focusedTabGroupId: TabGroupId;
 
   /**
-   * numbers the next open room, tab, tab group or split id. We never recycle id numbers to avoid
+   * numbers the next open room, tab, tab group, split or undo link id. We never recycle id numbers to avoid
    * remove-and-replace inside the same reduction
    */
   nextIdNumber: number;

@@ -28,7 +28,10 @@ import {
   type PreviewedRoomItemEdits,
 } from "../levelEditorSlice";
 import { layoutNodesOfType } from "../PaneLayout";
-import { type UndoItemEntry } from "../reducers/undoDescription";
+import {
+  type UndoDescription,
+  type UndoItemEntry,
+} from "../reducers/undoDescription";
 import {
   commitPendingEditsInPlace,
   commitPendingNudgeInPlace,
@@ -223,6 +226,25 @@ export const itemsMoveBetweenRoomsEdits = (
 };
 
 /**
+ * how the move is described in each room's undo history
+ */
+export const itemsMoveBetweenRoomsDescription = (
+  rooms: Rooms,
+  { fromRoomId, toRoomId, newIds }: ItemsMoveBetweenRooms,
+): UndoDescription => {
+  const fromRoom = roomById(rooms, fromRoomId)!;
+  return {
+    kind: "moveBetweenRooms",
+    fromRoomId,
+    toRoomId,
+    items: newIds
+      .keys()
+      .map((itemId): UndoItemEntry => [itemId, fromRoom.items[itemId]!])
+      .toArray(),
+  };
+};
+
+/**
  * Move items from the current room to any other room, returning the new ids of the moved items there
  * (undefined if nothing moved) which can change in the event of collisions.
  *
@@ -249,14 +271,7 @@ export const moveItemsToRoomInPlace = (
 
   state.pendingEdits = {
     edits: itemsMoveBetweenRoomsEdits(rooms, move),
-    description: {
-      kind: "itemAction",
-      verb: `Move to ${move.toRoomId}`,
-      items: move.newIds
-        .keys()
-        .map((itemId): UndoItemEntry => [itemId, fromRoom.items[itemId]!])
-        .toArray(),
-    },
+    description: itemsMoveBetweenRoomsDescription(rooms, move),
     timestamp,
     madeBy: { type: "drag" },
   };

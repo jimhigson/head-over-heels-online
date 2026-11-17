@@ -38,6 +38,7 @@ import {
   type EditorRoomState,
 } from "../../../editorTypes";
 import {
+  itemsMoveBetweenRoomsDescription,
   itemsMoveBetweenRoomsEdits,
   planItemsMoveBetweenRooms,
 } from "../../../slice/inPlaceMutators/moveItemsToRoomInPlace";
@@ -564,14 +565,7 @@ const dragPreviewInOtherRoom = (
     movedItemIds,
     pendingEdits: {
       edits: itemsMoveBetweenRoomsEdits(rooms, move),
-      description: {
-        kind: "itemAction",
-        verb: `Move to ${toRoomId}`,
-        items: move.newIds
-          .keys()
-          .map((itemId) => [itemId, fromRoom.items[itemId]] as const)
-          .toArray(),
-      },
+      description: itemsMoveBetweenRoomsDescription(rooms, move),
       timestamp: Date.now(),
       madeBy: { type: "drag" },
     },

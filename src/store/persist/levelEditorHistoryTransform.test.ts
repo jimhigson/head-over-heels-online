@@ -29,11 +29,13 @@ const history: LevelEditorState["history"] = {
       room: roomWithBlockAt(x),
       description,
       timestamp: x,
+      link: undefined,
     })),
     redo: [4].map((x) => ({
       room: roomWithBlockAt(x),
       description,
       timestamp: x,
+      link: undefined,
     })),
   },
 };
