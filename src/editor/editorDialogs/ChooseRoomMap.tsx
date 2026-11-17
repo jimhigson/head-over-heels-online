@@ -1,3 +1,4 @@
+import { memo } from "preact/compat";
 import { useCallback, useMemo, useState } from "preact/hooks";
 
 import { createClickableRoomBehaviour } from "../../game/components/dialogs/menuDialog/dialogs/map/createClickableRoomBehaviour";
@@ -13,12 +14,22 @@ import { originalUserId } from "../../gameInfo";
 import { teleporterLinksFromCell } from "../../model/map/teleporterLinksFromCell";
 import { emptyObject } from "../../utils/empty";
 import { useElementSize } from "../../utils/preact/useElementSize";
+import { LazyEditorMapNonContiguousRelationshipDecorator } from "../EditorMap/LazyEditorMapNonContiguousRelationshipDecorator";
+import { LazyEditorMapTeleporterLinkDecorator } from "../EditorMap/LazyEditorMapTeleporterLinkDecorator";
 import { mapAreaIndexOfRoom } from "../EditorMap/mapAreaIndexOfRoom";
 import { MapAreaSwitcher } from "../EditorMap/MapAreaSwitcher";
 import { editorMapAreas } from "../EditorMap/useEditorMapData";
 import { type EditorCampaign, type EditorRoomId } from "../editorTypes";
 import { EditorMapRoomTooltipBehaviour } from "../roomPreview/EditorMapRoomTooltipBehaviour";
 import { firstSubRoomId } from "../slice/inPlaceMutators/firstSubRoomId";
+
+const chooseRoomMapPrefixDecorators = [
+  memo(LazyEditorMapNonContiguousRelationshipDecorator),
+];
+
+const chooseRoomMapPostfixDecorators = [
+  memo(LazyEditorMapTeleporterLinkDecorator),
+];
 
 /**
  * the map's areas, and the context its rooms draw from with the given room
@@ -45,8 +56,8 @@ const useMapForRoom = (
       currentCharacterName: "head",
       onPlayableClick: undefined,
       behaviours,
-      prefixDecorators: [],
-      postfixDecorators: [],
+      prefixDecorators: chooseRoomMapPrefixDecorators,
+      postfixDecorators: chooseRoomMapPostfixDecorators,
       // none of these call any hooks, so are fine to swap for others when
       // the campaign or choice changes:
       useShownArea() {
@@ -149,11 +160,16 @@ export const ChooseRoomMap = ({
           }
         </div>
         {!mapAreas.isError && (
-          <MapAreaSwitcher
-            firstRoomIds={mapAreas.areas.map(({ firstRoomId }) => firstRoomId)}
-            shownAreaIndex={shownAreaIndex}
-            onSwitchToRoom={setShownAreaRoomId}
-          />
+          // inset into the bottom-left of the map, over it:
+          <div class="absolute bottom-0 left-0 flex pointer-events-none">
+            <MapAreaSwitcher
+              firstRoomIds={mapAreas.areas.map(
+                ({ firstRoomId }) => firstRoomId,
+              )}
+              shownAreaIndex={shownAreaIndex}
+              onSwitchToRoom={setShownAreaRoomId}
+            />
+          </div>
         )}
       </div>
     </div>

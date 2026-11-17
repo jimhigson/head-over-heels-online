@@ -38,6 +38,10 @@ export type TabProps = {
    * open only until replaced - its label is slanted, as the font has no italics
    */
   isPreview?: boolean;
+  /**
+   * iff true, the tab can't be selected
+   */
+  disabled?: boolean;
   onSelect: () => void;
   /** with this, the tab can be closed - by its x or middle-click */
   onClose?: () => void;
@@ -72,6 +76,7 @@ export const Tab = ({
   shortLabel,
   isActive,
   isPreview = false,
+  disabled = false,
   onSelect,
   onClose,
   onCloseOthers,
@@ -113,12 +118,13 @@ export const Tab = ({
       <div
         role="tab"
         aria-selected={isActive}
+        aria-disabled={disabled}
         tabIndex={-1}
         data-selected={isActive ? "true" : "false"}
-        class={`flex items-center gap-half pl-1 ${closeable ? "" : "pr-1"} cursor-pointer select-none ${className ?? ""}`}
+        class={`flex items-center gap-half pl-1 ${closeable ? "" : "pr-1"} ${disabled ? "cursor-default" : "cursor-pointer"} select-none ${className ?? ""}`}
         style={style}
         onClick={() => {
-          if (!isActive) {
+          if (!isActive && !disabled) {
             onSelect();
           }
         }}

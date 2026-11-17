@@ -1,6 +1,7 @@
 import { createContext } from "preact";
 import { useContext } from "preact/hooks";
 
+import { type EditorRoomId } from "../editorTypes";
 import { type LoadedRoomCache } from "../loadedRoomCache/LoadedRoomCache";
 import { type OpenRoomId } from "../slice/OpenRoom";
 
@@ -17,6 +18,10 @@ export type OpenRoomPaneContextValue = {
    * whether the open room is edited, or only picked from
    */
   editable: boolean;
+  /**
+   * a link in the room (eg a door's annotation) was followed to another room
+   */
+  onFollowLink: (roomId: EditorRoomId) => void;
   /**
    * the open room's room, loaded and following the store
    */
