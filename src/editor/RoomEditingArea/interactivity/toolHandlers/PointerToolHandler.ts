@@ -4,7 +4,6 @@ import {
 } from "../../../../consolidateItems/ConsolidatableJsonItem";
 import {
   fineXyzToBlockXyz,
-  projectWorldXyzToScreenXy,
   unprojectScreenXyToWorldXyz,
   unprojectScreenXyToWorldXyzOnFace,
 } from "../../../../game/render/projections";
@@ -81,6 +80,12 @@ import {
 } from "../../cursor/viewportMouse";
 import { resizeTimesAndPosition } from "../../resizeTimesAndPosition";
 import { itemsAreLocked } from "../itemsAreLocked";
+import {
+  candidatesAround,
+  nearestCandidatesFirst,
+  placementReachBlocks,
+  slideCandidates,
+} from "../nearestCandidatesFirst";
 import { setHoveredItemIfChangedThunk } from "../setHoveredItemIfChangedThunk";
 import { findItemInPlayForPicking } from "./ItemToolHandler";
 import {
@@ -282,75 +287,6 @@ const roundDragVector = (dragVector: Xyz, gridResolution: GridResolution) =>
   roundXyzProjection(dragVector, unitXyz_z, gridResolution);
 
 /**
- * the most moves a drag tries each time the pointer moves - if none of them
- * can be made, the drag keeps its last valid preview
- */
-const maxDragMovesToTry = 64;
-
-/**
- * the multiples of `step` from `from` to `to` (inclusive), in the direction of
- * `to`
- */
-const stepsTowards = (from: number, to: number, step: number): number[] =>
-  Array.from(
-    { length: Math.round(Math.abs(to - from) / step) + 1 },
-    (_, index) => from + Math.sign(to - from) * index * step,
-  );
-
-/**
- * the moves to try for a drag, best first: every grid step in the rectangle
- * between where the drag comes from and where it points, closest on screen
- * to where it points first (then furthest from where it comes from) - so a
- * drag that can't go where it points goes as near to it as it can, sliding
- * along whatever blocks it or stopping just short of it
- */
-const dragMovesToTry = (
-  /**
-   * the move the drag comes from - none, in the items' own room
-   */
-  from: Xyz,
-  /**
-   * the move the drag points to
-   */
-  target: Xyz,
-  gridResolution: GridResolution,
-  cameraAngle: Xy,
-): Xyz[] => {
-  const targetOnScreen = projectWorldXyzToScreenXy(target, cameraAngle);
-  const screenDistanceToTarget = (move: Xyz) =>
-    lengthXy(
-      subXy(projectWorldXyzToScreenXy(move, cameraAngle), targetOnScreen),
-    );
-  const isTarget = (move: Xyz) => move.x === target.x && move.y === target.y;
-
-  return stepsTowards(from.x, target.x, gridResolution)
-    .flatMap((x) =>
-      stepsTowards(from.y, target.y, gridResolution).map((y) => ({
-        x,
-        y,
-        z: target.z,
-      })),
-    )
-    .filter(
-      (move) =>
-        // not moving across at all would undo the drag, rather than follow it:
-        isTarget(move) || move.x !== from.x || move.y !== from.y,
-    )
-    .map((move) => ({
-      move,
-      screenDistanceToTarget: screenDistanceToTarget(move),
-      distanceFromStart: lengthXy(subXy(move, from)),
-    }))
-    .sort(
-      (a, b) =>
-        a.screenDistanceToTarget - b.screenDistanceToTarget ||
-        b.distanceFromStart - a.distanceFromStart,
-    )
-    .slice(0, maxDragMovesToTry)
-    .map(({ move }) => move);
-};
-
-/**
  * what previewing the drag in an open room works from
  */
 type DragPreviewArgs = {
@@ -425,9 +361,14 @@ const dragPreviewInItemsRoom = (
     //
     positionDelta = blockDragVector;
   }
+  // moving slides along whatever blocks the way, from where the items were:
   const movesToTry =
     resizeEdge === undefined ?
-      dragMovesToTry(originXyz, positionDelta, gridResolution, cameraAngle)
+      nearestCandidatesFirst(
+        slideCandidates(originXyz, positionDelta, gridResolution),
+        positionDelta,
+        cameraAngle,
+      )
     : [positionDelta];
 
   for (const moveToTry of movesToTry) {
@@ -471,25 +412,19 @@ const dragPreviewInItemsRoom = (
 };
 
 /**
- * the drag in another room: moving the items there with new ids, sliding to
- * the nearest spot that fits between where the drag came into the room and
- * where it points
+ * the drag in another room: moving the items there with new ids, to the
+ * nearest spot that fits around where the drag points - there is nowhere in
+ * this room for them to slide from
  */
-const dragPreviewInOtherRoom = (
-  {
-    levelEditorState,
-    itemGrab: { jsonItemIds, mouseDownPointingAt },
-    openRoomId,
-    roomState,
-    blockDragVector,
-    gridResolution,
-    cameraAngle,
-  }: DragPreviewArgs,
-  /**
-   * the drag vector, rounded, in blocks, where the drag came into the room
-   */
-  blockEntryDragVector: Xyz,
-): ItemGrabPreviewedIntoPayload | undefined => {
+const dragPreviewInOtherRoom = ({
+  levelEditorState,
+  itemGrab: { jsonItemIds, mouseDownPointingAt },
+  openRoomId,
+  roomState,
+  blockDragVector,
+  gridResolution,
+  cameraAngle,
+}: DragPreviewArgs): ItemGrabPreviewedIntoPayload | undefined => {
   const { rooms } = levelEditorState.campaignInProgress;
   const { roomId: toRoomId, subRoomId: toSubRoomId } = existingLayoutNode(
     levelEditorState.layout,
@@ -550,10 +485,9 @@ const dragPreviewInOtherRoom = (
       })
     );
   };
-  const validMove = dragMovesToTry(
-    blockEntryDragVector,
+  const validMove = nearestCandidatesFirst(
+    candidatesAround(blockDragVector, gridResolution, placementReachBlocks),
     blockDragVector,
-    gridResolution,
     cameraAngle,
   ).find(fits);
   if (validMove === undefined) {
@@ -712,12 +646,7 @@ export class PointerToolHandler implements ToolHandler {
       const previewed =
         isItemsRoom ?
           dragPreviewInItemsRoom(previewArgs, resizeEdge)
-        : dragPreviewInOtherRoom(
-            previewArgs,
-            fineXyzToBlockXyz(
-              roundDragVector(plane.startDragVector, gridResolution),
-            ),
-          );
+        : dragPreviewInOtherRoom(previewArgs);
       if (previewed !== undefined) {
         dispatch(itemGrabPreviewedInto(previewed));
       }
