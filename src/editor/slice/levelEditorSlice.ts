@@ -57,6 +57,7 @@ import {
 } from "./reducers/editorSettingsReducers";
 import { editRoomReducers } from "./reducers/editRoomReducers";
 import { explodeItemsReducers } from "./reducers/explodeItemsReducers";
+import { floorReducers } from "./reducers/floorReducers";
 import { itemActivationReducers } from "./reducers/itemActivationReducers";
 import { itemPreviewReducers } from "./reducers/itemPreviewReducers";
 import { mirrorOrientationReducers } from "./reducers/mirrorOrientationReducers";
@@ -254,6 +255,7 @@ export const levelEditorSlice = createSlice({
     ...explodeItemsReducers,
     ...itemActivationReducers,
     ...disappearingReducers,
+    ...floorReducers,
     ...monsterMovementReducers,
     ...moveItemsToRoomReducers,
     ...multiplyItemsReducers,
@@ -386,6 +388,8 @@ export const {
   makeHoleInSelectedFloor,
   setSelectedItemsActivation,
   setSelectedItemsDisappearing,
+  setSelectedFloorsScenery,
+  setSelectedFloorsType,
   setSelectedItemsInRoom,
   setSelectedItemsMirrorOrientation,
   setSelectedItemsStartDirection,
