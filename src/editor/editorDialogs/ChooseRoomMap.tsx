@@ -1,27 +1,17 @@
 import { memo } from "preact/compat";
 import { useCallback, useMemo, useState } from "preact/hooks";
 
-import { createClickableRoomBehaviour } from "../../game/components/dialogs/menuDialog/dialogs/map/createClickableRoomBehaviour";
-import { MapSvg } from "../../game/components/dialogs/menuDialog/dialogs/map/Map.svg";
-import {
-  MapContextProvider,
-  type MapContextValue,
-  noCellPlayables,
-} from "../../game/components/dialogs/menuDialog/dialogs/map/MapContext";
-import { type RoomBehaviourComponent } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
-import { selectNotableItems } from "../../game/components/dialogs/menuDialog/dialogs/map/selectNotableItems";
-import { originalUserId } from "../../gameInfo";
-import { teleporterLinksFromCell } from "../../model/map/teleporterLinksFromCell";
-import { emptyObject } from "../../utils/empty";
+import { createClickableRoomBehaviour } from "../../map/createClickableRoomBehaviour";
+import { MapSvg } from "../../map/Map.svg";
+import { MapContextProvider } from "../../map/MapContext";
+import { useCampaignMap } from "../../map/useCampaignMap";
+import { mapSettingsHooks } from "../../store/mapSettingsHooks";
 import { useElementSize } from "../../utils/preact/useElementSize";
 import { LazyEditorMapNonContiguousRelationshipDecorator } from "../EditorMap/LazyEditorMapNonContiguousRelationshipDecorator";
 import { LazyEditorMapTeleporterLinkDecorator } from "../EditorMap/LazyEditorMapTeleporterLinkDecorator";
-import { mapAreaIndexOfRoom } from "../EditorMap/mapAreaIndexOfRoom";
 import { MapAreaSwitcher } from "../EditorMap/MapAreaSwitcher";
-import { editorMapAreas } from "../EditorMap/useEditorMapData";
 import { type EditorCampaign, type EditorRoomId } from "../editorTypes";
 import { EditorMapRoomTooltipBehaviour } from "../roomPreview/EditorMapRoomTooltipBehaviour";
-import { firstSubRoomId } from "../slice/inPlaceMutators/firstSubRoomId";
 
 const chooseRoomMapPrefixDecorators = [
   memo(LazyEditorMapNonContiguousRelationshipDecorator),
@@ -30,60 +20,6 @@ const chooseRoomMapPrefixDecorators = [
 const chooseRoomMapPostfixDecorators = [
   memo(LazyEditorMapTeleporterLinkDecorator),
 ];
-
-/**
- * the map's areas, and the context its rooms draw from with the given room
- * as current
- */
-const useMapForRoom = (
-  campaign: EditorCampaign,
-  roomId: EditorRoomId,
-  behaviours: RoomBehaviourComponent<EditorRoomId>[],
-  chosenRoomId: EditorRoomId | undefined,
-  /**
-   * any room of the area to show
-   */
-  shownAreaRoomId: EditorRoomId,
-) => {
-  const mapAreas = useMemo(() => editorMapAreas(campaign), [campaign]);
-  const shownAreaIndex =
-    mapAreas.isError ? 0 : mapAreaIndexOfRoom(mapAreas.areas, shownAreaRoomId);
-  const maybeShownArea =
-    mapAreas.isError ? undefined : mapAreas.areas[shownAreaIndex];
-  const mapContext = useMemo(
-    (): MapContextValue<EditorRoomId> => ({
-      isOriginalCampaign: campaign.locator.userId === originalUserId,
-      currentCharacterName: "head",
-      onPlayableClick: undefined,
-      behaviours,
-      prefixDecorators: chooseRoomMapPrefixDecorators,
-      postfixDecorators: chooseRoomMapPostfixDecorators,
-      // none of these call any hooks, so are fine to swap for others when
-      // the campaign or choice changes:
-      useShownArea() {
-        // the map is only drawn when its geometry could be solved:
-        if (import.meta.env.DEV && maybeShownArea === undefined) {
-          throw new Error("the map was drawn without its geometry solved");
-        }
-        return maybeShownArea!;
-      },
-      useCurRoomId: () => roomId,
-      useCurSubRoomId: () => firstSubRoomId(campaign.rooms[roomId]),
-      useCurRoomScenery: () => campaign.rooms[roomId].planet,
-      useTeleporterLinksFrom: (mapRoomId, subRoomId) =>
-        teleporterLinksFromCell(campaign, mapRoomId, subRoomId),
-      useRoomJson: (mapRoomId) => campaign.rooms[mapRoomId],
-      // the editor collects no pickups:
-      useNotableItems: (mapRoomId, subRoomId) =>
-        selectNotableItems(campaign.rooms[mapRoomId], emptyObject, subRoomId),
-      useCellPlayables: () => noCellPlayables,
-      useRoomVisited: () => false,
-      useIsRoomSelected: (mapRoomId) => mapRoomId === chosenRoomId,
-    }),
-    [campaign, maybeShownArea, roomId, behaviours, chosenRoomId],
-  );
-  return { mapAreas, shownAreaIndex, mapContext };
-};
 
 /**
  * map behaviours that make clicking a room choose it, and hovering it show its
@@ -133,13 +69,16 @@ export const ChooseRoomMap = ({
   } = useElementSize<HTMLDivElement>();
 
   const chooseOnClickBehaviours = useChooseOnClickBehaviours(choose);
-  const { mapAreas, shownAreaIndex, mapContext } = useMapForRoom(
+  const { mapAreas, shownAreaIndex, mapContext } = useCampaignMap({
     campaign,
-    mapRoomId,
-    chooseOnClickBehaviours,
-    chosenRoomId,
+    currentRoomId: mapRoomId,
     shownAreaRoomId,
-  );
+    behaviours: chooseOnClickBehaviours,
+    prefixDecorators: chooseRoomMapPrefixDecorators,
+    postfixDecorators: chooseRoomMapPostfixDecorators,
+    settingsHooks: mapSettingsHooks,
+    selectedRoomId: chosenRoomId,
+  });
 
   return (
     <div class="flex flex-col gap-1 h-full">

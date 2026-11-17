@@ -146,6 +146,10 @@ jobs:
           - { os: ubuntu-24.04-arm, suite: upscaledSprites, projectOption: --project chromium-desktop }
           - { os: macos-latest, suite: upscaledSprites, projectOption: --project mobile-safari }
 
+          # MAP AREA SNAPSHOTS - desktop-chromium (Linux) and mobile-webkit (macOS)
+          - { os: ubuntu-24.04-arm, suite: mapAreaSnapshots, projectOption: --project chromium-desktop }
+          - { os: macos-latest, suite: mapAreaSnapshots, projectOption: --project mobile-safari }
+
           # LUT SNAPSHOTS - single batch per os/browser combo
           # chromium/mobile-chrome on Linux, webkit/mobile-safari on macOS:
           - { os: ubuntu-24.04-arm, suite: lutSnapshot, projectOption: "--project chromium-desktop --project mobile-chrome" }

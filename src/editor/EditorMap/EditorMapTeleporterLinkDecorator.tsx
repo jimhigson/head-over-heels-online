@@ -1,11 +1,11 @@
-import { notableItemSlotPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/ItemsInRoomLayout";
-import { useMapContext } from "../../game/components/dialogs/menuDialog/dialogs/map/MapContext";
-import { type RoomDecoratorProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
-import { roomWorldPosition } from "../../game/components/dialogs/menuDialog/dialogs/map/roomWorldPosition";
-import { translateXyz } from "../../game/components/dialogs/menuDialog/dialogs/map/svgHelpers";
-import { useRoomNode } from "../../game/components/dialogs/menuDialog/dialogs/map/useRoomNode";
 import { blockSizePx } from "../../game/physics/mechanicsConstants";
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
+import { notableItemSlotPositions } from "../../map/ItemsInRoomLayout";
+import { useMapContext } from "../../map/MapContext";
+import { type RoomDecoratorProps } from "../../map/RoomDecoratorProps";
+import { roomWorldPosition } from "../../map/roomWorldPosition";
+import { translateXyz } from "../../map/svgHelpers";
+import { useRoomNode } from "../../map/useRoomNode";
 import {
   type TeleporterCell,
   type TeleporterLink,

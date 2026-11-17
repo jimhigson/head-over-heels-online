@@ -1,12 +1,9 @@
-import {
-  type EditorJsonItem,
-  type EditorRoomId,
-} from "../../../editor/editorTypes";
-import { type LevelEditorState } from "../../../editor/slice/levelEditorSlice";
 import { firstUntakenRoomId } from "../../../model/firstUntakenRoomId";
 import { roomVerticalLinkHolders } from "../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { valuesIter } from "../../../utils/entries";
+import { type EditorJsonItem, type EditorRoomId } from "../../editorTypes";
+import { type LevelEditorState } from "../levelEditorSlice";
 import { layoutNodesOfType } from "../PaneLayout";
 
 /**

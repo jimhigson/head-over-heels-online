@@ -2,109 +2,22 @@ import { createSelector, lruMemoize } from "@reduxjs/toolkit";
 import nanoEqual from "nano-equal";
 import { capitalize } from "string-transform";
 
-import { findMapBounds } from "../../game/components/dialogs/menuDialog/dialogs/map/findMapBounds";
-import { lowestRoomIdOfArea } from "../../game/components/dialogs/menuDialog/dialogs/map/lowestRoomIdOfArea";
 import {
-  type MapArea,
-  type MapData,
-  type MapDataError,
-} from "../../game/components/dialogs/menuDialog/dialogs/map/MapData";
-import {
-  roomGridPositions,
-  type RoomNode,
-} from "../../model/map/roomGridPositions";
-import { sortRoomGridPositions } from "../../model/map/sortRoomGridPositions";
-import { type CharacterName } from "../../model/modelTypes";
+  campaignMapAreas,
+  type CampaignMapAreas,
+} from "../../map/campaignMapAreas";
+import { type MapDataError } from "../../map/MapData";
+import { type RoomNode } from "../../model/map/roomGridPositions";
 import { type RoomHues } from "../../model/roomHues";
 import { type RoomJson } from "../../model/RoomJson";
 import { iterateRoomJsonItemsWithIds } from "../../model/RoomJsonItemIterators";
 import { type EditorRootState } from "../../store/store";
 import { emptyArray, emptyObject } from "../../utils/empty";
 import { fromAllEntries, keys, valuesIter } from "../../utils/entries";
-import { naturalCompare } from "../../utils/naturalCompare";
-import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import { createShallowStableSelector } from "../../utils/redux/createShallowStableSelector";
 import { type EditorCampaign, type EditorRoomId } from "../editorTypes";
 import { selectCursorRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 import { selectRoomHues } from "../slice/selectRoomHues";
-
-/** the parts of the map that depend only on the campaign, not the cursor */
-export type EditorMapAreas = Pick<MapData<EditorRoomId>, "areas"> & {
-  isError: false;
-};
-
-/**
- * every room in the campaign, split into areas of rooms positioned relative to
- * each other, ordered by each area's first room id
- */
-/**
- * the room the map is built out from: head's starting room, else heels' if
- * there is no head, else the lowest room id
- */
-const mapSeedRoomId = (
-  campaign: Pick<EditorCampaign, "rooms">,
-): EditorRoomId => {
-  const roomIds = keys(campaign.rooms).sort(naturalCompare);
-  const startingRoomOf = (characterNames: CharacterName[]) =>
-    roomIds.find((roomId) =>
-      iterateRoomJsonItemsWithIds(campaign.rooms[roomId].items, "player").some(
-        ([, { config }]) => characterNames.includes(config.which),
-      ),
-    );
-  const [lowestRoomId] = roomIds;
-  return (
-    startingRoomOf(["head", "headOverHeels"]) ??
-    startingRoomOf(["heels"]) ??
-    lowestRoomId
-  );
-};
-
-export const editorMapAreas = (
-  campaign: Pick<EditorCampaign, "rooms">,
-): EditorMapAreas | MapDataError => {
-  const seedRoomId = mapSeedRoomId(campaign);
-  try {
-    const graph = roomGridPositions({
-      campaign,
-      roomId: seedRoomId,
-      totalGraph: true,
-      skipMissingRooms: true,
-    });
-
-    const nodesBySubgraph = Map.groupBy(
-      graph.nodes,
-      ({ subgraph }: RoomNode<EditorRoomId>) => subgraph,
-    );
-    const areas = nodesBySubgraph
-      .values()
-      .map((roomNodes): MapArea<EditorRoomId> => {
-        const gridPositions = sortRoomGridPositions(roomNodes);
-        return {
-          // the area laid out from the seed is first, by the seed; the others
-          // by their lowest room id:
-          firstRoomId:
-            roomNodes.some(({ roomId }) => roomId === seedRoomId) ? seedRoomId
-            : lowestRoomIdOfArea(gridPositions),
-          mapBounds: findMapBounds(roomNodes),
-          gridPositions,
-        };
-      })
-      .toArray()
-      .sort((areaA, areaB) =>
-        areaA.firstRoomId === seedRoomId ? -1
-        : areaB.firstRoomId === seedRoomId ? 1
-        : naturalCompare(areaA.firstRoomId, areaB.firstRoomId),
-      );
-
-    return { areas, isError: false };
-  } catch (e) {
-    console.error(Error("error getting map data", { cause: e }));
-    const errors = createSerialisableErrors(e)
-      .map((err) => err.message)
-      .reverse();
-    return { isError: true, errors };
-  }
-};
 
 const selectCampaignInProgress = (state: EditorRootState) =>
   state.levelEditor.campaignInProgress;
@@ -149,7 +62,7 @@ const areRoomsLaidOutAlike = (
  */
 const selectEditorMapLayout = createSelector(
   [(state: EditorRootState) => state.levelEditor.campaignInProgress.rooms],
-  (rooms) => editorMapAreas({ rooms }),
+  (rooms) => campaignMapAreas<EditorRoomId>({ rooms }),
   {
     memoize: lruMemoize,
     memoizeOptions: { equalityCheck: areRoomsLaidOutAlike },
@@ -232,7 +145,7 @@ export const selectEditorMapAreaFirstRoomHues = createShallowStableSelector(
  */
 const editorMapAreaLabels = (
   campaign: EditorCampaign,
-  mapAreas: EditorMapAreas | MapDataError,
+  mapAreas: CampaignMapAreas<EditorRoomId> | MapDataError,
 ): Partial<Record<EditorRoomId, string>> => {
   if (mapAreas.isError) {
     return emptyObject;

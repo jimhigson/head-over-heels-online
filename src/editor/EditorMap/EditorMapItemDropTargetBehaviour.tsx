@@ -1,6 +1,6 @@
 import { useEffect } from "preact/hooks";
 
-import { type RoomBehaviourProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
+import { type RoomBehaviourProps } from "../../map/RoomDecoratorProps";
 import { editorStore } from "../../store/store";
 import { HookComponent } from "../../utils/preact/HookComponent";
 import { twClass } from "../../utils/twClass.tsx" with { type: "macro" };

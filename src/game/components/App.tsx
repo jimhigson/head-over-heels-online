@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 
 import { GamePage } from "../../pages/gamePage/GamePage.tsx";
 import { importLutPage } from "../../pages/LutPage.import.ts";
+import { importMapPage } from "../../pages/mapPage/MapPage.import.ts";
 import { importSpritesPage } from "../../pages/spritesPage/SpritesPage.import.ts";
 import { useIsUncolourised } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
 import { store } from "../../store/store.ts";
@@ -18,9 +19,13 @@ import { useUpscaledSpritesAndSmoothFontInCss } from "./upscaledSpritesUi/useUps
 import { WantedEditor404 } from "./WantedEditor404.tsx";
 
 const LazyLutPage = lazy(importLutPage);
+const LazyMapPage = lazy(importMapPage);
 const LazySpritesPage = lazy(importSpritesPage);
 
-handleGameBoot();
+// the map page only shows a campaign's map - it starts no game:
+if (window.location.pathname !== "/map") {
+  handleGameBoot();
+}
 
 const AppInner = () => {
   const uncolourised = useIsUncolourised();
@@ -50,6 +55,13 @@ const AppInner = () => {
       </Route>
       <Route path="/lut">
         <LazyLutPage />
+      </Route>
+      <Route path="/map">
+        <CssVariables>
+          <Suspense fallback={<SpinnerHead loadingBorder />}>
+            <LazyMapPage />
+          </Suspense>
+        </CssVariables>
       </Route>
       <Route path="/editor">
         <CssVariables>

@@ -1,3 +1,4 @@
+import { firstSubRoomId } from "../../../model/firstSubRoomId";
 import { type EditorRoomId } from "../../editorTypes";
 import { type LevelEditorState } from "../levelEditorSlice";
 import {
@@ -14,7 +15,6 @@ import {
 } from "../PaneLayout";
 import { clearContextMenuXyInPlace } from "../reducers/contextMenuReducers";
 import { commitPendingNudgeInPlace } from "./commitPendingNudgeInPlace";
-import { firstSubRoomId } from "./firstSubRoomId";
 
 /**
  * the cursor moving to another room, or to another pane: `show` puts the room

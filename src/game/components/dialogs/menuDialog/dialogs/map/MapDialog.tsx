@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useMemo } from "preact/hooks";
 
+import { createClickableRoomBehaviour } from "../../../../../../map/createClickableRoomBehaviour";
+import { MapSvg } from "../../../../../../map/Map.svg";
+import { getMapColoursClass } from "../../../../../../map/mapColours";
+import { MapContextProvider } from "../../../../../../map/MapContext";
+import { mapDialogColourClasses } from "../../../../../../map/mapDialogColourClasses";
 import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
 import { useCheatsOn } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
@@ -11,11 +16,6 @@ import { useElementSize } from "../../../../../../utils/preact/useElementSize";
 import { swopPlayables } from "../../../../../gameState/mutators/swopPlayables";
 import { useGameApi } from "../../../../GameApiContext";
 import { useScrollingFromInputRef } from "../useScrollingFromInputRef";
-import { createClickableRoomBehaviour } from "./createClickableRoomBehaviour";
-import { MapSvg } from "./Map.svg";
-import { getMapColoursClass } from "./mapColours";
-import { MapContextProvider } from "./MapContext";
-import { mapDialogColourClasses } from "./mapDialogColourClasses";
 import { MapRoomTooltipBehaviour } from "./MapRoomTooltipBehaviour";
 import { useMapContextForCurrentGame } from "./useMapContextForCurrentGame";
 import { useAllowCharacterSwopping } from "./useTickingCurrentCharacterName";

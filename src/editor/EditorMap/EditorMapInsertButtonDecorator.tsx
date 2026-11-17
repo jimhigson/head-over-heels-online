@@ -1,13 +1,13 @@
 import { type ComponentChildren } from "preact";
 
-import { roomGridSizeXY } from "../../game/components/dialogs/menuDialog/dialogs/map/mapConstants";
-import { useMapContext } from "../../game/components/dialogs/menuDialog/dialogs/map/MapContext";
-import { type RoomDecoratorProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
-import { roomWorldPosition } from "../../game/components/dialogs/menuDialog/dialogs/map/roomWorldPosition";
-import { translateXyz } from "../../game/components/dialogs/menuDialog/dialogs/map/svgHelpers";
-import { useIsCurrentCell } from "../../game/components/dialogs/menuDialog/dialogs/map/useIsCurrentCell";
-import { useRoomNode } from "../../game/components/dialogs/menuDialog/dialogs/map/useRoomNode";
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
+import { roomGridSizeXY } from "../../map/mapConstants";
+import { useMapContext } from "../../map/MapContext";
+import { type RoomDecoratorProps } from "../../map/RoomDecoratorProps";
+import { roomWorldPosition } from "../../map/roomWorldPosition";
+import { translateXyz } from "../../map/svgHelpers";
+import { useIsCurrentCell } from "../../map/useIsCurrentCell";
+import { useRoomNode } from "../../map/useRoomNode";
 import {
   type Boundaries,
   type RoomNode,

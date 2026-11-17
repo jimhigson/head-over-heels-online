@@ -1,9 +1,9 @@
-import { useMapContext } from "../../game/components/dialogs/menuDialog/dialogs/map/MapContext";
-import { type RoomDecoratorProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
-import { roomWorldPosition } from "../../game/components/dialogs/menuDialog/dialogs/map/roomWorldPosition";
-import { translateXyz } from "../../game/components/dialogs/menuDialog/dialogs/map/svgHelpers";
-import { useRoomNode } from "../../game/components/dialogs/menuDialog/dialogs/map/useRoomNode";
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
+import { useMapContext } from "../../map/MapContext";
+import { type RoomDecoratorProps } from "../../map/RoomDecoratorProps";
+import { roomWorldPosition } from "../../map/roomWorldPosition";
+import { translateXyz } from "../../map/svgHelpers";
+import { useRoomNode } from "../../map/useRoomNode";
 import { roomNonContiguousRelationship } from "../../model/RoomJson";
 import { useEditorAppSelector } from "../../store/store";
 import {

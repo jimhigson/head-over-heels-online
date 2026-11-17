@@ -1,8 +1,8 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
+import { firstSubRoomId } from "../../../model/firstSubRoomId";
 import { keys } from "../../../utils/entries";
 import { type EditorRoomId } from "../../editorTypes";
-import { firstSubRoomId } from "../inPlaceMutators/firstSubRoomId";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { showRoomInFrontTabInPlace } from "../PaneLayout";
