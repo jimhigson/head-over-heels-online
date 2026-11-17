@@ -3,7 +3,6 @@ import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = inferRoomJson({
   color: { hue: "green", shade: "basic" },
-  id: "blacktooth16",
   items: {
     d: {
       config: { direction: "towards", toRoom: "blacktooth15" },

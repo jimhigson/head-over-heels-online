@@ -23,13 +23,11 @@ const teleporter1 = "teleporter1" as EditorRoomItemId;
 
 const addRooms = (draft: LevelEditorState) => {
   draft.campaignInProgress.rooms[roomA] = {
-    id: roomA,
     planet: "blacktooth",
     color: { hue: "cyan", shade: "basic" },
     items: {},
   };
   draft.campaignInProgress.rooms[roomB] = {
-    id: roomB,
     planet: "blacktooth",
     color: { hue: "cyan", shade: "basic" },
     items: {},
@@ -64,7 +62,6 @@ test("removeRoom deletes the deleted room's undo/redo history", () => {
         undo: [
           {
             room: {
-              id: roomA,
               planet: "blacktooth",
               color: { hue: "cyan", shade: "basic" },
               items: {},

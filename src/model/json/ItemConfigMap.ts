@@ -1,4 +1,4 @@
-import { type ExportedSoundId } from "../../_generated/sfxdex/sfx";
+import { type ExportedSoundId } from "../../_generated/sfxdex/soundIds";
 import { type MarkdownPageName } from "../../manual/pages";
 import { type PlanetName, type SceneryName } from "../../sprites/planets";
 import { type Subset } from "../../utils/Subset";

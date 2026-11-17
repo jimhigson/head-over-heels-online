@@ -64,7 +64,7 @@ export const registerRoomPreviewSnapshotListeners = () => {
 
           dispatch(roomPreviewRenderingStarted(roomId));
           try {
-            const dataUrl = await renderRoomPreviewImage(roomJson);
+            const dataUrl = await renderRoomPreviewImage(roomId, roomJson);
             // discard if the room's json changed or it was removed while
             // rendering - the invalidation listener will have cleared the entry
             const currentRoomJson = selectRoomFromLevelEditorState(

@@ -3,8 +3,8 @@ import { expect, test } from "vitest";
 import { campaignOf, newRoom, runCheck, setSubRoomCell } from "../testUtils";
 import { subRoomInvertedExtentVerifier } from "./subRoomInvertedExtentVerifier";
 
-const dividedRoom = (id: string): ReturnType<typeof newRoom> =>
-  newRoom(id, {
+const dividedRoom = (): ReturnType<typeof newRoom> =>
+  newRoom({
     gridPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },
@@ -12,7 +12,7 @@ const dividedRoom = (id: string): ReturnType<typeof newRoom> =>
   });
 
 test("flags a sub-room whose extent is inverted", () => {
-  const roomA = dividedRoom("roomA");
+  const roomA = dividedRoom();
   setSubRoomCell(roomA, "0", {
     physicalPosition: { from: { x: 8, y: 0 }, to: { x: 0, y: 8 } },
   });
@@ -29,7 +29,7 @@ test("flags a sub-room whose extent is inverted", () => {
 });
 
 test("accepts a normally-divided room", () => {
-  const roomA = dividedRoom("roomA");
+  const roomA = dividedRoom();
 
   expect(
     runCheck(subRoomInvertedExtentVerifier, campaignOf({ roomA })),

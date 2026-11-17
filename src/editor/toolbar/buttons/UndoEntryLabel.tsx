@@ -299,6 +299,19 @@ const UndoEntryLabelUnmemoised = ({
           {timeago}
         </>
       );
+    case "renameRoom":
+      return (
+        <>
+          <span />
+          <span class={`${verbClass} text-single-line`}>Rename </span>
+          <span class="text-single-line">
+            <span class={idClass}>{`'${description.fromRoomId}'`}</span>
+            {" to "}
+            <span class={idClass}>{`'${description.toRoomId}'`}</span>
+          </span>
+          {timeago}
+        </>
+      );
     default:
       return description satisfies never;
   }

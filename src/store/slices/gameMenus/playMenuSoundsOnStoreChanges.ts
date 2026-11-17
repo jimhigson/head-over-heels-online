@@ -1,4 +1,4 @@
-import { type ExportedSoundId } from "../../../_generated/sfxdex/sfx";
+import { type ExportedSoundId } from "../../../_generated/sfxdex/soundIds";
 import { audioCtx } from "../../../sound/audioCtx";
 import { isSoundLoaded } from "../../../sound/soundsLoader";
 import { connectWithGain } from "../../../sound/soundUtils/connectWithGain";

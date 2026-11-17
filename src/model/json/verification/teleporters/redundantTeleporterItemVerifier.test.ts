@@ -14,8 +14,8 @@ const teleporter = (toRoom: string, toItemId?: string) => ({
 });
 
 test("flags a toItemId that just names the destination's lone teleporter", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addItem(roomB, "tele", teleporter("roomA"));
   addItem(roomA, "tp", teleporter("roomB", "tele"));
   const campaign = campaignOf({ roomA, roomB });
@@ -26,8 +26,8 @@ test("flags a toItemId that just names the destination's lone teleporter", () =>
 });
 
 test("the fix drops the redundant toItemId, clearing the issue", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addItem(roomB, "tele", teleporter("roomA"));
   addItem(roomA, "tp", teleporter("roomB", "tele"));
   const campaign = campaignOf({ roomA, roomB });
@@ -39,8 +39,8 @@ test("the fix drops the redundant toItemId, clearing the issue", () => {
 });
 
 test("accepts a teleporter with no toItemId", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addItem(roomB, "tele", teleporter("roomA"));
   addItem(roomA, "tp", teleporter("roomB"));
 

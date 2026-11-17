@@ -70,18 +70,6 @@ export const useUpdateStoreWhenJsonEdited = (
         return;
       }
 
-      if (parsedJson.id !== roomJson.id) {
-        // it is ok to change the id of the room, but not over the top of another room's id:
-        if (
-          levelEditorState.campaignInProgress.rooms[parsedJson.id] !== undefined
-        ) {
-          console.warn(
-            "Edit to room id would overwrite another room, not populating.",
-          );
-          return;
-        }
-      }
-
       store.dispatch(
         roomJsonEdited({ roomJson: parsedJson, timestamp: Date.now() }),
       );

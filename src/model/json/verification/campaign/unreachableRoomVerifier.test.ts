@@ -11,9 +11,9 @@ import { type VerificationRoomId } from "../verificationTypes";
 import { unreachableRoomVerifier } from "./unreachableRoomVerifier";
 
 test("flags a room not connected to the start room", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
-  const roomC = newRoom("roomC");
+  const roomA = newRoom();
+  const roomB = newRoom();
+  const roomC = newRoom();
   addPlayer(roomA, "head");
   addDoor(roomA, "left", { toRoom: "roomB" as VerificationRoomId });
 
@@ -29,8 +29,8 @@ test("flags a room not connected to the start room", () => {
 });
 
 test("accepts a campaign where every room is reachable", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addPlayer(roomA, "head");
   addDoor(roomA, "left", { toRoom: "roomB" as VerificationRoomId });
 
@@ -40,8 +40,8 @@ test("accepts a campaign where every room is reachable", () => {
 });
 
 test("stays silent when there's no start room at all", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
 
   expect(
     runCheck(unreachableRoomVerifier, campaignOf({ roomA, roomB })),

@@ -5,7 +5,7 @@ import { campaignOf, newRoom, runCheck } from "../testUtils";
 import { roomPerimeterCoverageVerifier } from "./roomPerimeterCoverageVerifier";
 
 test("flags a room with a hole in its perimeter", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   // remove one perimeter wall, leaving an open edge
   const [wallId] = iterateRoomJsonItemIds(roomA.items, "wall");
   delete roomA.items[wallId];
@@ -22,7 +22,7 @@ test("flags a room with a hole in its perimeter", () => {
 });
 
 test("accepts a room with a complete perimeter", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
 
   expect(
     runCheck(roomPerimeterCoverageVerifier, campaignOf({ roomA })),

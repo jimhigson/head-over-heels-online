@@ -5,8 +5,8 @@ import { type VerificationRoomId } from "../verificationTypes";
 import { doorTwoWayLinkVerifier } from "./doorTwoWayLinkVerifier";
 
 test("flags a crossed two-way link", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const p1 = addDoor(
     roomB,
     "right",
@@ -37,8 +37,8 @@ test("flags a crossed two-way link", () => {
 });
 
 test("accepts a properly mutual two-way link", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomA, "left", { toRoom: "roomB" as VerificationRoomId });
   addDoor(roomB, "right", { toRoom: "roomA" as VerificationRoomId });
 

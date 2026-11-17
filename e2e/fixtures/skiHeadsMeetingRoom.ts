@@ -8,7 +8,6 @@ import { inferRoomJson, type RoomJson } from "../../src/model/RoomJson";
  */
 export const skiHeadsMeetingRoom = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
-  id: "skiHeadsMeetingRoom",
   planet: "moonbase",
   items: {
     floor: {

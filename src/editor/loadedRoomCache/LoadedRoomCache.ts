@@ -30,6 +30,7 @@ import { maybeLayoutNode } from "../slice/PaneLayout";
  * selectors - a changed identity is taken to mean a changed room
  */
 type RoomJsons = {
+  roomId: EditorRoomId;
   /**
    * the json to load - previews included, if the open room edits its room
    */
@@ -103,8 +104,7 @@ export class LoadedRoomCache {
     if (import.meta.env.DEV && maybeRoomJsons === undefined) {
       throw new Error(`open room ${openRoomId} is not in the store`);
     }
-    const { roomJsonWithPreviews, committedRoomJson } = maybeRoomJsons!;
-    this.#loaded = this.#tryLoad(roomJsonWithPreviews, committedRoomJson);
+    this.#loaded = this.#tryLoad(maybeRoomJsons!);
     this.#unsubscribeFromStore = store.subscribe(() => this.#bringUpToDate());
   }
 
@@ -127,7 +127,7 @@ export class LoadedRoomCache {
     if (committedRoomJson === undefined || roomJsonWithPreviews === undefined) {
       return undefined;
     }
-    return { roomJsonWithPreviews, committedRoomJson };
+    return { roomId, roomJsonWithPreviews, committedRoomJson };
   }
 
   /** stop following the store */
@@ -172,13 +172,13 @@ export class LoadedRoomCache {
     if (roomJsons === undefined) {
       return;
     }
-    const { roomJsonWithPreviews, committedRoomJson } = roomJsons;
+    const { roomId, roomJsonWithPreviews, committedRoomJson } = roomJsons;
     const loaded = this.#loaded;
 
     if (loaded === undefined) {
       // retrying the same json would fail again, and report the error again:
       if (roomJsonWithPreviews !== this.#failedRoomJsonWithPreviews) {
-        this.#loaded = this.#tryLoad(roomJsonWithPreviews, committedRoomJson);
+        this.#loaded = this.#tryLoad(roomJsons);
         this.#changed();
       }
       return;
@@ -201,12 +201,12 @@ export class LoadedRoomCache {
       // items like lightBeams from lamps benefit from a full reload of the
       // room, so committing takes the slower but more thorough path:
       loaded.committedRoomJson !== committedRoomJson ||
-      loadedRoomState.id !== roomJsonWithPreviews.id ||
+      loadedRoomState.id !== roomId ||
       prevRoomJsonWithPreviews.planet !== roomJsonWithPreviews.planet ||
       prevRoomJsonWithPreviews.color !== roomJsonWithPreviews.color;
 
     if (needsFullReload) {
-      this.#loaded = this.#tryLoad(roomJsonWithPreviews, committedRoomJson);
+      this.#loaded = this.#tryLoad(roomJsons);
     } else {
       patchLoadedRoomInPlace(
         loadedRoomState,
@@ -224,13 +224,14 @@ export class LoadedRoomCache {
   /**
    * loads a room, or reports to the store why it couldn't
    */
-  #tryLoad(
-    roomJsonWithPreviews: EditorRoomJson,
-    committedRoomJson: EditorRoomJson,
-  ): LoadedRoom | undefined {
+  #tryLoad({
+    roomId,
+    roomJsonWithPreviews,
+    committedRoomJson,
+  }: RoomJsons): LoadedRoom | undefined {
     try {
       return {
-        roomState: loadEditorRoom(roomJsonWithPreviews),
+        roomState: loadEditorRoom(roomId, roomJsonWithPreviews),
         roomJsonWithPreviews,
         committedRoomJson,
       };

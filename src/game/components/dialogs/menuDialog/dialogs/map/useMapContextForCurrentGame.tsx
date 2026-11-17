@@ -39,7 +39,7 @@ const playableItemInCell = <C extends CharacterName, RoomId extends string>(
 
   return (
       playableItemInPlay &&
-        roomId === characterRooms[characterName]!.roomJson.id &&
+        roomId === characterRooms[characterName]!.id &&
         subRoomId ===
           findSubRoomForItem(
             playableItemInPlay.state.box,
@@ -88,8 +88,7 @@ export const useMapContextForCurrentGame = <RoomId extends string>(
     try {
       const curRoom = selectCurrentRoomState<RoomId, string>(gameState);
       const centreRoomId =
-        curRoom?.roomJson.id ??
-        findStartingRoomsInCampaign(currentCampaign).head!;
+        curRoom?.id ?? findStartingRoomsInCampaign(currentCampaign).head!;
 
       let curSubRoom: string;
 
@@ -123,7 +122,7 @@ export const useMapContextForCurrentGame = <RoomId extends string>(
       const sortedPositions = sortRoomGridPositions(positions);
 
       const mapData: MapData<RoomId> = {
-        curRoomId: curRoom?.roomJson.id,
+        curRoomId: curRoom?.id,
         curSubRoomId: undefined,
         // in-game, the map only shows the area the current room is in, don't calc
         // any others since they won't be used:

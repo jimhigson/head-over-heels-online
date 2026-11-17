@@ -49,6 +49,7 @@ test("hovering the item tool where its item would collide previews nothing", () 
     },
   );
   const roomState = loadEditorRoom(
+    testRoomId,
     state0.campaignInProgress.rooms[testRoomId] as EditorRoomJson,
   );
   // on top of the floor in block (1, 0) - a block two long put down there

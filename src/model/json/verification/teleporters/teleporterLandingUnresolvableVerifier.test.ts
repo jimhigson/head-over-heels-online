@@ -18,8 +18,8 @@ const teleporter = (
 });
 
 test("flags a teleporter to a room with no teleporter to land on", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addItem(roomA, "tp", teleporter("roomB"));
 
   const [issue] = runCheck(
@@ -31,8 +31,8 @@ test("flags a teleporter to a room with no teleporter to land on", () => {
 });
 
 test("flags a teleporter to a room with several teleporters", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addItem(roomA, "tp", teleporter("roomB"));
   addItem(roomB, "one", teleporter("roomA"));
   addItem(roomB, "two", teleporter("roomA", { x: 3, y: 3, z: 0 }));
@@ -46,8 +46,8 @@ test("flags a teleporter to a room with several teleporters", () => {
 });
 
 test("accepts a teleporter naming which of several teleporters to land on", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addItem(roomA, "tp", teleporter("roomB", undefined, "one"));
   addItem(roomB, "one", teleporter("roomA"));
   addItem(roomB, "two", teleporter("roomA", { x: 3, y: 3, z: 0 }, "tp"));
@@ -61,8 +61,8 @@ test("accepts a teleporter naming which of several teleporters to land on", () =
 });
 
 test("leaves a missing toItemId to its own verifier", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addItem(roomA, "tp", teleporter("roomB", undefined, "ghost"));
 
   expect(
@@ -74,7 +74,7 @@ test("leaves a missing toItemId to its own verifier", () => {
 });
 
 test("a same-room teleporter lands on the room's other teleporter", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "tp", teleporter("roomA"));
   addItem(roomA, "other", teleporter("roomA", { x: 3, y: 3, z: 0 }));
 

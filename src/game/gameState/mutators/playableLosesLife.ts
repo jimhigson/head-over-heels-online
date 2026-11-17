@@ -234,6 +234,7 @@ const reloadRoomWithCharacterInIt = <RoomId extends string>({
   } = state;
 
   const reloadedRoom = loadRoom({
+    roomId,
     roomJson: campaign.rooms[roomId],
     roomPickupsCollected: gameState.pickupsCollected[roomId] ?? emptyObject,
     scrollsRead,

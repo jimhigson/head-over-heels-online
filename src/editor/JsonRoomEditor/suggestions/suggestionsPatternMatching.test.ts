@@ -450,7 +450,6 @@ describe("matchesPattern", () => {
     it("matches [type=door].config.toDoor from real editor scenario", () => {
       // Simulate what happens in real editor - JSON at room level
       const roomJson = {
-        id: "testRoom",
         items: {
           door1: {
             type: "door",
@@ -462,7 +461,7 @@ describe("matchesPattern", () => {
             },
           },
         },
-      } satisfies Pick<AnyRoomJson, "id" | "items">;
+      } satisfies Pick<AnyRoomJson, "items">;
 
       const jsonString = JSON.stringify(roomJson);
       const tree = parseTree(jsonString);

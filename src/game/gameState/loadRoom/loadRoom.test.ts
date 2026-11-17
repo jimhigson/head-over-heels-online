@@ -16,6 +16,7 @@ type TestRoomState = RoomState<string, string>;
 
 const loadTestRoom = (roomJson: Parameters<typeof loadRoom>[0]["roomJson"]) =>
   loadRoom({
+    roomId: "testRoom",
     roomJson,
     scrollsRead: {},
     planetsLiberated: noPlanetsLiberated,

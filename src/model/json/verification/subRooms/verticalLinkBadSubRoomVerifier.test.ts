@@ -5,8 +5,8 @@ import { type VerificationRoomId } from "../verificationTypes";
 import { verticalLinkBadSubRoomVerifier } from "./verticalLinkBadSubRoomVerifier";
 
 test("flags a link naming a sub-room that the target doesn't have", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   setWholeRoomCell(roomA, {
     below: { room: "roomB" as VerificationRoomId, subRoom: "ghost" },
   });
@@ -23,8 +23,8 @@ test("flags a link naming a sub-room that the target doesn't have", () => {
 });
 
 test("accepts a link naming a real sub-room of the target", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB", {
+  const roomA = newRoom();
+  const roomB = newRoom({
     gridPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },

@@ -360,7 +360,6 @@ test("coalescing rooms leaves the links of doors in unrelated rooms alone", () =
   const unrelatedDoorId = "unrelatedDoor" as EditorRoomItemId;
   const state1WithUnrelatedRoom = produce(state0TwoRooms, (draft) => {
     draft.campaignInProgress.rooms[unrelatedRoomId] = {
-      id: unrelatedRoomId,
       planet: "blacktooth",
       color: { hue: "cyan", shade: "basic" },
       items: {

@@ -7,10 +7,22 @@ import {
 import { type SceneryName } from "../../../sprites/planets";
 import { randomFromArray } from "../../../utils/random/randomFromArray";
 import { type Xy } from "../../../utils/vectors/vectors";
-import { type EditorRoomJson } from "../../editorTypes";
+import {
+  type EditorRoomId,
+  type EditorRoomItemId,
+  type EditorRoomJson,
+} from "../../editorTypes";
 import { type LevelEditorState } from "../levelEditorSlice";
 
 const defaultRoomSize: Xy = { x: 8, y: 8 };
+
+/**
+ * a room just added to the campaign, and the id it was added under
+ */
+export type AddedRoom = {
+  roomId: EditorRoomId;
+  room: EditorRoomJson;
+};
 
 type AddNewRoomInPlaceOptions = {
   state: LevelEditorState;
@@ -34,7 +46,7 @@ export const addNewRoomInPlace = ({
   maybeColour,
   roomSize = defaultRoomSize,
   gridPositions = [{ x: 0, y: 0 }],
-}: AddNewRoomInPlaceOptions): EditorRoomJson => {
+}: AddNewRoomInPlaceOptions): AddedRoom => {
   const newRoomId = firstUntakenRoomId(state.campaignInProgress.rooms);
 
   const colour: ZxSpectrumRoomColour = maybeColour ?? {
@@ -42,8 +54,7 @@ export const addNewRoomInPlace = ({
     shade: Math.random() < 0.66 ? "basic" : "dimmed",
   };
 
-  const newRoom = createNewRoom(
-    newRoomId,
+  const newRoom = createNewRoom<EditorRoomId, EditorRoomItemId>(
     roomSize,
     colour,
     scenery,
@@ -52,5 +63,5 @@ export const addNewRoomInPlace = ({
 
   state.campaignInProgress.rooms[newRoomId] = newRoom;
 
-  return newRoom as EditorRoomJson;
+  return { roomId: newRoomId, room: newRoom };
 };

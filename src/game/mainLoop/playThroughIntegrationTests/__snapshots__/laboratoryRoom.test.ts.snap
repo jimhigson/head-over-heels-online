@@ -8897,7 +8897,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "hue": "yellow",
       "shade": "dimmed",
     },
-    "id": "laboratory",
     "items": {
       "b": {
         "config": {

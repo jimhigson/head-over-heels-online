@@ -27,7 +27,8 @@ export type UndoDescription =
       toRoomId: EditorRoomId;
       items: UndoItemEntry[];
     }
-  | { kind: "pasteItems" };
+  | { kind: "pasteItems" }
+  | { kind: "renameRoom"; fromRoomId: EditorRoomId; toRoomId: EditorRoomId };
 
 export const describeItem = (item: EditorJsonItemUnion): string => {
   switch (item.type) {

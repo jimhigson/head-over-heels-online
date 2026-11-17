@@ -3,7 +3,7 @@ import { type RefObject } from "preact";
 import { useCallback, useEffect, useRef } from "preact/hooks";
 
 /** normalised mouse wheel handler */
-export const useMouseWheel = (
+const useMouseWheel = (
   elementRef: RefObject<Element | null>,
   callback: (direction: -1 | 1, wheelEvent: WheelEvent) => void,
   disabled: boolean = false,

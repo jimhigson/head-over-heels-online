@@ -11,8 +11,8 @@ const roomB = "b" as VerificationRoomId;
 const roomA = "a" as VerificationRoomId;
 
 test("no door comes back, so a toDoor is not needed", () => {
-  const a = newRoom("a");
-  const b = newRoom("b");
+  const a = newRoom();
+  const b = newRoom();
   addDoor(a, "left", { toRoom: roomB });
 
   const { rooms } = campaignOf({ a, b });
@@ -21,8 +21,8 @@ test("no door comes back, so a toDoor is not needed", () => {
 });
 
 test("exactly one door comes back, so a toDoor is redundant (not needed)", () => {
-  const a = newRoom("a");
-  const b = newRoom("b");
+  const a = newRoom();
+  const b = newRoom();
   addDoor(a, "left", { toRoom: roomB });
   addDoor(b, "right", { toRoom: roomA });
 
@@ -33,8 +33,8 @@ test("exactly one door comes back, so a toDoor is redundant (not needed)", () =>
 });
 
 test("more than one door comes back, so a toDoor is needed to disambiguate", () => {
-  const a = newRoom("a");
-  const b = newRoom("b");
+  const a = newRoom();
+  const b = newRoom();
   addDoor(a, "left", { toRoom: roomB });
   addDoor(b, "right", { toRoom: roomA });
   addDoor(b, "right", { toRoom: roomA });
@@ -46,8 +46,8 @@ test("more than one door comes back, so a toDoor is needed to disambiguate", () 
 });
 
 test("a door in the wrong direction is not a candidate partner", () => {
-  const a = newRoom("a");
-  const b = newRoom("b");
+  const a = newRoom();
+  const b = newRoom();
   addDoor(a, "left", { toRoom: roomB });
   // a door back to a, but on a perpendicular wall - not an opposite-direction match
   addDoor(b, "towards", { toRoom: roomA });

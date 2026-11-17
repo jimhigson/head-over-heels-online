@@ -95,16 +95,16 @@ export const doorRoomMissingVerifier: CampaignVerifier<DoorRoomMissing> = {
         draft.rooms[newRoomId] = createNewRoom<
           VerificationRoomId,
           VerificationRoomItemId
-        >(newRoomId, newRoomSize, fromRoom.color, fromRoom.planet, [
-          { x: 0, y: 0 },
-        ]);
+        >(newRoomSize, fromRoom.color, fromRoom.planet, [{ x: 0, y: 0 }]);
       }
       door.config.toRoom = newRoomId;
       delete door.config.toDoor;
       delete door.config.meta;
       addReturnDoorInPlace({
         rooms: draft.rooms,
+        fromRoomId: roomId,
         fromRoomJson: fromRoom,
+        toRoomId: newRoomId,
         toRoomJson: draft.rooms[newRoomId],
         outgoingDoorEntry: [doorId, door],
       });

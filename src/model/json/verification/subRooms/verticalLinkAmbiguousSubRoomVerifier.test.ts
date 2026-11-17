@@ -11,8 +11,8 @@ import { type VerificationRoomId } from "../verificationTypes";
 import { verticalLinkAmbiguousSubRoomVerifier } from "./verticalLinkAmbiguousSubRoomVerifier";
 
 test("flags a link naming no sub-room of a room with two sub-rooms linking back", () => {
-  const roomAbove = newRoom("roomAbove");
-  const roomBelow = newRoom("roomBelow", {
+  const roomAbove = newRoom();
+  const roomBelow = newRoom({
     gridPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },
@@ -39,13 +39,13 @@ test("flags a link naming no sub-room of a room with two sub-rooms linking back"
 });
 
 test("accepts links naming the sub-room they lead to", () => {
-  const roomAbove = newRoom("roomAbove", {
+  const roomAbove = newRoom({
     gridPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },
     ],
   });
-  const roomBelow = newRoom("roomBelow", {
+  const roomBelow = newRoom({
     gridPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },
@@ -69,8 +69,8 @@ test("accepts links naming the sub-room they lead to", () => {
 });
 
 test("accepts a link naming no sub-room of a room with one sub-room linking back", () => {
-  const roomAbove = newRoom("roomAbove");
-  const roomBelow = newRoom("roomBelow");
+  const roomAbove = newRoom();
+  const roomBelow = newRoom();
   setWholeRoomCell(roomAbove, {
     below: { room: "roomBelow" as VerificationRoomId },
   });

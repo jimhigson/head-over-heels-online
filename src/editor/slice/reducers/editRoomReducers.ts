@@ -44,7 +44,7 @@ import {
 } from "../../editorTypes";
 import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
-import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
+import { changeRoomIdInPlace } from "../inPlaceMutators/changeRoomIdInPlace";
 import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
 import { deleteItemInPlace } from "../inPlaceMutators/deleteItemInPlace";
 import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "../inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
@@ -62,7 +62,10 @@ import {
   type UndoDescription,
   type UndoItemEntry,
 } from "./undoDescription";
-import { pushUndoToCursorRoomInPlace } from "./undoReducers";
+import {
+  pushUndoForRoomInPlace,
+  pushUndoToCursorRoomInPlace,
+} from "./undoReducers";
 
 export type SetRoomAboveOrBelowPayload =
   | {
@@ -153,7 +156,7 @@ const writeVerticalLink = (
  */
 const roomAtVerticalNeighbour = (
   state: LevelEditorState,
-  room: EditorRoomJson,
+  roomId: EditorRoomId,
   subRoomId: string,
   direction: VerticalLinkDirection,
 ): { roomId: EditorRoomId; subRoomId: string } | undefined => {
@@ -161,14 +164,14 @@ const roomAtVerticalNeighbour = (
     direction === "above" ? unitVectors.up : unitVectors.down;
   const targetSpec = roomGridPositions({
     campaign: state.campaignInProgress,
-    roomId: room.id,
+    roomId,
     subRoomId,
     skipMissingRooms: true,
   }).nodes.find(({ gridPosition }) => xyzEqual(gridPosition, neighbourVector));
 
   if (
     targetSpec === undefined ||
-    targetSpec.roomId === room.id ||
+    targetSpec.roomId === roomId ||
     targetSpec.roomId === exitGameRoomId
   ) {
     return undefined;
@@ -294,6 +297,7 @@ const roomShape = (
  */
 const ensureRoomBelowInPlace = (
   state: LevelEditorState,
+  roomId: EditorRoomId,
   room: EditorRoomJson,
   subRoomId: string,
 ) => {
@@ -303,25 +307,27 @@ const ensureRoomBelowInPlace = (
 
   const existingBelow = roomAtVerticalNeighbour(
     state,
-    room,
+    roomId,
     subRoomId,
     "below",
   );
 
+  let roomBelowId: EditorRoomId;
   let roomBelow: EditorRoomJson;
   let subRoomBelowId: string;
   if (existingBelow !== undefined) {
+    roomBelowId = existingBelow.roomId;
     roomBelow = selectRoomFromLevelEditorState(state, existingBelow.roomId)!;
     subRoomBelowId = existingBelow.subRoomId;
   } else {
     const { cellSize, gridPositions, gridOrigin } = roomShape(room);
-    roomBelow = addNewRoomInPlace({
+    ({ roomId: roomBelowId, room: roomBelow } = addNewRoomInPlace({
       state,
       scenery: room.planet,
       maybeColour: room.color,
       roomSize: cellSize,
       gridPositions,
-    });
+    }));
     const subRoom = subRoomById(room, subRoomId);
     // a divided new room's sub-rooms are keyed by their index in gridPositions:
     subRoomBelowId =
@@ -338,17 +344,41 @@ const ensureRoomBelowInPlace = (
     room,
     subRoomId,
     "below",
-    verticalLinkTarget(roomBelow.id, subRoomBelowId),
+    verticalLinkTarget(roomBelowId, subRoomBelowId),
   );
   writeVerticalLink(
     roomBelow,
     subRoomBelowId,
     "above",
-    verticalLinkTarget(room.id, subRoomId),
+    verticalLinkTarget(roomId, subRoomId),
   );
 };
 
 export const editRoomReducers = {
+  /**
+   * give a room another id, following it everywhere it is referred to - as
+   * one undoable edit in that room
+   */
+  renameRoom(
+    _state,
+    {
+      payload: { fromRoomId, toRoomId, timestamp },
+    }: PayloadAction<{
+      fromRoomId: EditorRoomId;
+      toRoomId: EditorRoomId;
+      timestamp: number;
+    }>,
+  ) {
+    const state = _state as LevelEditorState;
+    pushUndoForRoomInPlace(
+      state,
+      fromRoomId,
+      { kind: "renameRoom", fromRoomId, toRoomId },
+      timestamp,
+    );
+    changeRoomIdInPlace(state, fromRoomId, toRoomId);
+  },
+
   changeRoomColour(
     _state,
     {
@@ -448,10 +478,6 @@ export const editRoomReducers = {
 
     clearContextMenuXyInPlace(state);
 
-    if (newRoomJson.id !== selectCursorRoomIdFromLevelEditorState(state)) {
-      changeIdOfCurrentRoomInPlace(state, newRoomJson.id);
-    }
-
     iterateRoomJsonItemsWithIds(newRoomJson.items, "door")
       // was already a door in in the room before this edit:
       .filter(([id, _doorItem]) => prevRoomJson.items[id]?.type === "door")
@@ -495,22 +521,24 @@ export const editRoomReducers = {
             addReturnDoorInPlace({
               rooms: state.campaignInProgress.rooms,
               outgoingDoorEntry: [doorItemId, doorItem],
+              fromRoomId: cursorRoomId,
               fromRoomJson: newRoomJson,
+              toRoomId: doorItem.config.toRoom,
               toRoomJson: otherRoom,
             });
             break;
           case 1: {
             // Exactly one matching door found; update it to point back to us:
             const [[, doorToChange]] = matchingDoors;
-            doorToChange.config.toRoom = newRoomJson.id;
+            doorToChange.config.toRoom = cursorRoomId;
             // only keep a toDoor when the link back is ambiguous (more than one
             // door leads here). When it's the only one, the toDoor is redundant,
             // so drop it rather than fight the verifier that would strip it.
             if (
               doorLinkNeedsToDoor(
                 rooms,
-                otherRoom.id,
-                newRoomJson.id,
+                doorItem.config.toRoom,
+                cursorRoomId,
                 doorToChange.config.direction,
               )
             ) {
@@ -532,12 +560,12 @@ export const editRoomReducers = {
       const outboundRoom = rooms[nextOutboundNCR.with.room];
       if (outboundRoom === undefined) {
         throw new Error(
-          `room ${newRoomJson.id} has a non-contiguous link to non-existing room ${nextOutboundNCR.with.room}`,
+          `room ${cursorRoomId} has a non-contiguous link to non-existing room ${nextOutboundNCR.with.room}`,
         );
       }
       // add a link back from the new NCR room:
       writeRoomNonContiguousRelationship(outboundRoom, {
-        with: { room: newRoomJson.id },
+        with: { room: cursorRoomId },
         gridOffset: scaleXyz(nextOutboundNCR.gridOffset, -1),
       });
     }
@@ -551,7 +579,7 @@ export const editRoomReducers = {
       const prevNcrRoom = rooms[prevOutboundNCR.with.room];
       if (prevNcrRoom === undefined) {
         throw new Error(
-          `room ${newRoomJson.id} has a non-contiguous link to non-existing room ${prevOutboundNCR.with.room}`,
+          `room ${cursorRoomId} has a non-contiguous link to non-existing room ${prevOutboundNCR.with.room}`,
         );
       }
       if (
@@ -636,7 +664,12 @@ export const editRoomReducers = {
 
     // a hole across several sub-rooms needs each one to lead below:
     for (const subRoomId of subRoomsIntersectingJsonItem(hole, roomJson)) {
-      ensureRoomBelowInPlace(state, roomJson, subRoomId);
+      ensureRoomBelowInPlace(
+        state,
+        selectCursorRoomIdFromLevelEditorState(state),
+        roomJson,
+        subRoomId,
+      );
     }
 
     setSelectedJsonItemIdsOnCursorRoomInPlace(state, [holeId]);
@@ -708,7 +741,7 @@ export const editRoomReducers = {
       payload.createNew && previouslyLinkedRoom === undefined ?
         roomAtVerticalNeighbour(
           state,
-          currentRoomJson,
+          selectCursorRoomIdFromLevelEditorState(state),
           currentSubRoomId,
           direction,
         )
@@ -722,11 +755,11 @@ export const editRoomReducers = {
         newLinkedToRoomId = existingAtTarget.roomId;
         linkedSubRoomId = existingAtTarget.subRoomId;
       } else {
-        newLinkedToRoomId = addNewRoomInPlace({
+        ({ roomId: newLinkedToRoomId } = addNewRoomInPlace({
           state,
           scenery: currentRoomJson.planet,
           maybeColour: currentRoomJson.color,
-        }).id;
+        }));
         createdNewRoom = true;
       }
     } else {
@@ -754,28 +787,35 @@ export const editRoomReducers = {
       ),
     );
 
-    if (newlyLinkedToRoom !== undefined) {
+    if (newLinkedToRoomId !== undefined && newlyLinkedToRoom !== undefined) {
       // reverse link: linked room -> current room's cursor sub-room
       writeVerticalLink(
         newlyLinkedToRoom,
         targetSubRoomId!,
         reverseDirection,
-        verticalLinkTarget(currentRoomJson.id, currentSubRoomId),
+        verticalLinkTarget(
+          selectCursorRoomIdFromLevelEditorState(state),
+          currentSubRoomId,
+        ),
       );
 
-      if (createdNewRoom && previouslyLinkedRoom) {
+      if (
+        createdNewRoom &&
+        previouslyLinkedRoomId !== undefined &&
+        previouslyLinkedRoom
+      ) {
         // splice the new room in between the current and previously-linked rooms
         writeVerticalLink(
           newlyLinkedToRoom,
           primarySubRoomId(newlyLinkedToRoom),
           direction,
-          { room: previouslyLinkedRoom.id },
+          { room: previouslyLinkedRoomId },
         );
         writeVerticalLink(
           previouslyLinkedRoom,
           primarySubRoomId(previouslyLinkedRoom),
           reverseDirection,
-          { room: newlyLinkedToRoom.id },
+          { room: newLinkedToRoomId },
         );
       }
     }

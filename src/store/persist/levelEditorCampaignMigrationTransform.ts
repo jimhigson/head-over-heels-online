@@ -1,6 +1,7 @@
 import createTransform from "redux-persist/es/createTransform";
 
 import { type EditorCampaign } from "../../editor/editorTypes";
+import { migrateRoomIdInPlace } from "../../model/inPlaceMutators/migrateRoomIdInPlace";
 import { migrateTeleporterActivationInPlace } from "../../model/inPlaceMutators/migrateTeleporterActivationInPlace";
 import { valuesIter } from "../../utils/entries";
 
@@ -18,6 +19,7 @@ export const levelEditorCampaignMigrationTransform = createTransform<
   (storedCampaign) => {
     // freshly parsed from storage, so ours to migrate in place:
     for (const room of valuesIter(storedCampaign?.rooms ?? {})) {
+      migrateRoomIdInPlace(room);
       migrateTeleporterActivationInPlace(room);
     }
     return storedCampaign;

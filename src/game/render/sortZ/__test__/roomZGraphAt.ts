@@ -26,6 +26,7 @@ export const roomZGraphAt = (
   geometryAngle: Xy,
 ) => {
   const roomState = loadRoom({
+    roomId: "testRoom",
     roomJson,
     scrollsRead: {},
     roomPickupsCollected: {},

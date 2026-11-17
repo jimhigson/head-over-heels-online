@@ -12,7 +12,6 @@ import { nextItemIdSet } from "./nextItemId";
 import { starterRoom } from "./starterRoom";
 
 export const createNewRoom = <RoomId extends string, RoomItemId extends string>(
-  roomId: RoomId,
   roomSize: Xy,
   colour: ZxSpectrumRoomColour,
   scenery: SceneryName,
@@ -107,7 +106,6 @@ export const createNewRoom = <RoomId extends string, RoomItemId extends string>(
     : undefined;
 
   const newRoom = {
-    id: roomId,
     planet: "blacktooth" as const,
     color: colour,
     items: consolidatedItems,

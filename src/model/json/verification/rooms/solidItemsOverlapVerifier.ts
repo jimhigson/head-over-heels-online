@@ -122,11 +122,13 @@ const overlapsAsSolid = (
  * each other, each pair once
  */
 const overlappingSolidJsonItemPairs = (
+  roomId: VerificationRoomId,
   room: VerificationRoomJson,
 ): [VerificationRoomItemId, VerificationRoomItemId][] => {
   // loading builds a spatial index of the room's items, used here and then
   // dropped with the loaded room:
   const roomState = loadRoom({
+    roomId,
     roomJson: room,
     roomPickupsCollected: emptyObject,
     scrollsRead: emptyObject,
@@ -210,9 +212,8 @@ export const solidItemsOverlapVerifier: CampaignVerifier<SolidItemsOverlap> = {
   name: "Solid items overlap",
   *check(campaign) {
     for (const [roomId, room] of entries(campaign.rooms)) {
-      const pairs = overlappingPairsOfRoom.getOrInsertComputed(
-        room,
-        overlappingSolidJsonItemPairs,
+      const pairs = overlappingPairsOfRoom.getOrInsertComputed(room, () =>
+        overlappingSolidJsonItemPairs(roomId, room),
       );
       for (const itemIds of pairs) {
         const [itemId, otherItemId] = itemIds;

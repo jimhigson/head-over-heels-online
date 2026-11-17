@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 
 import { iterateRoomJsonItemsWithIds } from "../../model/RoomJsonItemIterators";
-import { type EditorRoomId, type EditorRoomJson } from "../editorTypes";
+import { type EditorRoomId } from "../editorTypes";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
   selectCursorRoomIdFromLevelEditorState,
@@ -15,7 +15,7 @@ import {
   type LevelEditorSliceAction,
   type LevelEditorState,
   redo,
-  roomJsonEdited,
+  renameRoom,
   selectCurrentCommittedRoomJson,
   setSelectedItemsInRoom,
   setTool,
@@ -242,19 +242,16 @@ describe(
       }
     });
 
-    test("renaming a room via JSON edit can be undone", () => {
+    test("renaming a room can be undone", () => {
       const state0 = initialLevelEditorSliceState;
       const originalRoomId = selectCursorRoomIdFromLevelEditorState(state0);
       const newRoomId = "renamedRoom" as EditorRoomId;
 
-      const currentRoom = state0.campaignInProgress.rooms[
-        originalRoomId
-      ] as EditorRoomJson;
-
       const state1 = reduce(
         state0,
-        roomJsonEdited({
-          roomJson: { ...currentRoom, id: newRoomId },
+        renameRoom({
+          fromRoomId: originalRoomId,
+          toRoomId: newRoomId,
           timestamp: 0,
         }),
       );

@@ -14,8 +14,8 @@ const teleporter = (toRoom: string, toItemId?: string) => ({
 });
 
 test("flags a teleporter whose toItemId is missing in the destination", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addItem(roomB, "tele", teleporter("roomA"));
   addItem(roomA, "tp", teleporter("roomB", "ghost"));
 
@@ -31,8 +31,8 @@ test("flags a teleporter whose toItemId is missing in the destination", () => {
 });
 
 test("the fix drops the toItemId, clearing the issue", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addItem(roomB, "tele", teleporter("roomA"));
   addItem(roomA, "tp", teleporter("roomB", "ghost"));
   const campaign = campaignOf({ roomA, roomB });
@@ -44,8 +44,8 @@ test("the fix drops the toItemId, clearing the issue", () => {
 });
 
 test("accepts a teleporter whose toItemId exists", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addItem(roomB, "tele", teleporter("roomA"));
   addItem(roomA, "tp", teleporter("roomB", "tele"));
 

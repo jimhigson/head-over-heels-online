@@ -7,20 +7,13 @@ import { createNewRoom } from "./createNewRoom";
 expect.extend(roomJsonMatchers);
 
 describe("createNewRoom", () => {
-  const roomId = "room_0";
   const roomSize = { x: 8, y: 8 };
   const colour = { hue: "cyan" as const, shade: "basic" as const };
   const scenery = "blacktooth" as const;
 
   it("should create a single 8x8 room chunk when given one grid position", () => {
     const gridPositions = [{ x: 0, y: 0 }];
-    const room = createNewRoom(
-      roomId,
-      roomSize,
-      colour,
-      scenery,
-      gridPositions,
-    );
+    const room = createNewRoom(roomSize, colour, scenery, gridPositions);
 
     // Single room should not have subRooms metadata
     expect(room.meta?.subRooms).toBeUndefined();
@@ -76,13 +69,7 @@ describe("createNewRoom", () => {
       { x: 0, y: 0 },
       { x: 0, y: 1 },
     ];
-    const room = createNewRoom(
-      roomId,
-      roomSize,
-      colour,
-      scenery,
-      gridPositions,
-    );
+    const room = createNewRoom(roomSize, colour, scenery, gridPositions);
 
     // Check subRooms metadata
     expect(room).toHaveSubroom({
@@ -156,13 +143,7 @@ describe("createNewRoom", () => {
       { x: 1, y: 1 },
       { x: 1, y: 2 },
     ];
-    const room = createNewRoom(
-      roomId,
-      roomSize,
-      colour,
-      scenery,
-      gridPositions,
-    );
+    const room = createNewRoom(roomSize, colour, scenery, gridPositions);
 
     // Check subRooms metadata
     expect(room).toHaveSubroom({
@@ -274,13 +255,7 @@ describe("createNewRoom", () => {
       { x: 0, y: 1 }, // left
       { x: 2, y: 1 }, // right
     ];
-    const room = createNewRoom(
-      roomId,
-      roomSize,
-      colour,
-      scenery,
-      gridPositions,
-    );
+    const room = createNewRoom(roomSize, colour, scenery, gridPositions);
 
     // Check subRooms metadata
     expect(room).toHaveSubroom({
@@ -421,13 +396,7 @@ describe("createNewRoom", () => {
       { x: 0, y: 0 },
       { x: 1, y: 0 },
     ];
-    const room = createNewRoom(
-      roomId,
-      roomSize,
-      colour,
-      scenery,
-      gridPositions,
-    );
+    const room = createNewRoom(roomSize, colour, scenery, gridPositions);
 
     // Check subRooms metadata
     expect(room).toHaveSubroom({
@@ -499,14 +468,11 @@ describe("createNewRoom", () => {
       { x: 0, y: 0 },
       { x: 0, y: 1 },
     ];
-    const room = createNewRoom(
-      roomId,
-      roomSize,
-      colour,
-      scenery,
-      gridPositions,
-      { x: 4, y: 4, z: 2 },
-    );
+    const room = createNewRoom(roomSize, colour, scenery, gridPositions, {
+      x: 4,
+      y: 4,
+      z: 2,
+    });
 
     // Should have one consolidated floor spanning both chunks, offset by origin
     expect(room).toHaveFloor({

@@ -4420,8 +4420,7 @@ test("traversing original campaign from the final room", () => {
   `);
 });
 
-const testRoom = (id: string, items: AnyRoomJson["items"]): AnyRoomJson => ({
-  id,
+const testRoom = (items: AnyRoomJson["items"]): AnyRoomJson => ({
   planet: "blacktooth",
   color: { hue: "white", shade: "basic" },
   items,
@@ -4459,14 +4458,14 @@ test("teleporter with toItemId resolves to that item", () => {
   expect(
     collectTeleporterLinks(
       {
-        a: testRoom("a", {
+        a: testRoom({
           tp_a: {
             type: "teleporter",
             position: { x: 0, y: 0, z: 0 },
             config: { toRoom: "b", toItemId: "tp_b" },
           },
         }),
-        b: testRoom("b", {
+        b: testRoom({
           tp_b: {
             type: "teleporter",
             position: { x: 2, y: 2, z: 0 },
@@ -4489,14 +4488,14 @@ test("teleporter with only toRoom resolves to the single teleporter in the desti
   expect(
     collectTeleporterLinks(
       {
-        a: testRoom("a", {
+        a: testRoom({
           tp_a: {
             type: "teleporter",
             position: { x: 0, y: 0, z: 0 },
             config: { toRoom: "b" },
           },
         }),
-        b: testRoom("b", {
+        b: testRoom({
           only_tp: {
             type: "teleporter",
             position: { x: 3, y: 1, z: 0 },
@@ -4519,14 +4518,14 @@ test("teleporter to a room with multiple teleporters and no explicit target is d
   expect(
     collectTeleporterLinks(
       {
-        a: testRoom("a", {
+        a: testRoom({
           tp_a: {
             type: "teleporter",
             position: { x: 0, y: 0, z: 0 },
             config: { toRoom: "b" },
           },
         }),
-        b: testRoom("b", {
+        b: testRoom({
           tp_b1: {
             type: "teleporter",
             position: { x: 1, y: 1, z: 0 },
@@ -4548,7 +4547,7 @@ test("teleporter to the exit-game room is ignored", () => {
   expect(
     collectTeleporterLinks(
       {
-        a: testRoom("a", {
+        a: testRoom({
           tp_a: {
             type: "teleporter",
             position: { x: 0, y: 0, z: 0 },
@@ -4565,7 +4564,7 @@ test("a same-room teleporter lands on its room's other teleporter", () => {
   expect(
     collectTeleporterLinks(
       {
-        a: testRoom("a", {
+        a: testRoom({
           tp_a: {
             type: "teleporter",
             position: { x: 0, y: 0, z: 0 },
@@ -4596,7 +4595,7 @@ test("a lone same-room teleporter has nowhere to land, so has no link", () => {
   expect(
     collectTeleporterLinks(
       {
-        a: testRoom("a", {
+        a: testRoom({
           tp_a: {
             type: "teleporter",
             position: { x: 0, y: 0, z: 0 },
@@ -4613,7 +4612,7 @@ test("a mutual teleporter pair yields a link in each direction", () => {
   expect(
     collectTeleporterLinks(
       {
-        a: testRoom("a", {
+        a: testRoom({
           door_ab: {
             type: "door",
             position: { x: 0, y: 0, z: 0 },
@@ -4625,7 +4624,7 @@ test("a mutual teleporter pair yields a link in each direction", () => {
             config: { toRoom: "b" },
           },
         }),
-        b: testRoom("b", {
+        b: testRoom({
           tp_b: {
             type: "teleporter",
             position: { x: 1, y: 1, z: 0 },
@@ -4648,8 +4647,8 @@ test("a mutual teleporter pair yields a link in each direction", () => {
 });
 
 test("a room named nowhere is placed beyond the door leading to it", () => {
-  const start = newRoom("start");
-  const nowhere = newRoom("nowhere");
+  const start = newRoom();
+  const nowhere = newRoom();
   addDoor(start, "towards", { toRoom: "nowhere" }, { x: 3, y: 0, z: 0 });
   addDoor(nowhere, "away", { toRoom: "start" }, { x: 3, y: 8, z: 0 });
 

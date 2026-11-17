@@ -12,7 +12,7 @@ import { doorNoReturnVerifier } from "./doorNoReturnVerifier";
 import { doorRoomMissingVerifier } from "./doorRoomMissingVerifier";
 
 test("flags a door whose toRoom isn't a room in the campaign", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   const doorId = addDoor(roomA, "left", {
     toRoom: "ghost" as VerificationRoomId,
   });
@@ -23,8 +23,8 @@ test("flags a door whose toRoom isn't a room in the campaign", () => {
 });
 
 test("accepts a door to a real room", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomA, "left", { toRoom: "roomB" as VerificationRoomId });
   addDoor(roomB, "right", { toRoom: "roomA" as VerificationRoomId });
 
@@ -35,7 +35,7 @@ test("accepts a door to a real room", () => {
 
 /** roomA, with a door on its away wall leading to `toRoom`, which isn't a room */
 const campaignWithDoorTo = (toRoom: string) => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   const doorId = addDoor(
     roomA,
     "away",
@@ -99,7 +99,7 @@ test("after the fix, no door issues remain", () => {
 });
 
 test("a door further along the wall than the new room is wide gets its door back moved onto the wall", () => {
-  const roomA = newRoom("roomA", { size: { x: 16, y: 8 } });
+  const roomA = newRoom({ size: { x: 16, y: 8 } });
   addDoor(roomA, "away", { toRoom: nowhereRoomId }, { x: 12, y: 8, z: 0 });
   const campaign = campaignOf({ roomA });
   const [issue] = runCheck(doorRoomMissingVerifier, campaign);

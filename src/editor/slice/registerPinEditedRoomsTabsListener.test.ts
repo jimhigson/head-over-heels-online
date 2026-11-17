@@ -46,7 +46,7 @@ const floor: EditorJsonItemUnion = {
 
 const baseState = produce(editorStateWithOneRoomWithNoItems, (draft) => {
   const { rooms } = draft.campaignInProgress;
-  rooms[roomB] = { ...rooms[testRoomId], id: roomB };
+  rooms[roomB] = { ...rooms[testRoomId] };
   rooms[roomB].items[blockId] = block;
 });
 

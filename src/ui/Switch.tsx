@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { type ComponentChildren } from "preact";
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 
-import { type ExportedSoundId } from "../_generated/sfxdex/sfx";
+import { type ExportedSoundId } from "../_generated/sfxdex/soundIds";
 import { useUniqueId } from "../utils/preact/useUniqueId";
 import { PlayAudio } from "../utils/sound/PlayAudio";
 import { twClass } from "../utils/twClass.tsx" with { type: "macro" };

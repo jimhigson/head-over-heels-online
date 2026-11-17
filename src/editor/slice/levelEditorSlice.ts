@@ -368,6 +368,7 @@ export const {
   roomForward,
   roomHistoryRecorded,
   roomJsonEdited,
+  renameRoom,
   openRoomPaneResized,
   rotateCurrentToolItem,
   rotateSelectedItems,

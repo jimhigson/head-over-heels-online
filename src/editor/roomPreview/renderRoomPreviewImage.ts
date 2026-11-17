@@ -61,12 +61,14 @@ const getRenderer = (): Promise<Renderer> => {
  * (planet, colour) at a time.
  */
 export const renderRoomPreviewImage = async (
+  roomId: EditorRoomId,
   roomJson: EditorRoomJson,
 ): Promise<string> => {
   const renderer = await getRenderer();
   const ssv = spritesheets!;
 
   const room = loadRoom({
+    roomId,
     roomJson,
     roomPickupsCollected: emptyObject,
     scrollsRead: emptyObject,

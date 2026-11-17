@@ -22,7 +22,6 @@ import { inferRoomJson, type RoomJson } from "../../../../model/RoomJson";
  */
 export const quarterMaskFaultRoom = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
-  id: "quarterMaskFaultRoom",
   planet: "moonbase",
   items: {
     floor: {

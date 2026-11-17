@@ -19,11 +19,6 @@ import {
 } from "./RoomDecoratorProps";
 
 /**
- * the key of one placed cell of the map
- */
-export type MapCellKey<RoomId extends string> = `${RoomId}/${string}`;
-
-/**
  * the playable characters standing in one map cell
  */
 export type CellPlayables<RoomId extends string> = {

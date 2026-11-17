@@ -65,7 +65,6 @@ export const blockRoom = (): {
   block: EditorUnionOfAllItemInPlayTypes;
 } => {
   const roomJson = {
-    id: "testRoom" as EditorRoomId,
     planet: "blacktooth",
     color: {
       hue: "cyan",
@@ -80,7 +79,7 @@ export const blockRoom = (): {
     },
   } as EditorRoomJson;
 
-  const room = loadEditorRoom(roomJson);
+  const room = loadEditorRoom("testRoom" as EditorRoomId, roomJson);
   const block = roomItemsIterable(room.items).find((i) => i.type === "block");
   if (block === undefined) {
     throw new Error("fixture room has no block");

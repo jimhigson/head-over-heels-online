@@ -26,9 +26,12 @@ const loadRoomDefaultOptions = {
  * angle-dependent (which walls render, render boxes, hidden-wall door art) is
  * derived at render time, so no re-derivation is needed per view angle.
  */
-export const loadEditorRoom = (roomJson: EditorRoomJson): EditorRoomState =>
+export const loadEditorRoom = (
+  roomId: EditorRoomId,
+  roomJson: EditorRoomJson,
+): EditorRoomState =>
   // Object.assign keeps typechecking working since no casts needed:
-  Object.assign(loadRoom({ roomJson, ...loadRoomDefaultOptions }), {
+  Object.assign(loadRoom({ roomId, roomJson, ...loadRoomDefaultOptions }), {
     // freshly loaded, so there is no preview yet:
     itemsOverriddenByPreview: {},
   });

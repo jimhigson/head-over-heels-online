@@ -11,11 +11,10 @@ import {
   closeOtherRoomTabs,
   closeRoomTab,
   pinRoomTab,
-  roomJsonEdited,
+  renameRoom,
   roomTabDropped,
   roomTabSelected,
   roomTabSplit,
-  selectCurrentCommittedRoomJson,
   selectFocusedTabGroupId,
   selectIsOnlyPane,
   selectRoomHasUnsavedChanges,
@@ -39,17 +38,6 @@ const canRenameRoomTo = (newRoomId: string): boolean =>
   editorStore.getState().levelEditor.campaignInProgress.rooms[
     newRoomId as EditorRoomId
   ] === undefined;
-
-/** rename the cursor room (the front tab's) */
-const renameCursorRoom = (newRoomId: string) => {
-  const roomJson = selectCurrentCommittedRoomJson(editorStore.getState());
-  editorStore.dispatch(
-    roomJsonEdited({
-      roomJson: { ...roomJson, id: newRoomId as EditorRoomId },
-      timestamp: Date.now(),
-    }),
-  );
-};
 
 /** a trailing * on a room with changes to save */
 const unsavedMarked = (name: string, hasUnsavedChanges: boolean) =>
@@ -123,18 +111,20 @@ const RoomTabButton = ({
         roomTabDrag.start(dragEvent, { type: "tab", tabInGroup })
       }
       onDblClick={() => store.dispatch(pinRoomTab(tabInGroup))}
-      rename={
-        // renaming acts on the cursor room:
-        isFront && isInFocusedPane ?
-          {
-            name: roomId,
-            isValid: canRenameRoomTo,
-            // a tab being renamed is kept, not replaced by the next room browsed to:
-            onStart: () => store.dispatch(pinRoomTab(tabInGroup)),
-            onRename: renameCursorRoom,
-          }
-        : undefined
-      }
+      rename={{
+        name: roomId,
+        isValid: canRenameRoomTo,
+        // a tab being renamed is kept, not replaced by the next room browsed to:
+        onStart: () => store.dispatch(pinRoomTab(tabInGroup)),
+        onRename: (newRoomId) =>
+          editorStore.dispatch(
+            renameRoom({
+              fromRoomId: roomId,
+              toRoomId: newRoomId as EditorRoomId,
+              timestamp: Date.now(),
+            }),
+          ),
+      }}
       tip={
         // the front room is already shown, no need for a preview:
         !isFront && <RoomPreviewTipContents roomId={roomId} />

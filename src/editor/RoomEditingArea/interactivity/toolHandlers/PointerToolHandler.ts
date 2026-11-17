@@ -460,7 +460,7 @@ const dragPreviewInItemsRoom = (
         outcome.type === "unchanged" ?
           undefined
         : {
-            edits: { [roomJson.id]: outcome.edits },
+            edits: { [mouseDownPointingAt.roomId]: outcome.edits },
             description: outcome.description,
             timestamp: outcome.timestamp,
             madeBy: { type: "drag" },
@@ -497,7 +497,8 @@ const dragPreviewInOtherRoom = (
   );
   const fromRoom = rooms[mouseDownPointingAt.roomId] as EditorRoomJson;
   const toRoom = rooms[toRoomId] as EditorRoomJson;
-  const pointedMove = planItemsMoveBetweenRooms(rooms, fromRoom.id, {
+  const pointedMove = planItemsMoveBetweenRooms(rooms, {
+    fromRoomId: mouseDownPointingAt.roomId,
     itemIds: jsonItemIds,
     toRoomId,
     blockPositionDelta: blockDragVector,
@@ -626,7 +627,7 @@ export class PointerToolHandler implements ToolHandler {
         : undefined;
       const dragAction: ItemDragAction =
         resizeEdge === undefined ? "moveItems" : "resizeItems";
-      const isItemsRoom = openRoom.roomId === fromRoom.id;
+      const isItemsRoom = openRoom.roomId === mouseDownPointingAt.roomId;
       if (
         dragAction === "resizeItems" &&
         openRoomId !== itemGrab.sourceOpenRoomId

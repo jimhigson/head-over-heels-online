@@ -3,25 +3,17 @@ import { describe, expect, it } from "vitest";
 import { createNewRoom } from "../../../model/inPlaceMutators/createNewRoom";
 import { roomJsonMatchers } from "../../../model/json/__test__/roomJsonMatchers";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
-import { type EditorRoomId } from "../../editorTypes";
 
 expect.extend(roomJsonMatchers);
 
 describe("createNewRoom with gridPositions", () => {
-  const roomId = "room_0" as EditorRoomId;
   const roomSize = { x: 8, y: 8 };
   const colour = { hue: "cyan" as const, shade: "basic" as const };
   const scenery = "blacktooth" as const;
 
   it("should create a single 8x8 room chunk when given one grid position", () => {
     const gridPositions = [{ x: 0, y: 0 }];
-    const room = createNewRoom(
-      roomId,
-      roomSize,
-      colour,
-      scenery,
-      gridPositions,
-    );
+    const room = createNewRoom(roomSize, colour, scenery, gridPositions);
 
     // Single room should not have subRooms metadata
     expect(room.meta?.subRooms).toBeUndefined();

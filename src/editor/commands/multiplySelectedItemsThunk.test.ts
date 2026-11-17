@@ -73,6 +73,7 @@ const multiplyPresses = (
             direction,
             multiplyType,
             loadEditorRoom(
+              testRoomId,
               selectCurrentEditingRoomJsonWithPreviews(getState()),
             ),
           ),

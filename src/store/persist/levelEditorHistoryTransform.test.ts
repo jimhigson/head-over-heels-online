@@ -10,7 +10,6 @@ import { levelEditorHistoryTransform } from "./levelEditorHistoryTransform";
 
 const roomId = "room" as EditorRoomId;
 const roomWithBlockAt = (x: number): EditorRoomJson => ({
-  id: roomId,
   planet: "blacktooth",
   color: { hue: "cyan", shade: "basic" },
   items: {

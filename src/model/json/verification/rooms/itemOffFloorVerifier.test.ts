@@ -4,7 +4,7 @@ import { addItem, campaignOf, newRoom, runCheck } from "../testUtils";
 import { itemOffFloorVerifier } from "./itemOffFloorVerifier";
 
 test("flags an item off the edge of the floor", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   const itemId = addItem(roomA, "block", {
     type: "block",
     position: { x: 3, y: 8, z: 0 },
@@ -20,7 +20,7 @@ test("flags an item off the edge of the floor", () => {
 });
 
 test("accepts an item off the floor at or above the room's height, since it is above the room", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   roomA.height = 13;
   addItem(roomA, "block", {
     type: "block",
@@ -32,7 +32,7 @@ test("accepts an item off the floor at or above the room's height, since it is a
 });
 
 test("flags an item whose times take one of its copies off the floor", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   // copies at x=6, 7 and 8, the last off the 8-wide floor:
   const itemId = addItem(roomA, "block", {
     type: "block",
@@ -46,7 +46,7 @@ test("flags an item whose times take one of its copies off the floor", () => {
 });
 
 test("accepts an item part-way into a doorway, partly over the floor", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "block", {
     type: "block",
     position: { x: 7.625, y: 3, z: 0 },
@@ -57,7 +57,7 @@ test("accepts an item part-way into a doorway, partly over the floor", () => {
 });
 
 test("accepts items over the floor, and the room's own structure", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "block", {
     type: "block",
     position: { x: 3, y: 3, z: 0 },

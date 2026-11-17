@@ -26,7 +26,7 @@ const roomB = "roomB" as EditorRoomId;
 
 const baseState = produce(editorStateWithOneRoomWithNoItems, (draft) => {
   const { rooms } = draft.campaignInProgress;
-  rooms[roomB] = { ...rooms[testRoomId], id: roomB };
+  rooms[roomB] = { ...rooms[testRoomId] };
 });
 
 const someView: EditorRoomView = { zoom: 3, pan: { x: 10, y: 20 } };

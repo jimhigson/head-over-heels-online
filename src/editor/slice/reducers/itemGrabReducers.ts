@@ -84,7 +84,7 @@ export type ItemGrab = {
   dropInto: ItemGrabDropInto | undefined;
 };
 
-export type ItemGrabDropInto = {
+type ItemGrabDropInto = {
   openRoomId: OpenRoomId;
   movedItemIds: EditorRoomItemId[];
 };
@@ -214,7 +214,7 @@ export const itemGrabReducers = {
     ] as EditorRoomJson;
     state.pendingEdits = {
       edits: {
-        [sourceRoom.id]: Object.fromEntries(
+        [mouseDownPointingAt.roomId]: Object.fromEntries(
           jsonItemIds.map((itemId) => [itemId, null]),
         ),
       },

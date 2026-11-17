@@ -3,8 +3,8 @@ import { expect, test } from "vitest";
 import { campaignOf, newRoom, runCheck, setSubRoomCell } from "../testUtils";
 import { subRoomAdjacencyVerifier } from "./subRoomAdjacencyVerifier";
 
-const dividedRoom = (id: string): ReturnType<typeof newRoom> =>
-  newRoom(id, {
+const dividedRoom = (): ReturnType<typeof newRoom> =>
+  newRoom({
     gridPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },
@@ -12,7 +12,7 @@ const dividedRoom = (id: string): ReturnType<typeof newRoom> =>
   });
 
 test("flags cells that are grid-adjacent but physically apart", () => {
-  const roomA = dividedRoom("roomA");
+  const roomA = dividedRoom();
   // move cell 1 away physically while it stays grid-adjacent to cell 0
   setSubRoomCell(roomA, "1", {
     physicalPosition: { from: { x: 20, y: 0 }, to: { x: 28, y: 8 } },
@@ -27,7 +27,7 @@ test("flags cells that are grid-adjacent but physically apart", () => {
 });
 
 test("accepts a normally-divided room", () => {
-  const roomA = dividedRoom("roomA");
+  const roomA = dividedRoom();
 
   expect(runCheck(subRoomAdjacencyVerifier, campaignOf({ roomA }))).toEqual([]);
 });

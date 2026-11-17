@@ -8,7 +8,6 @@ import {
   iterateRoomItemEntries,
   roomItemsIterable,
 } from "../../model/roomItemsInPlayIterators";
-import { type RoomJson } from "../../model/RoomJson";
 import {
   getRoomItem,
   roomSpatialIndexKey,
@@ -19,7 +18,7 @@ import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlic
 import { store } from "../../store/store";
 import { badJsonClone } from "../../utils/badJsonClone";
 import { emptyObject } from "../../utils/empty";
-import { valuesIter } from "../../utils/entries";
+import { entries, valuesIter } from "../../utils/entries";
 import { cameraAngleBase } from "../../utils/vectors/cameraAngleVectors";
 import {
   cheatRoomIdFromUrlHash,
@@ -52,14 +51,14 @@ export const findStartingRoomsInCampaign = <RoomId extends string>(
 ): StartingRooms<RoomId> => {
   const startingRoomIds: Partial<StartingRooms<RoomId>> = {};
 
-  for (const r of Object.values<RoomJson<RoomId, string>>(campaign.rooms)) {
+  for (const [roomId, r] of entries(campaign.rooms)) {
     for (const i of Object.values(r.items)) {
       if (i.type === "player") {
         const { which } = i.config;
         if (startingRoomIds[which] !== undefined) {
           throw new Error(`Campaign has duplicate starting rooms for ${which}`);
         }
-        startingRoomIds[which] = r.id;
+        startingRoomIds[which] = roomId;
       }
     }
   }
@@ -228,7 +227,7 @@ const _loadGameState = <RoomId extends string>({
   const { userSettings } = store.getState().userSettings;
   const sharedLoadRoomOptions: Omit<
     LoadRoomOptions<RoomId, string>,
-    "roomJson"
+    "roomId" | "roomJson"
   > = {
     roomPickupsCollected: emptyObject,
     scrollsRead: emptyObject,
@@ -243,6 +242,7 @@ const _loadGameState = <RoomId extends string>({
     campaignStartingRoomIds.head &&
     loadRoom({
       // note - always load into their original room as per the campaign - if need to change, we can do later:
+      roomId: campaignStartingRoomIds.head,
       roomJson: campaign.rooms[campaignStartingRoomIds.head],
       // we are not loading so nothing has been collected/read:
       ...sharedLoadRoomOptions,
@@ -254,6 +254,7 @@ const _loadGameState = <RoomId extends string>({
     : campaignStartingRoomIds.heels &&
       loadRoom({
         // note - always load into their original room as per the campaign - if need to change, we can do later:
+        roomId: campaignStartingRoomIds.heels,
         roomJson: campaign.rooms[campaignStartingRoomIds.heels],
         // we are not loading so nothing has been collected/read:
         ...sharedLoadRoomOptions,

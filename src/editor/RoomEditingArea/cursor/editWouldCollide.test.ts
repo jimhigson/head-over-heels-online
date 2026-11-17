@@ -24,7 +24,6 @@ describe("itemMoveOrResizeWouldCollide", () => {
 
     const createRoomStateWithTowerAndBlock = (): EditorRoomState => {
       const roomJson: AnyRoomJson = {
-        id: "testRoom",
         planet: "blacktooth",
         color: {
           hue: "cyan",
@@ -48,6 +47,7 @@ describe("itemMoveOrResizeWouldCollide", () => {
       };
 
       return loadRoom({
+        roomId: "testRoom",
         roomJson,
         scrollsRead: {},
         planetsLiberated: noPlanetsLiberated,

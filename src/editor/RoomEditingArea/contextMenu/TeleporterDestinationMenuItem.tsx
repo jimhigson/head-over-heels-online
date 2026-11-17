@@ -9,6 +9,7 @@ import {
   closeItemContextMenu,
   selectCurrentCampaignInProgress,
   selectCurrentCommittedRoomJson,
+  selectCursorRoomId,
   selectCursorRoomSelectedJsonItemIds,
   setSelectedTeleportersDestination,
 } from "../../slice/levelEditorSlice";
@@ -18,6 +19,7 @@ export const TeleporterDestinationMenuItem = () => {
   const selectedJsonItemIds = useEditorAppSelector(
     selectCursorRoomSelectedJsonItemIds,
   );
+  const roomId = useEditorAppSelector(selectCursorRoomId);
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
   const campaign = useEditorAppSelector(selectCurrentCampaignInProgress);
   const isCampaignRoomId = (roomId: string): roomId is EditorRoomId =>
@@ -63,7 +65,7 @@ export const TeleporterDestinationMenuItem = () => {
           dispatch(closeItemContextMenu());
           const destination = await chooseTeleporterDestination({
             campaign,
-            fromRoomId: roomJson.id,
+            fromRoomId: roomId,
             teleporterIds: selectedJsonItemIds,
             // only one they all share:
             initialDestination:

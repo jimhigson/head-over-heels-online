@@ -12,7 +12,6 @@ import { inferRoomJson, type RoomJson } from "../../src/model/RoomJson";
  */
 export const allItemsTestRoom = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
-  id: "allItemsTestRoom",
   planet: "moonbase",
   items: {
     floor: {

@@ -33,7 +33,7 @@ const roomC = "roomC" as EditorRoomId;
 const baseState = produce(editorStateWithOneRoomWithNoItems, (draft) => {
   const { rooms } = draft.campaignInProgress;
   for (const roomId of [roomB, roomC]) {
-    rooms[roomId] = { ...rooms[testRoomId], id: roomId };
+    rooms[roomId] = rooms[testRoomId];
   }
 });
 

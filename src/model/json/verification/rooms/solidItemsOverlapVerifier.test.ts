@@ -4,7 +4,7 @@ import { addItem, campaignOf, newRoom, runCheck } from "../testUtils";
 import { solidItemsOverlapVerifier } from "./solidItemsOverlapVerifier";
 
 test("flags two blocks in the same place, naming both", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "block1", {
     type: "block",
     position: { x: 3, y: 3, z: 0 },
@@ -30,7 +30,7 @@ test("flags two blocks in the same place, naming both", () => {
 });
 
 test("describes overlapping items of different types by both their types", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "block1", {
     type: "block",
     position: { x: 3, y: 3, z: 0 },
@@ -50,7 +50,7 @@ test("describes overlapping items of different types by both their types", () =>
 });
 
 test("accepts a block standing on another, since they only touch", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "block1", {
     type: "block",
     position: { x: 3, y: 3, z: 0 },
@@ -68,7 +68,7 @@ test("accepts a block standing on another, since they only touch", () => {
 });
 
 test("accepts a room with nothing overlapping", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
 
   expect(runCheck(solidItemsOverlapVerifier, campaignOf({ roomA }))).toEqual(
     [],
@@ -76,7 +76,7 @@ test("accepts a room with nothing overlapping", () => {
 });
 
 test("accepts two walls meeting at an inside corner, both ending in the corner block", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "awayWall", {
     type: "wall",
     position: { x: 3, y: 3, z: 0 },
@@ -94,7 +94,7 @@ test("accepts two walls meeting at an inside corner, both ending in the corner b
 });
 
 test("flags a wall ending against the middle of another", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "awayWall", {
     type: "wall",
     position: { x: 1, y: 6, z: 0 },
@@ -118,7 +118,7 @@ test("flags a wall ending against the middle of another", () => {
 });
 
 test("flags two walls crossing in the middle of both", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "awayWall", {
     type: "wall",
     position: { x: 1, y: 4, z: 0 },
@@ -141,7 +141,7 @@ test("flags two walls crossing in the middle of both", () => {
 });
 
 test("flags two parallel walls along the same line, overlapping", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "awayWall1", {
     type: "wall",
     position: { x: 1, y: 4, z: 0 },
@@ -161,7 +161,7 @@ test("flags two parallel walls along the same line, overlapping", () => {
 });
 
 test("flags a block inside a wall", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "awayWall", {
     type: "wall",
     position: { x: 3, y: 3, z: 0 },
@@ -179,7 +179,7 @@ test("flags a block inside a wall", () => {
 });
 
 test("accepts a block above a wall, over the top of the room", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "awayWall", {
     type: "wall",
     position: { x: 3, y: 3, z: 0 },

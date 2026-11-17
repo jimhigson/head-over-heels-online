@@ -48,7 +48,7 @@ const joystick = () => ({
 });
 
 test("flags a switch targeting an item that isn't in the room", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "blk", block());
   addItem(roomA, "sw", blockSwitch(["blk", "ghost"]));
 
@@ -61,7 +61,7 @@ test("flags a switch targeting an item that isn't in the room", () => {
 });
 
 test("the fix removes the missing target, clearing the issue", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "blk", block());
   addItem(roomA, "sw", blockSwitch(["blk", "ghost"]));
   const campaign = campaignOf({ roomA });
@@ -73,7 +73,7 @@ test("the fix removes the missing target, clearing the issue", () => {
 });
 
 test("flags a modifier whose expectType doesn't match the target's type", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "blk", block());
   addItem(roomA, "sw", monsterSwitch(["blk"]));
 
@@ -87,7 +87,7 @@ test("flags a modifier whose expectType doesn't match the target's type", () => 
 });
 
 test("accepts a switch whose targets all exist with the expected type", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "blk", block());
   addItem(roomA, "sw", blockSwitch(["blk"]));
 
@@ -97,7 +97,7 @@ test("accepts a switch whose targets all exist with the expected type", () => {
 });
 
 test("flags a switch with an empty target list as controlling nothing", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "sw", blockSwitch([]));
 
   const issueTypes = runCheck(
@@ -109,7 +109,7 @@ test("flags a switch with an empty target list as controlling nothing", () => {
 });
 
 test("flags a switch whose only target is missing as also controlling nothing", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "sw", blockSwitch(["ghost"]));
 
   const issueTypes = runCheck(
@@ -121,7 +121,7 @@ test("flags a switch whose only target is missing as also controlling nothing", 
 });
 
 test("flags a switch with implicit targets when no item of its expectType is in the room", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "sw", monsterSwitch());
 
   const issueTypes = runCheck(
@@ -133,7 +133,7 @@ test("flags a switch with implicit targets when no item of its expectType is in 
 });
 
 test("flags a joystick with implicit targets in a room with no charles", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "js", joystick());
 
   const issueTypes = runCheck(

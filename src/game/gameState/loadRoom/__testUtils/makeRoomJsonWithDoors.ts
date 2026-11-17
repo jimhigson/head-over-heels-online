@@ -38,7 +38,6 @@ export const makeRoomJsonWithDoors = (
   doorZRelative: number,
 ) => {
   const roomJson = createNewRoom(
-    "testRoom",
     size,
     { hue: "cyan", shade: "basic" },
     "blacktooth",

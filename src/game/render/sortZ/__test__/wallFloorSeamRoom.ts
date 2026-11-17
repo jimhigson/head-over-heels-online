@@ -15,7 +15,6 @@ import { inferRoomJson, type RoomJson } from "../../../../model/RoomJson";
  */
 export const wallFloorSeamRoom = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
-  id: "wallFloorSeamRoom",
   planet: "moonbase",
   items: {
     floor: {

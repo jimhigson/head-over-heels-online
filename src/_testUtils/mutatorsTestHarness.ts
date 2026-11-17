@@ -57,7 +57,6 @@ const testCampaign = {
   rooms: {
     headStartingRoom: {
       ...roomProperties,
-      id: "headStartingRoom",
       items: {
         head: {
           type: "player",
@@ -78,7 +77,6 @@ const testCampaign = {
     },
     heelsStartingRoom: {
       ...roomProperties,
-      id: "heelsStartingRoom",
       items: {
         heels: {
           type: "player",
@@ -99,7 +97,6 @@ const testCampaign = {
     },
     thirdRoom: {
       ...roomProperties,
-      id: "thirdRoom",
       items: {
         doorToHeelsStartingRoom: {
           type: "door",

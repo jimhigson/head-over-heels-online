@@ -14,10 +14,6 @@ import {
   sameMoveOrResizeForEach,
 } from "../RoomEditingArea/cursor/editWouldCollide";
 import { isMovableBetweenRooms } from "./isMovableBetweenRooms";
-import {
-  selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorSubRoomIdFromLevelEditorState,
-} from "./levelEditorSelectors";
 import { type LevelEditorState } from "./levelEditorSlice";
 import { loadEditorRoom } from "./loadEditorRoom";
 
@@ -28,6 +24,20 @@ import { loadEditorRoom } from "./loadEditorRoom";
 const verticalCostFactor = 4;
 /** how far above where they would land the items may be stacked */
 const maxRiseBlocks = 8;
+
+/**
+ * items to drop into a room, from the (sub-)room they are in
+ */
+export type ItemsDrop = {
+  fromRoomId: EditorRoomId;
+  /**
+   * the sub-room the items are in, whose corner they keep their offset from
+   */
+  fromSubRoomId: string;
+  itemIds: EditorRoomItemId[];
+  toRoomId: EditorRoomId;
+  toSubRoomId: string;
+};
 
 export type ItemsDropPlacement = {
   /**
@@ -60,21 +70,24 @@ const blockRange = (min: number, max: number) =>
   Array.from({ length: Math.max(0, max - min + 1) }, (_, i) => min + i);
 
 /**
- * where to put the current room's items in another room: at the same offset
+ * where to put items in another room: at the same offset
  * from the destination (sub-)room's corner as from their own, moved inside its
  * walls, then to the nearest whole-block spot where nothing collides -
  * preferring sideways moves to stacking up. Undefined if they fit nowhere
  */
 export const findItemsDropPlacement = (
   state: LevelEditorState,
-  itemIds: EditorRoomItemId[],
-  toRoomId: EditorRoomId,
-  toSubRoomId: string,
+  { fromRoomId, fromSubRoomId, itemIds, toRoomId, toSubRoomId }: ItemsDrop,
 ): ItemsDropPlacement | undefined => {
-  const fromRoom = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
+  const fromRoom = state.campaignInProgress.rooms[fromRoomId] as
+    EditorRoomJson | undefined;
   const toRoom = state.campaignInProgress.rooms[toRoomId] as
     EditorRoomJson | undefined;
-  if (toRoom === undefined || toRoom.id === fromRoom.id) {
+  if (
+    fromRoom === undefined ||
+    toRoom === undefined ||
+    toRoomId === fromRoomId
+  ) {
     return undefined;
   }
 
@@ -86,10 +99,7 @@ export const findItemsDropPlacement = (
     return undefined;
   }
 
-  const fromWalls = roomWallBounds(
-    fromRoom,
-    selectCursorSubRoomIdFromLevelEditorState(state),
-  );
+  const fromWalls = roomWallBounds(fromRoom, fromSubRoomId);
   const toWalls = roomWallBounds(toRoom, toSubRoomId);
   const sameOffsetDelta: Xyz = {
     x: toWalls.from.x - fromWalls.from.x,
@@ -110,7 +120,10 @@ export const findItemsDropPlacement = (
     };
     return trialId;
   });
-  const trialRoomState = loadEditorRoom({ ...toRoom, items: trialItems });
+  const trialRoomState = loadEditorRoom(toRoomId, {
+    ...toRoom,
+    items: trialItems,
+  });
 
   // the items' extent once loaded, in blocks:
   const trialIdSet = new Set<string>(trialIds);

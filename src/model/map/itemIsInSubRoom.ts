@@ -6,7 +6,6 @@ import { isWholeRoomSubRooms, type RoomJson, type SubRooms } from "../RoomJson";
 import { getJsonItemTimes } from "../times";
 
 export type MaybeDividedRoom = {
-  id: string;
   meta?: {
     subRooms?: SubRooms<string>;
   };
@@ -134,7 +133,7 @@ export const findSubRoomForItem = (
 
   if (closestSubRoom === undefined) {
     throw new Error(
-      `item not found in any subroom of ${room.id}
+      `item not found in any subroom of its room
       item at 📍 ${JSON.stringify(positionMaybeConverted)}
       subrooms ${JSON.stringify(room.meta?.subRooms, null, 2)}`,
     );

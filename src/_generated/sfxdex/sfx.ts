@@ -79,6 +79,7 @@ import toasterPopUpSoundUrl from "./sfx/toasterPopUp.opus";
 import toasterPushDownSoundUrl from "./sfx/toasterPushDown.opus";
 import uhOhSoundUrl from "./sfx/uhOh.opus";
 import useItemFailSoundUrl from "./sfx/useItemFail.opus";
+import { type ExportedSoundId } from "./soundIds";
 
 export { activateSoundUrl };
 export { ballHitSoundUrl };
@@ -240,12 +241,7 @@ export const exportedSfxUrls = {
   toasterPushDown: toasterPushDownSoundUrl,
   uhOh: uhOhSoundUrl,
   useItemFail: useItemFailSoundUrl,
-};
-
-export type ExportedSoundId = keyof typeof exportedSfxUrls;
-
-export const isSoundId = (id: string): id is ExportedSoundId =>
-  id in exportedSfxUrls;
+} satisfies Record<ExportedSoundId, string>;
 
 export const sfxLooping = new Set<ExportedSoundId>([
   "bubbleRobotLoop",

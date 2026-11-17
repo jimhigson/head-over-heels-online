@@ -381,6 +381,7 @@ test("a multi-block conveyor turns about its middle and back, but not into an it
     rotateSelectionOrToolItemThunk(
       "clockwise",
       loadRoom({
+        roomId: testRoomId,
         roomJson:
           selectCurrentCommittedRoomJsonFromLevelEditorState(
             state5BlockInTheWay,
@@ -439,6 +440,7 @@ test("two selected conveyors turn together, each into the space the other leaves
     rotateSelectionOrToolItemThunk(
       "clockwise",
       loadRoom({
+        roomId: testRoomId,
         roomJson:
           selectCurrentCommittedRoomJsonFromLevelEditorState(
             state0TwoConveyors,

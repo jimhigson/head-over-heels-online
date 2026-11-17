@@ -6,10 +6,8 @@ import {
   type TestApiAudioNode,
 } from "web-audio-test-api";
 
-import {
-  exportedSfxUrls,
-  type ExportedSoundId,
-} from "../../_generated/sfxdex/sfx";
+import { exportedSfxUrls } from "../../_generated/sfxdex/sfx";
+import { type ExportedSoundId } from "../../_generated/sfxdex/soundIds";
 import { type GameState } from "../../game/gameState/GameState";
 import { selectCurrentRoomState } from "../../game/gameState/gameStateSelectors/selectCurrentRoomState";
 import { type ItemTickContext } from "../../game/render/ItemRenderContexts";

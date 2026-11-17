@@ -6,18 +6,18 @@ import { type LevelEditorState } from "../../../editor/slice/levelEditorSlice";
 import { roomVerticalLinkHolders } from "../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { valuesIter } from "../../../utils/entries";
-import {
-  selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomIdFromLevelEditorState,
-} from "../levelEditorSelectors";
 import { layoutNodesOfType } from "../PaneLayout";
 
-export const changeIdOfCurrentRoomInPlace = (
+/**
+ * give a room another id, following it everywhere it is referred to: other
+ * rooms' links to it, the selection, open rooms, room history and undo history
+ */
+export const changeRoomIdInPlace = (
   state: LevelEditorState,
+  prevRoomId: EditorRoomId,
   newRoomId: EditorRoomId,
 ) => {
-  const prevRoomId = selectCursorRoomIdFromLevelEditorState(state);
-  const prevRoom = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
+  const prevRoom = state.campaignInProgress.rooms[prevRoomId];
 
   for (const room of valuesIter(state.campaignInProgress.rooms)) {
     // update any doors and teleporters that reference the old room id
@@ -52,10 +52,7 @@ export const changeIdOfCurrentRoomInPlace = (
     }
   }
 
-  state.campaignInProgress.rooms[newRoomId] = {
-    ...prevRoom,
-    id: newRoomId,
-  };
+  state.campaignInProgress.rooms[newRoomId] = prevRoom;
   delete state.campaignInProgress.rooms[prevRoomId];
 
   state.selectedRoomIds = state.selectedRoomIds.map((id) =>

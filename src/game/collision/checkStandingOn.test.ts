@@ -15,7 +15,7 @@ import {
 
 describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
   test("prefers blocks over conveyors even if the conveyor has more overlap", () => {
-    const roomJson = basicEmptyRoom("firstRoom");
+    const roomJson = basicEmptyRoom();
     const [movable] = loadItemFromJson(
       "movable",
       {
@@ -64,7 +64,7 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
   });
 
   test("given two blocks, choses one with most overlap", () => {
-    const roomJson = basicEmptyRoom("firstRoom");
+    const roomJson = basicEmptyRoom();
     const [movable] = loadItemFromJson(
       "movable",
       {
@@ -115,7 +115,7 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
 
 describe("spatiallyCheckStandingOn", () => {
   test("simple case of being directly on top -> is standing on", () => {
-    const roomJson = basicEmptyRoom("firstRoom");
+    const roomJson = basicEmptyRoom();
     const [playable] = loadItemFromJson(
       "player",
       {
@@ -149,7 +149,7 @@ describe("spatiallyCheckStandingOn", () => {
   });
 
   test("simple case of being very slightly inside item in but mostly above with zero allowed overlap", () => {
-    const roomJson = basicEmptyRoom("firstRoom");
+    const roomJson = basicEmptyRoom();
     const [playable] = loadItemFromJson(
       "player",
       {
@@ -189,7 +189,7 @@ describe("spatiallyCheckStandingOn", () => {
   });
 
   test("simple case of being very slightly inside item in but mostly above", () => {
-    const roomJson = basicEmptyRoom("firstRoom");
+    const roomJson = basicEmptyRoom();
     const [playable] = loadItemFromJson(
       "player",
       {
@@ -229,7 +229,7 @@ describe("spatiallyCheckStandingOn", () => {
   });
 
   test("simple case of being very slightly overlapping in z, but not in x or y", () => {
-    const roomJson = basicEmptyRoom("firstRoom");
+    const roomJson = basicEmptyRoom();
     const [playable] = loadItemFromJson(
       "player",
       {
@@ -263,7 +263,7 @@ describe("spatiallyCheckStandingOn", () => {
   });
 
   test("case of being adjacent on the same level but to the side and slightly overlapping in x", () => {
-    const roomJson = basicEmptyRoom("firstRoom");
+    const roomJson = basicEmptyRoom();
     const [playable] = loadItemFromJson(
       "player",
       {
@@ -303,7 +303,7 @@ describe("spatiallyCheckStandingOn", () => {
   });
 
   test("found bug case", () => {
-    const roomJson = basicEmptyRoom("firstRoom");
+    const roomJson = basicEmptyRoom();
     const [playable] = loadItemFromJson(
       "player",
       {

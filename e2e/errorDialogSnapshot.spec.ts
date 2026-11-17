@@ -26,7 +26,6 @@ const noPlayableCampaign: Campaign<string> = {
   },
   rooms: {
     firstRoom: {
-      id: "firstRoom",
       planet: "blacktooth",
       color: { hue: "cyan", shade: "basic" },
       items: {

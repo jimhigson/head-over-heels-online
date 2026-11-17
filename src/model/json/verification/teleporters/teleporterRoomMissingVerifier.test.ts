@@ -14,7 +14,7 @@ const teleporter = (toRoom?: string) => ({
 });
 
 test("flags a teleporter whose toRoom isn't a room in the campaign", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "tp", teleporter("to?"));
 
   const issues = runCheck(teleporterRoomMissingVerifier, campaignOf({ roomA }));
@@ -23,8 +23,8 @@ test("flags a teleporter whose toRoom isn't a room in the campaign", () => {
 });
 
 test("accepts a teleporter to a real room", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addItem(roomA, "tp", teleporter("roomB"));
 
   expect(
@@ -33,7 +33,7 @@ test("accepts a teleporter to a real room", () => {
 });
 
 test("accepts a teleporter that exits the game", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "tp", teleporter(exitGameRoomId));
 
   expect(
@@ -42,7 +42,7 @@ test("accepts a teleporter that exits the game", () => {
 });
 
 test("accepts a same-room teleporter with no toRoom", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "tp", teleporter());
 
   expect(
@@ -55,7 +55,7 @@ const fixedCampaign = (
   /** other teleporters already in roomA */
   otherTeleporterIds: string[] = [],
 ) => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "tp", {
     type: "teleporter" as const,
     config: { toRoom: "to?" as VerificationRoomId, times: { x: 2, y: 2 } },
@@ -100,8 +100,8 @@ test("the way back names the teleporter when its room has more than one", () => 
 });
 
 test("fixing every issue at once creates a shared missing room only once", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addItem(roomA, "tp", teleporter("to?"));
   addItem(roomB, "tp", teleporter("to?"));
   const campaign = campaignOf({ roomA, roomB });
@@ -119,7 +119,7 @@ test("fixing every issue at once creates a shared missing room only once", () =>
 });
 
 test("the fix gives a teleporter to nowhere a new room of its own", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "tp", teleporter(nowhereRoomId));
   const campaign = campaignOf({ roomA });
   const [issue] = runCheck(teleporterRoomMissingVerifier, campaign);

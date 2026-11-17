@@ -422,7 +422,6 @@ describe("applying tools", () => {
             hue: expect.toBeOneOf(zxSpectrumRoomHue as unknown as string[]),
             shade: expect.toBeOneOf(zxSpectrumShades as unknown as string[]),
           },
-          id: "room_0",
           items: {
             // here's the return door:
             d: {
@@ -628,7 +627,6 @@ describe("applying tools", () => {
 test("a door adding a room beside one sub-room of a divided room adds no verification issues", () => {
   const roomId = "divided" as EditorRoomId;
   const room = createNewRoom<EditorRoomId, EditorRoomItemId>(
-    roomId,
     { x: 8, y: 8 },
     { hue: "cyan", shade: "basic" },
     "blacktooth",
@@ -685,7 +683,7 @@ test("previewing an item in a room other than the cursor room previews it there,
   const roomB = "roomB" as EditorRoomId;
   const state0 = produce(editorStateWithOneRoomWithNoItems, (draft) => {
     const { rooms } = draft.campaignInProgress;
-    rooms[roomB] = { ...rooms[testRoomId], id: roomB };
+    rooms[roomB] = { ...rooms[testRoomId] };
   });
   const state1 = reduceLevelEditorActions(
     state0,

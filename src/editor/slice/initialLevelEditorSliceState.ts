@@ -18,7 +18,6 @@ const initialTabGroupId = "tabGroup-initial" as TabGroupId;
 const initialRoom = produce(
   starterRoom({ x: 8, y: 8 }) as EditorRoomJson,
   (starterRoomDraft) => {
-    starterRoomDraft.id = initialRoomId;
     starterRoomDraft.items["head" as EditorRoomItemId] = {
       type: "player",
       config: { which: "head" },

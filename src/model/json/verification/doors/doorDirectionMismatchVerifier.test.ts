@@ -5,8 +5,8 @@ import { type VerificationRoomId } from "../verificationTypes";
 import { doorDirectionMismatchVerifier } from "./doorDirectionMismatchVerifier";
 
 test("flags a return door facing the wrong way", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomA, "left", { toRoom: "roomB" as VerificationRoomId });
   // the return door should face "right", not "left"
   addDoor(roomB, "left", { toRoom: "roomA" as VerificationRoomId });
@@ -20,8 +20,8 @@ test("flags a return door facing the wrong way", () => {
 });
 
 test("accepts a correctly-facing return door", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomA, "left", { toRoom: "roomB" as VerificationRoomId });
   addDoor(roomB, "right", { toRoom: "roomA" as VerificationRoomId });
 
