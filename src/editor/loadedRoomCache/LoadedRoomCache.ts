@@ -11,6 +11,7 @@ import { errorCaught } from "../../store/slices/errors/errorsSlice";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { type EditorAppStore, type EditorRootState } from "../../store/store";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
+import { type Xy } from "../../utils/vectors/vectors";
 import {
   type EditorJsonItemUnion,
   type EditorRoomId,
@@ -24,6 +25,8 @@ import { selectRoom } from "../slice/levelEditorSlice";
 import { loadEditorRoom } from "../slice/loadEditorRoom";
 import { type OpenRoomId } from "../slice/OpenRoom";
 import { maybeLayoutNode } from "../slice/PaneLayout";
+import { selectCrosshairJsonItemId } from "../slice/selectCrosshairJsonItemId";
+import { crosshairParticles } from "./crosshairParticles";
 
 /**
  * the json an open room's loaded room follows. Both come from caching
@@ -39,6 +42,16 @@ type RoomJsons = {
    * the committed json of the same room
    */
   committedRoomJson: EditorRoomJson;
+};
+
+type Crosshair = {
+  jsonItemId: EditorRoomItemId;
+  /**
+   * the open room's camera angle it was made for
+   */
+  cameraAngle: Xy;
+  roomState: EditorRoomState;
+  particles: EditorUnionOfAllItemInPlayTypes[];
 };
 
 type LoadedRoom = {
@@ -83,6 +96,11 @@ export class LoadedRoomCache {
    */
   #failedRoomJsonWithPreviews: EditorRoomJson | undefined = undefined;
   #revision = 0;
+  /**
+   * the particles of the crosshair shown on an item, in the loaded room they
+   * were added to
+   */
+  #crosshair: Crosshair | undefined = undefined;
   readonly #store: EditorAppStore;
   readonly #openRoomId: OpenRoomId;
   readonly #listeners = new Set<() => void>();
@@ -105,6 +123,7 @@ export class LoadedRoomCache {
       throw new Error(`open room ${openRoomId} is not in the store`);
     }
     this.#loaded = this.#tryLoad(maybeRoomJsons!);
+    this.#bringCrosshairUpToDate(store.getState(), true);
     this.#unsubscribeFromStore = store.subscribe(() => this.#bringUpToDate());
   }
 
@@ -163,15 +182,91 @@ export class LoadedRoomCache {
   };
 
   /**
-   * make the loaded room match the room json it follows -
-   * either by patching or full reload, or leave it be if nothing has changed
+   * make the loaded room match the store: its room json, and the crosshair
    */
   #bringUpToDate() {
-    const roomJsons = this.#roomJsons(this.#store.getState());
+    const state = this.#store.getState();
+    const roomJsons = this.#roomJsons(state);
     // closed, so nothing left to follow:
     if (roomJsons === undefined) {
       return;
     }
+    const roomChanged = this.#bringRoomUpToDate(roomJsons);
+    const crosshairChanged = this.#bringCrosshairUpToDate(state, roomChanged);
+    if (roomChanged || crosshairChanged) {
+      this.#changed();
+    }
+  }
+
+  /**
+   * show the crosshair on whichever item it should be on now, if any.
+   * Returns whether it changed
+   */
+  #bringCrosshairUpToDate(
+    state: EditorRootState,
+    /**
+     * the room's contents have changed, so the crosshair may need to too,
+     * even on the same item
+     */
+    roomChanged: boolean,
+  ): boolean {
+    const jsonItemId = selectCrosshairJsonItemId(state, this.#openRoomId);
+    const openRoom = maybeLayoutNode(
+      state.levelEditor.layout,
+      this.#openRoomId,
+    );
+    if (openRoom === undefined) {
+      return false;
+    }
+    const { cameraAngle } = openRoom;
+    const prevCrosshair = this.#crosshair;
+    if (
+      !roomChanged &&
+      jsonItemId === prevCrosshair?.jsonItemId &&
+      (prevCrosshair === undefined || cameraAngle === prevCrosshair.cameraAngle)
+    ) {
+      return false;
+    }
+
+    if (
+      prevCrosshair !== undefined &&
+      prevCrosshair.roomState === this.#loaded?.roomState
+    ) {
+      for (const particle of prevCrosshair.particles) {
+        deleteItemFromRoom({ room: prevCrosshair.roomState, item: particle });
+      }
+    }
+    this.#crosshair = undefined;
+
+    const loaded = this.#loaded;
+    if (jsonItemId === undefined || loaded === undefined) {
+      return prevCrosshair !== undefined;
+    }
+
+    const particles = crosshairParticles(
+      loaded.roomState,
+      loaded.roomJsonWithPreviews,
+      jsonItemId,
+      cameraAngle,
+    );
+    for (const particle of particles) {
+      addItemToRoom({ room: loaded.roomState, item: particle });
+    }
+    this.#crosshair = {
+      jsonItemId,
+      cameraAngle,
+      roomState: loaded.roomState,
+      particles,
+    };
+    return true;
+  }
+
+  /**
+   * make the loaded room match the room json it follows -
+   * either by patching or full reload, or leave it be if nothing has changed.
+   * Returns whether it changed
+   */
+  #bringRoomUpToDate(roomJsons: RoomJsons): boolean {
     const { roomId, roomJsonWithPreviews, committedRoomJson } = roomJsons;
     const loaded = this.#loaded;
 
@@ -179,9 +274,9 @@ export class LoadedRoomCache {
       // retrying the same json would fail again, and report the error again:
       if (roomJsonWithPreviews !== this.#failedRoomJsonWithPreviews) {
         this.#loaded = this.#tryLoad(roomJsons);
-        this.#changed();
+        return true;
       }
-      return;
+      return false;
     }
 
     const prevRoomJsonWithPreviews = loaded.roomJsonWithPreviews;
@@ -193,7 +288,7 @@ export class LoadedRoomCache {
       prevRoomJsonWithPreviews === roomJsonWithPreviews &&
       loaded.committedRoomJson === committedRoomJson
     ) {
-      return;
+      return false;
     }
 
     const needsFullReload =
@@ -218,7 +313,7 @@ export class LoadedRoomCache {
       loaded.committedRoomJson = committedRoomJson;
     }
 
-    this.#changed();
+    return true;
   }
 
   /**

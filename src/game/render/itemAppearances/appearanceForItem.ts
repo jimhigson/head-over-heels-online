@@ -421,7 +421,7 @@ const itemAppearancesMap: {
     ({
       renderContext: {
         item: {
-          config: { forCharacter },
+          config: { forCharacter, animated },
         },
         general: { paused, spritesheets },
       },
@@ -430,12 +430,20 @@ const itemAppearancesMap: {
 
       // particles are an unreflected item type, so never take the
       // mirror-reflection suffix:
-      return createSprite({
-        animationId: `particle.${characterEquivalent}.fade`,
-        anchor: { x: 0.5, y: 0.5 },
-        paused,
-        spritesheet: spritesheets.spritesheetForCurrentRoom,
-      });
+      return createSprite(
+        animated ?
+          {
+            animationId: `particle.${characterEquivalent}.fade`,
+            anchor: { x: 0.5, y: 0.5 },
+            paused,
+            spritesheet: spritesheets.spritesheetForCurrentRoom,
+          }
+        : {
+            textureId: `particle.${characterEquivalent}.2`,
+            anchor: { x: 0.5, y: 0.5 },
+            spritesheet: spritesheets.spritesheetForCurrentRoom,
+          },
+      );
     },
   ),
 };

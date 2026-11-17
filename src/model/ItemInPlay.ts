@@ -135,6 +135,10 @@ type ItemInPlayConfigMap<
   };
   particle: {
     forCharacter: "crown" | IndividualCharacterName;
+    /**
+     * plays its fade/twinkle anim, or shows a static frame only:
+     */
+    animated: boolean;
   };
   stopAutowalk: EmptyObject;
   // change lamp config's direction from a string to a vector while in-play
