@@ -6,8 +6,10 @@ import { type JsonItemUnion } from "../../../model/json/JsonItem";
 import { type RoomJson } from "../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { getJsonItemTimes } from "../../../model/times";
-import { type PlanetName } from "../../../sprites/planets";
-import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import {
+  type PlanetsLiberated,
+  type ScrollsRead,
+} from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
 import { hashXyzToNumber0to1 } from "../../../utils/maths/hashing";
@@ -84,6 +86,7 @@ export function* loadItemFromJson<
   jsonItemId: RoomItemId,
   jsonItem: JsonItemUnion<RoomId, RoomItemId>,
   roomJson: RoomJson<RoomId, RoomItemId>,
+  planetsLiberated: PlanetsLiberated,
   directionalIndex: RoomDirectionalIndex<
     RoomId,
     RoomItemId
@@ -91,7 +94,6 @@ export function* loadItemFromJson<
   roomPickupsCollected: RoomPickupsCollected = emptyObject,
   /** may be safely omitted if we know that the item is not a scroll */
   scrollsRead: ScrollsRead = {},
-  planetsLiberated: Partial<Record<PlanetName, boolean>> = emptyObject,
   pokesEnabled: PokesEnabled = {},
   itemIdSuffix = "",
 ): Generator<UnionOfAllItemInPlayTypes<RoomId>, undefined> {
@@ -152,10 +154,10 @@ export function* loadItemFromJson<
               jsonItemId,
               individualBlock,
               roomJson,
+              planetsLiberated,
               directionalIndex,
               roomPickupsCollected,
               scrollsRead,
-              planetsLiberated,
               pokesEnabled,
               `${itemIdSuffix}_${x}_${y}_${z}`,
             );
@@ -237,6 +239,7 @@ export function* loadItemFromJson<
             },
           },
           roomJson,
+          planetsLiberated,
           directionalIndex,
         );
       }

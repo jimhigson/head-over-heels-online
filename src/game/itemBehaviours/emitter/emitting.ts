@@ -3,6 +3,7 @@ import { type EmittableItemJson } from "../../../model/json/ItemConfigMap";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
+import { store } from "../../../store/store";
 import { hashXyzToNumber0to1 } from "../../../utils/maths/hashing";
 import {
   addXyz,
@@ -125,6 +126,7 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
         `${emitterId}-${quantityEmitted}-${Math.floor(room.roomTime)}`,
         emitsCloned,
         room.roomJson,
+        store.getState().gameInPlay.gameInPlay.planetsLiberated,
         buildRoomJsonDirectionalIndex(roomJsonItemsIterable(room.roomJson)),
       );
       if (newlyEmittedItem === undefined) {

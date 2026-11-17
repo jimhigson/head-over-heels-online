@@ -2,9 +2,9 @@ import { type Renderer } from "pixi.js";
 import { type SetRequired } from "type-fest";
 
 import { type RoomState } from "../../../model/RoomState";
-import { type PlanetName } from "../../../sprites/planets";
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type Spritesheets } from "../../../sprites/spritesheet/Spritesheets";
+import { type PlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { type Upscale } from "../../../store/slices/upscale/Upscale";
 import {
   type DisplaySettings,
@@ -49,7 +49,7 @@ export type GeneralRenderContext<RoomId extends string> = {
   /**
    * which planets have been liberated so far - none, in the level editor
    */
-  planetsLiberated: Readonly<Record<PlanetName, boolean>>;
+  planetsLiberated: PlanetsLiberated;
 };
 
 /**

@@ -2,6 +2,7 @@ import { afterAll, beforeAll, describe, expect, test } from "vitest";
 
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
+import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import {
   type DirectionXy4,
   type Xy,
@@ -17,6 +18,7 @@ const loadTestRoom = (roomJson: Parameters<typeof loadRoom>[0]["roomJson"]) =>
   loadRoom({
     roomJson,
     scrollsRead: {},
+    planetsLiberated: noPlanetsLiberated,
     roomPickupsCollected: {},
     isNewGame: false,
     userSettings: { soundSettings: {}, displaySettings: {}, pokesEnabled: {} },

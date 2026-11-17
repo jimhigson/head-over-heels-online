@@ -2,6 +2,7 @@ import { describe, expect, test } from "vitest";
 
 import { basicEmptyRoom } from "../../../_testUtils/basicRoom";
 import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { emptyRoomJsonDirectionalIndex } from "../../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
@@ -19,6 +20,7 @@ const makeHeels = (position: Xyz) => {
       config: { which: "heels" },
     },
     basicEmptyRoom("firstRoom"),
+    noPlanetsLiberated,
     emptyRoomJsonDirectionalIndex,
   );
   return heels as ItemInPlay<"heels">;
@@ -33,6 +35,7 @@ const makeHeadOverHeels = (position: Xyz) => {
       config: { which: "heels" },
     },
     basicEmptyRoom("firstRoom"),
+    noPlanetsLiberated,
     emptyRoomJsonDirectionalIndex,
   );
   const [head] = loadItemFromJson(
@@ -43,6 +46,7 @@ const makeHeadOverHeels = (position: Xyz) => {
       config: { which: "head" },
     },
     basicEmptyRoom("firstRoom"),
+    noPlanetsLiberated,
     emptyRoomJsonDirectionalIndex,
   );
 
@@ -61,6 +65,7 @@ const makeOneBlockSizedItemInPlayBlock = (position: Xyz) => {
       config: { style: "organic" },
     },
     basicEmptyRoom("firstRoom"),
+    noPlanetsLiberated,
     emptyRoomJsonDirectionalIndex,
   );
   return block as ItemInPlay<"block">;
@@ -75,6 +80,7 @@ const makePortableBlock = (position: Xyz) => {
       config: { style: "cube" },
     },
     basicEmptyRoom("firstRoom"),
+    noPlanetsLiberated,
     emptyRoomJsonDirectionalIndex,
   );
   return portableBlock as ItemInPlay<"block">;

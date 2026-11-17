@@ -4,6 +4,7 @@ import { campaign } from "../../../_generated/originalCampaign/campaign";
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
+import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { entries } from "../../../utils/entries";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { loadRoom } from "./loadRoom";
@@ -29,6 +30,7 @@ test.for(roomCases)(
     const roomState = loadRoom({
       roomJson,
       scrollsRead: {},
+      planetsLiberated: noPlanetsLiberated,
       roomPickupsCollected: {},
       isNewGame: false,
       userSettings: {
