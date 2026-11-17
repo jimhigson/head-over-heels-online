@@ -10,7 +10,7 @@ import { commitPendingNudgeInPlace } from "../inPlaceMutators/commitPendingNudge
 import { selectCursorRoomSelectedJsonItemIdsFromLevelEditorState } from "../levelEditorSelectors";
 import { type HoveredItem, type LevelEditorState } from "../levelEditorSlice";
 import {
-  existingOpenRoom,
+  maybeOpenRoom,
   type OpenRoomId,
   selectActiveOpenRoomFromLevelEditorState,
   selectOpenRoomSelectedJsonItemIdsFromLevelEditorState,
@@ -121,7 +121,11 @@ export const selectionsReducers = {
       hoveredItem: HoveredItem | undefined;
     }>,
   ) {
-    const openRoom = existingOpenRoom(state, openRoomId);
+    const openRoom = maybeOpenRoom(state, openRoomId);
+    // the pointer may report on an open room that has since closed:
+    if (openRoom === undefined) {
+      return;
+    }
     openRoom.hoveredItem = hoveredItem;
   },
   setClickableAnnotationHovered(
@@ -130,7 +134,11 @@ export const selectionsReducers = {
       payload: { openRoomId, hovered },
     }: PayloadAction<{ openRoomId: OpenRoomId; hovered: boolean }>,
   ) {
-    const openRoom = existingOpenRoom(state, openRoomId);
+    const openRoom = maybeOpenRoom(state, openRoomId);
+    // eg an annotation unhovering as its click replaces its open room:
+    if (openRoom === undefined) {
+      return;
+    }
     openRoom.clickableAnnotationHovered = hovered;
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
@@ -141,6 +149,6 @@ export const selectionsSelectors = {
   selectOpenRoomSelectedJsonItemIds:
     selectOpenRoomSelectedJsonItemIdsFromLevelEditorState,
   selectOpenRoomHoveredItem(state: LevelEditorState, openRoomId: OpenRoomId) {
-    return existingOpenRoom(state, openRoomId).hoveredItem;
+    return maybeOpenRoom(state, openRoomId)?.hoveredItem;
   },
 } satisfies SliceSelectors<LevelEditorState>;

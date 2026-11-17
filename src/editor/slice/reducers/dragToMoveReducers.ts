@@ -6,7 +6,7 @@ import {
 
 import { type LevelEditorState } from "../levelEditorSlice";
 import {
-  existingOpenRoom,
+  maybeOpenRoom,
   type OpenRoomId,
   selectActiveOpenRoomFromLevelEditorState,
 } from "../OpenRoom";
@@ -30,8 +30,10 @@ export const dragToMoveReducers = {
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we
     // assigned to the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed
     // anyway
-    const openRoom = existingOpenRoom(state as LevelEditorState, openRoomId);
-    openRoom.dragInProgress = dragInProgress;
+    const openRoom = maybeOpenRoom(state as LevelEditorState, openRoomId);
+    if (openRoom !== undefined) {
+      openRoom.dragInProgress = dragInProgress;
+    }
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
 
@@ -40,7 +42,7 @@ export const dragToMoveSelectors = {
     state: LevelEditorState,
     openRoomId: OpenRoomId,
   ) {
-    return existingOpenRoom(state, openRoomId).dragInProgress;
+    return maybeOpenRoom(state, openRoomId)?.dragInProgress;
   },
   selectActiveOpenRoomDragInProgress: (state: LevelEditorState) =>
     selectActiveOpenRoomFromLevelEditorState(state)?.dragInProgress,

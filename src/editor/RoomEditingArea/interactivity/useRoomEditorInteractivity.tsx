@@ -18,7 +18,7 @@ import {
   selectOpenRoomView,
   selectTool,
 } from "../../slice/levelEditorSlice";
-import { existingOpenRoom, type OpenRoomId } from "../../slice/OpenRoom";
+import { maybeOpenRoom, type OpenRoomId } from "../../slice/OpenRoom";
 import { findPointerPointingAt } from "../cursor/findPointerPointingAt";
 import { type MaybePointingAtSomething } from "../cursor/PointingAt";
 import { viewportMousePosition } from "../cursor/viewportMouse";
@@ -329,10 +329,14 @@ export const useRoomEditorInteractivity = (
       const storeState = editorStore.getState();
       const roomState = loadedRoom.getRoomState();
 
-      if (
-        roomState.id !==
-        existingOpenRoom(storeState.levelEditor, openRoomId).roomId
-      ) {
+      const openRoom = maybeOpenRoom(storeState.levelEditor, openRoomId);
+      // the open room can be closed or replaced earlier in this same event, eg
+      // by clicking a door's annotation in a preview tab:
+      if (openRoom === undefined) {
+        abandonToolDrag();
+        return;
+      }
+      if (roomState.id !== openRoom.roomId) {
         return;
       }
 

@@ -47,7 +47,7 @@ import {
   setSelectedItemsInRoom,
   toggleSelectedItemInRoom,
 } from "../../../slice/levelEditorSlice";
-import { existingOpenRoom, type OpenRoomId } from "../../../slice/OpenRoom";
+import { maybeOpenRoom, type OpenRoomId } from "../../../slice/OpenRoom";
 import { type ItemsDrag } from "../../../slice/reducers/dragToMoveReducers";
 import { getMovableVector } from "../../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import { moveOrResizeOutcome } from "../../../slice/reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
@@ -498,8 +498,7 @@ export class PointerToolHandler implements ToolHandler<
       return;
     }
     if (
-      existingOpenRoom(levelEditorState, openRoomId).dragInProgress !==
-      itemsDrag
+      maybeOpenRoom(levelEditorState, openRoomId)?.dragInProgress !== itemsDrag
     ) {
       dispatch(changeDragInProgress({ openRoomId, dragInProgress: itemsDrag }));
     }

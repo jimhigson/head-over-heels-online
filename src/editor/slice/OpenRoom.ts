@@ -96,6 +96,16 @@ export const addOpenRoomInPlace = (
 };
 
 /**
+ * an open room, or undefined if it is no longer open. For ids that come from
+ * outside the open rooms' own links - actions, panes, handlers - since an open
+ * room can be closed or replaced at any time
+ */
+export const maybeOpenRoom = (
+  state: LevelEditorState,
+  openRoomId: OpenRoomId,
+): OpenRoom | undefined => state.openRooms[openRoomId];
+
+/**
  * an open room that must exist - its id comes from code that only runs while
  * it is open
  */

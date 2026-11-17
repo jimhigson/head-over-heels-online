@@ -11,7 +11,7 @@ import {
   zoomEditorRoomView,
 } from "../EditorRoomView";
 import { type LevelEditorState } from "../levelEditorSlice";
-import { existingOpenRoom, type OpenRoomId } from "../OpenRoom";
+import { maybeOpenRoom, type OpenRoomId } from "../OpenRoom";
 
 export const roomViewReducers = {
   /**
@@ -27,7 +27,10 @@ export const roomViewReducers = {
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
-    existingOpenRoom(state, openRoomId).view = view;
+    const openRoom = maybeOpenRoom(state, openRoomId);
+    if (openRoom !== undefined) {
+      openRoom.view = view;
+    }
   },
 
   /**
@@ -43,8 +46,8 @@ export const roomViewReducers = {
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
-    const openRoom = existingOpenRoom(state, openRoomId);
-    if (openRoom.view !== undefined) {
+    const openRoom = maybeOpenRoom(state, openRoomId);
+    if (openRoom?.view !== undefined) {
       openRoom.view = panEditorRoomView(openRoom.view, delta);
     }
   },
@@ -67,8 +70,8 @@ export const roomViewReducers = {
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
-    const openRoom = existingOpenRoom(state, openRoomId);
-    if (openRoom.view !== undefined) {
+    const openRoom = maybeOpenRoom(state, openRoomId);
+    if (openRoom?.view !== undefined) {
       openRoom.view = zoomEditorRoomView(openRoom.view, zoom, fixedPanePoint);
     }
   },
@@ -86,7 +89,10 @@ export const roomViewReducers = {
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
-    existingOpenRoom(state, openRoomId).paneSize = paneSize;
+    const openRoom = maybeOpenRoom(state, openRoomId);
+    if (openRoom !== undefined) {
+      openRoom.paneSize = paneSize;
+    }
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
 
@@ -95,19 +101,9 @@ export const roomViewSelectors = {
    * undefined until the room has been framed
    */
   selectOpenRoomView(state: LevelEditorState, openRoomId: OpenRoomId) {
-    const openRoom = state.openRooms[openRoomId];
-    // check the room wasn't closed (in case we have a stale openRoomId reference)
-    if (openRoom === undefined) {
-      return undefined;
-    }
-    return openRoom.view;
+    return maybeOpenRoom(state, openRoomId)?.view;
   },
   selectOpenRoomPaneSize(state: LevelEditorState, openRoomId: OpenRoomId) {
-    const openRoom = state.openRooms[openRoomId];
-    // check the room wasn't closed (in case we have a stale openRoomId reference)
-    if (openRoom === undefined) {
-      return undefined;
-    }
-    return openRoom.paneSize;
+    return maybeOpenRoom(state, openRoomId)?.paneSize;
   },
 } satisfies SliceSelectors<LevelEditorState>;

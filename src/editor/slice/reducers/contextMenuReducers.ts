@@ -8,7 +8,7 @@ import { valuesIter } from "../../../utils/entries";
 import { type Xy } from "../../../utils/vectors/vectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import {
-  existingOpenRoom,
+  maybeOpenRoom,
   type OpenRoomId,
   selectOpenRoomSelectedJsonItemIdsFromLevelEditorState,
 } from "../OpenRoom";
@@ -37,7 +37,10 @@ export const contextMenuReducers = {
       payload: { openRoomId, scrXy },
     }: PayloadAction<{ openRoomId: OpenRoomId; scrXy: Xy }>,
   ) {
-    const openRoom = existingOpenRoom(state, openRoomId);
+    const openRoom = maybeOpenRoom(state, openRoomId);
+    if (openRoom === undefined) {
+      return;
+    }
     // only show a context menu when there is a selection to provide context for:
     if (
       selectOpenRoomSelectedJsonItemIdsFromLevelEditorState(state, openRoomId)
@@ -53,11 +56,6 @@ export const contextMenuReducers = {
 
 export const contextMenuSelectors = {
   selectOpenRoomContextMenuXy(state: LevelEditorState, openRoomId: OpenRoomId) {
-    const openRoom = state.openRooms[openRoomId];
-    // check the room wasn't closed (in case we have a stale openRoomId reference)
-    if (openRoom === undefined) {
-      return undefined;
-    }
-    return openRoom.contextMenuXy;
+    return maybeOpenRoom(state, openRoomId)?.contextMenuXy;
   },
 } satisfies SliceSelectors<LevelEditorState>;
