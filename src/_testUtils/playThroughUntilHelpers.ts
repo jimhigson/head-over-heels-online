@@ -1,5 +1,6 @@
 import { selectCurrentRoomState } from "../game/gameState/gameStateSelectors/selectCurrentRoomState";
 import { isFreeItem } from "../model/ItemInPlayNarrowedUnions";
+import { type CharacterName } from "../model/modelTypes";
 import { type UntilFunction } from "./playGameThrough";
 
 /**
@@ -75,3 +76,17 @@ export const not =
   (untilFunction: UntilFunction): UntilFunction =>
   (gameState) =>
     !untilFunction(gameState);
+
+/**
+ * for playGameThrough's `until`: whether the given character is in the given
+ * room
+ */
+export const isInRoom =
+  (
+    /** the character */
+    characterName: CharacterName,
+    /** the room's id */
+    roomId: string,
+  ): UntilFunction =>
+  (gameState) =>
+    gameState.characterRooms[characterName]?.id === roomId;

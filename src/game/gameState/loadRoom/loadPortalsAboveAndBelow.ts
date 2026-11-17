@@ -16,6 +16,14 @@ const portalThickness = blockSizePx.z;
 /* the z of the top of the portal to below */
 const portalToRoomBelowTop = -blockSizePx.z;
 
+/**
+ * a sub-room's link to the room above or below it
+ */
+type VerticalLink<RoomId extends string> = {
+  room: RoomId;
+  subRoom?: string;
+};
+
 type FloorFootprint = {
   minX: number;
   maxX: number;
@@ -110,10 +118,12 @@ export function* loadPortalsAboveAndBelow<
   const belowPortal = (
     subRoomId: string,
     { minX, maxX, minY, maxY }: FloorFootprint,
-    toRoom: RoomId,
+    { room: toRoom, subRoom: toSubRoom }: VerticalLink<RoomId>,
   ): ItemInPlay<"portal", RoomId, RoomItemId> => {
     const config = {
       toRoom,
+      subRoom: subRoomId,
+      toSubRoom,
       // floor and ceiling relative points are the middle of the portal, this fixes
       // falling into dissimilar-sized rooms, ie penitentiary21 falling into penitentiary20
       relativePoint: {
@@ -153,10 +163,12 @@ export function* loadPortalsAboveAndBelow<
   const abovePortal = (
     subRoomId: string,
     { minX, maxX, minY, maxY }: FloorFootprint,
-    toRoom: RoomId,
+    { room: toRoom, subRoom: toSubRoom }: VerticalLink<RoomId>,
   ): ItemInPlay<"portal", RoomId, RoomItemId> => {
     const config = {
       toRoom,
+      subRoom: subRoomId,
+      toSubRoom,
       relativePoint: {
         x: (maxX - minX) / 2,
         y: (maxY - minY) / 2,
@@ -189,60 +201,20 @@ export function* loadPortalsAboveAndBelow<
   };
 
   const linkHolders: Array<
-    [string, { above?: { room: RoomId }; below?: { room: RoomId } }]
+    [string, { above?: VerticalLink<RoomId>; below?: VerticalLink<RoomId> }]
   > =
     isWholeRoomSubRooms(subRooms) ?
       [["*", subRooms["*"]]]
     : [...objectEntriesIter(subRooms)];
 
-  // sub-rooms linking to the same room share one portal, since passing
-  // through any of them is the same transition. Keyed by the linked room:
-  const belowGroups = new Map<RoomId, PortalGroup>();
-  const aboveGroups = new Map<RoomId, PortalGroup>();
+  // one portal per cell, so arriving through one finds the cell it leads to:
   for (const [subRoomId, { above, below }] of linkHolders) {
     const footprint = footprintForSubRoom(subRoomId);
     if (below !== undefined) {
-      addToPortalGroup(belowGroups, below.room, subRoomId, footprint);
+      yield belowPortal(subRoomId, footprint, below);
     }
     if (above !== undefined) {
-      addToPortalGroup(aboveGroups, above.room, subRoomId, footprint);
+      yield abovePortal(subRoomId, footprint, above);
     }
   }
-
-  for (const [toRoom, { firstSubRoomId, footprint }] of belowGroups) {
-    yield belowPortal(firstSubRoomId, footprint, toRoom);
-  }
-  for (const [toRoom, { firstSubRoomId, footprint }] of aboveGroups) {
-    yield abovePortal(firstSubRoomId, footprint, toRoom);
-  }
 }
-
-type PortalGroup = {
-  /**
-   * names the group's portal, so a room with one link per direction keeps
-   * the same portal ids however its links are grouped
-   */
-  firstSubRoomId: string;
-  /**
-   * the bounding box of every sub-room in the group - covering any cells
-   * between them when they are not a rectangle
-   */
-  footprint: FloorFootprint;
-};
-
-const addToPortalGroup = <RoomId extends string>(
-  groups: Map<RoomId, PortalGroup>,
-  toRoom: RoomId,
-  subRoomId: string,
-  { minX, maxX, minY, maxY }: FloorFootprint,
-) => {
-  const group = groups.getOrInsertComputed(toRoom, () => ({
-    firstSubRoomId: subRoomId,
-    footprint: { minX, maxX, minY, maxY },
-  }));
-  const { footprint } = group;
-  footprint.minX = Math.min(footprint.minX, minX);
-  footprint.maxX = Math.max(footprint.maxX, maxX);
-  footprint.minY = Math.min(footprint.minY, minY);
-  footprint.maxY = Math.max(footprint.maxY, maxY);
-};

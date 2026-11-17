@@ -24,6 +24,7 @@ import { nonContiguousMirrorVerifier } from "./subRooms/nonContiguousMirrorVerif
 import { redundantToSubRoomVerifier } from "./subRooms/redundantToSubRoomVerifier";
 import { subRoomAdjacencyVerifier } from "./subRooms/subRoomAdjacencyVerifier";
 import { subRoomInvertedExtentVerifier } from "./subRooms/subRoomInvertedExtentVerifier";
+import { verticalLinkAmbiguousSubRoomVerifier } from "./subRooms/verticalLinkAmbiguousSubRoomVerifier";
 import { verticalLinkBadSubRoomVerifier } from "./subRooms/verticalLinkBadSubRoomVerifier";
 import { verticalLinkCollisionVerifier } from "./subRooms/verticalLinkCollisionVerifier";
 import { verticalLinkOneWayVerifier } from "./subRooms/verticalLinkOneWayVerifier";
@@ -55,6 +56,7 @@ export const allVerifiers: CampaignVerifier<unknown>[] = [
   controllerTargetsVerifier,
   verticalLinkOneWayVerifier,
   verticalLinkBadSubRoomVerifier,
+  verticalLinkAmbiguousSubRoomVerifier,
   verticalLinkCollisionVerifier,
   nonContiguousMirrorVerifier,
   subRoomInvertedExtentVerifier,

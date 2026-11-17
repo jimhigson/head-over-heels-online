@@ -7,14 +7,14 @@ import { xyzEqual } from "../../../utils/vectors/vectors";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { loadRoom } from "./loadRoom";
 
-test("sub-rooms that all lead to the same room below share one portal covering them all", () => {
+test("each sub-room leading to the room below has its own portal, covering just it, naming the sub-room it leads to", () => {
   const cell = (x: number, y: number) => ({
     gridPosition: { x, y },
     physicalPosition: {
       from: { x: x * 8, y: y * 8 },
       to: { x: (x + 1) * 8, y: (y + 1) * 8 },
     },
-    below: { room: "roomBelow" },
+    below: { room: "roomBelow", subRoom: `${x},${y}` },
   });
   const roomJson: RoomJson<string, string> = {
     id: "dividedRoom",
@@ -34,9 +34,7 @@ test("sub-rooms that all lead to the same room below share one portal covering t
     meta: {
       subRooms: {
         a: cell(-1, -1),
-        b: cell(0, -1),
-        c: cell(-1, 0),
-        d: cell(0, 0),
+        b: cell(0, 0),
       },
     },
   };
@@ -52,7 +50,9 @@ test("sub-rooms that all lead to the same room below share one portal covering t
   const portalsBelow = roomItemsIterable(roomState.items)
     .filter((item) => item.type === "portal")
     .filter((portal) => xyzEqual(portal.config.direction, unitVectors.down))
-    .map(({ state: { box } }) => ({
+    .map(({ config: { subRoom, toSubRoom }, state: { box } }) => ({
+      subRoom,
+      toSubRoom,
       x: box.x,
       y: box.y,
       xd: box.xd,
@@ -62,10 +62,20 @@ test("sub-rooms that all lead to the same room below share one portal covering t
 
   expect(portalsBelow).toEqual([
     {
+      subRoom: "a",
+      toSubRoom: "-1,-1",
       x: -8 * blockSizePx.x,
       y: -8 * blockSizePx.y,
-      xd: 16 * blockSizePx.x,
-      yd: 16 * blockSizePx.y,
+      xd: 8 * blockSizePx.x,
+      yd: 8 * blockSizePx.y,
+    },
+    {
+      subRoom: "b",
+      toSubRoom: "0,0",
+      x: 0,
+      y: 0,
+      xd: 8 * blockSizePx.x,
+      yd: 8 * blockSizePx.y,
     },
   ]);
 });
