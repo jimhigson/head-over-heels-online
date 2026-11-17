@@ -49,7 +49,7 @@ export const changeRoomReducers = {
       );
     }
     const targetRoomId = editingRoomIdHistory.back.pop() as EditorRoomId;
-    changeCurrentRoomInPlace(state, targetRoomId, undefined, true);
+    changeCurrentRoomInPlace(state, targetRoomId);
   },
 
   roomForward(_state, { payload: n = 1 }: PayloadAction<number | undefined>) {
@@ -72,12 +72,25 @@ export const changeRoomReducers = {
       );
     }
     const targetRoomId = editingRoomIdHistory.forward.pop() as EditorRoomId;
-    changeCurrentRoomInPlace(state, targetRoomId, undefined, true);
+    changeCurrentRoomInPlace(state, targetRoomId);
+  },
+
+  /**
+   * the cursor moved from this room to another - a step in the room history,
+   * so anything that was forward of it no longer is
+   */
+  roomHistoryRecorded(
+    state,
+    { payload: leftRoomId }: PayloadAction<EditorRoomId>,
+  ) {
+    state.editingRoomIdHistory.back.push(leftRoomId);
+    state.editingRoomIdHistory.forward = [];
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
 
 export const changeRoomSelectors = {
-  selectBackRooms: (state: LevelEditorState) => state.editingRoomIdHistory.back,
-  selectForwardRooms: (state: LevelEditorState) =>
+  selectHistoryRoomsBackwards: (state: LevelEditorState) =>
+    state.editingRoomIdHistory.back,
+  selectHistoryRoomsForwards: (state: LevelEditorState) =>
     state.editingRoomIdHistory.forward,
 } satisfies SliceSelectors<LevelEditorState>;

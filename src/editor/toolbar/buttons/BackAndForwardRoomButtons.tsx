@@ -6,8 +6,8 @@ import { CommandToolbarButton } from "../../commands/CommandToolbarButton";
 import {
   roomBack,
   roomForward,
-  selectBackRooms,
-  selectForwardRooms,
+  selectHistoryRoomsBackwards,
+  selectHistoryRoomsForwards,
 } from "../../slice/levelEditorSlice";
 import { selectRoomHues } from "../../slice/selectRoomHues";
 import { MenuButton, MenuItemButton } from "./MenuButton";
@@ -16,8 +16,8 @@ import { cssForRoomColour } from "./RoomColourSelect";
 const maxHistoryItems = 8;
 
 export const BackAndForwardRoomButtons = () => {
-  const backRooms = useEditorAppSelector(selectBackRooms);
-  const forwardRooms = useEditorAppSelector(selectForwardRooms);
+  const backRooms = useEditorAppSelector(selectHistoryRoomsBackwards);
+  const forwardRooms = useEditorAppSelector(selectHistoryRoomsForwards);
   const campaignRoomHues = useEditorAppSelector(selectRoomHues);
   const uncolourised = useIsUncolourised();
   const dispatch = useAppDispatch();

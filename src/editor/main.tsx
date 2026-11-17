@@ -18,6 +18,7 @@ import { registerRoomPreviewSnapshotListeners } from "./roomPreview/roomPreviewL
 import { registerNudgeCommitListeners } from "./slice/registerNudgeCommitListeners";
 import { registerOpenRoomsRestoredListener } from "./slice/registerOpenRoomsRestoredListener";
 import { registerPinEditedRoomsTabsListener } from "./slice/registerPinEditedRoomsTabsListener";
+import { registerRoomHistoryListener } from "./slice/registerRoomHistoryListener";
 import { registerEditorWebMcpTools } from "./webMcp/registerEditorWebMcpTools";
 
 if (import.meta.env.MODE === "visual-regression") {
@@ -35,6 +36,7 @@ registerRoomPreviewSnapshotListeners();
 registerNudgeCommitListeners();
 registerOpenRoomsRestoredListener();
 registerPinEditedRoomsTabsListener();
+registerRoomHistoryListener();
 registerLoadedRoomCachesListener();
 registerEditorWebMcpTools();
 

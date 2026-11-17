@@ -352,6 +352,7 @@ export const {
   resetPreviewedEdits,
   roomBack,
   roomForward,
+  roomHistoryRecorded,
   roomJsonEdited,
   openRoomPaneResized,
   rotateCurrentToolItem,
@@ -391,7 +392,7 @@ export const {
   undoHovered,
 } = levelEditorSlice.actions;
 export const {
-  selectBackRooms,
+  selectHistoryRoomsBackwards,
   selectPlaytestOptions,
   selectCmdKSearch,
   selectOpenRoomContextMenuXy,
@@ -410,7 +411,7 @@ export const {
   selectOpenRoomView,
   selectDoorAutoAddsRoom,
   selectOpenRoomCameraAngle,
-  selectForwardRooms,
+  selectHistoryRoomsForwards,
   selectOpenRoomHoveredItem,
   selectItem,
   selectFrontOpenRoomId,

@@ -20,11 +20,11 @@ import {
   roomBack,
   roomForward,
   selectActiveOpenRoomId,
-  selectBackRooms,
   selectCampaignHasUnsavedChanges,
   selectCurrentCampaignInProgress,
   selectCursorRoomSelectedJsonItemIds,
-  selectForwardRooms,
+  selectHistoryRoomsBackwards,
+  selectHistoryRoomsForwards,
   selectRedoHistory,
   selectTool,
   selectUndoHistory,
@@ -206,7 +206,7 @@ delete selected item(s)`,
 
 Go back to the previous room
 `,
-    selectIsAvailable: (state) => selectBackRooms(state).length > 0,
+    selectIsAvailable: (state) => selectHistoryRoomsBackwards(state).length > 0,
     action: () => roomBack(),
   },
   nextRoom: {
@@ -221,7 +221,7 @@ Go back to the previous room
 
 The opposite of back
 `,
-    selectIsAvailable: (state) => selectForwardRooms(state).length > 0,
+    selectIsAvailable: (state) => selectHistoryRoomsForwards(state).length > 0,
     action: () => roomForward(),
   },
   addRoom: {

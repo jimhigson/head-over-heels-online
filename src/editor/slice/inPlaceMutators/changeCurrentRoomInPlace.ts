@@ -1,5 +1,4 @@
 import { type EditorRoomId } from "../../editorTypes";
-import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import {
   existingLayoutNode,
@@ -24,17 +23,11 @@ import { firstSubRoomId } from "./firstSubRoomId";
 const moveCursorInPlace = (
   state: LevelEditorState,
   roomId: EditorRoomId,
-  noPushToHistory: boolean,
   show: () => void,
 ) => {
   // nudges being previewed are of the room being left:
   commitPendingNudgeInPlace(state);
 
-  if (!noPushToHistory) {
-    state.editingRoomIdHistory.back.push(
-      selectCursorRoomIdFromLevelEditorState(state),
-    );
-  }
   for (const openRoom of layoutNodesOfType(state.layout, "openRoom")) {
     openRoom.clickableAnnotationHovered = false;
     openRoom.hoveredItem = undefined;
@@ -49,7 +42,6 @@ export const changeCurrentRoomInPlace = (
   state: LevelEditorState,
   roomId: EditorRoomId,
   subRoomId?: string,
-  noPushToHistory = false,
 ) => {
   const roomJson = state.campaignInProgress.rooms[roomId];
   if (!roomJson) {
@@ -82,7 +74,7 @@ export const changeCurrentRoomInPlace = (
   // already showing it first, then any pane with a tab for it:
   const tabGroupWithRoom =
     focusedPaneFirst(showsRoomInFront) ?? focusedPaneFirst(hasRoomTab);
-  moveCursorInPlace(state, roomId, noPushToHistory, () => {
+  moveCursorInPlace(state, roomId, () => {
     if (tabGroupWithRoom !== undefined) {
       state.focusedTabGroupId = tabGroupWithRoom.id;
     }
@@ -102,9 +94,7 @@ export const focusTabInPlace = (
   const { layout } = state;
   const tabGroup = existingLayoutNode(layout, tabGroupId);
   const { roomId } = tabOpenRoom(layout, existingLayoutNode(layout, tabId));
-  // moving between panes on the same room isn't a step in the room history:
-  const isSameRoom = roomId === selectCursorRoomIdFromLevelEditorState(state);
-  moveCursorInPlace(state, roomId, isSameRoom, () => {
+  moveCursorInPlace(state, roomId, () => {
     state.focusedTabGroupId = tabGroupId;
     tabGroup.frontTabId = tabId;
   });
