@@ -126,9 +126,14 @@ export const ChooseTeleporterDestinationDialog = ({
     toRoom === undefined ? undefined : selectRoom(state, toRoom),
   );
   const defaultLandingItemId =
-    roomJson === undefined ? undefined : (
-      teleporterDefaultLandingItemId(roomJson, teleporterIds)
-    );
+    toRoom === undefined || roomJson === undefined ?
+      undefined
+    : teleporterDefaultLandingItemId(
+        toRoom,
+        roomJson,
+        fromRoomId,
+        teleporterIds,
+      );
   const landingItemId = pickedItemId ?? defaultLandingItemId;
 
   const [dialogEl, setDialogEl] = useState<HTMLDialogElement | null>(null);
