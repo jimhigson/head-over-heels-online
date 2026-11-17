@@ -133,7 +133,7 @@ test("rotates a selected scenery player by 45° (8-way)", () => {
   ).toMatchObject({ config: { startDirection: "towardsLeft" } });
 });
 
-test("leaves a multi-block conveyor untouched (not rotatable in place)", () => {
+test("turns a multi-block conveyor run about its middle", () => {
   expect(
     rotateSelected(
       {
@@ -145,8 +145,8 @@ test("leaves a multi-block conveyor untouched (not rotatable in place)", () => {
     ),
   ).toEqual({
     type: "conveyor",
-    config: { direction: "left", times: { x: 3 } },
-    position: { x: 0, y: 0, z: 0 },
+    config: { direction: "away", times: { y: 3 } },
+    position: { x: 1, y: -1, z: 0 },
   });
 });
 

@@ -79,11 +79,7 @@ const rotatableItems: ReadonlyArray<[string, EditorJsonItemUnion]> = [
     "tall barrier",
     { type: "barrier", config: { axis: "x", times: { z: 3 } }, position: at0 },
   ],
-];
-
-const notRotatableItems: ReadonlyArray<[string, EditorJsonItemUnion]> = [
-  ["block", { type: "block", config: { style: "artificial" }, position: at0 }],
-  // multi-block-in-plane barriers/conveyors can't rotate without changing their footprint:
+  // a multi-block run turns with its facing, its times swapping with it:
   [
     "multi-block conveyor",
     {
@@ -95,6 +91,41 @@ const notRotatableItems: ReadonlyArray<[string, EditorJsonItemUnion]> = [
   [
     "wide barrier",
     { type: "barrier", config: { axis: "x", times: { x: 2 } }, position: at0 },
+  ],
+  // with no facing, multi-block in x or y is enough:
+  [
+    "long block",
+    {
+      type: "block",
+      config: { style: "artificial", times: { x: 2 } },
+      position: at0,
+    },
+  ],
+];
+
+const notRotatableItems: ReadonlyArray<[string, EditorJsonItemUnion]> = [
+  ["block", { type: "block", config: { style: "artificial" }, position: at0 }],
+  // only tall, so turning changes nothing:
+  [
+    "tall tower",
+    {
+      type: "block",
+      config: { style: "tower", times: { z: 3 } },
+      position: at0,
+    },
+  ],
+  // the room's structure:
+  [
+    "floor",
+    {
+      type: "floor",
+      config: {
+        floorType: "standable",
+        scenery: "blacktooth",
+        times: { x: 8, y: 4 },
+      },
+      position: at0,
+    },
   ],
 ];
 
@@ -182,4 +213,44 @@ test("a wall on the floor that would turn off its edge can't be rotated in the r
   };
 
   expect(isPlacedItemRotatable(roomWithWall(wall), wall)).toBe(false);
+});
+
+test("a long block turns a quarter-turn about its middle, swapping its x and y", () => {
+  const block: EditorJsonItemUnion = {
+    type: "block",
+    config: { style: "artificial", times: { x: 3, z: 2 } },
+    position: { x: 2, y: 4, z: 0 },
+  };
+  rotatePlacedItemInPlace(block, "clockwise");
+  expect(block).toEqual<EditorJsonItemUnion>({
+    type: "block",
+    config: { style: "artificial", times: { y: 3, z: 2 } },
+    position: { x: 3, y: 3, z: 0 },
+  });
+});
+
+test.for([
+  ["odd", { x: 3 }],
+  ["even", { x: 4 }],
+  ["both multi-block", { x: 5, y: 2 }],
+] as const)("turning a %s block back puts it back", ([, times]) => {
+  const block: EditorJsonItemUnion = {
+    type: "block",
+    config: { style: "artificial", times },
+    position: { x: 2, y: 4, z: 0 },
+  };
+  const original = structuredClone(block);
+  rotatePlacedItemInPlace(block, "clockwise");
+  rotatePlacedItemInPlace(block, "anticlockwise");
+  expect(block).toEqual<EditorJsonItemUnion>(original);
+});
+
+test("a conveyor run turns its direction and the axis of its run together", () => {
+  const conveyor: EditorJsonItemUnion = {
+    type: "conveyor",
+    config: { direction: "left", times: { x: 3 } },
+    position: { x: 2, y: 4, z: 0 },
+  };
+  rotatePlacedItemInPlace(conveyor, "clockwise");
+  expect(conveyor.config).toEqual({ direction: "away", times: { y: 3 } });
 });

@@ -1,3 +1,5 @@
+import { getConsolidatableVector } from "../../consolidateItems/ConsolidatableJsonItem";
+import { getJsonItemTimes } from "../../model/times";
 import { type EditorRootState } from "../../store/store";
 import { fromAllEntries } from "../../utils/entries";
 import { twClass } from "../../utils/twClass.tsx" with { type: "macro" };
@@ -14,10 +16,12 @@ import { type EditorJsonItemUnion } from "../editorTypes";
 import { type RotationSense } from "../itemRotation";
 import { activeOpenRoomLoadedRoom } from "../loadedRoomCache/loadedRoomCaches";
 import {
+  multiplyCurrentToolItem,
   type NudgeKind,
   nudgeKinds,
   selectCurrentCommittedRoomJson,
   selectCursorRoomSelectedJsonItemIds,
+  selectTool,
 } from "../slice/levelEditorSlice";
 import {
   canMultiplyAlong,
@@ -129,6 +133,45 @@ const selectCanShrinkAlong = (state: EditorRootState, direction: Xyz) => {
   return resizedItemIds.length > 0 || deletedItemIds.length > 0;
 };
 
+/**
+ * whether the selection can be multiplied (or shrunk) in the direction
+ */
+const selectSelectionIsMultipliable = (
+  state: EditorRootState,
+  multiplyType: MultiplyType,
+  direction: Xyz,
+) =>
+  multiplyType === "multiplyOrGrow" ?
+    canMultiplyAlong(
+      selectCurrentCommittedRoomJson(state),
+      selectCursorRoomSelectedJsonItemIds(state),
+      direction,
+    )
+  : selectCanShrinkAlong(state, direction);
+
+/**
+ * whether the current item tool's item can grow (or shrink) along the
+ * direction's axis - it takes times along it, and shrinking leaves at least one
+ */
+const selectToolItemIsMultipliable = (
+  state: EditorRootState,
+  multiplyType: MultiplyType,
+  direction: Xyz,
+) => {
+  const tool = selectTool(state);
+  if (tool.type !== "item") {
+    return false;
+  }
+  // ItemTool is {type, config}; EditorJsonItemUnion is assignable to it, so the
+  // cast just gives the discriminated view these expect:
+  const toolItem = tool.item as EditorJsonItemUnion;
+  const axis = directionAxis(direction);
+  return (
+    getConsolidatableVector(toolItem)[axis] !== 0 &&
+    (multiplyType === "multiplyOrGrow" || getJsonItemTimes(toolItem)[axis] > 1)
+  );
+};
+
 const multiplyCommand = (
   label: string,
   /**
@@ -148,15 +191,23 @@ const multiplyCommand = (
     <span class={glyphIconClassName}>{directionXyz4Glyphs[iconDirection]}</span>
   ),
   shortcutKeys,
+  // the selection, or else the item the current tool will place:
   selectIsAvailable: (state) =>
-    multiplyType === "multiplyOrGrow" ?
-      canMultiplyAlong(
-        selectCurrentCommittedRoomJson(state),
-        selectCursorRoomSelectedJsonItemIds(state),
-        worldDirection(state),
-      )
-    : selectCanShrinkAlong(state, worldDirection(state)),
+    selectSelectionIsMultipliable(state, multiplyType, worldDirection(state)) ||
+    selectToolItemIsMultipliable(state, multiplyType, worldDirection(state)),
   action: () => (dispatch, getState) => {
+    const state = getState();
+    if (
+      !selectSelectionIsMultipliable(state, multiplyType, worldDirection(state))
+    ) {
+      dispatch(
+        multiplyCurrentToolItem({
+          direction: worldDirection(state),
+          multiplyType,
+        }),
+      );
+      return;
+    }
     const activeLoadedOpenRoom = activeOpenRoomLoadedRoom();
     if (activeLoadedOpenRoom !== undefined) {
       dispatch(
