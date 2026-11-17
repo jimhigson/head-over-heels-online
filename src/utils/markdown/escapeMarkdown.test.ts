@@ -14,12 +14,12 @@ test("leaves letters, digits and spaces alone", () => {
 
 test("an escaped id renders exactly as written, with no emphasis", () => {
   expect(renderToString(parse(escapeMarkdown("head_homers_jump")))).toEqual(
-    `"<p>head_homers_jump</p>"`,
+    "<p>head_homers_jump</p>",
   );
 });
 
 test("escaped text with every kind of markdown syntax renders exactly as written", () => {
   expect(
     renderToString(parse(escapeMarkdown("*a* **b** `c` [d](e) ~~f~~ #g _h_"))),
-  ).toEqual(`"<p>*a* **b** \`c\` [d](e) ~~f~~ #g _h_</p>"`);
+  ).toEqual("<p>*a* **b** `c` [d](e) ~~f~~ #g _h_</p>");
 });

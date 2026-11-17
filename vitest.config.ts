@@ -9,7 +9,7 @@ export default defineConfig({
   resolve: {
     // as in the app's builds, third-party react libraries run on preact:
     alias: {
-      "react": "preact/compat",
+      react: "preact/compat",
       "react-dom": "preact/compat",
       "react/jsx-runtime": "preact/jsx-runtime",
     },
