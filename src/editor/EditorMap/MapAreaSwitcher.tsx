@@ -1,6 +1,5 @@
 import { memo } from "preact/compat";
 
-import { type MapArea } from "../../game/components/dialogs/menuDialog/dialogs/map/MapData";
 import { useEditorAppSelector } from "../../store/store";
 import { RoomSelect } from "../../ui/RoomSelect";
 import { type EditorRoomId } from "../editorTypes";
@@ -12,7 +11,10 @@ import {
 } from "./useEditorMapData";
 
 export type MapAreaSwitcherProps = {
-  areas: ReadonlyArray<MapArea<EditorRoomId>>;
+  /**
+   * the first room of each of the map's areas, which stands for it
+   */
+  firstRoomIds: ReadonlyArray<EditorRoomId>;
   shownAreaIndex: number;
   /** called with the first room of the area to switch to */
   onSwitchToRoom: (roomId: EditorRoomId) => void;
@@ -51,15 +53,15 @@ export type MapAreaSelectProps = {
  * other. Hidden when there is only one area
  */
 export const MapAreaSwitcher = ({
-  areas,
+  firstRoomIds,
   shownAreaIndex,
   onSwitchToRoom,
 }: MapAreaSwitcherProps) =>
-  areas.length < 2 ?
+  firstRoomIds.length < 2 ?
     null
   : <div class="z-10 flex leading-none text-white pointer-events-auto">
       <MapAreaSelect
-        shownAreaFirstRoomId={areas[shownAreaIndex].firstRoomId}
+        shownAreaFirstRoomId={firstRoomIds[shownAreaIndex]}
         onSwitchToRoom={onSwitchToRoom}
       />
     </div>;

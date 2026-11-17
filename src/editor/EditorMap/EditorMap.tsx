@@ -37,7 +37,9 @@ import { LazyEditorMapTeleporterLinkDecorator } from "./LazyEditorMapTeleporterL
 import { MapAreaSwitcher } from "./MapAreaSwitcher";
 import { useEditorMapContextValue } from "./useEditorMapContextValue";
 import {
-  selectEditorMapAreas,
+  selectEditorMapAreaFirstRoomIds,
+  selectEditorMapErrors,
+  selectEditorShownMapArea,
   selectEditorShownMapAreaIndex,
 } from "./useEditorMapData";
 
@@ -195,11 +197,20 @@ const EditorMap = () => {
     width: mapContainerWidth,
     height: mapContainerHeight,
   } = useElementSize<HTMLDivElement>();
-  const mapAreas = useEditorAppSelector(selectEditorMapAreas);
+  const editorMapErrors = useEditorAppSelector(selectEditorMapErrors);
   const mapContext = useEditorMapContextValue(editorMapContextOptions);
-  const shownAreaIndex = useEditorAppSelector(selectEditorShownMapAreaIndex);
+  const editorShownMapAreaIndex = useEditorAppSelector(
+    selectEditorShownMapAreaIndex,
+  );
+  const maybeEditorShownMapArea = useEditorAppSelector(
+    selectEditorShownMapArea,
+  );
+  const editorMapAreaFirstRoomIds = useEditorAppSelector(
+    selectEditorMapAreaFirstRoomIds,
+  );
 
-  const mapRendering = mapContainerHeight !== 0 && !mapAreas.isError;
+  const mapRendering =
+    mapContainerHeight !== 0 && editorMapErrors === undefined;
   useEffect(() => {
     if (mapRendering) {
       // readiness signal for network-cost measurement (true-site-size)
@@ -207,13 +218,17 @@ const EditorMap = () => {
     }
   }, [mapRendering]);
 
-  if (mapAreas.isError) {
+  if (editorMapErrors !== undefined) {
     throw new Error(
-      `Could not solve map geometry:\n${mapAreas.errors.join("\n")}`,
+      `Could not solve map geometry:\n${editorMapErrors.join("\n")}`,
     );
   }
 
-  const shownArea = mapAreas.areas[shownAreaIndex];
+  // there is a shown area whenever the map could be laid out:
+  if (import.meta.env.DEV && maybeEditorShownMapArea === undefined) {
+    throw new Error("the map was laid out with no area shown");
+  }
+  const shownArea = maybeEditorShownMapArea!;
 
   if (mapContainerHeight === 0) {
     return null;
@@ -261,8 +276,8 @@ const EditorMap = () => {
           onKeyDown={(e: KeyboardEvent) => e.stopPropagation()}
         >
           <MapAreaSwitcher
-            areas={mapAreas.areas}
-            shownAreaIndex={shownAreaIndex}
+            firstRoomIds={editorMapAreaFirstRoomIds}
+            shownAreaIndex={editorShownMapAreaIndex}
             onSwitchToRoom={switchToRoom}
           />
         </div>
