@@ -12,7 +12,7 @@ import {
   closeRoomTab,
   pinRoomTab,
   roomJsonEdited,
-  roomTabMoved,
+  roomTabDropped,
   roomTabSelected,
   roomTabSplit,
   selectCurrentCommittedRoomJson,
@@ -119,7 +119,9 @@ const RoomTabButton = ({
       onClose={() => store.dispatch(closeRoomTab(tabInGroup))}
       onCloseOthers={() => store.dispatch(closeOtherRoomTabs(tabInGroup))}
       menuItems={splitMenuItems(tabInGroup)}
-      onDragStart={(dragEvent) => roomTabDrag.start(dragEvent, tabInGroup)}
+      onDragStart={(dragEvent) =>
+        roomTabDrag.start(dragEvent, { type: "tab", tabInGroup })
+      }
       onDblClick={() => store.dispatch(pinRoomTab(tabInGroup))}
       rename={
         // renaming acts on the cursor room:
@@ -186,10 +188,10 @@ export const RoomTabBar = ({
       isSingletonTabCloseable={!isOnlyPane}
       acceptsDrag={roomTabDrag.carries}
       onDropAt={(dragEvent, toIndex) => {
-        const tabInGroup = roomTabDrag.dropped(dragEvent);
-        if (tabInGroup !== undefined) {
+        const dragged = roomTabDrag.dropped(dragEvent);
+        if (dragged !== undefined) {
           store.dispatch(
-            roomTabMoved({ tabInGroup, toTabGroupId: tabGroupId, toIndex }),
+            roomTabDropped({ dragged, toTabGroupId: tabGroupId, toIndex }),
           );
         }
       }}

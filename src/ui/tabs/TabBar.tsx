@@ -3,6 +3,7 @@ import { useMemo, useRef, useState } from "preact/hooks";
 
 import { useOverflowsAtFullSize } from "../useOverflowsAtFullSize";
 import { TabBarContext } from "./TabBarContext";
+import { useIsAcceptedDragInProgress } from "./useIsAcceptedDragInProgress";
 
 /**
  * where among a bar's tabs a drop at this x goes, and the x (in the bar's own
@@ -77,12 +78,15 @@ export const TabBar = ({
   );
   const barRef = useRef<HTMLDivElement>(null);
   const [dropMarkerX, setDropMarkerX] = useState<number | undefined>(undefined);
+  const isAcceptedDragInProgress = useIsAcceptedDragInProgress(acceptsDrag);
 
   return (
     <div
       ref={barRef}
       data-tab-bar
-      class={`relative min-w-0 max-w-full ${className ?? ""}`}
+      // while something it would accept is dragged, the bar takes the space
+      // beside its tabs too, so a drop there goes after the last tab:
+      class={`relative min-w-0 max-w-full ${isAcceptedDragInProgress ? "flex-1" : ""} ${className ?? ""}`}
       onDragOver={(dragEvent) => {
         const { current: barElement } = barRef;
         if (barElement === null || !(acceptsDrag?.(dragEvent) ?? false)) {

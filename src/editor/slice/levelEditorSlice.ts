@@ -322,7 +322,7 @@ export const {
   editedRoomsTabsPinned,
   paneSplitResized,
   roomTabDroppedBesidePane,
-  roomTabMoved,
+  roomTabDropped,
   roomTabSelected,
   roomTabSplit,
   tabGroupFocused,
