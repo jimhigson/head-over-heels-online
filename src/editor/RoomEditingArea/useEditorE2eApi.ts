@@ -10,7 +10,8 @@ import {
   type EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
 import { type LoadedRoomCache } from "../loadedRoomCache/LoadedRoomCache";
-import { selectEditorCameraAngle } from "../slice/levelEditorSlice";
+import { selectOpenRoomCameraAngle } from "../slice/levelEditorSlice";
+import { type OpenRoomId } from "../slice/OpenRoom";
 import { type MaybePointingAtSomething } from "./cursor/PointingAt";
 import { type EditorViewport } from "./viewport/EditorViewport";
 
@@ -56,6 +57,7 @@ const editorE2eItem = (
 });
 
 export type UseEditorE2eApiParams = {
+  openRoomId: OpenRoomId;
   /** the element the room renders into, which mouse positions are relative to */
   renderArea: HTMLElement | null;
   viewport: EditorViewport;
@@ -74,6 +76,7 @@ export type UseEditorE2eApiParams = {
  * compiles away)
  */
 export const useEditorE2eApi = ({
+  openRoomId,
   renderArea,
   viewport,
   pointingAtRef,
@@ -95,7 +98,7 @@ export const useEditorE2eApi = ({
         const panePosition = viewport.toScreen(
           projectWorldXyzToScreenXy(
             worldPosition,
-            selectEditorCameraAngle(editorStore.getState()),
+            selectOpenRoomCameraAngle(editorStore.getState(), openRoomId),
           ),
         );
         return {
@@ -116,5 +119,5 @@ export const useEditorE2eApi = ({
     return () => {
       window._e2e_editor = undefined;
     };
-  }, [renderArea, viewport, pointingAtRef, loadedRoom, editable]);
+  }, [openRoomId, renderArea, viewport, pointingAtRef, loadedRoom, editable]);
 };

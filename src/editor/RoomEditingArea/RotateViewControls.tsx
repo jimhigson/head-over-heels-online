@@ -7,17 +7,21 @@ import {
   rotateViewAnticlockwise,
   rotateViewClockwise,
   rotateViewTo,
-  selectEditorCameraAngle,
+  selectOpenRoomCameraAngle,
 } from "../slice/levelEditorSlice";
 import { ToolbarButton } from "../toolbar/buttons/ToolbarButton";
+import { useOpenRoomPane } from "./useOpenRoomPane";
 
 /**
- * two buttons that rotate the editor's view of the room a quarter-turn each way,
+ * two buttons that rotate the pane's room view a quarter-turn each way,
  * with a compass needle between them showing where world "away" (north) points
  * at the current angle (↗ at the base angle).
  */
 export const RotateViewControls = () => {
-  const cameraAngle = useEditorAppSelector(selectEditorCameraAngle);
+  const { openRoomId } = useOpenRoomPane();
+  const cameraAngle = useEditorAppSelector((state) =>
+    selectOpenRoomCameraAngle(state, openRoomId),
+  );
   const cameraAngleXy4 = nonZeroVectorClosestDirectionXy4(
     rotateXy(unitVectors.away, cameraAngle),
   );

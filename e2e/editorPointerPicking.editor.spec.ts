@@ -3,56 +3,51 @@ import { expect } from "@playwright/test";
 import { blockSizePx } from "../src/game/physics/mechanicsConstants";
 import { type DirectionXy4, type Xyz } from "../src/utils/vectors/vectors";
 import {
-  editorCameraAngle,
   editorPointingAt,
   faceCentreWorld,
   fitRoomInView,
   openEditor,
   placeItemAtWorldPosition,
   pointAtWorldPosition,
-  rotateEditorViewTo,
+  rotateActiveRoomViewTo,
   selectTool,
   soleEditorItemOfType,
 } from "./testUtils/editorInteractions";
 import { test } from "./testUtils/test";
 
 /**
- * which physical faces of an item are drawn facing the camera, per camera
- * angle. Written out longhand as the test's own oracle, rather than derived
- * with the same rotation the app uses
+ * which physical faces of an item are drawn facing the camera, per settled
+ * camera angle (named by where world "away" appears). Written out longhand as
+ * the test's own oracle, rather than derived with the same rotation the app uses
  */
-const visibleFacesAtCameraAngle = [
+const visibleFacesWhereAwayAppearsAs: Array<{
+  awayAppearsAs: DirectionXy4;
+  apparentRight: Xyz;
+  apparentTowards: Xyz;
+}> = [
   {
-    cameraAngle: { x: 1, y: 0 },
+    awayAppearsAs: "away",
     apparentRight: { x: -1, y: 0, z: 0 },
     apparentTowards: { x: 0, y: -1, z: 0 },
   },
   {
-    cameraAngle: { x: 0, y: 1 },
+    awayAppearsAs: "left",
     apparentRight: { x: 0, y: 1, z: 0 },
     apparentTowards: { x: -1, y: 0, z: 0 },
   },
   {
-    cameraAngle: { x: -1, y: 0 },
+    awayAppearsAs: "towards",
     apparentRight: { x: 1, y: 0, z: 0 },
     apparentTowards: { x: 0, y: 1, z: 0 },
   },
   {
-    cameraAngle: { x: 0, y: -1 },
+    awayAppearsAs: "right",
     apparentRight: { x: 0, y: -1, z: 0 },
     apparentTowards: { x: 1, y: 0, z: 0 },
   },
 ];
 
 const upFace: Xyz = { x: 0, y: 0, z: 1 };
-
-/** the four settled camera angles, named by where world "away" appears */
-const awayAppearsAsDirections: Array<DirectionXy4> = [
-  "away",
-  "left",
-  "towards",
-  "right",
-];
 
 test.describe("pointing at the room", () => {
   test.beforeEach(async ({ page }) => {
@@ -70,20 +65,10 @@ test.describe("pointing at the room", () => {
     });
     await selectTool(page, "Pointer tool");
 
-    for (const awayAppearsAs of awayAppearsAsDirections) {
-      await rotateEditorViewTo(page, awayAppearsAs);
+    for (const faces of visibleFacesWhereAwayAppearsAs) {
+      const { awayAppearsAs } = faces;
+      await rotateActiveRoomViewTo(page, awayAppearsAs);
       await fitRoomInView(page);
-
-      const cameraAngle = await editorCameraAngle(page);
-      const faces = visibleFacesAtCameraAngle.find(
-        ({ cameraAngle: { x, y } }) =>
-          x === cameraAngle.x && y === cameraAngle.y,
-      );
-      if (faces === undefined) {
-        throw new Error(
-          `no expectation for camera angle ${JSON.stringify(cameraAngle)}`,
-        );
-      }
 
       const block = await soleEditorItemOfType(page, "block");
 

@@ -13,9 +13,9 @@ import {
   closeRoomsNotInCampaignInPlace,
   existingOpenRoom,
   findRoomTab,
-  newOpenRoom,
+  openRoomDefaults,
   type OpenRoomId,
-  resetOpenRoomsInteractionInPlace,
+  resetOpenRoomsInPlace,
   selectActiveOpenRoomIdFromLevelEditorState,
 } from "../OpenRoom";
 
@@ -44,12 +44,13 @@ export const openRoomsReducers = {
       // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
       const state = _state as LevelEditorState;
       const roomJson = state.campaignInProgress.rooms[roomId];
-      state.openRooms[openRoomId] = newOpenRoom(
+      state.openRooms[openRoomId] = {
+        ...openRoomDefaults,
         roomId,
-        firstSubRoomId(roomJson),
-        false,
+        subRoomId: firstSubRoomId(roomJson),
+        editable: false,
         selectedJsonItemIds,
-      );
+      };
     },
     // the dialog needs to know the id of the room it opens:
     prepare: (payload: DialogRoom) => ({
@@ -70,7 +71,7 @@ export const openRoomsReducers = {
 
   /**
    * the open rooms and tabs were restored from storage: nothing selected,
-   * hovered or dragged there is current, rooms no longer in the campaign
+   * hovered, dragged or framed there is current, rooms no longer in the campaign
    * close, dialogs' rooms close, and with no tab left the campaign's starting
    * room opens
    */
@@ -91,7 +92,7 @@ export const openRoomsReducers = {
         delete state.openRooms[openRoomId];
       }
     }
-    resetOpenRoomsInteractionInPlace(state);
+    resetOpenRoomsInPlace(state);
     closeRoomsNotInCampaignInPlace(state);
     if (findRoomTab(state, state.cursorRoomId) === undefined) {
       state.cursorRoomId = existingOpenRoom(

@@ -111,6 +111,7 @@ export const useRoomEditorInteractivity = (
   const itemDragLeftPaneAtRef = useRef<undefined | Xy>(undefined);
 
   useEditorE2eApi({
+    openRoomId,
     renderArea,
     viewport,
     pointingAtRef,
@@ -276,7 +277,8 @@ export const useRoomEditorInteractivity = (
         room: roomState,
         tool,
         gridResolution: storeState.levelEditor.gridResolution,
-        cameraAngle: storeState.levelEditor.cameraAngle,
+        cameraAngle: existingOpenRoom(storeState.levelEditor, openRoomId)
+          .cameraAngle,
         roomRenderer: roomRendererRef.current,
         previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
       });
@@ -352,7 +354,8 @@ export const useRoomEditorInteractivity = (
         room: roomState,
         tool,
         gridResolution: storeState.levelEditor.gridResolution,
-        cameraAngle: storeState.levelEditor.cameraAngle,
+        cameraAngle: existingOpenRoom(storeState.levelEditor, openRoomId)
+          .cameraAngle,
         roomRenderer: roomRendererRef.current,
         previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
       });
@@ -461,7 +464,8 @@ export const useRoomEditorInteractivity = (
         room: roomState,
         tool,
         gridResolution: storeState.levelEditor.gridResolution,
-        cameraAngle: storeState.levelEditor.cameraAngle,
+        cameraAngle: existingOpenRoom(storeState.levelEditor, openRoomId)
+          .cameraAngle,
         roomRenderer: roomRendererRef.current,
         previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
       });

@@ -18,13 +18,13 @@ import {
   nudgeKinds,
   selectCurrentCommittedRoomJson,
   selectCursorRoomSelectedJsonItemIds,
-  selectEditorCameraAngle,
 } from "../slice/levelEditorSlice";
 import {
   canMultiplyAlong,
   multiplyPlan,
   type MultiplyType,
 } from "../slice/multiplyPlan";
+import { selectActiveOpenRoomFromLevelEditorState } from "../slice/OpenRoom";
 import { getMovableVector } from "../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import {
   apparentMoveVector,
@@ -66,7 +66,10 @@ const selectNudgeWorldVector = (
 ): Xyz =>
   direction === "up" || direction === "down" ?
     unitVectors[direction]
-  : apparentMoveVector(direction, selectEditorCameraAngle(state));
+  : apparentMoveVector(
+      direction,
+      selectActiveOpenRoomFromLevelEditorState(state.levelEditor).cameraAngle,
+    );
 
 /** each nudge direction's key - each kind of nudge adds its own modifiers */
 const nudgeDirectionKeys = {

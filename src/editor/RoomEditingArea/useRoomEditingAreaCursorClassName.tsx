@@ -13,7 +13,7 @@ const selectCursor = (
   editorState: EditorRootState,
   openRoomId: OpenRoomId,
 ): `cursor-${string}` => {
-  const { openRooms, cameraAngle } = editorState.levelEditor;
+  const { openRooms } = editorState.levelEditor;
   const openRoom = openRooms[openRoomId];
   // check the room wasn't closed (in case we have a stale openRoomId reference)
   if (openRoom === undefined) {
@@ -43,7 +43,7 @@ const selectCursor = (
     if (hoveredItemJson !== undefined && isConsolidatable(hoveredItemJson)) {
       const resizeCursor = resizeCursorForPointingAt(
         hoveredItem.pointingAtOnItem,
-        cameraAngle,
+        openRoom.cameraAngle,
       );
       if (resizeCursor !== undefined) {
         return resizeCursor;

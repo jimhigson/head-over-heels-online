@@ -6,8 +6,9 @@ import { useEditorAppSelector } from "../../store/store";
 import { useStableValue } from "../../utils/preact/useStableValue";
 import { type Xy } from "../../utils/vectors/vectors";
 import { type EditorRoomState } from "../editorTypes";
-import { selectEditorCameraAngle } from "../slice/levelEditorSlice";
+import { selectOpenRoomCameraAngle } from "../slice/levelEditorSlice";
 import { useEditorLoadedRoom } from "../useEditorLoadedRoom";
+import { useOpenRoomPane } from "./useOpenRoomPane";
 
 export type RenderedRoomDimensions = {
   l: number;
@@ -41,7 +42,10 @@ export const editorRoomRenderDimensions = (
 
 export const useEditorRoomRenderDimensions = (): RenderedRoomDimensions => {
   const loadedRoom = useEditorLoadedRoom();
-  const cameraAngle = useEditorAppSelector(selectEditorCameraAngle);
+  const { openRoomId } = useOpenRoomPane();
+  const cameraAngle = useEditorAppSelector((state) =>
+    selectOpenRoomCameraAngle(state, openRoomId),
+  );
 
   /** useEditorLoadedRoom return changes when the room changes */
   const measured = useMemo(
