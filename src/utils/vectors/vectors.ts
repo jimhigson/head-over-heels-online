@@ -419,6 +419,27 @@ export const boxMaxOnAxis = (box: Readonly<XyzBox>, axis: AxisXyz): number =>
   box[axis] + box[sizeAxes[axis]];
 
 /**
+ * the box where two boxes overlap - its size is zero or negative on any axis
+ * they don't overlap on
+ */
+export const boxIntersection = (
+  a: Readonly<XyzBox>,
+  b: Readonly<XyzBox>,
+): XyzBox => {
+  const x = Math.max(a.x, b.x);
+  const y = Math.max(a.y, b.y);
+  const z = Math.max(a.z, b.z);
+  return {
+    x,
+    y,
+    z,
+    xd: Math.min(boxMaxOnAxis(a, "x"), boxMaxOnAxis(b, "x")) - x,
+    yd: Math.min(boxMaxOnAxis(a, "y"), boxMaxOnAxis(b, "y")) - y,
+    zd: Math.min(boxMaxOnAxis(a, "z"), boxMaxOnAxis(b, "z")) - z,
+  };
+};
+
+/**
  * dot product - the component of one vector in the direction of another
  */
 export const dotProductXyz = (a: Xyz, b: Xyz): number => {

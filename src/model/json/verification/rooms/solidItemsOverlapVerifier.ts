@@ -1,9 +1,17 @@
-import { collision2Items } from "../../../../game/collision/aabbCollision";
+import { collisionBoxes } from "../../../../game/collision/aabbCollision";
 import { loadRoom } from "../../../../game/gameState/loadRoom/loadRoom";
 import { noPlanetsLiberated } from "../../../../store/slices/gameInPlay/gameInPlaySlice";
 import { emptyUserSettings } from "../../../../store/slices/userSettings/emptyUserSettings";
 import { emptyObject } from "../../../../utils/empty";
 import { entries } from "../../../../utils/entries";
+import {
+  alongAxisOfDirectionXy,
+  boxIntersection,
+  boxMaxOnAxis,
+  type XyzBox,
+} from "../../../../utils/vectors/vectors";
+import { blockSizePx } from "../../../blockSizePx";
+import { defaultRoomHeightBlocks } from "../../../defaultRoomHeightBlocks";
 import { itemBehaviourKey } from "../../../ItemInPlay";
 import { type UnionOfAllItemInPlayTypes } from "../../../ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../roomItemsInPlayIterators";
@@ -23,17 +31,81 @@ type SolidItemsOverlap = {
 
 type LoadedItem = UnionOfAllItemInPlayTypes<string, string>;
 
+type OverlapQuery = {
+  /**
+   * the item the spatial index is being asked about
+   */
+  subject: LoadedItem;
+  /**
+   * the top of the room, in fine (px) z
+   */
+  roomTopZ: number;
+};
+
+/**
+ * the part of an item's box that counts for overlapping: a wall's loaded box
+ * reaches far above the room (so nothing can be jumped over it), but only the
+ * wall within the room is really there
+ */
+const overlapBox = (item: LoadedItem, roomTopZ: number): Readonly<XyzBox> =>
+  item.type === "wall" ?
+    {
+      ...item.state.box,
+      zd: Math.min(item.state.box.zd, roomTopZ - item.state.box.z),
+    }
+  : item.state.box;
+
+/**
+ * whether the overlap of two walls' boxes is at an end of this wall, along
+ * the axis it runs on
+ */
+const isAtWallEnd = (
+  wall: LoadedItem & { type: "wall" },
+  overlap: Readonly<XyzBox>,
+): boolean => {
+  const axis = alongAxisOfDirectionXy(wall.config.direction);
+  return (
+    overlap[axis] === wall.state.box[axis] ||
+    boxMaxOnAxis(overlap, axis) === boxMaxOnAxis(wall.state.box, axis)
+  );
+};
+
+/**
+ * whether two walls meet as a room's inside corner: they run on different
+ * axes, and the block where they overlap is at an end of both - unlike a
+ * wall ending against the middle of another, or two crossing
+ */
+const isInsideCorner = (a: LoadedItem, b: LoadedItem): boolean => {
+  if (a.type !== "wall" || b.type !== "wall") {
+    return false;
+  }
+  if (
+    alongAxisOfDirectionXy(a.config.direction) ===
+    alongAxisOfDirectionXy(b.config.direction)
+  ) {
+    return false;
+  }
+  const overlap = boxIntersection(a.state.box, b.state.box);
+  return isAtWallEnd(a, overlap) && isAtWallEnd(b, overlap);
+};
+
 /**
  * whether two items, as loaded, are solid to each other and overlap - not
- * merely touching, and not parts of the same json item
+ * merely touching, not parts of the same json item, and not walls meeting at
+ * an inside corner
  */
-const areOverlappingSolids = (a: LoadedItem, b: LoadedItem): boolean =>
+const areOverlappingSolids = (
+  a: LoadedItem,
+  b: LoadedItem,
+  roomTopZ: number,
+): boolean =>
   a.jsonItemId !== undefined &&
   b.jsonItemId !== undefined &&
   a.jsonItemId !== b.jsonItemId &&
   !a[itemBehaviourKey].isNonSolid(a, b) &&
   !b[itemBehaviourKey].isNonSolid(b, a) &&
-  collision2Items(a, b);
+  collisionBoxes(overlapBox(a, roomTopZ), overlapBox(b, roomTopZ)) &&
+  !isInsideCorner(a, b);
 
 /**
  * as a spatial index predicate: whether a candidate in the box overlaps the
@@ -42,8 +114,8 @@ const areOverlappingSolids = (a: LoadedItem, b: LoadedItem): boolean =>
 const overlapsAsSolid = (
   candidate: LoadedItem,
   _box: unknown,
-  subject: LoadedItem,
-): boolean => areOverlappingSolids(subject, candidate);
+  { subject, roomTopZ }: OverlapQuery,
+): boolean => areOverlappingSolids(subject, candidate, roomTopZ);
 
 /**
  * the pairs of json items in a room whose loaded items overlap while solid to
@@ -64,6 +136,7 @@ const overlappingSolidJsonItemPairs = (
     userSettings: emptyUserSettings,
   });
   const spatialIndex = roomState[roomSpatialIndexKey];
+  const roomTopZ = blockSizePx.z * (room.height ?? defaultRoomHeightBlocks);
 
   const pairKeys = new Set<string>();
   const pairs: [VerificationRoomItemId, VerificationRoomItemId][] = [];
@@ -78,7 +151,7 @@ const overlappingSolidJsonItemPairs = (
     for (const { jsonItemId: otherJsonItemId } of spatialIndex.filterInBox(
       item.state.box,
       overlapsAsSolid,
-      item,
+      { subject: item, roomTopZ },
       item,
     )) {
       if (otherJsonItemId === undefined) {
