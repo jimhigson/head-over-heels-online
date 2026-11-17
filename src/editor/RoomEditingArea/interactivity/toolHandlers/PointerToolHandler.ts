@@ -53,7 +53,10 @@ import { type ItemsDrag } from "../../../slice/reducers/dragToMoveReducers";
 import { getMovableVector } from "../../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import { moveOrResizeOutcome } from "../../../slice/reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
 import { snapGridResolution } from "../../../snapGridResolution";
-import { itemMoveOrResizeWouldCollide } from "../../cursor/editWouldCollide";
+import {
+  itemMoveOrResizeWouldCollide,
+  sameMoveOrResizeForEach,
+} from "../../cursor/editWouldCollide";
 import { roundXyzProjection } from "../../cursor/findPointerPointingAt";
 import { type MaybePointingAtSomething } from "../../cursor/PointingAt";
 import {
@@ -485,9 +488,10 @@ export class PointerToolHandler implements ToolHandler<
             selectCurrentCommittedRoomJsonFromLevelEditorState(
               levelEditorState,
             ),
-          jsonItemIds,
-          blockPositionDelta: moveToTry,
-          timesDelta,
+          movesOrResizes: sameMoveOrResizeForEach(jsonItemIds, {
+            blockPositionDelta: moveToTry,
+            timesDelta,
+          }),
         }) &&
         moveOrResizeOutcome(levelEditorState, {
           jsonItemIds,

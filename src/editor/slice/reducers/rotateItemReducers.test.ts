@@ -403,3 +403,72 @@ test("a multi-block conveyor turns about its middle and back, but not into an it
     position: { x: 2, y: 2, z: 0 },
   });
 });
+
+test("two selected conveyors turn together, each into the space the other leaves", () => {
+  const conveyorAId = "conveyorA" as EditorRoomItemId;
+  const conveyorBId = "conveyorB" as EditorRoomItemId;
+  // two conveyors, 3 long in x, B a block further along x and y than A. Each
+  // turns into where the other is now, but not where the other turns to:
+  const state0TwoConveyors = produce(
+    editorStateWithOneRoomWithNoItems,
+    (draft) => {
+      const { items } = draft.campaignInProgress.rooms[testRoomId];
+      items["floor" as EditorRoomItemId] = {
+        type: "floor",
+        config: {
+          floorType: "standable",
+          scenery: "blacktooth",
+          times: { x: 8, y: 8 },
+        },
+        position: originXyz,
+      };
+      items[conveyorAId] = {
+        type: "conveyor",
+        config: { direction: "left", times: { x: 3 } },
+        position: { x: 2, y: 2, z: 0 },
+      };
+      items[conveyorBId] = {
+        type: "conveyor",
+        config: { direction: "left", times: { x: 3 } },
+        position: { x: 3, y: 3, z: 0 },
+      };
+    },
+  );
+
+  const state1BothRotated = reduceLevelEditorActions(
+    state0TwoConveyors,
+    setSelectedItemsInRoom({ jsonItemIds: [conveyorAId, conveyorBId] }),
+    rotateSelectionOrToolItemThunk(
+      "clockwise",
+      loadRoom({
+        roomJson:
+          selectCurrentCommittedRoomJsonFromLevelEditorState(
+            state0TwoConveyors,
+          ),
+        scrollsRead: {},
+        planetsLiberated: noPlanetsLiberated,
+        roomPickupsCollected: {},
+        isNewGame: false,
+        userSettings: emptyUserSettings,
+      }) as EditorRoomState,
+    ),
+  );
+
+  expect(
+    roomJsonItemsIterable(
+      selectCurrentCommittedRoomJsonFromLevelEditorState(state1BothRotated),
+      "conveyor",
+    ).toArray(),
+  ).toEqual([
+    {
+      type: "conveyor",
+      config: { direction: "away", times: { y: 3 } },
+      position: { x: 3, y: 1, z: 0 },
+    },
+    {
+      type: "conveyor",
+      config: { direction: "away", times: { y: 3 } },
+      position: { x: 4, y: 2, z: 0 },
+    },
+  ]);
+});

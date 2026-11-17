@@ -8,6 +8,7 @@ import { type JsonItemType } from "../../../model/json/JsonItem";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import { fromEntries, objectEntriesIter } from "../../../utils/entries";
 import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import {
@@ -48,14 +49,38 @@ const collideableForItem = (
 };
 
 /**
- * return true/false depending on if moving or resizing would cause a collision
+ * how one item is moved and/or resized
+ */
+export type ItemMoveOrResize = {
+  blockPositionDelta: Xyz;
+  timesDelta?: Xyz;
+};
+
+/**
+ * items' moves/resizes, each by its own json item id
+ */
+export type ItemMovesOrResizes = Partial<
+  Record<EditorRoomItemId, ItemMoveOrResize>
+>;
+
+/**
+ * the same move/resize for every one of the items
+ */
+export const sameMoveOrResizeForEach = (
+  jsonItemIds: EditorRoomItemId[],
+  moveOrResize: ItemMoveOrResize,
+): ItemMovesOrResizes =>
+  fromEntries(jsonItemIds.map((jsonItemId) => [jsonItemId, moveOrResize]));
+
+/**
+ * return true/false depending on if moving or resizing items would cause a
+ * collision - the items are all moved together, so each is checked against
+ * the others where they are moved to
  */
 export const itemMoveOrResizeWouldCollide = ({
   roomState,
   roomJson,
-  jsonItemIds,
-  blockPositionDelta,
-  timesDelta,
+  movesOrResizes,
 }: {
   roomState: EditorRoomState;
   /**
@@ -63,29 +88,19 @@ export const itemMoveOrResizeWouldCollide = ({
    * which the loaded room's own json needn't be
    */
   roomJson: EditorRoomJson;
-  jsonItemIds: EditorRoomItemId[];
-  blockPositionDelta: Xyz;
-  timesDelta?: Xyz;
+  movesOrResizes: ItemMovesOrResizes;
 }) => {
   const directionalIndex = buildRoomJsonDirectionalIndex(
     roomJsonItemsIterable(roomJson),
   );
 
-  const loadedModifiedItemTuples = Iterator.from(jsonItemIds)
-    // get the json items from the room json:
-    .map(
-      (jsonItemId) =>
-        [jsonItemId, roomJson.items[jsonItemId]] as [
-          EditorRoomItemId,
-          EditorJsonItemUnion,
-        ],
-    )
+  const loadedModifiedItemTuples = objectEntriesIter(movesOrResizes)
     // modify the json items to their new position/size:
     .map(
-      ([jsonItemId, jsonItem]) =>
+      ([jsonItemId, { blockPositionDelta, timesDelta }]) =>
         [
           jsonItemId,
-          produce(jsonItem, (draftItemJson) => {
+          produce(roomJson.items[jsonItemId], (draftItemJson) => {
             draftItemJson.position = addXyz(
               draftItemJson.position,
               blockPositionDelta,
@@ -127,7 +142,8 @@ export const itemMoveOrResizeWouldCollide = ({
       modifiedJsonItem.type,
     ).filter(
       // do not colliding with the items we are currently moving - that will come next
-      (item) => item.jsonItemId && !jsonItemIds.includes(item.jsonItemId),
+      (item) =>
+        item.jsonItemId && movesOrResizes[item.jsonItemId] === undefined,
     );
 
     if (

@@ -2,20 +2,19 @@ import { produce } from "immer";
 
 import { getJsonItemTimes } from "../../model/times";
 import { type EditorRootState, type EditorThunk } from "../../store/store";
+import { fromEntries } from "../../utils/entries";
 import { subXyz } from "../../utils/vectors/vectors";
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomItemId,
-  type EditorRoomJson,
-  type EditorRoomState,
-} from "../editorTypes";
+import { type EditorJsonItemUnion, type EditorRoomState } from "../editorTypes";
 import {
   isPlacedItemRotatable,
   isRotatable,
   rotatePlacedItemInPlace,
   type RotationSense,
 } from "../itemRotation";
-import { itemMoveOrResizeWouldCollide } from "../RoomEditingArea/cursor/editWouldCollide";
+import {
+  type ItemMoveOrResize,
+  itemMoveOrResizeWouldCollide,
+} from "../RoomEditingArea/cursor/editWouldCollide";
 import { selectCurrentEditingRoomJsonWithPreviews } from "../slice/levelEditorSelectors";
 import {
   rotateCurrentToolItem,
@@ -52,26 +51,20 @@ export const selectSelectionOrToolItemIsRotatable = (
   selectSelectionIsRotatable(state) || selectToolItemIsRotatable(state);
 
 /**
- * whether turning a placed item would collide with the room - a turn is, to
- * collision, a move plus a resize
+ * how turning a placed item moves and resizes it - a turn is, to collision, a
+ * move plus a resize
  */
-const rotatingItemWouldCollide = (
-  roomState: EditorRoomState,
-  roomJson: EditorRoomJson,
-  jsonItemId: EditorRoomItemId,
+const rotationAsMoveOrResize = (
+  item: EditorJsonItemUnion,
   sense: RotationSense,
-): boolean => {
-  const item = roomJson.items[jsonItemId];
+): ItemMoveOrResize => {
   const rotatedItem = produce(item, (draftItem) => {
     rotatePlacedItemInPlace(draftItem, sense);
   });
-  return itemMoveOrResizeWouldCollide({
-    roomState,
-    roomJson,
-    jsonItemIds: [jsonItemId],
+  return {
     blockPositionDelta: subXyz(rotatedItem.position, item.position),
     timesDelta: subXyz(getJsonItemTimes(rotatedItem), getJsonItemTimes(item)),
-  });
+  };
 };
 
 /**
@@ -99,10 +92,17 @@ export const rotateSelectionOrToolItemThunk =
     }
     // previewed nudges are built on:
     const roomJson = selectCurrentEditingRoomJsonWithPreviews(state);
-    const wouldCollide = selectCursorRoomSelectedJsonItemIds(state).some(
-      (jsonItemId) =>
-        rotatingItemWouldCollide(roomState, roomJson, jsonItemId, sense),
-    );
+    // the items all turn together, so are checked together:
+    const wouldCollide = itemMoveOrResizeWouldCollide({
+      roomState,
+      roomJson,
+      movesOrResizes: fromEntries(
+        selectCursorRoomSelectedJsonItemIds(state).map((jsonItemId) => [
+          jsonItemId,
+          rotationAsMoveOrResize(roomJson.items[jsonItemId], sense),
+        ]),
+      ),
+    });
     if (!wouldCollide) {
       dispatch(rotateSelectedItems({ sense, timestamp: Date.now() }));
     }
