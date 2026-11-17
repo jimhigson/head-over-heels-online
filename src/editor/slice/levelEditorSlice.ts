@@ -135,14 +135,22 @@ type PendingEditsMadeBy =
       positionDelta: Xyz;
     };
 
+/**
+ * previewed edits, to each room they touch. Most edits will only populate this for
+ * a single room, but it is possible to impact multiple together -
+ * eg. dragging items from one room to another
+ */
+export type PreviewedEditsByRoom = Partial<
+  Record<EditorRoomId, PreviewedRoomItemEdits>
+>;
+
 export type PendingEdits = {
   /**
-   * the room the edits are to - not always the cursor room: the item tool
+   * the rooms the edits are to - not always the cursor room: the item tool
    * previews in whichever pane the pointer is over, but having a preview isn't
    * enough to make it the cursor room.
    */
-  roomId: EditorRoomId;
-  edits: PreviewedRoomItemEdits;
+  edits: PreviewedEditsByRoom;
   description: UndoDescription;
   timestamp: number;
   madeBy: PendingEditsMadeBy;

@@ -1,4 +1,5 @@
 import { entries } from "../../../../utils/entries";
+import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { reachableRoomIds, startRoomIds } from "../helpers/reachableRooms";
 import { type VerificationRoomId } from "../verificationTypes";
@@ -26,8 +27,9 @@ export const unreachableRoomVerifier: CampaignVerifier<UnreachableRoom> = {
       }
       yield {
         severity: "warning",
+        itemIds: [],
         roomId,
-        msg: `‘${roomId}’ can't be reached from either player's starting room`,
+        msg: `‘${escapeMarkdown(roomId)}’ can't be reached from either player's starting room`,
         fixable: false,
         fixText: `Connect ‘${roomId}’ to the rest of the campaign with a door, teleporter or above/below link`,
         issueData: { roomId },

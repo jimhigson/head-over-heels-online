@@ -4,6 +4,7 @@ import { produce } from "immer";
 import roomSchema from "../../../../_generated/room.schema.json";
 import { entries } from "../../../../utils/entries";
 import { getAtPath, setAtPath } from "../../../../utils/getAtPath";
+import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import {
   type VerificationRoomId,
@@ -231,19 +232,21 @@ const isPlainIdentifier = (segment: string): boolean =>
   /^[A-Za-z_$][\w$]*$/.test(segment);
 
 /**
- * render a JSON Pointer as a JS-style accessor path, eg `items.w3.config.tiles[0]`.
- * brackets are backslash-escaped so the markdown parser keeps them literal rather
- * than reading `[0]` as (broken) link syntax. A segment that isn't a plain
- * identifier (eg an item id containing a slash) is written as `["…"]`
+ * render a JSON Pointer as a JS-style accessor path, eg `items.w3.config.tiles[0]`,
+ * escaped for markdown so eg `[0]` isn't read as (broken) link syntax. A segment
+ * that isn't a plain identifier (eg an item id containing a slash) is written as
+ * `[‘…’]`
  */
 const displayPath = (pointer: string): string =>
-  pathSegments(pointer).reduce(
-    (acc, segment, index) =>
-      /^\d+$/.test(segment) ? `${acc}\\[${segment}\\]`
-      : !isPlainIdentifier(segment) ? `${acc}\\[‘${segment}’\\]`
-      : index === 0 ? segment
-      : `${acc}.${segment}`,
-    "",
+  escapeMarkdown(
+    pathSegments(pointer).reduce(
+      (acc, segment, index) =>
+        /^\d+$/.test(segment) ? `${acc}[${segment}]`
+        : !isPlainIdentifier(segment) ? `${acc}[‘${segment}’]`
+        : index === 0 ? segment
+        : `${acc}.${segment}`,
+      "",
+    ),
   );
 
 /**
@@ -292,6 +295,7 @@ export const schemaComplianceVerifier: CampaignVerifier<SchemaNonCompliant> = {
         const at = where === "" ? "" : ` at: *${where}*`;
         yield {
           severity: "error",
+          itemIds: [],
           roomId,
           msg:
             fixable ?

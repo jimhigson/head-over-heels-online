@@ -27,7 +27,7 @@ test("flags a teleporter to a room with no teleporter to land on", () => {
     campaignOf({ roomA, roomB }),
   );
 
-  expect(issue.itemId).toBe("tp");
+  expect(issue.itemIds).toEqual(["tp"]);
 });
 
 test("flags a teleporter to a room with several teleporters", () => {

@@ -125,15 +125,13 @@ export const selectPreviewOnlyJsonItemIds = createSelector(
 );
 
 /**
- * the pending edits, if they are to this room
+ * the pending edits to this room, if they touch it
  */
 const selectPendingEditsToRoom = (
   state: EditorRootState,
   roomId: EditorRoomId,
-): PreviewedRoomItemEdits | undefined => {
-  const { pendingEdits } = state.levelEditor;
-  return pendingEdits?.roomId === roomId ? pendingEdits.edits : undefined;
-};
+): PreviewedRoomItemEdits | undefined =>
+  state.levelEditor.pendingEdits?.edits[roomId];
 
 /** the room the undo history is being scrubbed to, while hovering it */
 const selectHoveredUndoRoom = (

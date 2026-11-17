@@ -20,8 +20,8 @@ test("flags a toDoor the link would resolve to anyway", () => {
     campaignOf({ roomA, roomB }),
   );
 
-  expect({ itemId: issue.itemId, fixable: issue.fixable }).toEqual({
-    itemId: doorId,
+  expect({ itemIds: issue.itemIds, fixable: issue.fixable }).toEqual({
+    itemIds: [doorId],
     fixable: true,
   });
 });

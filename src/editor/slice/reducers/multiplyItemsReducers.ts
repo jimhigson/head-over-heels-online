@@ -2,7 +2,7 @@ import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { nextItemIdInItems } from "../../../model/inPlaceMutators/nextItemId";
 import { typePrefix } from "../../../model/json/typePrefix";
-import { keys, valuesIter } from "../../../utils/entries";
+import { keys } from "../../../utils/entries";
 import { addXyz, originXyz, type Xyz } from "../../../utils/vectors/vectors";
 import {
   type EditorJsonItemWithTimes,
@@ -19,6 +19,7 @@ import {
   type PreviewedRoomItemEdits,
 } from "../levelEditorSlice";
 import { type MultiplyPlan, type MultiplyType } from "../multiplyPlan";
+import { previewedItemsIter } from "../previewedItemsIter";
 import {
   addTimesDeltaToJsonItemInPlace,
   moveOrResizeOutcome,
@@ -76,7 +77,7 @@ export const multiplyItemsReducers = {
             timestamp,
           });
           if (resizeOutcome.type === "valid") {
-            Object.assign(edits, resizeOutcome.pendingEdits.edits);
+            Object.assign(edits, resizeOutcome.edits);
           }
         }
 
@@ -157,13 +158,11 @@ export const multiplyItemsReducers = {
       fullTimesDelta,
     );
     if (state.pendingEdits?.madeBy.type === "itemTool") {
-      for (const itemPreview of valuesIter(state.pendingEdits.edits)) {
-        if (itemPreview !== null) {
-          addTimesDeltaToJsonItemInPlace(
-            itemPreview as EditorJsonItemWithTimes,
-            fullTimesDelta,
-          );
-        }
+      for (const itemPreview of previewedItemsIter(state.pendingEdits)) {
+        addTimesDeltaToJsonItemInPlace(
+          itemPreview as EditorJsonItemWithTimes,
+          fullTimesDelta,
+        );
       }
     }
   },

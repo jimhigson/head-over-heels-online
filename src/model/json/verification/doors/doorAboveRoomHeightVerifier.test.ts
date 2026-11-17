@@ -19,9 +19,9 @@ test("flags a door at or above the default room height", () => {
     campaignOf({ roomA, roomB }),
   );
 
-  expect({ severity: issue.severity, itemId: issue.itemId }).toEqual({
+  expect({ severity: issue.severity, itemIds: issue.itemIds }).toEqual({
     severity: "error",
-    itemId: doorId,
+    itemIds: [doorId],
   });
 });
 

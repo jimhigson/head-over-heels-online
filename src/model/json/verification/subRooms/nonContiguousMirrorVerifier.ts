@@ -1,3 +1,4 @@
+import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { roomNonContiguousRelationship } from "../../../RoomJson";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { subRoomCells } from "../helpers/verticalLinks";
@@ -28,8 +29,9 @@ export const nonContiguousMirrorVerifier: CampaignVerifier<NonContiguousMirror> 
         if (!(withRoom in campaign.rooms)) {
           yield {
             severity: "warning",
+            itemIds: [],
             roomId,
-            msg: `‘${roomId}’ has a non-contiguous relationship with ‘${withRoom}’, which isn't a room in this campaign`,
+            msg: `‘${escapeMarkdown(roomId)}’ has a non-contiguous relationship with ‘${escapeMarkdown(withRoom)}’, which isn't a room in this campaign`,
             fixable: false,
             fixText: `Point the relationship of ‘${roomId}’ at a real room`,
             issueData,
@@ -53,8 +55,9 @@ export const nonContiguousMirrorVerifier: CampaignVerifier<NonContiguousMirror> 
         }
         yield {
           severity: "warning",
+          itemIds: [],
           roomId,
-          msg: `‘${roomId}’ has a non-contiguous relationship with ‘${withRoom}’ that isn't mirrored back`,
+          msg: `‘${escapeMarkdown(roomId)}’ has a non-contiguous relationship with ‘${escapeMarkdown(withRoom)}’ that isn't mirrored back`,
           fixable: false,
           fixText: `Add the mirrored relationship (with the gridOffset negated) on ‘${withRoom}’`,
           issueData,

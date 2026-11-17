@@ -32,6 +32,7 @@ export const missingCrownVerifier: CampaignVerifier<MissingCrown> = {
       }
       yield {
         severity: "warning",
+        itemIds: [],
         msg: `No ${planet} crown`,
         fixable: false,
         fixText: `Add ${planet} crown somewhere`,

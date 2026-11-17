@@ -1,3 +1,4 @@
+import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { exitGameRoomId } from "../../ItemConfigMap";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { allDoors, candidatePartners } from "../helpers/doorPartner";
@@ -41,8 +42,8 @@ export const doorAmbiguousLinkVerifier: CampaignVerifier<DoorAmbiguousLink> = {
       yield {
         severity: "error",
         roomId,
-        itemId: doorId,
-        msg: `Door ‘${doorId}’ in ‘${roomId}’ has ${count} matching doors back from ‘${toRoom}’ and no toDoor — the game picks one arbitrarily`,
+        itemIds: [doorId],
+        msg: `Door ‘${escapeMarkdown(doorId)}’ in ‘${escapeMarkdown(roomId)}’ has ${count} matching doors back from ‘${escapeMarkdown(toRoom)}’ and no toDoor — the game picks one arbitrarily`,
         fixable: false,
         fixText: `Give door ‘${doorId}’ a toDoor naming its partner in ‘${toRoom}’`,
         issueData: { roomId, doorId, toRoom, count },

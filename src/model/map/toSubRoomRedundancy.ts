@@ -6,10 +6,16 @@ import { isWholeRoomSubRooms } from "../RoomJson";
 import { partnerDoorSubRoomId } from "./partnerDoorSubRoomId";
 
 /**
- * why a door's `meta.toSubRoom` has no effect: its `toRoom` is undivided, or
- * its partner door's position already implies the same sub-room
+ * a door's `meta.toSubRoom` that has no effect, and why: its `toRoom` is
+ * undivided, or its partner door's position already implies the same sub-room
  */
-export type ToSubRoomRedundancy = "inferable" | "undivided";
+export type ToSubRoomRedundancy = {
+  type: "inferable" | "undivided";
+  /**
+   * the redundant sub-room the door names
+   */
+  toSubRoom: string;
+};
 
 /**
  * why a door's `meta.toSubRoom` is redundant, or undefined when it isn't (or
@@ -32,10 +38,10 @@ export const toSubRoomRedundancy = <RoomId extends string>(
   }
   const subRooms = rooms[toRoom].meta?.subRooms;
   if (subRooms === undefined || isWholeRoomSubRooms(subRooms)) {
-    return "undivided";
+    return { type: "undivided", toSubRoom };
   }
   return partnerDoorSubRoomId(rooms, roomId, door, toRoom) === toSubRoom ?
-      "inferable"
+      { type: "inferable", toSubRoom }
     : undefined;
 };
 

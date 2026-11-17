@@ -1,4 +1,5 @@
 import { entries } from "../../../../utils/entries";
+import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import {
   dividedCells,
@@ -34,11 +35,12 @@ export const subRoomAdjacencyVerifier: CampaignVerifier<SubRoomAdjacency> = {
           }
           yield {
             severity: "warning",
+            itemIds: [],
             roomId,
             msg:
               byGrid ?
-                `Sub-rooms ‘${a.cellId}’ and ‘${b.cellId}’ of ‘${roomId}’ are next to each other on the map but their floors don't touch`
-              : `Sub-rooms ‘${a.cellId}’ and ‘${b.cellId}’ of ‘${roomId}’ touch physically but aren't adjacent on the map`,
+                `Sub-rooms ‘${escapeMarkdown(a.cellId)}’ and ‘${escapeMarkdown(b.cellId)}’ of ‘${escapeMarkdown(roomId)}’ are next to each other on the map but their floors don't touch`
+              : `Sub-rooms ‘${escapeMarkdown(a.cellId)}’ and ‘${escapeMarkdown(b.cellId)}’ of ‘${escapeMarkdown(roomId)}’ touch physically but aren't adjacent on the map`,
             fixable: false,
             fixText: `Line up the gridPosition and physicalPosition of sub-rooms ‘${a.cellId}’ and ‘${b.cellId}’ in ‘${roomId}’`,
             issueData: { roomId, cellIds: [a.cellId, b.cellId] },

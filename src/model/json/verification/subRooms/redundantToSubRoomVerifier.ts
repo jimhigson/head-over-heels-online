@@ -1,5 +1,6 @@
 import { produce } from "immer";
 
+import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import {
   dropRedundantToSubRoomInPlace,
   toSubRoomRedundancy,
@@ -26,20 +27,20 @@ export const redundantToSubRoomVerifier: CampaignVerifier<RedundantToSubRoom> =
     *check(campaign) {
       for (const doorRef of allDoors(campaign)) {
         const { roomId, doorId, door } = doorRef;
-        const reason = toSubRoomRedundancy(campaign.rooms, roomId, door);
-        if (reason === undefined) {
+        const redundancy = toSubRoomRedundancy(campaign.rooms, roomId, door);
+        if (redundancy === undefined) {
           continue;
         }
         const { toRoom } = door.config;
-        const toSubRoom = door.config.meta?.toSubRoom;
+        const { type: reason, toSubRoom } = redundancy;
         yield {
           severity: "warning",
           roomId,
-          itemId: doorId,
+          itemIds: [doorId],
           msg:
             reason === "undivided" ?
-              `Door ‘${doorId}’ in room ‘${roomId}’ sets config.toSubRoom explicitly to ‘${toSubRoom}’, but this is redundant since ‘${toRoom}’ isn't divided into sub-rooms`
-            : `Door ‘${doorId}’ in room ‘${roomId}’ sets config.toSubRoom explicitly to ‘${toSubRoom}’, but this is redundant since the map would already find the matching door in ‘${toRoom}’ and notice it is in the same sub-room`,
+              `Door ‘${escapeMarkdown(doorId)}’ in room ‘${escapeMarkdown(roomId)}’ sets config.toSubRoom explicitly to ‘${escapeMarkdown(toSubRoom)}’, but this is redundant since ‘${escapeMarkdown(toRoom)}’ isn't divided into sub-rooms`
+            : `Door ‘${escapeMarkdown(doorId)}’ in room ‘${escapeMarkdown(roomId)}’ sets config.toSubRoom explicitly to ‘${escapeMarkdown(toSubRoom)}’, but this is redundant since the map would already find the matching door in ‘${escapeMarkdown(toRoom)}’ and notice it is in the same sub-room`,
           fixable: true,
           fixText: `Remove the redundant config.toSubRoom from door ‘${doorId}’ in ‘${roomId}’`,
           issueData: { roomId, doorId },

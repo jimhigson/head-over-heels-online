@@ -244,13 +244,13 @@ test("issue and fix messages for an unambiguous broken link", () => {
   expect({
     severity: issue.severity,
     msg: issue.msg,
-    itemId: issue.itemId,
+    itemIds: issue.itemIds,
     fixable: issue.fixable,
     fixText: issue.fixText,
   }).toEqual({
     severity: "error",
     msg: `Door ‘${doorId}’ in ‘roomA’ links to door ‘nope’ in ‘roomB’, which does not exist`,
-    itemId: doorId,
+    itemIds: [doorId],
     fixable: true,
     fixText: `Remove the broken link from door ‘${doorId}’ in ‘roomA’`,
   });
@@ -274,13 +274,13 @@ test("issue message names the ambiguity and offers no fix when several doors com
   expect({
     severity: issue.severity,
     msg: issue.msg,
-    itemId: issue.itemId,
+    itemIds: issue.itemIds,
     fixable: issue.fixable,
     fixText: issue.fixText,
   }).toEqual({
     severity: "error",
     msg: `Door ‘${doorId}’ in ‘roomA’ links to door ‘nope’ in ‘roomB’, which does not exist`,
-    itemId: doorId,
+    itemIds: [doorId],
     fixable: false,
     fixText: `‘roomB’ has 2 doors back to ‘roomA’ in this direction, so this can't be removed automatically and must be fixed by hand`,
   });

@@ -17,9 +17,9 @@ test("flags a door hanging half off the end of the floor", () => {
 
   const [issue] = runCheck(doorOffFloorVerifier, campaignOf({ roomA, roomB }));
 
-  expect({ severity: issue.severity, itemId: issue.itemId }).toEqual({
+  expect({ severity: issue.severity, itemIds: issue.itemIds }).toEqual({
     severity: "error",
-    itemId: doorId,
+    itemIds: [doorId],
   });
 });
 
@@ -35,7 +35,7 @@ test("flags a door on a wall line away from the floor's edge", () => {
 
   const [issue] = runCheck(doorOffFloorVerifier, campaignOf({ roomA, roomB }));
 
-  expect(issue.itemId).toEqual(doorId);
+  expect(issue.itemIds).toEqual([doorId]);
 });
 
 test.for([

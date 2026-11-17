@@ -1,4 +1,5 @@
 import { entries } from "../../../../utils/entries";
+import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import {
   cellHasInvertedExtent,
@@ -26,8 +27,9 @@ export const subRoomInvertedExtentVerifier: CampaignVerifier<SubRoomInvertedExte
           }
           yield {
             severity: "error",
+            itemIds: [],
             roomId,
-            msg: `Sub-room ‘${cellId}’ of ‘${roomId}’ has an empty or inverted extent (its ‘from’ corner isn't before its ‘to’ corner)`,
+            msg: `Sub-room ‘${escapeMarkdown(cellId)}’ of ‘${escapeMarkdown(roomId)}’ has an empty or inverted extent (its ‘from’ corner isn't before its ‘to’ corner)`,
             fixable: false,
             fixText: `Fix the physicalPosition of sub-room ‘${cellId}’ in ‘${roomId}’`,
             issueData: { roomId, cellId },

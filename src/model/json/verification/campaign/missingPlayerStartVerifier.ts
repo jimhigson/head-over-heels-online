@@ -34,6 +34,7 @@ export const missingPlayerStartVerifier: CampaignVerifier<MissingPlayerStart> =
         }
         yield {
           severity: "error",
+          itemIds: [],
           msg: `There's no starting room for ${character} - the campaign can't begin without it`,
           fixable: false,
           fixText: `Add ${character} somewhere`,

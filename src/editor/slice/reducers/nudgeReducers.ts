@@ -45,9 +45,7 @@ export const nudgeReducers = {
           timesDelta,
           timestamp,
         });
-        return outcome.type === "valid" ?
-            { edits: outcome.pendingEdits.edits }
-          : undefined;
+        return outcome.type === "valid" ? { edits: outcome.edits } : undefined;
       },
     );
   },

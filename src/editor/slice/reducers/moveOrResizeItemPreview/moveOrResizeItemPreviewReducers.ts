@@ -429,7 +429,12 @@ export type MoveOrResizeOutcome =
   | { type: "unchanged" }
   | {
       type: "valid";
-      pendingEdits: Omit<PendingEdits, "madeBy" | "roomId">;
+      /**
+       * the edits to the room the items are in
+       */
+      edits: PreviewedRoomItemEdits;
+      description: PendingEdits["description"];
+      timestamp: number;
     };
 
 /**
@@ -568,11 +573,9 @@ export const moveOrResizeOutcome = (
 
   return {
     type: "valid",
-    pendingEdits: {
-      edits,
-      description: { kind: "itemAction", verb, items },
-      timestamp,
-    },
+    edits,
+    description: { kind: "itemAction", verb, items },
+    timestamp,
   };
 };
 
@@ -597,8 +600,11 @@ export const moveOrResizeItemPreviewReducers = {
         return;
       case "valid":
         state.pendingEdits = {
-          ...outcome.pendingEdits,
-          roomId: selectCursorRoomIdFromLevelEditorState(state),
+          edits: {
+            [selectCursorRoomIdFromLevelEditorState(state)]: outcome.edits,
+          },
+          description: outcome.description,
+          timestamp: outcome.timestamp,
           madeBy: { type: "drag" },
         };
         return;

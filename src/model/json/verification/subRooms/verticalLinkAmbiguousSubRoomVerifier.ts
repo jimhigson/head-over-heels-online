@@ -41,6 +41,7 @@ export const verticalLinkAmbiguousSubRoomVerifier: CampaignVerifier<VerticalLink
         }
         yield {
           severity: "error",
+          itemIds: [],
           roomId,
           msg: `‘${roomId}’ links ${direction} to ‘${link.room}’ without naming a sub-room, but ${returningCellCount} sub-rooms of ‘${link.room}’ link back`,
           fixable: false,

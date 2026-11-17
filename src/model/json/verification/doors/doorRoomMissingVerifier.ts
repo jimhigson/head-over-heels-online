@@ -1,5 +1,6 @@
 import { produce } from "immer";
 
+import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { firstUntakenRoomId } from "../../../firstUntakenRoomId";
 import { addReturnDoorInPlace } from "../../../inPlaceMutators/addReturnDoorInPlace";
 import { createNewRoom } from "../../../inPlaceMutators/createNewRoom";
@@ -59,8 +60,8 @@ export const doorRoomMissingVerifier: CampaignVerifier<DoorRoomMissing> = {
       yield {
         severity: "error",
         roomId,
-        itemId: doorId,
-        msg: `Door ‘${doorId}’ in ‘${roomId}’ leads to ‘${toRoom}’, which isn't a room in this campaign`,
+        itemIds: [doorId],
+        msg: `Door ‘${escapeMarkdown(doorId)}’ in ‘${escapeMarkdown(roomId)}’ leads to ‘${escapeMarkdown(toRoom)}’, which isn't a room in this campaign`,
         fixable: true,
         fixText:
           toRoom === nowhereRoomId ?

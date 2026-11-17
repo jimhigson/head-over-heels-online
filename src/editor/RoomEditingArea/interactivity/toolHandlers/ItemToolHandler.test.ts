@@ -1,0 +1,89 @@
+import { produce } from "immer";
+import { expect, test } from "vitest";
+
+import { blockSizePx } from "../../../../game/physics/mechanicsConstants";
+import { type EditorRootState } from "../../../../store/store";
+import {
+  type EditorRoomItemId,
+  type EditorRoomJson,
+} from "../../../editorTypes";
+import { type LevelEditorState } from "../../../slice/levelEditorSlice";
+import { loadEditorRoom } from "../../../slice/loadEditorRoom";
+import {
+  editorStateWithOneRoomWithNoItems,
+  reduceLevelEditorActions,
+  testOpenRoomId,
+  testRoomId,
+} from "../../../slice/reducers/__test__/storeStates";
+import { type PointingAtItem } from "../../cursor/PointingAt";
+import { type EditorViewport } from "../../viewport/EditorViewport";
+import { type Tool } from "../Tool";
+import { ItemToolHandler } from "./ItemToolHandler";
+
+test("hovering the item tool where its item would collide previews nothing", () => {
+  const floorId = "floor" as EditorRoomItemId;
+  const blockTool: Extract<Tool, { type: "item" }> = {
+    type: "item",
+    item: { type: "block", config: { style: "organic", times: { x: 2 } } },
+  };
+  // a floor with a block on it at (2, 0, 0), and a tool for a block two long
+  // in x:
+  const state0: LevelEditorState = produce(
+    editorStateWithOneRoomWithNoItems,
+    (draft) => {
+      const { items } = draft.campaignInProgress.rooms[testRoomId];
+      items[floorId] = {
+        type: "floor",
+        config: {
+          floorType: "standable",
+          scenery: "blacktooth",
+          times: { x: 8, y: 8 },
+        },
+        position: { x: 0, y: 0, z: 0 },
+      };
+      items["block" as EditorRoomItemId] = {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 2, y: 0, z: 0 },
+      };
+      draft.tool = blockTool;
+    },
+  );
+  const roomState = loadEditorRoom(
+    state0.campaignInProgress.rooms[testRoomId] as EditorRoomJson,
+  );
+  // on top of the floor in block (1, 0) - a block two long put down there
+  // would reach into (2, 0), where the block is:
+  const pointingAtFloorBesideBlock: PointingAtItem = {
+    roomId: testRoomId,
+    scrXy: { x: 0, y: 0 },
+    world: {
+      itemId: floorId,
+      position: { x: 1.5 * blockSizePx.x, y: 0.5 * blockSizePx.y, z: 0 },
+      onItem: { face: { x: 0, y: 0, z: 1 } },
+    },
+  };
+
+  // the pointer moves onto the floor beside the block:
+  const state1Hovered = reduceLevelEditorActions(
+    state0,
+    new ItemToolHandler().handleMouseMove({
+      openRoomId: testOpenRoomId,
+      editable: true,
+      roomState,
+      tool: blockTool,
+      // the handler only reads the level editor's state:
+      storeState: { levelEditor: state0 } as EditorRootState,
+      // neither is read by the item tool:
+      mouseEvent: {} as MouseEvent,
+      viewport: {} as EditorViewport,
+      pointingAt: pointingAtFloorBesideBlock,
+      pointingAtChanged: true,
+      clientMovement: { x: 0, y: 0 },
+      mouseDownPointingAtRef: { current: undefined },
+      dragAccVec: { current: undefined },
+    }),
+  );
+
+  expect(state1Hovered.pendingEdits).toBeUndefined();
+});

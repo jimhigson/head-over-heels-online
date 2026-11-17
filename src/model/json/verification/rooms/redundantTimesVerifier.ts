@@ -1,6 +1,7 @@
 import { produce } from "immer";
 
 import { entries } from "../../../../utils/entries";
+import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { type Xyz } from "../../../../utils/vectors/vectors";
 import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import { completeTimesXyz, optimiseTimesXyz } from "../../../times";
@@ -54,8 +55,8 @@ export const redundantTimesVerifier: CampaignVerifier<RedundantTimes> = {
         yield {
           severity: "warning",
           roomId,
-          itemId: itemId as VerificationRoomItemId,
-          msg: `Item ‘${itemId}’ in ‘${roomId}’ has a times of all 1s, which has no effect`,
+          itemIds: [itemId as VerificationRoomItemId],
+          msg: `Item ‘${escapeMarkdown(itemId)}’ in ‘${escapeMarkdown(roomId)}’ has a times of all 1s, which has no effect`,
           fixable: true,
           fixText: `Remove the redundant times from item ‘${itemId}’ in ‘${roomId}’`,
           issueData: { roomId, itemId: itemId as VerificationRoomItemId },

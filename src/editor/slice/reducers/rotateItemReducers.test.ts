@@ -228,12 +228,13 @@ const state0LampToolHovering = produce(
       item: { type: "lamp", config: { direction: "towards" } },
     };
     draft.pendingEdits = {
-      roomId: testRoomId,
       edits: {
-        ["preview" as EditorRoomItemId]: {
-          type: "lamp",
-          config: { direction: "towards" },
-          position: { x: 0, y: 0, z: 0 },
+        [testRoomId]: {
+          ["preview" as EditorRoomItemId]: {
+            type: "lamp",
+            config: { direction: "towards" },
+            position: { x: 0, y: 0, z: 0 },
+          },
         },
       },
       description: { kind: "editRoomJson" },
@@ -256,7 +257,7 @@ test("rotates the tool item when a hover preview is present", () => {
 
 test("also rotates the hover preview to match the rotated tool", () => {
   expect(
-    state1ToolAndPreviewRotated.pendingEdits?.edits[
+    state1ToolAndPreviewRotated.pendingEdits?.edits[testRoomId]?.[
       "preview" as EditorRoomItemId
     ],
   ).toMatchObject({ config: { direction: "left" } });

@@ -302,20 +302,22 @@ export const useRoomEditorInteractivity = (
       );
 
       const handler = toolHandlers[tool.type] as ToolHandler<Tool>;
-      handler.handleMouseMove({
-        openRoomId,
-        editable,
-        pointingAtChanged,
-        roomState,
-        pointingAt,
-        tool,
-        storeState,
-        mouseDownPointingAtRef,
-        mouseEvent,
-        clientMovement,
-        viewport,
-        dragAccVec,
-      });
+      store.dispatch(
+        handler.handleMouseMove({
+          openRoomId,
+          editable,
+          pointingAtChanged,
+          roomState,
+          pointingAt,
+          tool,
+          storeState,
+          mouseDownPointingAtRef,
+          mouseEvent,
+          clientMovement,
+          viewport,
+          dragAccVec,
+        }),
+      );
 
       pointingAtRef.current = pointingAt;
     };
@@ -405,19 +407,21 @@ export const useRoomEditorInteractivity = (
       }
 
       const handler = toolHandlers[tool.type] as ToolHandler<Tool>;
-      handler.handleMouseUp({
-        openRoomId,
-        editable,
-        roomState,
-        pointingAt,
-        tool,
-        storeState,
-        mouseDownPointingAt,
-        mouseEvent,
-        viewport,
-        isClick,
-        isDragEnd,
-      });
+      store.dispatch(
+        handler.handleMouseUp({
+          openRoomId,
+          editable,
+          roomState,
+          pointingAt,
+          tool,
+          storeState,
+          mouseDownPointingAt,
+          mouseEvent,
+          viewport,
+          isClick,
+          isDragEnd,
+        }),
+      );
     };
 
     const handleMouseLeave = (mouseEvent: MouseEvent) => {
@@ -435,14 +439,16 @@ export const useRoomEditorInteractivity = (
       const tool = openRoomTool(storeState, editable);
 
       const handler = toolHandlers[tool.type] as ToolHandler<Tool>;
-      handler.handleMouseLeave({
-        openRoomId,
-        editable,
-        roomState,
-        tool,
-        storeState,
-        mouseEvent,
-      });
+      store.dispatch(
+        handler.handleMouseLeave({
+          openRoomId,
+          editable,
+          roomState,
+          tool,
+          storeState,
+          mouseEvent,
+        }),
+      );
     };
 
     const handleMouseDown = (mouseEvent: PointerEvent) => {
@@ -520,7 +526,7 @@ export const useRoomEditorInteractivity = (
         };
       }
 
-      handler.handleMouseDown(mouseDownParams);
+      store.dispatch(handler.handleMouseDown(mouseDownParams));
     };
 
     // suppress the native browser context menu - right-clicks are handled via

@@ -1,6 +1,9 @@
 import { type RefObject } from "preact";
 
-import { type EditorRootState } from "../../../../store/store";
+import {
+  type EditorRootState,
+  type EditorThunk,
+} from "../../../../store/store";
 import { type Xy, type Xyz } from "../../../../utils/vectors/vectors";
 import { type EditorRoomState } from "../../../editorTypes";
 import { type OpenRoomId } from "../../../slice/OpenRoom";
@@ -8,11 +11,17 @@ import { type MaybePointingAtSomething } from "../../cursor/PointingAt";
 import { type EditorViewport } from "../../viewport/EditorViewport";
 import { type Tool } from "../Tool";
 
+/**
+ * what a tool does with the pointer in an open room - each handler can return a
+ * thunk to read from the store, dispatch or otherwise make changes to the store
+ * this allows us to test tool handlers which dispatch without mocking the store
+ * to catch what was dispatched
+ */
 export interface ToolHandler<T extends Tool> {
-  handleMouseMove(params: MouseMoveParams<T>): void;
-  handleMouseUp(params: MouseUpParams<T>): void;
-  handleMouseDown(params: MouseDownParams<T>): void;
-  handleMouseLeave(params: MouseLeaveParams<T>): void;
+  handleMouseMove(params: MouseMoveParams<T>): EditorThunk;
+  handleMouseUp(params: MouseUpParams<T>): EditorThunk;
+  handleMouseDown(params: MouseDownParams<T>): EditorThunk;
+  handleMouseLeave(params: MouseLeaveParams<T>): EditorThunk;
   /**
    * whether a drag starting at this mousedown would be used by this tool -
    * drags that no tool claims pan the editor view instead

@@ -1,8 +1,8 @@
-import { store } from "../../../../store/store";
+import { type EditorThunk } from "../../../../store/store";
 import { setTool } from "../../../slice/levelEditorSlice";
-import { dispatchHoveredOnChangedIfNeeded } from "../dispatchHoveredOnChangedIfNeeded";
 import { itemsAreLocked } from "../itemsAreLocked";
 import { jsonItemAndIdForInPlayItem } from "../jsonItemAndIdForInPlayItem";
+import { setHoveredItemIfChangedThunk } from "../setHoveredItemIfChangedThunk";
 import { type Tool } from "../Tool";
 import {
   type MouseDownParams,
@@ -12,8 +12,6 @@ import {
   type ToolHandler,
 } from "./ToolHandler";
 
-const { dispatch } = store;
-
 export class EyeDropperToolHandler implements ToolHandler<
   Extract<Tool, { type: "eyeDropper" }>
 > {
@@ -22,13 +20,17 @@ export class EyeDropperToolHandler implements ToolHandler<
     editable,
     roomState,
     pointingAt,
-  }: MouseMoveParams<Extract<Tool, { type: "eyeDropper" }>>) {
-    dispatchHoveredOnChangedIfNeeded(
-      openRoomId,
-      editable,
-      roomState,
-      pointingAt,
-    );
+  }: MouseMoveParams<Extract<Tool, { type: "eyeDropper" }>>): EditorThunk {
+    return (dispatch) => {
+      dispatch(
+        setHoveredItemIfChangedThunk(
+          openRoomId,
+          editable,
+          roomState,
+          pointingAt,
+        ),
+      );
+    };
   }
 
   handleMouseUp({
@@ -36,45 +38,49 @@ export class EyeDropperToolHandler implements ToolHandler<
     pointingAt,
     storeState,
     isClick,
-  }: MouseUpParams<Extract<Tool, { type: "eyeDropper" }>>) {
-    if (!isClick) {
-      return;
-    }
+  }: MouseUpParams<Extract<Tool, { type: "eyeDropper" }>>): EditorThunk {
+    return (dispatch) => {
+      if (!isClick) {
+        return;
+      }
 
-    const itemId = pointingAt.world?.itemId;
+      const itemId = pointingAt.world?.itemId;
 
-    if (itemId === undefined) {
-      console.warn("no itemId");
-      return;
-    }
+      if (itemId === undefined) {
+        console.warn("no itemId");
+        return;
+      }
 
-    const clickedOnItem = roomState.items[itemId];
+      const clickedOnItem = roomState.items[itemId];
 
-    if (itemsAreLocked(storeState, clickedOnItem)) {
-      return;
-    }
+      if (itemsAreLocked(storeState, clickedOnItem)) {
+        return;
+      }
 
-    const asJson = jsonItemAndIdForInPlayItem(storeState, clickedOnItem);
-    if (asJson === undefined) {
-      return;
-    }
-    const [, jsonItem] = asJson;
+      const asJson = jsonItemAndIdForInPlayItem(storeState, clickedOnItem);
+      if (asJson === undefined) {
+        return;
+      }
+      const [, jsonItem] = asJson;
 
-    dispatch(
-      setTool({
-        type: "item",
-        item: {
-          type: jsonItem.type,
-          config: jsonItem.config,
-        },
-      }),
-    );
+      dispatch(
+        setTool({
+          type: "item",
+          item: {
+            type: jsonItem.type,
+            config: jsonItem.config,
+          },
+        }),
+      );
+    };
   }
 
   handleMouseDown(
     _params: MouseDownParams<Extract<Tool, { type: "eyeDropper" }>>,
-  ) {
-    // EyeDropper tool doesn't need to do anything on mouse down
+  ): EditorThunk {
+    return () => {
+      // EyeDropper tool doesn't need to do anything on mouse down
+    };
   }
 
   claimsDrag(_params: MouseDownParams<Extract<Tool, { type: "eyeDropper" }>>) {
@@ -84,7 +90,9 @@ export class EyeDropperToolHandler implements ToolHandler<
 
   handleMouseLeave(
     _params: MouseLeaveParams<Extract<Tool, { type: "eyeDropper" }>>,
-  ) {
-    // EyeDropper tool doesn't need to do anything on mouse leave
+  ): EditorThunk {
+    return () => {
+      // EyeDropper tool doesn't need to do anything on mouse leave
+    };
   }
 }

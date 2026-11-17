@@ -1,3 +1,4 @@
+import { entries } from "../../../utils/entries";
 import { type EditorRoomJson } from "../../editorTypes";
 import { applyPreviewedEditsInPlace } from "../applyPreviewedEditsInPlace";
 import { type LevelEditorState, type NudgeKind } from "../levelEditorSlice";
@@ -13,17 +14,22 @@ export const commitPendingEditsInPlace = (state: LevelEditorState) => {
     return;
   }
   state.pendingEdits = undefined;
-  const { roomId } = pendingEdits;
-  pushUndoEntryInPlace(
-    state,
-    roomId,
-    pendingEdits.description,
-    pendingEdits.timestamp,
-  );
-  applyPreviewedEditsInPlace(
-    state.campaignInProgress.rooms[roomId] as EditorRoomJson,
-    pendingEdits.edits,
-  );
+  // undo is per room, so each room touched gets its own entry for the edit:
+  for (const [roomId, roomEdits] of entries(pendingEdits.edits)) {
+    if (roomEdits === undefined) {
+      continue;
+    }
+    pushUndoEntryInPlace(
+      state,
+      roomId,
+      pendingEdits.description,
+      pendingEdits.timestamp,
+    );
+    applyPreviewedEditsInPlace(
+      state.campaignInProgress.rooms[roomId] as EditorRoomJson,
+      roomEdits,
+    );
+  }
   if (state.autoCoalesce) {
     consolidateCurrentRoomInPlace(state);
   }

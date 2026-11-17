@@ -24,8 +24,8 @@ test("flags a teleporter whose toItemId is missing in the destination", () => {
     campaignOf({ roomA, roomB }),
   );
 
-  expect({ itemId: issue.itemId, fixable: issue.fixable }).toEqual({
-    itemId: "tp",
+  expect({ itemIds: issue.itemIds, fixable: issue.fixable }).toEqual({
+    itemIds: ["tp"],
     fixable: true,
   });
 });

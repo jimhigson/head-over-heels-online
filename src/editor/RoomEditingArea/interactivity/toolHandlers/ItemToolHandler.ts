@@ -1,7 +1,7 @@
 import { produce } from "immer";
 
 import { type DoorConfig } from "../../../../model/json/ItemConfigMap";
-import { store } from "../../../../store/store";
+import { type EditorThunk } from "../../../../store/store";
 import { nonZeroVectorClosestDirectionXy4 } from "../../../../utils/vectors/vectors";
 import {
   type EditorItemInPlayUnion,
@@ -28,8 +28,6 @@ import {
   type ToolHandler,
 } from "./ToolHandler";
 
-const { dispatch } = store;
-
 export class ItemToolHandler implements ToolHandler<
   Extract<Tool, { type: "item" }>
 > {
@@ -39,75 +37,77 @@ export class ItemToolHandler implements ToolHandler<
     pointingAt,
     tool,
     storeState,
-  }: MouseMoveParams<Extract<Tool, { type: "item" }>>) {
-    if (!pointingAtChanged) {
-      return;
-    }
+  }: MouseMoveParams<Extract<Tool, { type: "item" }>>): EditorThunk {
+    return (dispatch) => {
+      if (!pointingAtChanged) {
+        return;
+      }
 
-    // remove old previews
-    dispatch(resetPreviewedEdits());
+      // remove old previews
+      dispatch(resetPreviewedEdits());
 
-    if (pointingAt.world === undefined) {
-      return;
-    }
+      if (pointingAt.world === undefined) {
+        return;
+      }
 
-    const pointingAtItem = findItemInPlayForPicking(
-      roomState,
-      pointingAt.world.itemId,
-    );
-    const asJson = jsonItemAndIdForInPlayItem(storeState, pointingAtItem);
-    if (pointingAtItem === undefined || asJson === undefined) {
-      return;
-    }
-    const [, jsonItem] = asJson;
+      const pointingAtItem = findItemInPlayForPicking(
+        roomState,
+        pointingAt.world.itemId,
+      );
+      const asJson = jsonItemAndIdForInPlayItem(storeState, pointingAtItem);
+      if (pointingAtItem === undefined || asJson === undefined) {
+        return;
+      }
+      const [, jsonItem] = asJson;
 
-    const putDownBlockPosition = itemToolPutDownLocation(
-      pointingAt,
-      pointingAtItem,
-      tool.item,
-    );
+      const putDownBlockPosition = itemToolPutDownLocation(
+        pointingAt,
+        pointingAtItem,
+        tool.item,
+      );
 
-    if (putDownBlockPosition === undefined) {
-      return;
-    }
+      if (putDownBlockPosition === undefined) {
+        return;
+      }
 
-    const { item } = tool;
-    // if tool is a door, need to switch it to the side of the wall it is on.
-    // otherwise, the collision detection will fail to detect properly because
-    // different door directions would protrude differently
-    const toolItem =
-      item.type === "door" ?
-        produce(item, (draft) => {
-          const wall = pointingAtItem as EditorItemInPlayUnion<"wall">;
-          (draft.config as DoorConfig<EditorRoomId>).direction =
-            nonZeroVectorClosestDirectionXy4(wall.config.direction);
-        })
-        // otherwise, can use as-is
-      : tool.item;
+      const { item } = tool;
+      // if tool is a door, need to switch it to the side of the wall it is on.
+      // otherwise, the collision detection will fail to detect properly because
+      // different door directions would protrude differently
+      const toolItem =
+        item.type === "door" ?
+          produce(item, (draft) => {
+            const wall = pointingAtItem as EditorItemInPlayUnion<"wall">;
+            (draft.config as DoorConfig<EditorRoomId>).direction =
+              nonZeroVectorClosestDirectionXy4(wall.config.direction);
+          })
+          // otherwise, can use as-is
+        : tool.item;
 
-    const collides = addingItemWouldCollide({
-      roomState,
-      blockPosition: putDownBlockPosition,
-      itemTool: toolItem,
-      previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(
-        storeState,
-        roomState.id,
-      ),
-    });
-
-    if (collides) {
-      return;
-    }
-
-    dispatch(
-      applyItemTool({
-        roomId: roomState.id,
+      const collides = addingItemWouldCollide({
+        roomState,
         blockPosition: putDownBlockPosition,
-        pointedAtItemJson: jsonItem,
-        preview: true,
-        timestamp: Date.now(),
-      }),
-    );
+        itemTool: toolItem,
+        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(
+          storeState,
+          roomState.id,
+        ),
+      });
+
+      if (collides) {
+        return;
+      }
+
+      dispatch(
+        applyItemTool({
+          roomId: roomState.id,
+          blockPosition: putDownBlockPosition,
+          pointedAtItemJson: jsonItem,
+          preview: true,
+          timestamp: Date.now(),
+        }),
+      );
+    };
   }
 
   handleMouseUp({
@@ -116,51 +116,57 @@ export class ItemToolHandler implements ToolHandler<
     tool,
     storeState,
     isClick,
-  }: MouseUpParams<Extract<Tool, { type: "item" }>>) {
-    if (!isClick) {
-      return;
-    }
+  }: MouseUpParams<Extract<Tool, { type: "item" }>>): EditorThunk {
+    return (dispatch) => {
+      if (!isClick) {
+        return;
+      }
 
-    if (pointingAt.world === undefined) {
-      // if using item tool, clicking on nothing is a quick way to go back to
-      // the pointer:
-      dispatch(resetTool());
-      return;
-    }
+      if (pointingAt.world === undefined) {
+        // if using item tool, clicking on nothing is a quick way to go back to
+        // the pointer:
+        dispatch(resetTool());
+        return;
+      }
 
-    const pointingAtItem = findItemInPlayForPicking(
-      roomState,
-      pointingAt.world.itemId,
-    );
-    const asJson = jsonItemAndIdForInPlayItem(storeState, pointingAtItem);
-    if (pointingAtItem === undefined || asJson === undefined) {
-      return;
-    }
-    const [, jsonItem] = asJson;
+      const pointingAtItem = findItemInPlayForPicking(
+        roomState,
+        pointingAt.world.itemId,
+      );
+      const asJson = jsonItemAndIdForInPlayItem(storeState, pointingAtItem);
+      if (pointingAtItem === undefined || asJson === undefined) {
+        return;
+      }
+      const [, jsonItem] = asJson;
 
-    const putDownBlockPosition = itemToolPutDownLocation(
-      pointingAt,
-      pointingAtItem,
-      tool.item,
-    );
+      const putDownBlockPosition = itemToolPutDownLocation(
+        pointingAt,
+        pointingAtItem,
+        tool.item,
+      );
 
-    if (putDownBlockPosition === undefined) {
-      return;
-    }
+      if (putDownBlockPosition === undefined) {
+        return;
+      }
 
-    dispatch(
-      applyItemTool({
-        roomId: roomState.id,
-        blockPosition: putDownBlockPosition,
-        pointedAtItemJson: jsonItem,
-        preview: false,
-        timestamp: Date.now(),
-      }),
-    );
+      dispatch(
+        applyItemTool({
+          roomId: roomState.id,
+          blockPosition: putDownBlockPosition,
+          pointedAtItemJson: jsonItem,
+          preview: false,
+          timestamp: Date.now(),
+        }),
+      );
+    };
   }
 
-  handleMouseDown(_params: MouseDownParams<Extract<Tool, { type: "item" }>>) {
-    // Item tool doesn't need to do anything on mouse down
+  handleMouseDown(
+    _params: MouseDownParams<Extract<Tool, { type: "item" }>>,
+  ): EditorThunk {
+    return () => {
+      // Item tool doesn't need to do anything on mouse down
+    };
   }
 
   claimsDrag(_params: MouseDownParams<Extract<Tool, { type: "item" }>>) {
@@ -168,8 +174,12 @@ export class ItemToolHandler implements ToolHandler<
     return false;
   }
 
-  handleMouseLeave(_params: MouseLeaveParams<Extract<Tool, { type: "item" }>>) {
-    dispatch(resetPreviewedEdits());
+  handleMouseLeave(
+    _params: MouseLeaveParams<Extract<Tool, { type: "item" }>>,
+  ): EditorThunk {
+    return (dispatch) => {
+      dispatch(resetPreviewedEdits());
+    };
   }
 }
 /**

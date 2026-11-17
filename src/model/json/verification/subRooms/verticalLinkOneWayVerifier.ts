@@ -1,3 +1,4 @@
+import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { roomVerticalLink } from "../../../RoomJson";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import {
@@ -31,8 +32,9 @@ export const verticalLinkOneWayVerifier: CampaignVerifier<VerticalLinkOneWay> =
         if (!(link.room in campaign.rooms)) {
           yield {
             severity: "error",
+            itemIds: [],
             roomId,
-            msg: `‘${roomId}’ links ${direction} to ‘${link.room}’, which isn't a room in this campaign`,
+            msg: `‘${escapeMarkdown(roomId)}’ links ${direction} to ‘${escapeMarkdown(link.room)}’, which isn't a room in this campaign`,
             fixable: false,
             fixText: `Point the ${direction} link of ‘${roomId}’ at a real room`,
             issueData,
@@ -50,11 +52,12 @@ export const verticalLinkOneWayVerifier: CampaignVerifier<VerticalLinkOneWay> =
         }
         yield {
           severity: "error",
+          itemIds: [],
           roomId,
           msg:
             reverse === undefined ?
-              `‘${roomId}’ links ${direction} to ‘${link.room}’, which has no matching ${back} link back`
-            : `‘${roomId}’ links ${direction} to ‘${link.room}’, but ‘${link.room}’ links ${back} to ‘${reverse.room}’ instead`,
+              `‘${escapeMarkdown(roomId)}’ links ${direction} to ‘${escapeMarkdown(link.room)}’, which has no matching ${back} link back`
+            : `‘${escapeMarkdown(roomId)}’ links ${direction} to ‘${escapeMarkdown(link.room)}’, but ‘${escapeMarkdown(link.room)}’ links ${back} to ‘${escapeMarkdown(reverse.room)}’ instead`,
           fixable: false,
           fixText: `Add a ${back} link from ‘${link.room}’ back to ‘${roomId}’`,
           issueData,

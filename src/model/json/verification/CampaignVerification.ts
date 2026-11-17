@@ -16,8 +16,11 @@ export type CampaignVerificationIssue<TErr> = {
   msg: string;
   /** the room the problem is in, if it is specific to one room - lets the editor link there. Omitted for campaign-wide problems */
   roomId?: VerificationRoomId;
-  /** the item that should be updated to address the problem, if any - lets the editor select it */
-  itemId?: VerificationRoomItemId;
+  /**
+   * the items that should be updated to address the problem - lets the editor
+   * select them. Empty if the problem isn't with particular items
+   */
+  itemIds: VerificationRoomItemId[];
   /** whether the problem can be auto-fixed by calling the verifier's `fix` */
   fixable: boolean;
   /** when fixable, a short description of the fix (eg "remove toDoor from door a in room b"); otherwise an explanation of why it can't be auto-fixed */

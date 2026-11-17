@@ -111,13 +111,13 @@ export const VerifyIssuesDialog = ({ onClose }: VerifyIssuesDialogProps) => {
     loadFixedCampaign(fixAllVerificationIssues(openCampaign()).campaign);
   };
 
-  const goToRoom = (roomId: string, itemId: string | undefined) => {
+  const goToRoom = (roomId: string, itemIds: string[]) => {
     store.dispatch(changeToRoom(roomId as EditorRoomId));
-    if (itemId !== undefined) {
-      // select the item to update - safe because it lives in the room we just
-      // navigated to
+    if (itemIds.length > 0) {
+      // select the items to update - safe because they live in the room we
+      // just navigated to
       store.dispatch(
-        setSelectedItemsInRoom({ jsonItemIds: [itemId as EditorRoomItemId] }),
+        setSelectedItemsInRoom({ jsonItemIds: itemIds as EditorRoomItemId[] }),
       );
     }
     onClose();
@@ -188,7 +188,7 @@ export const VerifyIssuesDialog = ({ onClose }: VerifyIssuesDialogProps) => {
                       </div>
                     )}
                     {roomIssues?.map((issue, i) => {
-                      const { roomId, itemId } = issue;
+                      const { roomId, itemIds } = issue;
                       return (
                         <div key={i} class="flex flex-col gap-half">
                           <div
@@ -217,7 +217,7 @@ export const VerifyIssuesDialog = ({ onClose }: VerifyIssuesDialogProps) => {
                             {roomId !== undefined && (
                               <Button
                                 class="bg-pastelBlue px-1 py-half text-white shrink-0 hover:bg-highlightBeige h-3"
-                                onClick={() => goToRoom(roomId, itemId)}
+                                onClick={() => goToRoom(roomId, itemIds)}
                               >
                                 ➡ Go to
                               </Button>

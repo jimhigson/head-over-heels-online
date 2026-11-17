@@ -1,6 +1,7 @@
 import { produce } from "immer";
 
 import { entries } from "../../../../utils/entries";
+import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { roomJsonItemsEntriesIterable } from "../../../RoomJsonItemIterators";
 import { getControlTargetJsonItemsInRoom } from "../../getControlTargetJsonItemsInRoom";
 import { rewriteControllerTargetIdsInPlace } from "../../rewriteControllerTargetIdsInPlace";
@@ -59,8 +60,8 @@ function* controllerIssues(
     yield {
       severity: "error",
       roomId,
-      itemId,
-      msg: `‘${itemId}’ in ‘${roomId}’ targets item ‘${targetId}’, which isn't in the room`,
+      itemIds: [itemId],
+      msg: `‘${escapeMarkdown(itemId)}’ in ‘${escapeMarkdown(roomId)}’ targets item ‘${escapeMarkdown(targetId)}’, which isn't in the room`,
       fixable: true,
       fixText: `Remove the missing target ‘${targetId}’ from ‘${itemId}’ in ‘${roomId}’`,
       issueData: { type: "missingTarget", roomId, itemId, targetId },
@@ -83,8 +84,8 @@ function* controllerIssues(
         yield {
           severity: "warning",
           roomId,
-          itemId,
-          msg: `‘${itemId}’ in ‘${roomId}’ expects ‘${targetId}’ to be a ‘${expectType}’, but it's a ‘${actualType}’`,
+          itemIds: [itemId],
+          msg: `‘${escapeMarkdown(itemId)}’ in ‘${escapeMarkdown(roomId)}’ expects ‘${escapeMarkdown(targetId)}’ to be a ‘${escapeMarkdown(expectType)}’, but it's a ‘${escapeMarkdown(actualType)}’`,
           fixable: false,
           fixText: `Change ‘${itemId}’'s expectType to ‘${actualType}’, or point it at a ‘${expectType}’`,
           issueData: {
@@ -110,8 +111,8 @@ function* controllerIssues(
     yield {
       severity: "warning",
       roomId,
-      itemId,
-      msg: `‘${itemId}’ in ‘${roomId}’ doesn't control any item in the room`,
+      itemIds: [itemId],
+      msg: `‘${escapeMarkdown(itemId)}’ in ‘${escapeMarkdown(roomId)}’ doesn't control any item in the room`,
       fixable: false,
       fixText: `Give ‘${itemId}’ a target that's in the room, or remove it`,
       issueData: { type: "controlsNothing", roomId, itemId },

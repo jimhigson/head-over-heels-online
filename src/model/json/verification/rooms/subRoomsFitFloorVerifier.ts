@@ -1,6 +1,7 @@
 import { produce } from "immer";
 
 import { entries } from "../../../../utils/entries";
+import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { type Xy } from "../../../../utils/vectors/vectors";
 import { isWholeRoomSubRooms, type SubRoom } from "../../../RoomJson";
 import { roomJsonItemsIterable } from "../../../RoomJsonItemIterators";
@@ -161,8 +162,9 @@ export const subRoomsFitFloorVerifier: CampaignVerifier<SubRoomsNotFittingFloor>
           }
           yield {
             severity: "warning",
+            itemIds: [],
             roomId,
-            msg: `‘${roomId}’ is ${to.x - from.x}×${to.y - from.y} blocks, too big for one map cell (max ${maxSingleCellRoomBlocks}×${maxSingleCellRoomBlocks}), but isn’t divided into sub-rooms`,
+            msg: `‘${escapeMarkdown(roomId)}’ is ${to.x - from.x}×${to.y - from.y} blocks, too big for one map cell (max ${maxSingleCellRoomBlocks}×${maxSingleCellRoomBlocks}), but isn’t divided into sub-rooms`,
             fixable: true,
             fixText: `Divide ‘${roomId}’ into ${cellCounts.x}×${cellCounts.y} sub-rooms`,
             issueData: { roomId },
@@ -179,8 +181,9 @@ export const subRoomsFitFloorVerifier: CampaignVerifier<SubRoomsNotFittingFloor>
         const fixable = subRoomsFormGrid(cells, cellCounts);
         yield {
           severity: "warning",
+          itemIds: [],
           roomId,
-          msg: `${outside.length} floor square${outside.length === 1 ? "" : "s"} of ‘${roomId}’ ${outside.length === 1 ? "isn't" : "aren't"} inside any sub-room (eg (${x}, ${y}))`,
+          msg: `${outside.length} floor square${outside.length === 1 ? "" : "s"} of ‘${escapeMarkdown(roomId)}’ ${outside.length === 1 ? "isn't" : "aren't"} inside any sub-room (eg (${x}, ${y}))`,
           fixable,
           fixText:
             fixable ?

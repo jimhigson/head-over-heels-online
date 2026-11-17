@@ -1,3 +1,4 @@
+import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { oppositeDirection } from "../../../../utils/vectors/vectors";
 import { exitGameRoomId } from "../../ItemConfigMap";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
@@ -43,8 +44,8 @@ export const doorDirectionMismatchVerifier: CampaignVerifier<DoorDirectionMismat
         yield {
           severity: "error",
           roomId,
-          itemId: doorId,
-          msg: `Door ‘${doorId}’ in ‘${roomId}’ links to ‘${toRoom}’, whose return door faces the wrong way (it should face ‘${oppositeDirection(direction)}’)`,
+          itemIds: [doorId],
+          msg: `Door ‘${escapeMarkdown(doorId)}’ in ‘${escapeMarkdown(roomId)}’ links to ‘${escapeMarkdown(toRoom)}’, whose return door faces the wrong way (it should face ‘${escapeMarkdown(oppositeDirection(direction))}’)`,
           fixable: false,
           fixText: `Turn the door in ‘${toRoom}’ that leads back to ‘${roomId}’ to face ‘${oppositeDirection(direction)}’`,
           issueData: { roomId, doorId, toRoom },
