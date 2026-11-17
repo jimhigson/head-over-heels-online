@@ -9,6 +9,7 @@ import { FloorMenuItems } from "./FloorMenuItems";
 import { MakeHoleMenuItem } from "./MakeHoleMenuItem";
 import { MirrorOrientationMenuItems } from "./MirrorOrientationMenuItems";
 import { MonsterMovementMenuItems } from "./MonsterMovementMenuItems";
+import { SnapToGridMenuItems } from "./SnapToGridMenuItems";
 import { StartDirectionMenuItems } from "./StartDirectionMenuItems";
 import { TeleporterDestinationMenuItem } from "./TeleporterDestinationMenuItem";
 
@@ -31,5 +32,6 @@ export const ItemActionMenuItems = () => (
     <DoorGameEndMenuItem />
     <StartDirectionMenuItems />
     <MirrorOrientationMenuItems />
+    <SnapToGridMenuItems />
   </>
 );
