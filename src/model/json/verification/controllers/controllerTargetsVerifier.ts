@@ -1,7 +1,6 @@
 import { produce } from "immer";
 
 import { entries } from "../../../../utils/entries";
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { roomJsonItemsEntriesIterable } from "../../../RoomJsonItemIterators";
 import { getControlTargetJsonItemsInRoom } from "../../getControlTargetJsonItemsInRoom";
 import { rewriteControllerTargetIdsInPlace } from "../../rewriteControllerTargetIdsInPlace";
@@ -9,6 +8,7 @@ import {
   type CampaignVerificationIssue,
   type CampaignVerifier,
 } from "../CampaignVerification";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationJsonItemUnion,
   type VerificationRoomId,
@@ -61,7 +61,7 @@ function* controllerIssues(
       severity: "error",
       roomId,
       itemIds: [itemId],
-      msg: `‘${escapeMarkdown(itemId)}’ in ‘${escapeMarkdown(roomId)}’ targets item ‘${escapeMarkdown(targetId)}’, which isn't in the room`,
+      msg: `‘${itemIdMd(itemId)}’ in ‘${valueMd(roomId)}’ targets item ‘${itemIdMd(targetId)}’, which isn't in the room`,
       fixable: true,
       fixText: `Remove the missing target ‘${targetId}’ from ‘${itemId}’ in ‘${roomId}’`,
       issueData: { type: "missingTarget", roomId, itemId, targetId },
@@ -85,7 +85,7 @@ function* controllerIssues(
           severity: "warning",
           roomId,
           itemIds: [itemId],
-          msg: `‘${escapeMarkdown(itemId)}’ in ‘${escapeMarkdown(roomId)}’ expects ‘${escapeMarkdown(targetId)}’ to be a ‘${escapeMarkdown(expectType)}’, but it's a ‘${escapeMarkdown(actualType)}’`,
+          msg: `‘${itemIdMd(itemId)}’ in ‘${valueMd(roomId)}’ expects ‘${itemIdMd(targetId)}’ to be a ‘${valueMd(expectType)}’, but it's a ‘${valueMd(actualType)}’`,
           fixable: false,
           fixText: `Change ‘${itemId}’'s expectType to ‘${actualType}’, or point it at a ‘${expectType}’`,
           issueData: {
@@ -112,7 +112,7 @@ function* controllerIssues(
       severity: "warning",
       roomId,
       itemIds: [itemId],
-      msg: `‘${escapeMarkdown(itemId)}’ in ‘${escapeMarkdown(roomId)}’ doesn't control any item in the room`,
+      msg: `‘${itemIdMd(itemId)}’ in ‘${valueMd(roomId)}’ doesn't control any item in the room`,
       fixable: false,
       fixText: `Give ‘${itemId}’ a target that's in the room, or remove it`,
       issueData: { type: "controlsNothing", roomId, itemId },

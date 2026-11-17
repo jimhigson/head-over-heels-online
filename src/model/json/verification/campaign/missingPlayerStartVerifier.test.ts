@@ -11,7 +11,7 @@ test("flags a campaign with no heels start", () => {
 
   expect({ severity: issue.severity, msg: issue.msg }).toEqual({
     severity: "error",
-    msg: "There's no starting room for heels - the campaign can't begin without it",
+    msg: "There's no starting room for *heels* - the campaign can't begin without it",
   });
 });
 

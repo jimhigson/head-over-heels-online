@@ -1,5 +1,5 @@
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
+import { valueMd } from "../helpers/messageMarkdown";
 import {
   type VerticalDirection,
   verticalLinks,
@@ -40,7 +40,7 @@ export const verticalLinkCollisionVerifier: CampaignVerifier<VerticalLinkCollisi
           severity: "error",
           itemIds: [],
           roomId: group.roomId,
-          msg: `Sub-rooms ${group.cellIds.map((cellId) => `‘${escapeMarkdown(cellId)}’`).join(", ")} of ‘${escapeMarkdown(group.roomId)}’ all link ${group.direction} to the same place in ‘${escapeMarkdown(group.targetRoom)}’`,
+          msg: `Sub-rooms ${group.cellIds.map((cellId) => `‘${valueMd(cellId)}’`).join(", ")} of ‘${valueMd(group.roomId)}’ all link ${valueMd(group.direction)} to the same place in ‘${valueMd(group.targetRoom)}’`,
           fixable: false,
           fixText: `Give each sub-room of ‘${group.roomId}’ a distinct ${group.direction} target`,
           issueData: {

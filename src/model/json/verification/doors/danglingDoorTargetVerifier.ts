@@ -1,7 +1,6 @@
 import { produce } from "immer";
 
 import { entries } from "../../../../utils/entries";
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import { exitGameRoomId } from "../../ItemConfigMap";
 import { type CampaignVerifier } from "../CampaignVerification";
@@ -10,6 +9,7 @@ import {
   type DoorRef,
   inferredPartner,
 } from "../helpers/doorPartner";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationRoomId,
   type VerificationRoomItemId,
@@ -83,8 +83,8 @@ export const danglingDoorTargetVerifier: CampaignVerifier<DanglingDoorTarget> =
             itemIds: [doorId as VerificationRoomItemId],
             msg:
               toDoorExists ?
-                `Door ‘${escapeMarkdown(doorId)}’ in ‘${escapeMarkdown(roomId)}’ links to door ‘${escapeMarkdown(toDoor)}’ in ‘${escapeMarkdown(toRoom)}’, which doesn't lead back to ‘${escapeMarkdown(roomId)}’`
-              : `Door ‘${escapeMarkdown(doorId)}’ in ‘${escapeMarkdown(roomId)}’ links to door ‘${escapeMarkdown(toDoor)}’ in ‘${escapeMarkdown(toRoom)}’, which does not exist`,
+                `Door ‘${itemIdMd(doorId)}’ in ‘${valueMd(roomId)}’ links to door ‘${itemIdMd(toDoor)}’ in ‘${valueMd(toRoom)}’, which doesn't lead back to ‘${valueMd(roomId)}’`
+              : `Door ‘${itemIdMd(doorId)}’ in ‘${valueMd(roomId)}’ links to door ‘${itemIdMd(toDoor)}’ in ‘${valueMd(toRoom)}’, which does not exist`,
             fixable: partner !== undefined,
             fixText:
               partner === undefined ?

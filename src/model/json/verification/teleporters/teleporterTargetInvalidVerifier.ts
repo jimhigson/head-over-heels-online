@@ -1,7 +1,7 @@
 import { produce } from "immer";
 
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { type CampaignVerifier } from "../CampaignVerification";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   allTeleporters,
   type TeleporterConfig,
@@ -74,7 +74,7 @@ export const teleporterTargetInvalidVerifier: CampaignVerifier<TeleporterTargetI
           severity: "error",
           roomId,
           itemIds: [teleporterId],
-          msg: `Teleporter ‘${escapeMarkdown(teleporterId)}’ in ‘${escapeMarkdown(roomId)}’ targets item ‘${escapeMarkdown(toItemId)}’ in ‘${escapeMarkdown(targetRoom)}’, which doesn't exist`,
+          msg: `Teleporter ‘${itemIdMd(teleporterId)}’ in ‘${valueMd(roomId)}’ targets item ‘${itemIdMd(toItemId)}’ in ‘${valueMd(targetRoom)}’, which doesn't exist`,
           fixable: lone,
           fixText:
             lone ?

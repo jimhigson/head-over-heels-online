@@ -1,7 +1,7 @@
 import { produce } from "immer";
 
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { type CampaignVerifier } from "../CampaignVerification";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   allTeleporters,
   type TeleporterConfig,
@@ -68,7 +68,7 @@ export const redundantTeleporterItemVerifier: CampaignVerifier<RedundantTeleport
           severity: "warning",
           roomId,
           itemIds: [teleporterId],
-          msg: `Teleporter ‘${escapeMarkdown(teleporterId)}’ in ‘${escapeMarkdown(roomId)}’ sets a toItemId, but ‘${escapeMarkdown(targetRoom)}’ has a single teleporter so it's unnecessary`,
+          msg: `Teleporter ‘${itemIdMd(teleporterId)}’ in ‘${valueMd(roomId)}’ sets a toItemId, but ‘${valueMd(targetRoom)}’ has a single teleporter so it's unnecessary`,
           fixable: true,
           fixText: `Remove the redundant toItemId from teleporter ‘${teleporterId}’ in ‘${roomId}’`,
           issueData: { roomId, teleporterId, targetRoom },

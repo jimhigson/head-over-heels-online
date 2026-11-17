@@ -1,10 +1,10 @@
 import { produce } from "immer";
 
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { type DirectionXy4 } from "../../../../utils/vectors/vectors";
 import { exitGameRoomId } from "../../ItemConfigMap";
 import { type CampaignVerifier } from "../CampaignVerification";
 import { allDoors, candidatePartners } from "../helpers/doorPartner";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationCampaign,
   type VerificationRoomId,
@@ -53,7 +53,7 @@ export const redundantToDoorVerifier: CampaignVerifier<RedundantToDoor> = {
         severity: "warning",
         roomId,
         itemIds: [doorId],
-        msg: `Door ‘${escapeMarkdown(doorId)}’ in ‘${escapeMarkdown(roomId)}’ sets toDoor ‘${escapeMarkdown(toDoor)}’, but ‘${escapeMarkdown(toRoom)}’ has only one matching door back so it's unnecessary`,
+        msg: `Door ‘${itemIdMd(doorId)}’ in ‘${valueMd(roomId)}’ sets toDoor ‘${itemIdMd(toDoor)}’, but ‘${valueMd(toRoom)}’ has only one matching door back so it's unnecessary`,
         fixable: true,
         fixText: `Remove the redundant toDoor from door ‘${doorId}’ in ‘${roomId}’`,
         issueData: { roomId, doorId, toRoom },

@@ -110,7 +110,7 @@ test("describes a root-level violation without a path", () => {
       severity: "error",
       roomId: "roomA",
       itemIds: [],
-      msg: "JSON schema violated (required)",
+      msg: "JSON schema violated (*required*)",
       fixable: false,
       fixText: "Needs hand-editing",
       issueData: { roomId: "roomA", instancePath: "", enumValue: undefined },
@@ -130,7 +130,7 @@ test("describes a fixable enum mismatch with its path and replacement", () => {
       severity: "error",
       roomId: "roomA",
       itemIds: [],
-      msg: "Disallowed value: *planet* = **‘notARealPlanet’**",
+      msg: "Disallowed value: *planet* = ‘*notARealPlanet*’",
       fixable: true,
       fixText: "Set to ‘blacktooth’",
       issueData: {
@@ -286,7 +286,7 @@ test("a missing non-enum required property can't be auto-fixed", () => {
       severity: "error",
       roomId: "roomA",
       itemIds: [],
-      msg: "JSON schema violated at: *items\\.m\\.config* (required)",
+      msg: "JSON schema violated at: *items\\.m\\.config* (*required*)",
       fixable: false,
       fixText: "Needs hand-editing",
       issueData: {
@@ -317,7 +317,7 @@ test("a scroll pickup is narrowed by two discriminators and reports only the rea
       severity: "error",
       roomId: "roomA",
       itemIds: [],
-      msg: "JSON schema violated at: *items\\.m\\.config* (required)",
+      msg: "JSON schema violated at: *items\\.m\\.config* (*required*)",
       fixable: false,
       fixText: "Needs hand-editing",
       issueData: {

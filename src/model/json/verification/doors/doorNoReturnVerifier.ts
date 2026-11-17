@@ -1,10 +1,10 @@
 import { produce } from "immer";
 
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { addReturnDoorInPlace } from "../../../inPlaceMutators/addReturnDoorInPlace";
 import { exitGameRoomId } from "../../ItemConfigMap";
 import { type CampaignVerifier } from "../CampaignVerification";
 import { allDoors, doorsBackTo } from "../helpers/doorPartner";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationRoomId,
   type VerificationRoomItemId,
@@ -35,7 +35,7 @@ export const doorNoReturnVerifier: CampaignVerifier<DoorNoReturn> = {
         severity: "error",
         roomId,
         itemIds: [doorId],
-        msg: `Door ‘${escapeMarkdown(doorId)}’ in ‘${escapeMarkdown(roomId)}’ leads to ‘${escapeMarkdown(toRoom)}’, which has no door back to ‘${escapeMarkdown(roomId)}’`,
+        msg: `Door ‘${itemIdMd(doorId)}’ in ‘${valueMd(roomId)}’ leads to ‘${valueMd(toRoom)}’, which has no door back to ‘${valueMd(roomId)}’`,
         fixable: true,
         fixText: `Add a door in ‘${toRoom}’ back to ‘${roomId}’`,
         issueData: { roomId, doorId, toRoom },

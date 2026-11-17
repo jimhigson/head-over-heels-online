@@ -1,6 +1,6 @@
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { allDoors } from "../helpers/doorPartner";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationRoomId,
   type VerificationRoomItemId,
@@ -23,7 +23,7 @@ export const doorToSameRoomVerifier: CampaignVerifier<DoorToSameRoom> = {
         severity: "error",
         roomId,
         itemIds: [doorId],
-        msg: `Door ‘${escapeMarkdown(doorId)}’ in ‘${escapeMarkdown(roomId)}’ links back to its own room`,
+        msg: `Door ‘${itemIdMd(doorId)}’ in ‘${valueMd(roomId)}’ links back to its own room`,
         fixable: false,
         fixText: `Point door ‘${doorId}’ at a different room, or delete it`,
         issueData: { roomId, doorId },

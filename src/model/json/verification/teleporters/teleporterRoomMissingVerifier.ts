@@ -1,11 +1,11 @@
 import { produce } from "immer";
 
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { firstUntakenRoomId } from "../../../firstUntakenRoomId";
 import { createNewRoom } from "../../../inPlaceMutators/createNewRoom";
 import { exitGameRoomId, nowhereRoomId } from "../../ItemConfigMap";
 import { type TeleporterLandingConfig } from "../../resolveTeleporterLanding";
 import { type CampaignVerifier } from "../CampaignVerification";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import { allTeleporters, teleportersInRoom } from "../helpers/teleporterTarget";
 import {
   type VerificationRoomId,
@@ -45,7 +45,7 @@ export const teleporterRoomMissingVerifier: CampaignVerifier<TeleporterRoomMissi
           severity: "error",
           roomId,
           itemIds: [teleporterId],
-          msg: `Teleporter ‘${escapeMarkdown(teleporterId)}’ in ‘${escapeMarkdown(roomId)}’ leads to ‘${escapeMarkdown(toRoom)}’, which isn't a room in this campaign`,
+          msg: `Teleporter ‘${itemIdMd(teleporterId)}’ in ‘${valueMd(roomId)}’ leads to ‘${valueMd(toRoom)}’, which isn't a room in this campaign`,
           fixable: true,
           fixText:
             toRoom === nowhereRoomId ?

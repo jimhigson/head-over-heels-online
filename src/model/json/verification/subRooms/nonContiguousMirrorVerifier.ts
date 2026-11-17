@@ -1,6 +1,6 @@
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { roomNonContiguousRelationship } from "../../../RoomJson";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
+import { valueMd } from "../helpers/messageMarkdown";
 import { subRoomCells } from "../helpers/verticalLinks";
 import { type VerificationRoomId } from "../verificationTypes";
 
@@ -31,7 +31,7 @@ export const nonContiguousMirrorVerifier: CampaignVerifier<NonContiguousMirror> 
             severity: "warning",
             itemIds: [],
             roomId,
-            msg: `‘${escapeMarkdown(roomId)}’ has a non-contiguous relationship with ‘${escapeMarkdown(withRoom)}’, which isn't a room in this campaign`,
+            msg: `‘${valueMd(roomId)}’ has a non-contiguous relationship with ‘${valueMd(withRoom)}’, which isn't a room in this campaign`,
             fixable: false,
             fixText: `Point the relationship of ‘${roomId}’ at a real room`,
             issueData,
@@ -57,7 +57,7 @@ export const nonContiguousMirrorVerifier: CampaignVerifier<NonContiguousMirror> 
           severity: "warning",
           itemIds: [],
           roomId,
-          msg: `‘${escapeMarkdown(roomId)}’ has a non-contiguous relationship with ‘${escapeMarkdown(withRoom)}’ that isn't mirrored back`,
+          msg: `‘${valueMd(roomId)}’ has a non-contiguous relationship with ‘${valueMd(withRoom)}’ that isn't mirrored back`,
           fixable: false,
           fixText: `Add the mirrored relationship (with the gridOffset negated) on ‘${withRoom}’`,
           issueData,

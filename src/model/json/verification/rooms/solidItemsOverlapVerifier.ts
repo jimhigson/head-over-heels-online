@@ -4,12 +4,12 @@ import { noPlanetsLiberated } from "../../../../store/slices/gameInPlay/gameInPl
 import { emptyUserSettings } from "../../../../store/slices/userSettings/emptyUserSettings";
 import { emptyObject } from "../../../../utils/empty";
 import { entries } from "../../../../utils/entries";
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { itemBehaviourKey } from "../../../ItemInPlay";
 import { type UnionOfAllItemInPlayTypes } from "../../../ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../roomItemsInPlayIterators";
 import { roomSpatialIndexKey } from "../../../RoomState";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationRoomId,
   type VerificationRoomItemId,
@@ -113,7 +113,7 @@ const overlappingPairsOfRoom = new WeakMap<
  * "an *emitter*"
  */
 const withArticle = (itemType: string): string =>
-  `${/^[aeiou]/.test(itemType) ? "an" : "a"} *${itemType}*`;
+  `${/^[aeiou]/.test(itemType) ? "an" : "a"} ${valueMd(itemType)}`;
 
 /**
  * what a pair of items are, in the order given - "two *wall* items" when they
@@ -126,7 +126,7 @@ const itemTypesDescription = (
   const itemType = room.items[itemId].type;
   const otherItemType = room.items[otherItemId].type;
   return itemType === otherItemType ?
-      `two *${itemType}* items`
+      `two ${valueMd(itemType)} items`
     : `${withArticle(itemType)} and ${withArticle(otherItemType)} item`;
 };
 
@@ -147,7 +147,7 @@ export const solidItemsOverlapVerifier: CampaignVerifier<SolidItemsOverlap> = {
           severity: "error",
           roomId,
           itemIds,
-          msg: `${itemTypesDescription(room, itemIds)} in ‘${escapeMarkdown(roomId)}’: ‘${escapeMarkdown(itemId)}’ and ‘${escapeMarkdown(otherItemId)}’ overlap`,
+          msg: `${itemTypesDescription(room, itemIds)} in ‘${valueMd(roomId)}’: ‘${itemIdMd(itemId)}’ and ‘${itemIdMd(otherItemId)}’ overlap`,
           fixable: false,
           fixText: `Move ‘${itemId}’ or ‘${otherItemId}’ in ‘${roomId}’ so they don’t overlap`,
           issueData: { roomId, itemIds },

@@ -2,6 +2,7 @@ import { type PlanetName, planets } from "../../../../sprites/planets";
 import { entries } from "../../../../utils/entries";
 import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
+import { valueMd } from "../helpers/messageMarkdown";
 
 type MissingCrown = {
   planet: PlanetName;
@@ -33,7 +34,7 @@ export const missingCrownVerifier: CampaignVerifier<MissingCrown> = {
       yield {
         severity: "warning",
         itemIds: [],
-        msg: `No ${planet} crown`,
+        msg: `No ${valueMd(planet)} crown`,
         fixable: false,
         fixText: `Add ${planet} crown somewhere`,
         issueData: { planet },

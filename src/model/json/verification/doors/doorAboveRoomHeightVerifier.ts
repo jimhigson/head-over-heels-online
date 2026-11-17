@@ -1,9 +1,9 @@
 import { produce } from "immer";
 
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { defaultRoomHeightBlocks } from "../../../defaultRoomHeightBlocks";
 import { type CampaignVerifier } from "../CampaignVerification";
 import { allDoors } from "../helpers/doorPartner";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationRoomId,
   type VerificationRoomItemId,
@@ -35,7 +35,7 @@ export const doorAboveRoomHeightVerifier: CampaignVerifier<DoorAboveRoomHeight> 
           severity: "error",
           roomId,
           itemIds: [doorId],
-          msg: `Door ‘${escapeMarkdown(doorId)}’ in ‘${escapeMarkdown(roomId)}’ is at height ${z}, at or above the room's height of ${height}`,
+          msg: `Door ‘${itemIdMd(doorId)}’ in ‘${valueMd(roomId)}’ is at height ${z}, at or above the room's height of ${height}`,
           fixable: true,
           fixText: `Raise ‘${roomId}’ to height ${z + 1} so door ‘${doorId}’ sits inside the room`,
           issueData: { roomId, doorId, z, height },

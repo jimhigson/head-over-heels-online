@@ -1,10 +1,10 @@
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import {
   allDoors,
   type DoorRef,
   resolveDoorPartner,
 } from "../helpers/doorPartner";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationCampaign,
   type VerificationRoomId,
@@ -65,7 +65,7 @@ export const doorTwoWayLinkVerifier: CampaignVerifier<DoorTwoWayLink> = {
         severity: "error",
         roomId: ref.roomId,
         itemIds: [ref.doorId],
-        msg: `Doors ‘${escapeMarkdown(ref.doorId)}’ in ‘${escapeMarkdown(ref.roomId)}’ and ‘${escapeMarkdown(partner.doorId)}’ in ‘${escapeMarkdown(partner.roomId)}’ link to partners, but not to each other`,
+        msg: `Doors ‘${itemIdMd(ref.doorId)}’ in ‘${valueMd(ref.roomId)}’ and ‘${itemIdMd(partner.doorId)}’ in ‘${valueMd(partner.roomId)}’ link to partners, but not to each other`,
         fixable: false,
         fixText: `Make doors ‘${ref.doorId}’ and ‘${partner.doorId}’ name each other (or remove the crossed toDoor)`,
         issueData: {

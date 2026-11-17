@@ -1,4 +1,5 @@
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
+import { valueMd } from "../helpers/messageMarkdown";
 import {
   oppositeVerticalDirection,
   subRoomCells,
@@ -43,7 +44,7 @@ export const verticalLinkAmbiguousSubRoomVerifier: CampaignVerifier<VerticalLink
           severity: "error",
           itemIds: [],
           roomId,
-          msg: `‘${roomId}’ links ${direction} to ‘${link.room}’ without naming a sub-room, but ${returningCellCount} sub-rooms of ‘${link.room}’ link back`,
+          msg: `‘${valueMd(roomId)}’ links ${valueMd(direction)} to ‘${valueMd(link.room)}’ without naming a sub-room, but ${returningCellCount} sub-rooms of ‘${valueMd(link.room)}’ link back`,
           fixable: false,
           fixText: `Name which sub-room of ‘${link.room}’ the ${direction} link of ‘${roomId}’ leads to`,
           issueData: { roomId, cellId, direction, targetRoom: link.room },

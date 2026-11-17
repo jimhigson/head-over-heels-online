@@ -24,7 +24,7 @@ test("flags two blocks in the same place, naming both", () => {
     {
       severity: "error",
       itemIds: ["block1", "block2"],
-      msg: "two *block* items in ‘roomA’: ‘block1’ and ‘block2’ overlap",
+      msg: "two *block* items in ‘*roomA*’: ‘**block1**’ and ‘**block2**’ overlap",
     },
   ]);
 });
@@ -45,7 +45,7 @@ test("describes overlapping items of different types by both their types", () =>
   const [issue] = runCheck(solidItemsOverlapVerifier, campaignOf({ roomA }));
 
   expect(issue.msg).toBe(
-    "a *block* and a *spring* item in ‘roomA’: ‘block1’ and ‘spring1’ overlap",
+    "a *block* and a *spring* item in ‘*roomA*’: ‘**block1**’ and ‘**spring1**’ overlap",
   );
 });
 

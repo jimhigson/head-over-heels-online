@@ -1,6 +1,6 @@
 import { entries } from "../../../../utils/entries";
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
+import { valueMd } from "../helpers/messageMarkdown";
 import { uncoveredPerimeterEdges } from "../helpers/roomPerimeter";
 import { type VerificationRoomId } from "../verificationTypes";
 
@@ -28,7 +28,7 @@ export const roomPerimeterCoverageVerifier: CampaignVerifier<RoomPerimeterCovera
           severity: "warning",
           itemIds: [],
           roomId,
-          msg: `‘${escapeMarkdown(roomId)}’ has ${uncovered.length} perimeter edge${uncovered.length === 1 ? "" : "s"} with no wall or door (eg the ${direction} edge of square (${x}, ${y}))`,
+          msg: `‘${valueMd(roomId)}’ has ${uncovered.length} perimeter edge${uncovered.length === 1 ? "" : "s"} with no wall or door (eg the ${valueMd(direction)} edge of square (${x}, ${y}))`,
           fixable: false,
           fixText: `Add walls or doors to close the perimeter of ‘${roomId}’`,
           issueData: { roomId, gaps: uncovered.length },

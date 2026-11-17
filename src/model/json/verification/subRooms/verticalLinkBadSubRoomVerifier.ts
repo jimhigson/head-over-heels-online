@@ -1,6 +1,6 @@
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { subRoomById } from "../../../RoomJson";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
+import { valueMd } from "../helpers/messageMarkdown";
 import {
   type VerticalDirection,
   verticalLinks,
@@ -35,7 +35,7 @@ export const verticalLinkBadSubRoomVerifier: CampaignVerifier<VerticalLinkBadSub
           severity: "error",
           itemIds: [],
           roomId,
-          msg: `‘${escapeMarkdown(roomId)}’ links ${direction} to sub-room ‘${escapeMarkdown(link.subRoom)}’ of ‘${escapeMarkdown(link.room)}’, which doesn't exist`,
+          msg: `‘${valueMd(roomId)}’ links ${valueMd(direction)} to sub-room ‘${valueMd(link.subRoom)}’ of ‘${valueMd(link.room)}’, which doesn't exist`,
           fixable: false,
           fixText: `Point the ${direction} link of ‘${roomId}’ at a real sub-room of ‘${link.room}’`,
           issueData: {

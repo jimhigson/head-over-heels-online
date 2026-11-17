@@ -1,7 +1,7 @@
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { allDoors } from "../helpers/doorPartner";
 import { isDoorBesideFloor } from "../helpers/isDoorBesideFloor";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import { floorSquares } from "../helpers/roomPerimeter";
 import {
   type VerificationRoomId,
@@ -33,7 +33,7 @@ export const doorOffFloorVerifier: CampaignVerifier<DoorOffFloor> = {
         severity: "error",
         roomId,
         itemIds: [doorId],
-        msg: `Door ‘${escapeMarkdown(doorId)}’ in ‘${escapeMarkdown(roomId)}’ is not beside floor along all of its width`,
+        msg: `Door ‘${itemIdMd(doorId)}’ in ‘${valueMd(roomId)}’ is not beside floor along all of its width`,
         fixable: false,
         fixText: `Move door ‘${doorId}’ onto the edge of the floor in ‘${roomId}’`,
         issueData: { roomId, doorId },

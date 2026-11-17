@@ -1,6 +1,5 @@
 import { produce } from "immer";
 
-import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { firstUntakenRoomId } from "../../../firstUntakenRoomId";
 import { addReturnDoorInPlace } from "../../../inPlaceMutators/addReturnDoorInPlace";
 import { createNewRoom } from "../../../inPlaceMutators/createNewRoom";
@@ -9,6 +8,7 @@ import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import { exitGameRoomId, nowhereRoomId } from "../../ItemConfigMap";
 import { type CampaignVerifier } from "../CampaignVerification";
 import { allDoors } from "../helpers/doorPartner";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationCampaign,
   type VerificationJsonItem,
@@ -61,7 +61,7 @@ export const doorRoomMissingVerifier: CampaignVerifier<DoorRoomMissing> = {
         severity: "error",
         roomId,
         itemIds: [doorId],
-        msg: `Door ‘${escapeMarkdown(doorId)}’ in ‘${escapeMarkdown(roomId)}’ leads to ‘${escapeMarkdown(toRoom)}’, which isn't a room in this campaign`,
+        msg: `Door ‘${itemIdMd(doorId)}’ in ‘${valueMd(roomId)}’ leads to ‘${valueMd(toRoom)}’, which isn't a room in this campaign`,
         fixable: true,
         fixText:
           toRoom === nowhereRoomId ?
