@@ -5,7 +5,6 @@ import {
   RenderTexture,
   Sprite,
   type Texture,
-  TilingSprite,
 } from "pixi.js";
 
 import {
@@ -26,9 +25,7 @@ import { UniqueTextureSprite } from "./UniqueTextureSprite";
  */
 const maxTextureResolution = (container: Container): number => {
   let max =
-    container instanceof Sprite || container instanceof TilingSprite ?
-      container.texture.source.resolution
-    : 1;
+    container instanceof Sprite ? container.texture.source.resolution : 1;
   for (const child of container.children) {
     max = Math.max(max, maxTextureResolution(child));
   }
