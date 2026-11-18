@@ -111,6 +111,7 @@ export const useRoomEditorInteractivity = (
   const itemDragLeftPaneAtRef = useRef<undefined | Xy>(undefined);
 
   useEditorE2eApi({
+    openRoomId,
     renderArea,
     viewport,
     pointingAtRef,
@@ -268,6 +269,11 @@ export const useRoomEditorInteractivity = (
       const storeState = editorStore.getState();
       const roomState = loadedRoom.getRoomState();
       const mouseXy = viewportMousePosition(viewport, mouseEvent);
+      const openRoom = maybeOpenRoom(storeState.levelEditor, openRoomId);
+      // the open room may have been closed or replaced (this pane is going):
+      if (openRoom === undefined) {
+        return;
+      }
 
       const tool = openRoomTool(storeState, editable);
 
@@ -276,7 +282,7 @@ export const useRoomEditorInteractivity = (
         room: roomState,
         tool,
         gridResolution: storeState.levelEditor.gridResolution,
-        cameraAngle: storeState.levelEditor.cameraAngle,
+        cameraAngle: openRoom.cameraAngle,
         roomRenderer: roomRendererRef.current,
         previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
       });
@@ -352,7 +358,7 @@ export const useRoomEditorInteractivity = (
         room: roomState,
         tool,
         gridResolution: storeState.levelEditor.gridResolution,
-        cameraAngle: storeState.levelEditor.cameraAngle,
+        cameraAngle: openRoom.cameraAngle,
         roomRenderer: roomRendererRef.current,
         previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
       });
@@ -454,6 +460,11 @@ export const useRoomEditorInteractivity = (
       const storeState = editorStore.getState();
       const roomState = loadedRoom.getRoomState();
       const mouseXy = viewportMousePosition(viewport, mouseEvent);
+      const openRoom = maybeOpenRoom(storeState.levelEditor, openRoomId);
+      // the open room may have been closed or replaced (this pane is going):
+      if (openRoom === undefined) {
+        return;
+      }
       const tool = openRoomTool(storeState, editable);
 
       const pointingAt = findPointerPointingAt({
@@ -461,7 +472,7 @@ export const useRoomEditorInteractivity = (
         room: roomState,
         tool,
         gridResolution: storeState.levelEditor.gridResolution,
-        cameraAngle: storeState.levelEditor.cameraAngle,
+        cameraAngle: openRoom.cameraAngle,
         roomRenderer: roomRendererRef.current,
         previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
       });

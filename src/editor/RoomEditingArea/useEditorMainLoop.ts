@@ -20,11 +20,13 @@ import {
   type EditorRoomRenderer,
   type EditorRoomState,
 } from "../editorTypes";
-import { selectEditorCameraAngle } from "../slice/levelEditorSlice";
+import { selectOpenRoomCameraAngle } from "../slice/levelEditorSlice";
+import { type OpenRoomId } from "../slice/OpenRoom";
 import { useEditorLoadedRoom } from "../useEditorLoadedRoom";
 import { useEditorRoomRenderDimensions } from "./editorRoomRenderDimensions";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 import { roomEditingAreaMarginPx } from "./roomEditingAreaMarginPx";
+import { useOpenRoomPane } from "./useOpenRoomPane";
 import { useEditorViewport } from "./viewport/EditorViewportProvider";
 
 /**
@@ -45,6 +47,7 @@ const editorEngineUpscale: Upscale = {
 const editorGeneralRenderContext = (
   pixiRenderer: Renderer,
   spritesheets: Spritesheets,
+  openRoomId: OpenRoomId,
 ): GeneralRenderContext<EditorRoomId> => ({
   displaySettings: {
     emulatedResolution: "amigaLowResPal",
@@ -61,7 +64,7 @@ const editorGeneralRenderContext = (
   upscale: editorEngineUpscale,
   // the editor has no rotation transitions - the render angle is always the
   // settled quarter angle, kept up to date each tick:
-  cameraAngle: selectEditorCameraAngle(store.getState()),
+  cameraAngle: selectOpenRoomCameraAngle(store.getState(), openRoomId),
   onScreenControls: false,
   speedCoefficient: 1,
   spritesheets,
@@ -91,6 +94,7 @@ export const useEditorMainLoop = (
   }
 
   const { roomState: currentEditingRoomState } = useEditorLoadedRoom();
+  const { openRoomId } = useOpenRoomPane();
   const roomRenderSize = useEditorRoomRenderDimensions();
 
   useEffect(() => {
@@ -154,7 +158,11 @@ export const useEditorMainLoop = (
         roomRenderer = new RoomRenderer(
           {
             room: roomState,
-            general: editorGeneralRenderContext(pixiRenderer, spritesheets),
+            general: editorGeneralRenderContext(
+              pixiRenderer,
+              spritesheets,
+              openRoomId,
+            ),
           },
           decorators,
         );
@@ -193,9 +201,8 @@ export const useEditorMainLoop = (
       roomState.roomTime += deltaMS;
 
       // update the camera angle per-frame:
-      roomRenderer.renderContext.general.cameraAngle = selectEditorCameraAngle(
-        store.getState(),
-      );
+      roomRenderer.renderContext.general.cameraAngle =
+        selectOpenRoomCameraAngle(store.getState(), openRoomId);
 
       roomRenderer.tick({
         deltaMS,
@@ -222,5 +229,6 @@ export const useEditorMainLoop = (
     viewport,
     roomRendererRef,
     decorators,
+    openRoomId,
   ]);
 };

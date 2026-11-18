@@ -10,7 +10,7 @@ import {
   openEditor,
   placeItemAtWorldPosition,
   pointAtWorldPosition,
-  rotateEditorViewTo,
+  rotateActiveRoomViewTo,
   selectTool,
   soleEditorItemOfType,
 } from "./testUtils/editorInteractions";
@@ -46,7 +46,9 @@ const visibleFacesAtCameraAngle = [
 
 const upFace: Xyz = { x: 0, y: 0, z: 1 };
 
-/** the four settled camera angles, named by where world "away" appears */
+/**
+ * the four settled camera angles, named by where world "away" appears
+ */
 const awayAppearsAsDirections: Array<DirectionXy4> = [
   "away",
   "left",
@@ -71,7 +73,7 @@ test.describe("pointing at the room", () => {
     await selectTool(page, "Pointer tool");
 
     for (const awayAppearsAs of awayAppearsAsDirections) {
-      await rotateEditorViewTo(page, awayAppearsAs);
+      await rotateActiveRoomViewTo(page, awayAppearsAs);
       await fitRoomInView(page);
 
       const cameraAngle = await editorCameraAngle(page);

@@ -11,7 +11,7 @@ import {
   type LevelEditorSliceAction,
   type LevelEditorState,
 } from "../../levelEditorSlice";
-import { newOpenRoom, type OpenRoomId, type TabId } from "../../OpenRoom";
+import { openRoomDefaults, type OpenRoomId, type TabId } from "../../OpenRoom";
 
 export const doorItemToolWithAutoAddRooms: Tool = {
   type: "item",
@@ -40,7 +40,14 @@ const testTabId = "testTab" as TabId;
 export const editorStateWithOneRoomWithNoItems: LevelEditorState = {
   ...initialLevelEditorSliceState,
   selectedRoomIds: [testRoomId],
-  openRooms: { [testOpenRoomId]: newOpenRoom(testRoomId, "*", true) },
+  openRooms: {
+    [testOpenRoomId]: {
+      ...openRoomDefaults,
+      roomId: testRoomId,
+      subRoomId: "*",
+      editable: true,
+    },
+  },
   tabs: [{ id: testTabId, isPreview: false, openRoomId: testOpenRoomId }],
   cursorRoomId: testRoomId,
   campaignInProgress: {

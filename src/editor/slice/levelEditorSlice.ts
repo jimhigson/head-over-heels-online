@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { type ValueOf } from "type-fest";
 
 import { clearAllData } from "../../store/slices/clearAllData";
-import { type Xy, type Xyz } from "../../utils/vectors/vectors";
+import { type Xyz } from "../../utils/vectors/vectors";
 import {
   type EditorCampaign,
   type EditorRoomId,
@@ -189,8 +189,6 @@ export type LevelEditorState = {
   /** the text currently typed into the cmd-k menu's search input, retained while the menu is closed */
   cmdKSearch: string;
   gridResolution: GridResolution;
-  /** the 90°-increment camera rotation the editor is viewing the room from */
-  cameraAngle: Xy;
   autoCoalesce: boolean;
   wallsFloorsLocked: boolean;
   /** whether placing a door also adds a room beyond it */
@@ -397,7 +395,7 @@ export const {
   selectCursorSubRoomId,
   selectOpenRoomView,
   selectDoorAutoAddsRoom,
-  selectEditorCameraAngle,
+  selectOpenRoomCameraAngle,
   selectForwardRooms,
   selectOpenRoomHoveredItem,
   selectItem,

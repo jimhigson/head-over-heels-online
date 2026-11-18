@@ -10,7 +10,11 @@ import {
   type EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
 import { type LoadedRoomCache } from "../loadedRoomCache/LoadedRoomCache";
-import { selectEditorCameraAngle } from "../slice/levelEditorSlice";
+import {
+  selectActiveOpenRoomId,
+  selectOpenRoomCameraAngle,
+} from "../slice/levelEditorSlice";
+import { type OpenRoomId } from "../slice/OpenRoom";
 import { type MaybePointingAtSomething } from "./cursor/PointingAt";
 import { type EditorViewport } from "./viewport/EditorViewport";
 
@@ -25,25 +29,61 @@ export type EditorE2eItem = {
 };
 
 /**
- * the handle e2e tests drive the room editing area through. Pointing at the
- * room means putting the mouse at an exact place on the canvas, which is only
- * knowable from the room's projection and the viewport's transform - so the
- * app, which owns both, converts world positions to page coordinates for the
- * tests rather than tests guessing at pixels
+ * how e2e tests drive one open room's pane. Pointing at the room means putting
+ * the mouse at an exact place on the canvas, which is only knowable from the
+ * room's projection and the pane's viewport - so the app, which owns both,
+ * converts world positions to page coordinates for the tests rather than tests
+ * guessing at pixels
  */
-export type EditorE2eApi = {
+export type EditorE2eOpenRoomApi = {
   /**
    * where a world position falls on the page, in the client coordinates
    * mouse events are given in
    */
   worldToClient(worldPosition: Xyz): Xy;
+  /**
+   * the angle the open room is viewed from
+   */
+  cameraAngle(): Xy;
   /** the room's items, as picking sees them */
   items(): Array<EditorE2eItem>;
   /**
-   * what the pointer resolved to as of the last pointer event - the same value
-   * the tools act on
+   * what the pointer resolved to as of the last pointer event in the open
+   * room's pane - the same value the tools act on
    */
   pointingAt(): MaybePointingAtSomething | undefined;
+};
+
+/**
+ * the handle e2e tests drive the level editor through, on the window in
+ * visual-regression builds
+ */
+export type EditorE2eApi = {
+  /**
+   * an editable open room shown in a pane, or undefined if it isn't
+   */
+  openRoom(
+    /**
+     * which open room - the active one if not given
+     */
+    openRoomId?: OpenRoomId,
+  ): EditorE2eOpenRoomApi | undefined;
+  /**
+   * the open room commands act on - the focused pane's front tab
+   */
+  activeOpenRoomId(): OpenRoomId;
+};
+
+/**
+ * the open rooms in panes that tests can drive, by id
+ */
+const e2eOpenRooms = new Map<OpenRoomId, EditorE2eOpenRoomApi>();
+
+const activeOpenRoomId = () => selectActiveOpenRoomId(editorStore.getState());
+
+const editorE2eApi: EditorE2eApi = {
+  openRoom: (openRoomId = activeOpenRoomId()) => e2eOpenRooms.get(openRoomId),
+  activeOpenRoomId,
 };
 
 const editorE2eItem = (
@@ -56,6 +96,7 @@ const editorE2eItem = (
 });
 
 export type UseEditorE2eApiParams = {
+  openRoomId: OpenRoomId;
   /** the element the room renders into, which mouse positions are relative to */
   renderArea: HTMLElement | null;
   viewport: EditorViewport;
@@ -69,11 +110,12 @@ export type UseEditorE2eApiParams = {
 };
 
 /**
- * publishes {@link EditorE2eApi} on the window, in visual-regression builds
- * only - the same builds that expose the store (in any other build this
- * compiles away)
+ * makes an editable open room's pane drivable through {@link EditorE2eApi},
+ * published on the window, in visual-regression builds only - the same builds
+ * that expose the store (in any other build this compiles away)
  */
 export const useEditorE2eApi = ({
+  openRoomId,
   renderArea,
   viewport,
   pointingAtRef,
@@ -89,19 +131,23 @@ export const useEditorE2eApi = ({
       return;
     }
 
-    window._e2e_editor = {
+    window._e2e_editor = editorE2eApi;
+    e2eOpenRooms.set(openRoomId, {
       worldToClient(worldPosition) {
         const paneRect = renderArea.getBoundingClientRect();
         const panePosition = viewport.toScreen(
           projectWorldXyzToScreenXy(
             worldPosition,
-            selectEditorCameraAngle(editorStore.getState()),
+            selectOpenRoomCameraAngle(editorStore.getState(), openRoomId),
           ),
         );
         return {
           x: paneRect.left + panePosition.x,
           y: paneRect.top + panePosition.y,
         };
+      },
+      cameraAngle() {
+        return selectOpenRoomCameraAngle(editorStore.getState(), openRoomId);
       },
       items() {
         return roomItemsIterable(loadedRoom.getRoomState().items)
@@ -111,10 +157,10 @@ export const useEditorE2eApi = ({
       pointingAt() {
         return pointingAtRef.current;
       },
-    };
+    });
 
     return () => {
-      window._e2e_editor = undefined;
+      e2eOpenRooms.delete(openRoomId);
     };
-  }, [renderArea, viewport, pointingAtRef, loadedRoom, editable]);
+  }, [openRoomId, renderArea, viewport, pointingAtRef, loadedRoom, editable]);
 };
