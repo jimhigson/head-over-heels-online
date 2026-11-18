@@ -4,10 +4,10 @@ import {
   type SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
+import { firstSubRoomId } from "../../../model/firstSubRoomId";
 import { pick } from "../../../utils/pick";
 import { type EditorCampaign } from "../../editorTypes";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
-import { firstSubRoomId } from "../inPlaceMutators/firstSubRoomId";
 import { migrateRoomItems } from "../inPlaceMutators/migrateRoomItems";
 import { migrateRoomNonContiguousRelationships } from "../inPlaceMutators/migrateRoomNonContiguousRelationships";
 import { migrateRoomVerticalLinks } from "../inPlaceMutators/migrateRoomVerticalLinks";

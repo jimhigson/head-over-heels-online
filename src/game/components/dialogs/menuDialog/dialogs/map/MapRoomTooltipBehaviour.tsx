@@ -1,6 +1,6 @@
+import { type RoomBehaviourProps } from "../../../../../../map/RoomDecoratorProps";
+import { useIsCurrentCell } from "../../../../../../map/useIsCurrentCell";
 import { Tip } from "../../../../../../ui/tip/Tip";
-import { type RoomBehaviourProps } from "./RoomDecoratorProps";
-import { useIsCurrentCell } from "./useIsCurrentCell";
 
 export const MapRoomTooltipBehaviour = ({
   roomId,

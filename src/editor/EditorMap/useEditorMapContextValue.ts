@@ -2,18 +2,16 @@ import { createSelector } from "@reduxjs/toolkit";
 import nanoEqual from "nano-equal";
 import { useMemo } from "preact/hooks";
 
-import {
-  type MapContextValue,
-  noCellPlayables,
-} from "../../game/components/dialogs/menuDialog/dialogs/map/MapContext";
+import { originalUserId } from "../../gameInfo";
+import { type MapContextValue, noCellPlayables } from "../../map/MapContext";
 import {
   type PostfixRoomDecoratorComponent,
   type PrefixRoomDecoratorComponent,
   type RoomBehaviourComponent,
-} from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
-import { selectNotableItems } from "../../game/components/dialogs/menuDialog/dialogs/map/selectNotableItems";
-import { originalUserId } from "../../gameInfo";
+} from "../../map/RoomDecoratorProps";
+import { selectNotableItems } from "../../map/selectNotableItems";
 import { teleporterLinksFromCell } from "../../model/map/teleporterLinksFromCell";
+import { mapSettingsHooks } from "../../store/mapSettingsHooks";
 import { type EditorRootState, useEditorAppSelector } from "../../store/store";
 import { emptyObject } from "../../utils/empty";
 import { type EditorRoomId } from "../editorTypes";
@@ -123,6 +121,7 @@ export const useEditorMapContextValue = ({
       behaviours,
       prefixDecorators,
       postfixDecorators,
+      ...mapSettingsHooks,
       useShownArea: useEditorShownMapArea,
       useCurRoomId: useEditorCursorRoomId,
       useCurSubRoomId: useEditorCursorSubRoomId,

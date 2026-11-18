@@ -1,11 +1,11 @@
 import { memo } from "preact/compat";
 import { useEffect } from "preact/hooks";
 
-import { createClickableRoomBehaviour } from "../../game/components/dialogs/menuDialog/dialogs/map/createClickableRoomBehaviour";
-import { MapSvg } from "../../game/components/dialogs/menuDialog/dialogs/map/Map.svg";
-import { MapContextProvider } from "../../game/components/dialogs/menuDialog/dialogs/map/MapContext";
-import { type RoomBehaviourComponent } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
 import { type Key } from "../../game/input/keys";
+import { createClickableRoomBehaviour } from "../../map/createClickableRoomBehaviour";
+import { MapSvg } from "../../map/Map.svg";
+import { MapContextProvider } from "../../map/MapContext";
+import { type RoomBehaviourComponent } from "../../map/RoomDecoratorProps";
 import { type SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRoomGridPositions";
 import { startAppListening } from "../../store/listenerMiddleware";
 import { editorStore, store, useEditorAppSelector } from "../../store/store";

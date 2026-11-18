@@ -5,8 +5,8 @@ import {
   type SliceSelectors,
 } from "@reduxjs/toolkit";
 
+import { firstSubRoomId } from "../../../model/firstSubRoomId";
 import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
-import { firstSubRoomId } from "../inPlaceMutators/firstSubRoomId";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { openRoomDefaults, type OpenRoomId } from "../OpenRoom";
 import {

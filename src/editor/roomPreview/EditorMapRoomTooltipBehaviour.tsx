@@ -1,5 +1,5 @@
-import { type RoomBehaviourProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
-import { useIsCurrentCell } from "../../game/components/dialogs/menuDialog/dialogs/map/useIsCurrentCell";
+import { type RoomBehaviourProps } from "../../map/RoomDecoratorProps";
+import { useIsCurrentCell } from "../../map/useIsCurrentCell";
 import { Tip } from "../../ui/tip/Tip";
 import { type EditorRoomId } from "../editorTypes";
 import { RoomPreviewTipContents } from "./RoomPreviewTipContents";

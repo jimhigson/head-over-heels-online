@@ -196,6 +196,15 @@ export default defineConfig(({ mode: _mode }) => {
                     test: isVitePreloadHelper,
                     priority: 100,
                   },
+                  // the store and everything it statically imports, in one
+                  // chunk: left to itself, rolldown splits these whenever a
+                  // new lazy chunk shares some of them, and two chunks on the
+                  // path to the menu compress worse than one
+                  {
+                    name: "store",
+                    test: /\/src\/store\//,
+                    priority: 5,
+                  },
                   // the menu needs only a couple of leaf utilities from pixi;
                   // they are carved out first so wanting them never drags in
                   // the renderer

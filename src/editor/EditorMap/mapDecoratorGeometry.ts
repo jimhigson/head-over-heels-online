@@ -1,6 +1,6 @@
-import { roomGridSizeXY } from "../../game/components/dialogs/menuDialog/dialogs/map/mapConstants";
 import { blockSizePx } from "../../game/physics/mechanicsConstants";
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
+import { roomGridSizeXY } from "../../map/mapConstants";
 import {
   addXy,
   lengthXy,

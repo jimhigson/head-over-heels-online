@@ -1,10 +1,10 @@
 import { type Tagged } from "type-fest";
 
+import { firstSubRoomId } from "../../model/firstSubRoomId";
 import { emptyArray } from "../../utils/empty";
 import { valuesIter } from "../../utils/entries";
 import { omit } from "../../utils/pick";
 import { type EditorRoomId, type EditorRoomItemId } from "../editorTypes";
-import { firstSubRoomId } from "./inPlaceMutators/firstSubRoomId";
 import { newIdInPlace } from "./inPlaceMutators/newIdInPlace";
 import { type LevelEditorState } from "./levelEditorSlice";
 import { type OpenRoom, openRoomDefaults, type OpenRoomId } from "./OpenRoom";
