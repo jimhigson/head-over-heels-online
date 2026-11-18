@@ -32,7 +32,7 @@ const [monster] = loadItemFromJson(
     },
     position: originXyz,
   },
-  basicEmptyRoom("firstRoom"),
+  basicEmptyRoom(),
   noPlanetsLiberated,
   emptyRoomJsonDirectionalIndex,
 );
@@ -44,7 +44,7 @@ const [pushableBlock] = loadItemFromJson(
     config: {},
     position: originXyz,
   },
-  basicEmptyRoom("firstRoom"),
+  basicEmptyRoom(),
   noPlanetsLiberated,
   emptyRoomJsonDirectionalIndex,
 );

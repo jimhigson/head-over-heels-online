@@ -17,7 +17,7 @@ import { verifyCampaign } from "./verifyCampaign";
 
 test("fixing a door to nowhere leaves no issues", () => {
   // a valid campaign, but for one door to nowhere:
-  const start = newRoom("start");
+  const start = newRoom();
   addPlayer(start, "head", { x: 1, y: 1, z: 0 });
   addPlayer(start, "heels", { x: 2, y: 1, z: 0 });
   for (const [index, planet] of planets.entries()) {
@@ -33,7 +33,7 @@ test("fixing a door to nowhere leaves no issues", () => {
 
 test("fixing a teleporter to nowhere leaves no issues", () => {
   // a valid campaign, but for one teleporter to nowhere:
-  const start = newRoom("start");
+  const start = newRoom();
   addPlayer(start, "head", { x: 1, y: 1, z: 0 });
   addPlayer(start, "heels", { x: 2, y: 1, z: 0 });
   for (const [index, planet] of planets.entries()) {
@@ -53,8 +53,8 @@ test("fixing a teleporter to nowhere leaves no issues", () => {
 
 test("fixing a door with no door back leaves no issues", () => {
   // a valid campaign, but for one door whose room has no door back:
-  const start = newRoom("start");
-  const other = newRoom("other");
+  const start = newRoom();
+  const other = newRoom();
   addPlayer(start, "head", { x: 1, y: 1, z: 0 });
   addPlayer(start, "heels", { x: 2, y: 1, z: 0 });
   for (const [index, planet] of planets.entries()) {
@@ -75,7 +75,7 @@ test("fixing a door with no door back leaves no issues", () => {
 
 test("fixing a room too big for one map cell leaves no issues", () => {
   // a valid campaign, but for its one room being undivided at 18×14:
-  const start = newRoom("start", { size: { x: 18, y: 14 } });
+  const start = newRoom({ size: { x: 18, y: 14 } });
   addPlayer(start, "head", { x: 1, y: 1, z: 0 });
   addPlayer(start, "heels", { x: 2, y: 1, z: 0 });
   for (const [index, planet] of planets.entries()) {
@@ -95,7 +95,7 @@ test.for<[string, string]>([
   "two doors to %s on the same wall lead into one new room, leaving no issues",
   ([, toRoom]) => {
     // a valid campaign, but for two doors side by side to the same place:
-    const start = newRoom("start");
+    const start = newRoom();
     addPlayer(start, "head", { x: 1, y: 1, z: 0 });
     addPlayer(start, "heels", { x: 2, y: 1, z: 0 });
     for (const [index, planet] of planets.entries()) {
@@ -131,7 +131,7 @@ test.for<[string, string]>([
   "two doors to %s on opposite walls lead into two new rooms, leaving no issues",
   ([, toRoom]) => {
     // a valid campaign, but for two doors on opposite walls to the same place:
-    const start = newRoom("start");
+    const start = newRoom();
     addPlayer(start, "head", { x: 1, y: 1, z: 0 });
     addPlayer(start, "heels", { x: 2, y: 1, z: 0 });
     for (const [index, planet] of planets.entries()) {

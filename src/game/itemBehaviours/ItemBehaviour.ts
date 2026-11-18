@@ -1,4 +1,4 @@
-import { type ExportedSoundId } from "../../_generated/sfxdex/sfx";
+import { type ExportedSoundId } from "../../_generated/sfxdex/soundIds";
 import { itemBehaviourKey, type ItemInPlayType } from "../../model/ItemInPlay";
 import {
   type FreeItem,

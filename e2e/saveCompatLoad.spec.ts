@@ -60,8 +60,7 @@ test.describe("save games from previous versions load in the current version", (
 
       const restoredRoomId = await page.evaluate(() => {
         const { gameState } = window._e2e_gamePageGameAi!;
-        return gameState.characterRooms[gameState.currentCharacterName]
-          ?.roomJson.id;
+        return gameState.characterRooms[gameState.currentCharacterName]?.id;
       });
       expect(restoredRoomId).toBe(fixture.roomId);
 

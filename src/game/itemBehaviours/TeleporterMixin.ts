@@ -1,4 +1,4 @@
-import { type ExportedSoundId } from "../../_generated/sfxdex/sfx";
+import { type ExportedSoundId } from "../../_generated/sfxdex/soundIds";
 import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import { type Campaign } from "../../model/modelTypes";
 import { store } from "../../store/store";

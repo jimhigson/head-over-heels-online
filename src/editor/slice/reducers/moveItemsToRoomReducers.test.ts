@@ -30,11 +30,9 @@ const teleporterId = "teleporter" as EditorRoomItemId;
 const floorId = "floor" as EditorRoomItemId;
 
 const roomWithFloor = (
-  roomId: EditorRoomId,
   items: Record<string, EditorJsonItemUnion> = {},
   floorSize = 8,
 ): EditorRoomJson => ({
-  id: roomId,
   planet: "blacktooth",
   color: { hue: "cyan", shade: "basic" },
   items: {
@@ -63,15 +61,15 @@ const teleporterTo = (toRoom: EditorRoomId): EditorJsonItemUnion => ({
   position: { x: 5, y: 1, z: 0 },
 });
 
-const stateWithRooms = (...rooms: EditorRoomJson[]): LevelEditorState =>
+const stateWithRooms = (
+  rooms: Partial<Record<EditorRoomId, EditorRoomJson>>,
+): LevelEditorState =>
   produce(editorStateWithOneRoomWithNoItems, (draft) => {
-    for (const room of rooms) {
-      draft.campaignInProgress.rooms[room.id] = room;
-    }
+    Object.assign(draft.campaignInProgress.rooms, rooms);
   });
 
-const baseState = stateWithRooms(
-  roomWithFloor(testRoomId, {
+const baseState = stateWithRooms({
+  [testRoomId]: roomWithFloor({
     [blockId]: block(2, 2),
     [joystickId]: {
       type: "joystick",
@@ -80,9 +78,9 @@ const baseState = stateWithRooms(
     },
     [teleporterId]: teleporterTo(roomC),
   }),
-  roomWithFloor(roomB, { [blockId]: block(2, 2) }),
-  roomWithFloor(roomC, { [teleporterId]: teleporterTo(testRoomId) }),
-);
+  [roomB]: roomWithFloor({ [blockId]: block(2, 2) }),
+  [roomC]: roomWithFloor({ [teleporterId]: teleporterTo(testRoomId) }),
+});
 
 const jsonItemFromRoom = (
   state: LevelEditorState,
@@ -95,6 +93,8 @@ test("removes the item from the room it was in", () => {
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [blockId],
       toRoomId: roomB,
       toSubRoomId: "*",
@@ -108,6 +108,8 @@ test("gives the item a new id when its id is taken in the destination", () => {
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [blockId],
       toRoomId: roomB,
       toSubRoomId: "*",
@@ -121,6 +123,8 @@ test("moves the item to the nearest whole block clear of collisions", () => {
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [blockId],
       toRoomId: roomB,
       toSubRoomId: "*",
@@ -148,6 +152,8 @@ test("prefers moving sideways to stacking up", () => {
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [blockId],
       toRoomId: roomB,
       toSubRoomId: "*",
@@ -162,6 +168,8 @@ test("makes the destination the current room", () => {
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [blockId],
       toRoomId: roomB,
       toSubRoomId: "*",
@@ -175,6 +183,8 @@ test("selects the moved items in the destination", () => {
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [blockId],
       toRoomId: roomB,
       toSubRoomId: "*",
@@ -190,6 +200,8 @@ test("pushes an undo entry onto the destination room", () => {
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [blockId],
       toRoomId: roomB,
       toSubRoomId: "*",
@@ -203,6 +215,8 @@ test("pushes an undo entry onto the room moved from", () => {
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [blockId],
       toRoomId: roomB,
       toSubRoomId: "*",
@@ -216,6 +230,8 @@ test("leaves scenery behind", () => {
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [blockId, floorId],
       toRoomId: roomB,
       toSubRoomId: "*",
@@ -229,6 +245,8 @@ test("does nothing when dropped on the room the items are in", () => {
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [blockId],
       toRoomId: testRoomId,
       toSubRoomId: "*",
@@ -239,7 +257,7 @@ test("does nothing when dropped on the room the items are in", () => {
 
 test("does nothing when the items fit nowhere in the destination", () => {
   const state0 = produce(baseState, (draft) => {
-    draft.campaignInProgress.rooms[roomB] = roomWithFloor(roomB, {}, 1);
+    draft.campaignInProgress.rooms[roomB] = roomWithFloor({}, 1);
     draft.campaignInProgress.rooms[testRoomId].items[blockId] = {
       ...block(0, 0),
       config: { style: "organic", times: { x: 2 } },
@@ -248,6 +266,8 @@ test("does nothing when the items fit nowhere in the destination", () => {
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [blockId],
       toRoomId: roomB,
       toSubRoomId: "*",
@@ -261,6 +281,8 @@ test("keeps a reference between items that move together, under their new ids", 
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [blockId, joystickId],
       toRoomId: roomB,
       toSubRoomId: "*",
@@ -277,6 +299,8 @@ test("drops a reference from a moved item to one left behind", () => {
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [joystickId],
       toRoomId: roomB,
       toSubRoomId: "*",
@@ -293,6 +317,8 @@ test("drops a reference from an item left behind to a moved one", () => {
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [blockId],
       toRoomId: roomB,
       toSubRoomId: "*",
@@ -314,6 +340,8 @@ test("a teleporter that landed on a moved teleporter goes to its new room", () =
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [teleporterId],
       toRoomId: roomB,
       toSubRoomId: "*",
@@ -338,6 +366,8 @@ test("a teleporter that landed on a moved teleporter names it where the new room
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [teleporterId],
       toRoomId: roomB,
       toSubRoomId: "*",
@@ -358,13 +388,15 @@ test("a teleporter landing on the destination's only teleporter names it once th
   const state0 = produce(baseState, (draft) => {
     draft.campaignInProgress.rooms[roomB].items[teleporterId] =
       teleporterTo(roomD);
-    draft.campaignInProgress.rooms[roomD] = roomWithFloor(roomD, {
+    draft.campaignInProgress.rooms[roomD] = roomWithFloor({
       [teleporterId]: teleporterTo(roomB),
     });
   });
   const state1 = reduceLevelEditorActions(
     state0,
     dropItemsOnRoomThunk({
+      fromRoomId: testRoomId,
+      fromSubRoomId: "*",
       itemIds: [teleporterId],
       toRoomId: roomB,
       toSubRoomId: "*",

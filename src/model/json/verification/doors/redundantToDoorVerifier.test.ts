@@ -5,8 +5,8 @@ import { type VerificationRoomId } from "../verificationTypes";
 import { redundantToDoorVerifier } from "./redundantToDoorVerifier";
 
 test("flags a toDoor the link would resolve to anyway", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const back = addDoor(roomB, "right", {
     toRoom: "roomA" as VerificationRoomId,
   });
@@ -27,8 +27,8 @@ test("flags a toDoor the link would resolve to anyway", () => {
 });
 
 test("the fix removes the redundant toDoor, clearing the issue", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const back = addDoor(roomB, "right", {
     toRoom: "roomA" as VerificationRoomId,
   });
@@ -45,8 +45,8 @@ test("the fix removes the redundant toDoor, clearing the issue", () => {
 });
 
 test("accepts a toDoor that is needed (two doors back)", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomB, "right", { toRoom: "roomA" as VerificationRoomId });
   const back2 = addDoor(roomB, "right", {
     toRoom: "roomA" as VerificationRoomId,

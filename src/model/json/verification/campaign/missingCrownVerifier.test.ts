@@ -5,7 +5,7 @@ import { addCrown, campaignOf, newRoom, runCheck } from "../testUtils";
 import { missingCrownVerifier } from "./missingCrownVerifier";
 
 test("flags every planet whose crown is missing", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addCrown(roomA, "blacktooth");
 
   const issues = runCheck(missingCrownVerifier, campaignOf({ roomA }));
@@ -14,7 +14,7 @@ test("flags every planet whose crown is missing", () => {
 });
 
 test("accepts a campaign holding all five crowns", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   for (const planet of planets) {
     addCrown(roomA, planet, { x: 1, y: 1, z: 0 });
   }
@@ -23,7 +23,7 @@ test("accepts a campaign holding all five crowns", () => {
 });
 
 test("reports a missing crown as a warning", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
 
   const [issue] = runCheck(missingCrownVerifier, campaignOf({ roomA }));
 

@@ -4,7 +4,7 @@ import { addPlayer, campaignOf, newRoom, runCheck } from "../testUtils";
 import { missingPlayerStartVerifier } from "./missingPlayerStartVerifier";
 
 test("flags a campaign with no heels start", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addPlayer(roomA, "head");
 
   const [issue] = runCheck(missingPlayerStartVerifier, campaignOf({ roomA }));
@@ -16,8 +16,8 @@ test("flags a campaign with no heels start", () => {
 });
 
 test("accepts head and heels in separate rooms", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addPlayer(roomA, "head");
   addPlayer(roomB, "heels");
 
@@ -27,7 +27,7 @@ test("accepts head and heels in separate rooms", () => {
 });
 
 test("accepts a single joined headOverHeels start for both", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addPlayer(roomA, "headOverHeels");
 
   expect(runCheck(missingPlayerStartVerifier, campaignOf({ roomA }))).toEqual(
@@ -36,7 +36,7 @@ test("accepts a single joined headOverHeels start for both", () => {
 });
 
 test("flags both characters when there's no player at all", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
 
   expect(
     runCheck(missingPlayerStartVerifier, campaignOf({ roomA })),

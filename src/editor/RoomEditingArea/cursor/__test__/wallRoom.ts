@@ -29,7 +29,6 @@ export const wallRoom = (): {
   wall: EditorUnionOfAllItemInPlayTypes;
 } => {
   const roomJson = {
-    id: "testRoom" as EditorRoomId,
     planet: "blacktooth",
     color: {
       hue: "cyan",
@@ -47,7 +46,7 @@ export const wallRoom = (): {
     },
   } as EditorRoomJson;
 
-  const room = loadEditorRoom(roomJson);
+  const room = loadEditorRoom("testRoom" as EditorRoomId, roomJson);
   const wall = roomItemsIterable(room.items).find((i) => i.type === "wall");
   if (wall === undefined) {
     throw new Error("fixture room has no wall");
@@ -74,12 +73,14 @@ export const rightWallsRoom = (
       },
     };
   }
-  return loadEditorRoom({
-    id: "testRoom" as EditorRoomId,
-    planet: "blacktooth",
-    color: { hue: "cyan", shade: "dimmed" },
-    items,
-  } as EditorRoomJson);
+  return loadEditorRoom(
+    "testRoom" as EditorRoomId,
+    {
+      planet: "blacktooth",
+      color: { hue: "cyan", shade: "dimmed" },
+      items,
+    } as EditorRoomJson,
+  );
 };
 
 /** the in-play item loaded from the given json id */

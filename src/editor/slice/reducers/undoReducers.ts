@@ -7,7 +7,7 @@ import {
 
 import { emptyObject } from "../../../utils/empty";
 import { type EditorRoomId, type EditorRoomJson } from "../../editorTypes";
-import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
+import { changeRoomIdInPlace } from "../inPlaceMutators/changeRoomIdInPlace";
 import { commitPendingNudgeInPlace } from "../inPlaceMutators/commitPendingNudgeInPlace";
 import {
   pushUndoEntryInPlace,
@@ -176,12 +176,11 @@ export const undoReducers = {
     // be what's undone or redone from:
     commitPendingNudgeInPlace(state);
 
-    const currentlyEditingRoomId =
-      selectCursorRoomIdFromLevelEditorState(state);
-    const { undo } = roomHistory(state);
-
     for (let i = 0; i < n; i++) {
-      if (undo.length === 0) {
+      // read afresh each step, since undoing a rename changes it:
+      const currentlyEditingRoomId =
+        selectCursorRoomIdFromLevelEditorState(state);
+      if (roomHistory(state).undo.length === 0) {
         break;
       }
 
@@ -193,8 +192,12 @@ export const undoReducers = {
       );
       stepLinkedRoomsInPlace(state, currentlyEditingRoomId, entry, "undo");
 
-      if (entry.room.id !== currentlyEditingRoomId) {
-        changeIdOfCurrentRoomInPlace(state, entry.room.id as EditorRoomId);
+      if (entry.description.kind === "renameRoom") {
+        changeRoomIdInPlace(
+          state,
+          currentlyEditingRoomId,
+          entry.description.fromRoomId,
+        );
       }
     }
 
@@ -218,12 +221,11 @@ export const undoReducers = {
     // be what's undone or redone from:
     commitPendingNudgeInPlace(state);
 
-    const currentlyEditingRoomId =
-      selectCursorRoomIdFromLevelEditorState(state);
-    const { redo } = roomHistory(state);
-
     for (let i = 0; i < n; i++) {
-      if (redo.length === 0) {
+      // read afresh each step, since redoing a rename changes it:
+      const currentlyEditingRoomId =
+        selectCursorRoomIdFromLevelEditorState(state);
+      if (roomHistory(state).redo.length === 0) {
         break;
       }
 
@@ -234,8 +236,12 @@ export const undoReducers = {
       );
       stepLinkedRoomsInPlace(state, currentlyEditingRoomId, entry, "redo");
 
-      if (entry.room.id !== currentlyEditingRoomId) {
-        changeIdOfCurrentRoomInPlace(state, entry.room.id as EditorRoomId);
+      if (entry.description.kind === "renameRoom") {
+        changeRoomIdInPlace(
+          state,
+          currentlyEditingRoomId,
+          entry.description.toRoomId,
+        );
       }
     }
 

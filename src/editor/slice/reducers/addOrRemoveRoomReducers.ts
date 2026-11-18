@@ -28,14 +28,14 @@ export const addOrRemoveRoomReducers = {
     const { planet } =
       selectCurrentCommittedRoomJsonFromLevelEditorState(state);
 
-    const newRoom = addNewRoomInPlace({
+    const { roomId: newRoomId } = addNewRoomInPlace({
       state,
       scenery: planet,
       roomSize,
       gridPositions,
     });
 
-    changeCurrentRoomInPlace(state, newRoom.id);
+    changeCurrentRoomInPlace(state, newRoomId);
   },
   insertRoom(
     state,

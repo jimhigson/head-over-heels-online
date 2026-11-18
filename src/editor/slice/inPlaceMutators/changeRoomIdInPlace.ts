@@ -3,21 +3,33 @@ import {
   type EditorRoomId,
 } from "../../../editor/editorTypes";
 import { type LevelEditorState } from "../../../editor/slice/levelEditorSlice";
+import { firstUntakenRoomId } from "../../../model/firstUntakenRoomId";
 import { roomVerticalLinkHolders } from "../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { valuesIter } from "../../../utils/entries";
-import {
-  selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomIdFromLevelEditorState,
-} from "../levelEditorSelectors";
 import { layoutNodesOfType } from "../PaneLayout";
 
-export const changeIdOfCurrentRoomInPlace = (
+/**
+ * give a room another id, following it everywhere it is referred to: other
+ * rooms' links to it, the selection, open rooms, room history and undo history
+ */
+export const changeRoomIdInPlace = (
   state: LevelEditorState,
-  newRoomId: EditorRoomId,
+  prevRoomId: EditorRoomId,
+  /**
+   * the id wanted - if another room has it, a free id is chosen instead, so
+   * no room is ever overwritten
+   */
+  wantedRoomId: EditorRoomId,
 ) => {
-  const prevRoomId = selectCursorRoomIdFromLevelEditorState(state);
-  const prevRoom = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
+  if (wantedRoomId === prevRoomId) {
+    return;
+  }
+  const { rooms } = state.campaignInProgress;
+  const isWantedRoomIdTaken = rooms[wantedRoomId] !== undefined;
+  const newRoomId =
+    isWantedRoomIdTaken ? firstUntakenRoomId(rooms) : wantedRoomId;
+  const prevRoom = rooms[prevRoomId];
 
   for (const room of valuesIter(state.campaignInProgress.rooms)) {
     // update any doors and teleporters that reference the old room id
@@ -52,10 +64,7 @@ export const changeIdOfCurrentRoomInPlace = (
     }
   }
 
-  state.campaignInProgress.rooms[newRoomId] = {
-    ...prevRoom,
-    id: newRoomId,
-  };
+  state.campaignInProgress.rooms[newRoomId] = prevRoom;
   delete state.campaignInProgress.rooms[prevRoomId];
 
   state.selectedRoomIds = state.selectedRoomIds.map((id) =>

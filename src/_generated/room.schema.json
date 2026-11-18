@@ -28,9 +28,6 @@
           "description": "custom room height that can be set per-room in blocks. If not set, the default room height is used. Only a few of the original game rooms need this to make the transition to the next room above work better. Can be used to fine-tune the point in a jump where the room above loads.",
           "type": "number"
         },
-        "id": {
-          "type": "string"
-        },
         "items": {
           "additionalProperties": {
             "anyOf": [
@@ -1848,7 +1845,7 @@
           "type": "string"
         }
       },
-      "required": ["id", "planet", "color", "items"],
+      "required": ["planet", "color", "items"],
       "type": "object",
       "if": {
         "properties": {

@@ -29,7 +29,7 @@ test.for([
   { x: 8, y: 13 },
   { x: 14, y: 8 },
 ])("flags an undivided $x×$y room", (size) => {
-  const roomA = newRoom("roomA", { size });
+  const roomA = newRoom({ size });
 
   expect(
     runCheck(subRoomsFitFloorVerifier, campaignOf({ roomA })).map(
@@ -39,13 +39,13 @@ test.for([
 });
 
 test("accepts a 12×12 room as one map cell", () => {
-  const roomA = newRoom("roomA", { size: { x: 12, y: 12 } });
+  const roomA = newRoom({ size: { x: 12, y: 12 } });
 
   expect(runCheck(subRoomsFitFloorVerifier, campaignOf({ roomA }))).toEqual([]);
 });
 
 test("flags an oversized room with only a whole-room sub-room", () => {
-  const roomA = newRoom("roomA", { size: { x: 14, y: 8 } });
+  const roomA = newRoom({ size: { x: 14, y: 8 } });
   setWholeRoomCell(roomA, { above: { room: "roomB" } });
 
   expect(
@@ -54,7 +54,7 @@ test("flags an oversized room with only a whole-room sub-room", () => {
 });
 
 test("ignores an oversized room that is already divided", () => {
-  const roomA = newRoom("roomA", {
+  const roomA = newRoom({
     gridPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },
@@ -65,7 +65,7 @@ test("ignores an oversized room that is already divided", () => {
 });
 
 test("fix divides a 14×8 room into two side-by-side sub-rooms", () => {
-  const roomA = newRoom("roomA", { size: { x: 14, y: 8 } });
+  const roomA = newRoom({ size: { x: 14, y: 8 } });
 
   expect<SubRooms<VerificationRoomId> | undefined>(
     fixAll(campaignOf({ roomA })).rooms.roomA.meta?.subRooms,
@@ -82,7 +82,7 @@ test("fix divides a 14×8 room into two side-by-side sub-rooms", () => {
 });
 
 test("fix splits an uneven span into near-equal sub-rooms", () => {
-  const roomA = newRoom("roomA", { size: { x: 8, y: 25 } });
+  const roomA = newRoom({ size: { x: 8, y: 25 } });
 
   expect(
     dividedCells(fixAll(campaignOf({ roomA })).rooms.roomA)
@@ -102,7 +102,7 @@ test("fix splits an uneven span into near-equal sub-rooms", () => {
 });
 
 test("fix moves whole-room links onto the first sub-room", () => {
-  const roomA = newRoom("roomA", { size: { x: 14, y: 8 } });
+  const roomA = newRoom({ size: { x: 14, y: 8 } });
   setWholeRoomCell(roomA, { above: { room: "roomB" } });
 
   expect(
@@ -111,7 +111,7 @@ test("fix moves whole-room links onto the first sub-room", () => {
 });
 
 test("fix leaves nothing for the check to flag", () => {
-  const roomA = newRoom("roomA", { size: { x: 14, y: 25 } });
+  const roomA = newRoom({ size: { x: 14, y: 25 } });
 
   expect(
     runCheck(subRoomsFitFloorVerifier, fixAll(campaignOf({ roomA }))),
@@ -123,8 +123,8 @@ test("fix leaves nothing for the check to flag", () => {
  * room's 12 depth fits one map row, so both doors meet it on the same row
  */
 const twoWideRoomsJoinedByTwoDoors = () => {
-  const roomA = newRoom("roomA", { size: { x: 14, y: 8 } });
-  const roomB = newRoom("roomB", { size: { x: 14, y: 12 } });
+  const roomA = newRoom({ size: { x: 14, y: 8 } });
+  const roomB = newRoom({ size: { x: 14, y: 12 } });
   const nearDoorB = addDoor(
     roomB,
     "right",
@@ -172,7 +172,7 @@ test.for<[string, CampaignVerifier<unknown>]>([
 });
 
 test("flags floor squares left outside every sub-room, once per room", () => {
-  const roomA = newRoom("roomA", {
+  const roomA = newRoom({
     gridPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },
@@ -191,7 +191,7 @@ test("flags floor squares left outside every sub-room, once per room", () => {
 });
 
 test("fix divides the floor afresh between sub-rooms that form a grid, keeping their links", () => {
-  const roomA = newRoom("roomA", {
+  const roomA = newRoom({
     gridPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },
@@ -210,7 +210,7 @@ test("fix divides the floor afresh between sub-rooms that form a grid, keeping t
 });
 
 test("fix leaves no floor outside the sub-rooms", () => {
-  const roomA = newRoom("roomA", {
+  const roomA = newRoom({
     gridPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },
@@ -226,7 +226,7 @@ test("fix leaves no floor outside the sub-rooms", () => {
 });
 
 test("can't fix floor outside sub-rooms that aren't a grid of the size the floor needs", () => {
-  const roomA = newRoom("roomA", {
+  const roomA = newRoom({
     gridPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },
@@ -245,7 +245,7 @@ test("can't fix floor outside sub-rooms that aren't a grid of the size the floor
 });
 
 test("accepts a divided room whose sub-rooms cover the whole floor", () => {
-  const roomA = newRoom("roomA", {
+  const roomA = newRoom({
     gridPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },

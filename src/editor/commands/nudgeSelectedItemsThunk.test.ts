@@ -73,6 +73,7 @@ test("nudging a door at a fine grid resolution moves it by a whole block", () =>
     nudgeSelectedItemsThunk(
       { posVector: { x: 0, y: 1, z: 0 } },
       loadEditorRoom(
+        testRoomId,
         selectCurrentCommittedRoomJsonFromLevelEditorState(state0),
       ),
     ),
@@ -128,6 +129,7 @@ test.for([
       nudgeSelectedItemsThunk(
         { posVector: { x: direction, y: 0, z: 0 } },
         loadEditorRoom(
+          testRoomId,
           selectCurrentCommittedRoomJsonFromLevelEditorState(state0),
         ),
       ),

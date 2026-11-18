@@ -6,8 +6,8 @@ import { type VerificationRoomId } from "../verificationTypes";
 import { doorNoReturnVerifier } from "./doorNoReturnVerifier";
 
 test("flags a door whose destination has no door back", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const doorId = addDoor(roomA, "left", {
     toRoom: "roomB" as VerificationRoomId,
   });
@@ -18,8 +18,8 @@ test("flags a door whose destination has no door back", () => {
 });
 
 test("accepts a door that has a return door", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomA, "left", { toRoom: "roomB" as VerificationRoomId });
   addDoor(roomB, "right", { toRoom: "roomA" as VerificationRoomId });
 
@@ -29,8 +29,8 @@ test("accepts a door that has a return door", () => {
 });
 
 test("the fix adds a door back on the facing wall, cut through it", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(
     roomA,
     "away",
@@ -66,8 +66,8 @@ test("the fix adds a door back on the facing wall, cut through it", () => {
 });
 
 test("after the fix, the door has a way back", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(
     roomA,
     "away",

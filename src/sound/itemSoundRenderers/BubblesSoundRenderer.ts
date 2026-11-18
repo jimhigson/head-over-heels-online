@@ -1,4 +1,4 @@
-import { type ExportedSoundId } from "../../_generated/sfxdex/sfx";
+import { type ExportedSoundId } from "../../_generated/sfxdex/soundIds";
 import { type ItemConfigMap } from "../../model/json/ItemConfigMap";
 import { audioCtx } from "../audioCtx";
 import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";

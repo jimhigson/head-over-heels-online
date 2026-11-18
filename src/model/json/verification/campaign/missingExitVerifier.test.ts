@@ -6,8 +6,8 @@ import { type VerificationRoomId } from "../verificationTypes";
 import { missingExitVerifier } from "./missingExitVerifier";
 
 test("flags a campaign with no door to the end of the game", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomA, "left", { toRoom: "roomB" as VerificationRoomId });
   addDoor(roomB, "right", { toRoom: "roomA" as VerificationRoomId });
 
@@ -19,7 +19,7 @@ test("flags a campaign with no door to the end of the game", () => {
 });
 
 test("accepts a campaign with a door to the end of the game", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addDoor(roomA, "left", { toRoom: exitGameRoomId });
 
   expect(runCheck(missingExitVerifier, campaignOf({ roomA }))).toEqual([]);

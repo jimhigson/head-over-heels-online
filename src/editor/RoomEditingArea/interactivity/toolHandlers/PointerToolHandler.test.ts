@@ -65,6 +65,7 @@ test("a drag puts the dragged block where the pointer is, however few of the poi
     },
   );
   const roomState = loadEditorRoom(
+    testRoomId,
     state0.campaignInProgress.rooms[testRoomId] as EditorRoomJson,
   );
   // the pane is at the page's origin, and the view unpanned and unzoomed, so
@@ -165,7 +166,6 @@ test("dragging a block into another room's pane and releasing it there moves it 
       };
       rooms[otherRoomId] = {
         ...rooms[testRoomId],
-        id: otherRoomId,
         items: { ["floor" as EditorRoomItemId]: floor },
       };
       draft.layout.nodes[otherOpenRoomId] = {
@@ -194,9 +194,11 @@ test("dragging a block into another room's pane and releasing it there moves it 
     },
   };
   const sourceRoomState = loadEditorRoom(
+    testRoomId,
     state0.campaignInProgress.rooms[testRoomId] as EditorRoomJson,
   );
   const otherRoomState = loadEditorRoom(
+    otherRoomId,
     state0.campaignInProgress.rooms[otherRoomId] as EditorRoomJson,
   );
   const handler = new PointerToolHandler();
@@ -324,6 +326,7 @@ test("dragging a block into a second view of its own room and releasing it there
     },
   };
   const roomState = loadEditorRoom(
+    testRoomId,
     state0.campaignInProgress.rooms[testRoomId] as EditorRoomJson,
   );
   const handler = new PointerToolHandler();
@@ -419,7 +422,6 @@ test("holding shift while dragging a block over another room's pane lifts it the
       };
       rooms[otherRoomId] = {
         ...rooms[testRoomId],
-        id: otherRoomId,
         items: { ["floor" as EditorRoomItemId]: floor },
       };
       draft.layout.nodes[otherOpenRoomId] = {
@@ -448,9 +450,11 @@ test("holding shift while dragging a block over another room's pane lifts it the
     },
   };
   const sourceRoomState = loadEditorRoom(
+    testRoomId,
     state0.campaignInProgress.rooms[testRoomId] as EditorRoomJson,
   );
   const otherRoomState = loadEditorRoom(
+    otherRoomId,
     state0.campaignInProgress.rooms[otherRoomId] as EditorRoomJson,
   );
   const handler = new PointerToolHandler();
@@ -567,6 +571,7 @@ test("a block dragged out of its room's pane is hidden there until it can be dro
     },
   };
   const roomState = loadEditorRoom(
+    testRoomId,
     state0.campaignInProgress.rooms[testRoomId] as EditorRoomJson,
   );
   const handler = new PointerToolHandler();
@@ -650,6 +655,7 @@ test("dragging a block's edge and releasing it resizes the block", () => {
     },
   };
   const roomState = loadEditorRoom(
+    testRoomId,
     state0.campaignInProgress.rooms[testRoomId] as EditorRoomJson,
   );
   const handler = new PointerToolHandler();
@@ -742,6 +748,7 @@ test("a block dragged against another like it and released there is joined to it
     },
   };
   const roomState = loadEditorRoom(
+    testRoomId,
     state0.campaignInProgress.rooms[testRoomId] as EditorRoomJson,
   );
   const handler = new PointerToolHandler();
@@ -826,6 +833,7 @@ test("releasing a drag records it as one undoable move", () => {
     },
   };
   const roomState = loadEditorRoom(
+    testRoomId,
     state0.campaignInProgress.rooms[testRoomId] as EditorRoomJson,
   );
   const handler = new PointerToolHandler();
@@ -935,7 +943,6 @@ test.for([
         };
         rooms[otherRoomId] = {
           ...rooms[testRoomId],
-          id: otherRoomId,
           items: { ["floor" as EditorRoomItemId]: floor },
         };
         draft.layout.nodes[otherOpenRoomId] = {
@@ -964,9 +971,11 @@ test.for([
       },
     };
     const sourceRoomState = loadEditorRoom(
+      testRoomId,
       state0.campaignInProgress.rooms[testRoomId] as EditorRoomJson,
     );
     const otherRoomState = loadEditorRoom(
+      otherRoomId,
       state0.campaignInProgress.rooms[otherRoomId] as EditorRoomJson,
     );
     const handler = new PointerToolHandler();

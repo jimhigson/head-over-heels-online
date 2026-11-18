@@ -15,8 +15,8 @@ const ncrTo = (
 });
 
 test("flags two cells placed at the same grid position", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   // a zero offset stacks roomB exactly on top of roomA
   setWholeRoomCell(roomA, ncrTo("roomB", { x: 0, y: 0, z: 0 }));
 
@@ -29,8 +29,8 @@ test("flags two cells placed at the same grid position", () => {
 });
 
 test("flags a relationship that contradicts the grid layout", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   // roomB sits one step right of roomA, but links back as if one step away
   setWholeRoomCell(roomA, ncrTo("roomB", { x: 1, y: 0, z: 0 }));
   setWholeRoomCell(roomB, ncrTo("roomA", { x: 0, y: 1, z: 0 }));
@@ -41,8 +41,8 @@ test("flags a relationship that contradicts the grid layout", () => {
 });
 
 test("accepts a consistently-mirrored layout", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   setWholeRoomCell(roomA, ncrTo("roomB", { x: 1, y: 0, z: 0 }));
   setWholeRoomCell(roomB, ncrTo("roomA", { x: -1, y: 0, z: 0 }));
 

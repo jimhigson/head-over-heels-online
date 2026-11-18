@@ -11,7 +11,7 @@ import {
   iterateRoomJsonItemIds,
   iterateRoomJsonItemsWithIds,
 } from "../../../model/RoomJsonItemIterators";
-import { keys, valuesIter } from "../../../utils/entries";
+import { keys, objectEntriesIter, valuesIter } from "../../../utils/entries";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import {
   type EditorJsonItem,
@@ -21,7 +21,6 @@ import {
   type EditorRoomJson,
 } from "../../editorTypes";
 import { isMovableBetweenRooms } from "../isMovableBetweenRooms";
-import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
   type LevelEditorState,
   type PreviewedEditsByRoom,
@@ -61,10 +60,9 @@ const landingItemIdOf = (
   { roomId, itemId }: ItemLocation,
   teleporter: TeleporterJson,
 ): EditorRoomItemId | undefined => {
-  const destinationRoom = roomById(
-    rooms,
-    (teleporter.config.toRoom ?? roomId) as EditorRoomId,
-  );
+  const destinationRoomId = (teleporter.config.toRoom ??
+    roomId) as EditorRoomId;
+  const destinationRoom = roomById(rooms, destinationRoomId);
   if (destinationRoom === undefined) {
     return undefined;
   }
@@ -77,7 +75,7 @@ const landingItemIdOf = (
     ),
     (candidateId): candidateId is EditorRoomItemId =>
       candidateId in destinationRoom.items,
-    destinationRoom.id === roomId ? itemId : undefined,
+    destinationRoomId === roomId ? itemId : undefined,
   );
   return landing.type === "item" ? landing.itemId : undefined;
 };
@@ -93,18 +91,18 @@ const findAffectedTeleporters = (
   toRoomId: EditorRoomId,
   movingIds: ReadonlySet<EditorRoomItemId>,
 ): AffectedTeleporter[] =>
-  valuesIter(rooms)
-    .flatMap((room) =>
+  objectEntriesIter(rooms)
+    .flatMap(([roomId, room]) =>
       iterateRoomJsonItemsWithIds(
         (room as EditorRoomJson).items,
         "teleporter",
         "portableTeleporter",
       ).map(([itemId, teleporter]) => {
-        const location = { roomId: room.id as EditorRoomId, itemId };
+        const location = { roomId, itemId };
         return {
           teleporter: location,
           destinationRoomId: (teleporter.config.toRoom ??
-            room.id) as EditorRoomId,
+            roomId) as EditorRoomId,
           landingItemId: landingItemIdOf(rooms, location, teleporter),
         };
       }),
@@ -121,7 +119,8 @@ const findAffectedTeleporters = (
     .toArray();
 
 export type MoveItemsToRoomArgs = {
-  /** items in the current room; scenery and doors among them are left behind */
+  fromRoomId: EditorRoomId;
+  /** items in the room they move from; scenery and doors among them are left behind */
   itemIds: EditorRoomItemId[];
   toRoomId: EditorRoomId;
   /** added to each moved item's position */
@@ -152,8 +151,8 @@ export type ItemsMoveBetweenRooms = {
  */
 export const planItemsMoveBetweenRooms = (
   rooms: Rooms,
-  fromRoomId: EditorRoomId,
   {
+    fromRoomId,
     itemIds,
     toRoomId,
     blockPositionDelta,
@@ -245,7 +244,7 @@ export const itemsMoveBetweenRoomsDescription = (
 };
 
 /**
- * Move items from the current room to any other room, returning the new ids of the moved items there
+ * Move items from one room to another, returning the new ids of the moved items there
  * (undefined if nothing moved) which can change in the event of collisions.
  *
  * References between the items are kept where both ends move, or dropped where only one does.
@@ -263,8 +262,7 @@ export const moveItemsToRoomInPlace = (
   }
 
   const rooms = current(state.campaignInProgress.rooms);
-  const fromRoom = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
-  const move = planItemsMoveBetweenRooms(rooms, fromRoom.id, moveArgs);
+  const move = planItemsMoveBetweenRooms(rooms, moveArgs);
   if (move === undefined) {
     return undefined;
   }
@@ -292,7 +290,7 @@ const moveItemsBetweenRoomsInPlace = (
 
   const affectedTeleporters = findAffectedTeleporters(
     rooms,
-    fromRoom.id,
+    fromRoomId,
     toRoomId,
     new Set(movingIds),
   );
@@ -324,8 +322,8 @@ const moveItemsBetweenRoomsInPlace = (
 
   /** where an item is now, given where it was before the move */
   const locationAfterMove = ({ roomId, itemId }: ItemLocation): ItemLocation =>
-    roomId === fromRoom.id && newIds.has(itemId) ?
-      { roomId: toRoom.id, itemId: newIds.get(itemId)! }
+    roomId === fromRoomId && newIds.has(itemId) ?
+      { roomId: toRoomId, itemId: newIds.get(itemId)! }
     : { roomId, itemId };
 
   for (const {

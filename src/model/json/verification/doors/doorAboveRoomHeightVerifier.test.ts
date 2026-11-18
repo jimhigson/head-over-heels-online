@@ -5,8 +5,8 @@ import { type VerificationRoomId } from "../verificationTypes";
 import { doorAboveRoomHeightVerifier } from "./doorAboveRoomHeightVerifier";
 
 test("flags a door at or above the default room height", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const doorId = addDoor(
     roomA,
     "left",
@@ -26,8 +26,8 @@ test("flags a door at or above the default room height", () => {
 });
 
 test("the fix raises the room height so the door fits, clearing the issue", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(
     roomA,
     "left",
@@ -45,8 +45,8 @@ test("the fix raises the room height so the door fits, clearing the issue", () =
 });
 
 test("accepts a door below the room height", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomA, "left", { toRoom: "roomB" as VerificationRoomId });
 
   expect(

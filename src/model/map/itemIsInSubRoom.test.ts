@@ -9,7 +9,6 @@ const createFinePosition = (x: number, y: number) => ({
 });
 
 const createMockRoom = (): MaybeDividedRoom => ({
-  id: "testRoom",
   meta: {
     subRooms: {
       subRoom1: {
@@ -67,7 +66,6 @@ describe("fine mode", () => {
 
   test("returns '*' when room has no subrooms", () => {
     const roomWithoutSubRooms: MaybeDividedRoom = {
-      id: "testRoom",
       meta: undefined,
     };
 
@@ -78,7 +76,6 @@ describe("fine mode", () => {
 
   test("returns '*' when room meta has no subrooms", () => {
     const roomWithoutSubRooms: MaybeDividedRoom = {
-      id: "testRoom",
       meta: {},
     };
 
@@ -89,7 +86,6 @@ describe("fine mode", () => {
 
   test("handles items exactly between two equidistant subrooms", () => {
     const room: MaybeDividedRoom = {
-      id: "testRoom",
       meta: {
         subRooms: {
           subRoom1: {
@@ -155,7 +151,6 @@ describe("block mode", () => {
 
   test("returns '*' when room has no subrooms", () => {
     const roomWithoutSubRooms: MaybeDividedRoom = {
-      id: "testRoom",
       meta: undefined,
     };
 
@@ -205,7 +200,6 @@ test("fine and block modes give same results", () => {
 
 test("case that seems wrong in editor", () => {
   const room: MaybeDividedRoom = {
-    id: "testRoom",
     meta: {
       subRooms: {
         "3": {

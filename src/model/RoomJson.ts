@@ -181,7 +181,6 @@ export type RoomJson<
   ScN extends SceneryName = SceneryName,
 > = {
   $schema?: string;
-  id: RoomId;
   /**
    * custom room height that can be set per-room in blocks.
    * If not set, the default room height is used. Only a few of the original game rooms need this

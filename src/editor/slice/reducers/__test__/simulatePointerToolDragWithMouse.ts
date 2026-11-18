@@ -51,6 +51,7 @@ export const simulatePointerToolDragWithMouse = (
   { jsonItemIds, edgeDirection, moves }: SimulatePointerToolDragWithMouseArgs,
 ): LevelEditorState => {
   const roomState = loadEditorRoom(
+    testRoomId,
     state.campaignInProgress.rooms[testRoomId] as EditorRoomJson,
   );
   const [firstJsonItemId] = jsonItemIds;

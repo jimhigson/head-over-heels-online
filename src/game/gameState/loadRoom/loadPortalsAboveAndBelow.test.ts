@@ -18,7 +18,6 @@ test("each sub-room leading to the room below has its own portal, covering just 
     below: { room: "roomBelow", subRoom: `${x},${y}` },
   });
   const roomJson: RoomJson<string, string> = {
-    id: "dividedRoom",
     planet: "blacktooth",
     color: { hue: "cyan", shade: "basic" },
     items: {
@@ -41,6 +40,7 @@ test("each sub-room leading to the room below has its own portal, covering just 
   };
 
   const roomState = loadRoom({
+    roomId: "testRoom",
     roomJson,
     scrollsRead: {},
     planetsLiberated: noPlanetsLiberated,

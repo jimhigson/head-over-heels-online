@@ -1,5 +1,5 @@
 import { roomJsonItemsIterable } from "../../model/RoomJsonItemIterators";
-import { keysIter, valuesIter } from "../../utils/entries";
+import { keysIter, objectEntriesIter } from "../../utils/entries";
 import { first } from "../../utils/iterators/first";
 import { type EditorCampaign, type EditorRoomId } from "../editorTypes";
 
@@ -9,11 +9,11 @@ import { type EditorCampaign, type EditorRoomId } from "../editorTypes";
  */
 export const startingRoomId = (campaign: EditorCampaign): EditorRoomId => {
   const playerRoomId = (which: "head" | "heels") =>
-    valuesIter(campaign.rooms).find((room) =>
+    objectEntriesIter(campaign.rooms).find(([, room]) =>
       roomJsonItemsIterable(room).some(
         (item) => item.type === "player" && item.config.which === which,
       ),
-    )?.id;
+    )?.[0];
   const maybeRoomId =
     playerRoomId("head") ??
     playerRoomId("heels") ??

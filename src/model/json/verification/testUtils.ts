@@ -28,11 +28,9 @@ import {
 
 /** a fresh single-cell (or, with `gridPositions`, divided) room with full perimeter walls */
 export const newRoom = (
-  id: string,
   opts: { size?: Xy; gridPositions?: Xy[] } = {},
 ): VerificationRoomJson =>
   createNewRoom<VerificationRoomId, VerificationRoomItemId>(
-    id as VerificationRoomId,
     opts.size ?? { x: 8, y: 8 },
     { hue: "cyan", shade: "basic" },
     "blacktooth",
@@ -125,7 +123,7 @@ export const setSubRoomCell = (
 ): void => {
   const subRooms = room.meta?.subRooms;
   if (subRooms === undefined || isWholeRoomSubRooms(subRooms)) {
-    throw new Error(`room ‘${room.id}’ is not divided into sub-rooms`);
+    throw new Error("the room is not divided into sub-rooms");
   }
   Object.assign(subRooms[cellId], patch);
 };

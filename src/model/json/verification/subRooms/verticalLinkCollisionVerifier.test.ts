@@ -4,8 +4,8 @@ import { campaignOf, newRoom, runCheck, setSubRoomCell } from "../testUtils";
 import { type VerificationRoomId } from "../verificationTypes";
 import { verticalLinkCollisionVerifier } from "./verticalLinkCollisionVerifier";
 
-const dividedRoom = (id: string): ReturnType<typeof newRoom> =>
-  newRoom(id, {
+const dividedRoom = (): ReturnType<typeof newRoom> =>
+  newRoom({
     gridPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },
@@ -13,7 +13,7 @@ const dividedRoom = (id: string): ReturnType<typeof newRoom> =>
   });
 
 test("flags two sub-rooms that link above to the same place", () => {
-  const roomA = dividedRoom("roomA");
+  const roomA = dividedRoom();
   setSubRoomCell(roomA, "0", {
     above: { room: "roomC" as VerificationRoomId },
   });
@@ -33,7 +33,7 @@ test("flags two sub-rooms that link above to the same place", () => {
 });
 
 test("accepts sub-rooms with distinct vertical targets", () => {
-  const roomA = dividedRoom("roomA");
+  const roomA = dividedRoom();
   setSubRoomCell(roomA, "0", {
     above: { room: "roomB" as VerificationRoomId },
   });

@@ -8,8 +8,8 @@ import {
 import { danglingDoorTargetVerifier } from "./danglingDoorTargetVerifier";
 
 test("flags a door whose toDoor names a door that does not exist in the destination", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const doorId = addDoor(roomA, "left", {
     toRoom: "roomB" as VerificationRoomId,
     toDoor: "nope",
@@ -30,8 +30,8 @@ test("flags a toDoor that names an existing door which doesn't link back", () =>
   // mirrors sequel_23 room_6/door_2 -> timers: the named door (d2) really exists
   // in the destination, but it faces the wrong way and leads elsewhere, so the
   // game still can't resolve the partner even though the id is real
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   // the genuine partner for a left door from A is a right door back to A:
   addDoor(roomB, "right", { toRoom: "roomA" as VerificationRoomId });
   // ...but this other door also exists and is what the source wrongly names:
@@ -54,8 +54,8 @@ test("flags a toDoor that names an existing door which doesn't link back", () =>
 });
 
 test("accepts a door whose toDoor resolves to a real door", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const backDoorId = addDoor(roomB, "right", {
     toRoom: "roomA" as VerificationRoomId,
   });
@@ -73,8 +73,8 @@ test("accepts a door whose toDoor resolves to a real door", () => {
 });
 
 test("offers an auto-fix when exactly one door comes back", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomA, "left", {
     toRoom: "roomB" as VerificationRoomId,
     toDoor: "nope",
@@ -90,8 +90,8 @@ test("offers an auto-fix when exactly one door comes back", () => {
 });
 
 test("offers an auto-fix when several doors come back but only one is unmatched", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const back1 = addDoor(roomB, "right", {
     toRoom: "roomA" as VerificationRoomId,
   });
@@ -120,8 +120,8 @@ test("offers an auto-fix when several doors come back but only one is unmatched"
 });
 
 test("the fix points a broken link at the only unmatched door, clearing the issue", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const back1 = addDoor(roomB, "right", {
     toRoom: "roomA" as VerificationRoomId,
   });
@@ -150,8 +150,8 @@ test("offers an auto-fix when the destination links back to the broken door", ()
   // mirrors sequel_23's room_45 ↔ room_47: room_45's door is broken, but
   // room_47 has a door that links back to it - a mutual link is a strong signal
   // of the intended partner even when several doors come back
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const danglingId = addDoor(roomA, "left", {
     toRoom: "roomB" as VerificationRoomId,
     toDoor: "nope",
@@ -172,8 +172,8 @@ test("offers an auto-fix when the destination links back to the broken door", ()
 });
 
 test("the mutual-link fix points the broken door back, clearing the issue", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const danglingId = addDoor(roomA, "left", {
     toRoom: "roomB" as VerificationRoomId,
     toDoor: "nope",
@@ -194,8 +194,8 @@ test("the mutual-link fix points the broken door back, clearing the issue", () =
 });
 
 test("does not offer an auto-fix when several doors come back (ambiguous)", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomA, "left", {
     toRoom: "roomB" as VerificationRoomId,
     toDoor: "nope",
@@ -212,8 +212,8 @@ test("does not offer an auto-fix when several doors come back (ambiguous)", () =
 });
 
 test("the fix drops the broken toDoor, clearing the issue", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomA, "left", {
     toRoom: "roomB" as VerificationRoomId,
     toDoor: "nope",
@@ -228,8 +228,8 @@ test("the fix drops the broken toDoor, clearing the issue", () => {
 });
 
 test("issue and fix messages for an unambiguous broken link", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const doorId = addDoor(roomA, "left", {
     toRoom: "roomB" as VerificationRoomId,
     toDoor: "nope",
@@ -257,8 +257,8 @@ test("issue and fix messages for an unambiguous broken link", () => {
 });
 
 test("issue message names the ambiguity and offers no fix when several doors come back", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const doorId = addDoor(roomA, "left", {
     toRoom: "roomB" as VerificationRoomId,
     toDoor: "nope",
@@ -287,8 +287,8 @@ test("issue message names the ambiguity and offers no fix when several doors com
 });
 
 test("calling fix on an unfixable (ambiguous) issue throws", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomA, "left", {
     toRoom: "roomB" as VerificationRoomId,
     toDoor: "nope",

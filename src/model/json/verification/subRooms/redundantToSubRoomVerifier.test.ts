@@ -5,7 +5,7 @@ import { type VerificationRoomId } from "../verificationTypes";
 import { redundantToSubRoomVerifier } from "./redundantToSubRoomVerifier";
 
 const roomBWithReturnDoorInSubRoom1 = () => {
-  const roomB = newRoom("roomB", {
+  const roomB = newRoom({
     gridPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },
@@ -25,8 +25,8 @@ const roomBWithReturnDoorInSubRoom1 = () => {
 };
 
 test("flags a toSubRoom pointing at an undivided room", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const doorId = addDoor(roomA, "left", {
     toRoom: "roomB" as VerificationRoomId,
     toSubRoom: "x",
@@ -44,8 +44,8 @@ test("flags a toSubRoom pointing at an undivided room", () => {
 });
 
 test("the fix removes the redundant toSubRoom, clearing the issue", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomA, "left", {
     toRoom: "roomB" as VerificationRoomId,
     toSubRoom: "x",
@@ -59,8 +59,8 @@ test("the fix removes the redundant toSubRoom, clearing the issue", () => {
 });
 
 test("accepts a door without a toSubRoom", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomA, "left", { toRoom: "roomB" as VerificationRoomId });
 
   expect(
@@ -69,7 +69,7 @@ test("accepts a door without a toSubRoom", () => {
 });
 
 test("flags a toSubRoom naming the sub-room its partner door is in", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   const doorId = addDoor(
     roomA,
     "away",
@@ -90,7 +90,7 @@ test("flags a toSubRoom naming the sub-room its partner door is in", () => {
 });
 
 test("the fix removes the inferable toSubRoom, clearing the issue", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addDoor(
     roomA,
     "away",
@@ -109,7 +109,7 @@ test("the fix removes the inferable toSubRoom, clearing the issue", () => {
 });
 
 test("accepts a toSubRoom that disagrees with its partner door", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addDoor(
     roomA,
     "away",
@@ -126,8 +126,8 @@ test("accepts a toSubRoom that disagrees with its partner door", () => {
 });
 
 test("accepts a toSubRoom when there is no partner door", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB", {
+  const roomA = newRoom();
+  const roomB = newRoom({
     gridPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },

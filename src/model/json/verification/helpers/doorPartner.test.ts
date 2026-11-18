@@ -25,8 +25,8 @@ const doorRef = (
 };
 
 test("candidatePartners finds the one door coming back", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomA, "left", { toRoom: "roomB" as VerificationRoomId });
   const backDoorId = addDoor(roomB, "right", {
     toRoom: "roomA" as VerificationRoomId,
@@ -43,8 +43,8 @@ test("candidatePartners finds the one door coming back", () => {
 });
 
 test("candidatePartners counts several doors coming back", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomA, "left", { toRoom: "roomB" as VerificationRoomId });
   addDoor(roomB, "right", { toRoom: "roomA" as VerificationRoomId });
   addDoor(roomB, "right", { toRoom: "roomA" as VerificationRoomId });
@@ -60,8 +60,8 @@ test("candidatePartners counts several doors coming back", () => {
 });
 
 test("resolveDoorPartner: unambiguous single opposite-direction door back", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const aDoor = addDoor(roomA, "left", {
     toRoom: "roomB" as VerificationRoomId,
   });
@@ -82,8 +82,8 @@ test("resolveDoorPartner: unambiguous single opposite-direction door back", () =
 });
 
 test("resolveDoorPartner: ambiguous when two doors come back and no toDoor", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const aDoor = addDoor(roomA, "left", {
     toRoom: "roomB" as VerificationRoomId,
   });
@@ -100,8 +100,8 @@ test("resolveDoorPartner: ambiguous when two doors come back and no toDoor", () 
 });
 
 test("resolveDoorPartner: toDoor picks the named partner", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomB, "right", { toRoom: "roomA" as VerificationRoomId });
   const backDoorId = addDoor(roomB, "right", {
     toRoom: "roomA" as VerificationRoomId,
@@ -124,8 +124,8 @@ test("resolveDoorPartner: toDoor picks the named partner", () => {
 });
 
 test("resolveDoorPartner: toDoor naming a non-existent door is 'none'", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomB, "right", { toRoom: "roomA" as VerificationRoomId });
   const aDoor = addDoor(roomA, "left", {
     toRoom: "roomB" as VerificationRoomId,
@@ -142,7 +142,7 @@ test("resolveDoorPartner: toDoor naming a non-existent door is 'none'", () => {
 });
 
 test("resolveDoorPartner: exit-game and missing-room links", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   const exitDoor = addDoor(roomA, "left", { toRoom: exitGameRoomId });
   const ghostDoor = addDoor(roomA, "right", {
     toRoom: "ghost" as VerificationRoomId,

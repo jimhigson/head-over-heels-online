@@ -8,7 +8,6 @@ import {
 
 test("returns undefined for room with no floors", () => {
   const roomJson: AnyRoomJson = {
-    id: "testRoom",
     planet: "blacktooth",
     color: { hue: "green", shade: "basic" },
     items: {
@@ -39,7 +38,6 @@ test("returns undefined for room with no floors", () => {
 
 test("calculates extent for room with single floor", () => {
   const roomJson: AnyRoomJson = {
-    id: "testRoom",
     planet: "blacktooth",
     color: { hue: "green", shade: "basic" },
     items: {
@@ -65,7 +63,6 @@ test("calculates extent for room with single floor", () => {
 
 test("calculates extent for room with multiple non-overlapping floors", () => {
   const roomJson: AnyRoomJson = {
-    id: "testRoom",
     planet: "blacktooth",
     color: { hue: "green", shade: "basic" },
     items: {
@@ -100,7 +97,6 @@ test("calculates extent for room with multiple non-overlapping floors", () => {
 
 test("calculates extent for room with overlapping floors", () => {
   const roomJson: AnyRoomJson = {
-    id: "testRoom",
     planet: "blacktooth",
     color: { hue: "green", shade: "basic" },
     items: {
@@ -135,7 +131,6 @@ test("calculates extent for room with overlapping floors", () => {
 
 test("handles floors at different z-levels", () => {
   const roomJson: AnyRoomJson = {
-    id: "testRoom",
     planet: "blacktooth",
     color: { hue: "green", shade: "basic" },
     items: {
@@ -179,7 +174,6 @@ test("handles floors at different z-levels", () => {
 
 test("handles floors with different floor types", () => {
   const roomJson: AnyRoomJson = {
-    id: "testRoom",
     planet: "blacktooth",
     color: { hue: "green", shade: "basic" },
     items: {
@@ -221,7 +215,6 @@ test("handles floors with different floor types", () => {
 
 test("handles floors at negative positions", () => {
   const roomJson: AnyRoomJson = {
-    id: "testRoom",
     planet: "blacktooth",
     color: { hue: "green", shade: "basic" },
     items: {
@@ -256,7 +249,6 @@ test("handles floors at negative positions", () => {
 
 test("handles single tile floors (times 1x1)", () => {
   const roomJson: AnyRoomJson = {
-    id: "testRoom",
     planet: "blacktooth",
     color: { hue: "green", shade: "basic" },
     items: {
@@ -282,7 +274,6 @@ test("handles single tile floors (times 1x1)", () => {
 
 test("handles large floors", () => {
   const roomJson: AnyRoomJson = {
-    id: "testRoom",
     planet: "blacktooth",
     color: { hue: "green", shade: "basic" },
     items: {
@@ -308,7 +299,6 @@ test("handles large floors", () => {
 
 test("ignores non-floor items when calculating extent", () => {
   const roomJson: AnyRoomJson = {
-    id: "testRoom",
     planet: "blacktooth",
     color: { hue: "green", shade: "basic" },
     items: {
@@ -359,7 +349,6 @@ test("ignores non-floor items when calculating extent", () => {
 
 test("handles room with many floors forming complex shape", () => {
   const roomJson: AnyRoomJson = {
-    id: "testRoom",
     planet: "blacktooth",
     color: { hue: "green", shade: "basic" },
     items: {

@@ -225,7 +225,7 @@ const RoomSvgUnmemoised = <RoomId extends string>({
   const roomVisited = useRoomVisited(roomId);
   const isRoomSelected = useIsRoomSelected(roomId);
 
-  const { id, color } = roomJson;
+  const { color } = roomJson;
   const outline = useMemo(
     () => mapCellOutline(roomJson, roomNode),
     [roomJson, roomNode],
@@ -238,7 +238,7 @@ const RoomSvgUnmemoised = <RoomId extends string>({
 
   return (
     <g
-      data-room-id={id}
+      data-room-id={roomId}
       data-sub-room-id={subRoomId}
       strokeWidth={strokeWidth}
       class={`
@@ -465,7 +465,7 @@ const RoomSvgUnmemoised = <RoomId extends string>({
               key={i}
               interactiveAreaRef={interactiveAreaRef}
               tipId={tipId}
-              roomId={id}
+              roomId={roomId}
               subRoomId={subRoomId}
             />
           ))}

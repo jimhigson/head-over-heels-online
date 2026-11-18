@@ -3,7 +3,6 @@ import { expect, test } from "vitest";
 import {
   type EditorJsonItem,
   type EditorJsonItemUnion,
-  type EditorRoomId,
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "./editorTypes";
@@ -138,7 +137,6 @@ test.for(notRotatableItems)("isRotatable is false for %s", ([, item]) => {
 });
 
 const roomWithWall = (wall: EditorJsonItem<"wall">): EditorRoomJson => ({
-  id: "room" as EditorRoomId,
   planet: "blacktooth",
   color: { hue: "cyan", shade: "basic" },
   items: {

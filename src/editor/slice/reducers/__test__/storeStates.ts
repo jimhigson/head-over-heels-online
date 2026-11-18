@@ -76,7 +76,6 @@ export const editorStateWithOneRoomWithNoItems: LevelEditorState = {
     },
     rooms: {
       [testRoomId]: {
-        id: testRoomId,
         planet: "blacktooth",
         color: { hue: "cyan", shade: "basic" },
         items: {},

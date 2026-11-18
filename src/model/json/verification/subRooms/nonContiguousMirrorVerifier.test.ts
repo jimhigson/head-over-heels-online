@@ -5,7 +5,7 @@ import { type VerificationRoomId } from "../verificationTypes";
 import { nonContiguousMirrorVerifier } from "./nonContiguousMirrorVerifier";
 
 test("flags a relationship pointing at a room not in the campaign", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   setWholeRoomCell(roomA, {
     nonContiguousRelationship: {
       with: { room: "ghost" as VerificationRoomId },
@@ -22,8 +22,8 @@ test("flags a relationship pointing at a room not in the campaign", () => {
 });
 
 test("flags a relationship the partner doesn't mirror back", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   setWholeRoomCell(roomA, {
     nonContiguousRelationship: {
       with: { room: "roomB" as VerificationRoomId },
@@ -40,8 +40,8 @@ test("flags a relationship the partner doesn't mirror back", () => {
 });
 
 test("accepts a pair of rooms with mirrored relationships", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   setWholeRoomCell(roomA, {
     nonContiguousRelationship: {
       with: { room: "roomB" as VerificationRoomId },

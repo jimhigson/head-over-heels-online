@@ -10,7 +10,7 @@ import { type VerificationCampaign } from "../../model/json/verification/verific
 import { type CampaignLocator } from "../../model/modelTypes";
 import { editorCampaignsApiSlice } from "../../store/slices/campaigns/editorCampaignsApiSlice";
 import { type EditorRootState, editorStore } from "../../store/store";
-import { valuesIter } from "../../utils/entries";
+import { objectEntriesIter, valuesIter } from "../../utils/entries";
 import { queryJsonPattern } from "../../utils/jsonPattern/queryJsonPattern";
 import { setJsonPattern } from "../../utils/jsonPattern/setJsonPattern";
 import {
@@ -339,10 +339,10 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
     inputSchema: { type: "object", properties: {} },
     execute: async () =>
       jsonResult(
-        valuesIter(
+        objectEntriesIter(
           selectCurrentCampaignInProgress(editorStore.getState()).rooms,
         )
-          .map(({ id, planet }) => ({ id, planet }))
+          .map(([id, { planet }]) => ({ id, planet }))
           .toArray(),
       ),
   },
@@ -494,12 +494,15 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
       if (typeof roomId !== "string") {
         return jsonResult("roomId must be a string");
       }
+      const editorState = editorStore.getState();
       const placement = editorStore.dispatch(
         dropItemsOnRoomThunk({
+          fromRoomId: selectCursorRoomId(editorState),
+          fromSubRoomId: selectCursorSubRoomId(editorState),
           itemIds:
             Array.isArray(itemIds) ?
               (itemIds as EditorRoomItemId[])
-            : selectCursorRoomSelectedJsonItemIds(editorStore.getState()),
+            : selectCursorRoomSelectedJsonItemIds(editorState),
           toRoomId: roomId as EditorRoomId,
           toSubRoomId: typeof subRoomId === "string" ? subRoomId : "*",
         }),
@@ -633,7 +636,7 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
         roomJsonEdited({ roomJson: newRoomJson, timestamp: Date.now() }),
       );
       return jsonResult({
-        roomId: newRoomJson.id,
+        roomId: selectCursorRoomId(editorStore.getState()),
         itemCount: Object.keys(newItems).length,
       });
     },
@@ -674,7 +677,10 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
       editorStore.dispatch(
         roomJsonEdited({ roomJson: newRoomJson, timestamp: Date.now() }),
       );
-      return jsonResult({ roomId: newRoomJson.id, paths });
+      return jsonResult({
+        roomId: selectCursorRoomId(editorStore.getState()),
+        paths,
+      });
     },
   },
   {

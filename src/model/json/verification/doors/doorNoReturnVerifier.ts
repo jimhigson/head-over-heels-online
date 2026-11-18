@@ -53,7 +53,9 @@ export const doorNoReturnVerifier: CampaignVerifier<DoorNoReturn> = {
       }
       addReturnDoorInPlace({
         rooms: draft.rooms,
+        fromRoomId: roomId,
         fromRoomJson: draft.rooms[roomId],
+        toRoomId: toRoom,
         toRoomJson: draft.rooms[toRoom],
         outgoingDoorEntry: [doorId, draftDoor],
       });

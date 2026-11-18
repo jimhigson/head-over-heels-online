@@ -46,6 +46,10 @@ export type LoadRoomOptions<
   RoomId extends string,
   RoomItemId extends string,
 > = {
+  /**
+   * the room's id - its key in the campaign
+   */
+  roomId: RoomId;
   roomJson: RoomJson<RoomId, RoomItemId>;
   roomPickupsCollected: RoomPickupsCollected;
   scrollsRead: ScrollsRead;
@@ -69,6 +73,7 @@ export type LoadRoomOptions<
  * convert a room from it's storage (json) format to its in-play (loaded) format
  */
 export const loadRoom = <RoomId extends string, RoomItemId extends string>({
+  roomId,
   roomJson,
   roomPickupsCollected,
   scrollsRead,
@@ -130,6 +135,7 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
 
   const roomState: RoomState<RoomId, RoomItemId> = {
     ...roomJson,
+    id: roomId,
     roomJson,
     items,
     roomTime: 0,

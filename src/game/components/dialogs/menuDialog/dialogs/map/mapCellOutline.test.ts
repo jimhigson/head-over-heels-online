@@ -37,7 +37,6 @@ const room = (
   items: TestRoomJson["items"],
   subRooms?: SubRooms<string>,
 ): TestRoomJson => ({
-  id: "room",
   planet: "blacktooth",
   color: { hue: "cyan", shade: "basic" },
   items,

@@ -3,7 +3,6 @@ import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = inferRoomJson({
   color: { hue: "green", shade: "basic" },
-  id: "bookworld18",
   items: {
     b: {
       config: { disappearing: { on: "stand" }, style: "book", times: { z: 4 } },

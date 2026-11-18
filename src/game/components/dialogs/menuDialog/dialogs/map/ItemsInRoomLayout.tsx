@@ -80,7 +80,7 @@ const selectSubRoomStartAndEnd = (
 
     if (floorsExtent === undefined) {
       throw new Error(
-        `no floors in room ${roomJson.id} when trying to get start and end for subroom ${subRoomId}`,
+        `no floors in the room when trying to get start and end for subroom ${subRoomId}`,
       );
     }
 
@@ -89,7 +89,7 @@ const selectSubRoomStartAndEnd = (
   const subRooms = roomJson.meta?.subRooms;
   if (subRooms === undefined || isWholeRoomSubRooms(subRooms)) {
     throw new Error(
-      `no subrooms in ${roomJson.id} when trying to get start and end for subroom ${subRoomId}`,
+      `no subrooms in the room when trying to get start and end for subroom ${subRoomId}`,
     );
   }
   return subRooms[subRoomId].physicalPosition;
@@ -212,7 +212,7 @@ export const InPlayItemsInRoomLayout = <
       const floorExtent = roomJsonFloorsExtent(roomJson);
       if (floorExtent === undefined) {
         throw new Error(
-          `no floors in room ${roomJson.id} when trying to get item position`,
+          `no floors in the room when trying to get item position`,
         );
       }
       return {

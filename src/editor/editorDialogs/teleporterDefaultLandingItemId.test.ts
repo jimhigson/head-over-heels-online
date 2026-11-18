@@ -21,7 +21,6 @@ const roomWithItems = (
   items: Partial<Record<EditorRoomItemId, EditorJsonItemUnion>>,
 ): EditorRoomJson =>
   ({
-    id: destinationRoomId,
     planet: "blacktooth",
     color: { hue: "cyan", shade: "basic" },
     items,

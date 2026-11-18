@@ -15,7 +15,6 @@ const color = { hue: "cyan", shade: "basic" } as const;
 
 const mockRooms = {
   blacktooth1: {
-    id: "blacktooth1" as const,
     planet: "blacktooth",
     color,
     items: {
@@ -32,7 +31,6 @@ const mockRooms = {
     },
   },
   blacktooth2: {
-    id: "blacktooth2" as const,
     planet: "blacktooth",
     color,
     items: {
@@ -48,7 +46,6 @@ const mockRooms = {
     },
   },
   blacktooth10: {
-    id: "blacktooth10" as const,
     planet: "blacktooth",
     color,
     items: {
@@ -75,7 +72,6 @@ const mockRooms = {
     },
   },
   moonbase1: {
-    id: "moonbase1" as const,
     planet: "moonbase",
     color,
     items: {
@@ -87,7 +83,6 @@ const mockRooms = {
     },
   },
   moonbase2: {
-    id: "moonbase2" as const,
     planet: "moonbase",
     color,
     items: {
@@ -103,7 +98,6 @@ const mockRooms = {
     },
   },
   bookworld1: {
-    id: "bookworld1" as const,
     planet: "bookworld",
     color,
     items: {

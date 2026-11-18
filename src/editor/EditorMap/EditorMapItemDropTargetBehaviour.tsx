@@ -11,6 +11,7 @@ import {
   selectActiveOpenRoomDragInProgress,
   selectCursorRoomId,
   selectCursorRoomSelectedJsonItemIds,
+  selectCursorSubRoomId,
 } from "../slice/levelEditorSlice";
 
 /** tints a room while items dragged over it can (or can't) be dropped there */
@@ -56,12 +57,13 @@ const useEditorMapItemDropTarget = ({
       }
       const editorState = editorStore.getState();
       canDrop =
-        findItemsDropPlacement(
-          editorState.levelEditor,
-          selectCursorRoomSelectedJsonItemIds(editorState),
-          roomId,
-          subRoomId,
-        ) !== undefined;
+        findItemsDropPlacement(editorState.levelEditor, {
+          fromRoomId: selectCursorRoomId(editorState),
+          fromSubRoomId: selectCursorSubRoomId(editorState),
+          itemIds: selectCursorRoomSelectedJsonItemIds(editorState),
+          toRoomId: roomId,
+          toSubRoomId: subRoomId,
+        }) !== undefined;
       el.dataset.itemDrop = canDrop ? "allowed" : "blocked";
     };
 
@@ -77,11 +79,12 @@ const useEditorMapItemDropTarget = ({
 
     const handlePointerUp = () => {
       if (canDrop && isDraggingItemsFromAnotherRoom()) {
+        const editorState = editorStore.getState();
         editorStore.dispatch(
           dropItemsOnRoomThunk({
-            itemIds: selectCursorRoomSelectedJsonItemIds(
-              editorStore.getState(),
-            ),
+            fromRoomId: selectCursorRoomId(editorState),
+            fromSubRoomId: selectCursorSubRoomId(editorState),
+            itemIds: selectCursorRoomSelectedJsonItemIds(editorState),
             toRoomId: roomId,
             toSubRoomId: subRoomId,
           }),

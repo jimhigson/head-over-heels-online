@@ -1,4 +1,4 @@
-import { type ExportedSoundId } from "../../../_generated/sfxdex/sfx";
+import { type ExportedSoundId } from "../../../_generated/sfxdex/soundIds";
 import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
 import { type RoomJson } from "../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";

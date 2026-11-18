@@ -22,10 +22,11 @@ export type TestRoomJson = RoomJson<TestRoomId, string, "blacktooth">;
 export type ItemsInTestRoomJson = TestRoomJson["items"];
 
 const basicRoomSize = { x: 8, y: 8 };
-export const basicEmptyRoom = <RoomId extends string>(
-  id: RoomId,
-): RoomJson<RoomId, string, "blacktooth"> => ({
-  id,
+export const basicEmptyRoom = <RoomId extends string = string>(): RoomJson<
+  RoomId,
+  string,
+  "blacktooth"
+> => ({
   planet: "blacktooth",
   color: { hue: "cyan", shade: "basic" },
   items: {
@@ -41,11 +42,8 @@ export const basicEmptyRoom = <RoomId extends string>(
   },
   //size: basicRoomSize,
 });
-const basicEmptyRoomWithItems = (
-  id: TestRoomId,
-  items: ItemsInTestRoomJson,
-): TestRoomJson => {
-  const emptyRoom = basicEmptyRoom(id);
+const basicEmptyRoomWithItems = (items: ItemsInTestRoomJson): TestRoomJson => {
+  const emptyRoom = basicEmptyRoom<TestRoomId>();
 
   return {
     ...emptyRoom,
@@ -97,11 +95,11 @@ export const basicCampaign = ({
     },
     rooms: {
       [firstRoomId]: addPerimeterWallsToRoom({
-        ...basicEmptyRoomWithItems(firstRoomId, firstRoomItems),
+        ...basicEmptyRoomWithItems(firstRoomItems),
         ...firstRoomProps,
       }),
       [secondRoomId]: addPerimeterWallsToRoom({
-        ...basicEmptyRoomWithItems(secondRoomId, secondRoomItems),
+        ...basicEmptyRoomWithItems(secondRoomItems),
         ...secondRoomProps,
       }),
     },

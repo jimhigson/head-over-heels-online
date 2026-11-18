@@ -31,7 +31,7 @@ const state0BlockPreviewedMovingRooms: LevelEditorState = produce(
   (draft) => {
     const { rooms } = draft.campaignInProgress;
     rooms[testRoomId].items[blockId] = block;
-    rooms[roomB] = { ...rooms[testRoomId], id: roomB, items: {} };
+    rooms[roomB] = { ...rooms[testRoomId], items: {} };
     draft.pendingEdits = {
       edits: {
         [testRoomId]: { [blockId]: null },

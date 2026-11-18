@@ -19,7 +19,7 @@ const makeHeels = (position: Xyz) => {
       position,
       config: { which: "heels" },
     },
-    basicEmptyRoom("firstRoom"),
+    basicEmptyRoom(),
     noPlanetsLiberated,
     emptyRoomJsonDirectionalIndex,
   );
@@ -34,7 +34,7 @@ const makeHeadOverHeels = (position: Xyz) => {
       position,
       config: { which: "heels" },
     },
-    basicEmptyRoom("firstRoom"),
+    basicEmptyRoom(),
     noPlanetsLiberated,
     emptyRoomJsonDirectionalIndex,
   );
@@ -45,7 +45,7 @@ const makeHeadOverHeels = (position: Xyz) => {
       position: addXyz(position, { z: 1 }),
       config: { which: "head" },
     },
-    basicEmptyRoom("firstRoom"),
+    basicEmptyRoom(),
     noPlanetsLiberated,
     emptyRoomJsonDirectionalIndex,
   );
@@ -64,7 +64,7 @@ const makeOneBlockSizedItemInPlayBlock = (position: Xyz) => {
       position,
       config: { style: "organic" },
     },
-    basicEmptyRoom("firstRoom"),
+    basicEmptyRoom(),
     noPlanetsLiberated,
     emptyRoomJsonDirectionalIndex,
   );
@@ -79,7 +79,7 @@ const makePortableBlock = (position: Xyz) => {
       position,
       config: { style: "cube" },
     },
-    basicEmptyRoom("firstRoom"),
+    basicEmptyRoom(),
     noPlanetsLiberated,
     emptyRoomJsonDirectionalIndex,
   );

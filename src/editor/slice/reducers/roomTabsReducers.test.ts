@@ -54,7 +54,7 @@ const baseState = produce(editorStateWithOneRoomWithNoItems, (draft) => {
   const { rooms } = draft.campaignInProgress;
   rooms[testRoomId].items[blockId] = block;
   for (const roomId of [roomB, roomC]) {
-    rooms[roomId] = { ...rooms[testRoomId], id: roomId };
+    rooms[roomId] = { ...rooms[testRoomId] };
   }
 });
 

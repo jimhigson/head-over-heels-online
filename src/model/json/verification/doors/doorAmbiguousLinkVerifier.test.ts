@@ -5,8 +5,8 @@ import { type VerificationRoomId } from "../verificationTypes";
 import { doorAmbiguousLinkVerifier } from "./doorAmbiguousLinkVerifier";
 
 test("flags a no-toDoor door with two matching doors back", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const doorId = addDoor(roomA, "left", {
     toRoom: "roomB" as VerificationRoomId,
   });
@@ -22,8 +22,8 @@ test("flags a no-toDoor door with two matching doors back", () => {
 });
 
 test("accepts when a toDoor disambiguates", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomB, "right", { toRoom: "roomA" as VerificationRoomId });
   const back = addDoor(roomB, "right", {
     toRoom: "roomA" as VerificationRoomId,

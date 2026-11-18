@@ -16,11 +16,12 @@ import {
 import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { addItemInPlace } from "./addItemInPlace";
-import { addNewRoomInPlace } from "./addNewRoomInPlace";
+import { type AddedRoom, addNewRoomInPlace } from "./addNewRoomInPlace";
 import { cutHoleInWallsForDoorsInPlace } from "./cutHoleInWallsForDoorsInPlace";
 
 const getDestinationRoom = ({
   state,
+  fromRoomId,
   fromRoomJson,
   subRoomId,
   direction,
@@ -28,17 +29,18 @@ const getDestinationRoom = ({
   autoAddRooms,
 }: {
   state: LevelEditorState;
+  fromRoomId: EditorRoomId;
   fromRoomJson: EditorRoomJson;
   // the subroom the door is being added into - to start the search from
   subRoomId: string;
   direction: DirectionXy4;
   isPreview: boolean;
   autoAddRooms: boolean;
-}): EditorRoomJson | undefined => {
+}): AddedRoom | undefined => {
   const campaign = state.campaignInProgress;
   const gridPositions = roomGridPositions({
     campaign,
-    roomId: fromRoomJson.id,
+    roomId: fromRoomId,
     subRoomId,
     skipMissingRooms: true,
   }).nodes;
@@ -49,9 +51,8 @@ const getDestinationRoom = ({
 
   if (existingRoomGridPositionSpec) {
     // found an existing room for this door to go to
-    return campaign.rooms[
-      existingRoomGridPositionSpec.roomId
-    ] as EditorRoomJson;
+    const { roomId } = existingRoomGridPositionSpec;
+    return { roomId, room: campaign.rooms[roomId] as EditorRoomJson };
   }
 
   // no existing room
@@ -79,7 +80,7 @@ export const addDoorInPlace = (
   // for doors, trim walls around where the door was placed:
   cutHoleInWallsForDoorsInPlace(
     state,
-    fromRoomJson.id,
+    roomId,
     doorDirection,
     blockPosition,
     isPreview,
@@ -93,8 +94,9 @@ export const addDoorInPlace = (
     fromRoomJson,
   );
 
-  const toRoomJson = getDestinationRoom({
+  const toRoom = getDestinationRoom({
     state,
+    fromRoomId: roomId,
     fromRoomJson,
     subRoomId: fromDoorSubroom,
     direction: doorDirection,
@@ -110,8 +112,8 @@ export const addDoorInPlace = (
       config: {
         ...toolItem.config,
         toRoom:
-          toRoomJson ?
-            toRoomJson.id
+          toRoom ?
+            toRoom.roomId
             // preview rooms go to nowhere:
           : toolItem.config.toRoom,
         direction: doorDirection,
@@ -121,11 +123,13 @@ export const addDoorInPlace = (
     isPreview,
   );
 
-  if (!isPreview && toRoomJson) {
+  if (!isPreview && toRoom) {
     addReturnDoorInPlace({
       rooms: state.campaignInProgress.rooms,
+      fromRoomId: roomId,
       fromRoomJson,
-      toRoomJson,
+      toRoomId: toRoom.roomId,
+      toRoomJson: toRoom.room,
       outgoingDoorEntry: [doorId, doorJsonItem],
     });
   }

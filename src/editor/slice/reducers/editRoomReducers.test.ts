@@ -37,6 +37,7 @@ import {
   deleteSelected,
   type LevelEditorState,
   makeHoleInSelectedFloor,
+  renameRoom,
   roomJsonEdited,
   selectCurrentCommittedRoomJson,
   setRoomAboveOrBelow,
@@ -114,7 +115,6 @@ describe("changing the id of the current room updates all references to that roo
     editorStateWithOneRoomWithNoItems,
     (draft) => {
       draft.campaignInProgress.rooms[otherRoomId] = {
-        id: otherRoomId,
         planet: "blacktooth",
         color: { hue: "cyan", shade: "basic" },
         items: {},
@@ -122,20 +122,36 @@ describe("changing the id of the current room updates all references to that roo
     },
   );
 
-  test("the renamed room's own json id", () => {
-    const currentRoom = state0WithTwoRooms.campaignInProgress.rooms[
-      testRoomId
-    ] as EditorRoomJson;
+  test("a room other than the cursor room can be renamed, its links following it", () => {
+    // the cursor room has a door to the other room:
+    const state1 = produce(state0WithTwoRooms, (draft) => {
+      draft.campaignInProgress.rooms[testRoomId].items[
+        "door1" as EditorRoomItemId
+      ] = {
+        type: "door",
+        position: { x: 0, y: 0, z: 0 },
+        config: { direction: "towards", toRoom: otherRoomId },
+      };
+    });
 
-    const state1 = reduceLevelEditorActions(
-      state0WithTwoRooms,
-      roomJsonEdited({
-        roomJson: { ...currentRoom, id: newRoomId },
+    const state2 = reduceLevelEditorActions(
+      state1,
+      renameRoom({
+        fromRoomId: otherRoomId,
+        toRoomId: newRoomId,
         timestamp: 0,
       }),
     );
 
-    expect(state1.campaignInProgress.rooms[newRoomId].id).toBe(newRoomId);
+    expect({
+      roomIds: Object.keys(state2.campaignInProgress.rooms),
+      doorToRoom: [
+        ...iterateRoomJsonItemsWithIds(
+          state2.campaignInProgress.rooms[testRoomId].items,
+          "door",
+        ),
+      ].map(([, door]) => door.config.toRoom),
+    }).toEqual({ roomIds: [testRoomId, newRoomId], doorToRoom: [newRoomId] });
   });
 
   test("doors that reference the old room id in their config", () => {
@@ -153,16 +169,9 @@ describe("changing the id of the current room updates all references to that roo
       };
     });
 
-    const currentRoom = state1.campaignInProgress.rooms[
-      testRoomId
-    ] as EditorRoomJson;
-
     const state2 = reduceLevelEditorActions(
       state1,
-      roomJsonEdited({
-        roomJson: { ...currentRoom, id: newRoomId },
-        timestamp: 0,
-      }),
+      renameRoom({ fromRoomId: testRoomId, toRoomId: newRoomId, timestamp: 0 }),
     );
 
     const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
@@ -183,16 +192,9 @@ describe("changing the id of the current room updates all references to that roo
       };
     });
 
-    const currentRoom = state1.campaignInProgress.rooms[
-      testRoomId
-    ] as EditorRoomJson;
-
     const state2 = reduceLevelEditorActions(
       state1,
-      roomJsonEdited({
-        roomJson: { ...currentRoom, id: newRoomId },
-        timestamp: 0,
-      }),
+      renameRoom({ fromRoomId: testRoomId, toRoomId: newRoomId, timestamp: 0 }),
     );
 
     const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
@@ -217,16 +219,9 @@ describe("changing the id of the current room updates all references to that roo
       };
     });
 
-    const currentRoom = state1.campaignInProgress.rooms[
-      testRoomId
-    ] as EditorRoomJson;
-
     const state2 = reduceLevelEditorActions(
       state1,
-      roomJsonEdited({
-        roomJson: { ...currentRoom, id: newRoomId },
-        timestamp: 0,
-      }),
+      renameRoom({ fromRoomId: testRoomId, toRoomId: newRoomId, timestamp: 0 }),
     );
 
     const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
@@ -249,16 +244,9 @@ describe("changing the id of the current room updates all references to that roo
       };
     });
 
-    const currentRoom = state1.campaignInProgress.rooms[
-      testRoomId
-    ] as EditorRoomJson;
-
     const state2 = reduceLevelEditorActions(
       state1,
-      roomJsonEdited({
-        roomJson: { ...currentRoom, id: newRoomId },
-        timestamp: 0,
-      }),
+      renameRoom({ fromRoomId: testRoomId, toRoomId: newRoomId, timestamp: 0 }),
     );
 
     const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
@@ -281,16 +269,9 @@ describe("changing the id of the current room updates all references to that roo
       };
     });
 
-    const currentRoom = state1.campaignInProgress.rooms[
-      testRoomId
-    ] as EditorRoomJson;
-
     const state2 = reduceLevelEditorActions(
       state1,
-      roomJsonEdited({
-        roomJson: { ...currentRoom, id: newRoomId },
-        timestamp: 0,
-      }),
+      renameRoom({ fromRoomId: testRoomId, toRoomId: newRoomId, timestamp: 0 }),
     );
 
     const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
@@ -306,7 +287,6 @@ describe("changing the id of the current room updates all references to that roo
           undo: [
             {
               room: {
-                id: testRoomId,
                 planet: "blacktooth",
                 color: { hue: "cyan", shade: "basic" },
                 items: {},
@@ -319,7 +299,6 @@ describe("changing the id of the current room updates all references to that roo
           redo: [
             {
               room: {
-                id: testRoomId,
                 planet: "blacktooth",
                 color: { hue: "magenta", shade: "basic" },
                 items: {},
@@ -333,16 +312,9 @@ describe("changing the id of the current room updates all references to that roo
       },
     );
 
-    const currentRoom = state1WithHistory.campaignInProgress.rooms[
-      testRoomId
-    ] as EditorRoomJson;
-
     const state2 = reduceLevelEditorActions(
       state1WithHistory,
-      roomJsonEdited({
-        roomJson: { ...currentRoom, id: newRoomId },
-        timestamp: 0,
-      }),
+      renameRoom({ fromRoomId: testRoomId, toRoomId: newRoomId, timestamp: 0 }),
     );
 
     expect(state2.history[testRoomId]).toBeUndefined();
@@ -374,7 +346,6 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
       };
       // add a second empty room:
       draft.campaignInProgress.rooms[otherRoomId] = {
-        id: otherRoomId,
         planet: "blacktooth",
         color: { hue: "cyan", shade: "basic" },
         items: {},
@@ -750,7 +721,6 @@ describe("setRoomAboveOrBelow", () => {
       editorStateWithOneRoomWithNoItems,
       (draft) => {
         draft.campaignInProgress.rooms[roomB] = {
-          id: roomB,
           planet: "blacktooth",
           color: { hue: "cyan", shade: "basic" },
           items: {},
@@ -1080,7 +1050,6 @@ describe("makeHoleInSelectedFloor", () => {
       state0WithSelectedFloor,
       (draft) => {
         draft.campaignInProgress.rooms[roomB] = {
-          id: roomB,
           planet: "blacktooth",
           color: { hue: "cyan", shade: "basic" },
           items: {},
@@ -1116,7 +1085,6 @@ describe("makeHoleInSelectedFloor leaves the campaign without verification issue
   ])("$roomShape room", ({ gridPositions }) => {
     const roomId = "holed" as EditorRoomId;
     const room = createNewRoom<EditorRoomId, EditorRoomItemId>(
-      roomId,
       { x: 8, y: 8 },
       { hue: "cyan", shade: "basic" },
       "blacktooth",

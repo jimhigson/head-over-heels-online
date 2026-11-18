@@ -60,7 +60,13 @@ const sourceCells = (
       .map((node) => ({
         room,
         node,
-        doorsAcross: doorsAcrossCell(state, room, node.subRoomId, direction),
+        doorsAcross: doorsAcrossCell(
+          state,
+          node.roomId,
+          room,
+          node.subRoomId,
+          direction,
+        ),
       }))
       .filter(
         ({ doorsAcross: { outDoors, inboundDoors } }) =>
@@ -109,7 +115,7 @@ const roomsBeyond = (
   const selectedRoomIds = new Set(state.selectedRoomIds);
   const isSourceCell = (roomId: string, subRoomId: string) =>
     sources.some(
-      ({ room, node }) => room.id === roomId && node.subRoomId === subRoomId,
+      ({ node }) => node.roomId === roomId && node.subRoomId === subRoomId,
     );
 
   const splitDoors = new Set<JsonItem<"door", EditorRoomId, string>>(
@@ -128,7 +134,7 @@ const roomsBeyond = (
           (toRoom): toRoom is EditorRoomId =>
             toRoom !== exitGameRoomId && toRoom in rooms,
         ),
-      ...inboundDoors.map(({ room }) => room.id),
+      ...inboundDoors.map(({ roomId }) => roomId),
     ]),
   );
 
@@ -210,21 +216,22 @@ export const insertRoomsBesideSelectionInPlace = (
   }
 
   // every source's doors are found before any of them is split:
-  const newRooms = sources.map(({ room, node, doorsAcross }) => ({
-    node,
-    newRoom: spliceNewRoomIntoCellInPlace(
+  const newRooms = sources.map(({ room, node, doorsAcross }) => {
+    const { roomId: newRoomId } = spliceNewRoomIntoCellInPlace(
       state,
+      node.roomId,
       room,
       node.subRoomId,
       direction,
       doorsAcross,
       roomSize,
-    ),
-  }));
+    );
+    return { node, newRoomId };
+  });
 
-  const cursorNewRoom =
+  const { newRoomId: cursorNewRoomId } =
     newRooms.find(({ node }) => node.roomId === cursorRoom.roomId) ??
     newRooms[0];
-  changeCurrentRoomInPlace(state, cursorNewRoom.newRoom.id);
-  state.selectedRoomIds = newRooms.map(({ newRoom }) => newRoom.id);
+  changeCurrentRoomInPlace(state, cursorNewRoomId);
+  state.selectedRoomIds = newRooms.map(({ newRoomId }) => newRoomId);
 };

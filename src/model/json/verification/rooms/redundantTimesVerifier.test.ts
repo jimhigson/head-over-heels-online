@@ -15,7 +15,7 @@ const blockWithTimes = (times?: {
 });
 
 test("flags an item whose times is all 1s", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   const itemId = addItem(
     roomA,
     "block_test",
@@ -31,7 +31,7 @@ test("flags an item whose times is all 1s", () => {
 });
 
 test("the fix removes the redundant times, clearing the issue", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "block_test", blockWithTimes({ x: 1, y: 1, z: 1 }));
   const campaign = campaignOf({ roomA });
 
@@ -42,18 +42,18 @@ test("the fix removes the redundant times, clearing the issue", () => {
 });
 
 test("accepts an item whose times is meaningful", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "block_test", blockWithTimes({ x: 2, y: 1, z: 1 }));
 
   expect(runCheck(redundantTimesVerifier, campaignOf({ roomA }))).toEqual([]);
 });
 
 test("fixing an item that isn't redundant throws", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   const itemId = addItem(roomA, "block_test", blockWithTimes());
   const campaign = campaignOf({ roomA });
 
   expect(() =>
-    redundantTimesVerifier.fix(campaign, { roomId: roomA.id, itemId }),
+    redundantTimesVerifier.fix(campaign, { roomId: "roomA", itemId }),
   ).toThrow();
 });

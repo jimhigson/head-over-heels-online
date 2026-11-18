@@ -52,6 +52,7 @@ export const buildBeamScenario = (
   roomJson: BeamScenarioRoomJson,
 ): BeamScenario => {
   const room = loadRoom({
+    roomId: "testRoom",
     roomJson,
     scrollsRead: {},
     planetsLiberated: noPlanetsLiberated,

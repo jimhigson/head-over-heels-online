@@ -5,8 +5,8 @@ import { type VerificationRoomId } from "../verificationTypes";
 import { doorOffFloorVerifier } from "./doorOffFloorVerifier";
 
 test("flags a door hanging half off the end of the floor", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   // the floor is 8 long in y, so a door at y=7 covers y=7 and y=8:
   const doorId = addDoor(
     roomA,
@@ -24,8 +24,8 @@ test("flags a door hanging half off the end of the floor", () => {
 });
 
 test("flags a door on a wall line away from the floor's edge", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   const doorId = addDoor(
     roomA,
     "left",
@@ -46,8 +46,8 @@ test.for([
 ] as const)(
   "accepts a $direction door beside the floor",
   ({ direction, position }) => {
-    const roomA = newRoom("roomA");
-    const roomB = newRoom("roomB");
+    const roomA = newRoom();
+    const roomB = newRoom();
     addDoor(
       roomA,
       direction,

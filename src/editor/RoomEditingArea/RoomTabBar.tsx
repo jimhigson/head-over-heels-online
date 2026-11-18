@@ -1,21 +1,20 @@
 import nanoEqual from "nano-equal";
 
-import { exitGameRoomId } from "../../model/json/ItemConfigMap";
 import { useIsUncolourised } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { editorStore, store, useEditorAppSelector } from "../../store/store";
 import { Tab, type TabMenuItem } from "../../ui/tabs/Tab";
 import { TabBar } from "../../ui/tabs/TabBar";
+import { validateNewRoomIdThunk } from "../commands/validateNewRoomIdThunk";
 import { type EditorRoomId } from "../editorTypes";
 import { RoomPreviewTipContents } from "../roomPreview/RoomPreviewTipContents";
 import {
   closeOtherRoomTabs,
   closeRoomTab,
   pinRoomTab,
-  roomJsonEdited,
+  renameRoom,
   roomTabDropped,
   roomTabSelected,
   roomTabSplit,
-  selectCurrentCommittedRoomJson,
   selectFocusedTabGroupId,
   selectIsOnlyPane,
   selectRoomHasUnsavedChanges,
@@ -31,25 +30,6 @@ import { cssForRoomColour } from "../toolbar/buttons/RoomColourSelect";
 import { buttonSmallHeightClassNames } from "../toolbar/buttonSizeClassNames";
 import { abbreviateRoomId } from "./abbreviateRoomId";
 import { roomTabDrag } from "./roomTabDrag";
-
-/** a room can be renamed to an id that is not blank, has no spaces, and is not already used */
-const canRenameRoomTo = (newRoomId: string): boolean =>
-  /^\S+$/.test(newRoomId) &&
-  newRoomId !== exitGameRoomId &&
-  editorStore.getState().levelEditor.campaignInProgress.rooms[
-    newRoomId as EditorRoomId
-  ] === undefined;
-
-/** rename the cursor room (the front tab's) */
-const renameCursorRoom = (newRoomId: string) => {
-  const roomJson = selectCurrentCommittedRoomJson(editorStore.getState());
-  editorStore.dispatch(
-    roomJsonEdited({
-      roomJson: { ...roomJson, id: newRoomId as EditorRoomId },
-      timestamp: Date.now(),
-    }),
-  );
-};
 
 /** a trailing * on a room with changes to save */
 const unsavedMarked = (name: string, hasUnsavedChanges: boolean) =>
@@ -123,18 +103,21 @@ const RoomTabButton = ({
         roomTabDrag.start(dragEvent, { type: "tab", tabInGroup })
       }
       onDblClick={() => store.dispatch(pinRoomTab(tabInGroup))}
-      rename={
-        // renaming acts on the cursor room:
-        isFront && isInFocusedPane ?
-          {
-            name: roomId,
-            isValid: canRenameRoomTo,
-            // a tab being renamed is kept, not replaced by the next room browsed to:
-            onStart: () => store.dispatch(pinRoomTab(tabInGroup)),
-            onRename: renameCursorRoom,
-          }
-        : undefined
-      }
+      rename={{
+        name: roomId,
+        validate: (newRoomId) =>
+          editorStore.dispatch(validateNewRoomIdThunk(newRoomId)),
+        // a tab being renamed is kept, not replaced by the next room browsed to:
+        onStart: () => store.dispatch(pinRoomTab(tabInGroup)),
+        onRename: (newRoomId) =>
+          editorStore.dispatch(
+            renameRoom({
+              fromRoomId: roomId,
+              toRoomId: newRoomId as EditorRoomId,
+              timestamp: Date.now(),
+            }),
+          ),
+      }}
       tip={
         // the front room is already shown, no need for a preview:
         !isFront && <RoomPreviewTipContents roomId={roomId} />

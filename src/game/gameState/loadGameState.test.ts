@@ -53,7 +53,6 @@ test("if there is a saved game with both characters in the same room, only load 
       shade: "basic",
     },
     roomJson: {
-      id: "blacktooth1head",
       planet: "blacktooth",
       color: {
         hue: "yellow",

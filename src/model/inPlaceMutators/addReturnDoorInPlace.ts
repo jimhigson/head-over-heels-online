@@ -21,7 +21,9 @@ export type AddReturnDoorInPlaceOptions<
 > = {
   /** every room of the campaign, holding both rooms */
   rooms: Campaign<RoomId>["rooms"];
+  fromRoomId: RoomId;
   fromRoomJson: RoomJson<RoomId, RoomItemId>;
+  toRoomId: RoomId;
   toRoomJson: RoomJson<RoomId, RoomItemId>;
   outgoingDoorEntry: [RoomItemId, JsonItem<"door", RoomId, RoomItemId>];
 };
@@ -35,7 +37,9 @@ export const addReturnDoorInPlace = <
   RoomItemId extends string,
 >({
   rooms,
+  fromRoomId,
   fromRoomJson,
+  toRoomId,
   toRoomJson,
   outgoingDoorEntry: [outgoingDoorId, outgoingDoor],
 }: AddReturnDoorInPlaceOptions<RoomId, RoomItemId>) => {
@@ -86,7 +90,7 @@ export const addReturnDoorInPlace = <
   const returnDoorItemJson: JsonItem<"door", RoomId, RoomItemId> = {
     type: "door",
     config: {
-      toRoom: fromRoomJson.id,
+      toRoom: fromRoomId,
       direction: returnDoorDirection,
       ...(fromDoorSubroom !== "*" && { meta: { toSubRoom: fromDoorSubroom } }),
     },
@@ -96,14 +100,14 @@ export const addReturnDoorInPlace = <
   // a pair already linking these walls, unambiguous until the new pair is added:
   const existingReturnDoors = candidatePartnerDoors(
     rooms,
-    fromRoomJson.id,
-    toRoomJson.id,
+    fromRoomId,
+    toRoomId,
     outgoingDirection,
   );
   const existingOutgoingDoors = candidatePartnerDoors(
     rooms,
-    toRoomJson.id,
-    fromRoomJson.id,
+    toRoomId,
+    fromRoomId,
     returnDoorDirection,
   ).filter(({ doorId }) => doorId !== outgoingDoorId);
 
@@ -111,14 +115,7 @@ export const addReturnDoorInPlace = <
 
   // only name a partner with `toDoor` where the link would otherwise be
   // ambiguous (more than one door comes back)
-  if (
-    doorLinkNeedsToDoor(
-      rooms,
-      toRoomJson.id,
-      fromRoomJson.id,
-      returnDoorDirection,
-    )
-  ) {
+  if (doorLinkNeedsToDoor(rooms, toRoomId, fromRoomId, returnDoorDirection)) {
     returnDoorItemJson.config.toDoor = outgoingDoorId;
     // the existing pair is now ambiguous too:
     if (
@@ -133,22 +130,15 @@ export const addReturnDoorInPlace = <
   } else {
     delete returnDoorItemJson.config.toDoor;
   }
-  if (
-    doorLinkNeedsToDoor(
-      rooms,
-      fromRoomJson.id,
-      toRoomJson.id,
-      outgoingDirection,
-    )
-  ) {
+  if (doorLinkNeedsToDoor(rooms, fromRoomId, toRoomId, outgoingDirection)) {
     outgoingDoor.config.toDoor = returnDoorId;
   } else {
     delete outgoingDoor.config.toDoor;
   }
 
   // the pair now finds each other, so may imply the sub-rooms by themselves:
-  dropRedundantToSubRoomInPlace(rooms, toRoomJson.id, returnDoorItemJson);
-  dropRedundantToSubRoomInPlace(rooms, fromRoomJson.id, outgoingDoor);
+  dropRedundantToSubRoomInPlace(rooms, toRoomId, returnDoorItemJson);
+  dropRedundantToSubRoomInPlace(rooms, fromRoomId, outgoingDoor);
 
   for (const [itemId, modifiedWall] of generateHoleInWallsForDoor(
     toRoomJson.items,

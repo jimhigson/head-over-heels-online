@@ -58,7 +58,6 @@ const stateWithFloorAndRoomB: LevelEditorState = produce(
   stateWithFloor,
   (draft) => {
     draft.campaignInProgress.rooms[roomB] = {
-      id: roomB,
       planet: "blacktooth",
       color: { hue: "cyan", shade: "basic" },
       items: {
@@ -449,13 +448,11 @@ describe("insertRoom when unconnected room already exists at target grid positio
     stateWithFloorAndRoomB,
     (draft) => {
       draft.campaignInProgress.rooms[roomC] = {
-        id: roomC,
         planet: "blacktooth",
         color: { hue: "cyan", shade: "basic" },
         items: { ["f" as EditorRoomItemId]: makeFloor() },
       };
       draft.campaignInProgress.rooms[roomD] = {
-        id: roomD,
         planet: "blacktooth",
         color: { hue: "cyan", shade: "basic" },
         items: { ["f" as EditorRoomItemId]: makeFloor() },
@@ -529,7 +526,6 @@ describe("insertRoom from a subroom of a multi-chunk room", () => {
     editorStateWithOneRoomWithNoItems,
     (draft) => {
       draft.campaignInProgress.rooms[testRoomId] = {
-        id: testRoomId,
         planet: "blacktooth",
         color: { hue: "cyan", shade: "basic" },
         items: {
@@ -605,7 +601,6 @@ describe("insertRoom from a subroom where floor extends beyond subroom bounds", 
     editorStateWithOneRoomWithNoItems,
     (draft) => {
       draft.campaignInProgress.rooms[testRoomId] = {
-        id: testRoomId,
         planet: "blacktooth",
         color: { hue: "cyan", shade: "basic" },
         items: {
@@ -699,7 +694,6 @@ describe("insertRoom from a subroom that does not touch the room outer wall", ()
     editorStateWithOneRoomWithNoItems,
     (draft) => {
       draft.campaignInProgress.rooms[testRoomId] = {
-        id: testRoomId,
         planet: "blacktooth",
         color: { hue: "cyan", shade: "basic" },
         items: {

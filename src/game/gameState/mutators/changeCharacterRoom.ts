@@ -1,6 +1,6 @@
 import { type AllUnionFields } from "type-fest";
 
-import { isSoundId } from "../../../_generated/sfxdex/sfx";
+import { isSoundId } from "../../../_generated/sfxdex/soundIds";
 import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
 import {
   type PlayableItem,
@@ -456,6 +456,7 @@ export function changeCharacterRoom<
       // special case of staying in the same room (ie a teleporter to the same room)
     : otherCharacterLoadedRoom?.id === toRoomId ? otherCharacterLoadedRoom
     : (loadRoom({
+        roomId: toRoomId,
         roomJson: toRoomJson,
         roomPickupsCollected:
           gameState.pickupsCollected[toRoomId] ?? emptyObject,

@@ -1,26 +1,29 @@
 import { describe, expect, test } from "vitest";
 
 import { iterateRoomJsonItemsWithIds } from "../../model/RoomJsonItemIterators";
-import { type EditorRoomId, type EditorRoomJson } from "../editorTypes";
+import { type EditorRoomId } from "../editorTypes";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
   selectCursorRoomIdFromLevelEditorState,
   selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
 } from "./levelEditorSelectors";
 import {
+  addRoom,
   applyItemTool,
   changeRoomColour,
+  changeToRoom,
   deleteSelected,
   levelEditorSlice,
   type LevelEditorSliceAction,
   type LevelEditorState,
   redo,
-  roomJsonEdited,
+  renameRoom,
   selectCurrentCommittedRoomJson,
   setSelectedItemsInRoom,
   setTool,
   undo,
 } from "./levelEditorSlice";
+import { reduceLevelEditorActions } from "./reducers/__test__/storeStates";
 
 const reduce = (state: LevelEditorState, action: LevelEditorSliceAction) => {
   return levelEditorSlice.reducer(state, action);
@@ -242,19 +245,16 @@ describe(
       }
     });
 
-    test("renaming a room via JSON edit can be undone", () => {
+    test("renaming a room can be undone", () => {
       const state0 = initialLevelEditorSliceState;
       const originalRoomId = selectCursorRoomIdFromLevelEditorState(state0);
       const newRoomId = "renamedRoom" as EditorRoomId;
 
-      const currentRoom = state0.campaignInProgress.rooms[
-        originalRoomId
-      ] as EditorRoomJson;
-
       const state1 = reduce(
         state0,
-        roomJsonEdited({
-          roomJson: { ...currentRoom, id: newRoomId },
+        renameRoom({
+          fromRoomId: originalRoomId,
+          toRoomId: newRoomId,
           timestamp: 0,
         }),
       );
@@ -276,6 +276,38 @@ describe(
       expect(selectCursorRoomIdFromLevelEditorState(state3)).toBe(newRoomId);
       expect(state3.campaignInProgress.rooms[newRoomId]).toBeDefined();
       expect(state3.campaignInProgress.rooms[originalRoomId]).toBeUndefined();
+    });
+
+    test("undoing a rename back to a name another room has since taken keeps both rooms", () => {
+      const state0Initial = initialLevelEditorSliceState;
+      const firstRoomId = selectCursorRoomIdFromLevelEditorState(state0Initial);
+      const renamedRoomId = "renamedRoom" as EditorRoomId;
+
+      // the first room renamed, then a second room added - which is given
+      // the first room's old id, as the first that is free:
+      const state1SecondRoomTookOldName = reduceLevelEditorActions(
+        state0Initial,
+        renameRoom({
+          fromRoomId: firstRoomId,
+          toRoomId: renamedRoomId,
+          timestamp: 0,
+        }),
+        addRoom({}),
+      );
+      expect(
+        selectCursorRoomIdFromLevelEditorState(state1SecondRoomTookOldName),
+      ).toBe(firstRoomId);
+
+      // back in the first room, its rename undone:
+      const state2RenameUndone = reduceLevelEditorActions(
+        state1SecondRoomTookOldName,
+        changeToRoom(renamedRoomId),
+        undo(),
+      );
+
+      expect(
+        Object.keys(state2RenameUndone.campaignInProgress.rooms),
+      ).toHaveLength(2);
     });
   },
 );

@@ -8,7 +8,7 @@ import {
 import { schemaComplianceVerifier } from "./schemaComplianceVerifier";
 
 const campaignWithItem = (item: VerificationJsonItemUnion) => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   addItem(roomA, "m", item);
   return campaignOf({ roomA });
 };
@@ -58,7 +58,7 @@ const missingEnumIssue = ({
 });
 
 test("flags a room that doesn't match the schema", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   // a real room always has a planet; removing it breaks schema compliance
   delete (roomA as Partial<VerificationRoomJson>).planet;
 
@@ -71,13 +71,13 @@ test("flags a room that doesn't match the schema", () => {
 });
 
 test("accepts a well-formed room", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
 
   expect(runCheck(schemaComplianceVerifier, campaignOf({ roomA }))).toEqual([]);
 });
 
 test("marks an enum mismatch as fixable", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   // planet is an enum, so an unknown value is recoverable to the first allowed one
   (roomA as { planet: string }).planet = "notARealPlanet";
 
@@ -87,7 +87,7 @@ test("marks an enum mismatch as fixable", () => {
 });
 
 test("the enum fix produces a schema-compliant room", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   (roomA as { planet: string }).planet = "notARealPlanet";
   const campaign = campaignOf({ roomA });
   const [issue] = runCheck(schemaComplianceVerifier, campaign);
@@ -98,10 +98,11 @@ test("the enum fix produces a schema-compliant room", () => {
 });
 
 test("describes a root-level violation without a path", () => {
-  const roomA = newRoom("roomA");
-  // a missing top-level id is a pure root `required` error - unlike planet, it
-  // doesn't cascade into the value-constraint errors that would be reported first
-  delete (roomA as Partial<VerificationRoomJson>).id;
+  const roomA = newRoom();
+  // a missing top-level colour is a pure root `required` error - unlike planet,
+  // it doesn't cascade into the value-constraint errors that would be reported
+  // first
+  delete (roomA as Partial<VerificationRoomJson>).color;
 
   const issues = runCheck(schemaComplianceVerifier, campaignOf({ roomA }));
 
@@ -120,7 +121,7 @@ test("describes a root-level violation without a path", () => {
 });
 
 test("describes a fixable enum mismatch with its path and replacement", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   (roomA as { planet: string }).planet = "notARealPlanet";
 
   const issues = runCheck(schemaComplianceVerifier, campaignOf({ roomA }));

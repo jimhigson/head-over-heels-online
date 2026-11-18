@@ -74,7 +74,6 @@ export const teleporterRoomMissingVerifier: CampaignVerifier<TeleporterRoomMissi
       const { position } = teleporter;
       const times = teleporter.config.times ?? {};
       const newRoom = createNewRoom<VerificationRoomId, VerificationRoomItemId>(
-        newRoomId,
         {
           x: Math.max(newRoomMinimumSize.x, position.x + (times.x ?? 1)),
           y: Math.max(newRoomMinimumSize.y, position.y + (times.y ?? 1)),

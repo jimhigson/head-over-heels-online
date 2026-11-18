@@ -5,7 +5,7 @@ import { type VerificationRoomId } from "../verificationTypes";
 import { doorToSameRoomVerifier } from "./doorToSameRoomVerifier";
 
 test("flags a door pointing at its own room", () => {
-  const roomA = newRoom("roomA");
+  const roomA = newRoom();
   const doorId = addDoor(roomA, "left", {
     toRoom: "roomA" as VerificationRoomId,
   });
@@ -16,8 +16,8 @@ test("flags a door pointing at its own room", () => {
 });
 
 test("accepts a door pointing at another room", () => {
-  const roomA = newRoom("roomA");
-  const roomB = newRoom("roomB");
+  const roomA = newRoom();
+  const roomB = newRoom();
   addDoor(roomA, "left", { toRoom: "roomB" as VerificationRoomId });
 
   expect(

@@ -3,7 +3,6 @@ import { describe, expect, test } from "vitest";
 import { type Xyz } from "../../../utils/vectors/vectors";
 import {
   type EditorJsonItemUnion,
-  type EditorRoomId,
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../../editorTypes";
@@ -45,7 +44,6 @@ describe("moveVerb", () => {
 });
 
 const baseRoom: EditorRoomJson = {
-  id: "room1" as EditorRoomId,
   planet: "blacktooth",
   color: { hue: "cyan", shade: "basic" },
   items: {

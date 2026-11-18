@@ -7,6 +7,7 @@ import {
 } from "../inPlaceMutators/moveItemsToRoomInPlace";
 import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "../inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { layoutNodesOfType } from "../PaneLayout";
 
 export type MoveItemsToRoomPayload = MoveItemsToRoomArgs & {
   /** the sub-room of the destination to show after moving */
@@ -26,8 +27,12 @@ export const moveItemsToRoomReducers = {
     if (movedItemIds === undefined) {
       return;
     }
-    // the moved items were the selection here, and are gone:
-    setSelectedJsonItemIdsOnCursorRoomInPlace(editorState, []);
+    // the moved items were the selection where they came from, and are gone:
+    for (const openRoom of layoutNodesOfType(editorState.layout, "openRoom")) {
+      if (openRoom.roomId === moveArgs.fromRoomId) {
+        openRoom.selectedJsonItemIds = [];
+      }
+    }
     changeCurrentRoomInPlace(editorState, moveArgs.toRoomId, toSubRoomId);
     setSelectedJsonItemIdsOnCursorRoomInPlace(editorState, movedItemIds);
   },

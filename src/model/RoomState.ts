@@ -80,6 +80,10 @@ export type RoomState<
   ScN extends SceneryName = SceneryName,
 > = Simplify<
   Omit<RoomJson<RoomId, RoomItemId, ScN>, "items" | "meta"> & {
+    /**
+     * the room's id - its key in the campaign
+     */
+    id: RoomId;
     items: RoomStateItems<RoomId, RoomItemId, ScN>;
     /** the json this room was loaded from */
     roomJson: RoomJson<RoomId, RoomItemId, ScN>;

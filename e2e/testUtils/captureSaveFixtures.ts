@@ -122,7 +122,7 @@ export const captureSaveFixtures = async (
           return false;
         }
         const room = gameState.characterRooms[gameState.currentCharacterName];
-        return room?.roomJson.id === targetRoomId;
+        return room?.id === targetRoomId;
       },
       roomId,
       { timeout: arrivalTimeoutMs },
