@@ -17,7 +17,6 @@ export const savedGameStateFields = [
   "currentCharacterName",
   "entryState",
   "gameTime",
-  "pickupsCollected",
   "previousPlayable",
 ] as const satisfies readonly (keyof GameState<string>)[];
 

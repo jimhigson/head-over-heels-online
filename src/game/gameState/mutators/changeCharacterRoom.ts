@@ -22,9 +22,11 @@ import {
   characterRoomChange,
   roomExplored,
 } from "../../../store/slices/gameInPlay/gameInPlaySlice";
-import { selectCurrentCampaign } from "../../../store/slices/gameMenus/gameMenusSelectors";
+import {
+  selectCurrentCampaign,
+  selectRoomPickupsCollected,
+} from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
-import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import {
   addXyz,
@@ -458,8 +460,7 @@ export function changeCharacterRoom<
     : (loadRoom({
         roomId: toRoomId,
         roomJson: toRoomJson,
-        roomPickupsCollected:
-          gameState.pickupsCollected[toRoomId] ?? emptyObject,
+        roomPickupsCollected: selectRoomPickupsCollected(storeState, toRoomId),
         scrollsRead: storeState.gameInPlay.gameInPlay.scrollsRead,
         planetsLiberated: storeState.gameInPlay.gameInPlay.planetsLiberated,
         userSettings: storeState.userSettings.userSettings,

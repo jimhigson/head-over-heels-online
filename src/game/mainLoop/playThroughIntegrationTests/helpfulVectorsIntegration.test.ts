@@ -12,7 +12,7 @@ import {
 } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
+import { currentRoomIs } from "../../../_testUtils/playThroughUntilHelpers";
 
 beforeEach(() => {
   resetStore();
@@ -540,9 +540,7 @@ test.for(["right", "left"] as const)(
       setupInitialInput(mockInputStateTracker) {
         mockInputStateTracker.mockDirectionPressed = "right";
       },
-      until(gameState) {
-        return selectCurrentRoomState(gameState)?.id === secondRoomId;
-      },
+      until: currentRoomIs(secondRoomId),
     });
 
     // walk perpendicular to the doorway to slide on the doorframe:
@@ -586,14 +584,8 @@ test.for([2.25, 2.4, 2.6, 2.75])(
       setupInitialInput(mockInputStateTracker) {
         mockInputStateTracker.mockDirectionPressed = "right";
       },
-      until(gameState) {
-        return (
-          selectCurrentRoomState(gameState)?.id === secondRoomId ||
-          gameState.gameTime > 3_000
-        );
-      },
+      until: currentRoomIs(secondRoomId),
+      failAfter: 3_000,
     });
-
-    expect(selectCurrentRoomState(gameState)?.id).toBe(secondRoomId);
   },
 );

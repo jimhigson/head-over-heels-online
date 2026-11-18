@@ -21,6 +21,7 @@ import { getRoomItem } from "../../../../../../model/RoomState";
 import { mapSettingsHooks } from "../../../../../../store/mapSettingsHooks";
 import {
   useCurrentCampaign,
+  usePickupsCollected,
   useRoomsExplored,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { emptyArray, emptyObject } from "../../../../../../utils/empty";
@@ -84,6 +85,7 @@ export const useMapContextForCurrentGame = <RoomId extends string>(
   const currentCharacterName = useTickingCurrentCharacterName();
 
   const roomsExplored = useRoomsExplored<RoomId>();
+  const pickupsCollected = usePickupsCollected<RoomId>();
 
   const { gameState } = useGameApi<RoomId>();
   const currentCampaign = useCurrentCampaign<RoomId>();
@@ -160,7 +162,7 @@ export const useMapContextForCurrentGame = <RoomId extends string>(
         useNotableItems: (roomId, subRoomId) =>
           selectNotableItems(
             currentCampaign.rooms[roomId],
-            gameState.pickupsCollected[roomId] ?? emptyObject,
+            pickupsCollected[roomId] ?? emptyObject,
             subRoomId,
           ),
         useCellPlayables: (roomId, subRoomId) =>
@@ -177,6 +179,7 @@ export const useMapContextForCurrentGame = <RoomId extends string>(
     currentCharacterName,
     gameState,
     onPlayableClick,
+    pickupsCollected,
     roomsExplored,
   ]);
 };

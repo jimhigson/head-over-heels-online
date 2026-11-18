@@ -3,6 +3,7 @@ import { beforeEach, expect, test } from "vitest";
 import { setUpBasicGame } from "../../../_testUtils/basicRoom";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
+import { currentRoomIs } from "../../../_testUtils/playThroughUntilHelpers";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 
 beforeEach(() => {
@@ -66,8 +67,7 @@ test("collecting a scroll in one room means it does not get loaded in another ro
     setupInitialInput(mockInputStateTracker) {
       mockInputStateTracker.mockDirectionPressed = "right";
     },
-    until: (gameState) =>
-      selectCurrentRoomState(gameState)?.id === "secondRoom",
+    until: currentRoomIs("secondRoom"),
   });
 
   expect(

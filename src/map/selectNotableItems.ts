@@ -1,6 +1,6 @@
-import { type RoomPickupsCollected } from "../game/gameState/GameState";
 import { type RoomJson } from "../model/RoomJson";
 import { roomJsonItemsEntriesIterable } from "../model/RoomJsonItemIterators";
+import { type RoomPickupsCollected } from "../store/slices/gameInPlay/gameInPlaySlice";
 import { fromAllEntries } from "../utils/entries";
 import { jsonItemIsNotable } from "./jsonItemIsNotable";
 import { type NotableItem, type NotableItemsInCell } from "./NotableItem";

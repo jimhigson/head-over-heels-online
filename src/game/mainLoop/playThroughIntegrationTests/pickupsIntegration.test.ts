@@ -1,9 +1,11 @@
 import { beforeEach, expect, test } from "vitest";
 
 import {
+  basicCampaign,
   firstRoomId,
   secondRoomId,
   setUpBasicGame,
+  setupGameForCampaign,
 } from "../../../_testUtils/basicRoom";
 import {
   headState,
@@ -12,6 +14,10 @@ import {
 } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
+import { currentRoomIs } from "../../../_testUtils/playThroughUntilHelpers";
+import { reloadFromSave } from "../../../_testUtils/reloadFromSave";
+import { selectPickupsCollected } from "../../../store/slices/gameMenus/gameMenusSelectors";
+import { store } from "../../../store/store";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 
 beforeEach(() => {
@@ -56,7 +62,9 @@ test("character walks into pickup", () => {
 
   // should have recorded collecting the pickup:
   expect(
-    gameState.pickupsCollected[firstRoomId]?.["pickupTwoSquaresFromHead"],
+    selectPickupsCollected(store.getState())[firstRoomId]?.[
+      "pickupTwoSquaresFromHead"
+    ],
   ).toBe(true);
   // the pickup should have disappeared:
   expect(
@@ -66,7 +74,7 @@ test("character walks into pickup", () => {
 
   // but not this one (included as a control):
   expect(
-    gameState.pickupsCollected[firstRoomId]?.[
+    selectPickupsCollected(store.getState())[firstRoomId]?.[
       "pickupCharactersWillNotGetInThisTest"
     ],
   ).toBeFalsy();
@@ -108,7 +116,9 @@ test("when character walks into pickup that they are not eligible to collect, th
   });
 
   // should *not* have recorded collecting the pickup:
-  expect(gameState.pickupsCollected[firstRoomId]?.["bag"]).toBeUndefined();
+  expect(
+    selectPickupsCollected(store.getState())[firstRoomId]?.["bag"],
+  ).toBeUndefined();
   // the pickup should *not* have disappeared:
   expect(selectCurrentRoomState(gameState)?.items["bag"]).toBeDefined();
 
@@ -170,9 +180,9 @@ test("character stand on pickup by walking off adjacent block", () => {
   });
 
   // should have recorded collecting the pickup:
-  expect(gameState.pickupsCollected[firstRoomId]?.["pickupOnTheFloor"]).toBe(
-    true,
-  );
+  expect(
+    selectPickupsCollected(store.getState())[firstRoomId]?.["pickupOnTheFloor"],
+  ).toBe(true);
   // the pickup should have disappeared:
   expect(
     selectCurrentRoomState(gameState)?.items["pickupOnTheFloor"],
@@ -204,9 +214,9 @@ test("pickup can land on character", () => {
   playGameThrough(gameState);
 
   // should have collected the pickup:
-  expect(gameState.pickupsCollected[firstRoomId]?.["pickupAboveHeels"]).toBe(
-    true,
-  );
+  expect(
+    selectPickupsCollected(store.getState())[firstRoomId]?.["pickupAboveHeels"],
+  ).toBe(true);
   expect(heelsState(gameState).lives).toBe(10);
   // the pickup should have disappeared:
   expect(
@@ -308,9 +318,9 @@ test.todo(
       },
     });
 
-    expect(gameState.pickupsCollected[firstRoomId]?.["pickupOnFloor"]).toBe(
-      true,
-    );
+    expect(
+      selectPickupsCollected(store.getState())[firstRoomId]?.["pickupOnFloor"],
+    ).toBe(true);
     expect(gameState.characterRooms.heels?.id).toBe("firstRoom");
     expect(gameState.characterRooms.heels?.items.pickupOnFloor).toBeUndefined();
   },
@@ -415,3 +425,60 @@ test.for([1, 2] as const)(
     ).toBeUndefined();
   },
 );
+
+test("a collected pickup is still gone from its room after leaving, reloading and coming back", () => {
+  const campaign = basicCampaign({
+    firstRoomItems: {
+      head: {
+        type: "player",
+        // at this y head is aligned to get through the door without colliding with the doorframe
+        position: { x: 4, y: 2.5, z: 0 },
+        config: { which: "head" },
+      },
+      extraLifeOnTheWayToTheDoor: {
+        type: "pickup",
+        position: { x: 2, y: 2.5, z: 0 },
+        config: { gives: "extra-life" },
+      },
+      doorToSecondRoom: {
+        type: "door",
+        position: { x: 0, y: 2, z: 0 },
+        config: { direction: "right", toRoom: secondRoomId },
+      },
+    },
+    secondRoomItems: {
+      doorToFirstRoom: {
+        type: "door",
+        position: { x: 8, y: 2, z: 0 },
+        config: { direction: "left", toRoom: firstRoomId },
+      },
+    },
+  });
+  const gameState = setupGameForCampaign(campaign);
+
+  // walk through the pickup and on through the door:
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockDirectionPressed = "right";
+    },
+    until: currentRoomIs(secondRoomId),
+    failAfter: 5_000,
+  });
+  expect(headState(gameState).lives).toBe(10);
+
+  const reloadedGameState = reloadFromSave(gameState, campaign);
+
+  // walk back into the room the pickup was in:
+  playGameThrough(reloadedGameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockDirectionPressed = "left";
+    },
+    until: currentRoomIs(firstRoomId),
+    failAfter: 5_000,
+  });
+
+  // the pickup has not respawned:
+  expect(
+    itemState<"pickup">(reloadedGameState, "extraLifeOnTheWayToTheDoor"),
+  ).toBeUndefined();
+});

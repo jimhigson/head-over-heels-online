@@ -3,11 +3,11 @@ import { type JsonItemUnion } from "../../../model/json/JsonItem";
 import { type RoomJson } from "../../../model/RoomJson";
 import {
   type PlanetsLiberated,
+  type RoomPickupsCollected,
   type ScrollsRead,
 } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { entries } from "../../../utils/entries";
-import { type RoomPickupsCollected } from "../GameState";
 import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "./loadItemFromJson";
 
