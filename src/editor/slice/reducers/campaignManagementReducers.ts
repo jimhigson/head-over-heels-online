@@ -2,10 +2,10 @@ import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { pick } from "../../../utils/pick";
 import { type EditorCampaign } from "../../editorTypes";
-import { resetPanesInPlace } from "../EditorPane";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { levelEditorSliceCampaignTransientFields } from "../levelEditorSliceTransientFields";
+import { closeRoomsNotInCampaignInPlace } from "../OpenRoom";
 
 export const campaignManagementReducers = {
   /**
@@ -24,9 +24,7 @@ export const campaignManagementReducers = {
     // anyway
     const state = _state as LevelEditorState;
     state.campaignInProgress = campaign;
-    state.openRoomTabs = state.openRoomTabs.filter(
-      ({ roomId }) => roomId in campaign.rooms,
-    );
+    closeRoomsNotInCampaignInPlace(state);
   },
   newCampaign(_state) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
@@ -42,14 +40,15 @@ export const campaignManagementReducers = {
         ...levelEditorSliceCampaignTransientFields,
         "campaignInProgress",
         "selectedRoomIds",
-        "cursorRoom",
-        "openRoomTabs",
+        "openRooms",
+        "tabs",
+        "cursorRoomId",
+        "nextIdNumber",
         "remoteCampaign",
         "history",
         "editingRoomIdHistory",
       ),
     );
-    resetPanesInPlace(state);
   },
   setCampaignName(state, { payload: name }: PayloadAction<string>) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed

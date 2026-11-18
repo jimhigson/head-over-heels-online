@@ -1,17 +1,10 @@
-import { type RoomJson } from "../../../model/RoomJson";
 import { type EditorRoomId } from "../../editorTypes";
-import { cursorRoomPanesIter } from "../EditorPane";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { showRoomInFrontTabInPlace, tabOpenRoomsIter } from "../OpenRoom";
 import { clearContextMenuXyInPlace } from "../reducers/contextMenuReducers";
 import { commitPendingNudgeInPlace } from "./commitPendingNudgeInPlace";
-import { openRoomTabInPlace } from "./openRoomTabInPlace";
-
-export const firstSubRoomId = (roomJson: RoomJson<string, string>): string => {
-  const subRoomKeys =
-    roomJson.meta?.subRooms && Object.keys(roomJson.meta.subRooms);
-  return subRoomKeys?.[0] ?? "*";
-};
+import { firstSubRoomId } from "./firstSubRoomId";
 
 export const changeCurrentRoomInPlace = (
   state: LevelEditorState,
@@ -44,14 +37,12 @@ export const changeCurrentRoomInPlace = (
       selectCursorRoomIdFromLevelEditorState(state),
     );
   }
-  openRoomTabInPlace(state, roomId);
-  state.selectedRoomIds = [roomId];
-  state.cursorRoom = { roomId, subRoomId: resolvedSubRoomId };
-
-  for (const pane of cursorRoomPanesIter(state)) {
-    pane.clickableAnnotationHovered = false;
-    pane.hoveredItem = undefined;
+  for (const openRoom of tabOpenRoomsIter(state)) {
+    openRoom.clickableAnnotationHovered = false;
+    openRoom.hoveredItem = undefined;
   }
+  showRoomInFrontTabInPlace(state, roomId, resolvedSubRoomId);
+  state.selectedRoomIds = [roomId];
   state.hoveredUndoIndex = 0;
   clearContextMenuXyInPlace(state);
 };

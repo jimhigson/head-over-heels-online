@@ -35,13 +35,13 @@ import {
 } from "../editorTypes";
 import { editorUiScale } from "../editorUiScale";
 import { type EditorViewport } from "../RoomEditingArea/viewport/EditorViewport";
-import { type EditorPaneId } from "../slice/EditorPane";
 import {
   changeToRoom,
-  selectPaneSelectedJsonItemIds,
+  selectOpenRoomSelectedJsonItemIds,
   selectTool,
   setClickableAnnotationHovered,
 } from "../slice/levelEditorSlice";
+import { type OpenRoomId } from "../slice/OpenRoom";
 
 const selectionColour = blockstackPixiPalettes.basic.pastelBlue;
 const monsterWakesColour = blockstackPixiPalettes.basic.lightBeige;
@@ -203,7 +203,7 @@ class EditorAnnotationsRenderer<
   readonly renderContext: ItemRenderContext<T>;
   #childRenderer: ItemChainPixiRenderer<T>;
   #viewport: EditorViewport;
-  #paneId: EditorPaneId;
+  #openRoomId: OpenRoomId;
   #editable: boolean;
   #outlineFilters: EditorOutlineFilters;
   /** text annotations, counter-scaled so they read at a constant size under zoom */
@@ -213,16 +213,20 @@ class EditorAnnotationsRenderer<
     renderContext: ItemRenderContext<T>,
     childRenderer: ItemChainPixiRenderer<T>,
     viewport: EditorViewport,
-    /** the pane rendering the item, since hover and selection are per-pane we need this */
-    paneId: EditorPaneId,
-    /** whether that pane edits its room - only then are annotations clickable */
+    /**
+     * the open room rendering the item, since hover and selection are per open room
+     */
+    openRoomId: OpenRoomId,
+    /**
+     * whether that open room is editable - only then are annotations clickable
+     */
     editable: boolean,
     editorOutlineFilters: EditorOutlineFilters,
   ) {
     this.renderContext = renderContext;
     this.#childRenderer = childRenderer;
     this.#viewport = viewport;
-    this.#paneId = paneId;
+    this.#openRoomId = openRoomId;
     this.#editable = editable;
     this.#outlineFilters = editorOutlineFilters;
     this.output.addChild(childRenderer.output);
@@ -448,7 +452,7 @@ class EditorAnnotationsRenderer<
     });
 
     if (clickDispatch !== undefined && this.#editable) {
-      const paneId = this.#paneId;
+      const openRoomId = this.#openRoomId;
 
       annotationContainer.eventMode = "static";
 
@@ -464,13 +468,13 @@ class EditorAnnotationsRenderer<
         // TODO: this is over-dispatching - need some way to
         // prevent firing when enter/leave children
         store.dispatch(
-          setClickableAnnotationHovered({ paneId, hovered: true }),
+          setClickableAnnotationHovered({ openRoomId, hovered: true }),
         );
         annotationContainer.colour = textClickableAnnotationHoverColour;
       });
       annotationContainer.on("mouseout", () => {
         store.dispatch(
-          setClickableAnnotationHovered({ paneId, hovered: false }),
+          setClickableAnnotationHovered({ openRoomId, hovered: false }),
         );
         annotationContainer.colour = tint;
       });
@@ -532,13 +536,20 @@ class EditorAnnotationsRenderer<
     const { jsonItemId } = item;
 
     const state = editorStore.getState();
-    const pane = state.levelEditor.panes[this.#paneId];
-    const { clickableAnnotationHovered, hoveredItem: hoveredJsonItem } = pane;
-    const selectedJsonItemIds = selectPaneSelectedJsonItemIds(
+    const openRoom = state.levelEditor.openRooms[this.#openRoomId];
+    // check the room wasn't closed (in case we have a stale openRoomId
+    // reference) - eg a frame drawn after its tab closed but before its pane
+    // unmounts:
+    if (openRoom === undefined) {
+      return;
+    }
+    const { clickableAnnotationHovered, hoveredItem: hoveredJsonItem } =
+      openRoom;
+    const selectedJsonItemIds = selectOpenRoomSelectedJsonItemIds(
       state,
-      this.#paneId,
+      this.#openRoomId,
     );
-    // a pane that doesn't edit only ever points:
+    // a non-editable open room only ever points:
     const toolType = this.#editable ? selectTool(state).type : "pointer";
 
     const isHovered =
@@ -608,9 +619,10 @@ class EditorAnnotationsRenderer<
  */
 export const makeEditorAnnotationsDecorateItemRenderer = (
   viewport: EditorViewport,
-  /** the pane rendering the items */
-  paneId: EditorPaneId,
-  /** whether that pane edits its room */
+  /**
+   * the open room rendering the items
+   */
+  openRoomId: OpenRoomId,
   editable: boolean,
 ): DecorateItemMaybeRenderer => {
   const editorOutlineFilters = makeEditorOutlineFilters(viewport);
@@ -620,7 +632,7 @@ export const makeEditorAnnotationsDecorateItemRenderer = (
         itemRenderContext,
         childRenderer,
         viewport,
-        paneId,
+        openRoomId,
         editable,
         editorOutlineFilters,
       )

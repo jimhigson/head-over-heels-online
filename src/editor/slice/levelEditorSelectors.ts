@@ -11,9 +11,12 @@ import {
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../editorTypes";
-import { selectActiveCursorRoomEditingPaneFromLevelEditorState } from "./EditorPane";
 import { jsonItemsWithEdits } from "./jsonItemsWithEdits";
 import { type LevelEditorState } from "./levelEditorSlice";
+import {
+  selectActiveCursorRoomEditingOpenRoomFromLevelEditorState,
+  selectFrontOpenRoomFromLevelEditorState,
+} from "./OpenRoom";
 
 /** whether the campaign being edited differs from as last saved (or loaded) */
 export const selectCampaignHasUnsavedChangesFromLevelEditorState = ({
@@ -21,12 +24,15 @@ export const selectCampaignHasUnsavedChangesFromLevelEditorState = ({
   campaignInProgress,
 }: LevelEditorState) => !nanoEqual(remoteCampaign, campaignInProgress);
 
+/**
+ * the cursor room's open room, in the front tab
+ */
 export const selectCursorRoomFromLevelEditorState = (state: LevelEditorState) =>
-  state.cursorRoom;
+  selectFrontOpenRoomFromLevelEditorState(state);
 
 export const selectCursorRoomIdFromLevelEditorState = (
   state: LevelEditorState,
-) => selectCursorRoomFromLevelEditorState(state).roomId;
+) => state.cursorRoomId;
 
 export const selectCursorSubRoomIdFromLevelEditorState = (
   state: LevelEditorState,
@@ -77,16 +83,14 @@ export const selectItemInLevelEditorState = (
   ]?.items[itemId] as EditorJsonItemUnion | undefined;
 
 /**
- * the items selected in the cursor room, by the active pane - the selection
- * that commands act on. Empty unless the active pane edits the cursor room
+ * the items selected in the cursor room - the selection that commands act on.
+ * Empty unless the active open room is the front tab's
  */
 export const selectCursorRoomSelectedJsonItemIdsFromLevelEditorState = (
   state: LevelEditorState,
 ): EditorRoomItemId[] =>
-  selectActiveCursorRoomEditingPaneFromLevelEditorState(state)
-    ?.selectedJsonItemIdsByRoom[
-    selectCursorRoomIdFromLevelEditorState(state)
-  ] ?? emptyArray;
+  selectActiveCursorRoomEditingOpenRoomFromLevelEditorState(state)
+    ?.selectedJsonItemIds ?? emptyArray;
 
 /**
  * the json ids of items that exist only as an uncommitted preview - ie, the

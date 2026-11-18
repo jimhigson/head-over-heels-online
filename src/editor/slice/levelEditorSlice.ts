@@ -15,11 +15,6 @@ import {
   type ItemTool,
   type Tool,
 } from "../RoomEditingArea/interactivity/Tool";
-import {
-  type EditorPane,
-  type EditorPaneId,
-  resetPanesInPlace,
-} from "./EditorPane";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
   selectCampaignHasUnsavedChangesFromLevelEditorState,
@@ -31,6 +26,7 @@ import {
   selectRoomFromLevelEditorState,
   selectRoomHasUnsavedChangesFromLevelEditorState,
 } from "./levelEditorSelectors";
+import { type OpenRoom, type OpenRoomId, type Tab } from "./OpenRoom";
 import { addOrRemoveRoomReducers } from "./reducers/addOrRemoveRoomReducers";
 import { applyItemToolReducers } from "./reducers/applyItemToolReducers";
 import { campaignManagementReducers } from "./reducers/campaignManagementReducers";
@@ -68,7 +64,10 @@ import { moveItemsToRoomReducers } from "./reducers/moveItemsToRoomReducers";
 import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
 import { multiplyItemsReducers } from "./reducers/multiplyItemsReducers";
 import { nudgeReducers } from "./reducers/nudgeReducers";
-import { panesReducers, panesSelectors } from "./reducers/panesReducers";
+import {
+  openRoomsReducers,
+  openRoomsSelectors,
+} from "./reducers/openRoomsReducers";
 import {
   playtestOptionsReducers,
   playtestOptionsSelectors,
@@ -101,7 +100,6 @@ import {
   undoReducers,
   undoSelectors,
 } from "./reducers/undoReducers";
-import { type RoomTab } from "./RoomTab";
 
 export type HoveredItem = {
   jsonItemId: EditorRoomItemId;
@@ -152,12 +150,27 @@ export type LevelEditorState = {
   /** the campaign in the db (as far as we know) - can be used to check if we have edits since the last save */
   remoteCampaign: EditorCampaign | undefined;
   selectedRoomIds: EditorRoomId[];
-  cursorRoom: { roomId: EditorRoomId; subRoomId: string };
   /**
-   * the rooms open in the editing pane's tabs, in order. The cursor room's tab
-   * is the front tab
+   * the current room (must be one of the rooms in selectedRoomIds)
+   * - the map highlights it, and its tab is in front
    */
-  openRoomTabs: RoomTab[];
+  cursorRoomId: EditorRoomId;
+  /**
+   * the rooms open for viewing and editing, being rendered by the game engine
+   * embedded into the editor, in tabs or elsewhere (eg a dialog), by their own ids
+   */
+  openRooms: Record<OpenRoomId, OpenRoom>;
+  /**
+   * the room editing area's tabs, in order. Currently, will correlate to an
+   * open room in `.openRooms`, since we only support open rooms in tabs
+   */
+  tabs: Tab[];
+
+  /**
+   * numbers the next open room or tab id. We never recycle id numbers to avoid
+   * remove-and-replace inside the same reduction
+   */
+  nextIdNumber: number;
   editingRoomIdHistory: {
     back: EditorRoomId[];
     forward: EditorRoomId[];
@@ -175,15 +188,6 @@ export type LevelEditorState = {
   lastItemTool: ItemTool | undefined;
   /** the text currently typed into the cmd-k menu's search input, retained while the menu is closed */
   cmdKSearch: string;
-  /**
-   * the mounted room panes, by the ids they were given on mounting
-   */
-  panes: Record<EditorPaneId, EditorPane>;
-  /**
-   * the pane last interacted with - commands acting on the selection act on
-   * its selection. Undefined while no pane is mounted
-   */
-  activePaneId: EditorPaneId | undefined;
   gridResolution: GridResolution;
   /** the 90°-increment camera rotation the editor is viewing the room from */
   cameraAngle: Xy;
@@ -249,19 +253,12 @@ export const levelEditorSlice = createSlice({
     ...campaignManagementReducers,
     ...contextMenuReducers,
     ...playtestOptionsReducers,
-    ...panesReducers,
+    ...openRoomsReducers,
   },
   extraReducers(builder) {
-    builder.addCase(clearAllData, ({ panes, activePaneId }) => {
-      // the panes reflect the DOM, so keep them until the DOM nodes are unmounted, which will cause this state to go:
-      const clearedState: LevelEditorState = {
-        ...structuredClone(initialLevelEditorSliceState),
-        panes,
-        activePaneId,
-      };
-      resetPanesInPlace(clearedState);
-      return clearedState;
-    });
+    builder.addCase(clearAllData, () =>
+      structuredClone(initialLevelEditorSliceState),
+    );
   },
   selectors: {
     selectCursorRoom: selectCursorRoomFromLevelEditorState,
@@ -291,7 +288,7 @@ export const levelEditorSlice = createSlice({
     ...rotateViewSelectors,
     ...playtestOptionsSelectors,
     ...editorSettingsSelectors,
-    ...panesSelectors,
+    ...openRoomsSelectors,
     ...selectionsSelectors,
     ...contextMenuSelectors,
     ...dragToMoveSelectors,
@@ -318,12 +315,12 @@ export const {
   closeOtherRoomTabs,
   closeRoomTab,
   closeItemContextMenu,
-  editorPaneActivated,
-  editorPaneMounted,
-  editorPaneUnmounted,
-  paneViewChanged,
-  paneViewPanned,
-  paneViewZoomed,
+  dialogRoomClosed,
+  dialogRoomOpened,
+  openRoomsRestored,
+  openRoomViewChanged,
+  openRoomViewPanned,
+  openRoomViewZoomed,
   coalesceSelectedItems,
   coalesceSelectedRooms,
   commitCurrentPreviewedEdits,
@@ -344,7 +341,7 @@ export const {
   roomBack,
   roomForward,
   roomJsonEdited,
-  paneResized,
+  openRoomPaneResized,
   rotateCurrentToolItem,
   rotateSelectedItems,
   rotateViewAnticlockwise,
@@ -385,11 +382,11 @@ export const {
   selectBackRooms,
   selectPlaytestOptions,
   selectCmdKSearch,
-  selectPaneContextMenuXy,
-  selectPaneSelectedJsonItemIds,
-  selectPaneDragInProgress,
-  selectActivePaneId,
-  selectActivePaneDragInProgress,
+  selectOpenRoomContextMenuXy,
+  selectOpenRoomSelectedJsonItemIds,
+  selectOpenRoomDragInProgress,
+  selectActiveOpenRoomId,
+  selectActiveOpenRoomDragInProgress,
   selectCurrentCampaignInProgress,
   selectCurrentCampaignVersion,
   selectCurrentEditingRoomColour,
@@ -398,18 +395,20 @@ export const {
   selectCursorRoom,
   selectCursorRoomId,
   selectCursorSubRoomId,
-  selectPaneView,
+  selectOpenRoomView,
   selectDoorAutoAddsRoom,
   selectEditorCameraAngle,
   selectForwardRooms,
-  selectPaneHoveredItem,
+  selectOpenRoomHoveredItem,
   selectItem,
-  selectOpenRoomTabs,
+  selectFrontOpenRoomId,
+  selectTabs,
+  selectTabRoomIds,
   selectRedoHistory,
   selectCampaignHasUnsavedChanges,
   selectRoom,
   selectRoomHasUnsavedChanges,
-  selectPaneSize,
+  selectOpenRoomPaneSize,
   selectCursorRoomSelectedJsonItemIds,
   selectTool,
   selectUndoHistory,

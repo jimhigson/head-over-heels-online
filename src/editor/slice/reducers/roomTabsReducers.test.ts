@@ -6,7 +6,10 @@ import {
   type EditorRoomId,
   type EditorRoomItemId,
 } from "../../editorTypes";
-import { selectCursorRoomSelectedJsonItemIdsFromLevelEditorState } from "../levelEditorSelectors";
+import {
+  selectCursorRoomIdFromLevelEditorState,
+  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+} from "../levelEditorSelectors";
 import {
   changeToRoom,
   closeOtherRoomTabs,
@@ -15,10 +18,10 @@ import {
   type LevelEditorState,
   pinRoomTab,
   removeRoom,
-  selectOpenRoomTabs,
+  selectTabRoomIds,
+  selectTabs,
   setSelectedItemsInRoom,
 } from "../levelEditorSlice";
-import { type RoomTab } from "../RoomTab";
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,
@@ -43,53 +46,64 @@ const baseState = produce(editorStateWithOneRoomWithNoItems, (draft) => {
   }
 });
 
-const tabsOf = (state: LevelEditorState): RoomTab[] =>
-  selectOpenRoomTabs({ levelEditor: state });
+type TabSummary = { roomId: EditorRoomId; isPreview: boolean };
+
+const tabsOf = (state: LevelEditorState): TabSummary[] => {
+  const tabRoomIds = selectTabRoomIds({ levelEditor: state });
+  return selectTabs({ levelEditor: state }).map(({ isPreview }, tabIndex) => ({
+    roomId: tabRoomIds[tabIndex],
+    isPreview,
+  }));
+};
 
 test("browsing to a room opens it in a preview tab after the current one", () => {
-  const state = reduceLevelEditorActions(baseState, changeToRoom(roomB));
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(state0, changeToRoom(roomB));
 
-  expect<RoomTab[]>(tabsOf(state)).toEqual([
-    { roomId: testRoomId, isPreview: false, view: undefined },
-    { roomId: roomB, isPreview: true, view: undefined },
+  expect<TabSummary[]>(tabsOf(state1)).toEqual([
+    { roomId: testRoomId, isPreview: false },
+    { roomId: roomB, isPreview: true },
   ]);
 });
 
 test("browsing to another room replaces the preview tab", () => {
-  const state = reduceLevelEditorActions(
-    baseState,
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
     changeToRoom(roomB),
     changeToRoom(roomC),
   );
 
-  expect<RoomTab[]>(tabsOf(state)).toEqual([
-    { roomId: testRoomId, isPreview: false, view: undefined },
-    { roomId: roomC, isPreview: true, view: undefined },
+  expect<TabSummary[]>(tabsOf(state1)).toEqual([
+    { roomId: testRoomId, isPreview: false },
+    { roomId: roomC, isPreview: true },
   ]);
 });
 
 test("browsing to an open room switches to its tab", () => {
-  const state = reduceLevelEditorActions(
-    baseState,
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
     changeToRoom(roomB),
     changeToRoom(testRoomId),
   );
 
-  expect(tabsOf(state).map(({ roomId }) => roomId)).toEqual([
+  expect(tabsOf(state1).map(({ roomId }) => roomId)).toEqual([
     testRoomId,
     roomB,
   ]);
 });
 
 test("a pinned tab stays when browsing on", () => {
-  const state = reduceLevelEditorActions(
-    baseState,
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
     changeToRoom(roomB),
     pinRoomTab(roomB),
     changeToRoom(roomC),
   );
 
-  expect(tabsOf(state).map(({ roomId }) => roomId)).toEqual([
+  expect(tabsOf(state1).map(({ roomId }) => roomId)).toEqual([
     testRoomId,
     roomB,
     roomC,
@@ -97,23 +111,25 @@ test("a pinned tab stays when browsing on", () => {
 });
 
 test("editing a room pins its tab", () => {
-  const state = reduceLevelEditorActions(
-    produce(baseState, (draft) => {
-      draft.campaignInProgress.rooms[roomB].items[blockId] = block;
-    }),
+  const state0 = produce(baseState, (draft) => {
+    draft.campaignInProgress.rooms[roomB].items[blockId] = block;
+  });
+  const state1 = reduceLevelEditorActions(
+    state0,
     changeToRoom(roomB),
     setSelectedItemsInRoom({ jsonItemIds: [blockId] }),
     deleteSelected({ timestamp: 0 }),
   );
 
-  expect(tabsOf(state).find(({ roomId }) => roomId === roomB)?.isPreview).toBe(
+  expect(tabsOf(state1).find(({ roomId }) => roomId === roomB)?.isPreview).toBe(
     false,
   );
 });
 
 test("closing the active tab moves to the tab after it", () => {
-  const state = reduceLevelEditorActions(
-    baseState,
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
     changeToRoom(roomB),
     pinRoomTab(roomB),
     changeToRoom(roomC),
@@ -121,53 +137,58 @@ test("closing the active tab moves to the tab after it", () => {
     closeRoomTab(roomB),
   );
 
-  expect(state.cursorRoom.roomId).toBe(roomC);
+  expect(selectCursorRoomIdFromLevelEditorState(state1)).toBe(roomC);
 });
 
 test("closing the last tab moves to the tab before it", () => {
-  const state = reduceLevelEditorActions(
-    baseState,
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
     changeToRoom(roomB),
     closeRoomTab(roomB),
   );
 
-  expect(state.cursorRoom.roomId).toBe(testRoomId);
+  expect(selectCursorRoomIdFromLevelEditorState(state1)).toBe(testRoomId);
 });
 
 test("the only tab can't be closed", () => {
-  const state = reduceLevelEditorActions(baseState, closeRoomTab(testRoomId));
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(state0, closeRoomTab(testRoomId));
 
-  expect(tabsOf(state).map(({ roomId }) => roomId)).toEqual([testRoomId]);
+  expect(tabsOf(state1).map(({ roomId }) => roomId)).toEqual([testRoomId]);
 });
 
 test("each room keeps its own selection", () => {
-  const state = reduceLevelEditorActions(
-    baseState,
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
     setSelectedItemsInRoom({ jsonItemIds: [blockId] }),
     changeToRoom(roomB),
     changeToRoom(testRoomId),
   );
 
   expect(
-    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state),
+    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state1),
   ).toEqual([blockId]);
 });
 
 test("deleting a room closes its tab", () => {
-  const state = reduceLevelEditorActions(
-    baseState,
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
     changeToRoom(roomB),
     pinRoomTab(roomB),
     changeToRoom(testRoomId),
     removeRoom({ roomId: roomB }),
   );
 
-  expect(tabsOf(state).map(({ roomId }) => roomId)).toEqual([testRoomId]);
+  expect(tabsOf(state1).map(({ roomId }) => roomId)).toEqual([testRoomId]);
 });
 
 test("closing other tabs leaves just the room's own, switched to", () => {
-  const state = reduceLevelEditorActions(
-    baseState,
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
     changeToRoom(roomB),
     pinRoomTab(roomB),
     changeToRoom(roomC),
@@ -175,7 +196,7 @@ test("closing other tabs leaves just the room's own, switched to", () => {
   );
 
   expect({
-    cursorRoomId: state.cursorRoom.roomId,
-    tabRoomIds: tabsOf(state).map(({ roomId }) => roomId),
+    cursorRoomId: selectCursorRoomIdFromLevelEditorState(state1),
+    tabRoomIds: tabsOf(state1).map(({ roomId }) => roomId),
   }).toEqual({ cursorRoomId: roomB, tabRoomIds: [roomB] });
 });

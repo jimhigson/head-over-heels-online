@@ -7,6 +7,7 @@ import {
   newCampaign,
   removeRoom,
   selectCampaignHasUnsavedChanges,
+  selectCursorRoomId,
 } from "../slice/levelEditorSlice";
 import { confirm, type ConfirmOptions } from "./confirm";
 
@@ -47,7 +48,7 @@ export const confirmDeleteRoomThunk =
     roomId?: EditorRoomId,
   ): EditorThunk<Promise<void>> =>
   async (dispatch, getState) => {
-    const targetRoomId = roomId ?? getState().levelEditor.cursorRoom.roomId;
+    const targetRoomId = roomId ?? selectCursorRoomId(getState());
     if (
       await confirm({
         heading: "Delete room?",
@@ -68,8 +69,7 @@ export const confirmClearRoomThunk: EditorThunk<Promise<void>> = async (
   dispatch,
   getState,
 ) => {
-  const { cursorRoom } = getState().levelEditor;
-  const { roomId } = cursorRoom;
+  const roomId = selectCursorRoomId(getState());
   if (
     await confirm({
       heading: "Clear room?",

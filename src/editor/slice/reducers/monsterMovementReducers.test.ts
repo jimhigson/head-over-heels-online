@@ -14,37 +14,41 @@ import {
   testRoomId,
 } from "./__test__/storeStates";
 
-const monsterAndBlock = produce(editorStateWithOneRoomWithNoItems, (draft) => {
-  const { items } = draft.campaignInProgress.rooms[testRoomId];
-  items["monkey" as EditorRoomItemId] = {
-    type: "monster",
-    config: {
-      which: "monkey",
-      movement: "patrol-randomly-xy4",
-      startDirection: "towards",
-      activated: "on",
-    },
-    position: { x: 0, y: 0, z: 0 },
-  };
-  items["block" as EditorRoomItemId] = {
-    type: "block",
-    config: { style: "artificial" },
-    position: { x: 1, y: 0, z: 0 },
-  };
-});
+const state0MonsterAndBlock = produce(
+  editorStateWithOneRoomWithNoItems,
+  (draft) => {
+    const { items } = draft.campaignInProgress.rooms[testRoomId];
+    items["monkey" as EditorRoomItemId] = {
+      type: "monster",
+      config: {
+        which: "monkey",
+        movement: "patrol-randomly-xy4",
+        startDirection: "towards",
+        activated: "on",
+      },
+      position: { x: 0, y: 0, z: 0 },
+    };
+    items["block" as EditorRoomItemId] = {
+      type: "block",
+      config: { style: "artificial" },
+      position: { x: 1, y: 0, z: 0 },
+    };
+  },
+);
 
-const setMovement = selectCurrentCommittedRoomJsonFromLevelEditorState(
-  reduceLevelEditorActions(
-    monsterAndBlock,
-    setSelectedItemsInRoom({
-      jsonItemIds: ["monkey", "block"] as EditorRoomItemId[],
-    }),
-    setSelectedMonstersMovement({
-      movement: "towards-on-shortest-axis-xy4",
-      timestamp: 0,
-    }),
-  ),
-).items;
+const state1MovementSet = reduceLevelEditorActions(
+  state0MonsterAndBlock,
+  setSelectedItemsInRoom({
+    jsonItemIds: ["monkey", "block"] as EditorRoomItemId[],
+  }),
+  setSelectedMonstersMovement({
+    movement: "towards-on-shortest-axis-xy4",
+    timestamp: 0,
+  }),
+);
+
+const setMovement =
+  selectCurrentCommittedRoomJsonFromLevelEditorState(state1MovementSet).items;
 
 test("sets the movement on a selected monster", () => {
   expect(setMovement["monkey" as EditorRoomItemId]).toEqual<

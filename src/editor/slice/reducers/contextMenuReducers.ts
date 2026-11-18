@@ -4,46 +4,49 @@ import {
   type SliceSelectors,
 } from "@reduxjs/toolkit";
 
+import { valuesIter } from "../../../utils/entries";
 import { type Xy } from "../../../utils/vectors/vectors";
-import {
-  type EditorPaneId,
-  panesIter,
-  requirePane,
-  selectPaneSelectedJsonItemIdsFromLevelEditorState,
-} from "../EditorPane";
 import { type LevelEditorState } from "../levelEditorSlice";
+import {
+  maybeOpenRoom,
+  type OpenRoomId,
+  selectOpenRoomSelectedJsonItemIdsFromLevelEditorState,
+} from "../OpenRoom";
 
 /**
- * Clear any open item context menu, in every pane. Guarded so that immer does
+ * Clear any open item context menu, in every open room. Guarded so that immer does
  * not register a state change when there is nothing to clear.
  */
 export const clearContextMenuXyInPlace = (state: LevelEditorState) => {
-  for (const pane of panesIter(state)) {
-    if (pane.contextMenuXy !== undefined) {
-      pane.contextMenuXy = undefined;
+  for (const openRoom of valuesIter(state.openRooms)) {
+    if (openRoom.contextMenuXy !== undefined) {
+      openRoom.contextMenuXy = undefined;
     }
   }
 };
 
 export const contextMenuReducers = {
   /**
-   * open the item context menu in a pane at the given position (scaled pixels,
+   * open the item context menu in a openRoom at the given position (scaled pixels,
    * in the room's projected screen space - ie, the same space as
    * PointingAt.scrXy)
    */
   openItemContextMenu(
     state,
     {
-      payload: { paneId, scrXy },
-    }: PayloadAction<{ paneId: EditorPaneId; scrXy: Xy }>,
+      payload: { openRoomId, scrXy },
+    }: PayloadAction<{ openRoomId: OpenRoomId; scrXy: Xy }>,
   ) {
-    const pane = requirePane(state, paneId);
+    const openRoom = maybeOpenRoom(state, openRoomId);
+    if (openRoom === undefined) {
+      return;
+    }
     // only show a context menu when there is a selection to provide context for:
     if (
-      selectPaneSelectedJsonItemIdsFromLevelEditorState(state, paneId).length >
-      0
+      selectOpenRoomSelectedJsonItemIdsFromLevelEditorState(state, openRoomId)
+        .length > 0
     ) {
-      pane.contextMenuXy = scrXy;
+      openRoom.contextMenuXy = scrXy;
     }
   },
   closeItemContextMenu(state) {
@@ -52,12 +55,7 @@ export const contextMenuReducers = {
 } satisfies SliceCaseReducers<LevelEditorState>;
 
 export const contextMenuSelectors = {
-  selectPaneContextMenuXy(state: LevelEditorState, paneId: EditorPaneId) {
-    const pane = state.panes[paneId];
-    // check pane wasn't closed (in case we have a stale paneId reference)
-    if (pane === undefined) {
-      return undefined;
-    }
-    return pane.contextMenuXy;
+  selectOpenRoomContextMenuXy(state: LevelEditorState, openRoomId: OpenRoomId) {
+    return maybeOpenRoom(state, openRoomId)?.contextMenuXy;
   },
 } satisfies SliceSelectors<LevelEditorState>;

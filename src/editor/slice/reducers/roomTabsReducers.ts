@@ -5,15 +5,20 @@ import {
 } from "@reduxjs/toolkit";
 
 import { type EditorRoomId } from "../../editorTypes";
-import { forgetTabSelectionsInPlace } from "../EditorPane";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
 import { pinRoomTabInPlace } from "../inPlaceMutators/pinRoomTabInPlace";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
+import {
+  closeTabInPlace,
+  existingOpenRoom,
+  findRoomTab,
+  selectFrontTabFromLevelEditorState,
+} from "../OpenRoom";
 
 export const roomTabsReducers = {
   /**
-   * close a room's tab. The last tab can't be closed; closing the active one
+   * close a room's tab. The last tab can't be closed; closing the front one
    * moves to the tab after it, or before it if it was the last
    */
   closeRoomTab(_state, { payload: roomId }: PayloadAction<EditorRoomId>) {
@@ -22,25 +27,23 @@ export const roomTabsReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
-    const roomTabs = state.openRoomTabs;
-    const closingIndex = roomTabs.findIndex(
-      (roomTab) => roomTab.roomId === roomId,
-    );
-    if (closingIndex === -1 || roomTabs.length === 1) {
+    const closingTab = findRoomTab(state, roomId);
+    if (closingTab === undefined || state.tabs.length === 1) {
       return;
     }
 
-    if (roomId === selectCursorRoomIdFromLevelEditorState(state)) {
+    if (roomId === state.cursorRoomId) {
       // move off first, so the closing room isn't the cursor room any more:
+      const closingIndex = state.tabs.indexOf(closingTab);
       const neighbourTab =
-        roomTabs[closingIndex + 1] ?? roomTabs[closingIndex - 1];
-      changeCurrentRoomInPlace(state, neighbourTab.roomId);
+        state.tabs[closingIndex + 1] ?? state.tabs[closingIndex - 1];
+      changeCurrentRoomInPlace(
+        state,
+        existingOpenRoom(state, neighbourTab.openRoomId).roomId,
+      );
     }
 
-    state.openRoomTabs = state.openRoomTabs.filter(
-      (roomTab) => roomTab.roomId !== roomId,
-    );
-    forgetTabSelectionsInPlace(state, roomId);
+    closeTabInPlace(state, closingTab.id);
   },
 
   /** close every tab but the room's own, moving to it if needed */
@@ -53,14 +56,12 @@ export const roomTabsReducers = {
     if (roomId !== selectCursorRoomIdFromLevelEditorState(state)) {
       changeCurrentRoomInPlace(state, roomId);
     }
-    for (const { roomId: otherRoomId } of state.openRoomTabs) {
-      if (otherRoomId !== roomId) {
-        forgetTabSelectionsInPlace(state, otherRoomId);
-      }
+    for (const otherTab of state.tabs.filter(
+      ({ openRoomId }) =>
+        existingOpenRoom(state, openRoomId).roomId !== state.cursorRoomId,
+    )) {
+      closeTabInPlace(state, otherTab.id);
     }
-    state.openRoomTabs = state.openRoomTabs.filter(
-      (roomTab) => roomTab.roomId === roomId,
-    );
   },
 
   /** keep a room's tab open when other rooms are browsed to */
@@ -74,5 +75,15 @@ export const roomTabsReducers = {
 } satisfies SliceCaseReducers<LevelEditorState>;
 
 export const roomTabsSelectors = {
-  selectOpenRoomTabs: (state: LevelEditorState) => state.openRoomTabs,
+  selectFrontOpenRoomId: (state: LevelEditorState) =>
+    selectFrontTabFromLevelEditorState(state).openRoomId,
+  selectTabs: (state: LevelEditorState) => state.tabs,
+  /**
+   * the room each tab shows, in tab order - a new array every call, so
+   * compare by value when subscribing
+   */
+  selectTabRoomIds: (state: LevelEditorState): EditorRoomId[] =>
+    state.tabs.map(
+      ({ openRoomId }) => existingOpenRoom(state, openRoomId).roomId,
+    ),
 } satisfies SliceSelectors<LevelEditorState>;

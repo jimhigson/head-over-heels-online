@@ -26,19 +26,19 @@ import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors"
 import {
   applyItemTool,
   deleteSelected,
-  editorPaneMounted,
   type LevelEditorState,
   setAutoCoalesce,
   setSelectedItemsInRoom,
   setTool,
 } from "../levelEditorSlice";
+import { newOpenRoom } from "../OpenRoom";
 import {
   doorItemToolWithAutoAddRooms,
   doorItemToolWithoutAutoAddRooms,
   editorStateWithOneRoomWithNoItems,
   editorStateWithOneRoomWithOneAwayWall,
   reduceLevelEditorActions,
-  testPaneId,
+  testOpenRoomId,
   testRoomId,
   wallItemId,
 } from "./__test__/storeStates";
@@ -64,24 +64,25 @@ describe("applying tools", () => {
         timestamp: 0,
       };
 
-      const next = reduceLevelEditorActions(
-        {
-          ...editorStateWithOneRoomWithNoItems,
-          tool: {
-            type: "item",
-            item: {
-              type: "pickup",
-              config: {
-                gives: "bag",
-              },
+      const state0: LevelEditorState = {
+        ...editorStateWithOneRoomWithNoItems,
+        tool: {
+          type: "item",
+          item: {
+            type: "pickup",
+            config: {
+              gives: "bag",
             },
           },
         },
+      };
+      const state1 = reduceLevelEditorActions(
+        state0,
         applyItemTool(actionPayload),
       );
 
       expect(
-        next.campaignInProgress.rooms[testRoomId].items,
+        state1.campaignInProgress.rooms[testRoomId].items,
       ).toMatchObject<EditorRoomJsonItems>({
         ["pi" as EditorRoomItemId]: {
           config: {
@@ -143,16 +144,17 @@ describe("applying tools", () => {
               },
             },
           };
-          const next = reduceLevelEditorActions(
-            {
-              ...editorStateWithOneRoomWithNoItems,
-              tool: addCybermanTool,
-            },
+          const state0: LevelEditorState = {
+            ...editorStateWithOneRoomWithNoItems,
+            tool: addCybermanTool,
+          };
+          const state1 = reduceLevelEditorActions(
+            state0,
             applyItemTool(actionPayload),
           );
 
           expect(
-            next.campaignInProgress.rooms[testRoomId].items,
+            state1.campaignInProgress.rooms[testRoomId].items,
           ).toMatchObject<EditorRoomJsonItems>({
             ["m" as EditorRoomItemId]: {
               type: "monster",
@@ -186,14 +188,15 @@ describe("applying tools", () => {
           timestamp: 0,
         };
 
-        const next = reduceLevelEditorActions(
-          editorStateWithOneRoomWithOneAwayWall,
+        const state0 = editorStateWithOneRoomWithOneAwayWall;
+        const state1 = reduceLevelEditorActions(
+          state0,
           setTool(doorItemToolWithAutoAddRooms),
           applyItemTool(actionPayload),
         );
 
         expect(
-          next.campaignInProgress.rooms[testRoomId].items,
+          state1.campaignInProgress.rooms[testRoomId].items,
         ).toEqual<EditorRoomJsonItems>({
           ["d" as EditorRoomItemId]: {
             config: {
@@ -241,13 +244,14 @@ describe("applying tools", () => {
           timestamp: 0,
         };
 
-        const next = reduceLevelEditorActions(
-          editorStateWithOneRoomWithOneAwayWall,
+        const state0 = editorStateWithOneRoomWithOneAwayWall;
+        const state1 = reduceLevelEditorActions(
+          state0,
           setTool(doorItemToolWithAutoAddRooms),
           applyItemTool(actionPayload),
         );
 
-        expect(Object.keys(next.campaignInProgress.rooms[testRoomId].items))
+        expect(Object.keys(state1.campaignInProgress.rooms[testRoomId].items))
           .toMatchInlineSnapshot(`
             [
               "testWall",
@@ -256,7 +260,7 @@ describe("applying tools", () => {
           `);
 
         expect(
-          next.campaignInProgress.rooms[testRoomId].items,
+          state1.campaignInProgress.rooms[testRoomId].items,
         ).toEqual<EditorRoomJsonItems>({
           ["d" as EditorRoomItemId]: {
             config: {
@@ -292,14 +296,15 @@ describe("applying tools", () => {
           timestamp: 0,
         };
 
-        const next = reduceLevelEditorActions(
-          editorStateWithOneRoomWithOneAwayWall,
+        const state0 = editorStateWithOneRoomWithOneAwayWall;
+        const state1 = reduceLevelEditorActions(
+          state0,
           setTool(doorItemToolWithAutoAddRooms),
           applyItemTool(actionPayload),
         );
 
         expect(
-          next.campaignInProgress.rooms[testRoomId].items,
+          state1.campaignInProgress.rooms[testRoomId].items,
         ).toEqual<EditorRoomJsonItems>({
           ["d" as EditorRoomItemId]: {
             config: {
@@ -325,7 +330,7 @@ describe("applying tools", () => {
       });
 
       test("deletes a wall if a door completely covers it", () => {
-        const editorStateWithOneRoomWithOneSmallAwayWall = produce(
+        const state0WithOneSmallAwayWall = produce(
           editorStateWithOneRoomWithOneAwayWall,
           (draft) => {
             const wall =
@@ -338,33 +343,31 @@ describe("applying tools", () => {
         );
 
         const wallPosition =
-          editorStateWithOneRoomWithOneSmallAwayWall.campaignInProgress.rooms[
-            testRoomId
-          ].items[wallItemId].position;
+          state0WithOneSmallAwayWall.campaignInProgress.rooms[testRoomId].items[
+            wallItemId
+          ].position;
         const actionPayload: ApplyToolToRoomJsonPayload = {
           blockPosition:
             // placing at the wall's position:
             wallPosition,
-          pointedAtItemJson: editorStateWithOneRoomWithOneSmallAwayWall
-            .campaignInProgress.rooms[testRoomId].items[
-            wallItemId
-          ] as EditorJsonItemUnion,
+          pointedAtItemJson: state0WithOneSmallAwayWall.campaignInProgress
+            .rooms[testRoomId].items[wallItemId] as EditorJsonItemUnion,
           preview: false,
           timestamp: 0,
         };
 
-        const next = reduceLevelEditorActions(
-          editorStateWithOneRoomWithOneSmallAwayWall,
+        const state1 = reduceLevelEditorActions(
+          state0WithOneSmallAwayWall,
           setTool(doorItemToolWithAutoAddRooms),
           applyItemTool(actionPayload),
         );
 
         expect(
-          Object.keys(next.campaignInProgress.rooms[testRoomId].items),
+          Object.keys(state1.campaignInProgress.rooms[testRoomId].items),
         ).toEqual(["d"]);
 
         expect(
-          next.campaignInProgress.rooms[testRoomId].items,
+          state1.campaignInProgress.rooms[testRoomId].items,
         ).toEqual<EditorRoomJsonItems>({
           // the wall is gone!
           ["d" as EditorRoomItemId]: {
@@ -390,20 +393,21 @@ describe("applying tools", () => {
           timestamp: 0,
         };
 
-        const next = reduceLevelEditorActions(
-          editorStateWithOneRoomWithOneAwayWall,
+        const state0 = editorStateWithOneRoomWithOneAwayWall;
+        const state1 = reduceLevelEditorActions(
+          state0,
           setTool(doorItemToolWithAutoAddRooms),
           applyItemTool(actionPayload),
         );
 
         // should have one more room id:
-        expect(Object.keys(next.campaignInProgress.rooms)).toMatchObject([
+        expect(Object.keys(state1.campaignInProgress.rooms)).toMatchObject([
           "testRoomId",
           "room_0",
         ]);
 
         expect(
-          next.campaignInProgress.rooms["room_0" as EditorRoomId],
+          state1.campaignInProgress.rooms["room_0" as EditorRoomId],
         ).toMatchObject<AnyRoomJson>({
           color: {
             hue: expect.toBeOneOf(zxSpectrumRoomHue as unknown as string[]),
@@ -441,14 +445,15 @@ describe("applying tools", () => {
           timestamp: 0,
         };
 
-        const next = reduceLevelEditorActions(
-          editorStateWithOneRoomWithOneAwayWall,
+        const state0 = editorStateWithOneRoomWithOneAwayWall;
+        const state1 = reduceLevelEditorActions(
+          state0,
           setTool(doorItemToolWithoutAutoAddRooms),
           applyItemTool(actionPayload),
         );
 
         // should have the same single room:
-        expect(Object.keys(next.campaignInProgress.rooms)).toMatchObject([
+        expect(Object.keys(state1.campaignInProgress.rooms)).toMatchObject([
           "testRoomId",
         ]);
       });
@@ -473,13 +478,9 @@ describe("applying tools", () => {
   describe("toaster consolidation with monsters", () => {
     test("two adjacent toasters consolidate, adding a cyberman on top prevents consolidation, removing it restores consolidation", () => {
       // 1. add two adjacent toasters — they should consolidate into one with times.x=2
-      const stateWithTwoToasters = reduceLevelEditorActions(
-        initialLevelEditorSliceState,
-        editorPaneMounted({
-          paneId: testPaneId,
-          roomSource: { type: "cursorRoom" },
-          editable: true,
-        }),
+      const state0 = initialLevelEditorSliceState;
+      const state1WithTwoToasters = reduceLevelEditorActions(
+        state0,
         setTool({
           type: "item",
           item: { type: "deadlyBlock", config: { style: "toaster" } },
@@ -506,7 +507,7 @@ describe("applying tools", () => {
         },
       );
 
-      const toasters = roomJsonItemsIterable(currentRoom(stateWithTwoToasters))
+      const toasters = roomJsonItemsIterable(currentRoom(state1WithTwoToasters))
         .filter((i) => i.type === "deadlyBlock")
         .toArray();
       expect(toasters).toHaveLength(1);
@@ -517,8 +518,8 @@ describe("applying tools", () => {
 
       // 2. add a sleeping cyberman on top of one toaster — toasters should
       //    de-consolidate so each block under a monster stays individual
-      const stateWithCyberman = reduceLevelEditorActions(
-        stateWithTwoToasters,
+      const state2WithCyberman = reduceLevelEditorActions(
+        state1WithTwoToasters,
         setTool({
           type: "item",
           item: {
@@ -540,7 +541,7 @@ describe("applying tools", () => {
       );
 
       const toastersAfterCyberman = roomJsonItemsIterable(
-        currentRoom(stateWithCyberman),
+        currentRoom(state2WithCyberman),
       )
         .filter((i) => i.type === "deadlyBlock")
         .toArray();
@@ -548,18 +549,18 @@ describe("applying tools", () => {
 
       // 3. remove the cyberman — toasters should re-consolidate
       const [cybermanId] = iterateRoomJsonItemIds(
-        currentRoom(stateWithCyberman).items,
+        currentRoom(state2WithCyberman).items,
         "monster",
       );
 
-      const stateWithoutCyberman = reduceLevelEditorActions(
-        stateWithCyberman,
+      const state3WithoutCyberman = reduceLevelEditorActions(
+        state2WithCyberman,
         setSelectedItemsInRoom({ jsonItemIds: [cybermanId] }),
         deleteSelected({ timestamp: 0 }),
       );
 
       const toastersAfterRemoval = roomJsonItemsIterable(
-        currentRoom(stateWithoutCyberman),
+        currentRoom(state3WithoutCyberman),
       )
         .filter((i) => i.type === "deadlyBlock")
         .toArray();
@@ -572,8 +573,9 @@ describe("applying tools", () => {
   });
 
   test("two adjacent blocks do not consolidate when autoCoalesce is off", () => {
-    const state = reduceLevelEditorActions(
-      initialLevelEditorSliceState,
+    const state0 = initialLevelEditorSliceState;
+    const state1 = reduceLevelEditorActions(
+      state0,
       setTool({
         type: "item",
         item: { type: "block", config: { style: "organic" } },
@@ -601,7 +603,7 @@ describe("applying tools", () => {
       },
     );
 
-    const blocks = roomJsonItemsIterable(currentRoom(state))
+    const blocks = roomJsonItemsIterable(currentRoom(state1))
       .filter((i) => i.type === "block")
       .toArray();
     expect(blocks).toHaveLength(2);
@@ -628,8 +630,8 @@ test("a door adding a room beside one sub-room of a divided room adds no verific
   const state0: LevelEditorState = {
     ...editorStateWithOneRoomWithNoItems,
     selectedRoomIds: [roomId],
-    cursorRoom: { roomId, subRoomId: "2" },
-    openRoomTabs: [{ roomId, isPreview: false, view: undefined }],
+    openRooms: { [testOpenRoomId]: newOpenRoom(roomId, "2", true) },
+    cursorRoomId: roomId,
     campaignInProgress: {
       ...editorStateWithOneRoomWithNoItems.campaignInProgress,
       rooms: {
@@ -642,7 +644,7 @@ test("a door adding a room beside one sub-room of a divided room adds no verific
       ({ msg }) => msg,
     );
 
-  const next = reduceLevelEditorActions(
+  const state1 = reduceLevelEditorActions(
     state0,
     setTool(doorItemToolWithAutoAddRooms),
     applyItemTool({
@@ -654,5 +656,5 @@ test("a door adding a room beside one sub-room of a divided room adds no verific
     }),
   );
 
-  expect(issueMessages(next)).toEqual(issueMessages(state0));
+  expect(issueMessages(state1)).toEqual(issueMessages(state0));
 });

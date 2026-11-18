@@ -13,19 +13,19 @@ import {
   rotationVectorsByDirectionXy4,
 } from "../../../utils/vectors/rotateXy";
 import { type DirectionXy4 } from "../../../utils/vectors/vectors";
-import { forgetRoomTabViewsInPlace } from "../inPlaceMutators/forgetRoomTabViewsInPlace";
+import { forgetOpenRoomViewsInPlace } from "../inPlaceMutators/forgetOpenRoomViewsInPlace";
 import { type LevelEditorState } from "../levelEditorSlice";
 
 export const rotateViewReducers = {
   /** rotate the editor's view of the room a quarter-turn clockwise */
   rotateViewClockwise(state) {
     state.cameraAngle = rotateXy(state.cameraAngle, quarterTurnClockwise);
-    forgetRoomTabViewsInPlace(state);
+    forgetOpenRoomViewsInPlace(state);
   },
   /** rotate the editor's view of the room a quarter-turn anticlockwise */
   rotateViewAnticlockwise(state) {
     state.cameraAngle = rotateXy(state.cameraAngle, quarterTurnAnticlockwise);
-    forgetRoomTabViewsInPlace(state);
+    forgetOpenRoomViewsInPlace(state);
   },
   /**
    * rotate the editor's view to the angle named by where world "away"
@@ -34,7 +34,7 @@ export const rotateViewReducers = {
    */
   rotateViewTo(state, { payload: awayAppearsAs }: PayloadAction<DirectionXy4>) {
     state.cameraAngle = rotationVectorsByDirectionXy4[awayAppearsAs];
-    forgetRoomTabViewsInPlace(state);
+    forgetOpenRoomViewsInPlace(state);
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
 

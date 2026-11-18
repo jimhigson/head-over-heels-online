@@ -1,3 +1,5 @@
+import nanoEqual from "nano-equal";
+
 import { exitGameRoomId } from "../../model/json/ItemConfigMap";
 import { useIsUncolourised } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { editorStore, store, useEditorAppSelector } from "../../store/store";
@@ -13,10 +15,11 @@ import {
   roomJsonEdited,
   selectCurrentCommittedRoomJson,
   selectCursorRoomId,
-  selectOpenRoomTabs,
   selectRoomHasUnsavedChanges,
+  selectTabRoomIds,
+  selectTabs,
 } from "../slice/levelEditorSlice";
-import { type RoomTab } from "../slice/RoomTab";
+import { type Tab as RoomTab } from "../slice/OpenRoom";
 import { cssForRoomColour } from "../toolbar/buttons/RoomColourSelect";
 import { buttonSmallHeightClassNames } from "../toolbar/buttonSizeClassNames";
 import { abbreviateRoomId } from "./abbreviateRoomId";
@@ -46,11 +49,17 @@ const unsavedMarked = (name: string, hasUnsavedChanges: boolean) =>
 
 export type RoomTabButtonProps = {
   roomTab: RoomTab;
+  /**
+   * the room the tab shows - given by the bar, so a closed tab's button never
+   * reads its removed open room
+   */
+  roomId: EditorRoomId;
   isActive: boolean;
 };
 
 const RoomTabButton = ({
-  roomTab: { roomId, isPreview },
+  roomTab: { isPreview },
+  roomId,
   isActive,
 }: RoomTabButtonProps) => {
   const uncolourised = useIsUncolourised();
@@ -107,20 +116,18 @@ export type RoomTabBarProps = {
  * Tab bar for open rooms
  */
 export const RoomTabBar = ({ class: className }: RoomTabBarProps) => {
-  const roomTabs = useEditorAppSelector((state) => selectOpenRoomTabs(state));
+  const roomTabs = useEditorAppSelector(selectTabs);
+  const tabRoomIds = useEditorAppSelector(selectTabRoomIds, nanoEqual);
   const cursorRoomId = useEditorAppSelector(selectCursorRoomId);
 
   return (
-    <TabBar
-      tabLabels={roomTabs.map(({ roomId }) => roomId)}
-      label="Open rooms"
-      class={className}
-    >
-      {roomTabs.map((roomTab) => (
+    <TabBar tabLabels={tabRoomIds} label="Open rooms" class={className}>
+      {roomTabs.map((roomTab, tabIndex) => (
         <RoomTabButton
-          key={roomTab.roomId}
+          key={roomTab.id}
           roomTab={roomTab}
-          isActive={roomTab.roomId === cursorRoomId}
+          roomId={tabRoomIds[tabIndex]}
+          isActive={tabRoomIds[tabIndex] === cursorRoomId}
         />
       ))}
     </TabBar>

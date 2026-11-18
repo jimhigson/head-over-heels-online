@@ -2,7 +2,7 @@ import { useSyncExternalStore } from "preact/compat";
 import { useMemo } from "preact/hooks";
 
 import { type EditorRoomState } from "./editorTypes";
-import { useEditorPane } from "./RoomEditingArea/pane/EditorPaneProvider";
+import { useOpenRoomPane } from "./RoomEditingArea/useOpenRoomPane";
 
 /**
  * value returned by useEditorLoadedRoom; a new, reference-unequal object is
@@ -20,10 +20,10 @@ export type UseEditorLoadedRoomReturn = {
 };
 
 /**
- * the pane's loaded room, for rendering: re-renders whenever it changes
+ * the open room's loaded room, for rendering: re-renders whenever it changes
  */
 export const useEditorLoadedRoom = (): UseEditorLoadedRoomReturn => {
-  const { loadedRoom } = useEditorPane();
+  const { loadedRoom } = useOpenRoomPane();
   const revision = useSyncExternalStore(
     loadedRoom.subscribe,
     () => loadedRoom.revision,

@@ -19,7 +19,7 @@ import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,
   type ReducibleAction,
-  testPaneId,
+  testOpenRoomId,
   testRoomId,
 } from "../slice/reducers/__test__/storeStates";
 import { multiplySelectedItemsThunk } from "./multiplySelectedItemsThunk";
@@ -50,7 +50,7 @@ const stateWithSelectedMonkeyOnFloor: LevelEditorState = produce(
       },
     };
     room.items[monkeyId] = monkey;
-    draft.panes[testPaneId]!.selectedJsonItemIdsByRoom[testRoomId] = [monkeyId];
+    draft.openRooms[testOpenRoomId].selectedJsonItemIds = [monkeyId];
   },
 );
 
@@ -88,8 +88,9 @@ const monsterPositions = (state: LevelEditorState): Xyz[] =>
     .sort((a, b) => a.x - b.x || a.y - b.y || a.z - b.z);
 
 test("multiplying a monster three times along x then three along y makes a 4×4 square of them", () => {
-  const result = reduceLevelEditorActions(
-    stateWithSelectedMonkeyOnFloor,
+  const state0 = stateWithSelectedMonkeyOnFloor;
+  const state1 = reduceLevelEditorActions(
+    state0,
     ...multiplyPresses([
       unitVectors.left,
       unitVectors.left,
@@ -100,20 +101,19 @@ test("multiplying a monster three times along x then three along y makes a 4×4 
     ]),
   );
 
-  expect<Xyz[]>(monsterPositions(result)).toEqual<Xyz[]>(
+  expect<Xyz[]>(monsterPositions(state1)).toEqual<Xyz[]>(
     [1, 2, 3, 4].flatMap((x) => [1, 2, 3, 4].map((y) => ({ x, y, z: 0 }))),
   );
 });
 
 test("multiplying selects the copies along with the originals", () => {
-  const result = reduceLevelEditorActions(
-    stateWithSelectedMonkeyOnFloor,
+  const state0 = stateWithSelectedMonkeyOnFloor;
+  const state1 = reduceLevelEditorActions(
+    state0,
     ...multiplyPresses([unitVectors.left]),
   );
 
-  expect(
-    result.panes[testPaneId]!.selectedJsonItemIdsByRoom[testRoomId],
-  ).toHaveLength(2);
+  expect(state1.openRooms[testOpenRoomId].selectedJsonItemIds).toHaveLength(2);
 });
 
 test("each of several scattered selected items gets its own copy", () => {
@@ -125,19 +125,19 @@ test("each of several scattered selected items gets its own copy", () => {
         ...monkey,
         position: { x: 5, y: 4, z: 0 },
       };
-      draft.panes[testPaneId]!.selectedJsonItemIdsByRoom[testRoomId] = [
+      draft.openRooms[testOpenRoomId].selectedJsonItemIds = [
         monkeyId,
         otherMonkeyId,
       ];
     },
   );
 
-  const result = reduceLevelEditorActions(
+  const state1 = reduceLevelEditorActions(
     state0,
     ...multiplyPresses([unitVectors.away]),
   );
 
-  expect<Xyz[]>(monsterPositions(result)).toEqual<Xyz[]>([
+  expect<Xyz[]>(monsterPositions(state1)).toEqual<Xyz[]>([
     { x: 1, y: 1, z: 0 },
     { x: 1, y: 2, z: 0 },
     { x: 5, y: 4, z: 0 },
@@ -157,19 +157,19 @@ test("a copy that would collide is left out, while the others are still made", (
         position: { x: 5, y: 5, z: 0 },
         config: { style: "organic" },
       };
-      draft.panes[testPaneId]!.selectedJsonItemIdsByRoom[testRoomId] = [
+      draft.openRooms[testOpenRoomId].selectedJsonItemIds = [
         monkeyId,
         otherMonkeyId,
       ];
     },
   );
 
-  const result = reduceLevelEditorActions(
+  const state1 = reduceLevelEditorActions(
     state0,
     ...multiplyPresses([unitVectors.away]),
   );
 
-  expect<Xyz[]>(monsterPositions(result)).toEqual<Xyz[]>([
+  expect<Xyz[]>(monsterPositions(state1)).toEqual<Xyz[]>([
     { x: 1, y: 1, z: 0 },
     { x: 1, y: 2, z: 0 },
     { x: 5, y: 4, z: 0 },
@@ -177,37 +177,40 @@ test("a copy that would collide is left out, while the others are still made", (
 });
 
 test("a copy that would be off the floor is left out", () => {
-  const result = reduceLevelEditorActions(
-    stateWithSelectedMonkeyOnFloor,
+  const state0 = stateWithSelectedMonkeyOnFloor;
+  const state1 = reduceLevelEditorActions(
+    state0,
     ...multiplyPresses([unitVectors.right, unitVectors.right]),
   );
 
-  expect<Xyz[]>(monsterPositions(result)).toEqual<Xyz[]>([
+  expect<Xyz[]>(monsterPositions(state1)).toEqual<Xyz[]>([
     { x: 0, y: 1, z: 0 },
     { x: 1, y: 1, z: 0 },
   ]);
 });
 
 test("shrinking a line of copies removes its trailing item", () => {
-  const result = reduceLevelEditorActions(
-    stateWithSelectedMonkeyOnFloor,
+  const state0 = stateWithSelectedMonkeyOnFloor;
+  const state1 = reduceLevelEditorActions(
+    state0,
     ...multiplyPresses([unitVectors.left, unitVectors.left]),
     ...multiplyPresses([unitVectors.left], "removeOrShrink"),
   );
 
-  expect<Xyz[]>(monsterPositions(result)).toEqual<Xyz[]>([
+  expect<Xyz[]>(monsterPositions(state1)).toEqual<Xyz[]>([
     { x: 2, y: 1, z: 0 },
     { x: 3, y: 1, z: 0 },
   ]);
 });
 
 test("shrinking never removes the last item of a line", () => {
-  const result = reduceLevelEditorActions(
-    stateWithSelectedMonkeyOnFloor,
+  const state0 = stateWithSelectedMonkeyOnFloor;
+  const state1 = reduceLevelEditorActions(
+    state0,
     ...multiplyPresses([unitVectors.left], "removeOrShrink"),
   );
 
-  expect<Xyz[]>(monsterPositions(result)).toEqual<Xyz[]>([
+  expect<Xyz[]>(monsterPositions(state1)).toEqual<Xyz[]>([
     { x: 1, y: 1, z: 0 },
   ]);
 });
@@ -222,24 +225,21 @@ test("multiplying a block and a monster together grows the block and copies the 
         position: { x: 1, y: 4, z: 0 },
         config: { style: "organic" },
       };
-      draft.panes[testPaneId]!.selectedJsonItemIdsByRoom[testRoomId] = [
-        monkeyId,
-        blockId,
-      ];
+      draft.openRooms[testOpenRoomId].selectedJsonItemIds = [monkeyId, blockId];
       draft.autoCoalesce = false;
     },
   );
 
-  const result = reduceLevelEditorActions(
+  const state1 = reduceLevelEditorActions(
     state0,
     ...multiplyPresses([unitVectors.left]),
   );
 
-  const room = result.campaignInProgress.rooms[testRoomId];
+  const room = state1.campaignInProgress.rooms[testRoomId];
   expect({
     blockConfig: room.items[blockId]?.config,
-    monsterCount: monsterPositions(result).length,
-    undoEntries: result.history[testRoomId]?.undo.length,
+    monsterCount: monsterPositions(state1).length,
+    undoEntries: state1.history[testRoomId]?.undo.length,
   }).toEqual({
     blockConfig: { style: "organic", times: { x: 2 } },
     monsterCount: 2,
@@ -248,20 +248,22 @@ test("multiplying a block and a monster together grows the block and copies the 
 });
 
 test("multiplying repeatedly before pausing is one undoable edit", () => {
-  const result = reduceLevelEditorActions(
-    stateWithSelectedMonkeyOnFloor,
+  const state0 = stateWithSelectedMonkeyOnFloor;
+  const state1 = reduceLevelEditorActions(
+    state0,
     ...multiplyPresses([unitVectors.left, unitVectors.left, unitVectors.away]),
   );
 
-  expect(result.history[testRoomId]?.undo).toHaveLength(1);
+  expect(state1.history[testRoomId]?.undo).toHaveLength(1);
 });
 
 test("shrinking straight after multiplying is a separate undoable edit", () => {
-  const result = reduceLevelEditorActions(
-    stateWithSelectedMonkeyOnFloor,
+  const state0 = stateWithSelectedMonkeyOnFloor;
+  const state1 = reduceLevelEditorActions(
+    state0,
     ...multiplyPresses([unitVectors.left, unitVectors.left]).slice(0, -1),
     ...multiplyPresses([unitVectors.left], "removeOrShrink"),
   );
 
-  expect(result.history[testRoomId]?.undo).toHaveLength(2);
+  expect(state1.history[testRoomId]?.undo).toHaveLength(2);
 });

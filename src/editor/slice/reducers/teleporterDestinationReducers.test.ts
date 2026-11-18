@@ -19,7 +19,7 @@ import {
 
 const teleporterId = "t" as EditorRoomItemId;
 
-const stateWithTeleporter = produce(
+const state0WithTeleporter = produce(
   editorStateWithOneRoomWithNoItems,
   (draft) => {
     draft.campaignInProgress.rooms[testRoomId].items[teleporterId] = {
@@ -33,7 +33,7 @@ const stateWithTeleporter = produce(
 const teleporterAfterSetting = (toItemId: EditorRoomItemId | undefined) =>
   selectCurrentCommittedRoomJsonFromLevelEditorState(
     reduceLevelEditorActions(
-      stateWithTeleporter,
+      state0WithTeleporter,
       setSelectedItemsInRoom({ jsonItemIds: [teleporterId] }),
       setSelectedTeleportersDestination({
         toRoom: "destination" as EditorRoomId,
