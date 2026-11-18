@@ -94,6 +94,7 @@ import {
   selectionsSelectors,
 } from "./reducers/selectionsReducers";
 import { setToolReducers, setToolSelectors } from "./reducers/setToolReducers";
+import { snapToGridReducers } from "./reducers/snapToGridReducers";
 import { startDirectionReducers } from "./reducers/startDirectionReducers";
 import { teleporterDestinationReducers } from "./reducers/teleporterDestinationReducers";
 import { type UndoDescription } from "./reducers/undoDescription";
@@ -268,6 +269,7 @@ export const levelEditorSlice = createSlice({
     ...doorGameEndReducers,
     ...startDirectionReducers,
     ...mirrorOrientationReducers,
+    ...snapToGridReducers,
     ...rotateItemReducers,
     ...campaignManagementReducers,
     ...contextMenuReducers,
@@ -404,6 +406,7 @@ export const {
   itemGrabRounded,
   setSelectedItemsInRoom,
   setSelectedItemsMirrorOrientation,
+  snapSelectedItemsToGrid,
   setSelectedItemsStartDirection,
   setSelectedMonstersMovement,
   setSelectedDoorsToGameEnd,
