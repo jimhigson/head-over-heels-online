@@ -1,5 +1,4 @@
-import { useEffect } from "preact/hooks";
-
+import { type SceneryName } from "../../../sprites/planets";
 import { useAppDispatch } from "../../../store/hooks";
 import {
   type EditorRootState,
@@ -14,19 +13,20 @@ import {
   selectRedoHistory,
   selectUndoHistory,
   undo,
-  undoHovered,
 } from "../../slice/levelEditorSlice";
-import { type UndoHistoryItem } from "../../slice/reducers/undoReducers";
+import {
+  type HistoryDirection,
+  type UndoHistoryItem,
+} from "../../slice/reducers/undoReducers";
 import { MenuButton, MenuItemButton } from "./MenuButton";
 import {
   UndoEntryLabel,
   undoHistoryGridClassName,
   undoHistorySubgridClassName,
 } from "./UndoEntryLabel";
+import { useHistoryHoverPreview } from "./useHistoryHoverPreview";
 
 const maxHistoryItems = 50;
-
-type HistoryDirection = "redo" | "undo";
 
 const selectHistory = {
   undo: selectUndoHistory,
@@ -60,9 +60,57 @@ const NextHistoryEntryTooltip = ({ direction }: HistoryDirectionProps) => {
         {direction === "undo" ? "Undo" : "Redo"}
       </span>
       <div class={undoHistoryGridClassName}>
-        <UndoEntryLabel entry={nextEntry} scenery={scenery} />
+        <UndoEntryLabel
+          entry={nextEntry}
+          scenery={scenery}
+          direction={direction}
+        />
       </div>
     </div>
+  );
+};
+
+type HistoryMenuItemProps = {
+  direction: HistoryDirection;
+  entry: UndoHistoryItem;
+  /**
+   * how many steps back (or forward) the entry is, the newest being 1
+   */
+  steps: number;
+  /**
+   * the entry, numbered from the oldest in its stack, from 1
+   */
+  entryNumber: number;
+  scenery: SceneryName;
+};
+
+/**
+ * an entry of the undo or redo history, to step back or forward to
+ */
+const HistoryMenuItem = ({
+  direction,
+  entry,
+  steps,
+  entryNumber,
+  scenery,
+}: HistoryMenuItemProps) => {
+  const dispatch = useAppDispatch();
+  const { onMouseEnter, onMouseLeave } = useHistoryHoverPreview(
+    direction,
+    entryNumber,
+  );
+
+  return (
+    <MenuItemButton
+      class={undoHistorySubgridClassName}
+      onClick={() =>
+        dispatch(direction === "undo" ? undo({ steps }) : redo({ steps }))
+      }
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      <UndoEntryLabel entry={entry} scenery={scenery} direction={direction} />
+    </MenuItemButton>
   );
 };
 
@@ -71,11 +119,7 @@ const NextHistoryEntryTooltip = ({ direction }: HistoryDirectionProps) => {
  * while its menu is open, so only then does it follow the history
  */
 const HistoryMenuItems = ({ direction }: HistoryDirectionProps) => {
-  const dispatch = useAppDispatch();
   const history = useEditorAppSelector(selectHistory[direction]);
-  // closing the menu unmounts the entries before any of them sees the pointer
-  // leave, so stop previewing the hovered one then:
-  useEffect(() => () => dispatch(undoHovered(0)), [dispatch]);
   const scenery = useEditorAppSelector(selectCurrentEditingRoomScenery);
 
   return (
@@ -84,40 +128,30 @@ const HistoryMenuItems = ({ direction }: HistoryDirectionProps) => {
         .slice(-maxHistoryItems)
         .reverse()
         .map((entry, index) => (
-          <MenuItemButton
+          <HistoryMenuItem
             // keyed by entry, so each keeps its (memoised) label as more are pushed:
             key={entry}
-            class={undoHistorySubgridClassName}
-            onClick={() =>
-              dispatch(
-                direction === "undo" ?
-                  undo({ steps: index + 1 })
-                : redo({ steps: index + 1 }),
-              )
-            }
-            onMouseEnter={() =>
-              dispatch(
-                undoHovered(
-                  direction === "undo" ?
-                    history.length - index
-                  : -(history.length - index),
-                ),
-              )
-            }
-            onMouseLeave={() => dispatch(undoHovered(0))}
-          >
-            <UndoEntryLabel entry={entry} scenery={scenery} />
-          </MenuItemButton>
+            direction={direction}
+            entry={entry}
+            steps={index + 1}
+            entryNumber={history.length - index}
+            scenery={scenery}
+          />
         ))}
     </>
   );
 };
 
 const HistoryButton = ({ direction }: HistoryDirectionProps) => {
-  // the closed button only needs to know if there is any history to show:
-  const hasHistory = useEditorAppSelector(
-    (state) => selectHistory[direction](state).length > 0,
+  const historyLength = useEditorAppSelector(
+    (state) => selectHistory[direction](state).length,
   );
+  // hovering the button previews its next step, as hovering that entry does:
+  const { onMouseEnter, onMouseLeave } = useHistoryHoverPreview(
+    direction,
+    historyLength,
+  );
+  const hasHistory = historyLength > 0;
 
   return (
     <MenuButton
@@ -130,6 +164,8 @@ const HistoryButton = ({ direction }: HistoryDirectionProps) => {
               <NextHistoryEntryTooltip direction={direction} />
             : undefined
           }
+          onMouseEnter={hasHistory ? onMouseEnter : undefined}
+          onMouseLeave={hasHistory ? onMouseLeave : undefined}
         />
       }
     >

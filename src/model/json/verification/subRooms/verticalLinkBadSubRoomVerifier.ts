@@ -1,5 +1,6 @@
 import { subRoomById } from "../../../RoomJson";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
+import { valueMd } from "../helpers/messageMarkdown";
 import {
   type VerticalDirection,
   verticalLinks,
@@ -32,8 +33,9 @@ export const verticalLinkBadSubRoomVerifier: CampaignVerifier<VerticalLinkBadSub
         }
         yield {
           severity: "error",
+          itemIds: [],
           roomId,
-          msg: `‘${roomId}’ links ${direction} to sub-room ‘${link.subRoom}’ of ‘${link.room}’, which doesn't exist`,
+          msg: `‘${valueMd(roomId)}’ links ${valueMd(direction)} to sub-room ‘${valueMd(link.subRoom)}’ of ‘${valueMd(link.room)}’, which doesn't exist`,
           fixable: false,
           fixText: `Point the ${direction} link of ‘${roomId}’ at a real sub-room of ‘${link.room}’`,
           issueData: {

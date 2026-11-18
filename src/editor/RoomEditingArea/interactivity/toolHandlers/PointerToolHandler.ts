@@ -6,11 +6,12 @@ import {
   fineXyzToBlockXyz,
   projectWorldXyzToScreenXy,
   unprojectScreenXyToWorldXyz,
+  unprojectScreenXyToWorldXyzOnFace,
 } from "../../../../game/render/projections";
+import { roomWallBounds } from "../../../../model/roomWallBounds";
 import {
   type EditorRootState,
-  editorStore,
-  store,
+  type EditorThunk,
 } from "../../../../store/store";
 import { emptyArray } from "../../../../utils/empty";
 import { planeAxesDesc } from "../../../../utils/vectors/orthoPlane";
@@ -22,6 +23,7 @@ import {
   originXyz,
   type Plane,
   subXy,
+  subXyz,
   unitXyz_x,
   unitXyz_y,
   unitXyz_z,
@@ -32,14 +34,23 @@ import {
 import {
   type EditorJsonItemUnion,
   type EditorRoomItemId,
+  type EditorRoomJson,
   type EditorRoomState,
 } from "../../../editorTypes";
-import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../../../slice/levelEditorSelectors";
 import {
-  changeDragInProgress,
-  commitCurrentPreviewedEdits,
+  itemsMoveBetweenRoomsDescription,
+  itemsMoveBetweenRoomsEdits,
+  planItemsMoveBetweenRooms,
+} from "../../../slice/inPlaceMutators/moveItemsToRoomInPlace";
+import {
   type GridResolution,
-  moveOrResizeItemAsPreview,
+  itemGrabDragStarted,
+  itemGrabDropped,
+  itemGrabPlaneChanged,
+  itemGrabPointerDown,
+  itemGrabPreviewedInto,
+  itemGrabRounded,
+  type LevelEditorState,
   openItemContextMenu,
   selectItem,
   selectOpenRoomSelectedJsonItemIds,
@@ -48,10 +59,15 @@ import {
   toggleSelectedItemInRoom,
 } from "../../../slice/levelEditorSlice";
 import { type OpenRoomId } from "../../../slice/OpenRoom";
-import { maybeLayoutNode } from "../../../slice/PaneLayout";
-import { type ItemsDrag } from "../../../slice/reducers/dragToMoveReducers";
+import { existingLayoutNode, maybeLayoutNode } from "../../../slice/PaneLayout";
+import { type ItemDragAction } from "../../../slice/reducers/dragToMoveReducers";
+import {
+  type ItemDragPlane,
+  type ItemGrab,
+  type ItemGrabPreviewedIntoPayload,
+} from "../../../slice/reducers/itemGrabReducers";
 import { getMovableVector } from "../../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
-import { moveOrResizeOutcome } from "../../../slice/reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
+import { moveOrResizeOutcome } from "../../../slice/reducers/moveOrResizeItemPreview/moveOrResizeOutcome";
 import { snapGridResolution } from "../../../snapGridResolution";
 import {
   itemMoveOrResizeWouldCollide,
@@ -64,10 +80,8 @@ import {
   viewportMousePosition,
 } from "../../cursor/viewportMouse";
 import { resizeTimesAndPosition } from "../../resizeTimesAndPosition";
-import { dispatchHoveredOnChangedIfNeeded } from "../dispatchHoveredOnChangedIfNeeded";
 import { itemsAreLocked } from "../itemsAreLocked";
-import { jsonItemAndIdForInPlayItem } from "../jsonItemAndIdForInPlayItem";
-import { type Tool } from "../Tool";
+import { setHoveredItemIfChangedThunk } from "../setHoveredItemIfChangedThunk";
 import { findItemInPlayForPicking } from "./ItemToolHandler";
 import {
   type MouseDownParams,
@@ -78,8 +92,6 @@ import {
 } from "./ToolHandler";
 
 const dragMinimumDistance = 5; // pixels
-
-const { dispatch } = store;
 
 /**
  * interpret which item(s) the user wants the current operation to affect
@@ -184,52 +196,86 @@ const getDragPlaneNormal = (
   }
 };
 
-const getDragVector = (
-  /** undefined if the mouse is not down */
-  mouseDownPointingAt: MaybePointingAtSomething | undefined,
+/**
+ * the (unrounded) drag vector with the pointer at `mousePosition` - worked out
+ * from where the pointer is, not from its movements, so it is right however
+ * many of the pointer's moves were seen
+ */
+const dragVectorOnPlane = (
+  { normal, modifierPressed, startScrXy, startDragVector }: ItemDragPlane,
   mousePosition: Xy,
-  mouseMove: Xy,
-  modifierPressed: boolean,
-  draggingAlready: boolean,
-  jsonItem: Iterable<EditorJsonItemUnion>,
   cameraAngle: Xy,
-): undefined | Xyz => {
-  if (mouseDownPointingAt === undefined) {
-    return undefined;
-  }
-
-  const dragVectorScrPx = subXy(mousePosition, mouseDownPointingAt.scrXy);
-  const dragDistancePx = lengthXy(dragVectorScrPx);
-  const isDragging = draggingAlready || dragDistancePx > dragMinimumDistance;
-
-  if (!isDragging) {
-    return undefined;
-  }
-
-  const plane = getDragPlaneNormal(
-    mouseDownPointingAt,
-    modifierPressed,
-    jsonItem,
-  );
-
-  if (plane === undefined) {
-    // can't move in any direction
-    return undefined;
-  }
-
-  const dragVectorWorld = unprojectScreenXyToWorldXyz(
-    plane,
-    mouseMove,
+): Xyz => {
+  const onPlane = unprojectScreenXyToWorldXyz(
+    normal,
+    subXy(mousePosition, startScrXy),
     cameraAngle,
   );
+  return addXyz(
+    startDragVector,
+    modifierPressed ? { x: 0, y: 0, z: onPlane.z } : onPlane,
+  );
+};
 
-  return modifierPressed ?
-      {
-        x: 0,
-        y: 0,
-        z: dragVectorWorld.z,
-      }
-    : dragVectorWorld;
+/**
+ * the plane the drag is on with the pointer at `mousePosition`, in the open
+ * room the pointer is over - or undefined if the pointer hasn't yet moved far
+ * enough to drag
+ */
+const dragPlaneNow = (
+  itemGrab: ItemGrab,
+  normal: Xyz,
+  modifierPressed: boolean,
+  mousePosition: Xy,
+  /**
+   * how far the pointer moved to get to `mousePosition`, in screen px
+   */
+  mouseMovement: Xy,
+  cameraAngle: Xy,
+): ItemDragPlane | undefined => {
+  const { plane, mouseDownPointingAt, dragging, roundedDragVector } = itemGrab;
+  if (plane === undefined && dragging === undefined) {
+    return (
+        lengthXy(subXy(mousePosition, mouseDownPointingAt.scrXy)) >
+          dragMinimumDistance
+      ) ?
+        {
+          normal,
+          modifierPressed,
+          startScrXy: mouseDownPointingAt.scrXy,
+          startDragVector: originXyz,
+        }
+      : undefined;
+  }
+  if (plane === undefined) {
+    // just come into this open room - carry on with the grabbed point under
+    // the pointer, at the height the drag had it:
+    const grabbedAt = mouseDownPointingAt.world.position;
+    const pointedAt = unprojectScreenXyToWorldXyzOnFace(
+      addXyz(grabbedAt, roundedDragVector),
+      unitXyz_z,
+      mousePosition,
+      cameraAngle,
+    );
+    return {
+      normal,
+      modifierPressed,
+      startScrXy: mousePosition,
+      startDragVector: subXyz(pointedAt, grabbedAt),
+    };
+  }
+  if (plane.modifierPressed === modifierPressed) {
+    return plane;
+  }
+  // the modifier changed since the pointer's last move - carry on from where
+  // it was then, on the other plane:
+  const changedAt = subXy(mousePosition, mouseMovement);
+  return {
+    normal,
+    modifierPressed,
+    startScrXy: changedAt,
+    startDragVector: dragVectorOnPlane(plane, changedAt, cameraAngle),
+  };
 };
 
 const roundDragVector = (dragVector: Xyz, gridResolution: GridResolution) =>
@@ -241,23 +287,30 @@ const roundDragVector = (dragVector: Xyz, gridResolution: GridResolution) =>
  */
 const maxDragMovesToTry = 64;
 
-/** the multiples of `step` from 0 to `to` (inclusive), in the direction of `to` */
-const stepsTowards = (to: number, step: number): number[] =>
+/**
+ * the multiples of `step` from `from` to `to` (inclusive), in the direction of
+ * `to`
+ */
+const stepsTowards = (from: number, to: number, step: number): number[] =>
   Array.from(
-    { length: Math.round(Math.abs(to) / step) + 1 },
-    (_, index) => Math.sign(to) * index * step,
+    { length: Math.round(Math.abs(to - from) / step) + 1 },
+    (_, index) => from + Math.sign(to - from) * index * step,
   );
 
 /**
  * the moves to try for a drag, best first: every grid step in the rectangle
- * between where the items started and where they are dragged to, closest on
- * screen to where they are dragged to first (then furthest from the start) -
- * so a drag that can't go where it points goes as near to it as it can,
- * sliding along whatever blocks it or stopping just short of it
+ * between where the drag comes from and where it points, closest on screen
+ * to where it points first (then furthest from where it comes from) - so a
+ * drag that can't go where it points goes as near to it as it can, sliding
+ * along whatever blocks it or stopping just short of it
  */
 const dragMovesToTry = (
   /**
-   * where the drag would move the items to, from where they started
+   * the move the drag comes from - none, in the items' own room
+   */
+  from: Xyz,
+  /**
+   * the move the drag points to
    */
   target: Xyz,
   gridResolution: GridResolution,
@@ -270,9 +323,9 @@ const dragMovesToTry = (
     );
   const isTarget = (move: Xyz) => move.x === target.x && move.y === target.y;
 
-  return stepsTowards(target.x, gridResolution)
+  return stepsTowards(from.x, target.x, gridResolution)
     .flatMap((x) =>
-      stepsTowards(target.y, gridResolution).map((y) => ({
+      stepsTowards(from.y, target.y, gridResolution).map((y) => ({
         x,
         y,
         z: target.z,
@@ -281,12 +334,12 @@ const dragMovesToTry = (
     .filter(
       (move) =>
         // not moving across at all would undo the drag, rather than follow it:
-        isTarget(move) || move.x !== 0 || move.y !== 0,
+        isTarget(move) || move.x !== from.x || move.y !== from.y,
     )
     .map((move) => ({
       move,
       screenDistanceToTarget: screenDistanceToTarget(move),
-      distanceFromStart: lengthXy(move),
+      distanceFromStart: lengthXy(subXy(move, from)),
     }))
     .sort(
       (a, b) =>
@@ -297,308 +350,489 @@ const dragMovesToTry = (
     .map(({ move }) => move);
 };
 
-export class PointerToolHandler implements ToolHandler<
-  Extract<Tool, { type: "pointer" }>
-> {
+/**
+ * what previewing the drag in an open room works from
+ */
+type DragPreviewArgs = {
+  levelEditorState: LevelEditorState;
+  itemGrab: ItemGrab;
+  /**
+   * the open room the pointer is over
+   */
+  openRoomId: OpenRoomId;
+  /**
+   * that open room's loaded room
+   */
+  roomState: EditorRoomState;
+  /**
+   * the drag vector, rounded, in blocks
+   */
+  blockDragVector: Xyz;
+  gridResolution: GridResolution;
+  cameraAngle: Xy;
+};
+
+/**
+ * the drag in a view of the items' own room: moving (sliding to the nearest
+ * spot that fits) or resizing them
+ */
+const dragPreviewInItemsRoom = (
+  {
+    levelEditorState,
+    itemGrab: { jsonItemIds, mouseDownPointingAt },
+    openRoomId,
+    roomState,
+    blockDragVector,
+    gridResolution,
+    cameraAngle,
+  }: DragPreviewArgs,
+  /**
+   * the edge being dragged, when resizing
+   */
+  resizeEdge: Plane | undefined,
+): ItemGrabPreviewedIntoPayload | undefined => {
+  const roomJson = levelEditorState.campaignInProgress.rooms[
+    mouseDownPointingAt.roomId
+  ] as EditorRoomJson;
+
+  let positionDelta: Xyz;
+  let timesDelta: undefined | Xyz = undefined;
+  if (resizeEdge !== undefined) {
+    // resizing
+    //
+    //   ⌑
+    //     ↘ ┌-┐
+    //       └-┘
+    //
+    const mouseDownJsonItemId = findItemInPlayForPicking(
+      roomState,
+      mouseDownPointingAt.world.itemId,
+    )!.jsonItemId!;
+    ({ timesDelta, positionDelta } = resizeTimesAndPosition({
+      // in case there are multiple, the changes are calculated on the item the (single) item
+      // that the mouse went down on, and then applied to the other selected items - this
+      // could potentially create different results for different items if they have different
+      // starting sizes but it generally makes sense- all are increase or decreased by the same
+      // amount on the same axes:
+      jsonItem: roomJson.items[mouseDownJsonItemId],
+      blockDragAccVec: blockDragVector,
+      resizeEdgeDirection: resizeEdge.point,
+    }));
+  } else {
+    // moving
+    //
+    //   ⌑ -> ⌑
+    //
+    positionDelta = blockDragVector;
+  }
+  const movesToTry =
+    resizeEdge === undefined ?
+      dragMovesToTry(originXyz, positionDelta, gridResolution, cameraAngle)
+    : [positionDelta];
+
+  for (const moveToTry of movesToTry) {
+    if (
+      // collision has to happen on the loaded room, not the json:
+      itemMoveOrResizeWouldCollide({
+        roomState,
+        roomJson,
+        movesOrResizes: sameMoveOrResizeForEach(jsonItemIds, {
+          blockPositionDelta: moveToTry,
+          timesDelta,
+        }),
+      })
+    ) {
+      continue;
+    }
+    const outcome = moveOrResizeOutcome(levelEditorState, {
+      jsonItemIds,
+      positionDelta: moveToTry,
+      timesDelta,
+      timestamp: Date.now(),
+    });
+    if (outcome.type === "invalid") {
+      continue;
+    }
+    return {
+      openRoomId,
+      movedItemIds: jsonItemIds,
+      pendingEdits:
+        outcome.type === "unchanged" ?
+          undefined
+        : {
+            edits: { [roomJson.id]: outcome.edits },
+            description: outcome.description,
+            timestamp: outcome.timestamp,
+            madeBy: { type: "drag" },
+          },
+    };
+  }
+  return undefined;
+};
+
+/**
+ * the drag in another room: moving the items there with new ids, sliding to
+ * the nearest spot that fits between where the drag came into the room and
+ * where it points
+ */
+const dragPreviewInOtherRoom = (
+  {
+    levelEditorState,
+    itemGrab: { jsonItemIds, mouseDownPointingAt },
+    openRoomId,
+    roomState,
+    blockDragVector,
+    gridResolution,
+    cameraAngle,
+  }: DragPreviewArgs,
+  /**
+   * the drag vector, rounded, in blocks, where the drag came into the room
+   */
+  blockEntryDragVector: Xyz,
+): ItemGrabPreviewedIntoPayload | undefined => {
+  const { rooms } = levelEditorState.campaignInProgress;
+  const { roomId: toRoomId, subRoomId: toSubRoomId } = existingLayoutNode(
+    levelEditorState.layout,
+    openRoomId,
+  );
+  const fromRoom = rooms[mouseDownPointingAt.roomId] as EditorRoomJson;
+  const toRoom = rooms[toRoomId] as EditorRoomJson;
+  const pointedMove = planItemsMoveBetweenRooms(rooms, fromRoom.id, {
+    itemIds: jsonItemIds,
+    toRoomId,
+    blockPositionDelta: blockDragVector,
+  });
+  if (pointedMove === undefined) {
+    return undefined;
+  }
+
+  // the destination with the items added where the drag points, to try moves
+  // from there against:
+  const movedItemIds = pointedMove.newIds.values().toArray();
+  const toRoomWithItems: EditorRoomJson = {
+    ...toRoom,
+    items: {
+      ...toRoom.items,
+      ...Object.fromEntries(
+        pointedMove.newIds.entries().map(([itemId, newId]) => {
+          const item = fromRoom.items[itemId];
+          return [
+            newId,
+            { ...item, position: addXyz(item.position, blockDragVector) },
+          ];
+        }),
+      ),
+    },
+  };
+  const walls = roomWallBounds(toRoom, toSubRoomId);
+  const fits = (moveToTry: Xyz) => {
+    const fromPointed = subXyz(moveToTry, blockDragVector);
+    return (
+      movedItemIds.every((itemId) => {
+        const { x, y } = addXyz(
+          toRoomWithItems.items[itemId].position,
+          fromPointed,
+        );
+        return (
+          x >= walls.from.x &&
+          x < walls.to.x &&
+          y >= walls.from.y &&
+          y < walls.to.y
+        );
+      }) &&
+      !itemMoveOrResizeWouldCollide({
+        roomState,
+        roomJson: toRoomWithItems,
+        movesOrResizes: sameMoveOrResizeForEach(movedItemIds, {
+          blockPositionDelta: fromPointed,
+        }),
+      })
+    );
+  };
+  const validMove = dragMovesToTry(
+    blockEntryDragVector,
+    blockDragVector,
+    gridResolution,
+    cameraAngle,
+  ).find(fits);
+  if (validMove === undefined) {
+    return undefined;
+  }
+
+  const move = { ...pointedMove, blockPositionDelta: validMove };
+  return {
+    openRoomId,
+    movedItemIds,
+    pendingEdits: {
+      edits: itemsMoveBetweenRoomsEdits(rooms, move),
+      description: itemsMoveBetweenRoomsDescription(rooms, move),
+      timestamp: Date.now(),
+      madeBy: { type: "drag" },
+    },
+  };
+};
+
+export class PointerToolHandler implements ToolHandler {
   handleMouseMove({
     openRoomId,
-    editable,
     roomState,
     pointingAt,
-    storeState,
-    mouseDownPointingAtRef,
     mouseEvent,
-    clientMovement,
     viewport,
-    dragAccVec,
-  }: MouseMoveParams<Extract<Tool, { type: "pointer" }>>) {
-    const mouseMoveXy = viewportMouseMovement(viewport, clientMovement);
-
-    const jsonItemIds: EditorRoomItemId[] =
-      editable ?
-        getJsonItemIdsToUseForPointingAt(
-          storeState,
-          openRoomId,
-          roomState,
-          mouseDownPointingAtRef.current,
-        )
-        // a non-editable open room never drags items:
-      : emptyArray;
-
-    if (jsonItemIds.length === 0) {
-      // can't be pointing without mouse going down on an item
-      dispatchHoveredOnChangedIfNeeded(
+  }: MouseMoveParams): EditorThunk {
+    return (dispatch, getState) => {
+      const storeState = getState();
+      const openRoom = maybeLayoutNode(
+        storeState.levelEditor.layout,
         openRoomId,
-        editable,
-        roomState,
-        pointingAt,
       );
-      return;
-    }
+      // the open room may have been closed or replaced (its pane is going):
+      if (openRoom === undefined) {
+        return;
+      }
+      const { itemGrab } = storeState.levelEditor;
+      if (itemGrab === undefined) {
+        // not dragging, so the most moving the pointer can do is change the
+        // hover status of items:
+        dispatch(
+          setHoveredItemIfChangedThunk(
+            openRoomId,
+            openRoom.editable,
+            roomState,
+            pointingAt,
+          ),
+        );
+        return;
+      }
+      if (!openRoom.editable) {
+        // nothing can be dropped here
+        return;
+      }
 
-    // we are dragging - resize/move items
-    const jsonItems = jsonItemIds.map((jiid) => selectItem(storeState, jiid)!);
+      const { jsonItemIds, mouseDownPointingAt } = itemGrab;
+      const fromRoom = storeState.levelEditor.campaignInProgress.rooms[
+        mouseDownPointingAt.roomId
+      ] as EditorRoomJson;
+      const jsonItems = jsonItemIds.map((itemId) => fromRoom.items[itemId]);
+      if (itemsAreLocked(storeState, ...jsonItems)) {
+        // if item isn't in the json (or is locked) we can't drag it
+        return;
+      }
 
-    if (itemsAreLocked(storeState, ...jsonItems)) {
-      // if item isn't in the json (or is locked) we can't drag it
-      return;
-    }
+      // grabbing an edge resizes, if every item can be resized:
+      const resizeEdge =
+        jsonItems.every((jsonItem) => isConsolidatable(jsonItem)) ?
+          mouseDownPointingAt.world.onItem.edge
+        : undefined;
+      const dragAction: ItemDragAction =
+        resizeEdge === undefined ? "moveItems" : "resizeItems";
+      const isItemsRoom = openRoom.roomId === fromRoom.id;
+      if (
+        dragAction === "resizeItems" &&
+        openRoomId !== itemGrab.sourceOpenRoomId
+      ) {
+        // a resize stays in its own pane
+        return;
+      }
 
-    const openRoom = maybeLayoutNode(storeState.levelEditor.layout, openRoomId);
-    // the open room may have been closed or replaced (its pane is going):
-    if (openRoom === undefined) {
-      return;
-    }
-    const { cameraAngle } = openRoom;
-
-    const mouseWhenDownInSameRoom =
-      pointingAt.roomId === mouseDownPointingAtRef.current?.roomId;
-
-    /**
-     * get the (unrounded) drag delta vector since the last frame
-     * (if there is one)
-     */
-    const dragDeltaVec: undefined | Xyz =
-      mouseWhenDownInSameRoom ?
-        getDragVector(
-          mouseDownPointingAtRef.current,
-          viewportMousePosition(viewport, mouseEvent),
-          mouseMoveXy,
-          mouseEvent.metaKey || mouseEvent.shiftKey,
-          dragAccVec.current !== undefined,
-          jsonItems,
-          cameraAngle,
-        )
-        // ignore dragging if it started in a different room:
-      : undefined;
-
-    if (!dragDeltaVec) {
-      // not dragging so the most moving the pointer can do is change the hover status of items:
-      dispatchHoveredOnChangedIfNeeded(
-        openRoomId,
-        editable,
-        roomState,
-        pointingAt,
+      const modifierPressed = mouseEvent.metaKey || mouseEvent.shiftKey;
+      const normal = getDragPlaneNormal(
+        mouseDownPointingAt,
+        modifierPressed,
+        jsonItems,
       );
-      return;
-    }
+      if (normal === undefined) {
+        // can't move in any direction
+        return;
+      }
 
-    if (
-      jsonItemIds.length === 1 &&
-      !selectOpenRoomSelectedJsonItemIds(storeState, openRoomId).includes(
-        jsonItemIds[0],
-      )
-    ) {
-      // once we are dragging an item, select it:
-      store.dispatch(
-        setSelectedItemsInRoom({
-          jsonItemIds,
+      const { cameraAngle } = openRoom;
+      const mousePosition = viewportMousePosition(viewport, mouseEvent);
+      const plane = dragPlaneNow(
+        itemGrab,
+        normal,
+        modifierPressed,
+        mousePosition,
+        viewportMouseMovement(viewport, {
+          x: mouseEvent.movementX,
+          y: mouseEvent.movementY,
         }),
+        cameraAngle,
       );
-    }
+      if (plane === undefined) {
+        // not dragging yet
+        return;
+      }
+      if (itemGrab.dragging === undefined) {
+        dispatch(itemGrabDragStarted({ dragging: dragAction, plane }));
+        if (
+          jsonItemIds.length === 1 &&
+          !selectOpenRoomSelectedJsonItemIds(storeState, openRoomId).includes(
+            jsonItemIds[0],
+          )
+        ) {
+          // once we are dragging an item, select it:
+          dispatch(setSelectedItemsInRoom({ jsonItemIds }));
+        }
+      } else if (plane !== itemGrab.plane) {
+        dispatch(itemGrabPlaneChanged(plane));
+      }
 
-    const mouseDownEdge: Plane | undefined =
-      mouseDownPointingAtRef.current?.world?.onItem.edge;
-    // grabbing an edge resizes, if every item can be resized:
-    const resizeEdge =
-      jsonItems.every((jsonItem) => isConsolidatable(jsonItem)) ? mouseDownEdge
-      : undefined;
-    const itemsDrag: ItemsDrag =
-      resizeEdge === undefined ? "moveItems" : "resizeItems";
-
-    const prevDragAccVec: Xyz = dragAccVec.current ?? originXyz;
-    const dragGridResolution =
-      // sizes are always whole blocks:
-      itemsDrag === "resizeItems" ? 1 : (
-        snapGridResolution(
-          storeState.levelEditor.gridResolution,
-          jsonItems.map(({ type }) => type),
-        )
+      const gridResolution =
+        // sizes are always whole blocks:
+        dragAction === "resizeItems" ? 1 : (
+          snapGridResolution(
+            storeState.levelEditor.gridResolution,
+            jsonItems.map(({ type }) => type),
+          )
+        );
+      const roundedDragVector = roundDragVector(
+        dragVectorOnPlane(plane, mousePosition, cameraAngle),
+        gridResolution,
       );
+      if (
+        itemGrab.triedInOpenRoomId === openRoomId &&
+        xyzEqual(itemGrab.roundedDragVector, roundedDragVector)
+      ) {
+        // rounded drag vector didn't change - nothing to do
+        return;
+      }
+      dispatch(itemGrabRounded({ openRoomId, roundedDragVector }));
 
-    // accumulate some more on the drag vector:
-    const nextDragAccVec = addXyz(prevDragAccVec, dragDeltaVec);
-    const nextDragAccVecRound = roundDragVector(
-      nextDragAccVec,
-      dragGridResolution,
-    );
-
-    // store for the next frame:
-    dragAccVec.current = nextDragAccVec;
-
-    if (
-      xyzEqual(
-        roundDragVector(prevDragAccVec, dragGridResolution),
-        nextDragAccVecRound,
-      )
-    ) {
-      // rounded acc drag vector didn't change - nothing to do
-      return;
-    }
-
-    const blockDragAccVec = fineXyzToBlockXyz(nextDragAccVecRound);
-
-    let positionDelta: Xyz;
-    let timesDelta: undefined | Xyz = undefined;
-
-    if (resizeEdge !== undefined) {
-      // resizing
-      //
-      //   ⌑
-      //     ↘ ┌-┐
-      //       └-┘
-      //
-      const [, mouseDownJsonItem] = jsonItemAndIdForInPlayItem(
-        storeState,
-        findItemInPlayForPicking(
-          roomState,
-          mouseDownPointingAtRef.current!.world!.itemId,
-        ),
-      )!;
-      ({ timesDelta, positionDelta } = resizeTimesAndPosition({
-        // in case there are multiple, the changes are calculated on the item the (single) item
-        // that the mouse went down on, and then applied to the other selected items - this
-        // could potentially create different results for different items if they have different
-        // starting sizes but it generally makes sense- all are increase or decreased by the same
-        // amount on the same axes:
-        jsonItem: mouseDownJsonItem,
-        blockDragAccVec,
-        resizeEdgeDirection: resizeEdge.point,
-      }));
-    } else {
-      // moving
-      //
-      //   ⌑ -> ⌑
-      //
-      positionDelta = blockDragAccVec;
-    }
-    const movesToTry =
-      resizeEdge === undefined ?
-        dragMovesToTry(positionDelta, dragGridResolution, cameraAngle)
-      : [positionDelta];
-
-    const { levelEditor: levelEditorState } = editorStore.getState();
-    const validMove = movesToTry.find(
-      (moveToTry) =>
-        // collision has to happen on the loaded room, not the json:
-        !itemMoveOrResizeWouldCollide({
-          roomState,
-          // the drag's moves are from the committed room:
-          roomJson:
-            selectCurrentCommittedRoomJsonFromLevelEditorState(
-              levelEditorState,
+      const previewArgs: DragPreviewArgs = {
+        levelEditorState: getState().levelEditor,
+        itemGrab,
+        openRoomId,
+        roomState,
+        blockDragVector: fineXyzToBlockXyz(roundedDragVector),
+        gridResolution,
+        cameraAngle,
+      };
+      const previewed =
+        isItemsRoom ?
+          dragPreviewInItemsRoom(previewArgs, resizeEdge)
+        : dragPreviewInOtherRoom(
+            previewArgs,
+            fineXyzToBlockXyz(
+              roundDragVector(plane.startDragVector, gridResolution),
             ),
-          movesOrResizes: sameMoveOrResizeForEach(jsonItemIds, {
-            blockPositionDelta: moveToTry,
-            timesDelta,
-          }),
-        }) &&
-        moveOrResizeOutcome(levelEditorState, {
-          jsonItemIds,
-          positionDelta: moveToTry,
-          timesDelta,
-          timestamp: 0,
-        }).type !== "invalid",
-    );
-
-    if (validMove === undefined) {
-      // nowhere near the drag can be moved to, so keep the last valid preview
-      return;
-    }
-    if (
-      maybeLayoutNode(levelEditorState.layout, openRoomId)?.dragInProgress !==
-      itemsDrag
-    ) {
-      dispatch(changeDragInProgress({ openRoomId, dragInProgress: itemsDrag }));
-    }
-    dispatch(
-      moveOrResizeItemAsPreview({
-        jsonItemIds,
-        positionDelta: validMove,
-        timesDelta,
-        timestamp: Date.now(),
-      }),
-    );
+          );
+      if (previewed !== undefined) {
+        dispatch(itemGrabPreviewedInto(previewed));
+      }
+      // otherwise, nowhere near the drag can go, so the last preview stays
+    };
   }
 
   handleMouseUp({
     openRoomId,
-    editable,
     roomState,
     pointingAt,
-    storeState,
     mouseEvent,
     isClick,
-    isDragEnd,
-  }: MouseUpParams<Extract<Tool, { type: "pointer" }>>) {
-    if (isClick) {
-      const clickedOnItem =
-        pointingAt.world === undefined ?
-          undefined
-        : findItemInPlayForPicking(roomState, pointingAt.world.itemId);
-
-      if (
-        clickedOnItem?.jsonItemId === undefined ||
-        (editable && itemsAreLocked(storeState, clickedOnItem))
-      ) {
-        // clicking on nothing (or something with no json id) (or a locked floor/wall) unselects:
-        dispatch(
-          setSelectedItemsInRoom({
-            jsonItemIds: [],
-          }),
+  }: MouseUpParams): EditorThunk {
+    return (dispatch, getState) => {
+      const storeState = getState();
+      if (isClick) {
+        const openRoom = maybeLayoutNode(
+          storeState.levelEditor.layout,
+          openRoomId,
         );
+        // the open room may have been closed or replaced (its pane is going):
+        if (openRoom === undefined) {
+          return;
+        }
+        const { editable } = openRoom;
+        const clickedOnItem =
+          pointingAt.world === undefined ?
+            undefined
+          : findItemInPlayForPicking(roomState, pointingAt.world.itemId);
+
+        if (
+          clickedOnItem?.jsonItemId === undefined ||
+          (editable && itemsAreLocked(storeState, clickedOnItem))
+        ) {
+          // clicking on nothing (or something with no json id) (or a locked floor/wall) unselects:
+          dispatch(
+            setSelectedItemsInRoom({
+              jsonItemIds: [],
+            }),
+          );
+          return;
+        }
+
+        // a non-editable open room has no context menu:
+        const isRightClick = editable && mouseEvent.button === 2;
+        // right-clicking within the selection opens the menu for all of it:
+        const keepsSelection =
+          isRightClick &&
+          selectOpenRoomSelectedJsonItemIds(storeState, openRoomId).includes(
+            clickedOnItem.jsonItemId,
+          );
+
+        if (!keepsSelection) {
+          dispatch(
+            // a non-editable open room picks a single item:
+            editable && (mouseEvent.ctrlKey || mouseEvent.metaKey) ?
+              toggleSelectedItemInRoom({
+                jsonItemId: clickedOnItem.jsonItemId,
+                onlySelect: isRightClick,
+              })
+            : setSelectedItemsInRoom({
+                jsonItemIds: [clickedOnItem.jsonItemId],
+              }),
+          );
+        }
+
+        if (isRightClick) {
+          // a right-click selects the item the same way a left-click does (above),
+          // unless it is already selected, then additionally opens the context
+          // menu for the resulting selection
+          dispatch(
+            openItemContextMenu({ openRoomId, scrXy: pointingAt.scrXy }),
+          );
+        }
+      } else if (
+        storeState.levelEditor.itemGrab?.dropInto?.openRoomId === openRoomId
+      ) {
+        // a drag released where it is previewed dropping:
+        dispatch(itemGrabDropped());
+      }
+    };
+  }
+
+  handleMouseDown(params: MouseDownParams): EditorThunk {
+    return (dispatch, getState) => {
+      const { openRoomId, roomState, pointingAt, mouseEvent } = params;
+      if (mouseEvent.button !== 0 || pointingAt.world === undefined) {
         return;
       }
-
-      // a non-editable open room has no context menu:
-      const isRightClick = editable && mouseEvent.button === 2;
-      // right-clicking within the selection opens the menu for all of it:
-      const keepsSelection =
-        isRightClick &&
-        selectOpenRoomSelectedJsonItemIds(storeState, openRoomId).includes(
-          clickedOnItem.jsonItemId,
-        );
-
-      if (!keepsSelection) {
-        dispatch(
-          // a non-editable open room picks a single item:
-          editable && (mouseEvent.ctrlKey || mouseEvent.metaKey) ?
-            toggleSelectedItemInRoom({
-              jsonItemId: clickedOnItem.jsonItemId,
-              onlySelect: isRightClick,
-            })
-          : setSelectedItemsInRoom({
-              jsonItemIds: [clickedOnItem.jsonItemId],
-            }),
-        );
+      const storeState = getState();
+      if (!this.claimsDrag(params, storeState)) {
+        return;
       }
-
-      if (isRightClick) {
-        // a right-click selects the item the same way a left-click does (above),
-        // unless it is already selected, then additionally opens the context
-        // menu for the resulting selection
-        dispatch(openItemContextMenu({ openRoomId, scrXy: pointingAt.scrXy }));
-      }
-    } else if (isDragEnd) {
-      dispatch(commitCurrentPreviewedEdits());
-    }
+      // the items a drag from here would drag, if the pointer moves far enough:
+      dispatch(
+        itemGrabPointerDown({
+          sourceOpenRoomId: openRoomId,
+          mouseDownPointingAt: pointingAt,
+          jsonItemIds: getJsonItemIdsToUseForPointingAt(
+            storeState,
+            openRoomId,
+            roomState,
+            pointingAt,
+          ),
+        }),
+      );
+    };
   }
 
-  handleMouseDown(
-    _params: MouseDownParams<Extract<Tool, { type: "pointer" }>>,
-  ) {
-    // Pointer tool doesn't need to do anything special on mouse down
-    // The main logic handles setting mouseDownPointingAtRef
-  }
-
-  claimsDrag({
-    openRoomId,
-    editable,
-    pointingAt,
-    roomState,
-    storeState,
-  }: MouseDownParams<Extract<Tool, { type: "pointer" }>>): boolean {
-    if (!editable) {
+  claimsDrag(
+    { openRoomId, pointingAt, roomState }: MouseDownParams,
+    storeState: EditorRootState,
+  ): boolean {
+    // a closed (or replaced) open room claims nothing:
+    if (!maybeLayoutNode(storeState.levelEditor.layout, openRoomId)?.editable) {
       return false;
     }
     // a drag is used (to move/resize) only when it starts on unlocked item(s) -
@@ -616,9 +850,9 @@ export class PointerToolHandler implements ToolHandler<
     return !itemsAreLocked(storeState, ...jsonItems);
   }
 
-  handleMouseLeave({
-    openRoomId,
-  }: MouseLeaveParams<Extract<Tool, { type: "pointer" }>>) {
-    dispatch(setHoveredItemInRoom({ openRoomId, hoveredItem: undefined }));
+  handleMouseLeave({ openRoomId }: MouseLeaveParams): EditorThunk {
+    return (dispatch) => {
+      dispatch(setHoveredItemInRoom({ openRoomId, hoveredItem: undefined }));
+    };
   }
 }

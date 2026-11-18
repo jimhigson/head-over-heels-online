@@ -4,6 +4,7 @@ import { type DirectionXy4 } from "../../../../utils/vectors/vectors";
 import { exitGameRoomId } from "../../ItemConfigMap";
 import { type CampaignVerifier } from "../CampaignVerification";
 import { allDoors, candidatePartners } from "../helpers/doorPartner";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationCampaign,
   type VerificationRoomId,
@@ -51,8 +52,8 @@ export const redundantToDoorVerifier: CampaignVerifier<RedundantToDoor> = {
       yield {
         severity: "warning",
         roomId,
-        itemId: doorId,
-        msg: `Door ‘${doorId}’ in ‘${roomId}’ sets toDoor ‘${toDoor}’, but ‘${toRoom}’ has only one matching door back so it's unnecessary`,
+        itemIds: [doorId],
+        msg: `Door ‘${itemIdMd(doorId)}’ in ‘${valueMd(roomId)}’ sets toDoor ‘${itemIdMd(toDoor)}’, but ‘${valueMd(toRoom)}’ has only one matching door back so it's unnecessary`,
         fixable: true,
         fixText: `Remove the redundant toDoor from door ‘${doorId}’ in ‘${roomId}’`,
         issueData: { roomId, doorId, toRoom },

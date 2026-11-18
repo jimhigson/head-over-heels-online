@@ -9,6 +9,7 @@ import { type LevelEditorState } from "../../editor/slice/levelEditorSlice";
 import {
   type RoomUndoHistory,
   type UndoEntry,
+  type UndoLink,
 } from "../../editor/slice/reducers/undoReducers";
 import { emptyArray } from "../../utils/empty";
 import { entries, fromAllEntries } from "../../utils/entries";
@@ -24,7 +25,11 @@ type History = LevelEditorState["history"];
 type StoredUndoStack = {
   newestRoom: EditorRoomJson | undefined;
   entries: Array<
-    Omit<UndoEntry, "room"> & {
+    Omit<UndoEntry, "link" | "room"> & {
+      /**
+       * absent where the entry has none, as json leaves out undefined
+       */
+      link?: UndoLink;
       /**
        * empty for the newest entry, whose room is stored in full
        */
@@ -89,13 +94,13 @@ const undoStackFromStored = ({
   const stack: UndoEntry[] = [];
   let nextRoom = newestRoom!;
   for (let index = storedEntries.length - 1; index >= 0; index--) {
-    const { patchFromNext, ...entry } = storedEntries[index];
+    const { patchFromNext, link, ...entry } = storedEntries[index];
     const room =
       patchFromNext.length === 0 ?
         nextRoom
       : (applyPatch(nextRoom, patchFromNext, false, false)
           .newDocument as EditorRoomJson);
-    stack[index] = { ...entry, room };
+    stack[index] = { ...entry, link, room };
     nextRoom = room;
   }
   return stack;

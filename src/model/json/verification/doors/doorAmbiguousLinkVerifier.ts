@@ -1,6 +1,7 @@
 import { exitGameRoomId } from "../../ItemConfigMap";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { allDoors, candidatePartners } from "../helpers/doorPartner";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationRoomId,
   type VerificationRoomItemId,
@@ -41,8 +42,8 @@ export const doorAmbiguousLinkVerifier: CampaignVerifier<DoorAmbiguousLink> = {
       yield {
         severity: "error",
         roomId,
-        itemId: doorId,
-        msg: `Door ‘${doorId}’ in ‘${roomId}’ has ${count} matching doors back from ‘${toRoom}’ and no toDoor — the game picks one arbitrarily`,
+        itemIds: [doorId],
+        msg: `Door ‘${itemIdMd(doorId)}’ in ‘${valueMd(roomId)}’ has ${count} matching doors back from ‘${valueMd(toRoom)}’ and no toDoor — the game picks one arbitrarily`,
         fixable: false,
         fixText: `Give door ‘${doorId}’ a toDoor naming its partner in ‘${toRoom}’`,
         issueData: { roomId, doorId, toRoom, count },

@@ -6,6 +6,7 @@ import {
   candidatePartners,
   doorsBackTo,
 } from "../helpers/doorPartner";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationRoomId,
   type VerificationRoomItemId,
@@ -43,8 +44,8 @@ export const doorDirectionMismatchVerifier: CampaignVerifier<DoorDirectionMismat
         yield {
           severity: "error",
           roomId,
-          itemId: doorId,
-          msg: `Door ‘${doorId}’ in ‘${roomId}’ links to ‘${toRoom}’, whose return door faces the wrong way (it should face ‘${oppositeDirection(direction)}’)`,
+          itemIds: [doorId],
+          msg: `Door ‘${itemIdMd(doorId)}’ in ‘${valueMd(roomId)}’ links to ‘${valueMd(toRoom)}’, whose return door faces the wrong way (it should face ‘${valueMd(oppositeDirection(direction))}’)`,
           fixable: false,
           fixText: `Turn the door in ‘${toRoom}’ that leads back to ‘${roomId}’ to face ‘${oppositeDirection(direction)}’`,
           issueData: { roomId, doorId, toRoom },

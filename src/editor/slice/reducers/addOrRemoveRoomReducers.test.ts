@@ -70,6 +70,7 @@ test("removeRoom deletes the deleted room's undo/redo history", () => {
               items: {},
             },
             description: { kind: "clearRoom" } satisfies UndoDescription,
+            link: undefined,
             timestamp: 0,
           },
         ],

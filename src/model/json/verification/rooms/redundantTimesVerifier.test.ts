@@ -24,8 +24,8 @@ test("flags an item whose times is all 1s", () => {
 
   const [issue] = runCheck(redundantTimesVerifier, campaignOf({ roomA }));
 
-  expect({ itemId: issue.itemId, fixable: issue.fixable }).toEqual({
-    itemId,
+  expect({ itemIds: issue.itemIds, fixable: issue.fixable }).toEqual({
+    itemIds: [itemId],
     fixable: true,
   });
 });

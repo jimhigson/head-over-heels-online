@@ -4,7 +4,9 @@ import { produce } from "immer";
 import roomSchema from "../../../../_generated/room.schema.json";
 import { entries } from "../../../../utils/entries";
 import { getAtPath, setAtPath } from "../../../../utils/getAtPath";
+import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
+import { valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationRoomId,
   type VerificationRoomJson,
@@ -231,19 +233,28 @@ const isPlainIdentifier = (segment: string): boolean =>
   /^[A-Za-z_$][\w$]*$/.test(segment);
 
 /**
- * render a JSON Pointer as a JS-style accessor path, eg `items.w3.config.tiles[0]`.
- * brackets are backslash-escaped so the markdown parser keeps them literal rather
- * than reading `[0]` as (broken) link syntax. A segment that isn't a plain
- * identifier (eg an item id containing a slash) is written as `["…"]`
+ * a value from a room's json as it reads in the json - a string as itself,
+ * anything else (numbers, objects, arrays...) as json
+ */
+const displayValue = (value: unknown): string =>
+  typeof value === "string" ? value : JSON.stringify(value);
+
+/**
+ * render a JSON Pointer as a JS-style accessor path, eg `items.w3.config.tiles[0]`,
+ * escaped for markdown so eg `[0]` isn't read as (broken) link syntax. A segment
+ * that isn't a plain identifier (eg an item id containing a slash) is written as
+ * `[‘…’]`
  */
 const displayPath = (pointer: string): string =>
-  pathSegments(pointer).reduce(
-    (acc, segment, index) =>
-      /^\d+$/.test(segment) ? `${acc}\\[${segment}\\]`
-      : !isPlainIdentifier(segment) ? `${acc}\\[‘${segment}’\\]`
-      : index === 0 ? segment
-      : `${acc}.${segment}`,
-    "",
+  escapeMarkdown(
+    pathSegments(pointer).reduce(
+      (acc, segment, index) =>
+        /^\d+$/.test(segment) ? `${acc}[${segment}]`
+        : !isPlainIdentifier(segment) ? `${acc}[‘${segment}’]`
+        : index === 0 ? segment
+        : `${acc}.${segment}`,
+      "",
+    ),
   );
 
 /**
@@ -287,16 +298,19 @@ export const schemaComplianceVerifier: CampaignVerifier<SchemaNonCompliant> = {
           pathSegments,
         );
         const valueSuffix =
-          currentValue === undefined ? "" : ` = **‘${String(currentValue)}’**`;
+          currentValue === undefined ? "" : (
+            ` = ‘${valueMd(displayValue(currentValue))}’`
+          );
         const fixable = enumValue !== undefined;
         const at = where === "" ? "" : ` at: *${where}*`;
         yield {
           severity: "error",
+          itemIds: [],
           roomId,
           msg:
             fixable ?
               `${verb}: *${where}*${valueSuffix}`
-            : `JSON schema violated${at} (${error.keyword})`,
+            : `JSON schema violated${at} (${valueMd(error.keyword)})`,
           fixable,
           fixText: fixable ? `Set to ‘${enumValue}’` : `Needs hand-editing`,
           issueData: { roomId, instancePath: path, enumValue },

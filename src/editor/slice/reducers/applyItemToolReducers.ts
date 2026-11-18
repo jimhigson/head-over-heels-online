@@ -82,7 +82,6 @@ export const applyItemToolReducers = {
       state.pendingEdits = undefined;
     } else {
       state.pendingEdits = {
-        roomId,
         edits: {},
         description: { kind: "editRoomJson" },
         timestamp,
@@ -158,10 +157,14 @@ export const applyItemToolReducers = {
       state.history[roomId] ??= { undo: [], redo: [] };
       const { undo, redo } = state.history[roomId];
       redo.length = 0;
-      undo.push({ room: roomSnapshot!, description, timestamp });
+      undo.push({
+        room: roomSnapshot!,
+        description,
+        timestamp,
+        link: undefined,
+      });
     } else {
       state.pendingEdits = {
-        roomId,
         edits: state.pendingEdits!.edits,
         description,
         timestamp,

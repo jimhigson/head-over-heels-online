@@ -19,6 +19,7 @@ import { itemOffFloorVerifier } from "./rooms/itemOffFloorVerifier";
 import { mapGeometryVerifier } from "./rooms/mapGeometryVerifier";
 import { redundantTimesVerifier } from "./rooms/redundantTimesVerifier";
 import { roomPerimeterCoverageVerifier } from "./rooms/roomPerimeterCoverageVerifier";
+import { solidItemsOverlapVerifier } from "./rooms/solidItemsOverlapVerifier";
 import { subRoomsFitFloorVerifier } from "./rooms/subRoomsFitFloorVerifier";
 import { nonContiguousMirrorVerifier } from "./subRooms/nonContiguousMirrorVerifier";
 import { redundantToSubRoomVerifier } from "./subRooms/redundantToSubRoomVerifier";
@@ -64,6 +65,7 @@ export const allVerifiers: CampaignVerifier<unknown>[] = [
   subRoomsFitFloorVerifier,
   roomPerimeterCoverageVerifier,
   itemOffFloorVerifier,
+  solidItemsOverlapVerifier,
   doorAboveRoomHeightVerifier,
   doorOffFloorVerifier,
   redundantTimesVerifier,

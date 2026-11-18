@@ -55,6 +55,10 @@ export const nudgeSelectedItemsThunk =
   ): EditorThunk =>
   (dispatch, getState) => {
     const editorState = getState();
+    if (editorState.levelEditor.itemGrab?.dragging !== undefined) {
+      // the pointer is dragging the items:
+      return;
+    }
     const jsonItemIds = selectCursorRoomSelectedJsonItemIds(editorState);
     if (jsonItemIds.length === 0) {
       return;

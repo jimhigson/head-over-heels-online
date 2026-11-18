@@ -9,6 +9,7 @@ import {
   type DoorRef,
   inferredPartner,
 } from "../helpers/doorPartner";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationRoomId,
   type VerificationRoomItemId,
@@ -79,11 +80,11 @@ export const danglingDoorTargetVerifier: CampaignVerifier<DanglingDoorTarget> =
           yield {
             severity: "error",
             roomId,
-            itemId: doorId as VerificationRoomItemId,
+            itemIds: [doorId as VerificationRoomItemId],
             msg:
               toDoorExists ?
-                `Door ‘${doorId}’ in ‘${roomId}’ links to door ‘${toDoor}’ in ‘${toRoom}’, which doesn't lead back to ‘${roomId}’`
-              : `Door ‘${doorId}’ in ‘${roomId}’ links to door ‘${toDoor}’ in ‘${toRoom}’, which does not exist`,
+                `Door ‘${itemIdMd(doorId)}’ in ‘${valueMd(roomId)}’ links to door ‘${itemIdMd(toDoor)}’ in ‘${valueMd(toRoom)}’, which doesn't lead back to ‘${valueMd(roomId)}’`
+              : `Door ‘${itemIdMd(doorId)}’ in ‘${valueMd(roomId)}’ links to door ‘${itemIdMd(toDoor)}’ in ‘${valueMd(toRoom)}’, which does not exist`,
             fixable: partner !== undefined,
             fixText:
               partner === undefined ?

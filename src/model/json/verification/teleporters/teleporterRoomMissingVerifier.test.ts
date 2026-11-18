@@ -19,7 +19,7 @@ test("flags a teleporter whose toRoom isn't a room in the campaign", () => {
 
   const issues = runCheck(teleporterRoomMissingVerifier, campaignOf({ roomA }));
 
-  expect(issues.map((issue) => issue.itemId)).toEqual(["tp"]);
+  expect(issues.map((issue) => issue.itemIds)).toEqual([["tp"]]);
 });
 
 test("accepts a teleporter to a real room", () => {

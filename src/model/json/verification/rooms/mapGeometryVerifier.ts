@@ -1,6 +1,7 @@
 import { addXyz, type Xyz } from "../../../../utils/vectors/vectors";
 import { type RoomNode } from "../../../map/roomGridPositions";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
+import { valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationRoomId,
   type VerificationRoomItemId,
@@ -18,6 +19,14 @@ const cellLabel = (node: RoomNode<string>): string =>
   node.subRoomId === "*" ?
     `‘${node.roomId}’`
   : `‘${node.roomId}’ sub-room ‘${node.subRoomId}’`;
+
+/**
+ * a cell's label as it shows in a message, its ids marked up
+ */
+const cellLabelMd = (node: RoomNode<string>): string =>
+  node.subRoomId === "*" ?
+    `‘${valueMd(node.roomId)}’`
+  : `‘${valueMd(node.roomId)}’ sub-room ‘${valueMd(node.subRoomId)}’`;
 
 /**
  * Euclidean map-geometry check, over the room graph. Within each subgraph
@@ -47,8 +56,9 @@ export const mapGeometryVerifier: CampaignVerifier<MapGeometryIssue> = {
       const [first] = cells;
       yield {
         severity: "error",
+        itemIds: [],
         roomId: first.roomId,
-        msg: `${cells.map(cellLabel).join(" and ")} occupy the same position on the map grid`,
+        msg: `${cells.map(cellLabelMd).join(" and ")} occupy the same position on the map grid`,
         fixable: false,
         fixText: `Give ${cells.map(cellLabel).join(" and ")} distinct map positions`,
         issueData: { roomId: first.roomId },
@@ -71,8 +81,8 @@ export const mapGeometryVerifier: CampaignVerifier<MapGeometryIssue> = {
         yield {
           severity: "error",
           roomId: from.roomId,
-          ...(itemId !== undefined ? { itemId } : {}),
-          msg: `The ${edge.kind} link from ${cellLabel(from)} to ${cellLabel(to)} can't be placed adjacently - the two rooms end up in different parts of the map`,
+          itemIds: itemId === undefined ? [] : [itemId],
+          msg: `The ${valueMd(edge.kind)} link from ${cellLabelMd(from)} to ${cellLabelMd(to)} can't be placed adjacently - the two rooms end up in different parts of the map`,
           fixable: false,
           fixText: `Connect ${cellLabel(from)} and ${cellLabel(to)} into one consistent map layout`,
           issueData: {
@@ -97,8 +107,8 @@ export const mapGeometryVerifier: CampaignVerifier<MapGeometryIssue> = {
       yield {
         severity: "error",
         roomId: from.roomId,
-        ...(itemId !== undefined ? { itemId } : {}),
-        msg: `The ${edge.kind} link from ${cellLabel(from)} to ${cellLabel(to)} doesn't match where they sit on the map grid`,
+        itemIds: itemId === undefined ? [] : [itemId],
+        msg: `The ${valueMd(edge.kind)} link from ${cellLabelMd(from)} to ${cellLabelMd(to)} doesn't match where they sit on the map grid`,
         fixable: false,
         fixText: `Make ${cellLabel(from)} and ${cellLabel(to)} consistent on the map (their ${edge.kind} link disagrees with their grid positions)`,
         issueData: {

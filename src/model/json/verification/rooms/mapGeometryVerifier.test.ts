@@ -24,7 +24,7 @@ test("flags two cells placed at the same grid position", () => {
 
   expect({ severity: issue.severity, msg: issue.msg }).toEqual({
     severity: "error",
-    msg: "‘roomA’ and ‘roomB’ occupy the same position on the map grid",
+    msg: "‘*roomA*’ and ‘*roomB*’ occupy the same position on the map grid",
   });
 });
 

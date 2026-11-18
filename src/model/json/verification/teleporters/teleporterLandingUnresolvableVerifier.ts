@@ -1,4 +1,5 @@
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import { allTeleporters, teleporterLanding } from "../helpers/teleporterTarget";
 import {
   type VerificationRoomId,
@@ -40,11 +41,11 @@ export const teleporterLandingUnresolvableVerifier: CampaignVerifier<TeleporterL
         yield {
           severity: "error",
           roomId,
-          itemId: teleporterId,
+          itemIds: [teleporterId],
           msg:
             target.landing.reason === "noTeleporter" ?
-              `Teleporter ‘${teleporterId}’ in ‘${roomId}’ leads to ‘${targetRoom}’, which has no teleporter to land on`
-            : `Teleporter ‘${teleporterId}’ in ‘${roomId}’ leads to ‘${targetRoom}’, which has several teleporters - set which to land on`,
+              `Teleporter ‘${itemIdMd(teleporterId)}’ in ‘${valueMd(roomId)}’ leads to ‘${valueMd(targetRoom)}’, which has no teleporter to land on`
+            : `Teleporter ‘${itemIdMd(teleporterId)}’ in ‘${valueMd(roomId)}’ leads to ‘${valueMd(targetRoom)}’, which has several teleporters - set which to land on`,
           fixable: false,
           fixText: `Where to land needs choosing by hand: set a toItemId or toPosition`,
           issueData: { roomId, teleporterId, targetRoom },

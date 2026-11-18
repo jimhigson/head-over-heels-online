@@ -14,6 +14,8 @@ export type CommandToolbarButtonProps = {
   /** called once the command has run, and finished if it takes time */
   onClick?: () => void;
   small?: boolean;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 };
 
 /** a command as a toolbar button */
@@ -22,6 +24,8 @@ export const CommandToolbarButton = ({
   tooltipContent,
   onClick,
   small = false,
+  onMouseEnter,
+  onMouseLeave,
 }: CommandToolbarButtonProps) => {
   const isActive = useEditorAppSelector(
     (state) => selectCommandIsActive(command, state) ?? false,
@@ -38,6 +42,8 @@ export const CommandToolbarButton = ({
       disabled={!isAvailable}
       shortcutKeys={command.shortcutKeys}
       small={small}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       tooltipContent={tooltipContent ?? command.tooltipContent}
       onClick={async () => {
         await runCommand(command);

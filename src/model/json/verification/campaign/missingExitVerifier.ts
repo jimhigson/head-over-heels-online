@@ -3,6 +3,7 @@ import { type EmptyObject } from "type-fest";
 import { exitGameRoomId } from "../../ItemConfigMap";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { allDoors } from "../helpers/doorPartner";
+import { valueMd } from "../helpers/messageMarkdown";
 
 /**
  * no door leads to `$$final`, so the game can never be finished.
@@ -20,7 +21,8 @@ export const missingExitVerifier: CampaignVerifier<EmptyObject> = {
     }
     yield {
       severity: "error",
-      msg: `No door leads to ‘${exitGameRoomId}’, so the game can never be finished`,
+      itemIds: [],
+      msg: `No door leads to ‘${valueMd(exitGameRoomId)}’, so the game can never be finished`,
       fixable: false,
       fixText: `Assign a door's config.toRoom the special value ‘${exitGameRoomId}’ - this door will end the game`,
       issueData: {},

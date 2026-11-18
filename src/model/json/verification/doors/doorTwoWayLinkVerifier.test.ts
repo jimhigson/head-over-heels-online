@@ -33,7 +33,7 @@ test("flags a crossed two-way link", () => {
 
   const issues = runCheck(doorTwoWayLinkVerifier, campaignOf({ roomA, roomB }));
 
-  expect(issues.map((issue) => issue.itemId)).toEqual([d1]);
+  expect(issues.map((issue) => issue.itemIds)).toEqual([[d1]]);
 });
 
 test("accepts a properly mutual two-way link", () => {

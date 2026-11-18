@@ -2,15 +2,22 @@ import { memo } from "preact/compat";
 
 import { type SceneryName } from "../../../sprites/planets";
 import { itemGlyph, textureForItem } from "../../../sprites/textureForItem";
+import { useEditorAppSelector } from "../../../store/store";
 import { Timeago } from "../../../ui/Timeago";
 import { camelToSpaced } from "../../../utils/camelToSpaced";
 import { twClass } from "../../../utils/twClass.tsx";
-import { type EditorJsonItemUnion } from "../../editorTypes";
+import { type EditorJsonItemUnion, type EditorRoomId } from "../../editorTypes";
+import { selectCursorRoomId } from "../../slice/levelEditorSlice";
 import {
   describeItem,
   type UndoItemEntry,
 } from "../../slice/reducers/undoDescription";
-import { type UndoHistoryItem } from "../../slice/reducers/undoReducers";
+import {
+  type HistoryDirection,
+  isLinkedStepNext,
+  type UndoHistoryItem,
+  type UndoLink,
+} from "../../slice/reducers/undoReducers";
 
 const maxIcons = 3;
 
@@ -78,14 +85,117 @@ export const undoHistoryGridClassName =
 export const undoHistorySubgridClassName =
   "grid grid-cols-subgrid col-span-full";
 
+type LinkedRoomProps = {
+  roomId: EditorRoomId;
+  link: UndoLink;
+  direction: HistoryDirection;
+};
+
+/**
+ * a room the entry's edit was also to - and, if something else has been done
+ * there since, that it has to be undone (or redone) there
+ */
+const LinkedRoom = ({ roomId, link, direction }: LinkedRoomProps) => {
+  const isNext = useEditorAppSelector((state) =>
+    isLinkedStepNext(state.levelEditor.history[roomId], direction, link),
+  );
+  return (
+    <span class="text-single-line">
+      <span class={idClass}>{`'${roomId}'`}</span>
+      {isNext ? "" : ` (changed since: ${direction} it there)`}
+    </span>
+  );
+};
+
+type LinkedRoomsProps = {
+  link: undefined | UndoLink;
+  direction: HistoryDirection;
+};
+
+/**
+ * the other rooms an entry's edit was to, which undo and redo with it
+ */
+const LinkedRooms = ({ link, direction }: LinkedRoomsProps) => {
+  const cursorRoomId = useEditorAppSelector(selectCursorRoomId);
+  if (link === undefined) {
+    return null;
+  }
+  return (
+    <span class="text-single-line">
+      {" with "}
+      {link.roomIds
+        .filter((roomId) => roomId !== cursorRoomId)
+        .map((roomId) => (
+          <LinkedRoom
+            key={roomId}
+            roomId={roomId}
+            link={link}
+            direction={direction}
+          />
+        ))}
+    </span>
+  );
+};
+
+type MoveBetweenRoomsRoomsProps = {
+  fromRoomId: EditorRoomId;
+  toRoomId: EditorRoomId;
+  link: undefined | UndoLink;
+  direction: HistoryDirection;
+};
+
+/**
+ * where items moved between rooms went, as seen from the room whose history it
+ * is: to the other room, from it, or (for a room only changed by the move,
+ * eg its teleporters) from one to the other
+ */
+const MoveBetweenRoomsRooms = ({
+  fromRoomId,
+  toRoomId,
+  link,
+  direction,
+}: MoveBetweenRoomsRoomsProps) => {
+  const cursorRoomId = useEditorAppSelector(selectCursorRoomId);
+  const room = (roomId: EditorRoomId) =>
+    link === undefined ?
+      <span class={`${idClass} text-single-line`}>{`'${roomId}'`}</span>
+    : <LinkedRoom roomId={roomId} link={link} direction={direction} />;
+  return (
+    <span class="text-single-line">
+      {cursorRoomId === fromRoomId ?
+        <>
+          {" to "}
+          {room(toRoomId)}
+        </>
+      : cursorRoomId === toRoomId ?
+        <>
+          {" from "}
+          {room(fromRoomId)}
+        </>
+      : <>
+          {" from "}
+          {room(fromRoomId)}
+          {" to "}
+          {room(toRoomId)}
+        </>
+      }
+    </span>
+  );
+};
+
 export type UndoEntryLabelProps = {
   entry: UndoHistoryItem;
   scenery: SceneryName;
+  /**
+   * whether the entry is to undo or to redo
+   */
+  direction: HistoryDirection;
 };
 
 const UndoEntryLabelUnmemoised = ({
-  entry: { description, timestamp },
+  entry: { description, timestamp, link },
   scenery,
+  direction,
 }: UndoEntryLabelProps) => {
   const timeago = <Timeago timestamp={timestamp} class="text-lightGrey" />;
 
@@ -97,7 +207,27 @@ const UndoEntryLabelUnmemoised = ({
           <span class={`${verbClass} text-single-line`}>
             {description.verb}{" "}
           </span>
-          <ItemDescriptions items={description.items} />
+          <span>
+            <ItemDescriptions items={description.items} />
+            <LinkedRooms link={link} direction={direction} />
+          </span>
+          {timeago}
+        </>
+      );
+    case "moveBetweenRooms":
+      return (
+        <>
+          <ItemIcons items={description.items} scenery={scenery} />
+          <span class={`${verbClass} text-single-line`}>Move </span>
+          <span>
+            <ItemDescriptions items={description.items} />
+            <MoveBetweenRoomsRooms
+              fromRoomId={description.fromRoomId}
+              toRoomId={description.toRoomId}
+              link={link}
+              direction={direction}
+            />
+          </span>
           {timeago}
         </>
       );

@@ -6,6 +6,14 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   // glsl: item behaviours make renderers, which import shaders
   plugins: [Macros({ runner: unrunRunner() }), glsl()],
+  resolve: {
+    // as in the app's builds, third-party react libraries run on preact:
+    alias: {
+      react: "preact/compat",
+      "react-dom": "preact/compat",
+      "react/jsx-runtime": "preact/jsx-runtime",
+    },
+  },
   test: {
     // Only include .test.ts and .test.tsx files, exclude .spec.ts (used by Playwright)
     include: ["**/*.test.ts", "**/*.test.tsx"],

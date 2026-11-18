@@ -2,6 +2,7 @@ import { entries } from "../../../../utils/entries";
 import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { isItemOverFloor, needsFloorUnder } from "../helpers/isItemOverFloor";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import { floorSquares } from "../helpers/roomPerimeter";
 import {
   type VerificationRoomId,
@@ -29,8 +30,8 @@ export const itemOffFloorVerifier: CampaignVerifier<ItemOffFloor> = {
         yield {
           severity: "error",
           roomId,
-          itemId,
-          msg: `‘${itemId}’ in ‘${roomId}’ is not over the floor`,
+          itemIds: [itemId],
+          msg: `‘${itemIdMd(itemId)}’ in ‘${valueMd(roomId)}’ is not over the floor`,
           fixable: false,
           fixText: `Move ‘${itemId}’ over the floor in ‘${roomId}’`,
           issueData: { roomId, itemId },

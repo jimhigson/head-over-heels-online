@@ -57,12 +57,13 @@ import {
 } from "./reducers/editorSettingsReducers";
 import { editRoomReducers } from "./reducers/editRoomReducers";
 import { explodeItemsReducers } from "./reducers/explodeItemsReducers";
+import { floorReducers } from "./reducers/floorReducers";
 import { itemActivationReducers } from "./reducers/itemActivationReducers";
+import { type ItemGrab, itemGrabReducers } from "./reducers/itemGrabReducers";
 import { itemPreviewReducers } from "./reducers/itemPreviewReducers";
 import { mirrorOrientationReducers } from "./reducers/mirrorOrientationReducers";
 import { monsterMovementReducers } from "./reducers/monsterMovementReducers";
 import { moveItemsToRoomReducers } from "./reducers/moveItemsToRoomReducers";
-import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
 import { multiplyItemsReducers } from "./reducers/multiplyItemsReducers";
 import { nudgeReducers } from "./reducers/nudgeReducers";
 import {
@@ -135,14 +136,22 @@ type PendingEditsMadeBy =
       positionDelta: Xyz;
     };
 
+/**
+ * previewed edits, to each room they touch. Most edits will only populate this for
+ * a single room, but it is possible to impact multiple together -
+ * eg. dragging items from one room to another
+ */
+export type PreviewedEditsByRoom = Partial<
+  Record<EditorRoomId, PreviewedRoomItemEdits>
+>;
+
 export type PendingEdits = {
   /**
-   * the room the edits are to - not always the cursor room: the item tool
+   * the rooms the edits are to - not always the cursor room: the item tool
    * previews in whichever pane the pointer is over, but having a preview isn't
    * enough to make it the cursor room.
    */
-  roomId: EditorRoomId;
-  edits: PreviewedRoomItemEdits;
+  edits: PreviewedEditsByRoom;
   description: UndoDescription;
   timestamp: number;
   madeBy: PendingEditsMadeBy;
@@ -174,7 +183,7 @@ export type LevelEditorState = {
   focusedTabGroupId: TabGroupId;
 
   /**
-   * numbers the next open room, tab, tab group or split id. We never recycle id numbers to avoid
+   * numbers the next open room, tab, tab group, split or undo link id. We never recycle id numbers to avoid
    * remove-and-replace inside the same reduction
    */
   nextIdNumber: number;
@@ -188,6 +197,10 @@ export type LevelEditorState = {
    * the action are required together.
    */
   pendingEdits?: PendingEdits;
+  /**
+   * the pointer pressed on items in an open room, to drag them
+   */
+  itemGrab: ItemGrab | undefined;
   tool: Tool;
   /**
    * the item tool most recently chosen, so we can switch to the pointer and later switch back
@@ -233,7 +246,6 @@ export const levelEditorSlice = createSlice({
     ...dragToMoveReducers,
     ...selectionsReducers,
     ...editRoomReducers,
-    ...moveOrResizeItemPreviewReducers,
     ...itemPreviewReducers,
     ...saveAndLoadReducers,
     ...addOrRemoveRoomReducers,
@@ -246,6 +258,8 @@ export const levelEditorSlice = createSlice({
     ...explodeItemsReducers,
     ...itemActivationReducers,
     ...disappearingReducers,
+    ...floorReducers,
+    ...itemGrabReducers,
     ...monsterMovementReducers,
     ...moveItemsToRoomReducers,
     ...multiplyItemsReducers,
@@ -341,7 +355,6 @@ export const {
   insertRoom,
   loadCampaign,
   moveItemsToRoom,
-  moveOrResizeItemAsPreview,
   multiplyCurrentToolItem,
   multiplySelectedItems,
   nudgeSelectedItems,
@@ -378,6 +391,16 @@ export const {
   makeHoleInSelectedFloor,
   setSelectedItemsActivation,
   setSelectedItemsDisappearing,
+  setSelectedFloorsScenery,
+  setSelectedFloorsType,
+  itemGrabDropped,
+  itemGrabAbandoned,
+  itemGrabOverOpenRoom,
+  itemGrabPlaneChanged,
+  itemGrabPointerDown,
+  itemGrabPreviewedInto,
+  itemGrabDragStarted,
+  itemGrabRounded,
   setSelectedItemsInRoom,
   setSelectedItemsMirrorOrientation,
   setSelectedItemsStartDirection,

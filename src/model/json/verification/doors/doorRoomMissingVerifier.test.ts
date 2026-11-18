@@ -19,7 +19,7 @@ test("flags a door whose toRoom isn't a room in the campaign", () => {
 
   const issues = runCheck(doorRoomMissingVerifier, campaignOf({ roomA }));
 
-  expect(issues.map((issue) => issue.itemId)).toEqual([doorId]);
+  expect(issues.map((issue) => issue.itemIds)).toEqual([[doorId]]);
 });
 
 test("accepts a door to a real room", () => {

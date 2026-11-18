@@ -49,6 +49,7 @@ const missingEnumIssue = ({
 }: MissingEnumIssueOptions) => ({
   severity: "error",
   roomId: "roomA",
+  itemIds: [],
   msg,
   fixable: true,
   fixText: `Set to ‘${enumValue}’`,
@@ -108,7 +109,8 @@ test("describes a root-level violation without a path", () => {
     {
       severity: "error",
       roomId: "roomA",
-      msg: "JSON schema violated (required)",
+      itemIds: [],
+      msg: "JSON schema violated (*required*)",
       fixable: false,
       fixText: "Needs hand-editing",
       issueData: { roomId: "roomA", instancePath: "", enumValue: undefined },
@@ -127,7 +129,8 @@ test("describes a fixable enum mismatch with its path and replacement", () => {
     {
       severity: "error",
       roomId: "roomA",
-      msg: "Disallowed value: *planet* = **‘notARealPlanet’**",
+      itemIds: [],
+      msg: "Disallowed value: *planet* = ‘*notARealPlanet*’",
       fixable: true,
       fixText: "Set to ‘blacktooth’",
       issueData: {
@@ -151,7 +154,7 @@ test("a computerBot missing its movement is fixable to the first allowed movemen
 
   expect(issues).toEqual([
     missingEnumIssue({
-      msg: "Missing value: *items.m.config.movement*",
+      msg: "Missing value: *items\\.m\\.config\\.movement*",
       instancePath: "/items/m/config/movement",
       enumValue: "patrol-randomly-xy4-and-reverse",
     }),
@@ -169,7 +172,7 @@ test("a computerBot missing its startDirection is fixable to the first allowed d
 
   expect(issues).toEqual([
     missingEnumIssue({
-      msg: "Missing value: *items.m.config.startDirection*",
+      msg: "Missing value: *items\\.m\\.config\\.startDirection*",
       instancePath: "/items/m/config/startDirection",
       enumValue: "towards",
     }),
@@ -187,7 +190,7 @@ test("a computerBot missing its activated flag is fixable to the first allowed v
 
   expect(issues).toEqual([
     missingEnumIssue({
-      msg: "Missing value: *items.m.config.activated*",
+      msg: "Missing value: *items\\.m\\.config\\.activated*",
       instancePath: "/items/m/config/activated",
       enumValue: "on",
     }),
@@ -205,7 +208,7 @@ test("a sceneryPlayer missing its which is fixable to the first allowed characte
 
   expect(issues).toEqual([
     missingEnumIssue({
-      msg: "Missing value: *items.m.config.which*",
+      msg: "Missing value: *items\\.m\\.config\\.which*",
       instancePath: "/items/m/config/which",
       enumValue: "head",
     }),
@@ -223,7 +226,7 @@ test("a sceneryPlayer missing its startDirection is fixable to the first allowed
 
   expect(issues).toEqual([
     missingEnumIssue({
-      msg: "Missing value: *items.m.config.startDirection*",
+      msg: "Missing value: *items\\.m\\.config\\.startDirection*",
       instancePath: "/items/m/config/startDirection",
       enumValue: "towards",
     }),
@@ -242,7 +245,7 @@ test("a crown pickup missing its planet is fixable to the first allowed planet",
 
   expect(issues).toEqual([
     missingEnumIssue({
-      msg: "Missing value: *items.m.config.planet*",
+      msg: "Missing value: *items\\.m\\.config\\.planet*",
       instancePath: "/items/m/config/planet",
       enumValue: "blacktooth",
     }),
@@ -261,7 +264,7 @@ test("a slidingDeadly missing its startingPhase is fixable to the first allowed 
 
   expect(issues).toEqual([
     missingEnumIssue({
-      msg: "Missing value: *items.m.config.startingPhase*",
+      msg: "Missing value: *items\\.m\\.config\\.startingPhase*",
       instancePath: "/items/m/config/startingPhase",
       enumValue: 1,
     }),
@@ -282,7 +285,8 @@ test("a missing non-enum required property can't be auto-fixed", () => {
     {
       severity: "error",
       roomId: "roomA",
-      msg: "JSON schema violated at: *items.m.config* (required)",
+      itemIds: [],
+      msg: "JSON schema violated at: *items\\.m\\.config* (*required*)",
       fixable: false,
       fixText: "Needs hand-editing",
       issueData: {
@@ -312,7 +316,8 @@ test("a scroll pickup is narrowed by two discriminators and reports only the rea
     {
       severity: "error",
       roomId: "roomA",
-      msg: "JSON schema violated at: *items.m.config* (required)",
+      itemIds: [],
+      msg: "JSON schema violated at: *items\\.m\\.config* (*required*)",
       fixable: false,
       fixText: "Needs hand-editing",
       issueData: {

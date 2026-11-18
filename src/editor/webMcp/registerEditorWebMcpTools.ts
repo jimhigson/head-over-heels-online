@@ -101,7 +101,7 @@ const verificationIssueAsJson = ({
   verifier,
   msg,
   roomId,
-  itemId,
+  itemIds,
   fixable,
   fixText,
   issueData,
@@ -110,7 +110,7 @@ const verificationIssueAsJson = ({
   verifier: verifier.name,
   msg,
   roomId,
-  itemId,
+  itemIds,
   fixable,
   fixText,
   // passed back unchanged to fixVerificationIssue to identify the issue:

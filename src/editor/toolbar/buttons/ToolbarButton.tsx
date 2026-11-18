@@ -20,6 +20,8 @@ export type ToolbarButtonProps = {
   /** accessible name for the (usually icon-only) button */
   ariaLabel?: string;
   ref?: Ref<HTMLButtonElement>;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 };
 
 export const ToolbarButton = ({
@@ -33,6 +35,8 @@ export const ToolbarButton = ({
   tooltipContent,
   ariaLabel,
   ref,
+  onMouseEnter,
+  onMouseLeave,
 }: PropsWithChildren<ToolbarButtonProps>) => {
   return (
     <Button
@@ -47,6 +51,8 @@ export const ToolbarButton = ({
         
         ${className ?? ""}`}
       onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       tooltipContent={tooltipContent}
       shortcutKeys={shortcutKeys}
     >

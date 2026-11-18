@@ -1,5 +1,6 @@
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { allDoors } from "../helpers/doorPartner";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationRoomId,
   type VerificationRoomItemId,
@@ -21,8 +22,8 @@ export const doorToSameRoomVerifier: CampaignVerifier<DoorToSameRoom> = {
       yield {
         severity: "error",
         roomId,
-        itemId: doorId,
-        msg: `Door ‘${doorId}’ in ‘${roomId}’ links back to its own room`,
+        itemIds: [doorId],
+        msg: `Door ‘${itemIdMd(doorId)}’ in ‘${valueMd(roomId)}’ links back to its own room`,
         fixable: false,
         fixText: `Point door ‘${doorId}’ at a different room, or delete it`,
         issueData: { roomId, doorId },

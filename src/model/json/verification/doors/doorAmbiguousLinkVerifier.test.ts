@@ -18,7 +18,7 @@ test("flags a no-toDoor door with two matching doors back", () => {
     campaignOf({ roomA, roomB }),
   );
 
-  expect(issues.map((issue) => issue.itemId)).toEqual([doorId]);
+  expect(issues.map((issue) => issue.itemIds)).toEqual([[doorId]]);
 });
 
 test("accepts when a toDoor disambiguates", () => {

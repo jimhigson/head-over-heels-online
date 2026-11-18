@@ -8,6 +8,7 @@ import {
   type CampaignVerificationIssue,
   type CampaignVerifier,
 } from "../CampaignVerification";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationJsonItemUnion,
   type VerificationRoomId,
@@ -59,8 +60,8 @@ function* controllerIssues(
     yield {
       severity: "error",
       roomId,
-      itemId,
-      msg: `‘${itemId}’ in ‘${roomId}’ targets item ‘${targetId}’, which isn't in the room`,
+      itemIds: [itemId],
+      msg: `‘${itemIdMd(itemId)}’ in ‘${valueMd(roomId)}’ targets item ‘${itemIdMd(targetId)}’, which isn't in the room`,
       fixable: true,
       fixText: `Remove the missing target ‘${targetId}’ from ‘${itemId}’ in ‘${roomId}’`,
       issueData: { type: "missingTarget", roomId, itemId, targetId },
@@ -83,8 +84,8 @@ function* controllerIssues(
         yield {
           severity: "warning",
           roomId,
-          itemId,
-          msg: `‘${itemId}’ in ‘${roomId}’ expects ‘${targetId}’ to be a ‘${expectType}’, but it's a ‘${actualType}’`,
+          itemIds: [itemId],
+          msg: `‘${itemIdMd(itemId)}’ in ‘${valueMd(roomId)}’ expects ‘${itemIdMd(targetId)}’ to be a ‘${valueMd(expectType)}’, but it's a ‘${valueMd(actualType)}’`,
           fixable: false,
           fixText: `Change ‘${itemId}’'s expectType to ‘${actualType}’, or point it at a ‘${expectType}’`,
           issueData: {
@@ -110,8 +111,8 @@ function* controllerIssues(
     yield {
       severity: "warning",
       roomId,
-      itemId,
-      msg: `‘${itemId}’ in ‘${roomId}’ doesn't control any item in the room`,
+      itemIds: [itemId],
+      msg: `‘${itemIdMd(itemId)}’ in ‘${valueMd(roomId)}’ doesn't control any item in the room`,
       fixable: false,
       fixText: `Give ‘${itemId}’ a target that's in the room, or remove it`,
       issueData: { type: "controlsNothing", roomId, itemId },

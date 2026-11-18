@@ -94,17 +94,20 @@ export const addNudgeStepToPreviewInPlace = (
   commitPendingNudgeInPlace(state, kind);
 
   const stateNow = current(castDraft(state));
+  const cursorRoomId = selectCursorRoomIdFromLevelEditorState(stateNow);
   const committedRoom =
     selectCurrentCommittedRoomJsonFromLevelEditorState(stateNow);
   const pendingNudge =
     stateNow.pendingEdits?.madeBy.type === "nudge" ?
       stateNow.pendingEdits
     : undefined;
+  // a nudge is only ever to the cursor room:
+  const pendingNudgeEdits = pendingNudge?.edits[cursorRoomId];
   const previewRoom =
-    pendingNudge === undefined ? committedRoom : (
+    pendingNudgeEdits === undefined ? committedRoom : (
       {
         ...committedRoom,
-        items: jsonItemsWithEdits(committedRoom.items, pendingNudge.edits),
+        items: jsonItemsWithEdits(committedRoom.items, pendingNudgeEdits),
       }
     );
   const previewState: LevelEditorState = {
@@ -113,7 +116,7 @@ export const addNudgeStepToPreviewInPlace = (
       ...stateNow.campaignInProgress,
       rooms: {
         ...stateNow.campaignInProgress.rooms,
-        [selectCursorRoomIdFromLevelEditorState(stateNow)]: previewRoom,
+        [cursorRoomId]: previewRoom,
       },
     },
     pendingEdits: undefined,
@@ -153,9 +156,10 @@ export const addNudgeStepToPreviewInPlace = (
         },
       );
 
+  // assuming the nudge owns previews outright, replace it
+  // entirely, and limit to only the nudge room:
   state.pendingEdits = {
-    roomId: selectCursorRoomIdFromLevelEditorState(state),
-    edits,
+    edits: { [cursorRoomId]: edits },
     description: {
       kind: "itemAction",
       verb: nudgeVerb(kind, positionDelta),

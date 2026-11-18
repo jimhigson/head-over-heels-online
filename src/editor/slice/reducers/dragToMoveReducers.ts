@@ -12,9 +12,9 @@ import {
 } from "../PaneLayout";
 
 /** a drag of the selected items, rather than of the view */
-export type ItemsDrag = "moveItems" | "resizeItems";
+export type ItemDragAction = "moveItems" | "resizeItems";
 
-export type DragInProgress = "pan" | ItemsDrag;
+export type DragInProgress = "pan" | ItemDragAction;
 
 export const dragToMoveReducers = {
   changeDragInProgress(

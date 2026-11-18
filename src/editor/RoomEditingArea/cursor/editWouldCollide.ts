@@ -19,7 +19,7 @@ import {
   type EditorRoomState,
   type EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
-import { addTimesDeltaToJsonItemInPlace } from "../../slice/reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
+import { addTimesDeltaToJsonItemInPlace } from "../../slice/reducers/moveOrResizeItemPreview/moveOrResizeOutcome";
 import { type ItemTool } from "../interactivity/Tool";
 
 /**

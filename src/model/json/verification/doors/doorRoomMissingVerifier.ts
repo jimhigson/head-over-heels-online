@@ -8,6 +8,7 @@ import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import { exitGameRoomId, nowhereRoomId } from "../../ItemConfigMap";
 import { type CampaignVerifier } from "../CampaignVerification";
 import { allDoors } from "../helpers/doorPartner";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationCampaign,
   type VerificationJsonItem,
@@ -59,8 +60,8 @@ export const doorRoomMissingVerifier: CampaignVerifier<DoorRoomMissing> = {
       yield {
         severity: "error",
         roomId,
-        itemId: doorId,
-        msg: `Door ‘${doorId}’ in ‘${roomId}’ leads to ‘${toRoom}’, which isn't a room in this campaign`,
+        itemIds: [doorId],
+        msg: `Door ‘${itemIdMd(doorId)}’ in ‘${valueMd(roomId)}’ leads to ‘${valueMd(toRoom)}’, which isn't a room in this campaign`,
         fixable: true,
         fixText:
           toRoom === nowhereRoomId ?

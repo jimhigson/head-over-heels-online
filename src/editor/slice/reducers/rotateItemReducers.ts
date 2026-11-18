@@ -1,6 +1,5 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { valuesIter } from "../../../utils/entries";
 import { type EditorJsonItemUnion } from "../../editorTypes";
 import {
   isPlacedItemRotatable,
@@ -10,6 +9,7 @@ import {
 } from "../../itemRotation";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { previewedItemsIter } from "../previewedItemsIter";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
 
@@ -50,15 +50,16 @@ export const rotateItemReducers = {
     // type and reads/writes the config):
     rotateItemInPlace(state.tool.item as EditorJsonItemUnion, sense);
 
-    // the hover preview is built from the tool, so rotate its item(s) too -
-    // rotating in place keeps any preview-only config (eg a cyberman placed on
+    // hover preview is built from the tool, which just changed, so rotate the
+    // preview itself too to match the updated tool.
+    // Rotating in-place keeps any preview-only config (eg a cyberman placed on
     // a toaster starts deactivated). rotateItemInPlace no-ops on non-rotatable
     // entries, so iterating them all is safe:
+    // IT MAY BE BETTER: to re-apply the tool again, rather than modifying the tool's
+    // already-created preview
     if (state.pendingEdits?.madeBy.type === "itemTool") {
-      for (const itemPreview of valuesIter(state.pendingEdits.edits)) {
-        if (itemPreview !== null) {
-          rotateItemInPlace(itemPreview, sense);
-        }
+      for (const itemPreview of previewedItemsIter(state.pendingEdits)) {
+        rotateItemInPlace(itemPreview, sense);
       }
     }
   },

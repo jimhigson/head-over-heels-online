@@ -6,6 +6,7 @@ import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import { completeTimesXyz, optimiseTimesXyz } from "../../../times";
 import { type JsonItemUnion } from "../../JsonItem";
 import { type CampaignVerifier } from "../CampaignVerification";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   type VerificationRoomId,
   type VerificationRoomItemId,
@@ -54,8 +55,8 @@ export const redundantTimesVerifier: CampaignVerifier<RedundantTimes> = {
         yield {
           severity: "warning",
           roomId,
-          itemId: itemId as VerificationRoomItemId,
-          msg: `Item ‘${itemId}’ in ‘${roomId}’ has a times of all 1s, which has no effect`,
+          itemIds: [itemId as VerificationRoomItemId],
+          msg: `Item ‘${itemIdMd(itemId)}’ in ‘${valueMd(roomId)}’ has a times of all 1s, which has no effect`,
           fixable: true,
           fixText: `Remove the redundant times from item ‘${itemId}’ in ‘${roomId}’`,
           issueData: { roomId, itemId: itemId as VerificationRoomItemId },

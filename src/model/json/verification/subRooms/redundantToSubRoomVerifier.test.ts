@@ -37,8 +37,8 @@ test("flags a toSubRoom pointing at an undivided room", () => {
     campaignOf({ roomA, roomB }),
   );
 
-  expect({ itemId: issue.itemId, fixable: issue.fixable }).toEqual({
-    itemId: doorId,
+  expect({ itemIds: issue.itemIds, fixable: issue.fixable }).toEqual({
+    itemIds: [doorId],
     fixable: true,
   });
 });
@@ -83,10 +83,10 @@ test("flags a toSubRoom naming the sub-room its partner door is in", () => {
   );
 
   expect({
-    itemId: issue.itemId,
+    itemIds: issue.itemIds,
     severity: issue.severity,
     fixable: issue.fixable,
-  }).toEqual({ itemId: doorId, severity: "warning", fixable: true });
+  }).toEqual({ itemIds: [doorId], severity: "warning", fixable: true });
 });
 
 test("the fix removes the inferable toSubRoom, clearing the issue", () => {

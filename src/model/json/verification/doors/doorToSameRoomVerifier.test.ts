@@ -12,7 +12,7 @@ test("flags a door pointing at its own room", () => {
 
   const issues = runCheck(doorToSameRoomVerifier, campaignOf({ roomA }));
 
-  expect(issues.map((issue) => issue.itemId)).toEqual([doorId]);
+  expect(issues.map((issue) => issue.itemIds)).toEqual([[doorId]]);
 });
 
 test("accepts a door pointing at another room", () => {

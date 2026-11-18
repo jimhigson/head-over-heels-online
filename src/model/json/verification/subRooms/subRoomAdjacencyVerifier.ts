@@ -1,5 +1,6 @@
 import { entries } from "../../../../utils/entries";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
+import { valueMd } from "../helpers/messageMarkdown";
 import {
   dividedCells,
   gridAdjacent,
@@ -34,11 +35,12 @@ export const subRoomAdjacencyVerifier: CampaignVerifier<SubRoomAdjacency> = {
           }
           yield {
             severity: "warning",
+            itemIds: [],
             roomId,
             msg:
               byGrid ?
-                `Sub-rooms ‘${a.cellId}’ and ‘${b.cellId}’ of ‘${roomId}’ are next to each other on the map but their floors don't touch`
-              : `Sub-rooms ‘${a.cellId}’ and ‘${b.cellId}’ of ‘${roomId}’ touch physically but aren't adjacent on the map`,
+                `Sub-rooms ‘${valueMd(a.cellId)}’ and ‘${valueMd(b.cellId)}’ of ‘${valueMd(roomId)}’ are next to each other on the map but their floors don't touch`
+              : `Sub-rooms ‘${valueMd(a.cellId)}’ and ‘${valueMd(b.cellId)}’ of ‘${valueMd(roomId)}’ touch physically but aren't adjacent on the map`,
             fixable: false,
             fixText: `Line up the gridPosition and physicalPosition of sub-rooms ‘${a.cellId}’ and ‘${b.cellId}’ in ‘${roomId}’`,
             issueData: { roomId, cellIds: [a.cellId, b.cellId] },

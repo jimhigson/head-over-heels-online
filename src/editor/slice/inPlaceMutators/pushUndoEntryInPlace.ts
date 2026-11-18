@@ -4,7 +4,7 @@ import { type EditorRoomId, type EditorRoomJson } from "../../editorTypes";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { type UndoDescription } from "../reducers/undoDescription";
-import { type RoomUndoHistory } from "../reducers/undoReducers";
+import { type RoomUndoHistory, type UndoLink } from "../reducers/undoReducers";
 
 export const roomHistory = (
   state: LevelEditorState,
@@ -23,6 +23,10 @@ export const pushUndoEntryInPlace = (
   roomId: EditorRoomId,
   description: UndoDescription,
   timestamp: number,
+  /**
+   * the other rooms' entries for the same edit, if it was to several
+   */
+  link: undefined | UndoLink,
 ) => {
   const previousRoom = structuredClone(
     current(state.campaignInProgress.rooms[roomId] as EditorRoomJson),
@@ -33,5 +37,5 @@ export const pushUndoEntryInPlace = (
   redo.length = 0;
   state.hoveredUndoIndex = 0;
 
-  undo.push({ room: previousRoom, description, timestamp });
+  undo.push({ room: previousRoom, description, timestamp, link });
 };

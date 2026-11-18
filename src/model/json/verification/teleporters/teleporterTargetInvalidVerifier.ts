@@ -1,6 +1,7 @@
 import { produce } from "immer";
 
 import { type CampaignVerifier } from "../CampaignVerification";
+import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   allTeleporters,
   type TeleporterConfig,
@@ -72,8 +73,8 @@ export const teleporterTargetInvalidVerifier: CampaignVerifier<TeleporterTargetI
         yield {
           severity: "error",
           roomId,
-          itemId: teleporterId,
-          msg: `Teleporter ‘${teleporterId}’ in ‘${roomId}’ targets item ‘${toItemId}’ in ‘${targetRoom}’, which doesn't exist`,
+          itemIds: [teleporterId],
+          msg: `Teleporter ‘${itemIdMd(teleporterId)}’ in ‘${valueMd(roomId)}’ targets item ‘${itemIdMd(toItemId)}’ in ‘${valueMd(targetRoom)}’, which doesn't exist`,
           fixable: lone,
           fixText:
             lone ?

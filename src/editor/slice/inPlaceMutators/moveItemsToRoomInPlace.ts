@@ -1,3 +1,6 @@
+import { current } from "@reduxjs/toolkit";
+import { produce } from "immer";
+
 import { nextItemIdSet } from "../../../model/inPlaceMutators/nextItemId";
 import {
   resolveTeleporterLanding,
@@ -19,10 +22,20 @@ import {
 } from "../../editorTypes";
 import { isMovableBetweenRooms } from "../isMovableBetweenRooms";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
+import {
+  type LevelEditorState,
+  type PreviewedEditsByRoom,
+  type PreviewedRoomItemEdits,
+} from "../levelEditorSlice";
 import { layoutNodesOfType } from "../PaneLayout";
-import { pushUndoForRoomInPlace } from "../reducers/undoReducers";
-import { commitPendingNudgeInPlace } from "./commitPendingNudgeInPlace";
+import {
+  type UndoDescription,
+  type UndoItemEntry,
+} from "../reducers/undoDescription";
+import {
+  commitPendingEditsInPlace,
+  commitPendingNudgeInPlace,
+} from "./commitPendingNudgeInPlace";
 
 type TeleporterJson =
   EditorJsonItem<"portableTeleporter"> | EditorJsonItem<"teleporter">;
@@ -117,27 +130,43 @@ export type MoveItemsToRoomArgs = {
 };
 
 /**
- * Move items from the current room to any other room, returning the new ids of the moved items there
- * (undefined if nothing moved) which can change in the event of collisions.
- *
- * References between the items are kept where both ends move, or dropped where only one does.
+ * a move of items from one room to another, with the id each will have there
  */
-export const moveItemsToRoomInPlace = (
-  state: LevelEditorState,
-  { itemIds, toRoomId, blockPositionDelta, timestamp }: MoveItemsToRoomArgs,
-): EditorRoomItemId[] | undefined => {
-  commitPendingNudgeInPlace(state);
-  // the drag's preview is replaced by the move:
-  state.pendingEdits = undefined;
-  for (const openRoom of layoutNodesOfType(state.layout, "openRoom")) {
-    openRoom.dragInProgress = undefined;
-  }
+export type ItemsMoveBetweenRooms = {
+  fromRoomId: EditorRoomId;
+  toRoomId: EditorRoomId;
+  /**
+   * added to each moved item's position
+   */
+  blockPositionDelta: Xyz;
+  /**
+   * each moving item's id, to its id in the destination room
+   */
+  newIds: Map<EditorRoomItemId, EditorRoomItemId>;
+};
 
-  const { rooms } = state.campaignInProgress;
-  const fromRoom = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
+/**
+ * what moving items from one room to another would do: which of them move
+ * (scenery and doors are left behind), and their ids in the destination.
+ * Undefined if nothing would move
+ */
+export const planItemsMoveBetweenRooms = (
+  rooms: Rooms,
+  fromRoomId: EditorRoomId,
+  {
+    itemIds,
+    toRoomId,
+    blockPositionDelta,
+  }: Omit<MoveItemsToRoomArgs, "timestamp">,
+): ItemsMoveBetweenRooms | undefined => {
+  const fromRoom = roomById(rooms, fromRoomId);
   const toRoom = roomById(rooms, toRoomId);
-  if (toRoom === undefined || toRoom.id === fromRoom.id) {
-    return;
+  if (
+    fromRoom === undefined ||
+    toRoom === undefined ||
+    toRoomId === fromRoomId
+  ) {
+    return undefined;
   }
 
   const movingIds = itemIds.filter((itemId) => {
@@ -145,8 +174,121 @@ export const moveItemsToRoomInPlace = (
     return item !== undefined && isMovableBetweenRooms(item);
   });
   if (movingIds.length === 0) {
-    return;
+    return undefined;
   }
+
+  const takenIds = new Set(keys(toRoom.items));
+  return {
+    fromRoomId,
+    toRoomId,
+    blockPositionDelta,
+    newIds: new Map(
+      movingIds.map((itemId) => {
+        const newId = nextItemIdSet(takenIds, itemId);
+        takenIds.add(newId);
+        return [itemId, newId];
+      }),
+    ),
+  };
+};
+
+/**
+ * the edits to every room that moving the items makes - as a preview, these
+ * are exactly what committing the move does
+ */
+export const itemsMoveBetweenRoomsEdits = (
+  rooms: Rooms,
+  move: ItemsMoveBetweenRooms,
+): PreviewedEditsByRoom => {
+  const movedRooms = produce(rooms, (draftRooms) => {
+    moveItemsBetweenRoomsInPlace(draftRooms, move);
+  });
+  const edits: PreviewedEditsByRoom = {};
+  for (const roomId of keys(movedRooms)) {
+    const room = roomById(rooms, roomId)!;
+    const movedRoom = roomById(movedRooms, roomId)!;
+    if (movedRoom === room) {
+      continue;
+    }
+    const roomEdits: PreviewedRoomItemEdits = {};
+    for (const itemId of new Set([
+      ...keys(room.items),
+      ...keys(movedRoom.items),
+    ])) {
+      const movedItem = movedRoom.items[itemId];
+      if (movedItem !== room.items[itemId]) {
+        roomEdits[itemId] = movedItem ?? null;
+      }
+    }
+    edits[roomId] = roomEdits;
+  }
+  return edits;
+};
+
+/**
+ * how the move is described in each room's undo history
+ */
+export const itemsMoveBetweenRoomsDescription = (
+  rooms: Rooms,
+  { fromRoomId, toRoomId, newIds }: ItemsMoveBetweenRooms,
+): UndoDescription => {
+  const fromRoom = roomById(rooms, fromRoomId)!;
+  return {
+    kind: "moveBetweenRooms",
+    fromRoomId,
+    toRoomId,
+    items: newIds
+      .keys()
+      .map((itemId): UndoItemEntry => [itemId, fromRoom.items[itemId]!])
+      .toArray(),
+  };
+};
+
+/**
+ * Move items from the current room to any other room, returning the new ids of the moved items there
+ * (undefined if nothing moved) which can change in the event of collisions.
+ *
+ * References between the items are kept where both ends move, or dropped where only one does.
+ */
+export const moveItemsToRoomInPlace = (
+  state: LevelEditorState,
+  { timestamp, ...moveArgs }: MoveItemsToRoomArgs,
+): EditorRoomItemId[] | undefined => {
+  commitPendingNudgeInPlace(state);
+  // the drag's preview is replaced by the move:
+  state.pendingEdits = undefined;
+  state.itemGrab = undefined;
+  for (const openRoom of layoutNodesOfType(state.layout, "openRoom")) {
+    openRoom.dragInProgress = undefined;
+  }
+
+  const rooms = current(state.campaignInProgress.rooms);
+  const fromRoom = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
+  const move = planItemsMoveBetweenRooms(rooms, fromRoom.id, moveArgs);
+  if (move === undefined) {
+    return undefined;
+  }
+
+  state.pendingEdits = {
+    edits: itemsMoveBetweenRoomsEdits(rooms, move),
+    description: itemsMoveBetweenRoomsDescription(rooms, move),
+    timestamp,
+    madeBy: { type: "drag" },
+  };
+  commitPendingEditsInPlace(state);
+  return move.newIds.values().toArray();
+};
+
+/**
+ * move the items in the rooms given
+ */
+const moveItemsBetweenRoomsInPlace = (
+  rooms: Rooms,
+  { fromRoomId, toRoomId, blockPositionDelta, newIds }: ItemsMoveBetweenRooms,
+) => {
+  const fromRoom = roomById(rooms, fromRoomId)!;
+  const toRoom = roomById(rooms, toRoomId)!;
+  const movingIds = newIds.keys().toArray();
 
   const affectedTeleporters = findAffectedTeleporters(
     rooms,
@@ -155,14 +297,6 @@ export const moveItemsToRoomInPlace = (
     new Set(movingIds),
   );
 
-  const takenIds = new Set(keys(toRoom.items));
-  const newIds = new Map(
-    movingIds.map((itemId) => {
-      const newId = nextItemIdSet(takenIds, itemId);
-      takenIds.add(newId);
-      return [itemId, newId];
-    }),
-  );
   const movedEntries = movingIds.map(
     (itemId): [EditorRoomItemId, EditorJsonItemUnion] => {
       const item = fromRoom.items[itemId]!;
@@ -171,27 +305,6 @@ export const moveItemsToRoomInPlace = (
         { ...item, position: addXyz(item.position, blockPositionDelta) },
       ];
     },
-  );
-
-  pushUndoForRoomInPlace(
-    state,
-    fromRoom.id,
-    {
-      kind: "itemAction",
-      verb: `Move to ${toRoom.id}`,
-      items: movingIds.map((itemId) => [itemId, fromRoom.items[itemId]!]),
-    },
-    timestamp,
-  );
-  pushUndoForRoomInPlace(
-    state,
-    toRoom.id,
-    {
-      kind: "itemAction",
-      verb: `Move from ${fromRoom.id}`,
-      items: movedEntries,
-    },
-    timestamp,
   );
 
   for (const itemId of movingIds) {
@@ -259,6 +372,4 @@ export const moveItemsToRoomInPlace = (
       destinationConfig.toItemId = landing.itemId;
     }
   }
-
-  return newIds.values().toArray();
 };

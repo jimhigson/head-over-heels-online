@@ -4,7 +4,7 @@ import { type Xyz } from "../../../utils/vectors/vectors";
 import { addNudgeStepToPreviewInPlace } from "../inPlaceMutators/addNudgeStepToPreviewInPlace";
 import { selectCursorRoomSelectedJsonItemIdsFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
-import { moveOrResizeOutcome } from "./moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
+import { moveOrResizeOutcome } from "./moveOrResizeItemPreview/moveOrResizeOutcome";
 
 export type NudgeSelectedItemsPayload = {
   /**
@@ -45,9 +45,7 @@ export const nudgeReducers = {
           timesDelta,
           timestamp,
         });
-        return outcome.type === "valid" ?
-            { edits: outcome.pendingEdits.edits }
-          : undefined;
+        return outcome.type === "valid" ? { edits: outcome.edits } : undefined;
       },
     );
   },

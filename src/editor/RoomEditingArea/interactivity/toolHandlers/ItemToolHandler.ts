@@ -1,7 +1,11 @@
 import { produce } from "immer";
 
 import { type DoorConfig } from "../../../../model/json/ItemConfigMap";
-import { store } from "../../../../store/store";
+import {
+  type EditorRootState,
+  type EditorThunk,
+} from "../../../../store/store";
+import { noopFunction } from "../../../../utils/empty";
 import { nonZeroVectorClosestDirectionXy4 } from "../../../../utils/vectors/vectors";
 import {
   type EditorItemInPlayUnion,
@@ -15,6 +19,7 @@ import {
   applyItemTool,
   resetPreviewedEdits,
   resetTool,
+  selectTool,
 } from "../../../slice/levelEditorSlice";
 import { addingItemWouldCollide } from "../../cursor/editWouldCollide";
 import { itemToolPutDownLocation } from "../../cursor/itemToolPutDownLocation";
@@ -28,148 +33,166 @@ import {
   type ToolHandler,
 } from "./ToolHandler";
 
-const { dispatch } = store;
+/**
+ * the selected tool, which is the item tool whenever this handler is used
+ */
+const selectItemTool = (
+  storeState: EditorRootState,
+): Extract<Tool, { type: "item" }> => {
+  const tool = selectTool(storeState);
+  if (tool.type !== "item") {
+    throw new Error(
+      `the item tool handler was used with the ${tool.type} tool`,
+    );
+  }
+  return tool;
+};
 
-export class ItemToolHandler implements ToolHandler<
-  Extract<Tool, { type: "item" }>
-> {
+export class ItemToolHandler implements ToolHandler {
   handleMouseMove({
     pointingAtChanged,
     roomState,
     pointingAt,
-    tool,
-    storeState,
-  }: MouseMoveParams<Extract<Tool, { type: "item" }>>) {
+  }: MouseMoveParams): EditorThunk {
     if (!pointingAtChanged) {
-      return;
+      return noopFunction;
     }
+    return (dispatch, getState) => {
+      const storeState = getState();
+      const tool = selectItemTool(storeState);
 
-    // remove old previews
-    dispatch(resetPreviewedEdits());
+      // remove old previews
+      dispatch(resetPreviewedEdits());
 
-    if (pointingAt.world === undefined) {
-      return;
-    }
+      if (pointingAt.world === undefined) {
+        return;
+      }
 
-    const pointingAtItem = findItemInPlayForPicking(
-      roomState,
-      pointingAt.world.itemId,
-    );
-    const asJson = jsonItemAndIdForInPlayItem(storeState, pointingAtItem);
-    if (pointingAtItem === undefined || asJson === undefined) {
-      return;
-    }
-    const [, jsonItem] = asJson;
+      const pointingAtItem = findItemInPlayForPicking(
+        roomState,
+        pointingAt.world.itemId,
+      );
+      const asJson = jsonItemAndIdForInPlayItem(storeState, pointingAtItem);
+      if (pointingAtItem === undefined || asJson === undefined) {
+        return;
+      }
+      const [, jsonItem] = asJson;
 
-    const putDownBlockPosition = itemToolPutDownLocation(
-      pointingAt,
-      pointingAtItem,
-      tool.item,
-    );
+      const putDownBlockPosition = itemToolPutDownLocation(
+        pointingAt,
+        pointingAtItem,
+        tool.item,
+      );
 
-    if (putDownBlockPosition === undefined) {
-      return;
-    }
+      if (putDownBlockPosition === undefined) {
+        return;
+      }
 
-    const { item } = tool;
-    // if tool is a door, need to switch it to the side of the wall it is on.
-    // otherwise, the collision detection will fail to detect properly because
-    // different door directions would protrude differently
-    const toolItem =
-      item.type === "door" ?
-        produce(item, (draft) => {
-          const wall = pointingAtItem as EditorItemInPlayUnion<"wall">;
-          (draft.config as DoorConfig<EditorRoomId>).direction =
-            nonZeroVectorClosestDirectionXy4(wall.config.direction);
-        })
-        // otherwise, can use as-is
-      : tool.item;
+      const { item } = tool;
+      // if tool is a door, need to switch it to the side of the wall it is on.
+      // otherwise, the collision detection will fail to detect properly because
+      // different door directions would protrude differently
+      const toolItem =
+        item.type === "door" ?
+          produce(item, (draft) => {
+            const wall = pointingAtItem as EditorItemInPlayUnion<"wall">;
+            (draft.config as DoorConfig<EditorRoomId>).direction =
+              nonZeroVectorClosestDirectionXy4(wall.config.direction);
+          })
+          // otherwise, can use as-is
+        : tool.item;
 
-    const collides = addingItemWouldCollide({
-      roomState,
-      blockPosition: putDownBlockPosition,
-      itemTool: toolItem,
-      previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(
-        storeState,
-        roomState.id,
-      ),
-    });
-
-    if (collides) {
-      return;
-    }
-
-    dispatch(
-      applyItemTool({
-        roomId: roomState.id,
+      const collides = addingItemWouldCollide({
+        roomState,
         blockPosition: putDownBlockPosition,
-        pointedAtItemJson: jsonItem,
-        preview: true,
-        timestamp: Date.now(),
-      }),
-    );
+        itemTool: toolItem,
+        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(
+          storeState,
+          roomState.id,
+        ),
+      });
+
+      if (collides) {
+        return;
+      }
+
+      dispatch(
+        applyItemTool({
+          roomId: roomState.id,
+          blockPosition: putDownBlockPosition,
+          pointedAtItemJson: jsonItem,
+          preview: true,
+          timestamp: Date.now(),
+        }),
+      );
+    };
   }
 
   handleMouseUp({
     roomState,
     pointingAt,
-    tool,
-    storeState,
     isClick,
-  }: MouseUpParams<Extract<Tool, { type: "item" }>>) {
+  }: MouseUpParams): EditorThunk {
     if (!isClick) {
-      return;
+      return noopFunction;
     }
+    return (dispatch, getState) => {
+      const storeState = getState();
+      const tool = selectItemTool(storeState);
 
-    if (pointingAt.world === undefined) {
-      // if using item tool, clicking on nothing is a quick way to go back to
-      // the pointer:
-      dispatch(resetTool());
-      return;
-    }
+      if (pointingAt.world === undefined) {
+        // if using item tool, clicking on nothing is a quick way to go back to
+        // the pointer:
+        dispatch(resetTool());
+        return;
+      }
 
-    const pointingAtItem = findItemInPlayForPicking(
-      roomState,
-      pointingAt.world.itemId,
-    );
-    const asJson = jsonItemAndIdForInPlayItem(storeState, pointingAtItem);
-    if (pointingAtItem === undefined || asJson === undefined) {
-      return;
-    }
-    const [, jsonItem] = asJson;
+      const pointingAtItem = findItemInPlayForPicking(
+        roomState,
+        pointingAt.world.itemId,
+      );
+      const asJson = jsonItemAndIdForInPlayItem(storeState, pointingAtItem);
+      if (pointingAtItem === undefined || asJson === undefined) {
+        return;
+      }
+      const [, jsonItem] = asJson;
 
-    const putDownBlockPosition = itemToolPutDownLocation(
-      pointingAt,
-      pointingAtItem,
-      tool.item,
-    );
+      const putDownBlockPosition = itemToolPutDownLocation(
+        pointingAt,
+        pointingAtItem,
+        tool.item,
+      );
 
-    if (putDownBlockPosition === undefined) {
-      return;
-    }
+      if (putDownBlockPosition === undefined) {
+        return;
+      }
 
-    dispatch(
-      applyItemTool({
-        roomId: roomState.id,
-        blockPosition: putDownBlockPosition,
-        pointedAtItemJson: jsonItem,
-        preview: false,
-        timestamp: Date.now(),
-      }),
-    );
+      dispatch(
+        applyItemTool({
+          roomId: roomState.id,
+          blockPosition: putDownBlockPosition,
+          pointedAtItemJson: jsonItem,
+          preview: false,
+          timestamp: Date.now(),
+        }),
+      );
+    };
   }
 
-  handleMouseDown(_params: MouseDownParams<Extract<Tool, { type: "item" }>>) {
-    // Item tool doesn't need to do anything on mouse down
+  handleMouseDown(_params: MouseDownParams): EditorThunk {
+    // Item tool doesn't need to do anything on mouse down:
+    return noopFunction;
   }
 
-  claimsDrag(_params: MouseDownParams<Extract<Tool, { type: "item" }>>) {
+  claimsDrag(_params: MouseDownParams) {
     // the item tool places on click, not drag:
     return false;
   }
 
-  handleMouseLeave(_params: MouseLeaveParams<Extract<Tool, { type: "item" }>>) {
-    dispatch(resetPreviewedEdits());
+  handleMouseLeave(_params: MouseLeaveParams): EditorThunk {
+    return (dispatch) => {
+      dispatch(resetPreviewedEdits());
+    };
   }
 }
 /**

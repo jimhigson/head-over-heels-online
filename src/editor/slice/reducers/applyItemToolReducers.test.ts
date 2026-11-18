@@ -12,6 +12,7 @@ import {
   roomJsonItemsIterable,
 } from "../../../model/RoomJsonItemIterators";
 import { zxSpectrumRoomHue, zxSpectrumShades } from "../../../originalGame";
+import { keys } from "../../../utils/entries";
 import { originXyz } from "../../../utils/vectors/vectors";
 import {
   type EditorJsonItemUnion,
@@ -710,7 +711,7 @@ test("previewing an item in a room other than the cursor room previews it there,
     }),
   );
   expect({
-    previewRoomId: state1.pendingEdits?.roomId,
+    previewRoomIds: keys(state1.pendingEdits?.edits ?? {}),
     cursorRoomId: selectCursorRoomIdFromLevelEditorState(state1),
-  }).toEqual({ previewRoomId: testRoomId, cursorRoomId: roomB });
+  }).toEqual({ previewRoomIds: [testRoomId], cursorRoomId: roomB });
 });

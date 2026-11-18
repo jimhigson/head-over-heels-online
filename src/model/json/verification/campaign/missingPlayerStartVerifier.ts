@@ -6,6 +6,7 @@ import {
 } from "../../../modelTypes";
 import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
+import { valueMd } from "../helpers/messageMarkdown";
 
 type MissingPlayerStart = {
   character: IndividualCharacterName;
@@ -34,7 +35,8 @@ export const missingPlayerStartVerifier: CampaignVerifier<MissingPlayerStart> =
         }
         yield {
           severity: "error",
-          msg: `There's no starting room for ${character} - the campaign can't begin without it`,
+          itemIds: [],
+          msg: `There's no starting room for ${valueMd(character)} - the campaign can't begin without it`,
           fixable: false,
           fixText: `Add ${character} somewhere`,
           issueData: { character },

@@ -14,7 +14,7 @@ test("flags a door whose destination has no door back", () => {
 
   const issues = runCheck(doorNoReturnVerifier, campaignOf({ roomA, roomB }));
 
-  expect(issues.map((issue) => issue.itemId)).toEqual([doorId]);
+  expect(issues.map((issue) => issue.itemIds)).toEqual([[doorId]]);
 });
 
 test("accepts a door that has a return door", () => {

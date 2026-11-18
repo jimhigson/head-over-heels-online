@@ -81,7 +81,7 @@ export const roomEditTarget = (
         "roomEditTarget called in preview mode without pendingEdits",
       );
     }
-    return state.pendingEdits.edits;
+    return (state.pendingEdits.edits[roomId] ??= {});
   }
   return state.campaignInProgress.rooms[roomId].items as EditorRoomJsonItems;
 };

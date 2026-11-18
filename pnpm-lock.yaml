@@ -226,7 +226,7 @@ importers:
         version: 8.16.0(patch_hash=f826773b254612b58c4a67990b588c16a8ce5a37a265617833cc955eda633028)
       preact:
         specifier: 11.2.0
-        version: 11.2.0
+        version: 11.2.0(preact-render-to-string@6.8.3)
       react:
         specifier: ^19.3.1
         version: 19.3.1
@@ -372,6 +372,9 @@ importers:
       postcss:
         specifier: 8.5.32
         version: 8.5.32
+      preact-render-to-string:
+        specifier: 6.8.3
+        version: 6.8.3(preact@11.2.0)
       prettier:
         specifier: 3.10.1
         version: 3.10.1
@@ -4851,6 +4854,11 @@ packages:
     resolution: {integrity: sha512-dM0jVuXJPsDN6DvRpea484tCUaMiXWjuCn++HGTqUWzGDjv5tZkEZldAJ/UMlqRYGFrD/etByo4/xOuC/snX2A==}
     engines: {node: '>=20'}
 
+  preact-render-to-string@6.8.3:
+    resolution: {integrity: sha512-yg04edGH7f5yfBUV4uyL2brzPB3e26AimLO5WNfUtwoCv8LBJ7Z+dElG8P5v+o8UqMUM6kZhnn4I/HEXNyP0ZQ==}
+    peerDependencies:
+      preact: '>=10 || >= 11.0.0-0'
+
   preact@11.2.0:
     resolution: {integrity: sha512-/HfHI/7N84e6GrWBJ3J280z3mLaRJiDcSvj/A+y/4AbLnND/1UlGHe1sR6oYuTGwId0nP7dqDU9OnLxMPZ7xBg==}
     peerDependencies:
@@ -7759,7 +7767,7 @@ snapshots:
 
   '@prefresh/core@1.5.9(preact@11.2.0)':
     dependencies:
-      preact: 11.2.0
+      preact: 11.2.0(preact-render-to-string@6.8.3)
 
   '@prefresh/utils@1.2.1': {}
 
@@ -7770,7 +7778,7 @@ snapshots:
       '@prefresh/core': 1.5.9(preact@11.2.0)
       '@prefresh/utils': 1.2.1
       '@rollup/pluginutils': 4.2.1
-      preact: 11.2.0
+      preact: 11.2.0(preact-render-to-string@6.8.3)
       vite: 8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.48.0)(tsx@4.23.15)(yaml@2.9.1)
     transitivePeerDependencies:
       - supports-color
@@ -10302,7 +10310,13 @@ snapshots:
 
   powershell-utils@0.1.0: {}
 
-  preact@11.2.0: {}
+  preact-render-to-string@6.8.3(preact@11.2.0):
+    dependencies:
+      preact: 11.2.0(preact-render-to-string@6.8.3)
+
+  preact@11.2.0(preact-render-to-string@6.8.3):
+    optionalDependencies:
+      preact-render-to-string: 6.8.3(preact@11.2.0)
 
   prelude-ls@1.2.1: {}
 
