@@ -1,12 +1,16 @@
 import { produce } from "immer";
 
-import { collision1toManyIter } from "../../../game/collision/aabbCollision";
+import {
+  collision1toManyIter,
+  hasCollisionItemWithIndex,
+} from "../../../game/collision/aabbCollision";
 import { buildRoomJsonDirectionalIndex } from "../../../game/gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { type JsonItemType } from "../../../model/json/JsonItem";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
+import { roomSpatialIndexKey } from "../../../model/RoomState";
 import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { fromEntries, objectEntriesIter } from "../../../utils/entries";
 import { isEmpty } from "../../../utils/iterators/isEmpty";
@@ -173,55 +177,55 @@ export const itemMoveOrResizeWouldCollide = ({
   });
 };
 
-export const addingItemWouldCollide = ({
+/**
+ * a check of whether adding the tool's item to the room would collide, at a
+ * given position - the room's side of the check is worked out once, so
+ * checking many positions (eg searching for one that fits) costs only the
+ * item's side each time
+ */
+export const addingItemCollisionCheck = ({
   roomState,
-  blockPosition,
   itemTool,
   previewOnlyJsonItemIds,
 }: {
   roomState: EditorRoomState;
-  blockPosition: Xyz;
   itemTool: ItemTool;
   /**
    * items in the room only because a previous position of this same tool is
    * being previewed - the item being added can't collide with its own preview
    */
   previewOnlyJsonItemIds: ReadonlySet<EditorRoomItemId>;
-}) => {
-  // load the modified version of the item from JSON:
+}): ((blockPosition: Xyz) => boolean) => {
   const directionalIndex = buildRoomJsonDirectionalIndex(
     roomJsonItemsIterable(roomState.roomJson),
   );
-  const newItems = loadItemFromJson(
-    "maybeAddedItem" as EditorRoomItemId,
-    {
-      ...itemTool,
-      position: blockPosition,
-    } as EditorJsonItemUnion,
-    roomState.roomJson,
-    noPlanetsLiberated,
-    directionalIndex,
-  )
-    // our new item may have some non-solid items, which are fine to collide (eg, stopAutowalk doors)
-    .filter((i) => !i[itemBehaviourKey].isNonSolid(i));
+  const spatialIndex = roomState[roomSpatialIndexKey];
+  const isCollideableForThisTool = (item: EditorUnionOfAllItemInPlayTypes) =>
+    !item[itemBehaviourKey].isNonSolid(item) &&
+    // doors can collide with walls, and that's ok since they cut into the wall:
+    !(itemTool.type === "door" && item.type === "wall") &&
+    (item.jsonItemId === undefined ||
+      !previewOnlyJsonItemIds.has(item.jsonItemId));
 
-  const collideableItemsForThisTool = collideableForItem(
-    roomState,
-    itemTool.type,
-  )
-    .filter(
-      (item) =>
-        item.jsonItemId === undefined ||
-        !previewOnlyJsonItemIds.has(item.jsonItemId),
+  return (blockPosition) =>
+    // load the item from JSON, at the position:
+    loadItemFromJson(
+      "maybeAddedItem" as EditorRoomItemId,
+      {
+        ...itemTool,
+        position: blockPosition,
+      } as EditorJsonItemUnion,
+      roomState.roomJson,
+      noPlanetsLiberated,
+      directionalIndex,
     )
-    .toArray();
-
-  return newItems.some((loadedItem) => {
-    const collisions = collision1toManyIter(
-      loadedItem,
-      collideableItemsForThisTool,
-    );
-
-    return !isEmpty(collisions);
-  });
+      // our new item may have some non-solid items, which are fine to collide (eg, stopAutowalk doors)
+      .filter((i) => !i[itemBehaviourKey].isNonSolid(i))
+      .some((loadedItem) =>
+        hasCollisionItemWithIndex(
+          loadedItem,
+          spatialIndex,
+          isCollideableForThisTool,
+        ),
+      );
 };

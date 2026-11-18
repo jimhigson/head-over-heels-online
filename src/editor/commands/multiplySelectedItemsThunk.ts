@@ -8,7 +8,7 @@ import { emptyArray } from "../../utils/empty";
 import { addXyz, originXyz, type Xyz } from "../../utils/vectors/vectors";
 import { type EditorRoomItemId, type EditorRoomState } from "../editorTypes";
 import {
-  addingItemWouldCollide,
+  addingItemCollisionCheck,
   itemMoveOrResizeWouldCollide,
   sameMoveOrResizeForEach,
 } from "../RoomEditingArea/cursor/editWouldCollide";
@@ -73,12 +73,11 @@ export const multiplySelectedItemsThunk =
       return (
         (!needsFloorUnder(roomJson, copy) ||
           isItemOverFloor(roomFloorSquares, copy)) &&
-        !addingItemWouldCollide({
+        !addingItemCollisionCheck({
           roomState,
-          blockPosition: copy.position,
           itemTool: { type, config },
           previewOnlyJsonItemIds: noPreviewOnlyJsonItemIds,
-        })
+        })(copy.position)
       );
     });
 

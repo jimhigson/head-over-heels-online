@@ -24,12 +24,17 @@ const useMonacoEditorText = (
     // Get initial value
     setText(editor.getValue());
 
-    // Listen for changes
-    const disposable = editor.onDidChangeModelContent(() => {
+    const updateText = () => {
       setText(editor.getValue());
-    });
+    };
+    const contentListener = editor.onDidChangeModelContent(updateText);
+    // the editor swaps to another room's model with no content change:
+    const modelListener = editor.onDidChangeModel(updateText);
 
-    return () => disposable.dispose();
+    return () => {
+      contentListener.dispose();
+      modelListener.dispose();
+    };
   }, [editor]);
 
   return text;
