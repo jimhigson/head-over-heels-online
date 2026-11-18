@@ -7,10 +7,17 @@ export const formatShortcutKey = (key: string): string =>
     .replace(/ArrowUp/g, "⬆")
     .replace(/ArrowDown/g, "⬇");
 
+/**
+ * a key as markdown text: its ascii punctuation escaped, so eg `[` isn't read
+ * as starting a link
+ */
+const formatShortcutKeyAsMarkdown = (key: string): string =>
+  formatShortcutKey(key).replace(/[!-/:-@[-`{-~]/g, "\\$&");
+
 export const formatShortcutKeysAsMarkdown = (
   shortcutKeys: ShortcutKeys,
 ): string => {
-  const formattedKeys = shortcutKeys.map(formatShortcutKey);
+  const formattedKeys = shortcutKeys.map(formatShortcutKeyAsMarkdown);
   if (formattedKeys.length === 1) {
     return `key: **${formattedKeys[0]}**`;
   }

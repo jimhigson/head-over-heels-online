@@ -18,7 +18,8 @@ import {
   selectOpenRoomView,
   selectTool,
 } from "../../slice/levelEditorSlice";
-import { maybeOpenRoom, type OpenRoomId } from "../../slice/OpenRoom";
+import { type OpenRoomId } from "../../slice/OpenRoom";
+import { maybeLayoutNode } from "../../slice/PaneLayout";
 import { findPointerPointingAt } from "../cursor/findPointerPointingAt";
 import { type MaybePointingAtSomething } from "../cursor/PointingAt";
 import { viewportMousePosition } from "../cursor/viewportMouse";
@@ -269,7 +270,10 @@ export const useRoomEditorInteractivity = (
       const storeState = editorStore.getState();
       const roomState = loadedRoom.getRoomState();
       const mouseXy = viewportMousePosition(viewport, mouseEvent);
-      const openRoom = maybeOpenRoom(storeState.levelEditor, openRoomId);
+      const openRoom = maybeLayoutNode(
+        storeState.levelEditor.layout,
+        openRoomId,
+      );
       // the open room may have been closed or replaced (this pane is going):
       if (openRoom === undefined) {
         return;
@@ -284,7 +288,10 @@ export const useRoomEditorInteractivity = (
         gridResolution: storeState.levelEditor.gridResolution,
         cameraAngle: openRoom.cameraAngle,
         roomRenderer: roomRendererRef.current,
-        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
+        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(
+          storeState,
+          roomState.id,
+        ),
       });
 
       // we don't care if just the xy of the mouse changed (if it didn't point at anything new),
@@ -335,7 +342,10 @@ export const useRoomEditorInteractivity = (
       const storeState = editorStore.getState();
       const roomState = loadedRoom.getRoomState();
 
-      const openRoom = maybeOpenRoom(storeState.levelEditor, openRoomId);
+      const openRoom = maybeLayoutNode(
+        storeState.levelEditor.layout,
+        openRoomId,
+      );
       // the open room can be closed or replaced earlier in this same event, eg
       // by clicking a door's annotation in a preview tab:
       if (openRoom === undefined) {
@@ -360,7 +370,10 @@ export const useRoomEditorInteractivity = (
         gridResolution: storeState.levelEditor.gridResolution,
         cameraAngle: openRoom.cameraAngle,
         roomRenderer: roomRendererRef.current,
-        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
+        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(
+          storeState,
+          roomState.id,
+        ),
       });
 
       const isDragEnd = dragAccVec.current !== undefined;
@@ -460,7 +473,10 @@ export const useRoomEditorInteractivity = (
       const storeState = editorStore.getState();
       const roomState = loadedRoom.getRoomState();
       const mouseXy = viewportMousePosition(viewport, mouseEvent);
-      const openRoom = maybeOpenRoom(storeState.levelEditor, openRoomId);
+      const openRoom = maybeLayoutNode(
+        storeState.levelEditor.layout,
+        openRoomId,
+      );
       // the open room may have been closed or replaced (this pane is going):
       if (openRoom === undefined) {
         return;
@@ -474,7 +490,10 @@ export const useRoomEditorInteractivity = (
         gridResolution: storeState.levelEditor.gridResolution,
         cameraAngle: openRoom.cameraAngle,
         roomRenderer: roomRendererRef.current,
-        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
+        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(
+          storeState,
+          roomState.id,
+        ),
       });
       mouseDownPointingAtRef.current = pointingAt;
 

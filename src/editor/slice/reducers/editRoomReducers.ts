@@ -111,6 +111,18 @@ const primarySubRoomId = (room: EditorRoomJson): string => {
   return first;
 };
 
+/**
+ * a vertical link to a room, naming the sub-room it attaches to only when
+ * that isn't the whole room
+ */
+const verticalLinkTarget = (
+  roomId: EditorRoomId,
+  subRoomId: string | undefined,
+): VerticalLinkTarget => ({
+  room: roomId,
+  ...(subRoomId !== undefined && subRoomId !== "*" && { subRoom: subRoomId }),
+});
+
 const writeVerticalLink = (
   room: EditorRoomJson,
   subRoomId: string,
@@ -322,14 +334,18 @@ const ensureRoomBelowInPlace = (
           .toString();
   }
 
-  writeVerticalLink(room, subRoomId, "below", {
-    room: roomBelow.id,
-    subRoom: subRoomBelowId === "*" ? undefined : subRoomBelowId,
-  });
-  writeVerticalLink(roomBelow, subRoomBelowId, "above", {
-    room: room.id,
-    subRoom: subRoomId === "*" ? undefined : subRoomId,
-  });
+  writeVerticalLink(
+    room,
+    subRoomId,
+    "below",
+    verticalLinkTarget(roomBelow.id, subRoomBelowId),
+  );
+  writeVerticalLink(
+    roomBelow,
+    subRoomBelowId,
+    "above",
+    verticalLinkTarget(room.id, subRoomId),
+  );
 };
 
 export const editRoomReducers = {
@@ -734,19 +750,18 @@ export const editRoomReducers = {
       currentSubRoomId,
       direction,
       newLinkedToRoomId === undefined ? undefined : (
-        {
-          room: newLinkedToRoomId,
-          subRoom: targetSubRoomId === "*" ? undefined : targetSubRoomId,
-        }
+        verticalLinkTarget(newLinkedToRoomId, targetSubRoomId)
       ),
     );
 
     if (newlyLinkedToRoom !== undefined) {
       // reverse link: linked room -> current room's cursor sub-room
-      writeVerticalLink(newlyLinkedToRoom, targetSubRoomId!, reverseDirection, {
-        room: currentRoomJson.id,
-        subRoom: currentSubRoomId === "*" ? undefined : currentSubRoomId,
-      });
+      writeVerticalLink(
+        newlyLinkedToRoom,
+        targetSubRoomId!,
+        reverseDirection,
+        verticalLinkTarget(currentRoomJson.id, currentSubRoomId),
+      );
 
       if (createdNewRoom && previouslyLinkedRoom) {
         // splice the new room in between the current and previously-linked rooms

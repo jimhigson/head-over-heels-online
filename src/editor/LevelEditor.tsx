@@ -17,7 +17,7 @@ import { EditorErrorBoundary } from "./EditorErrorBoundary";
 import { EditorMapWithErrorBoundary } from "./EditorMap/EditorMap";
 import { LazyJsonRoomEditor } from "./JsonRoomEditor/JsonRoomEditor.lazy";
 import { EditorMenuBar } from "./menuBar/EditorMenuBar";
-import { LazyRoomEditingArea } from "./RoomEditingArea/RoomEditingArea.lazy";
+import { LazyPaneLayoutView } from "./RoomEditingArea/PaneLayoutView.lazy";
 import { LevelEditorToolbar } from "./toolbar/LevelEditorToolbar";
 
 const LevelEditorPanels = () => {
@@ -43,7 +43,7 @@ const LevelEditorPanels = () => {
               <PanelResizeHandle className="scale-editor h-1 bg-metallicBlueHalfbrite  hover:border-moss hover:bg-moss border-b-[calc(1px*var(--scale))] border-metallicBlue" />
               <Panel id="editingArea">
                 <Suspense fallback={<SpinnerHeels loadingBorder />}>
-                  <LazyRoomEditingArea />
+                  <LazyPaneLayoutView />
                 </Suspense>
               </Panel>
             </PanelGroup>

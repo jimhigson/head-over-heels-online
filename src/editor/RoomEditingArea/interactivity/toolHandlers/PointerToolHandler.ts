@@ -47,7 +47,8 @@ import {
   setSelectedItemsInRoom,
   toggleSelectedItemInRoom,
 } from "../../../slice/levelEditorSlice";
-import { maybeOpenRoom, type OpenRoomId } from "../../../slice/OpenRoom";
+import { type OpenRoomId } from "../../../slice/OpenRoom";
+import { maybeLayoutNode } from "../../../slice/PaneLayout";
 import { type ItemsDrag } from "../../../slice/reducers/dragToMoveReducers";
 import { getMovableVector } from "../../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import { moveOrResizeOutcome } from "../../../slice/reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
@@ -340,7 +341,7 @@ export class PointerToolHandler implements ToolHandler<
       return;
     }
 
-    const openRoom = maybeOpenRoom(storeState.levelEditor, openRoomId);
+    const openRoom = maybeLayoutNode(storeState.levelEditor.layout, openRoomId);
     // the open room may have been closed or replaced (its pane is going):
     if (openRoom === undefined) {
       return;
@@ -501,7 +502,8 @@ export class PointerToolHandler implements ToolHandler<
       return;
     }
     if (
-      maybeOpenRoom(levelEditorState, openRoomId)?.dragInProgress !== itemsDrag
+      maybeLayoutNode(levelEditorState.layout, openRoomId)?.dragInProgress !==
+      itemsDrag
     ) {
       dispatch(changeDragInProgress({ openRoomId, dragInProgress: itemsDrag }));
     }

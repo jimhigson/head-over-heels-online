@@ -382,10 +382,9 @@ export const insertRoomInPlace = (
         config: {
           toRoom: existingRoomAtTarget.id,
           direction,
-          meta:
-            targetSubRoomId === "*" ? undefined : (
-              { toSubRoom: targetSubRoomId }
-            ),
+          ...(targetSubRoomId !== "*" && {
+            meta: { toSubRoom: targetSubRoomId },
+          }),
         },
         position: centrePosition,
       };

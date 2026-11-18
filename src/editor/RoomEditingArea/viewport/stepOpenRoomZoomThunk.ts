@@ -3,7 +3,8 @@ import {
   openRoomViewZoomed,
   selectOpenRoomView,
 } from "../../slice/levelEditorSlice";
-import { maybeOpenRoom, type OpenRoomId } from "../../slice/OpenRoom";
+import { type OpenRoomId } from "../../slice/OpenRoom";
+import { maybeLayoutNode } from "../../slice/PaneLayout";
 import { zoomLadder } from "./zoomLadder";
 
 // past the ends of the ladder (eg after a fit zoomed a huge room way out),
@@ -22,7 +23,7 @@ export const stepOpenRoomZoomThunk =
   (openRoomId: OpenRoomId, direction: "in" | "out"): EditorThunk =>
   (dispatch, getState) => {
     const state = getState();
-    const openRoom = maybeOpenRoom(state.levelEditor, openRoomId);
+    const openRoom = maybeLayoutNode(state.levelEditor.layout, openRoomId);
     const openRoomView = selectOpenRoomView(state, openRoomId);
     // closed, or not yet framed:
     if (openRoom === undefined || openRoomView === undefined) {

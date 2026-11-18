@@ -20,6 +20,18 @@ export type NotableItem<RoomId extends string> =
   | JsonItem<"pickup", RoomId>
   | JsonItem<"teleporter", RoomId>;
 
+/**
+ * the items of one map cell to draw as icons
+ */
+export type NotableItemsInCell<
+  RoomId extends string,
+  RoomItemId extends string,
+> = Record<
+  /** key'd by their ids in the room */
+  RoomItemId,
+  NotableItem<RoomId>
+>;
+
 export const PlayableItemInRoom = ({
   characterName,
   facing,
@@ -35,11 +47,11 @@ export const PlayableItemInRoom = ({
   yAdjust?: number;
   onClick?: (name: "head" | "heels") => void;
 }) => {
-  const spriteClassname = usePlayableTailwindSpriteClassname();
+  const playableTailwindSpriteClassname = usePlayableTailwindSpriteClassname();
   return (
     <SvgSpriteInRoom
       scale={onlyPlayableInRoom ? 2.5 : 1.5}
-      spriteClass={spriteClassname({
+      spriteClass={playableTailwindSpriteClassname({
         character: characterName,
         action: isCurrent ? "walking" : "idle",
         facingXy8: nonZeroVectorClosestDirectionXy8(facing),

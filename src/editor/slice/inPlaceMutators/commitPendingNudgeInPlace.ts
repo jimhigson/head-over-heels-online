@@ -1,8 +1,5 @@
+import { type EditorRoomJson } from "../../editorTypes";
 import { applyPreviewedEditsInPlace } from "../applyPreviewedEditsInPlace";
-import {
-  selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomIdFromLevelEditorState,
-} from "../levelEditorSelectors";
 import { type LevelEditorState, type NudgeKind } from "../levelEditorSlice";
 import { consolidateCurrentRoomInPlace } from "./consolidateCurrentRoomInPlace";
 import { pushUndoEntryInPlace } from "./pushUndoEntryInPlace";
@@ -16,14 +13,15 @@ export const commitPendingEditsInPlace = (state: LevelEditorState) => {
     return;
   }
   state.pendingEdits = undefined;
+  const { roomId } = pendingEdits;
   pushUndoEntryInPlace(
     state,
-    selectCursorRoomIdFromLevelEditorState(state),
+    roomId,
     pendingEdits.description,
     pendingEdits.timestamp,
   );
   applyPreviewedEditsInPlace(
-    selectCurrentCommittedRoomJsonFromLevelEditorState(state),
+    state.campaignInProgress.rooms[roomId] as EditorRoomJson,
     pendingEdits.edits,
   );
   if (state.autoCoalesce) {

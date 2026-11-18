@@ -24,7 +24,7 @@ import {
   multiplyPlan,
   type MultiplyType,
 } from "../slice/multiplyPlan";
-import { selectActiveOpenRoomFromLevelEditorState } from "../slice/OpenRoom";
+import { selectActiveOpenRoomFromLevelEditorState } from "../slice/PaneLayout";
 import { getMovableVector } from "../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import {
   apparentMoveVector,

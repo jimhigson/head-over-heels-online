@@ -2,6 +2,7 @@ import {
   loadRoom,
   type LoadRoomOptions,
 } from "../../game/gameState/loadRoom/loadRoom";
+import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { emptyUserSettings } from "../../store/slices/userSettings/emptyUserSettings";
 import { emptyObject } from "../../utils/empty";
 import {
@@ -14,6 +15,7 @@ import {
 const loadRoomDefaultOptions = {
   roomPickupsCollected: emptyObject,
   scrollsRead: emptyObject,
+  planetsLiberated: noPlanetsLiberated,
   // display heads and heels in their starting rooms:
   isNewGame: true,
   userSettings: emptyUserSettings,

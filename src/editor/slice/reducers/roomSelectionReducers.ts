@@ -5,7 +5,7 @@ import { type EditorRoomId } from "../../editorTypes";
 import { firstSubRoomId } from "../inPlaceMutators/firstSubRoomId";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
-import { showRoomInFrontTabInPlace } from "../OpenRoom";
+import { showRoomInFrontTabInPlace } from "../PaneLayout";
 
 export const roomSelectionReducers = {
   toggleRoomInSelection(

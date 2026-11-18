@@ -21,18 +21,44 @@ export type TabRename = {
   onRename: (newName: string) => void;
 };
 
+/**
+ * a further choice in a tab's menu
+ */
+export type TabMenuItem = {
+  label: string;
+  onSelect: () => void;
+};
+
 export type TabProps = {
   label: string;
   /** shown in place of the label while the bar's tabs don't all fit */
   shortLabel: string;
   isActive: boolean;
+  /**
+   * open only until replaced - its label is slanted, as the font has no italics
+   */
+  isPreview?: boolean;
+  /**
+   * iff true, the tab can't be selected
+   */
+  disabled?: boolean;
   onSelect: () => void;
   /** with this, the tab can be closed - by its x or middle-click */
   onClose?: () => void;
   /** with this, the tab's menu can close the other tabs */
   onCloseOthers?: () => void;
+  /**
+   * more choices in the tab's menu
+   */
+  menuItems?: TabMenuItem[];
+  /**
+   * with this, the tab can be dragged
+   */
+  onDragStart?: (dragEvent: DragEvent) => void;
   onDblClick?: () => void;
-  /** with this, clicking the front tab edits its name in place */
+  /**
+   * with this, the tab's name can be edited in place - by enter, or its menu
+   */
   rename?: TabRename;
   /** shown on interest in the tab */
   tip?: ComponentChildren;
@@ -42,25 +68,35 @@ export type TabProps = {
 
 /**
  * one tab of a `TabBar`: click to select, middle-click or its x to close,
- * right-click for a menu to close the others
+ * enter to rename, right-click for a menu (to rename, close the others, and
+ * any further choices)
  */
 export const Tab = ({
   label,
   shortLabel,
   isActive,
+  isPreview = false,
+  disabled = false,
   onSelect,
   onClose,
   onCloseOthers,
+  menuItems = [],
+  onDragStart,
   onDblClick,
   rename,
   tip: tipContent,
   class: className,
   style,
 }: TabProps) => {
-  const { shortenLabels, isOnlyTab } = useContext(TabBarContext);
-  // with one tab, there are no others to close, and it is never closed:
-  const closeable = onClose !== undefined && !isOnlyTab;
+  const { shortenLabels, isOnlyTab, isSingletonTabCloseable } =
+    useContext(TabBarContext);
+  // with one tab, there are no others to close, and it is closed only where
+  // the bar allows:
+  const closeable =
+    onClose !== undefined && (!isOnlyTab || isSingletonTabCloseable);
   const canCloseOthers = onCloseOthers !== undefined && !isOnlyTab;
+  const hasMenu =
+    rename !== undefined || canCloseOthers || menuItems.length > 0;
   const { interestfor, tip } = useTip(tipContent);
   // the name being typed, while renaming:
   const [editedName, setEditedName] = useState<string | undefined>(undefined);
@@ -70,25 +106,41 @@ export const Tab = ({
     (): Xy => contextMenuXy ?? { x: 0, y: 0 },
     [contextMenuXy],
   );
+  const startRename = () => {
+    if (rename !== undefined && editedName === undefined) {
+      setEditedName(rename.name);
+      rename.onStart();
+    }
+  };
 
   return (
     <>
       <div
         role="tab"
         aria-selected={isActive}
+        aria-disabled={disabled}
         tabIndex={-1}
         data-selected={isActive ? "true" : "false"}
-        class={`flex items-center gap-half pl-1 ${isOnlyTab ? "pr-1" : ""} cursor-pointer select-none ${className ?? ""}`}
+        class={`flex items-center gap-half pl-1 ${closeable ? "" : "pr-1"} ${disabled ? "cursor-default" : "cursor-pointer"} select-none ${className ?? ""}`}
         style={style}
         onClick={() => {
-          if (!isActive) {
+          if (!isActive && !disabled) {
             onSelect();
-          } else if (rename !== undefined && editedName === undefined) {
-            setEditedName(rename.name);
-            rename.onStart();
+          }
+        }}
+        onKeyDown={(keyboardEvent) => {
+          // the tab's own enter, not one typed into its name while renaming:
+          if (
+            keyboardEvent.key === "Enter" &&
+            keyboardEvent.target === keyboardEvent.currentTarget
+          ) {
+            keyboardEvent.preventDefault();
+            startRename();
           }
         }}
         onDblClick={onDblClick}
+        draggable={onDragStart !== undefined}
+        onDragStart={onDragStart}
         onMouseDown={(mouseEvent) => {
           // stop the middle button starting the browser's autoscroll:
           if (mouseEvent.button === 1) {
@@ -102,7 +154,7 @@ export const Tab = ({
         }}
         onContextMenu={(mouseEvent) => {
           mouseEvent.preventDefault();
-          if (canCloseOthers) {
+          if (hasMenu) {
             setContextMenuXy({ x: mouseEvent.clientX, y: mouseEvent.clientY });
           }
         }}
@@ -120,7 +172,7 @@ export const Tab = ({
               type="button"
               tabIndex={-1}
               interestfor={interestfor}
-              class="text-single-line"
+              class={`text-single-line ${isPreview ? "inline-block -skew-x-12" : ""}`}
             >
               {shortenLabels ? shortLabel : label}
             </button>
@@ -148,16 +200,41 @@ export const Tab = ({
         onClose={closeContextMenu}
         anchor={contextMenuAnchor}
       >
-        <ContextMenuItem
-          value="close other tabs"
-          onSelect={() => {
-            onCloseOthers?.();
-            // choosing an item doesn't close the menu by itself:
-            closeContextMenu();
-          }}
-        >
-          Close other tabs
-        </ContextMenuItem>
+        {rename !== undefined && (
+          <ContextMenuItem
+            value="rename"
+            onSelect={() => {
+              closeContextMenu();
+              startRename();
+            }}
+          >
+            Rename
+          </ContextMenuItem>
+        )}
+        {canCloseOthers && (
+          <ContextMenuItem
+            value="close other tabs"
+            onSelect={() => {
+              onCloseOthers();
+              // choosing an item doesn't close the menu by itself:
+              closeContextMenu();
+            }}
+          >
+            Close other tabs
+          </ContextMenuItem>
+        )}
+        {menuItems.map(({ label: itemLabel, onSelect: onSelectItem }) => (
+          <ContextMenuItem
+            key={itemLabel}
+            value={itemLabel}
+            onSelect={() => {
+              onSelectItem();
+              closeContextMenu();
+            }}
+          >
+            {itemLabel}
+          </ContextMenuItem>
+        ))}
       </ContextMenu>
     </>
   );

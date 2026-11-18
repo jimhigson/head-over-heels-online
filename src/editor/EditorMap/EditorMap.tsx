@@ -25,7 +25,6 @@ import { selectCursorRoomFromLevelEditorState } from "../slice/levelEditorSelect
 import {
   addRoomToSelection,
   changeToRoom,
-  pinRoomTab,
   selectAllRooms,
   toggleRoomInSelection,
 } from "../slice/levelEditorSlice";
@@ -35,21 +34,21 @@ import { EditorMapItemDropTargetBehaviour } from "./EditorMapItemDropTargetBehav
 import { LazyEditorMapInsertButtonDecorator } from "./LazyEditorMapInsertButtonDecorator";
 import { LazyEditorMapNonContiguousRelationshipDecorator } from "./LazyEditorMapNonContiguousRelationshipDecorator";
 import { LazyEditorMapTeleporterLinkDecorator } from "./LazyEditorMapTeleporterLinkDecorator";
-import { mapAreaIndexOfRoom } from "./mapAreaIndexOfRoom";
 import { MapAreaSwitcher } from "./MapAreaSwitcher";
 import { useEditorMapContextValue } from "./useEditorMapContextValue";
-import { useEditorMapData } from "./useEditorMapData";
+import {
+  selectEditorMapAreaFirstRoomIds,
+  selectEditorMapErrors,
+  selectEditorShownMapArea,
+  selectEditorShownMapAreaIndex,
+} from "./useEditorMapData";
 
 const editorClickableRoomBehaviour = createClickableRoomBehaviour<EditorRoomId>(
-  (roomId, subRoomId, { metaKey, ctrlKey, detail: clickCount }) => {
+  (roomId, subRoomId, { metaKey, ctrlKey }) => {
     if (metaKey || ctrlKey) {
       store.dispatch(toggleRoomInSelection({ roomId, subRoomId }));
     } else {
       store.dispatch(changeToRoom({ roomId, subRoomId }));
-      if (clickCount === 2) {
-        // double-clicked: keep its tab open, rather than a preview tab
-        store.dispatch(pinRoomTab(roomId));
-      }
     }
   },
 );
@@ -198,13 +197,20 @@ const EditorMap = () => {
     width: mapContainerWidth,
     height: mapContainerHeight,
   } = useElementSize<HTMLDivElement>();
-  const mapData = useEditorMapData();
+  const editorMapErrors = useEditorAppSelector(selectEditorMapErrors);
   const mapContext = useEditorMapContextValue(editorMapContextOptions);
-  const { roomId: cursorRoomId } = useEditorAppSelector((state) =>
-    selectCursorRoomFromLevelEditorState(state.levelEditor),
+  const editorShownMapAreaIndex = useEditorAppSelector(
+    selectEditorShownMapAreaIndex,
+  );
+  const maybeEditorShownMapArea = useEditorAppSelector(
+    selectEditorShownMapArea,
+  );
+  const editorMapAreaFirstRoomIds = useEditorAppSelector(
+    selectEditorMapAreaFirstRoomIds,
   );
 
-  const mapRendering = mapContainerHeight !== 0 && !mapData.isError;
+  const mapRendering =
+    mapContainerHeight !== 0 && editorMapErrors === undefined;
   useEffect(() => {
     if (mapRendering) {
       // readiness signal for network-cost measurement (true-site-size)
@@ -212,14 +218,17 @@ const EditorMap = () => {
     }
   }, [mapRendering]);
 
-  if (mapData.isError) {
+  if (editorMapErrors !== undefined) {
     throw new Error(
-      `Could not solve map geometry:\n${mapData.errors.join("\n")}`,
+      `Could not solve map geometry:\n${editorMapErrors.join("\n")}`,
     );
   }
 
-  const shownAreaIndex = mapAreaIndexOfRoom(mapData.areas, cursorRoomId);
-  const shownArea = mapData.areas[shownAreaIndex];
+  // there is a shown area whenever the map could be laid out:
+  if (import.meta.env.DEV && maybeEditorShownMapArea === undefined) {
+    throw new Error("the map was laid out with no area shown");
+  }
+  const shownArea = maybeEditorShownMapArea!;
 
   if (mapContainerHeight === 0) {
     return null;
@@ -256,11 +265,7 @@ const EditorMap = () => {
       >
         <div class="shrink-0">
           <MapContextProvider value={mapContext}>
-            <MapSvg<EditorRoomId>
-              containerWidth={mapContainerWidth}
-              {...mapData}
-              areaIndex={shownAreaIndex}
-            />
+            <MapSvg<EditorRoomId> containerWidth={mapContainerWidth} />
           </MapContextProvider>
         </div>
         {/* stuck to the bottom-right of the visible map, inside any scrollbar,
@@ -271,8 +276,8 @@ const EditorMap = () => {
           onKeyDown={(e: KeyboardEvent) => e.stopPropagation()}
         >
           <MapAreaSwitcher
-            areas={mapData.areas}
-            shownAreaIndex={shownAreaIndex}
+            firstRoomIds={editorMapAreaFirstRoomIds}
+            shownAreaIndex={editorShownMapAreaIndex}
             onSwitchToRoom={switchToRoom}
           />
         </div>

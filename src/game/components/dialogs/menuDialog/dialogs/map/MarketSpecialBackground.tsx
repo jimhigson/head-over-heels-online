@@ -30,7 +30,7 @@ export const MarketSpecialBackground = ({
   mapBounds: Bounds;
   containerWidth: number;
 }) => {
-  const scale = useTotalUpscale();
+  const totalUpscale = useTotalUpscale();
   const contentW = mapBounds.r - mapBounds.l + 2 * mapSvgMarginX;
 
   type RoomAndSubRoomId = keyof typeof originalCampaignPositions;
@@ -91,10 +91,10 @@ export const MarketSpecialBackground = ({
     z: 0,
   });
 
-  const leftBound = scale * 8 * 2;
+  const leftBound = totalUpscale * 8 * 2;
   const title = "Market";
-  const titleRightBound = (title.length + 3) * scale * 8;
-  const titleHeight = scale * 8 * 2 + 32;
+  const titleRightBound = (title.length + 3) * totalUpscale * 8;
+  const titleHeight = totalUpscale * 8 * 2 + 32;
   return (
     <>
       <path

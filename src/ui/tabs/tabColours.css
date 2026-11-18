@@ -6,6 +6,9 @@
   background-color: var(--colour-lightGrey);
   color: var(--colour-midGrey);
 }
+:where([role="tab"][aria-disabled="true"]) {
+  color: var(--colour-midGreyHalfbrite);
+}
 :where([role="tab"][data-selected="true"]) {
   background-color: var(--colour-white);
   color: var(--colour-metallicBlue);

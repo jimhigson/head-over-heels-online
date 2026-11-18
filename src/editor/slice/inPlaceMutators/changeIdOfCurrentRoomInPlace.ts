@@ -10,6 +10,7 @@ import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomIdFromLevelEditorState,
 } from "../levelEditorSelectors";
+import { layoutNodesOfType } from "../PaneLayout";
 
 export const changeIdOfCurrentRoomInPlace = (
   state: LevelEditorState,
@@ -60,13 +61,10 @@ export const changeIdOfCurrentRoomInPlace = (
   state.selectedRoomIds = state.selectedRoomIds.map((id) =>
     id === prevRoomId ? newRoomId : id,
   );
-  for (const openRoom of valuesIter(state.openRooms)) {
+  for (const openRoom of layoutNodesOfType(state.layout, "openRoom")) {
     if (openRoom.roomId === prevRoomId) {
       openRoom.roomId = newRoomId;
     }
-  }
-  if (state.cursorRoomId === prevRoomId) {
-    state.cursorRoomId = newRoomId;
   }
 
   state.editingRoomIdHistory.back = state.editingRoomIdHistory.back.map((id) =>

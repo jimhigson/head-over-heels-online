@@ -12,11 +12,14 @@ import {
   type EditorRoomJson,
 } from "../editorTypes";
 import { jsonItemsWithEdits } from "./jsonItemsWithEdits";
-import { type LevelEditorState } from "./levelEditorSlice";
+import {
+  type LevelEditorState,
+  type PreviewedRoomItemEdits,
+} from "./levelEditorSlice";
 import {
   selectActiveCursorRoomEditingOpenRoomFromLevelEditorState,
   selectFrontOpenRoomFromLevelEditorState,
-} from "./OpenRoom";
+} from "./PaneLayout";
 
 /** whether the campaign being edited differs from as last saved (or loaded) */
 export const selectCampaignHasUnsavedChangesFromLevelEditorState = ({
@@ -25,14 +28,14 @@ export const selectCampaignHasUnsavedChangesFromLevelEditorState = ({
 }: LevelEditorState) => !nanoEqual(remoteCampaign, campaignInProgress);
 
 /**
- * the cursor room's open room, in the front tab
+ * the cursor room's open room, in the focused pane's front tab
  */
 export const selectCursorRoomFromLevelEditorState = (state: LevelEditorState) =>
   selectFrontOpenRoomFromLevelEditorState(state);
 
 export const selectCursorRoomIdFromLevelEditorState = (
   state: LevelEditorState,
-) => state.cursorRoomId;
+) => selectCursorRoomFromLevelEditorState(state).roomId;
 
 export const selectCursorSubRoomIdFromLevelEditorState = (
   state: LevelEditorState,
@@ -61,16 +64,21 @@ export const selectRoomFromLevelEditorState = (
   roomId: EditorRoomId,
 ) => state.campaignInProgress.rooms[roomId] as EditorRoomJson | undefined;
 
-/** whether the room differs from its last saved version (or has never been saved) */
-export const selectRoomHasUnsavedChangesFromLevelEditorState = (
-  state: LevelEditorState,
-  roomId: EditorRoomId,
-): boolean => {
-  const savedRoom = state.remoteCampaign?.rooms[roomId];
-  const room = state.campaignInProgress.rooms[roomId];
-  // untouched rooms keep their identity, so the deep compare is only for edited ones:
-  return savedRoom !== room && !nanoEqual(savedRoom, room);
-};
+/**
+ * whether the room differs from its last saved version (or has never been
+ * saved) - memoised per room, on its json and its saved json
+ */
+export const selectRoomHasUnsavedChangesFromLevelEditorState = createSelector(
+  [
+    (state: LevelEditorState, roomId: EditorRoomId) =>
+      state.remoteCampaign?.rooms[roomId],
+    (state: LevelEditorState, roomId: EditorRoomId) =>
+      state.campaignInProgress.rooms[roomId],
+  ],
+  (savedRoom, room): boolean =>
+    // untouched rooms keep their identity, so the deep compare is only for edited ones:
+    savedRoom !== room && !nanoEqual(savedRoom, room),
+);
 
 export const selectItemInLevelEditorState = (
   state: LevelEditorState,
@@ -101,9 +109,10 @@ export const selectCursorRoomSelectedJsonItemIdsFromLevelEditorState = (
  */
 export const selectPreviewOnlyJsonItemIds = createSelector(
   [
-    (state: EditorRootState) => state.levelEditor.pendingEdits?.edits,
-    (state: EditorRootState) =>
-      selectCurrentCommittedRoomJsonFromLevelEditorState(state.levelEditor),
+    (state: EditorRootState, roomId: EditorRoomId) =>
+      selectPendingEditsToRoom(state, roomId),
+    (state: EditorRootState, roomId: EditorRoomId) =>
+      state.levelEditor.campaignInProgress.rooms[roomId] as EditorRoomJson,
   ],
   (pendingEdits, committedRoomJson): ReadonlySet<EditorRoomItemId> =>
     new Set(
@@ -114,6 +123,17 @@ export const selectPreviewOnlyJsonItemIds = createSelector(
       ),
     ),
 );
+
+/**
+ * the pending edits, if they are to this room
+ */
+const selectPendingEditsToRoom = (
+  state: EditorRootState,
+  roomId: EditorRoomId,
+): PreviewedRoomItemEdits | undefined => {
+  const { pendingEdits } = state.levelEditor;
+  return pendingEdits?.roomId === roomId ? pendingEdits.edits : undefined;
+};
 
 /** the room the undo history is being scrubbed to, while hovering it */
 const selectHoveredUndoRoom = (
@@ -149,6 +169,29 @@ const selectHoveredUndoRoom = (
 };
 
 /**
+ * a room json with temporary previews on top of it: the undo history being
+ * scrubbed to, if any, otherwise the pending edits
+ */
+const roomJsonWithPreviews = (
+  roomJson: EditorRoomJson,
+  pendingEdits: PreviewedRoomItemEdits | undefined,
+  hoveredUndoRoom: EditorRoomJson | undefined,
+): EditorRoomJson => {
+  if (hoveredUndoRoom !== undefined) {
+    return hoveredUndoRoom;
+  }
+
+  if (pendingEdits === undefined) {
+    return roomJson;
+  }
+
+  return {
+    ...roomJson,
+    items: jsonItemsWithEdits(roomJson.items, pendingEdits),
+  };
+};
+
+/**
  * gets the current editing room json with temporary previews applied on
  * top of it
  */
@@ -156,21 +199,35 @@ export const selectCurrentEditingRoomJsonWithPreviews = createSelector(
   [
     (state: EditorRootState) =>
       selectCurrentCommittedRoomJsonFromLevelEditorState(state.levelEditor),
-    (state: EditorRootState) => state.levelEditor.pendingEdits?.edits,
+    (state: EditorRootState) =>
+      selectPendingEditsToRoom(
+        state,
+        selectCursorRoomIdFromLevelEditorState(state.levelEditor),
+      ),
     selectHoveredUndoRoom,
   ],
-  (roomJson, pendingEdits, hoveredUndoRoom): EditorRoomJson => {
-    if (hoveredUndoRoom !== undefined) {
-      return hoveredUndoRoom;
-    }
+  roomJsonWithPreviews,
+);
 
-    if (pendingEdits === undefined) {
-      return roomJson;
-    }
-
-    return {
-      ...roomJson,
-      items: jsonItemsWithEdits(roomJson.items, pendingEdits),
-    };
-  },
+/**
+ * any room's json with temporary previews on top of it - the pending edits
+ * when they are to that room, and the undo history being scrubbed to when it
+ * is the cursor room. Undefined for a room no longer in the campaign. Memoised
+ * per room
+ */
+export const selectRoomJsonWithPreviews = createSelector(
+  [
+    (state: EditorRootState, roomId: EditorRoomId) =>
+      state.levelEditor.campaignInProgress.rooms[roomId] as
+        EditorRoomJson | undefined,
+    selectPendingEditsToRoom,
+    (state: EditorRootState, roomId: EditorRoomId) =>
+      roomId === selectCursorRoomIdFromLevelEditorState(state.levelEditor) ?
+        selectHoveredUndoRoom(state)
+      : undefined,
+  ],
+  (roomJson, pendingEdits, hoveredUndoRoom): EditorRoomJson | undefined =>
+    roomJson === undefined ? undefined : (
+      roomJsonWithPreviews(roomJson, pendingEdits, hoveredUndoRoom)
+    ),
 );

@@ -8,11 +8,13 @@ import {
   type EditorRoomJson,
 } from "../editorTypes";
 import { type LevelEditorState } from "./levelEditorSlice";
-import { openRoomDefaults, type OpenRoomId, type TabId } from "./OpenRoom";
+import { openRoomDefaults, type OpenRoomId } from "./OpenRoom";
+import { type TabGroupId, type TabId } from "./PaneLayout";
 
 const initialRoomId = "room_0" as EditorRoomId;
-const initialOpenRoomId = "initialOpenRoom" as OpenRoomId;
-const initialTabId = "initialTab" as TabId;
+const initialOpenRoomId = "openRoom-initial" as OpenRoomId;
+const initialTabId = "tab-initial" as TabId;
+const initialTabGroupId = "tabGroup-initial" as TabGroupId;
 const initialRoom = produce(
   starterRoom({ x: 8, y: 8 }) as EditorRoomJson,
   (starterRoomDraft) => {
@@ -53,16 +55,32 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   // showing a 'new campaign' placeholder that has never been saved:
   remoteCampaign: undefined,
   selectedRoomIds: [initialRoomId],
-  openRooms: {
-    [initialOpenRoomId]: {
-      ...openRoomDefaults,
-      roomId: initialRoomId,
-      subRoomId: "*",
-      editable: true,
+  dialogOpenRoomIds: [],
+  layout: {
+    rootId: initialTabGroupId,
+    nodes: {
+      [initialTabGroupId]: {
+        type: "tabGroup",
+        id: initialTabGroupId,
+        children: [initialTabId],
+        frontTabId: initialTabId,
+      },
+      [initialTabId]: {
+        type: "tab",
+        id: initialTabId,
+        isPreview: false,
+        children: [initialOpenRoomId],
+      },
+      [initialOpenRoomId]: {
+        ...openRoomDefaults,
+        id: initialOpenRoomId,
+        roomId: initialRoomId,
+        subRoomId: "*",
+        editable: true,
+      },
     },
   },
-  tabs: [{ id: initialTabId, isPreview: false, openRoomId: initialOpenRoomId }],
-  cursorRoomId: initialRoomId,
+  focusedTabGroupId: initialTabGroupId,
   nextIdNumber: 0,
   editingRoomIdHistory: {
     back: [],

@@ -12,10 +12,12 @@ import {
   type RoomState,
   type RoomStateItems,
 } from "../../../model/RoomState";
-import { type PlanetName, type SceneryName } from "../../../sprites/planets";
-import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import { type SceneryName } from "../../../sprites/planets";
+import {
+  type PlanetsLiberated,
+  type ScrollsRead,
+} from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { type UserSettings } from "../../../store/slices/userSettings/userSettingsSlice";
-import { emptyObject } from "../../../utils/empty";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { SpatialIndex } from "../../physics/gridSpace/SpatialIndex";
 import { type RoomPickupsCollected } from "../GameState";
@@ -47,7 +49,7 @@ export type LoadRoomOptions<
   roomJson: RoomJson<RoomId, RoomItemId>;
   roomPickupsCollected: RoomPickupsCollected;
   scrollsRead: ScrollsRead;
-  planetsLiberated?: Partial<Record<PlanetName, boolean>>;
+  planetsLiberated: PlanetsLiberated;
   /**
    * if true, this is a new game - ie, load head and heels at using their starting json
    * item if they are in the room
@@ -84,7 +86,7 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
       directionalIndex,
       roomPickupsCollected,
       scrollsRead,
-      planetsLiberated ?? emptyObject,
+      planetsLiberated,
       userSettings.pokesEnabled,
       isNewGame,
     ),

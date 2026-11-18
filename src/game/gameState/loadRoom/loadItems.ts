@@ -1,8 +1,10 @@
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { type JsonItemUnion } from "../../../model/json/JsonItem";
 import { type RoomJson } from "../../../model/RoomJson";
-import { type PlanetName } from "../../../sprites/planets";
-import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import {
+  type PlanetsLiberated,
+  type ScrollsRead,
+} from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { entries } from "../../../utils/entries";
 import { type RoomPickupsCollected } from "../GameState";
@@ -14,7 +16,7 @@ export function* loadItems<RoomId extends string, RoomItemId extends string>(
   directionalIndex: RoomDirectionalIndex<RoomId, RoomItemId>,
   roomPickupsCollected: RoomPickupsCollected,
   scrollsRead: ScrollsRead,
-  planetsLiberated: Partial<Record<PlanetName, boolean>>,
+  planetsLiberated: PlanetsLiberated,
   pokesEnabled: PokesEnabled,
   isNewGame: boolean,
   shouldLoadItem: (item: JsonItemUnion<RoomId, RoomItemId>) => boolean = () =>
@@ -32,10 +34,10 @@ export function* loadItems<RoomId extends string, RoomItemId extends string>(
       id,
       item,
       roomJson,
+      planetsLiberated,
       directionalIndex,
       roomPickupsCollected,
       scrollsRead,
-      planetsLiberated,
       pokesEnabled,
       "",
     );

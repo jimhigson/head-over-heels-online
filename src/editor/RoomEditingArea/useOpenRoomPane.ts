@@ -1,15 +1,27 @@
 import { createContext } from "preact";
 import { useContext } from "preact/hooks";
 
+import { type EditorRoomId } from "../editorTypes";
 import { type LoadedRoomCache } from "../loadedRoomCache/LoadedRoomCache";
 import { type OpenRoomId } from "../slice/OpenRoom";
 
+/**
+ * the open room a pane draws, for the many hooks and components inside the
+ * pane that act on it - given through context rather than props, which would
+ * otherwise be threaded through every level between. Its loaded room and
+ * editability could each be looked up by the id, but are given here once so
+ * every consumer needn't look them up for itself
+ */
 export type OpenRoomPaneContextValue = {
   openRoomId: OpenRoomId;
   /**
    * whether the open room is edited, or only picked from
    */
   editable: boolean;
+  /**
+   * a link in the room (eg a door's annotation) was followed to another room
+   */
+  onFollowLink: (roomId: EditorRoomId) => void;
   /**
    * the open room's room, loaded and following the store
    */

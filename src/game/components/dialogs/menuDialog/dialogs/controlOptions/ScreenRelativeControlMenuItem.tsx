@@ -7,7 +7,7 @@ import {
 import { nextDirectionRelativeTo } from "../../../../../../store/slices/userSettings/userSettingsSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { SwitchN } from "../../../../../../ui/Switch";
-import { twClass } from "../../../../../../utils/twClass";
+import { twClass } from "../../../../../../utils/twClass.tsx";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/playableTailwindSpriteClassname";
 import {

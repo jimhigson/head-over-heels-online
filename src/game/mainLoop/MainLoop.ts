@@ -2,7 +2,6 @@ import { type Application, Container, Rectangle } from "pixi.js";
 
 import { audioCtx } from "../../sound/audioCtx";
 import { ensureRoomSoundsLoaded } from "../../sound/ensureRoomSoundsLoaded";
-import { type PlanetName } from "../../sprites/planets";
 import {
   spritesheetArtName,
   spritesheetMetas,
@@ -13,6 +12,7 @@ import {
   errorCaught,
   selectHasError,
 } from "../../store/slices/errors/errorsSlice";
+import { type PlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import {
   selectCurrentCampaign,
   selectInputDirectionMode,
@@ -279,7 +279,7 @@ export class MainLoop<RoomId extends string> {
     cameraAngle: Xy,
     /** game-speed multiplier - <1 for slow-mo, 0 while paused */
     speedCoefficient: number,
-    planetsLiberated: Readonly<Record<PlanetName, boolean>>,
+    planetsLiberated: PlanetsLiberated,
   ): InGameGeneralRenderContext<RoomId> {
     const existing = this.#generalRenderContext;
 

@@ -151,10 +151,10 @@ export const SvgSpriteInRoom = ({
   onClick,
   yAdjust = 0,
 }: SvgSpriteInRoomProps) => {
-  const spritesheetData = useCurrentSpritesheetData();
+  const currentSpritesheetData = useCurrentSpritesheetData();
   const resolved = useMemo(
-    () => resolveSpriteClass(spriteClass, spritesheetData),
-    [spriteClass, spritesheetData],
+    () => resolveSpriteClass(spriteClass, currentSpritesheetData),
+    [spriteClass, currentSpritesheetData],
   );
 
   const { w, h } = spriteBoxSize(resolved);

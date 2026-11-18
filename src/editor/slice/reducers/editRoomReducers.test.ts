@@ -23,7 +23,6 @@ import {
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../../editorTypes";
-import { openRoomDefaults } from "../OpenRoom";
 
 /** the room id linked above/below a room's primary sub-room */
 const roomAboveOf = <RoomId extends string>(room: {
@@ -44,6 +43,7 @@ import {
   setSelectedItemsInRoom,
   setTool,
 } from "../levelEditorSlice";
+import { existingLayoutNode } from "../PaneLayout";
 import {
   doorItemToolWithAutoAddRooms,
   editorStateWithOneRoomWithNoItems,
@@ -62,6 +62,7 @@ test('deleting a door "heals" the void where the door once stood by extending an
     setTool(doorItemToolWithAutoAddRooms),
     // cut hole in the middle of a door:
     applyItemTool({
+      roomId: testRoomId,
       blockPosition: { x: 2, y: 5, z: 0 },
       pointedAtItemJson: editorStateWithOneRoomWithOneAwayWall
         .campaignInProgress.rooms[testRoomId].items[
@@ -599,69 +600,68 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
     const bLeftDoorId = "bLeftDoor" as EditorRoomItemId;
     const cRightDoorId = "cRightDoor" as EditorRoomItemId;
 
-    const state0: LevelEditorState = {
-      ...editorStateWithOneRoomWithNoItems,
-      selectedRoomIds: [roomA],
-      openRooms: {
-        [testOpenRoomId]: {
-          ...openRoomDefaults,
-          roomId: roomA,
-          subRoomId: "*",
-          editable: true,
-        },
-      },
-      cursorRoomId: roomA,
-      campaignInProgress: {
-        ...editorStateWithOneRoomWithNoItems.campaignInProgress,
-        rooms: {
-          [roomA]: {
-            id: roomA,
-            planet: "blacktooth",
-            color: { hue: "cyan", shade: "basic" },
-            items: {
-              [aLeftDoorId]: {
-                type: "door",
-                position: { x: 0, y: 0, z: 0 },
-                config: { direction: "left", toRoom: roomC },
-              },
-            },
-          },
-          [roomB]: {
-            id: roomB,
-            planet: "blacktooth",
-            color: { hue: "cyan", shade: "basic" },
-            items: {
-              [bRightDoorId]: {
-                type: "door",
-                position: { x: 5, y: 0, z: 0 },
-                config: {
-                  direction: "right",
-                  toRoom: roomA,
-                  toDoor: aLeftDoorId,
+    const state0: LevelEditorState = produce(
+      {
+        ...editorStateWithOneRoomWithNoItems,
+        selectedRoomIds: [roomA],
+        campaignInProgress: {
+          ...editorStateWithOneRoomWithNoItems.campaignInProgress,
+          rooms: {
+            [roomA]: {
+              id: roomA,
+              planet: "blacktooth",
+              color: { hue: "cyan", shade: "basic" },
+              items: {
+                [aLeftDoorId]: {
+                  type: "door",
+                  position: { x: 0, y: 0, z: 0 },
+                  config: { direction: "left", toRoom: roomC },
                 },
               },
-              [bLeftDoorId]: {
-                type: "door",
-                position: { x: 0, y: 0, z: 0 },
-                config: { direction: "left", toRoom: roomC },
+            },
+            [roomB]: {
+              id: roomB,
+              planet: "blacktooth",
+              color: { hue: "cyan", shade: "basic" },
+              items: {
+                [bRightDoorId]: {
+                  type: "door",
+                  position: { x: 5, y: 0, z: 0 },
+                  config: {
+                    direction: "right",
+                    toRoom: roomA,
+                    toDoor: aLeftDoorId,
+                  },
+                },
+                [bLeftDoorId]: {
+                  type: "door",
+                  position: { x: 0, y: 0, z: 0 },
+                  config: { direction: "left", toRoom: roomC },
+                },
               },
             },
-          },
-          [roomC]: {
-            id: roomC,
-            planet: "blacktooth",
-            color: { hue: "cyan", shade: "basic" },
-            items: {
-              [cRightDoorId]: {
-                type: "door",
-                position: { x: 5, y: 0, z: 0 },
-                config: { direction: "right", toRoom: roomB },
+            [roomC]: {
+              id: roomC,
+              planet: "blacktooth",
+              color: { hue: "cyan", shade: "basic" },
+              items: {
+                [cRightDoorId]: {
+                  type: "door",
+                  position: { x: 5, y: 0, z: 0 },
+                  config: { direction: "right", toRoom: roomB },
+                },
               },
             },
           },
         },
       },
-    };
+      (draft) => {
+        Object.assign(existingLayoutNode(draft.layout, testOpenRoomId), {
+          roomId: roomA,
+          subRoomId: "*",
+        });
+      },
+    );
 
     const editedRoomA = structuredClone(
       produce(
@@ -926,7 +926,9 @@ describe("makeHoleInSelectedFloor", () => {
           times: { x: 6, y: 7 },
         },
       };
-      draft.openRooms[testOpenRoomId].selectedJsonItemIds = [floorId];
+      existingLayoutNode(draft.layout, testOpenRoomId).selectedJsonItemIds = [
+        floorId,
+      ];
     },
   );
 
@@ -1040,8 +1042,10 @@ describe("makeHoleInSelectedFloor", () => {
             d: cell(0, 0),
           },
         };
-        draft.openRooms[testOpenRoomId].subRoomId = "a";
-        draft.openRooms[testOpenRoomId].selectedJsonItemIds = [floorId];
+        existingLayoutNode(draft.layout, testOpenRoomId).subRoomId = "a";
+        existingLayoutNode(draft.layout, testOpenRoomId).selectedJsonItemIds = [
+          floorId,
+        ];
       },
     );
 
@@ -1120,27 +1124,26 @@ describe("makeHoleInSelectedFloor leaves the campaign without verification issue
       room.items,
       "floor",
     ).toArray();
-    const state0: LevelEditorState = {
-      ...editorStateWithOneRoomWithNoItems,
-      selectedRoomIds: [roomId],
+    const state0: LevelEditorState = produce(
+      {
+        ...editorStateWithOneRoomWithNoItems,
+        selectedRoomIds: [roomId],
 
-      campaignInProgress: {
-        ...editorStateWithOneRoomWithNoItems.campaignInProgress,
-        rooms: {
-          [roomId]: room,
-        } as LevelEditorState["campaignInProgress"]["rooms"],
-      },
-      openRooms: {
-        [testOpenRoomId]: {
-          ...openRoomDefaults,
-          roomId,
-          subRoomId: Object.keys(room.meta?.subRooms ?? { "*": {} })[0],
-          editable: true,
-          selectedJsonItemIds: [floorId],
+        campaignInProgress: {
+          ...editorStateWithOneRoomWithNoItems.campaignInProgress,
+          rooms: {
+            [roomId]: room,
+          } as LevelEditorState["campaignInProgress"]["rooms"],
         },
       },
-      cursorRoomId: roomId,
-    };
+      (draft) => {
+        Object.assign(existingLayoutNode(draft.layout, testOpenRoomId), {
+          roomId,
+          subRoomId: Object.keys(room.meta?.subRooms ?? { "*": {} })[0],
+          selectedJsonItemIds: [floorId],
+        });
+      },
+    );
     const issueMessages = (state: LevelEditorState) =>
       verifyCampaign(state.campaignInProgress as VerificationCampaign).map(
         ({ msg }) => msg,

@@ -5,7 +5,6 @@ import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors"
 import { type LevelEditorState } from "../levelEditorSlice";
 import { type UndoDescription } from "../reducers/undoDescription";
 import { type RoomUndoHistory } from "../reducers/undoReducers";
-import { pinRoomTabInPlace } from "./pinRoomTabInPlace";
 
 export const roomHistory = (
   state: LevelEditorState,
@@ -35,6 +34,4 @@ export const pushUndoEntryInPlace = (
   state.hoveredUndoIndex = 0;
 
   undo.push({ room: previousRoom, description, timestamp });
-  // an edited room's tab stays open:
-  pinRoomTabInPlace(state, roomId);
 };

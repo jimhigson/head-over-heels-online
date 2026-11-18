@@ -1,11 +1,17 @@
 import { type ComponentChildren } from "preact";
 
 import { roomGridSizeXY } from "../../game/components/dialogs/menuDialog/dialogs/map/mapConstants";
+import { useMapContext } from "../../game/components/dialogs/menuDialog/dialogs/map/MapContext";
 import { type RoomDecoratorProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
 import { roomWorldPosition } from "../../game/components/dialogs/menuDialog/dialogs/map/roomWorldPosition";
 import { translateXyz } from "../../game/components/dialogs/menuDialog/dialogs/map/svgHelpers";
+import { useIsCurrentCell } from "../../game/components/dialogs/menuDialog/dialogs/map/useIsCurrentCell";
+import { useRoomNode } from "../../game/components/dialogs/menuDialog/dialogs/map/useRoomNode";
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
-import { type Boundaries } from "../../model/map/roomGridPositions";
+import {
+  type Boundaries,
+  type RoomNode,
+} from "../../model/map/roomGridPositions";
 import { type SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRoomGridPositions";
 import { editorStore, useEditorAppSelector } from "../../store/store";
 import { useTip } from "../../ui/tip/useTip";
@@ -59,21 +65,10 @@ const isXyConnected = (
 
 const hasRoomAtTarget = (
   direction: DirectionXyz4,
-  roomId: EditorRoomId,
-  subRoomId: string,
+  { roomId, gridPosition }: RoomNode<EditorRoomId>,
   allGridPositions: SortedObjectOfRoomGridPositionSpecs<EditorRoomId>,
 ): boolean => {
-  const currentSpec = valuesIter(allGridPositions).find(
-    (spec) => spec.roomId === roomId && spec.subRoomId === subRoomId,
-  );
-  if (!currentSpec) {
-    return false;
-  }
-
-  const targetPosition = addXyz(
-    currentSpec.gridPosition,
-    unitVectors[direction],
-  );
+  const targetPosition = addXyz(gridPosition, unitVectors[direction]);
   return valuesIter(allGridPositions).some(
     (spec) =>
       spec.roomId !== roomId && xyzEqual(spec.gridPosition, targetPosition),
@@ -84,15 +79,13 @@ export type ButtonMode = "add" | "door" | "floor" | "insert";
 
 const getXyButtonMode = (
   direction: "away" | "left" | "right" | "towards",
-  boundaries: Boundaries,
-  roomId: EditorRoomId,
-  subRoomId: string,
+  roomNode: RoomNode<EditorRoomId>,
   allGridPositions: SortedObjectOfRoomGridPositionSpecs<EditorRoomId>,
 ): ButtonMode => {
-  if (isXyConnected(direction, boundaries)) {
+  if (isXyConnected(direction, roomNode.boundaries)) {
     return "insert";
   }
-  if (hasRoomAtTarget(direction, roomId, subRoomId, allGridPositions)) {
+  if (hasRoomAtTarget(direction, roomNode, allGridPositions)) {
     return "door";
   }
   return "add";
@@ -101,14 +94,13 @@ const getXyButtonMode = (
 const getZButtonMode = (
   direction: "down" | "up",
   hasRoomVertically: boolean,
-  roomId: EditorRoomId,
-  subRoomId: string,
+  roomNode: RoomNode<EditorRoomId>,
   allGridPositions: SortedObjectOfRoomGridPositionSpecs<EditorRoomId>,
 ): ButtonMode => {
   if (hasRoomVertically) {
     return "insert";
   }
-  if (hasRoomAtTarget(direction, roomId, subRoomId, allGridPositions)) {
+  if (hasRoomAtTarget(direction, roomNode, allGridPositions)) {
     return "floor";
   }
   return "add";
@@ -217,10 +209,12 @@ const InsertButton = ({
 const EditorMapInsertButtonDecorator = ({
   roomId,
   subRoomId,
-  boundaries,
-  isCurrentSubRoom,
-  allGridPositions,
 }: RoomDecoratorProps<EditorRoomId>) => {
+  const { gridPositions: allGridPositions } =
+    useMapContext<EditorRoomId>().useShownArea();
+  const roomNode = useRoomNode(roomId, subRoomId);
+  const { boundaries, gridPosition } = roomNode;
+  const { isCurrentSubRoom } = useIsCurrentCell(roomId, subRoomId);
   const hasRoomAbove = useEditorAppSelector(
     (state) =>
       selectCursorSubRoomVerticalLink(state.levelEditor, "above") !== undefined,
@@ -234,39 +228,25 @@ const EditorMapInsertButtonDecorator = ({
     return null;
   }
 
-  const gridPositionKey: `${EditorRoomId}/${string}` = `${roomId}/${subRoomId}`;
-  const currentGridPosition = allGridPositions[gridPositionKey]?.gridPosition;
-  if (currentGridPosition === undefined) {
-    return null;
-  }
-
   const getModeForDirection = (direction: DirectionXyz4): ButtonMode => {
     switch (direction) {
       case "left":
       case "right":
       case "away":
       case "towards":
-        return getXyButtonMode(
-          direction,
-          boundaries,
-          roomId,
-          subRoomId,
-          allGridPositions,
-        );
+        return getXyButtonMode(direction, roomNode, allGridPositions);
       case "up":
         return getZButtonMode(
           direction,
           hasRoomAbove,
-          roomId,
-          subRoomId,
+          roomNode,
           allGridPositions,
         );
       case "down":
         return getZButtonMode(
           direction,
           hasRoomBelow,
-          roomId,
-          subRoomId,
+          roomNode,
           allGridPositions,
         );
     }
@@ -286,7 +266,7 @@ const EditorMapInsertButtonDecorator = ({
   });
 
   return (
-    <g transform={translateXyz(roomWorldPosition(currentGridPosition))}>
+    <g transform={translateXyz(roomWorldPosition(gridPosition))}>
       {visibleDirections.map((direction) => {
         const { x, y } = screenPositions[direction];
         const mode = getModeForDirection(direction);

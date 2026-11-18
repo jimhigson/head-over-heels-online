@@ -70,6 +70,7 @@ export const renderRoomPreviewImage = async (
     roomJson,
     roomPickupsCollected: emptyObject,
     scrollsRead: emptyObject,
+    planetsLiberated: noPlanetsLiberated,
     // display heads and heels in their starting rooms:
     isNewGame: true,
     userSettings: emptyUserSettings,

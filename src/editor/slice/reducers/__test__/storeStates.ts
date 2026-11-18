@@ -11,7 +11,8 @@ import {
   type LevelEditorSliceAction,
   type LevelEditorState,
 } from "../../levelEditorSlice";
-import { openRoomDefaults, type OpenRoomId, type TabId } from "../../OpenRoom";
+import { openRoomDefaults, type OpenRoomId } from "../../OpenRoom";
+import { type TabGroupId, type TabId } from "../../PaneLayout";
 
 export const doorItemToolWithAutoAddRooms: Tool = {
   type: "item",
@@ -34,22 +35,39 @@ export const wallItemId = "testWall" as EditorRoomItemId;
 /**
  * the open room the test states show in their one tab
  */
-export const testOpenRoomId = "testOpenRoom" as OpenRoomId;
-const testTabId = "testTab" as TabId;
+export const testOpenRoomId = "openRoom-test" as OpenRoomId;
+const testTabId = "tab-test" as TabId;
+export const testTabGroupId = "tabGroup-test" as TabGroupId;
 
 export const editorStateWithOneRoomWithNoItems: LevelEditorState = {
   ...initialLevelEditorSliceState,
   selectedRoomIds: [testRoomId],
-  openRooms: {
-    [testOpenRoomId]: {
-      ...openRoomDefaults,
-      roomId: testRoomId,
-      subRoomId: "*",
-      editable: true,
+  dialogOpenRoomIds: [],
+  layout: {
+    rootId: testTabGroupId,
+    nodes: {
+      [testTabGroupId]: {
+        type: "tabGroup",
+        id: testTabGroupId,
+        children: [testTabId],
+        frontTabId: testTabId,
+      },
+      [testTabId]: {
+        type: "tab",
+        id: testTabId,
+        isPreview: false,
+        children: [testOpenRoomId],
+      },
+      [testOpenRoomId]: {
+        ...openRoomDefaults,
+        id: testOpenRoomId,
+        roomId: testRoomId,
+        subRoomId: "*",
+        editable: true,
+      },
     },
   },
-  tabs: [{ id: testTabId, isPreview: false, openRoomId: testOpenRoomId }],
-  cursorRoomId: testRoomId,
+  focusedTabGroupId: testTabGroupId,
   campaignInProgress: {
     locator: {
       campaignName: "testCampaign",
