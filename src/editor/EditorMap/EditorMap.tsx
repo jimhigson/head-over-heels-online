@@ -42,6 +42,7 @@ import {
   selectEditorShownMapArea,
   selectEditorShownMapAreaIndex,
 } from "./useEditorMapData";
+import { useRoomDragFromMap } from "./useRoomDragFromMap";
 
 const editorClickableRoomBehaviour = createClickableRoomBehaviour<EditorRoomId>(
   (roomId, subRoomId, { metaKey, ctrlKey }) => {
@@ -208,6 +209,7 @@ const EditorMap = () => {
   const editorMapAreaFirstRoomIds = useEditorAppSelector(
     selectEditorMapAreaFirstRoomIds,
   );
+  const roomDragFromMap = useRoomDragFromMap();
 
   const mapRendering =
     mapContainerHeight !== 0 && editorMapErrors === undefined;
@@ -263,7 +265,13 @@ const EditorMap = () => {
           }
         }}
       >
-        <div class="shrink-0">
+        <div
+          class="shrink-0"
+          // svg can't be dragged, so rooms are dragged out (to open in a tab) by this:
+          draggable
+          onPointerDown={roomDragFromMap.onPointerDown}
+          onDragStart={roomDragFromMap.onDragStart}
+        >
           <MapContextProvider value={mapContext}>
             <MapSvg<EditorRoomId> containerWidth={mapContainerWidth} />
           </MapContextProvider>

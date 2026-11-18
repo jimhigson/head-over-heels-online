@@ -1,10 +1,10 @@
 import { tabDrag } from "../../ui/tabs/tabDrag";
-import { type TabInGroup } from "../slice/PaneLayout";
+import { type DraggedRoomTab } from "../slice/PaneLayout";
 
 /**
- * a room tab dragged (html drag and drop) to another place among tabs, or
- * beside a pane
+ * a room tab, or a room to open in a tab (eg from the map), dragged (html drag
+ * and drop) to a place among tabs, or beside a pane
  */
-export const roomTabDrag = tabDrag<TabInGroup>(
+export const roomTabDrag = tabDrag<DraggedRoomTab>(
   "application/x-blockstack-room-tab",
 );

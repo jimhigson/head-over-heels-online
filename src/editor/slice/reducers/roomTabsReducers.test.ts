@@ -17,8 +17,8 @@ import {
   type LevelEditorState,
   pinRoomTab,
   removeRoom,
+  roomTabDropped,
   roomTabDroppedBesidePane,
-  roomTabMoved,
   roomTabSplit,
   setSelectedItemsInRoom,
   tabGroupFocused,
@@ -398,7 +398,7 @@ test("dropping a tab beside a pane moves it to a new pane there", () => {
   const state2 = reduceLevelEditorActions(
     state1,
     roomTabDroppedBesidePane({
-      tabInGroup: focusedPaneTabOf(state1, roomB),
+      dragged: { type: "tab", tabInGroup: focusedPaneTabOf(state1, roomB) },
       besideTabGroupId: testTabGroupId,
       side: "bottom",
     }),
@@ -416,15 +416,15 @@ test("dropping a tab among another pane's tabs moves it there", () => {
   const state2 = reduceLevelEditorActions(
     state1,
     roomTabDroppedBesidePane({
-      tabInGroup: focusedPaneTabOf(state1, roomB),
+      dragged: { type: "tab", tabInGroup: focusedPaneTabOf(state1, roomB) },
       besideTabGroupId: testTabGroupId,
       side: "bottom",
     }),
   );
   const state3 = reduceLevelEditorActions(
     state2,
-    roomTabMoved({
-      tabInGroup: focusedPaneTabOf(state2, roomB),
+    roomTabDropped({
+      dragged: { type: "tab", tabInGroup: focusedPaneTabOf(state2, roomB) },
       toTabGroupId: testTabGroupId,
       toIndex: 0,
     }),
@@ -446,8 +446,8 @@ test("dragging a tab along its own pane's tabs reorders them", () => {
   );
   const state3 = reduceLevelEditorActions(
     state2,
-    roomTabMoved({
-      tabInGroup: focusedPaneTabOf(state2, roomC),
+    roomTabDropped({
+      dragged: { type: "tab", tabInGroup: focusedPaneTabOf(state2, roomC) },
       toTabGroupId: testTabGroupId,
       toIndex: 0,
     }),
@@ -471,8 +471,11 @@ test("a pane already showing a room keeps its own tab when the room's tab is dro
   );
   const state2 = reduceLevelEditorActions(
     state1,
-    roomTabMoved({
-      tabInGroup: focusedPaneTabOf(state1, testRoomId),
+    roomTabDropped({
+      dragged: {
+        type: "tab",
+        tabInGroup: focusedPaneTabOf(state1, testRoomId),
+      },
       toTabGroupId: testTabGroupId,
       toIndex: 1,
     }),
@@ -513,5 +516,74 @@ test("browsing to a room already in front of another pane focuses that pane, swi
   }).toEqual({
     focusedTabGroupId: testTabGroupId,
     splitPaneFrontRoomId: roomB,
+  });
+});
+
+test("a room dropped among a pane's tabs opens in a new pinned tab there", () => {
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
+    roomTabDropped({
+      dragged: { type: "room", roomId: roomB, subRoomId: "*" },
+      toTabGroupId: testTabGroupId,
+      toIndex: 0,
+    }),
+  );
+
+  expect<TabSummary[]>(tabsOf(state1)).toEqual<TabSummary[]>([
+    { roomId: roomB, isPreview: false },
+    { roomId: testRoomId, isPreview: false },
+  ]);
+});
+
+test("a room dropped among a pane's tabs becomes the cursor room", () => {
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
+    roomTabDropped({
+      dragged: { type: "room", roomId: roomB, subRoomId: "*" },
+      toTabGroupId: testTabGroupId,
+      toIndex: 0,
+    }),
+  );
+
+  expect(selectCursorRoomIdFromLevelEditorState(state1)).toBe(roomB);
+});
+
+test("a room dropped among the tabs of a pane already showing it keeps that pane's tab", () => {
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
+    roomTabDropped({
+      dragged: { type: "room", roomId: testRoomId, subRoomId: "*" },
+      toTabGroupId: testTabGroupId,
+      toIndex: 1,
+    }),
+  );
+
+  expect({
+    layout: layoutOf(state1),
+    openRoomCount: layoutNodesOfType(state1.layout, "openRoom").toArray()
+      .length,
+  }).toEqual({
+    layout: { direction: undefined, paneRoomIds: [[testRoomId]] },
+    openRoomCount: 1,
+  });
+});
+
+test("a room dropped beside a pane opens in a new pane there", () => {
+  const state0 = baseState;
+  const state1 = reduceLevelEditorActions(
+    state0,
+    roomTabDroppedBesidePane({
+      dragged: { type: "room", roomId: roomB, subRoomId: "*" },
+      besideTabGroupId: testTabGroupId,
+      side: "right",
+    }),
+  );
+
+  expect<LayoutSummary>(layoutOf(state1)).toEqual<LayoutSummary>({
+    direction: "|",
+    paneRoomIds: [[testRoomId], [roomB]],
   });
 });

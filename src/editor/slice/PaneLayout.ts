@@ -99,6 +99,14 @@ export type PaneSide = "bottom" | "left" | "right" | "top";
 export type TabInGroup = { tabGroupId: TabGroupId; tabId: TabId };
 
 /**
+ * what is dragged to a place among tabs, or beside a pane: a tab already
+ * open, or a room (eg from the map) to open in a new tab there
+ */
+export type DraggedRoomTab =
+  | { type: "room"; roomId: EditorRoomId; subRoomId: string }
+  | { type: "tab"; tabInGroup: TabInGroup };
+
+/**
  * a node - undefined once it has left the layout (in case we have a stale id
  * reference)
  */

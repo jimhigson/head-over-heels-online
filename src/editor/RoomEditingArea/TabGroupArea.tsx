@@ -3,8 +3,8 @@ import { PaneDropZones } from "../../ui/PaneDropZones";
 import { type EditorRoomId } from "../editorTypes";
 import {
   changeToRoom,
+  roomTabDropped,
   roomTabDroppedBesidePane,
-  roomTabMoved,
   selectFocusedTabGroupId,
   selectIsOnlyPane,
   selectTabGroupFrontOpenRoomId,
@@ -84,19 +84,19 @@ export const TabGroupArea = ({ tabGroupId }: TabGroupAreaProps) => {
         class="w-full h-full"
         acceptsDrag={roomTabDrag.carries}
         onDropAt={(dragEvent, dropPlace) => {
-          const tabInGroup = roomTabDrag.dropped(dragEvent);
-          if (tabInGroup === undefined) {
+          const dragged = roomTabDrag.dropped(dragEvent);
+          if (dragged === undefined) {
             return;
           }
           store.dispatch(
             dropPlace === "centre" ?
-              roomTabMoved({
-                tabInGroup,
+              roomTabDropped({
+                dragged,
                 toTabGroupId: tabGroupId,
                 toIndex: tabCount,
               })
             : roomTabDroppedBesidePane({
-                tabInGroup,
+                dragged,
                 besideTabGroupId: tabGroupId,
                 side: dropPlace,
               }),

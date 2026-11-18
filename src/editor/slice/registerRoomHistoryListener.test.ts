@@ -8,7 +8,7 @@ import {
   changeToRoom,
   levelEditorSlice,
   roomBack,
-  roomTabMoved,
+  roomTabDropped,
   roomTabSelected,
   roomTabSplit,
   selectHistoryRoomsBackwards,
@@ -110,8 +110,8 @@ test("dragging the focused pane's front tab into another pane leaves the room hi
 
   // the test room's tab, dragged into pane B - still showing the test room:
   store.dispatch(
-    roomTabMoved({
-      tabInGroup: roomTab(store, testRoomId, paneB),
+    roomTabDropped({
+      dragged: { type: "tab", tabInGroup: roomTab(store, testRoomId, paneB) },
       toTabGroupId: paneB,
       toIndex: 0,
     }),

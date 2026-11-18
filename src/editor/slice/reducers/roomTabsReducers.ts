@@ -13,6 +13,7 @@ import {
   closeTabInPlace,
   deleteLayoutNodesInPlace,
   detachTabInPlace,
+  type DraggedRoomTab,
   existingLayoutNode,
   findRoomTab,
   frontTab,
@@ -26,11 +27,35 @@ import {
   type PaneSplitId,
   putTabGroupBesideInPlace,
   selectFrontOpenRoomFromLevelEditorState,
+  type Tab,
   type TabGroupId,
   tabGroupsIter,
   type TabInGroup,
   tabOpenRoom,
 } from "../PaneLayout";
+
+/**
+ * a new pinned tab on a room dragged in to open, seen from the angle of the
+ * pane it lands in or beside
+ */
+const newDraggedRoomTabInPlace = (
+  state: LevelEditorState,
+  { roomId, subRoomId }: Extract<DraggedRoomTab, { type: "room" }>,
+  landingTabGroupId: TabGroupId,
+): Tab => {
+  const { layout } = state;
+  const { cameraAngle } = tabOpenRoom(
+    layout,
+    frontTab(layout, existingLayoutNode(layout, landingTabGroupId)),
+  );
+  const { id: openRoomId } = newOpenRoomInPlace(
+    state,
+    roomId,
+    subRoomId,
+    cameraAngle,
+  );
+  return newTabInPlace(state, openRoomId, false);
+};
 
 export const roomTabsReducers = {
   /**
@@ -157,16 +182,16 @@ export const roomTabsReducers = {
   },
 
   /**
-   * a tab was dragged to a place among a pane's tabs - its own pane's, or
-   * another's. A pane that already has a tab on the room keeps that one
-   * instead. The pane it lands in is focused
+   * a tab, or a room to open in a new tab, was dragged to a place among a
+   * pane's tabs - its own pane's, or another's. A pane that already has a tab
+   * on the room keeps that one instead. The pane it lands in is focused
    */
-  roomTabMoved(
+  roomTabDropped(
     _state,
     {
-      payload: { tabInGroup, toTabGroupId, toIndex },
+      payload: { dragged, toTabGroupId, toIndex },
     }: PayloadAction<{
-      tabInGroup: TabInGroup;
+      dragged: DraggedRoomTab;
       toTabGroupId: TabGroupId;
       /**
        * where among the destination pane's tabs, before it moves
@@ -179,9 +204,30 @@ export const roomTabsReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
     const { layout } = state;
-    const { tabGroupId: fromTabGroupId, tabId } = tabInGroup;
     const toTabGroup = existingLayoutNode(layout, toTabGroupId);
 
+    if (dragged.type === "room") {
+      const roomTabAlreadyThere = findRoomTab(
+        layout,
+        toTabGroup,
+        dragged.roomId,
+      );
+      if (roomTabAlreadyThere !== undefined) {
+        tabOpenRoom(layout, roomTabAlreadyThere).subRoomId = dragged.subRoomId;
+        focusTabInPlace(state, toTabGroupId, roomTabAlreadyThere.id);
+        return;
+      }
+      const { id: newTabId } = newDraggedRoomTabInPlace(
+        state,
+        dragged,
+        toTabGroupId,
+      );
+      toTabGroup.children.splice(toIndex, 0, newTabId);
+      focusTabInPlace(state, toTabGroupId, newTabId);
+      return;
+    }
+
+    const { tabGroupId: fromTabGroupId, tabId } = dragged.tabInGroup;
     if (fromTabGroupId === toTabGroupId) {
       const fromIndex = toTabGroup.children.indexOf(tabId);
       toTabGroup.children.splice(fromIndex, 1);
@@ -212,15 +258,15 @@ export const roomTabsReducers = {
   },
 
   /**
-   * a tab was dragged to a side of a pane: it gets a pane of its own there,
-   * splitting the space, and focused
+   * a tab, or a room to open in a new tab, was dragged to a side of a pane:
+   * it gets a pane of its own there, splitting the space, and focused
    */
   roomTabDroppedBesidePane(
     _state,
     {
-      payload: { tabInGroup, besideTabGroupId, side },
+      payload: { dragged, besideTabGroupId, side },
     }: PayloadAction<{
-      tabInGroup: TabInGroup;
+      dragged: DraggedRoomTab;
       besideTabGroupId: TabGroupId;
       side: PaneSide;
     }>,
@@ -229,7 +275,20 @@ export const roomTabsReducers = {
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
-    const { tabGroupId: fromTabGroupId, tabId } = tabInGroup;
+
+    if (dragged.type === "room") {
+      const { id: newTabId } = newDraggedRoomTabInPlace(
+        state,
+        dragged,
+        besideTabGroupId,
+      );
+      const { id: newTabGroupId } = newTabGroupInPlace(state, newTabId);
+      putTabGroupBesideInPlace(state, besideTabGroupId, side, newTabGroupId);
+      focusTabInPlace(state, newTabGroupId, newTabId);
+      return;
+    }
+
+    const { tabGroupId: fromTabGroupId, tabId } = dragged.tabInGroup;
 
     if (
       fromTabGroupId === besideTabGroupId &&

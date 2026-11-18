@@ -239,6 +239,7 @@ const RoomSvgUnmemoised = <RoomId extends string>({
   return (
     <g
       data-room-id={id}
+      data-sub-room-id={subRoomId}
       strokeWidth={strokeWidth}
       class={`
         ${roomAccentColourClass(color)}
