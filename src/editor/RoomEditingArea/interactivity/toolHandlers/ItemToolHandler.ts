@@ -1,7 +1,10 @@
 import { produce } from "immer";
 
 import { type DoorConfig } from "../../../../model/json/ItemConfigMap";
-import { roomWallBounds } from "../../../../model/roomWallBounds";
+import {
+  isXyRectInFootprints,
+  roomFootprints,
+} from "../../../../model/roomFootprints";
 import { completeTimesXy } from "../../../../model/times";
 import {
   type EditorRootState,
@@ -75,9 +78,9 @@ const itemToolPlacement = (
   roomState: EditorRoomState,
   pointingAt: MaybePointingAtSomething,
   /**
-   * the open room being pointed into, for its camera angle and sub-room
+   * the open room being pointed into, for its camera angle
    */
-  { cameraAngle, subRoomId }: OpenRoom,
+  { cameraAngle }: OpenRoom,
 ): ApplyToolToRoomJsonPayload | undefined => {
   if (pointingAt.world === undefined) {
     return undefined;
@@ -140,19 +143,20 @@ const itemToolPlacement = (
         putDownBlockPosition,
         cameraAngle,
       );
-  const walls = roomWallBounds(roomState.roomJson, subRoomId);
+  const footprints = roomFootprints(roomState.roomJson);
   const times = completeTimesXy(
     ("times" in toolItem.config ? toolItem.config.times : undefined) ?? {},
   );
-  const isInsideWalls = ({ x, y }: Xyz) =>
-    x >= walls.from.x &&
-    x + times.x <= walls.to.x &&
-    y >= walls.from.y &&
-    y + times.y <= walls.to.y;
+  const isInRoom = ({ x, y }: Xyz) =>
+    isXyRectInFootprints(
+      footprints,
+      { x, y },
+      { x: x + times.x, y: y + times.y },
+    );
   const blockPosition = candidates.find(
     (candidate) =>
       // doors go in the walls themselves:
-      (item.type === "door" || isInsideWalls(candidate)) &&
+      (item.type === "door" || isInRoom(candidate)) &&
       !wouldCollideAt(candidate),
   );
   if (blockPosition === undefined) {

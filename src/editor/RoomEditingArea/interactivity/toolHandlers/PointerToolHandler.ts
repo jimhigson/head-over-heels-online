@@ -7,7 +7,11 @@ import {
   unprojectScreenXyToWorldXyz,
   unprojectScreenXyToWorldXyzOnFace,
 } from "../../../../game/render/projections";
-import { roomWallBounds } from "../../../../model/roomWallBounds";
+import {
+  isXyRectInFootprints,
+  roomFootprints,
+} from "../../../../model/roomFootprints";
+import { getJsonItemTimes } from "../../../../model/times";
 import {
   type EditorRootState,
   type EditorThunk,
@@ -426,7 +430,7 @@ const dragPreviewInOtherRoom = ({
   cameraAngle,
 }: DragPreviewArgs): ItemGrabPreviewedIntoPayload | undefined => {
   const { rooms } = levelEditorState.campaignInProgress;
-  const { roomId: toRoomId, subRoomId: toSubRoomId } = existingLayoutNode(
+  const { roomId: toRoomId } = existingLayoutNode(
     levelEditorState.layout,
     openRoomId,
   );
@@ -460,20 +464,18 @@ const dragPreviewInOtherRoom = ({
       ),
     },
   };
-  const walls = roomWallBounds(toRoom, toSubRoomId);
+  const footprints = roomFootprints(toRoom);
   const fits = (moveToTry: Xyz) => {
     const fromPointed = subXyz(moveToTry, blockDragVector);
     return (
       movedItemIds.every((itemId) => {
-        const { x, y } = addXyz(
-          toRoomWithItems.items[itemId].position,
-          fromPointed,
-        );
-        return (
-          x >= walls.from.x &&
-          x < walls.to.x &&
-          y >= walls.from.y &&
-          y < walls.to.y
+        const movedItem = toRoomWithItems.items[itemId];
+        const { x, y } = addXyz(movedItem.position, fromPointed);
+        const times = getJsonItemTimes(movedItem);
+        return isXyRectInFootprints(
+          footprints,
+          { x, y },
+          { x: x + times.x, y: y + times.y },
         );
       }) &&
       !itemMoveOrResizeWouldCollide({

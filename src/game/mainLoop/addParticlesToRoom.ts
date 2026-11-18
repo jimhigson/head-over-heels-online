@@ -57,7 +57,7 @@ const createParticleItemInPlay = (
   // fold roomTime in so particles spawned at the same spot at different
   // times don't start their fade animation in sync:
   const hash = hashXyzToNumber0to1(position, roomTime);
-  const config = { forCharacter };
+  const config = { forCharacter, animated: true };
   return {
     hash,
     id: `particle.${forItemId}.${particlesAdded++}`,

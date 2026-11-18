@@ -6,6 +6,17 @@ import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXyOnContainer } from "../projections";
 
 /**
+ * which world axes the camera looks along backwards - on those, an item's
+ * camera-closest side is its far (max) side, not its origin's
+ */
+export const cameraReversedAxes = (
+  cameraAngle: Xy,
+): { x: boolean; y: boolean } => ({
+  x: cameraAngle.x + cameraAngle.y < 0,
+  y: cameraAngle.x - cameraAngle.y < 0,
+});
+
+/**
  * the world-space vector from an item's origin to the (camera-closest-bottom) corner its
  * footprint sprite anchors at: one base cell (`aabb/times` per axis) from the origin,
  * on whichever axes the camera has reversed (`cos+sin<0` for x, `cos-sin<0` for y).
@@ -25,9 +36,10 @@ export const nearCornerOffsetWorldXyz = (
   const times = getItemInPlayTimes(item);
   const xSize = size?.x ?? item.state.box.xd;
   const ySize = size?.y ?? item.state.box.yd;
+  const reversedAxes = cameraReversedAxes(cameraAngle);
   return {
-    x: cameraAngle.x + cameraAngle.y < 0 ? xSize / times.x : 0,
-    y: cameraAngle.x - cameraAngle.y < 0 ? ySize / times.y : 0,
+    x: reversedAxes.x ? xSize / times.x : 0,
+    y: reversedAxes.y ? ySize / times.y : 0,
     z: 0,
   };
 };
