@@ -46,7 +46,7 @@ Magazines used to print memory locations to ‘*poke*’ values into so that rea
 
 A true hero leaves these **off**, but do modern gamers even know what lives are?`;
 
-export const OptionsDialog = () => {
+const OptionsDialog = () => {
   const infiniteLivesPokeOn = useAppSelector(selectIsInfiniteLivesPoke);
   return (
     <DialogPortal>

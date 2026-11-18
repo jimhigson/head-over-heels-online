@@ -128,7 +128,8 @@ export const bakeContainerToTexture = (
     });
   } catch (e) {
     throw new Error(
-      `bakeContainerToTexture: failed to render to texture. Container:\n ${pixiContainerToString(container)}`,
+      // full scene-graph dump is dev-only, so prod builds don't ship the stringifier
+      `bakeContainerToTexture: failed to render to texture. Container:\n ${import.meta.env.DEV ? pixiContainerToString(container) : container.label}`,
       { cause: e },
     );
   }

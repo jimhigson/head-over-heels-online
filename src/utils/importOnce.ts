@@ -13,7 +13,11 @@ export const importOnce = <M, Args extends Array<unknown> = []>(
    */
   return (...args) => {
     if (!promise) {
-      promise = importFn(...args);
+      promise = importFn(...args).catch((e: unknown) => {
+        // forget the failure so the next call retries
+        promise = undefined;
+        throw new Error("dynamic import failed", { cause: e });
+      });
     }
 
     return promise;

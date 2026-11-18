@@ -45,7 +45,7 @@ const ResolutionMenuItem = ({
   );
 };
 
-export const EmulatedResolutionDialog = () => {
+const EmulatedResolutionDialog = () => {
   return (
     <DialogPortal>
       <Dialog

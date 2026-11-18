@@ -4,7 +4,7 @@ import { DialogPortal } from "../../ui/DialogPortal";
 import { directionsXy8 } from "../../utils/vectors/vectors";
 import { usePlayableTailwindSpriteClassname } from "./tailwindSprites/playableTailwindSpriteClassname";
 
-export const NotFound404Page = () => {
+const NotFound404Page = () => {
   const spriteClassname = usePlayableTailwindSpriteClassname();
   return (
     <DialogPortal>
@@ -36,3 +36,5 @@ export const NotFound404Page = () => {
     </DialogPortal>
   );
 };
+
+export default NotFound404Page;

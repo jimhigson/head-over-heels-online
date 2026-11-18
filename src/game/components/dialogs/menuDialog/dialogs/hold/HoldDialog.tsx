@@ -5,7 +5,7 @@ import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { detectDeviceType } from "../../../../../../utils/detectEnv/detectDeviceType";
 import { CurrentKeyAssignments } from "../../CurrentKeyAssignments";
 
-export const HoldDialog = () => {
+const HoldDialog = () => {
   return (
     <DialogPortal>
       <Dialog
@@ -60,3 +60,5 @@ export const HoldDialog = () => {
     </DialogPortal>
   );
 };
+
+export default HoldDialog;

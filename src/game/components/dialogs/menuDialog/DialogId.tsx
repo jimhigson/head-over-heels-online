@@ -25,6 +25,5 @@ export type DialogId =
   | "reincarnatedRestart"
   | "score"
   | "sound"
-  | "sureWantEditor"
   | "whichGame"
   | `markdown/${MarkdownPageName}`;

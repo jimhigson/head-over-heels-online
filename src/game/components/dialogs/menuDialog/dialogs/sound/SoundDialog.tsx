@@ -33,7 +33,7 @@ const roomEntryTunesDescription = (
   : roomEntryTunes === "sparse" ? `Play jingles when the scenery changes`
   : `Nope, off`;
 
-export const SoundDialog = () => {
+const SoundDialog = () => {
   const isMuted = useAppSelector(selectIsSoundMuted);
   const isNoFootstepSounds = useAppSelector(selectIsNoFootstepSounds);
   const roomEntryTunes = useAppSelector(selectRoomEntryTunes);

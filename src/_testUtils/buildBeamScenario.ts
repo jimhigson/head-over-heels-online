@@ -1,5 +1,5 @@
 import { loadCampaignFromDb } from "../db/campaign";
-import { postgrestDb } from "../db/postgrestDb";
+import { postgrestDbClient } from "../db/postgrestDbClient";
 import { loadRoom } from "../game/gameState/loadRoom/loadRoom";
 import {
   castBeamSegments,
@@ -27,7 +27,7 @@ export type BeamScenarioRoomJson = RoomJson<string, string>;
  */
 export const loadBeamScenarioRoomJson =
   async (): Promise<BeamScenarioRoomJson> => {
-    const laboratoryCampaign = await loadCampaignFromDb(postgrestDb, {
+    const laboratoryCampaign = await loadCampaignFromDb(postgrestDbClient, {
       userId: jimAtBlockstackingUserId,
       campaignName: "laboratory",
     });

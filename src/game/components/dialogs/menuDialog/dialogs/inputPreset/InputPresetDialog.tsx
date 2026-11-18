@@ -11,7 +11,7 @@ import { MenuItems } from "../../MenuItems";
 import { DialogTitleBar } from "../DialogTitleBar";
 import { InputPresetMenuItem } from "./InputPresetMenuItem";
 
-export const InputPresetDialog = () => {
+const InputPresetDialog = () => {
   return (
     <DialogPortal>
       <Dialog fullScreen class={optionsDialogClasses} dialogId="inputPreset">

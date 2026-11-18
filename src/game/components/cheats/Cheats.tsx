@@ -247,7 +247,7 @@ const cheatsDecorators = [
 
 const cheatsRoomDecorators = [subRoomBoundariesDecorateRoomRenderer];
 
-export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
+const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
   useRegisterDecorateItemRenderers(cheatsDecorators);
   useRegisterDecorateRoomRenderers(cheatsRoomDecorators);
   const gameApi = useGameApi<RoomId>();

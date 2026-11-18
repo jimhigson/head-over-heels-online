@@ -6,7 +6,7 @@ import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItems } from "../../MenuItems";
 
-export const ReincarnatedRestartDialog = () => {
+const ReincarnatedRestartDialog = () => {
   return (
     <DialogPortal>
       <Dialog
@@ -41,3 +41,5 @@ export const ReincarnatedRestartDialog = () => {
     </DialogPortal>
   );
 };
+
+export default ReincarnatedRestartDialog;

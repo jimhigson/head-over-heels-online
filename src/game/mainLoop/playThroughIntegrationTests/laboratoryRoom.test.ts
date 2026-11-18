@@ -3,7 +3,7 @@ import { expect, test } from "vitest";
 import { setupGameForCampaign } from "../../../_testUtils/basicRoom";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { loadCampaignFromDb } from "../../../db/campaign";
-import { postgrestDb } from "../../../db/postgrestDb";
+import { postgrestDbClient } from "../../../db/postgrestDbClient";
 import { jimAtBlockstackingUserId } from "../../../gameInfo";
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
@@ -35,7 +35,7 @@ const sanitiseItem = <RoomId extends string, RoomItemId extends string>(
 });
 
 // the latest version, so the test follows the room as it is edited:
-const laboratoryCampaign = await loadCampaignFromDb(postgrestDb, {
+const laboratoryCampaign = await loadCampaignFromDb(postgrestDbClient, {
   userId: jimAtBlockstackingUserId,
   campaignName: "laboratory",
 });

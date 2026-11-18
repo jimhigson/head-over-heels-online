@@ -14,7 +14,7 @@ import { proclaimEmperorDialogColourClasses } from "./proclaimEmperorDialogColou
 
 const crownClass = `sprite ${"texture-crown_blacktooth" satisfies TextureTailwindClass} ${"zx:texture-crown_uncolourised" satisfies TextureTailwindClass} zx:sprite-tinted zx:text-zxYellow toppy:text-toppyWarm1`;
 
-export const ProclaimEmperorDialog = () => {
+const ProclaimEmperorDialog = () => {
   return (
     <DialogPortal>
       <Border class="bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack" />

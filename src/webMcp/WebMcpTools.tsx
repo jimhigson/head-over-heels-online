@@ -8,7 +8,7 @@ import { getModelContext } from "./modelContext";
 import { useRegisterWebMcpTools } from "./useRegisterWebMcpTools";
 
 /** registers the debugging tools with the browser's webmcp api */
-export const WebMcpTools = (_emptyProps: EmptyObject) => {
+const WebMcpTools = (_emptyProps: EmptyObject) => {
   const gameApi = useMaybeGameApi();
   const inputStateTracker = useInputStateTracker();
 

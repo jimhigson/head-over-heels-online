@@ -8,7 +8,7 @@ import { usePlayableTailwindSpriteClassname } from "./tailwindSprites/playableTa
 
 const editorUrl = import.meta.env.VITE_EDITOR_URL;
 
-export const WantedEditor404 = () => {
+const WantedEditor404 = () => {
   const spriteClassname = usePlayableTailwindSpriteClassname();
   return (
     <DialogPortal>
@@ -46,3 +46,5 @@ The link I have is: [${editorUrl}](${editorUrl})
     </DialogPortal>
   );
 };
+
+export default WantedEditor404;

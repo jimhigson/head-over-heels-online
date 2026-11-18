@@ -15,7 +15,7 @@ const introMarkdown = `The game works on *any modern web browser*: phone, deskto
 But, it is better to **install the game**, either as a PWA
 or by downloading the app.`;
 
-export const InstallDialog = (_emptyProps: EmptyObject) => {
+const InstallDialog = (_emptyProps: EmptyObject) => {
   return (
     <DialogPortal>
       <Border class="bg-metallicBlue zx:bg-zxRed toppy:bg-toppyCool3" />

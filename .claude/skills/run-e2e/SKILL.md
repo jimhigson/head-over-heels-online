@@ -156,7 +156,7 @@ allowed (a denied host gives `ERR_TUNNEL_CONNECTION_FAILED` instead), so it is
 the interception, not egress policy.
 
 **CLI supabase access DOES work** through the proxy with the anon key baked into
-the build (`grep -oE 'eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+' dist/assets/postgrestDb.js`).
+the build (`grep -oE 'eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+' dist/assets/postgrestDbClient.js`).
 The campaign load is a POST RPC:
 
 ```bash

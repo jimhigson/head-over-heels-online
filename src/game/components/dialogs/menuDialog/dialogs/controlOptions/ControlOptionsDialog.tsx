@@ -90,7 +90,7 @@ const controlOptionsMenuItemsClass =
 // on mobile, override the double-height of menu items (put in to give a bitter hit area) since they're big enough already
 //"!sprites-normal-height";
 
-export const ControlOptionsDialog = () => {
+const ControlOptionsDialog = () => {
   useKeyAssignmentInput();
 
   const [showAll, setShowAll] = useState<boolean>(!isTouchDevice());
