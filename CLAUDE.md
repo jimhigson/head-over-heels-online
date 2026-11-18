@@ -471,6 +471,16 @@ Never padd off a test as 'flaky' as an excuse - a 'flaky' test is a broken test.
 
  * when asked to investigate, for any data that can reasonably be shown as a table, that is always the preferred format to give the findings to the user
 
+ ### Testing store reducers and state transitions
+
+ The preferred way to write these tests is:
+
+* produce named and numbered states which are the result of either the initial state or the state after reductions. Eg: `state0BaseWithFoo`, `state1AfterBar`, `state2AfterBaz` etc
+* transition between store states ONLY by using reducers, eg: `reduceLevelEditorActions` if in the editor
+* the initial state can be created using immer produce over a base state, all other states should be reachable via reducers
+* the test alone should tell the story of its states and create the states - avoid using states defined at module level
+* the expects can be intermediate states (not just the last one) and should use selectors on the store where possible to check it is correct
+
  ### End to end (playwright)
 
  * before running, do `pnpm build:game` or else it'll run against old build, unless sure nothing has been edited since the last run - if unsure, assume edits.

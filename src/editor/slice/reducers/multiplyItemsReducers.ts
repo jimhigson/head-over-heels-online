@@ -2,9 +2,12 @@ import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { nextItemIdInItems } from "../../../model/inPlaceMutators/nextItemId";
 import { typePrefix } from "../../../model/json/typePrefix";
-import { keys } from "../../../utils/entries";
+import { keys, valuesIter } from "../../../utils/entries";
 import { addXyz, originXyz, type Xyz } from "../../../utils/vectors/vectors";
-import { type EditorRoomItemId } from "../../editorTypes";
+import {
+  type EditorJsonItemWithTimes,
+  type EditorRoomItemId,
+} from "../../editorTypes";
 import { growArgs, shrinkArgs } from "../../toolbar/buttons/nudgeDirections";
 import { addNudgeStepToPreviewInPlace } from "../inPlaceMutators/addNudgeStepToPreviewInPlace";
 import {
@@ -16,7 +19,10 @@ import {
   type PreviewedRoomItemEdits,
 } from "../levelEditorSlice";
 import { type MultiplyPlan, type MultiplyType } from "../multiplyPlan";
-import { moveOrResizeOutcome } from "./moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
+import {
+  addTimesDeltaToJsonItemInPlace,
+  moveOrResizeOutcome,
+} from "./moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
 
 export type MultiplySelectedItemsPayload = {
   /**
@@ -112,5 +118,53 @@ export const multiplyItemsReducers = {
         };
       },
     );
+  },
+
+  /**
+   * grow (or shrink) the item held by the current item tool one block along a
+   * world direction's axis, so the next placement is that size. Also resizes
+   * the hover preview, so it keeps matching the tool. No-op unless an item
+   * tool is active
+   */
+  multiplyCurrentToolItem(
+    _state,
+    {
+      payload: { direction, multiplyType },
+    }: PayloadAction<{
+      /**
+       * a world unit vector - its sense doesn't matter, as the tool's item
+       * has no position to grow from
+       */
+      direction: Xyz;
+      multiplyType: MultiplyType;
+    }>,
+  ) {
+    // see multiplySelectedItems for why the WritableDraft<> wrapper is cast away:
+    const state = _state as LevelEditorState;
+
+    if (state.tool.type !== "item") {
+      return;
+    }
+    const { timesDelta } =
+      multiplyType === "multiplyOrGrow" ?
+        growArgs(direction)
+      : shrinkArgs(direction);
+    const fullTimesDelta = { ...originXyz, ...timesDelta };
+    // ItemTool is {type, config} with no position; only its type and times are
+    // read and written:
+    addTimesDeltaToJsonItemInPlace(
+      state.tool.item as EditorJsonItemWithTimes,
+      fullTimesDelta,
+    );
+    if (state.pendingEdits?.madeBy.type === "itemTool") {
+      for (const itemPreview of valuesIter(state.pendingEdits.edits)) {
+        if (itemPreview !== null) {
+          addTimesDeltaToJsonItemInPlace(
+            itemPreview as EditorJsonItemWithTimes,
+            fullTimesDelta,
+          );
+        }
+      }
+    }
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

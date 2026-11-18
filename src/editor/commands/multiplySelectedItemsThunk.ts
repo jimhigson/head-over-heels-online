@@ -10,6 +10,7 @@ import { type EditorRoomItemId, type EditorRoomState } from "../editorTypes";
 import {
   addingItemWouldCollide,
   itemMoveOrResizeWouldCollide,
+  sameMoveOrResizeForEach,
 } from "../RoomEditingArea/cursor/editWouldCollide";
 import { selectCurrentEditingRoomJsonWithPreviews } from "../slice/levelEditorSelectors";
 import {
@@ -55,9 +56,10 @@ export const multiplySelectedItemsThunk =
       itemMoveOrResizeWouldCollide({
         roomState,
         roomJson,
-        jsonItemIds: plan.resizedItemIds,
-        blockPositionDelta: posVector,
-        timesDelta: { ...originXyz, ...timesDelta },
+        movesOrResizes: sameMoveOrResizeForEach(plan.resizedItemIds, {
+          blockPositionDelta: posVector,
+          timesDelta: { ...originXyz, ...timesDelta },
+        }),
       });
 
     const roomFloorSquares = floorSquares(roomJson);

@@ -1,6 +1,7 @@
+import { getConsolidatableVector } from "../consolidateItems/ConsolidatableJsonItem";
 import { floorSquares } from "../model/json/verification/helpers/roomPerimeter";
 import { flippedMirrorOrientation } from "../model/MirrorOrientation";
-import { getJsonItemTimes } from "../model/times";
+import { getJsonItemTimes, optimiseTimesXyz } from "../model/times";
 import { unitVectors } from "../utils/vectors/unitVectors";
 import {
   alongAxisOfDirectionXy,
@@ -12,6 +13,7 @@ import {
 import {
   type EditorJsonItem,
   type EditorJsonItemUnion,
+  type EditorJsonItemWithTimes,
   type EditorRoomJson,
 } from "./editorTypes";
 import { directionForItem, setItemDirectionInPlace } from "./itemDirection";
@@ -19,36 +21,13 @@ import { directionForItem, setItemDirectionInPlace } from "./itemDirection";
 export type RotationSense = "anticlockwise" | "clockwise";
 
 /**
- * whether the editor can rotate this item - a mirror (flips orientation) or any
- * item with a settable facing direction (lamp, monster, movingPlatform,
- * sceneryPlayer). Matches what the direction/orientation context menus cover.
+ * turn an item's facing (direction, axis or orientation) a quarter-turn, in
+ * place. No-op for items with no facing
  */
-export const isRotatable = (item: EditorJsonItemUnion): boolean => {
-  if (item.type === "mirror" || item.type === "wall") {
-    return true;
-  }
-  if (item.type === "barrier" || item.type === "conveyor") {
-    // these can only rotate while a single block in the xy plane - rotating a
-    // multi-block run would change its footprint. z extent doesn't matter:
-    const times = getJsonItemTimes(item);
-    return times.x <= 1 && times.y <= 1;
-  }
-  return directionForItem(item) !== undefined;
-};
-
-/**
- * rotate one item's facing a quarter-turn, mutating its config in place. Shared
- * by the room-selection reducer and the item-tool reducer. No-op for items with
- * no rotatable facing.
- */
-export const rotateItemInPlace = (
+const rotateFacingInPlace = (
   item: EditorJsonItemUnion,
   sense: RotationSense,
 ): void => {
-  if (!isRotatable(item)) {
-    // includes multi-block-in-plane barriers/conveyors, which can't rotate:
-    return;
-  }
   if (item.type === "mirror") {
     // a mirror plane is 180°-symmetric, so a quarter-turn either way is a flip:
     item.config.orientation = flippedMirrorOrientation(item.config.orientation);
@@ -77,6 +56,98 @@ export const rotateItemInPlace = (
   );
 };
 
+const hasTimes = (item: EditorJsonItemUnion): item is EditorJsonItemWithTimes =>
+  "times" in item.config;
+
+/**
+ * whether the item covers more than one block in x or y - so a quarter-turn
+ * swaps its x and y extents
+ */
+const isMultiBlockInXy = (item: EditorJsonItemUnion): boolean => {
+  const { x, y } = getJsonItemTimes(item);
+  return x !== 1 || y !== 1;
+};
+
+/**
+ * the axes an item can take times along once turned a quarter: a barrier's
+ * and a conveyor's follow their facing so swap x and y, every other item's
+ * stay as they are
+ */
+const consolidatableAxesAfterQuarterTurn = (item: EditorJsonItemUnion): Xyz => {
+  const consolidatableAxes = getConsolidatableVector(item);
+  return item.type === "barrier" || item.type === "conveyor" ?
+      {
+        ...consolidatableAxes,
+        x: consolidatableAxes.y,
+        y: consolidatableAxes.x,
+      }
+    : consolidatableAxes;
+};
+
+/**
+ * whether, once turned a quarter, the item can take its x and y times swapped
+ * - eg a block can along both axes, a conveyor run along the axis its turned
+ * direction runs on
+ */
+const timesFitAfterQuarterTurn = (item: EditorJsonItemUnion): boolean => {
+  if (!isMultiBlockInXy(item)) {
+    return true;
+  }
+  const { x: timesX, y: timesY } = getJsonItemTimes(item);
+  const turnedAxes = consolidatableAxesAfterQuarterTurn(item);
+  // after the swap, the item's x extent is its y extent now, and vice versa:
+  return (
+    (timesY === 1 || turnedAxes.x !== 0) && (timesX === 1 || turnedAxes.y !== 0)
+  );
+};
+
+/**
+ * whether the editor can rotate this item: a wall, or an item with a facing
+ * (mirror, barrier, conveyor, lamp, monster...) or spread over more than one
+ * block in x or y - whose times can be swapped once it is turned. Not a floor,
+ * which is the room's structure
+ */
+export const isRotatable = (item: EditorJsonItemUnion): boolean => {
+  if (item.type === "wall") {
+    return true;
+  }
+  if (item.type === "floor") {
+    return false;
+  }
+  const hasFacing =
+    item.type === "mirror" ||
+    item.type === "barrier" ||
+    item.type === "conveyor" ||
+    directionForItem(item) !== undefined;
+  return (
+    (hasFacing || isMultiBlockInXy(item)) && timesFitAfterQuarterTurn(item)
+  );
+};
+
+/**
+ * rotate one item a quarter-turn, mutating it in place: its facing turns, and
+ * its x and y times swap. Shared by the room-selection reducer and the
+ * item-tool reducer. No-op for items that can't rotate
+ */
+export const rotateItemInPlace = (
+  item: EditorJsonItemUnion,
+  sense: RotationSense,
+): void => {
+  if (!isRotatable(item)) {
+    return;
+  }
+  rotateFacingInPlace(item, sense);
+  if (hasTimes(item) && item.config.times !== undefined) {
+    const { x, y, z } = getJsonItemTimes(item);
+    const swappedTimes = optimiseTimesXyz({ x: y, y: x, z });
+    if (swappedTimes === undefined) {
+      delete item.config.times;
+    } else {
+      item.config.times = swappedTimes;
+    }
+  }
+};
+
 /**
  * where a wall's run starts after a quarter-turn about its middle: it swaps to
  * the other axis, centred on the same point (rounded the same way both ways,
@@ -93,6 +164,21 @@ const wallPositionAfterQuarterTurn = ({
     ...position,
     [alongAxis]: position[alongAxis] + halfLength,
     [acrossAxis]: position[acrossAxis] - halfLength,
+  };
+};
+
+/**
+ * where an item's footprint starts after a quarter-turn about its middle: its
+ * x and y extents swap, centred on the same point (truncating the same both
+ * ways, so turning back puts it back)
+ */
+const footprintPositionAfterQuarterTurn = (item: EditorJsonItemUnion): Xyz => {
+  const { position } = item;
+  const { x: timesX, y: timesY } = getJsonItemTimes(item);
+  return {
+    ...position,
+    x: position.x + Math.trunc((timesX - timesY) / 2),
+    y: position.y + Math.trunc((timesY - timesX) / 2),
   };
 };
 
@@ -153,8 +239,12 @@ export const rotatePlacedItemInPlace = (
   item: EditorJsonItemUnion,
   sense: RotationSense,
 ): void => {
-  if (item.type === "wall") {
-    item.position = wallPositionAfterQuarterTurn(item);
+  if (!isRotatable(item)) {
+    return;
   }
+  item.position =
+    item.type === "wall" ?
+      wallPositionAfterQuarterTurn(item)
+    : footprintPositionAfterQuarterTurn(item);
   rotateItemInPlace(item, sense);
 };

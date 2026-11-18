@@ -1,7 +1,10 @@
 import { type EditorThunk } from "../../store/store";
 import { type AxisXyz, originXyz, type Xyz } from "../../utils/vectors/vectors";
 import { type EditorRoomState } from "../editorTypes";
-import { itemMoveOrResizeWouldCollide } from "../RoomEditingArea/cursor/editWouldCollide";
+import {
+  itemMoveOrResizeWouldCollide,
+  sameMoveOrResizeForEach,
+} from "../RoomEditingArea/cursor/editWouldCollide";
 import { selectCurrentEditingRoomJsonWithPreviews } from "../slice/levelEditorSelectors";
 import {
   nudgeSelectedItems,
@@ -84,9 +87,10 @@ export const nudgeSelectedItemsThunk =
     const collides = itemMoveOrResizeWouldCollide({
       roomState,
       roomJson,
-      jsonItemIds,
-      blockPositionDelta: positionDelta,
-      timesDelta: fullTimesDelta,
+      movesOrResizes: sameMoveOrResizeForEach(jsonItemIds, {
+        blockPositionDelta: positionDelta,
+        timesDelta: fullTimesDelta,
+      }),
     });
 
     if (collides) {

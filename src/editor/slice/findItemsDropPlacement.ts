@@ -9,7 +9,10 @@ import {
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../editorTypes";
-import { itemMoveOrResizeWouldCollide } from "../RoomEditingArea/cursor/editWouldCollide";
+import {
+  itemMoveOrResizeWouldCollide,
+  sameMoveOrResizeForEach,
+} from "../RoomEditingArea/cursor/editWouldCollide";
 import { isMovableBetweenRooms } from "./isMovableBetweenRooms";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
@@ -168,8 +171,9 @@ export const findItemsDropPlacement = (
       !itemMoveOrResizeWouldCollide({
         roomState: trialRoomState,
         roomJson: trialRoomState.roomJson,
-        jsonItemIds: trialIds,
-        blockPositionDelta: addXyz(candidate, { x: insideX, y: insideY }),
+        movesOrResizes: sameMoveOrResizeForEach(trialIds, {
+          blockPositionDelta: addXyz(candidate, { x: insideX, y: insideY }),
+        }),
       }),
   );
   return fit === undefined ? undefined : (

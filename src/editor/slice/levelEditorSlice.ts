@@ -342,6 +342,7 @@ export const {
   loadCampaign,
   moveItemsToRoom,
   moveOrResizeItemAsPreview,
+  multiplyCurrentToolItem,
   multiplySelectedItems,
   nudgeSelectedItems,
   commitPendingNudge,

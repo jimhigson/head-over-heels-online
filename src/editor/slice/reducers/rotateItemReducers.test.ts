@@ -1,15 +1,31 @@
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
+import { loadRoom } from "../../../game/gameState/loadRoom/loadRoom";
+import {
+  iterateRoomJsonItemIds,
+  roomJsonItemsIterable,
+} from "../../../model/RoomJsonItemIterators";
+import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import { emptyUserSettings } from "../../../store/slices/userSettings/emptyUserSettings";
+import { originXyz } from "../../../utils/vectors/vectors";
+import { rotateSelectionOrToolItemThunk } from "../../commands/rotateSelectionOrToolItemThunk";
 import {
   type EditorJsonItemUnion,
   type EditorRoomItemId,
+  type EditorRoomState,
 } from "../../editorTypes";
 import { type RotationSense } from "../../itemRotation";
 import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
-import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
+  selectCurrentCommittedRoomJsonFromLevelEditorState,
+  selectItemInLevelEditorState,
+} from "../levelEditorSelectors";
+import {
+  applyItemTool,
+  commitCurrentPreviewedEdits,
   type LevelEditorState,
+  moveOrResizeItemAsPreview,
   rotateCurrentToolItem,
   rotateSelectedItems,
   setSelectedItemsInRoom,
@@ -133,7 +149,7 @@ test("rotates a selected scenery player by 45° (8-way)", () => {
   ).toMatchObject({ config: { startDirection: "towardsLeft" } });
 });
 
-test("leaves a multi-block conveyor untouched (not rotatable in place)", () => {
+test("turns a multi-block conveyor run about its middle", () => {
   expect(
     rotateSelected(
       {
@@ -145,8 +161,8 @@ test("leaves a multi-block conveyor untouched (not rotatable in place)", () => {
     ),
   ).toEqual({
     type: "conveyor",
-    config: { direction: "left", times: { x: 3 } },
-    position: { x: 0, y: 0, z: 0 },
+    config: { direction: "away", times: { y: 3 } },
+    position: { x: 1, y: -1, z: 0 },
   });
 });
 
@@ -244,4 +260,215 @@ test("also rotates the hover preview to match the rotated tool", () => {
       "preview" as EditorRoomItemId
     ],
   ).toMatchObject({ config: { direction: "left" } });
+});
+
+test("a multi-block conveyor turns about its middle and back, but not into an item in the way", () => {
+  const floor: EditorJsonItemUnion = {
+    type: "floor",
+    config: {
+      floorType: "standable",
+      scenery: "blacktooth",
+      times: { x: 8, y: 8 },
+    },
+    position: originXyz,
+  };
+  // an otherwise empty room, with just a floor to put things on:
+  const state0EmptyRoom = produce(
+    editorStateWithOneRoomWithNoItems,
+    (draft) => {
+      draft.campaignInProgress.rooms[testRoomId].items[
+        "floor" as EditorRoomItemId
+      ] = floor;
+    },
+  );
+
+  // a conveyor, put down on the floor with the item tool:
+  const state1ConveyorAdded = reduceLevelEditorActions(
+    state0EmptyRoom,
+    setTool({
+      type: "item",
+      item: { type: "conveyor", config: { direction: "left" } },
+    }),
+    applyItemTool({
+      roomId: testRoomId,
+      blockPosition: { x: 2, y: 2, z: 0 },
+      pointedAtItemJson: floor,
+      preview: false,
+      timestamp: 0,
+    }),
+  );
+  const [conveyorId] = iterateRoomJsonItemIds(
+    selectCurrentCommittedRoomJsonFromLevelEditorState(state1ConveyorAdded)
+      .items,
+    "conveyor",
+  ).toArray();
+
+  // made 3 long:
+  const state2ConveyorResized = reduceLevelEditorActions(
+    state1ConveyorAdded,
+    setSelectedItemsInRoom({ jsonItemIds: [conveyorId] }),
+    moveOrResizeItemAsPreview({
+      jsonItemIds: [conveyorId],
+      positionDelta: originXyz,
+      timesDelta: { x: 2, y: 0, z: 0 },
+      timestamp: 0,
+    }),
+    commitCurrentPreviewedEdits(),
+  );
+  expect(
+    selectItemInLevelEditorState(state2ConveyorResized, conveyorId),
+  ).toEqual({
+    type: "conveyor",
+    config: { direction: "left", times: { x: 3 } },
+    position: { x: 2, y: 2, z: 0 },
+  });
+
+  // turned clockwise, about its middle, to face away and run 3 long in y:
+  const state3RotatedClockwise = reduceLevelEditorActions(
+    state2ConveyorResized,
+    rotateSelectedItems({ sense: "clockwise", timestamp: 0 }),
+  );
+  expect(
+    selectItemInLevelEditorState(state3RotatedClockwise, conveyorId),
+  ).toEqual({
+    type: "conveyor",
+    config: { direction: "away", times: { y: 3 } },
+    position: { x: 3, y: 1, z: 0 },
+  });
+
+  // turned back anticlockwise, back to as it was:
+  const state4RotatedBack = reduceLevelEditorActions(
+    state3RotatedClockwise,
+    rotateSelectedItems({ sense: "anticlockwise", timestamp: 0 }),
+  );
+  expect(selectItemInLevelEditorState(state4RotatedBack, conveyorId)).toEqual({
+    type: "conveyor",
+    config: { direction: "left", times: { x: 3 } },
+    position: { x: 2, y: 2, z: 0 },
+  });
+
+  // a block put down where the conveyor would turn into, then the conveyor
+  // selected again:
+  const state5BlockInTheWay = reduceLevelEditorActions(
+    state4RotatedBack,
+    setTool({
+      type: "item",
+      item: { type: "block", config: { style: "organic" } },
+    }),
+    applyItemTool({
+      roomId: testRoomId,
+      blockPosition: { x: 3, y: 1, z: 0 },
+      pointedAtItemJson: floor,
+      preview: false,
+      timestamp: 0,
+    }),
+    setSelectedItemsInRoom({ jsonItemIds: [conveyorId] }),
+  );
+  expect(
+    roomJsonItemsIterable(
+      selectCurrentCommittedRoomJsonFromLevelEditorState(state5BlockInTheWay),
+      "block",
+    ).toArray(),
+  ).toEqual([
+    {
+      type: "block",
+      config: { style: "organic" },
+      position: { x: 3, y: 1, z: 0 },
+    },
+  ]);
+
+  // turning into the block is refused - the conveyor stays as it was:
+  const state6RotatedIntoTheBlock = reduceLevelEditorActions(
+    state5BlockInTheWay,
+    rotateSelectionOrToolItemThunk(
+      "clockwise",
+      loadRoom({
+        roomJson:
+          selectCurrentCommittedRoomJsonFromLevelEditorState(
+            state5BlockInTheWay,
+          ),
+        scrollsRead: {},
+        planetsLiberated: noPlanetsLiberated,
+        roomPickupsCollected: {},
+        isNewGame: false,
+        userSettings: emptyUserSettings,
+      }) as EditorRoomState,
+    ),
+  );
+  expect(
+    selectItemInLevelEditorState(state6RotatedIntoTheBlock, conveyorId),
+  ).toEqual({
+    type: "conveyor",
+    config: { direction: "left", times: { x: 3 } },
+    position: { x: 2, y: 2, z: 0 },
+  });
+});
+
+test("two selected conveyors turn together, each into the space the other leaves", () => {
+  const conveyorAId = "conveyorA" as EditorRoomItemId;
+  const conveyorBId = "conveyorB" as EditorRoomItemId;
+  // two conveyors, 3 long in x, B a block further along x and y than A. Each
+  // turns into where the other is now, but not where the other turns to:
+  const state0TwoConveyors = produce(
+    editorStateWithOneRoomWithNoItems,
+    (draft) => {
+      const { items } = draft.campaignInProgress.rooms[testRoomId];
+      items["floor" as EditorRoomItemId] = {
+        type: "floor",
+        config: {
+          floorType: "standable",
+          scenery: "blacktooth",
+          times: { x: 8, y: 8 },
+        },
+        position: originXyz,
+      };
+      items[conveyorAId] = {
+        type: "conveyor",
+        config: { direction: "left", times: { x: 3 } },
+        position: { x: 2, y: 2, z: 0 },
+      };
+      items[conveyorBId] = {
+        type: "conveyor",
+        config: { direction: "left", times: { x: 3 } },
+        position: { x: 3, y: 3, z: 0 },
+      };
+    },
+  );
+
+  const state1BothRotated = reduceLevelEditorActions(
+    state0TwoConveyors,
+    setSelectedItemsInRoom({ jsonItemIds: [conveyorAId, conveyorBId] }),
+    rotateSelectionOrToolItemThunk(
+      "clockwise",
+      loadRoom({
+        roomJson:
+          selectCurrentCommittedRoomJsonFromLevelEditorState(
+            state0TwoConveyors,
+          ),
+        scrollsRead: {},
+        planetsLiberated: noPlanetsLiberated,
+        roomPickupsCollected: {},
+        isNewGame: false,
+        userSettings: emptyUserSettings,
+      }) as EditorRoomState,
+    ),
+  );
+
+  expect(
+    roomJsonItemsIterable(
+      selectCurrentCommittedRoomJsonFromLevelEditorState(state1BothRotated),
+      "conveyor",
+    ).toArray(),
+  ).toEqual([
+    {
+      type: "conveyor",
+      config: { direction: "away", times: { y: 3 } },
+      position: { x: 3, y: 1, z: 0 },
+    },
+    {
+      type: "conveyor",
+      config: { direction: "away", times: { y: 3 } },
+      position: { x: 4, y: 2, z: 0 },
+    },
+  ]);
 });
