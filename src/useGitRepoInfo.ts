@@ -11,7 +11,10 @@ const { version: deployedVersion, majorVersion: deployedMajor } = buildInfo;
  * release is out (`undefined` until the latest release is known)
  */
 export const useGitRepoInfo = () => {
-  const { data: latestRelease } = useGetLatestReleaseQuery();
+  const { data: latestRelease } = useGetLatestReleaseQuery(undefined, {
+    // e2e must not depend on GitHub's rate-limited api:
+    skip: import.meta.env.MODE === "visual-regression",
+  });
 
   const latestTag = latestRelease?.tag_name;
   const latestMajor =
