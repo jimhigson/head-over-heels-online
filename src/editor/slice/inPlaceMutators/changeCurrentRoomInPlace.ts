@@ -1,8 +1,10 @@
 import { type RoomJson } from "../../../model/RoomJson";
 import { type EditorRoomId } from "../../editorTypes";
+import { cursorRoomPanesIter } from "../EditorPane";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "../reducers/contextMenuReducers";
+import { commitPendingNudgeInPlace } from "./commitPendingNudgeInPlace";
 import { openRoomTabInPlace } from "./openRoomTabInPlace";
 
 export const firstSubRoomId = (roomJson: RoomJson<string, string>): string => {
@@ -22,6 +24,9 @@ export const changeCurrentRoomInPlace = (
     console.warn(`can't change to room ${roomId} - it doesn't exist`);
     return;
   }
+
+  // nudges being previewed are of the room being left:
+  commitPendingNudgeInPlace(state);
 
   const resolvedSubRoomId = subRoomId ?? firstSubRoomId(roomJson);
 
@@ -43,8 +48,10 @@ export const changeCurrentRoomInPlace = (
   state.selectedRoomIds = [roomId];
   state.cursorRoom = { roomId, subRoomId: resolvedSubRoomId };
 
-  state.clickableAnnotationHovered = false;
-  state.hoveredItem = undefined;
+  for (const pane of cursorRoomPanesIter(state)) {
+    pane.clickableAnnotationHovered = false;
+    pane.hoveredItem = undefined;
+  }
   state.hoveredUndoIndex = 0;
   clearContextMenuXyInPlace(state);
 };

@@ -1,7 +1,6 @@
 import { type ExportedSoundId } from "../../_generated/sfxdex/sfx";
 import { type MarkdownPageName } from "../../manual/pages";
 import { type PlanetName, type SceneryName } from "../../sprites/planets";
-import { type GameInPlayBooleanPaths } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { type Subset } from "../../utils/Subset";
 import {
   type AxisXy,
@@ -121,13 +120,11 @@ export type DoorConfig<RoomId extends string> = {
 };
 
 type TeleporterConfig<RoomId extends string> = ConsolidatableConfig & {
-  // narrowed to the crown (planet-liberated) paths actually used in room json;
-  // `Subset` enforces each is a real toggleable boolean leaf, keeping the
-  // generated schema tiny rather than listing every store boolean path
-  activatedOnStoreValue?: Subset<
-    GameInPlayBooleanPaths,
-    `planetsLiberated.${PlanetName}`
-  >;
+  /**
+   * the teleporter only works once this planet has been liberated (its crown
+   * collected); always works when not given
+   */
+  activatedIfPlanetLiberated?: PlanetName;
   /**
    * an item in the destination room this teleporter should go to - the
    * player will be moved to atop this item

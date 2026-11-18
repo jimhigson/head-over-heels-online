@@ -5,6 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 
 import { type EditorRoomId } from "../../editorTypes";
+import { forgetTabSelectionsInPlace } from "../EditorPane";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
 import { pinRoomTabInPlace } from "../inPlaceMutators/pinRoomTabInPlace";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
@@ -39,7 +40,7 @@ export const roomTabsReducers = {
     state.openRoomTabs = state.openRoomTabs.filter(
       (roomTab) => roomTab.roomId !== roomId,
     );
-    delete state.selectedJsonItemIdsByRoom[roomId];
+    forgetTabSelectionsInPlace(state, roomId);
   },
 
   /** close every tab but the room's own, moving to it if needed */
@@ -54,7 +55,7 @@ export const roomTabsReducers = {
     }
     for (const { roomId: otherRoomId } of state.openRoomTabs) {
       if (otherRoomId !== roomId) {
-        delete state.selectedJsonItemIdsByRoom[otherRoomId];
+        forgetTabSelectionsInPlace(state, otherRoomId);
       }
     }
     state.openRoomTabs = state.openRoomTabs.filter(

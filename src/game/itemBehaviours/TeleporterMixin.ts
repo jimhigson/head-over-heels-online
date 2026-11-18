@@ -1,6 +1,7 @@
 import { type ExportedSoundId } from "../../_generated/sfxdex/sfx";
 import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import { type Campaign } from "../../model/modelTypes";
+import { store } from "../../store/store";
 import { emptyArray } from "../../utils/empty";
 import { teleporterIsActive } from "../physics/mechanics/teleporterIsActive";
 import { entryTuneSoundsForRoom } from "./entryTuneSoundsForRoom";
@@ -25,7 +26,10 @@ export const TeleporterMixin = <B extends ItemBehaviourClass>(Base: B) =>
       teleporter: TeleporterItem<RoomId, RoomItemId>,
     ): boolean {
       // can't jump from an active teleporter (jump input teleports)
-      return !teleporterIsActive(teleporter);
+      return !teleporterIsActive(
+        teleporter,
+        store.getState().gameInPlay.gameInPlay.planetsLiberated,
+      );
     }
 
     /** preload the room entry tune of the room the teleporter leads to */

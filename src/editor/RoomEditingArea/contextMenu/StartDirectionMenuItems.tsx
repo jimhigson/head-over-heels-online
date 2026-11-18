@@ -2,6 +2,8 @@ import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
 import { cn } from "../../../ui/cn";
 import { MenuItem } from "../../../ui/menuBar/MenuItem";
+import { camelToSpaced } from "../../../utils/camelToSpaced";
+import { directionXyz8Glyphs } from "../../../utils/vectors/directionGlyphs";
 import { type DirectionXy8 } from "../../../utils/vectors/vectors";
 import { directionForItem } from "../../itemDirection";
 import {
@@ -10,21 +12,8 @@ import {
   setSelectedItemsStartDirection,
 } from "../../slice/levelEditorSlice";
 
-// the on-screen arrow for each game direction, in the iso projection (the four
-// cardinal directions appear diagonal, the four diagonals appear orthogonal):
-const directionArrow = {
-  away: "↗",
-  towards: "↙",
-  left: "↖",
-  right: "↘",
-  awayRight: "➡",
-  towardsRight: "⬇",
-  towardsLeft: "⬅",
-  awayLeft: "⬆",
-} satisfies Record<DirectionXy8, string>;
-
 const directionLabel = (direction: DirectionXy8): string =>
-  `${direction.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase()} ${directionArrow[direction]}`;
+  `${camelToSpaced(direction)} ${directionXyz8Glyphs[direction]}`;
 
 /**
  * Direction arrows for the selection, one per direction valid for every
@@ -99,7 +88,7 @@ export const StartDirectionMenuItems = () => {
                 )
               }
             >
-              {directionArrow[direction]}
+              {directionXyz8Glyphs[direction]}
             </button>
           ))}
         </span>

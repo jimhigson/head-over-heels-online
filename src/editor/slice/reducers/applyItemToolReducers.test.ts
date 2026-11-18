@@ -1,10 +1,14 @@
 import { produce } from "immer";
 import { describe, expect, test } from "vitest";
 
+import { createNewRoom } from "../../../model/inPlaceMutators/createNewRoom";
+import { type VerificationCampaign } from "../../../model/json/verification/verificationTypes";
+import { verifyCampaign } from "../../../model/json/verification/verifyCampaign";
 import { type WallJsonConfig } from "../../../model/json/WallJsonConfig";
 import { type AnyRoomJson } from "../../../model/RoomJson";
 import {
   iterateRoomJsonItemIds,
+  iterateRoomJsonItemsWithIds,
   roomJsonItemsIterable,
 } from "../../../model/RoomJsonItemIterators";
 import { zxSpectrumRoomHue, zxSpectrumShades } from "../../../originalGame";
@@ -22,8 +26,10 @@ import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors"
 import {
   applyItemTool,
   deleteSelected,
+  editorPaneMounted,
   type LevelEditorState,
   setAutoCoalesce,
+  setSelectedItemsInRoom,
   setTool,
 } from "../levelEditorSlice";
 import {
@@ -32,6 +38,7 @@ import {
   editorStateWithOneRoomWithNoItems,
   editorStateWithOneRoomWithOneAwayWall,
   reduceLevelEditorActions,
+  testPaneId,
   testRoomId,
   wallItemId,
 } from "./__test__/storeStates";
@@ -468,6 +475,11 @@ describe("applying tools", () => {
       // 1. add two adjacent toasters — they should consolidate into one with times.x=2
       const stateWithTwoToasters = reduceLevelEditorActions(
         initialLevelEditorSliceState,
+        editorPaneMounted({
+          paneId: testPaneId,
+          roomSource: { type: "cursorRoom" },
+          editable: true,
+        }),
         setTool({
           type: "item",
           item: { type: "deadlyBlock", config: { style: "toaster" } },
@@ -541,12 +553,8 @@ describe("applying tools", () => {
       );
 
       const stateWithoutCyberman = reduceLevelEditorActions(
-        {
-          ...stateWithCyberman,
-          selectedJsonItemIdsByRoom: {
-            [stateWithCyberman.cursorRoom.roomId]: [cybermanId],
-          },
-        },
+        stateWithCyberman,
+        setSelectedItemsInRoom({ jsonItemIds: [cybermanId] }),
         deleteSelected({ timestamp: 0 }),
       );
 
@@ -598,4 +606,53 @@ describe("applying tools", () => {
       .toArray();
     expect(blocks).toHaveLength(2);
   });
+});
+
+test("a door adding a room beside one sub-room of a divided room adds no verification issues", () => {
+  const roomId = "divided" as EditorRoomId;
+  const room = createNewRoom<EditorRoomId, EditorRoomItemId>(
+    roomId,
+    { x: 8, y: 8 },
+    { hue: "cyan", shade: "basic" },
+    "blacktooth",
+    [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 0, y: 1 },
+      { x: 1, y: 1 },
+    ],
+  );
+  const [[, awayWall]] = iterateRoomJsonItemsWithIds(room.items, "wall")
+    .filter(([, wall]) => wall.config.direction === "away")
+    .toArray();
+  const state0: LevelEditorState = {
+    ...editorStateWithOneRoomWithNoItems,
+    selectedRoomIds: [roomId],
+    cursorRoom: { roomId, subRoomId: "2" },
+    openRoomTabs: [{ roomId, isPreview: false, view: undefined }],
+    campaignInProgress: {
+      ...editorStateWithOneRoomWithNoItems.campaignInProgress,
+      rooms: {
+        [roomId]: room,
+      } as LevelEditorState["campaignInProgress"]["rooms"],
+    },
+  };
+  const issueMessages = (state: LevelEditorState) =>
+    verifyCampaign(state.campaignInProgress as VerificationCampaign).map(
+      ({ msg }) => msg,
+    );
+
+  const next = reduceLevelEditorActions(
+    state0,
+    setTool(doorItemToolWithAutoAddRooms),
+    applyItemTool({
+      // on the away wall of sub-room 2:
+      blockPosition: { x: 3, y: 16, z: 0 },
+      pointedAtItemJson: awayWall as EditorJsonItemUnion,
+      preview: false,
+      timestamp: 0,
+    }),
+  );
+
+  expect(issueMessages(next)).toEqual(issueMessages(state0));
 });

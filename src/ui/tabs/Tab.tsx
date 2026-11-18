@@ -7,6 +7,7 @@ import { ContextMenu } from "../command/ContextMenu";
 import { ContextMenuItem } from "../command/ContextMenuItem";
 import { useTip } from "../tip/useTip";
 import { TabBarContext } from "./TabBarContext";
+import "./tabColours.css";
 import { TabRenameInput } from "./TabRenameInput";
 
 /** how a tab is renamed: return takes the edited name, escape or leaving it cancels */
@@ -26,8 +27,10 @@ export type TabProps = {
   shortLabel: string;
   isActive: boolean;
   onSelect: () => void;
-  onClose: () => void;
-  onCloseOthers: () => void;
+  /** with this, the tab can be closed - by its x or middle-click */
+  onClose?: () => void;
+  /** with this, the tab's menu can close the other tabs */
+  onCloseOthers?: () => void;
   onDblClick?: () => void;
   /** with this, clicking the front tab edits its name in place */
   rename?: TabRename;
@@ -55,6 +58,9 @@ export const Tab = ({
   style,
 }: TabProps) => {
   const { shortenLabels, isOnlyTab } = useContext(TabBarContext);
+  // with one tab, there are no others to close, and it is never closed:
+  const closeable = onClose !== undefined && !isOnlyTab;
+  const canCloseOthers = onCloseOthers !== undefined && !isOnlyTab;
   const { interestfor, tip } = useTip(tipContent);
   // the name being typed, while renaming:
   const [editedName, setEditedName] = useState<string | undefined>(undefined);
@@ -90,14 +96,13 @@ export const Tab = ({
           }
         }}
         onAuxClick={(mouseEvent) => {
-          if (mouseEvent.button === 1 && !isOnlyTab) {
+          if (mouseEvent.button === 1 && closeable) {
             onClose();
           }
         }}
         onContextMenu={(mouseEvent) => {
           mouseEvent.preventDefault();
-          // with one tab, there are no others to close:
-          if (!isOnlyTab) {
+          if (canCloseOthers) {
             setContextMenuXy({ x: mouseEvent.clientX, y: mouseEvent.clientY });
           }
         }}
@@ -122,7 +127,7 @@ export const Tab = ({
 
         }
         {tip}
-        {!isOnlyTab && (
+        {closeable && (
           <button
             type="button"
             aria-label={`Close ${label}`}
@@ -146,7 +151,7 @@ export const Tab = ({
         <ContextMenuItem
           value="close other tabs"
           onSelect={() => {
-            onCloseOthers();
+            onCloseOthers?.();
             // choosing an item doesn't close the menu by itself:
             closeContextMenu();
           }}

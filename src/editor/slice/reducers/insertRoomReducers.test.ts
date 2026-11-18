@@ -15,6 +15,7 @@ import {
 } from "../levelEditorSelectors";
 import {
   addRoom,
+  addRoomToSelection,
   applyItemTool,
   changeToRoom,
   insertRoom,
@@ -996,4 +997,105 @@ describe("removeRoom cleans up doors and heals walls", () => {
     expect(restoredWalls).toEqual(expect.arrayContaining(originalWalls));
     expect(restoredWalls).toHaveLength(originalWalls.length);
   });
+});
+
+test("inserting beside one room of a square of four is refused, but with the room beside it selected too makes a rectangle of six", () => {
+  // each insert moves the cursor to the room it adds (or links), which names it:
+  const nearLeftRoomId = selectCursorRoomIdFromLevelEditorState(stateWithFloor);
+  const withNearRight = reduceLevelEditorActions(
+    stateWithFloor,
+    insertRoom({ direction: "right" }),
+  );
+  const nearRightRoomId = selectCursorRoomIdFromLevelEditorState(withNearRight);
+  const withFarRight = reduceLevelEditorActions(
+    withNearRight,
+    insertRoom({ direction: "away" }),
+  );
+  const farRightRoomId = selectCursorRoomIdFromLevelEditorState(withFarRight);
+  const withFarLeft = reduceLevelEditorActions(
+    withFarRight,
+    changeToRoom({ roomId: nearLeftRoomId }),
+    insertRoom({ direction: "away" }),
+  );
+  const farLeftRoomId = selectCursorRoomIdFromLevelEditorState(withFarLeft);
+  // a door between the two far rooms closes the square into a loop:
+  const square = reduceLevelEditorActions(
+    withFarLeft,
+    insertRoom({ direction: "right" }),
+  );
+  const startingRoomIds = roomGridPositions({
+    campaign: square.campaignInProgress,
+    roomId: nearLeftRoomId,
+    skipMissingRooms: true,
+  }).nodes.map(({ roomId }) => roomId);
+
+  // alone, the near-left room can't be split from the right column, which the
+  // far rooms tie back round to it:
+  const afterInsertBesideOneRoom = reduceLevelEditorActions(
+    square,
+    changeToRoom({ roomId: nearLeftRoomId }),
+    insertRoom({ direction: "right" }),
+  );
+  expect(afterInsertBesideOneRoom.campaignInProgress).toBe(
+    square.campaignInProgress,
+  );
+
+  const insertedBesideLeftColumn = reduceLevelEditorActions(
+    afterInsertBesideOneRoom,
+    addRoomToSelection({ roomId: farLeftRoomId, subRoomId: "*" }),
+    insertRoom({ direction: "right" }),
+  );
+
+  expect(
+    roomGridPositions({
+      campaign: insertedBesideLeftColumn.campaignInProgress,
+      roomId: nearLeftRoomId,
+      skipMissingRooms: true,
+    })
+      .nodes.map(({ roomId, gridPosition: { x, y } }) => ({
+        roomId: startingRoomIds.includes(roomId) ? roomId : "inserted",
+        x,
+        y,
+      }))
+      .sort((a, b) => a.y - b.y || b.x - a.x),
+  ).toEqual([
+    // the left column stays put, the right column moves one further right,
+    // and a new room sits between them in each row:
+    { roomId: nearLeftRoomId, x: 0, y: 0 },
+    { roomId: "inserted", x: -1, y: 0 },
+    { roomId: nearRightRoomId, x: -2, y: 0 },
+    { roomId: farLeftRoomId, x: 0, y: 1 },
+    { roomId: "inserted", x: -1, y: 1 },
+    { roomId: farRightRoomId, x: -2, y: 1 },
+  ]);
+});
+
+test("inserting with two rooms of a square of four selected along the direction leaves the square unchanged, since the loop can't be split", () => {
+  // each insert moves the cursor to the room it adds (or links), which names it:
+  const nearLeftRoomId = selectCursorRoomIdFromLevelEditorState(stateWithFloor);
+  const withNearRight = reduceLevelEditorActions(
+    stateWithFloor,
+    insertRoom({ direction: "right" }),
+  );
+  const nearRightRoomId = selectCursorRoomIdFromLevelEditorState(withNearRight);
+  const withFarLeft = reduceLevelEditorActions(
+    withNearRight,
+    insertRoom({ direction: "away" }),
+    changeToRoom({ roomId: nearLeftRoomId }),
+    insertRoom({ direction: "away" }),
+  );
+  // a door between the two far rooms closes the square into a loop:
+  const square = reduceLevelEditorActions(
+    withFarLeft,
+    insertRoom({ direction: "right" }),
+  );
+
+  const afterInsert = reduceLevelEditorActions(
+    square,
+    changeToRoom({ roomId: nearLeftRoomId }),
+    addRoomToSelection({ roomId: nearRightRoomId, subRoomId: "*" }),
+    insertRoom({ direction: "right" }),
+  );
+
+  expect(afterInsert.campaignInProgress).toBe(square.campaignInProgress);
 });

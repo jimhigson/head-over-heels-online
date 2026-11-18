@@ -88,6 +88,42 @@ type ChangeCharacterRoomOptions<
       >;
     };
 
+/**
+ * of the portals in a room leading back down (or up), the one a floor (or
+ * ceiling) portal arrives at: its link's sub-room's, else the only one
+ */
+const verticalDestinationPortal = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  /**
+   * the destination room's portals leading back the other way
+   */
+  returningPortals: ItemInPlay<"portal", RoomId, RoomItemId>[],
+  sourcePortal: ItemInPlay<"portal", RoomId, RoomItemId>,
+  toRoom: RoomState<RoomId, RoomItemId>,
+): ItemInPlay<"portal", RoomId, RoomItemId> | undefined => {
+  const { toSubRoom } = sourcePortal.config;
+  if (toSubRoom !== undefined) {
+    const subRoomPortal = returningPortals.find(
+      ({ config: { subRoom } }) => subRoom === toSubRoom,
+    );
+    if (subRoomPortal === undefined) {
+      throw new Error(
+        `portal ${sourcePortal.id} leads to sub-room "${toSubRoom}" of room ${toRoom.id}, which has no portal leading back`,
+      );
+    }
+    return subRoomPortal;
+  }
+  if (returningPortals.length > 1) {
+    throw new Error(
+      `portal ${sourcePortal.id} names no sub-room of room ${toRoom.id}, which has ${returningPortals.length} portals leading back`,
+    );
+  }
+  const [onlyPortal] = returningPortals;
+  return onlyPortal;
+};
+
 const findDestinationPortal = <
   RoomId extends string,
   RoomItemId extends string,
@@ -103,8 +139,8 @@ const findDestinationPortal = <
   },
 ): ItemInPlay<"portal", RoomId, RoomItemId> | undefined => {
   switch (changeType) {
-    case "portal":
-      return roomItemsIterable(toRoom.items).find(
+    case "portal": {
+      const returningPortals = roomItemsIterable(toRoom.items).filter(
         (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
           i.type === "portal" &&
           i.config.toRoom === fromRoom.id &&
@@ -117,6 +153,16 @@ const findDestinationPortal = <
             i.config.direction,
           ),
       );
+      const isVertical = sourcePortal.config.direction.z !== 0;
+      if (!isVertical) {
+        return returningPortals.next().value;
+      }
+      return verticalDestinationPortal(
+        returningPortals.toArray(),
+        sourcePortal,
+        toRoom,
+      );
+    }
 
     case "level-select":
       return (

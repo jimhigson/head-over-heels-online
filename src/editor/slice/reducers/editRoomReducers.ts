@@ -2,17 +2,20 @@ import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { addReturnDoorInPlace } from "../../../model/inPlaceMutators/addReturnDoorInPlace";
 import { changeRoomSceneryInPlace } from "../../../model/inPlaceMutators/changeRoomSceneryInPlace";
+import { nextItemIdInItems } from "../../../model/inPlaceMutators/nextItemId";
 import { doorLinkNeedsToDoor } from "../../../model/json/candidatePartnerDoors";
 import {
   exitGameRoomId,
   type FloorType,
 } from "../../../model/json/ItemConfigMap";
 import { type JsonItemConfig } from "../../../model/json/JsonItem";
+import { subRoomsIntersectingJsonItem } from "../../../model/map/itemIsInSubRoom";
 import { roomGridPositions } from "../../../model/map/roomGridPositions";
 import {
   isWholeRoomSubRooms,
   roomNonContiguousRelationship,
   roomVerticalLink,
+  subRoomById,
   writeRoomNonContiguousRelationship,
 } from "../../../model/RoomJson";
 import {
@@ -24,8 +27,13 @@ import { type SceneryName } from "../../../sprites/planets";
 import { keysIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
+  addXy,
   oppositeDirection,
+  originXy,
   scaleXyz,
+  subXy,
+  type Xy,
+  xyEqual,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
 import {
@@ -154,6 +162,174 @@ const roomAtVerticalNeighbour = (
     return undefined;
   }
   return { roomId: targetSpec.roomId, subRoomId: targetSpec.subRoomId };
+};
+
+/**
+ * the size of hole cut by `makeHoleInSelectedFloor`, in blocks
+ */
+const holeSize: Xy = { x: 2, y: 2 };
+
+/**
+ * a floor can have a hole made in it if the hole fits strictly inside it
+ */
+export const canMakeHoleInFloor = (floor: EditorJsonItem<"floor">) =>
+  floor.config.floorType !== "none" &&
+  floor.config.times.x > holeSize.x &&
+  floor.config.times.y > holeSize.y;
+
+/**
+ * the floors that replace `floor` once a hole is cut in its centre: a
+ * `none` floor for the hole, and up to four surrounding it
+ */
+const floorsAroundHole = (
+  floor: EditorJsonItem<"floor">,
+): {
+  hole: EditorJsonItem<"floor">;
+  surrounding: EditorJsonItem<"floor">[];
+} => {
+  const { position } = floor;
+  const { times } = floor.config;
+  // rounded down for floors of odd size:
+  const holeFrom: Xy = {
+    x: Math.floor((times.x - holeSize.x) / 2),
+    y: Math.floor((times.y - holeSize.y) / 2),
+  };
+  const holeTo = addXy(holeFrom, holeSize);
+
+  const floorPart = (from: Xy, partTimes: Xy): EditorJsonItem<"floor"> => ({
+    ...floor,
+    position: { ...position, x: position.x + from.x, y: position.y + from.y },
+    config: { ...floor.config, times: partTimes },
+  });
+
+  const surrounding = [
+    // in front of the hole, the floor's full width:
+    floorPart({ x: 0, y: 0 }, { x: times.x, y: holeFrom.y }),
+    // behind the hole, the floor's full width:
+    floorPart({ x: 0, y: holeTo.y }, { x: times.x, y: times.y - holeTo.y }),
+    // either side of the hole:
+    floorPart({ x: 0, y: holeFrom.y }, { x: holeFrom.x, y: holeSize.y }),
+    floorPart(
+      { x: holeTo.x, y: holeFrom.y },
+      { x: times.x - holeTo.x, y: holeSize.y },
+    ),
+  ].filter(({ config }) => config.times.x > 0 && config.times.y > 0);
+
+  return {
+    hole: {
+      ...floorPart(holeFrom, holeSize),
+      config: { floorType: "none", times: holeSize },
+    },
+    surrounding,
+  };
+};
+
+/**
+ * the size of each map cell of `room`, and the cells it covers - from which
+ * a new room of the same size and shape can be made
+ */
+const roomShape = (
+  room: EditorRoomJson,
+): { cellSize: Xy; gridPositions: Xy[]; gridOrigin: Xy } => {
+  const subRooms = room.meta?.subRooms;
+  if (subRooms !== undefined && !isWholeRoomSubRooms(subRooms)) {
+    const subRoomsList = Object.values(subRooms);
+    const [{ physicalPosition }] = subRoomsList;
+    const gridOrigin: Xy = {
+      x: Math.min(...subRoomsList.map(({ gridPosition }) => gridPosition.x)),
+      y: Math.min(...subRoomsList.map(({ gridPosition }) => gridPosition.y)),
+    };
+    return {
+      cellSize: subXy(physicalPosition.to, physicalPosition.from),
+      gridPositions: subRoomsList.map(({ gridPosition }) =>
+        subXy(gridPosition, gridOrigin),
+      ),
+      gridOrigin,
+    };
+  }
+
+  const groundFloors = roomJsonItemsIterable(room)
+    .filter((item) => item.type === "floor")
+    .filter((floor) => floor.position.z === 0)
+    .toArray();
+  const extentFrom: Xy = {
+    x: Math.min(...groundFloors.map(({ position }) => position.x)),
+    y: Math.min(...groundFloors.map(({ position }) => position.y)),
+  };
+  const extentTo: Xy = {
+    x: Math.max(
+      ...groundFloors.map(
+        ({ position, config }) => position.x + config.times.x,
+      ),
+    ),
+    y: Math.max(
+      ...groundFloors.map(
+        ({ position, config }) => position.y + config.times.y,
+      ),
+    ),
+  };
+  return {
+    cellSize: subXy(extentTo, extentFrom),
+    gridPositions: [originXy],
+    gridOrigin: originXy,
+  };
+};
+
+/**
+ * makes sure the given sub-room has a room below it to fall into: links to
+ * the room already in the map cell below, or else creates one the same size
+ * and shape as `room`
+ */
+const ensureRoomBelowInPlace = (
+  state: LevelEditorState,
+  room: EditorRoomJson,
+  subRoomId: string,
+) => {
+  if (roomVerticalLink(room, "below", subRoomId) !== undefined) {
+    return;
+  }
+
+  const existingBelow = roomAtVerticalNeighbour(
+    state,
+    room,
+    subRoomId,
+    "below",
+  );
+
+  let roomBelow: EditorRoomJson;
+  let subRoomBelowId: string;
+  if (existingBelow !== undefined) {
+    roomBelow = selectRoomFromLevelEditorState(state, existingBelow.roomId)!;
+    subRoomBelowId = existingBelow.subRoomId;
+  } else {
+    const { cellSize, gridPositions, gridOrigin } = roomShape(room);
+    roomBelow = addNewRoomInPlace({
+      state,
+      scenery: room.planet,
+      maybeColour: room.color,
+      roomSize: cellSize,
+      gridPositions,
+    });
+    const subRoom = subRoomById(room, subRoomId);
+    // a divided new room's sub-rooms are keyed by their index in gridPositions:
+    subRoomBelowId =
+      gridPositions.length === 1 || subRoom === undefined ?
+        "*"
+      : gridPositions
+          .findIndex((gridPosition) =>
+            xyEqual(gridPosition, subXy(subRoom.gridPosition, gridOrigin)),
+          )
+          .toString();
+  }
+
+  writeVerticalLink(room, subRoomId, "below", {
+    room: roomBelow.id,
+    subRoom: subRoomBelowId === "*" ? undefined : subRoomBelowId,
+  });
+  writeVerticalLink(roomBelow, subRoomBelowId, "above", {
+    room: room.id,
+    subRoom: subRoomId === "*" ? undefined : subRoomId,
+  });
 };
 
 export const editRoomReducers = {
@@ -404,6 +580,51 @@ export const editRoomReducers = {
     if (state.autoCoalesce) {
       consolidateCurrentRoomInPlace(state);
     }
+  },
+  /**
+   * cut a hole in the centre of the selected floor, splitting it into the
+   * hole (a `none` floor) and the floors around it, and make sure there is a
+   * room below to fall into
+   */
+  makeHoleInSelectedFloor(
+    _state,
+    { payload: { timestamp } }: PayloadAction<{ timestamp: number }>,
+  ) {
+    // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
+    // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
+    // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
+    const state = _state as LevelEditorState;
+
+    const roomJson = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
+    const [floorId] =
+      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state);
+    const floor = roomJson.items[floorId];
+    if (floor?.type !== "floor" || !canMakeHoleInFloor(floor)) {
+      return;
+    }
+
+    pushUndoToCursorRoomInPlace(
+      state,
+      { kind: "itemAction", verb: "Make hole", items: [[floorId, floor]] },
+      timestamp,
+    );
+
+    const { hole, surrounding } = floorsAroundHole(floor);
+    delete roomJson.items[floorId];
+    for (const surroundingFloor of surrounding) {
+      roomJson.items[nextItemIdInItems(roomJson.items, floorId)] =
+        surroundingFloor;
+    }
+    const holeId = nextItemIdInItems(roomJson.items, floorId);
+    roomJson.items[holeId] = hole;
+
+    // a hole across several sub-rooms needs each one to lead below:
+    for (const subRoomId of subRoomsIntersectingJsonItem(hole, roomJson)) {
+      ensureRoomBelowInPlace(state, roomJson, subRoomId);
+    }
+
+    setSelectedJsonItemIdsOnCursorRoomInPlace(state, [holeId]);
+    clearContextMenuXyInPlace(state);
   },
   clearRoom(
     _state,

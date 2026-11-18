@@ -17,10 +17,12 @@ import {
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../../editorTypes";
+import { panesIter } from "../EditorPane";
 import { isMovableBetweenRooms } from "../isMovableBetweenRooms";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { pushUndoForRoomInPlace } from "../reducers/undoReducers";
+import { commitPendingNudgeInPlace } from "./commitPendingNudgeInPlace";
 
 type TeleporterJson =
   EditorJsonItem<"portableTeleporter"> | EditorJsonItem<"teleporter">;
@@ -124,9 +126,12 @@ export const moveItemsToRoomInPlace = (
   state: LevelEditorState,
   { itemIds, toRoomId, blockPositionDelta, timestamp }: MoveItemsToRoomArgs,
 ): EditorRoomItemId[] | undefined => {
+  commitPendingNudgeInPlace(state);
   // the drag's preview is replaced by the move:
   state.pendingEdits = undefined;
-  state.dragInProgress = undefined;
+  for (const pane of panesIter(state)) {
+    pane.dragInProgress = undefined;
+  }
 
   const { rooms } = state.campaignInProgress;
   const fromRoom = selectCurrentCommittedRoomJsonFromLevelEditorState(state);

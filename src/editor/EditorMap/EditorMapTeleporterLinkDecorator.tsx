@@ -1,3 +1,4 @@
+import { useMapContext } from "../../game/components/dialogs/menuDialog/dialogs/map/MapContext";
 import { type RoomDecoratorProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
 import { roomWorldPosition } from "../../game/components/dialogs/menuDialog/dialogs/map/roomWorldPosition";
 import { translateXyz } from "../../game/components/dialogs/menuDialog/dialogs/map/svgHelpers";
@@ -93,11 +94,11 @@ const arrowPath = (
 const EditorMapTeleporterLinkDecorator = ({
   roomId,
   subRoomId,
-  mapData,
-  areaIndex,
+  allGridPositions: gridPositions,
+  teleporterLinks,
 }: RoomDecoratorProps<EditorRoomId>) => {
-  const { teleporterLinks } = mapData;
-  const { gridPositions, notableItemsByCell } = mapData.areas[areaIndex];
+  const notableItemsByCell =
+    useMapContext<EditorRoomId>().useNotableItemsByCell();
 
   if (teleporterLinks === undefined) {
     return null;

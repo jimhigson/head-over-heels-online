@@ -10,19 +10,21 @@ import { doorAboveRoomHeightVerifier } from "./doors/doorAboveRoomHeightVerifier
 import { doorAmbiguousLinkVerifier } from "./doors/doorAmbiguousLinkVerifier";
 import { doorDirectionMismatchVerifier } from "./doors/doorDirectionMismatchVerifier";
 import { doorNoReturnVerifier } from "./doors/doorNoReturnVerifier";
+import { doorOffFloorVerifier } from "./doors/doorOffFloorVerifier";
 import { doorRoomMissingVerifier } from "./doors/doorRoomMissingVerifier";
 import { doorToSameRoomVerifier } from "./doors/doorToSameRoomVerifier";
 import { doorTwoWayLinkVerifier } from "./doors/doorTwoWayLinkVerifier";
 import { redundantToDoorVerifier } from "./doors/redundantToDoorVerifier";
+import { itemOffFloorVerifier } from "./rooms/itemOffFloorVerifier";
 import { mapGeometryVerifier } from "./rooms/mapGeometryVerifier";
-import { oversizedUndividedRoomVerifier } from "./rooms/oversizedUndividedRoomVerifier";
 import { redundantTimesVerifier } from "./rooms/redundantTimesVerifier";
 import { roomPerimeterCoverageVerifier } from "./rooms/roomPerimeterCoverageVerifier";
+import { subRoomsFitFloorVerifier } from "./rooms/subRoomsFitFloorVerifier";
 import { nonContiguousMirrorVerifier } from "./subRooms/nonContiguousMirrorVerifier";
 import { redundantToSubRoomVerifier } from "./subRooms/redundantToSubRoomVerifier";
 import { subRoomAdjacencyVerifier } from "./subRooms/subRoomAdjacencyVerifier";
-import { subRoomFloorCoverageVerifier } from "./subRooms/subRoomFloorCoverageVerifier";
 import { subRoomInvertedExtentVerifier } from "./subRooms/subRoomInvertedExtentVerifier";
+import { verticalLinkAmbiguousSubRoomVerifier } from "./subRooms/verticalLinkAmbiguousSubRoomVerifier";
 import { verticalLinkBadSubRoomVerifier } from "./subRooms/verticalLinkBadSubRoomVerifier";
 import { verticalLinkCollisionVerifier } from "./subRooms/verticalLinkCollisionVerifier";
 import { verticalLinkOneWayVerifier } from "./subRooms/verticalLinkOneWayVerifier";
@@ -54,14 +56,16 @@ export const allVerifiers: CampaignVerifier<unknown>[] = [
   controllerTargetsVerifier,
   verticalLinkOneWayVerifier,
   verticalLinkBadSubRoomVerifier,
+  verticalLinkAmbiguousSubRoomVerifier,
   verticalLinkCollisionVerifier,
   nonContiguousMirrorVerifier,
   subRoomInvertedExtentVerifier,
-  subRoomFloorCoverageVerifier,
   subRoomAdjacencyVerifier,
-  oversizedUndividedRoomVerifier,
+  subRoomsFitFloorVerifier,
   roomPerimeterCoverageVerifier,
+  itemOffFloorVerifier,
   doorAboveRoomHeightVerifier,
+  doorOffFloorVerifier,
   redundantTimesVerifier,
   unreachableRoomVerifier,
   mapGeometryVerifier,

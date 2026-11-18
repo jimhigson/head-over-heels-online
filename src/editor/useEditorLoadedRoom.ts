@@ -1,8 +1,8 @@
 import { useSyncExternalStore } from "preact/compat";
 import { useMemo } from "preact/hooks";
 
-import { editorLoadedRoom } from "./editorLoadedRoom";
 import { type EditorRoomState } from "./editorTypes";
+import { useEditorPane } from "./RoomEditingArea/pane/EditorPaneProvider";
 
 /**
  * value returned by useEditorLoadedRoom; a new, reference-unequal object is
@@ -19,15 +19,16 @@ export type UseEditorLoadedRoomReturn = {
   roomState: EditorRoomState;
 };
 
-const getRevision = () => editorLoadedRoom.revision;
-
-/** the editor's loaded room, for rendering: re-renders whenever it changes */
+/**
+ * the pane's loaded room, for rendering: re-renders whenever it changes
+ */
 export const useEditorLoadedRoom = (): UseEditorLoadedRoomReturn => {
+  const { loadedRoom } = useEditorPane();
   const revision = useSyncExternalStore(
-    editorLoadedRoom.subscribe,
-    getRevision,
+    loadedRoom.subscribe,
+    () => loadedRoom.revision,
   );
-  const roomState = editorLoadedRoom.getRoomState();
+  const roomState = loadedRoom.getRoomState();
 
   // oxlint-disable-next-line react-hooks/exhaustive-deps -- we only want to recompute the wrapper when revision changes
   return useMemo(() => ({ roomState }), [revision]);

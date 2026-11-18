@@ -1,13 +1,15 @@
 import clsx from "clsx";
 import { type ComponentChildren } from "preact";
-import { useCallback, useEffect, useId, useRef, useState } from "preact/hooks";
+import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 
 import { type ExportedSoundId } from "../_generated/sfxdex/sfx";
+import { useUniqueId } from "../utils/preact/useUniqueId";
 import { PlayAudio } from "../utils/sound/PlayAudio";
 import { twClass } from "../utils/twClass.tsx" with { type: "macro" };
 import { cn } from "./cn";
 import { enhanceTooltipWithHotkeys } from "./enhanceTooltipWithHotkeys";
 import { getSwitchPaddedLabels, paddingChar } from "./getSwitchPaddedLabels";
+import { ShortcutUnderlinedLabel } from "./ShortcutUnderlinedLabel";
 import { useTip } from "./tip/useTip";
 import { type ShortcutKeys, useKeyboardShortcut } from "./useKeyboardShortcut";
 
@@ -16,16 +18,18 @@ const uiSoundVolume = 0.3;
 const SwitchLabel = ({
   label,
   htmlFor,
+  shortcutKeys,
 }: {
   label: ComponentChildren;
   htmlFor: string;
+  shortcutKeys: ShortcutKeys | undefined;
 }) =>
   typeof label === "string" ?
     <label
       htmlFor={htmlFor}
       class="inline-block mr-1 text-lightGrey py-half whitespace-nowrap text-single-line"
     >
-      {label}
+      <ShortcutUnderlinedLabel text={label} shortcutKeys={shortcutKeys} />
     </label>
   : <label htmlFor={htmlFor} class="inline-block mr-1 py-half">
       {label}
@@ -64,7 +68,7 @@ export const Switch = ({
   ariaLabel,
   ariaDescription,
 }: SwitchProps) => {
-  const switchId = useId();
+  const switchId = useUniqueId();
   const labelLength = Math.max(trueLabel.length, falseLabel.length) + 1;
   const trueLabelPadded = trueLabel.padStart(labelLength, paddingChar);
   const falseLabelPadded = falseLabel.padEnd(labelLength, paddingChar);
@@ -103,7 +107,13 @@ export const Switch = ({
           key={`${value}`}
         />
       )}
-      {label && <SwitchLabel label={label} htmlFor={switchId} />}
+      {label && (
+        <SwitchLabel
+          label={label}
+          htmlFor={switchId}
+          shortcutKeys={shortcutKeys}
+        />
+      )}
       <button
         type="button"
         id={switchId}
@@ -168,7 +178,7 @@ export const SwitchN = <TValue extends number | string>({
   tooltipContent,
   ariaLabel,
 }: SwitchNProps<TValue>) => {
-  const switchId = useId();
+  const switchId = useUniqueId();
   const valueIndex = values.indexOf(value);
 
   const notFound = valueIndex === -1;
@@ -225,7 +235,13 @@ export const SwitchN = <TValue extends number | string>({
           key={`${value}`}
         />
       )}
-      {label && <SwitchLabel label={label} htmlFor={switchId} />}
+      {label && (
+        <SwitchLabel
+          label={label}
+          htmlFor={switchId}
+          shortcutKeys={shortcutKeys}
+        />
+      )}
       <button
         type="button"
         id={switchId}

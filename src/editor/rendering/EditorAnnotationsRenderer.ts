@@ -18,7 +18,16 @@ import { type JsonMovement } from "../../model/json/utilityJsonConfigTypes";
 import { blockstackPixiPalettes } from "../../sprites/palette/spritesheetPixiPalettes";
 import { editorStore, store } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
-import { isNegativeSideXy, type Xy } from "../../utils/vectors/vectors";
+import {
+  type DirectionXyz4Glyph,
+  directionXyz4Glyphs,
+} from "../../utils/vectors/directionGlyphs";
+import { rotateXy } from "../../utils/vectors/rotateXy";
+import {
+  isNegativeSideXy,
+  nonZeroVectorClosestDirectionXy4,
+  type Xy,
+} from "../../utils/vectors/vectors";
 import {
   type EditorItemInPlayUnion,
   type EditorRoomId,
@@ -26,10 +35,10 @@ import {
 } from "../editorTypes";
 import { editorUiScale } from "../editorUiScale";
 import { type EditorViewport } from "../RoomEditingArea/viewport/EditorViewport";
+import { type EditorPaneId } from "../slice/EditorPane";
 import {
   changeToRoom,
-  selectCursorRoomSelectedJsonItemIds,
-  selectHoveredItem,
+  selectPaneSelectedJsonItemIds,
   selectTool,
   setClickableAnnotationHovered,
 } from "../slice/levelEditorSlice";
@@ -96,18 +105,25 @@ const textAnnotationErrorColour = blockstackPixiPalettes.basic.midRed;
 const textClickableAnnotationHoverColour =
   blockstackPixiPalettes.basic.pastelBlue;
 
-/** the isometric arrow glyph pointing along a cardinal direction vector */
-const directionArrow = ({ x, y }: Xy): string =>
-  y > 0 ?
-    `↗` // away
-  : y < 0 ?
-    `↙` // towards
-  : x > 0 ?
-    `↖` // left
-  : `↘`; // right
+/**
+ * the isometric arrow glyph pointing along a cardinal direction vector, as it
+ * appears on screen - give it {@link apparentDirection}, not a world direction
+ */
+const directionArrow = (direction: Xy): DirectionXyz4Glyph =>
+  directionXyz4Glyphs[nonZeroVectorClosestDirectionXy4(direction)];
+
+/**
+ * the direction a world direction appears in on screen at the camera's angle -
+ * so arrows annotating item get the direction consistent with the world rendering
+ */
+const apparentDirection = (worldDirection: Xy, cameraAngle: Xy): Xy =>
+  rotateXy(worldDirection, cameraAngle);
 
 const movementPatternAnnotationText = (
   movement: JsonMovement,
+  /**
+   * the apparent start direction, as given by {@link apparentDirection}
+   */
   startDirection: Xy,
 ) => {
   const { x, y } = startDirection;
@@ -187,6 +203,8 @@ class EditorAnnotationsRenderer<
   readonly renderContext: ItemRenderContext<T>;
   #childRenderer: ItemChainPixiRenderer<T>;
   #viewport: EditorViewport;
+  #paneId: EditorPaneId;
+  #editable: boolean;
   #outlineFilters: EditorOutlineFilters;
   /** text annotations, counter-scaled so they read at a constant size under zoom */
   #annotations: TextContainer[] = [];
@@ -195,11 +213,17 @@ class EditorAnnotationsRenderer<
     renderContext: ItemRenderContext<T>,
     childRenderer: ItemChainPixiRenderer<T>,
     viewport: EditorViewport,
+    /** the pane rendering the item, since hover and selection are per-pane we need this */
+    paneId: EditorPaneId,
+    /** whether that pane edits its room - only then are annotations clickable */
+    editable: boolean,
     editorOutlineFilters: EditorOutlineFilters,
   ) {
     this.renderContext = renderContext;
     this.#childRenderer = childRenderer;
     this.#viewport = viewport;
+    this.#paneId = paneId;
+    this.#editable = editable;
     this.#outlineFilters = editorOutlineFilters;
     this.output.addChild(childRenderer.output);
 
@@ -208,6 +232,7 @@ class EditorAnnotationsRenderer<
 
   #initAnnotations() {
     const item = this.renderContext.item as unknown as EditorItemInPlayUnion<T>;
+    const { cameraAngle } = this.renderContext.general;
 
     switch (item.type) {
       case "pickup":
@@ -250,15 +275,20 @@ class EditorAnnotationsRenderer<
           if (toRoom !== exitGameRoomId) {
             const toRoomExists = !!rooms[toRoom];
 
-            const arrow = directionArrow(direction);
+            // laid out as the door appears, which depends on the camera:
+            const apparentDoorDirection = apparentDirection(
+              direction,
+              cameraAngle,
+            );
+            const arrow = directionArrow(apparentDoorDirection);
             const text =
-              direction.y > 0 || direction.x < 0 ?
+              apparentDoorDirection.y > 0 || apparentDoorDirection.x < 0 ?
                 `${toRoom}${arrow}`
               : `${arrow}${toRoom}`;
 
             this.#addTextAnnotation({
               annotationText: text,
-              yAdj: !isNegativeSideXy(direction) ? -48 : 0,
+              yAdj: !isNegativeSideXy(apparentDoorDirection) ? -48 : 0,
               tint:
                 toRoomExists ?
                   textAnnotationNormalColour
@@ -315,7 +345,9 @@ class EditorAnnotationsRenderer<
           // direction arrow:
           this.#addTextAnnotation({
             annotationText:
-              disappearing !== null ? "*" : directionArrow(direction),
+              disappearing !== null ? "*" : (
+                directionArrow(apparentDirection(direction, cameraAngle))
+              ),
             yAdj: -12,
           });
         }
@@ -339,7 +371,7 @@ class EditorAnnotationsRenderer<
           this.#addTextAnnotation({
             annotationText: movementPatternAnnotationText(
               movement,
-              startDirection,
+              apparentDirection(startDirection, cameraAngle),
             ),
             yAdj: -12,
           });
@@ -364,7 +396,7 @@ class EditorAnnotationsRenderer<
               this.#addTextAnnotation({
                 annotationText: movementPatternAnnotationText(
                   config.movement,
-                  config.startDirection,
+                  apparentDirection(config.startDirection, cameraAngle),
                 ),
                 yAdj: -12,
               });
@@ -415,7 +447,9 @@ class EditorAnnotationsRenderer<
       y: yAdj,
     });
 
-    if (clickDispatch !== undefined) {
+    if (clickDispatch !== undefined && this.#editable) {
+      const paneId = this.#paneId;
+
       annotationContainer.eventMode = "static";
 
       annotationContainer.on("click", () => {
@@ -429,11 +463,15 @@ class EditorAnnotationsRenderer<
         }
         // TODO: this is over-dispatching - need some way to
         // prevent firing when enter/leave children
-        store.dispatch(setClickableAnnotationHovered(true));
+        store.dispatch(
+          setClickableAnnotationHovered({ paneId, hovered: true }),
+        );
         annotationContainer.colour = textClickableAnnotationHoverColour;
       });
       annotationContainer.on("mouseout", () => {
-        store.dispatch(setClickableAnnotationHovered(false));
+        store.dispatch(
+          setClickableAnnotationHovered({ paneId, hovered: false }),
+        );
         annotationContainer.colour = tint;
       });
       annotationContainer.cursor = "pointer";
@@ -442,6 +480,15 @@ class EditorAnnotationsRenderer<
     this.output.addChild(annotationContainer);
     frontLayer.attach(annotationContainer);
     this.#annotations.push(annotationContainer);
+  }
+
+  #destroyAnnotations() {
+    const { frontLayer } = this.renderContext;
+    for (const annotation of this.#annotations) {
+      frontLayer.detach(annotation);
+      annotation.destroy({ children: true });
+    }
+    this.#annotations = [];
   }
 
   /**
@@ -465,6 +512,11 @@ class EditorAnnotationsRenderer<
   }
 
   tick(tickContext: ItemTickContext) {
+    if (tickContext.cameraAngleChanged) {
+      // arrows and label layouts follow the camera, so draw them afresh:
+      this.#destroyAnnotations();
+      this.#initAnnotations();
+    }
     this.#updateSelectedAndHovered();
     this.#updateAnnotationScale();
 
@@ -477,14 +529,17 @@ class EditorAnnotationsRenderer<
     } = this;
     const item = this.renderContext.item as unknown as EditorItemInPlayUnion<T>;
 
-    const { clickableAnnotationHovered } = editorStore.getState().levelEditor;
-
     const { jsonItemId } = item;
 
     const state = editorStore.getState();
-    const hoveredJsonItem = selectHoveredItem(state);
-    const selectedJsonItemIds = selectCursorRoomSelectedJsonItemIds(state);
-    const tool = selectTool(state);
+    const pane = state.levelEditor.panes[this.#paneId];
+    const { clickableAnnotationHovered, hoveredItem: hoveredJsonItem } = pane;
+    const selectedJsonItemIds = selectPaneSelectedJsonItemIds(
+      state,
+      this.#paneId,
+    );
+    // a pane that doesn't edit only ever points:
+    const toolType = this.#editable ? selectTool(state).type : "pointer";
 
     const isHovered =
       jsonItemId &&
@@ -525,12 +580,12 @@ class EditorAnnotationsRenderer<
       isHovered && isSelected ?
         [
           selectedFilter,
-          tool.type === "eyeDropper" ?
+          toolType === "eyeDropper" ?
             eyeDropperHoverFilter
           : pointerHoverFilter,
         ]
       : isHovered ?
-        tool.type === "eyeDropper" ?
+        toolType === "eyeDropper" ?
           eyeDropperHoverFilter
         : pointerHoverFilter
       : isSelected ? selectedFilter
@@ -553,6 +608,10 @@ class EditorAnnotationsRenderer<
  */
 export const makeEditorAnnotationsDecorateItemRenderer = (
   viewport: EditorViewport,
+  /** the pane rendering the items */
+  paneId: EditorPaneId,
+  /** whether that pane edits its room */
+  editable: boolean,
 ): DecorateItemMaybeRenderer => {
   const editorOutlineFilters = makeEditorOutlineFilters(viewport);
   return (itemRenderContext, childRenderer) =>
@@ -561,6 +620,8 @@ export const makeEditorAnnotationsDecorateItemRenderer = (
         itemRenderContext,
         childRenderer,
         viewport,
+        paneId,
+        editable,
         editorOutlineFilters,
       )
     : undefined;

@@ -9,14 +9,15 @@ import { keysIter, valuesIter } from "../../../utils/entries";
 import { first } from "../../../utils/iterators/first";
 import { pick } from "../../../utils/pick";
 import { type EditorCampaign } from "../../editorTypes";
+import { resetPanesInPlace } from "../EditorPane";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
+import { migrateRoomItems } from "../inPlaceMutators/migrateRoomItems";
 import { migrateRoomNonContiguousRelationships } from "../inPlaceMutators/migrateRoomNonContiguousRelationships";
 import { migrateRoomVerticalLinks } from "../inPlaceMutators/migrateRoomVerticalLinks";
-import { migrateRoomWallTiles } from "../inPlaceMutators/migrateRoomWallTiles";
 import { pinRoomTabInPlace } from "../inPlaceMutators/pinRoomTabInPlace";
 import { type LevelEditorState } from "../levelEditorSlice";
-import { levelEditorSliceNonPersistedFields } from "../levelEditorSliceTransientFields";
+import { levelEditorSliceCampaignTransientFields } from "../levelEditorSliceTransientFields";
 
 export const saveAndLoadReducers = {
   loadCampaign(
@@ -29,9 +30,10 @@ export const saveAndLoadReducers = {
     const state = _state as LevelEditorState;
 
     // convert old-format campaigns (top-level roomAbove/roomBelow and
-    // room-level nonContiguousRelationship to the current per-sub-room form, and
-    // walls without tiles to carry them) in memory only
-    const migratedCampaign = migrateRoomWallTiles(
+    // room-level nonContiguousRelationship to the current per-sub-room form,
+    // walls without tiles to carry them, and teleporters' store-path conditions
+    // to the planet they name) in memory only
+    const migratedCampaign = migrateRoomItems(
       migrateRoomNonContiguousRelationships(migrateRoomVerticalLinks(campaign)),
     );
 
@@ -43,10 +45,11 @@ export const saveAndLoadReducers = {
       state,
       pick(
         initialLevelEditorSliceState,
-        ...levelEditorSliceNonPersistedFields,
+        ...levelEditorSliceCampaignTransientFields,
         "history",
       ),
     );
+    resetPanesInPlace(state);
     state.openRoomTabs = [];
 
     // choose which room to start the editor in.
@@ -81,7 +84,7 @@ export const saveAndLoadReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
-    state.remoteCampaign = migrateRoomWallTiles(
+    state.remoteCampaign = migrateRoomItems(
       migrateRoomNonContiguousRelationships(migrateRoomVerticalLinks(campaign)),
     );
   },

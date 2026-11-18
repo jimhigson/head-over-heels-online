@@ -10,6 +10,7 @@ import { type SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRo
 import { editorStore, useEditorAppSelector } from "../../store/store";
 import { useTip } from "../../ui/tip/useTip";
 import { valuesIter } from "../../utils/entries";
+import { directionXyz4Glyphs } from "../../utils/vectors/directionGlyphs";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
   addXyz,
@@ -120,17 +121,17 @@ const buttonLabels: Record<ButtonMode, string> = {
   add: "+",
 };
 
-const directionNames: Record<DirectionXyz4, string> = {
-  left: "**↖** *left* of",
-  right: "**↘** *right* of",
-  away: "**↗** *away from*",
-  towards: "**↙** *in front* of",
-  up: "**⬆** *up of*",
-  down: "**⬇** *down of*",
+const directionWords: Record<DirectionXyz4, string> = {
+  left: "*left* of",
+  right: "*right* of",
+  away: "*away from*",
+  towards: "*in front* of",
+  up: "*above*",
+  down: "*below*",
 };
 
 const tooltipForMode = (mode: ButtonMode, direction: DirectionXyz4): string => {
-  const where = directionNames[direction];
+  const where = `**${directionXyz4Glyphs[direction]}** ${directionWords[direction]}`;
   switch (mode) {
     case "add":
       return `*Add* a room ${where} this one`;

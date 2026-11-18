@@ -1,6 +1,10 @@
 import { type EditorRootState, type EditorThunk } from "../../store/store";
 import { type EditorJsonItemUnion } from "../editorTypes";
-import { isRotatable, type RotationSense } from "../itemRotation";
+import {
+  isPlacedItemRotatable,
+  isRotatable,
+  type RotationSense,
+} from "../itemRotation";
 import {
   rotateCurrentToolItem,
   rotateSelectedItems,
@@ -16,7 +20,9 @@ const selectSelectionIsRotatable = (state: EditorRootState): boolean => {
   );
   return (
     selectedItems.length > 0 &&
-    selectedItems.every((item) => item !== undefined && isRotatable(item))
+    selectedItems.every(
+      (item) => item !== undefined && isPlacedItemRotatable(roomJson, item),
+    )
   );
 };
 

@@ -27,7 +27,14 @@ export const teleporterAppearance: ItemAppearance<
     isReflection,
     item,
     room,
-    general: { paused, pixiRenderer, spritesheets, cameraAngle },
+    general: {
+      paused,
+      pixiRenderer,
+      spritesheets,
+      spritesheetMeta,
+      cameraAngle,
+      planetsLiberated,
+    },
   },
   currentRendering,
 }) => {
@@ -40,7 +47,7 @@ export const teleporterAppearance: ItemAppearance<
 
   const currentlyRenderedProps = currentRendering?.renderProps;
 
-  const activated = teleporterIsActive(item);
+  const activated = teleporterIsActive(item, planetsLiberated);
 
   const flashing =
     activated && iterateStoodOnByItems(stoodOnBy, room).some(isPlayableItem);
@@ -89,13 +96,18 @@ export const teleporterAppearance: ItemAppearance<
       : maybeRenderContainerToSprite(
           pixiRenderer,
           createSprite({
-            textureId: variantTextureId(
-              activated ? type : "block.artificial",
-              isReflection,
-              false,
-              false,
-              false,
-            ),
+            textureId:
+              // greyed out when inactive - except uncolourised, where greying
+              // can't show, so an inactive one is drawn as a block:
+              !activated && spritesheetMeta.isUncolourisedOf !== undefined ?
+                variantTextureId(
+                  "block.artificial",
+                  isReflection,
+                  false,
+                  false,
+                  false,
+                )
+              : variantTextureId(type, isReflection, false, !activated, false),
             flipX,
             times,
             cameraQuarterAngle,

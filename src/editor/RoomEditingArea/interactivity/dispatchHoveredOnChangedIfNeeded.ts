@@ -2,15 +2,21 @@ import nanoEqual from "nano-equal";
 
 import { editorStore, store } from "../../../store/store";
 import { type EditorRoomState } from "../../editorTypes";
+import { type EditorPaneId } from "../../slice/EditorPane";
 import {
   type HoveredItem,
-  selectHoveredItem,
+  selectPaneHoveredItem,
   setHoveredItemInRoom,
 } from "../../slice/levelEditorSlice";
 import { type MaybePointingAtSomething } from "../cursor/PointingAt";
 import { itemsAreLocked } from "./itemsAreLocked";
 
 export const dispatchHoveredOnChangedIfNeeded = (
+  paneId: EditorPaneId,
+  /**
+   * whether the pane edits its room - only an editing pane locks items
+   */
+  editable: boolean,
   roomState: EditorRoomState,
   pointingAt: MaybePointingAtSomething,
 ) => {
@@ -26,7 +32,7 @@ export const dispatchHoveredOnChangedIfNeeded = (
       pointingAtItemId && roomState.items[pointingAtItemId];
 
     const newHoveredItemJsonId =
-      itemsAreLocked(storeState, hoveredInPlayItem) ? undefined : (
+      editable && itemsAreLocked(storeState, hoveredInPlayItem) ? undefined : (
         hoveredInPlayItem.jsonItemId
       );
 
@@ -43,8 +49,10 @@ export const dispatchHoveredOnChangedIfNeeded = (
 
   if (
     // only dispatch if something is different, to stop the redux dev tools being flooded:
-    !nanoEqual(selectHoveredItem(storeState), newHoveredItem)
+    !nanoEqual(selectPaneHoveredItem(storeState, paneId), newHoveredItem)
   ) {
-    store.dispatch(setHoveredItemInRoom(newHoveredItem));
+    store.dispatch(
+      setHoveredItemInRoom({ paneId, hoveredItem: newHoveredItem }),
+    );
   }
 };

@@ -19,7 +19,13 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
   Sprite
 > = ({
   renderContext: {
-    general: { pixiRenderer, spritesheets, cameraAngle },
+    general: {
+      pixiRenderer,
+      spritesheets,
+      spritesheetMeta,
+      cameraAngle,
+      planetsLiberated,
+    },
     item,
     room,
   },
@@ -34,7 +40,7 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
 
   const currentlyRenderedProps = currentRendering?.renderProps;
 
-  const activated = teleporterIsActive(item);
+  const activated = teleporterIsActive(item, planetsLiberated);
 
   const flashing =
     activated &&
@@ -56,8 +62,11 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
         {
           textureId:
             flashing ? `shadowMask.${type}.flashing`
-            : activated ? `shadowMask.${type}`
-            : "shadowMask.artificial",
+              // an inactive pad is drawn as a block only uncolourised, where
+              // greying can't show - its mask matches what is drawn:
+            : !activated && spritesheetMeta.isUncolourisedOf !== undefined ?
+              "shadowMask.artificial"
+            : `shadowMask.${type}`,
           // multiplied masks tile along their world axes, which the projection
           // rotates on screen:
           cameraQuarterAngle,

@@ -8,7 +8,7 @@ export type ItemSoundRenderContext<T extends ItemInPlayType> = {
   /** only the parts of the general render context that sound needs */
   general: Pick<
     GeneralRenderContext<string>,
-    "cameraAngle" | "gameState" | "soundSettings"
+    "cameraAngle" | "gameState" | "planetsLiberated" | "soundSettings"
   >;
   room: RoomState<string, string>;
 };

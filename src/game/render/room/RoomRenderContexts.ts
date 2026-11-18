@@ -2,6 +2,7 @@ import { type Renderer } from "pixi.js";
 import { type SetRequired } from "type-fest";
 
 import { type RoomState } from "../../../model/RoomState";
+import { type PlanetName } from "../../../sprites/planets";
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type Spritesheets } from "../../../sprites/spritesheet/Spritesheets";
 import { type Upscale } from "../../../store/slices/upscale/Upscale";
@@ -45,6 +46,10 @@ export type GeneralRenderContext<RoomId extends string> = {
   /** game speed multiplier for the current frame — 0 when paused, <1 during slow-motion (e.g. death animation) */
   speedCoefficient: number;
   spritesheets: Spritesheets;
+  /**
+   * which planets have been liberated so far - none, in the level editor
+   */
+  planetsLiberated: Readonly<Record<PlanetName, boolean>>;
 };
 
 /**

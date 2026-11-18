@@ -5,14 +5,15 @@ import { type EditorRoomId } from "../../editorTypes";
 import { type EditorRoomView } from "../EditorRoomView";
 import {
   changeToRoom,
-  cursorRoomViewChanged,
-  cursorRoomViewPanned,
+  paneViewChanged,
+  paneViewPanned,
   rotateViewClockwise,
-  selectCursorRoomView,
+  selectPaneView,
 } from "../levelEditorSlice";
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,
+  testPaneId,
   testRoomId,
 } from "./__test__/storeStates";
 
@@ -28,54 +29,57 @@ const someView: EditorRoomView = { zoom: 3, pan: { x: 10, y: 20 } };
 test("a newly opened tab has no view of its own", () => {
   const state = reduceLevelEditorActions(
     baseState,
-    cursorRoomViewChanged(someView),
+    paneViewChanged({ paneId: testPaneId, view: someView }),
     changeToRoom(roomB),
   );
 
-  expect(selectCursorRoomView({ levelEditor: state })).toBeUndefined();
+  expect(selectPaneView({ levelEditor: state }, testPaneId)).toBeUndefined();
 });
 
 test("switching back to a tab restores its view", () => {
   const state = reduceLevelEditorActions(
     baseState,
-    cursorRoomViewChanged(someView),
+    paneViewChanged({ paneId: testPaneId, view: someView }),
     changeToRoom(roomB),
-    cursorRoomViewChanged({ zoom: 5, pan: { x: 0, y: 0 } }),
+    paneViewChanged({
+      paneId: testPaneId,
+      view: { zoom: 5, pan: { x: 0, y: 0 } },
+    }),
     changeToRoom(testRoomId),
   );
 
   expect<EditorRoomView | undefined>(
-    selectCursorRoomView({ levelEditor: state }),
+    selectPaneView({ levelEditor: state }, testPaneId),
   ).toEqual<EditorRoomView>(someView);
 });
 
-test("panning moves the cursor room's view", () => {
+test("panning moves the pane's view", () => {
   const state = reduceLevelEditorActions(
     baseState,
-    cursorRoomViewChanged(someView),
-    cursorRoomViewPanned({ x: 1, y: -1 }),
+    paneViewChanged({ paneId: testPaneId, view: someView }),
+    paneViewPanned({ paneId: testPaneId, delta: { x: 1, y: -1 } }),
   );
 
   expect<EditorRoomView | undefined>(
-    selectCursorRoomView({ levelEditor: state }),
+    selectPaneView({ levelEditor: state }, testPaneId),
   ).toEqual<EditorRoomView>({ zoom: 3, pan: { x: 11, y: 19 } });
 });
 
 test("panning a room not yet framed does nothing", () => {
   const state = reduceLevelEditorActions(
     baseState,
-    cursorRoomViewPanned({ x: 1, y: -1 }),
+    paneViewPanned({ paneId: testPaneId, delta: { x: 1, y: -1 } }),
   );
 
-  expect(selectCursorRoomView({ levelEditor: state })).toBeUndefined();
+  expect(selectPaneView({ levelEditor: state }, testPaneId)).toBeUndefined();
 });
 
 test("rotating drops the view, so the room is fitted afresh", () => {
   const state = reduceLevelEditorActions(
     baseState,
-    cursorRoomViewChanged(someView),
+    paneViewChanged({ paneId: testPaneId, view: someView }),
     rotateViewClockwise(),
   );
 
-  expect(selectCursorRoomView({ levelEditor: state })).toBeUndefined();
+  expect(selectPaneView({ levelEditor: state }, testPaneId)).toBeUndefined();
 });

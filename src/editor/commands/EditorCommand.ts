@@ -23,6 +23,10 @@ type EditorCommandPresentation = {
   menuIcon?: TextureTailwindClass | VNode;
   shortcutKeys?: ShortcutKeys;
   tooltipContent?: ComponentChildren;
+  /**
+   * shown on hovering the command's entry in cmd-k
+   */
+  cmdKTip?: ComponentChildren;
   /** for the toolbar button, eg its colour */
   toolbarClass?: string;
   /** shown as the current tool, or as a ticked menu item */

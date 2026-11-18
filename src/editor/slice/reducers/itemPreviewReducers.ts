@@ -1,38 +1,36 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { applyPreviewedEditsInPlace } from "../applyPreviewedEditsInPlace";
-import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
-import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
+import {
+  commitPendingEditsInPlace,
+  commitPendingNudgeInPlace,
+} from "../inPlaceMutators/commitPendingNudgeInPlace";
 import { type LevelEditorState } from "../levelEditorSlice";
-import { pushUndoToCursorRoomInPlace } from "./undoReducers";
 
 export const itemPreviewReducers = {
   setAutoCoalesce(_state: LevelEditorState, action: PayloadAction<boolean>) {
     _state.autoCoalesce = action.payload;
   },
-  resetPreviewedEdits(state) {
+  /**
+   * drop the previewed edits - though pending nudges, which are debounced so that they are only
+   * a preview until a pause in their movement (to prevent too many items in undo history for
+   * a series of nudges), are committed rather than lost
+   */
+  resetPreviewedEdits(_state) {
+    const state = _state as LevelEditorState;
+    commitPendingNudgeInPlace(state);
     state.pendingEdits = undefined;
   },
   /**
    * overwrite the permanent state of the current room by committing the previewed edits
    */
-  commitCurrentPreviewedEdits(state) {
-    if (state.pendingEdits === undefined) {
-      return;
-    }
-    pushUndoToCursorRoomInPlace(
-      state,
-      state.pendingEdits.description,
-      state.pendingEdits.timestamp,
-    );
-    applyPreviewedEditsInPlace(
-      selectCurrentCommittedRoomJsonFromLevelEditorState(state),
-      state.pendingEdits.edits,
-    );
-    if (state.autoCoalesce) {
-      consolidateCurrentRoomInPlace(state);
-    }
-
-    state.pendingEdits = undefined;
+  commitCurrentPreviewedEdits(_state) {
+    commitPendingEditsInPlace(_state as LevelEditorState);
+  },
+  /**
+   * commit the nudges being previewed, if there are any - runs on a debounce for the nudge
+   * interactions so that a series of nudges counts as one undoable interaction
+   */
+  commitPendingNudge(_state) {
+    commitPendingNudgeInPlace(_state as LevelEditorState);
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

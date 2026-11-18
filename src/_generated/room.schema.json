@@ -517,7 +517,7 @@
                             "additionalProperties": false,
                             "properties": {
                               "config": {
-                                "$ref": "#/definitions/r68"
+                                "$ref": "#/definitions/r69"
                               },
                               "type": {
                                 "const": "firedDoughnut",
@@ -666,7 +666,7 @@
                                     "$ref": "#/definitions/r20"
                                   },
                                   {
-                                    "$ref": "#/definitions/r64"
+                                    "$ref": "#/definitions/r65"
                                   }
                                 ]
                               },
@@ -724,7 +724,7 @@
                             "additionalProperties": false,
                             "properties": {
                               "config": {
-                                "$ref": "#/definitions/r70"
+                                "$ref": "#/definitions/r71"
                               },
                               "type": {
                                 "const": "sceneryCrown",
@@ -766,7 +766,7 @@
                             "additionalProperties": false,
                             "properties": {
                               "config": {
-                                "$ref": "#/definitions/r67"
+                                "$ref": "#/definitions/r68"
                               },
                               "type": {
                                 "const": "slidingDeadly",
@@ -977,7 +977,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r68"
+                    "$ref": "#/definitions/r69"
                   },
                   "position": {
                     "$ref": "#/definitions/r47"
@@ -1021,7 +1021,7 @@
                             "type": "string"
                           },
                           "times": {
-                            "$ref": "#/definitions/r63"
+                            "$ref": "#/definitions/r64"
                           }
                         },
                         "required": ["floorType", "times"],
@@ -1035,7 +1035,7 @@
                             "type": "string"
                           },
                           "times": {
-                            "$ref": "#/definitions/r63"
+                            "$ref": "#/definitions/r64"
                           }
                         },
                         "required": ["floorType", "times"],
@@ -1062,7 +1062,7 @@
                             "type": "string"
                           },
                           "times": {
-                            "$ref": "#/definitions/r63"
+                            "$ref": "#/definitions/r64"
                           }
                         },
                         "required": ["floorType", "scenery", "times"],
@@ -1339,7 +1339,7 @@
                         "$ref": "#/definitions/r20"
                       },
                       {
-                        "$ref": "#/definitions/r64"
+                        "$ref": "#/definitions/r65"
                       }
                     ]
                   },
@@ -1433,7 +1433,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r70"
+                    "$ref": "#/definitions/r71"
                   },
                   "position": {
                     "$ref": "#/definitions/r47"
@@ -1484,7 +1484,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r67"
+                    "$ref": "#/definitions/r68"
                   },
                   "position": {
                     "$ref": "#/definitions/r47"
@@ -2290,7 +2290,7 @@
           "$ref": "#/definitions/r84"
         },
         {
-          "$ref": "#/definitions/r68"
+          "$ref": "#/definitions/r69"
         },
         {
           "$ref": "#/definitions/r61"
@@ -2302,13 +2302,13 @@
           "$ref": "#/definitions/r20"
         },
         {
-          "$ref": "#/definitions/r64"
+          "$ref": "#/definitions/r65"
         },
         {
           "$ref": "#/definitions/r38"
         },
         {
-          "$ref": "#/definitions/r70"
+          "$ref": "#/definitions/r71"
         },
         {
           "$ref": "#/definitions/r80"
@@ -2320,7 +2320,7 @@
           "$ref": "#/definitions/r81"
         },
         {
-          "$ref": "#/definitions/r67"
+          "$ref": "#/definitions/r68"
         },
         {
           "$ref": "#/definitions/r12"
@@ -2410,7 +2410,7 @@
           "$ref": "#/definitions/r10"
         },
         "everActivated": {
-          "$ref": "#/definitions/r65"
+          "$ref": "#/definitions/r66"
         },
         "expires": {
           "$ref": "#/definitions/r35"
@@ -2484,8 +2484,8 @@
     "r12": {
       "additionalProperties": false,
       "properties": {
-        "activatedOnStoreValue": {
-          "$ref": "#/definitions/r71"
+        "activatedIfPlanetLiberated": {
+          "$ref": "#/definitions/r63"
         },
         "times": {
           "$ref": "#/definitions/r58"
@@ -2526,10 +2526,10 @@
           "type": "string"
         },
         "leftState": {
-          "$ref": "#/definitions/r69"
+          "$ref": "#/definitions/r70"
         },
         "rightState": {
-          "$ref": "#/definitions/r69"
+          "$ref": "#/definitions/r70"
         },
         "targets": {
           "items": {
@@ -2765,7 +2765,7 @@
           "type": "string"
         },
         "leftState": {
-          "$ref": "#/definitions/r66"
+          "$ref": "#/definitions/r67"
         },
         "rightState": {
           "$ref": "#/definitions/r91"
@@ -3375,6 +3375,11 @@
       "type": "boolean"
     },
     "r63": {
+      "description": "the teleporter only works once this planet has been liberated (its crown collected); always works when not given",
+      "enum": ["blacktooth", "bookworld", "egyptus", "penitentiary", "safari"],
+      "type": "string"
+    },
+    "r64": {
       "additionalProperties": false,
       "properties": {
         "x": {
@@ -3393,7 +3398,7 @@
       "required": ["x", "y"],
       "type": "object"
     },
-    "r64": {
+    "r65": {
       "additionalProperties": false,
       "properties": {
         "gives": {
@@ -3403,12 +3408,12 @@
       "required": ["gives"],
       "type": "object"
     },
-    "r65": {
+    "r66": {
       "description": "if this item has ever been activated, in the lifetime of the room. Charging cybermen will have this flag as false so long as they are charging",
       "enum": [false, true],
       "type": "boolean"
     },
-    "r66": {
+    "r67": {
       "additionalProperties": false,
       "properties": {
         "disappearing": {
@@ -3417,7 +3422,7 @@
       },
       "type": "object"
     },
-    "r67": {
+    "r68": {
       "additionalProperties": false,
       "properties": {
         "startingPhase": {
@@ -3432,7 +3437,7 @@
       "required": ["style", "startingPhase"],
       "type": "object"
     },
-    "r68": {
+    "r69": {
       "additionalProperties": false,
       "properties": {
         "direction": {
@@ -3441,7 +3446,7 @@
       },
       "type": "object"
     },
-    "r69": {
+    "r70": {
       "additionalProperties": false,
       "properties": {
         "activated": {
@@ -3450,7 +3455,7 @@
       },
       "type": "object"
     },
-    "r70": {
+    "r71": {
       "additionalProperties": false,
       "properties": {
         "planet": {
@@ -3459,16 +3464,6 @@
       },
       "required": ["planet"],
       "type": "object"
-    },
-    "r71": {
-      "enum": [
-        "planetsLiberated.blacktooth",
-        "planetsLiberated.bookworld",
-        "planetsLiberated.egyptus",
-        "planetsLiberated.penitentiary",
-        "planetsLiberated.safari"
-      ],
-      "type": "string"
     },
     "r72": {
       "description": "the way the mirror turns (90°, to its other orientation) every time its controller changes setting",

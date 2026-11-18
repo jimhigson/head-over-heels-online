@@ -416,12 +416,16 @@ export type RoomJsonSchema = {
                                 y?: number;
                                 z?: number;
                               };
-                              activatedOnStoreValue?:
-                                | "planetsLiberated.blacktooth"
-                                | "planetsLiberated.bookworld"
-                                | "planetsLiberated.egyptus"
-                                | "planetsLiberated.penitentiary"
-                                | "planetsLiberated.safari";
+                              /**
+                               * the teleporter only works once this planet has been liberated (its crown
+                               * collected); always works when not given
+                               */
+                              activatedIfPlanetLiberated?:
+                                | "blacktooth"
+                                | "bookworld"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari";
                               /**
                                * an item in the destination room this teleporter should go to - the
                                * player will be moved to atop this item
@@ -709,12 +713,16 @@ export type RoomJsonSchema = {
                                 y?: number;
                                 z?: number;
                               };
-                              activatedOnStoreValue?:
-                                | "planetsLiberated.blacktooth"
-                                | "planetsLiberated.bookworld"
-                                | "planetsLiberated.egyptus"
-                                | "planetsLiberated.penitentiary"
-                                | "planetsLiberated.safari";
+                              /**
+                               * the teleporter only works once this planet has been liberated (its crown
+                               * collected); always works when not given
+                               */
+                              activatedIfPlanetLiberated?:
+                                | "blacktooth"
+                                | "bookworld"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari";
                               /**
                                * an item in the destination room this teleporter should go to - the
                                * player will be moved to atop this item
@@ -1455,12 +1463,16 @@ export type RoomJsonSchema = {
                     y?: number;
                     z?: number;
                   };
-                  activatedOnStoreValue?:
-                    | "planetsLiberated.blacktooth"
-                    | "planetsLiberated.bookworld"
-                    | "planetsLiberated.egyptus"
-                    | "planetsLiberated.penitentiary"
-                    | "planetsLiberated.safari";
+                  /**
+                   * the teleporter only works once this planet has been liberated (its crown
+                   * collected); always works when not given
+                   */
+                  activatedIfPlanetLiberated?:
+                    | "blacktooth"
+                    | "bookworld"
+                    | "egyptus"
+                    | "penitentiary"
+                    | "safari";
                   /**
                    * an item in the destination room this teleporter should go to - the
                    * player will be moved to atop this item
@@ -2037,12 +2049,12 @@ export type RoomJsonSchema = {
             y?: number;
             z?: number;
           };
-          activatedOnStoreValue?:
-            | "planetsLiberated.blacktooth"
-            | "planetsLiberated.bookworld"
-            | "planetsLiberated.egyptus"
-            | "planetsLiberated.penitentiary"
-            | "planetsLiberated.safari";
+          /**
+           * the teleporter only works once this planet has been liberated (its crown
+           * collected); always works when not given
+           */
+          activatedIfPlanetLiberated?:
+            "blacktooth" | "bookworld" | "egyptus" | "penitentiary" | "safari";
           /**
            * an item in the destination room this teleporter should go to - the
            * player will be moved to atop this item
@@ -2427,12 +2439,16 @@ export type RoomJsonSchema = {
                                 y?: number;
                                 z?: number;
                               };
-                              activatedOnStoreValue?:
-                                | "planetsLiberated.blacktooth"
-                                | "planetsLiberated.bookworld"
-                                | "planetsLiberated.egyptus"
-                                | "planetsLiberated.penitentiary"
-                                | "planetsLiberated.safari";
+                              /**
+                               * the teleporter only works once this planet has been liberated (its crown
+                               * collected); always works when not given
+                               */
+                              activatedIfPlanetLiberated?:
+                                | "blacktooth"
+                                | "bookworld"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari";
                               /**
                                * an item in the destination room this teleporter should go to - the
                                * player will be moved to atop this item
@@ -2720,12 +2736,16 @@ export type RoomJsonSchema = {
                                 y?: number;
                                 z?: number;
                               };
-                              activatedOnStoreValue?:
-                                | "planetsLiberated.blacktooth"
-                                | "planetsLiberated.bookworld"
-                                | "planetsLiberated.egyptus"
-                                | "planetsLiberated.penitentiary"
-                                | "planetsLiberated.safari";
+                              /**
+                               * the teleporter only works once this planet has been liberated (its crown
+                               * collected); always works when not given
+                               */
+                              activatedIfPlanetLiberated?:
+                                | "blacktooth"
+                                | "bookworld"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari";
                               /**
                                * an item in the destination room this teleporter should go to - the
                                * player will be moved to atop this item
@@ -3176,12 +3196,12 @@ export type RoomJsonSchema = {
             y?: number;
             z?: number;
           };
-          activatedOnStoreValue?:
-            | "planetsLiberated.blacktooth"
-            | "planetsLiberated.bookworld"
-            | "planetsLiberated.egyptus"
-            | "planetsLiberated.penitentiary"
-            | "planetsLiberated.safari";
+          /**
+           * the teleporter only works once this planet has been liberated (its crown
+           * collected); always works when not given
+           */
+          activatedIfPlanetLiberated?:
+            "blacktooth" | "bookworld" | "egyptus" | "penitentiary" | "safari";
           /**
            * an item in the destination room this teleporter should go to - the
            * player will be moved to atop this item
@@ -3474,12 +3494,16 @@ export type RoomJsonSchema = {
                             y?: number;
                             z?: number;
                           };
-                          activatedOnStoreValue?:
-                            | "planetsLiberated.blacktooth"
-                            | "planetsLiberated.bookworld"
-                            | "planetsLiberated.egyptus"
-                            | "planetsLiberated.penitentiary"
-                            | "planetsLiberated.safari";
+                          /**
+                           * the teleporter only works once this planet has been liberated (its crown
+                           * collected); always works when not given
+                           */
+                          activatedIfPlanetLiberated?:
+                            | "blacktooth"
+                            | "bookworld"
+                            | "egyptus"
+                            | "penitentiary"
+                            | "safari";
                           /**
                            * an item in the destination room this teleporter should go to - the
                            * player will be moved to atop this item
@@ -3759,12 +3783,16 @@ export type RoomJsonSchema = {
                             y?: number;
                             z?: number;
                           };
-                          activatedOnStoreValue?:
-                            | "planetsLiberated.blacktooth"
-                            | "planetsLiberated.bookworld"
-                            | "planetsLiberated.egyptus"
-                            | "planetsLiberated.penitentiary"
-                            | "planetsLiberated.safari";
+                          /**
+                           * the teleporter only works once this planet has been liberated (its crown
+                           * collected); always works when not given
+                           */
+                          activatedIfPlanetLiberated?:
+                            | "blacktooth"
+                            | "bookworld"
+                            | "egyptus"
+                            | "penitentiary"
+                            | "safari";
                           /**
                            * an item in the destination room this teleporter should go to - the
                            * player will be moved to atop this item

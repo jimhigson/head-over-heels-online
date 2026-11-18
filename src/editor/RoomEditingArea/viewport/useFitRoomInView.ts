@@ -1,32 +1,35 @@
 import { useEffect } from "preact/hooks";
 
 import { startEditorListening } from "../../../store/listenerMiddleware";
-import {
-  selectCursorRoomView,
-  selectRoomPaneSize,
-} from "../../slice/levelEditorSlice";
-import { fitCursorRoomInViewThunk } from "./fitCursorRoomInViewThunk";
+import { selectPaneSize, selectPaneView } from "../../slice/levelEditorSlice";
+import { useEditorPane } from "../pane/EditorPaneProvider";
+import { fitPaneRoomInViewThunk } from "./fitPaneRoomInViewThunk";
 
 /**
- * fits the cursor room in the pane whenever its tab has no view of its own -
- * a newly opened tab, or after rotating - once the pane has a size
+ * fits the pane's room in the pane whenever it has no view - a newly opened
+ * tab, or after rotating - once the pane has a size
  */
 export const useFitRoomInView = () => {
+  const { paneId } = useEditorPane();
   useEffect(
     () =>
       startEditorListening({
         predicate(_action, state) {
-          const paneSize = selectRoomPaneSize(state);
+          const paneSize = selectPaneSize(state, paneId);
+          // check pane wasn't closed (in case we have a stale paneId reference)
+          if (paneSize === undefined) {
+            return false;
+          }
           return (
-            selectCursorRoomView(state) === undefined &&
+            selectPaneView(state, paneId) === undefined &&
             paneSize.x > 0 &&
             paneSize.y > 0
           );
         },
         effect(_action, { dispatch }) {
-          dispatch(fitCursorRoomInViewThunk());
+          dispatch(fitPaneRoomInViewThunk(paneId));
         },
       }),
-    [],
+    [paneId],
   );
 };

@@ -22,6 +22,7 @@ import { createSoundRenderer } from "../../sound/createSoundRenderer";
 import { type ItemSoundRenderer } from "../../sound/ItemSoundRenderer";
 import { loadedSound, loadSound } from "../../sound/soundsLoader";
 import { soundsFadeDurationSec } from "../../sound/soundUtils/stopWithFade";
+import { store } from "../../store/store";
 import { keys } from "../../utils/entries";
 import { cameraAngleBase } from "../../utils/vectors/cameraAngleVectors";
 import { type TestRenderState } from "../makeTestRenderState";
@@ -212,6 +213,9 @@ export const makeTestRoomSoundRenderer = (soundOutput: AudioNode) => {
               cameraAngle: cameraAngleBase,
               gameState,
               soundSettings: {},
+              // as the game's main loop reads it, at the time of rendering:
+              planetsLiberated:
+                store.getState().gameInPlay.gameInPlay.planetsLiberated,
             },
           });
           itemSoundRenderer?.output.connect(soundOutput);

@@ -1,6 +1,10 @@
+import { type ComponentChildren } from "preact";
+
 import { twClass } from "../../../utils/twClass.tsx" with { type: "macro" };
+import { type DirectionXyz4 } from "../../../utils/vectors/vectors";
 import { CommandToolbarButton } from "../../commands/CommandToolbarButton";
 import { nudgeCommandDefinitions } from "../../commands/nudgeCommandDefinitions";
+import { type NudgeKind, nudgeKinds } from "../../slice/levelEditorSlice";
 
 const lineContainerClassName = twClass(
   "flex flex-row flex-wrap gap-x-0 gap-y-oneScaledPix items-center mt-1 w-full",
@@ -14,112 +18,65 @@ const buttonsClassName = twClass(
   "flex flex-row flex-wrap gap-oneScaledPix items-center",
 );
 
-export const NudgeButtons = () => (
+const forwardDirections = [
+  "left",
+  "right",
+  "away",
+  "towards",
+  "up",
+  "down",
+] as const satisfies DirectionXyz4[];
+
+const nudgeRows = {
+  move: { label: "Move:", directions: forwardDirections },
+  multiplyOrGrow: { label: "Multiply:", directions: forwardDirections },
+  removeOrShrink: {
+    label: "Shrink:",
+    directions: ["right", "left", "towards", "away", "down", "up"],
+  },
+} as const satisfies Record<
+  NudgeKind,
+  { label: string; directions: readonly DirectionXyz4[] }
+>;
+
+export type ButtonRowProps = {
+  label: string;
+  children: ComponentChildren;
+};
+
+const ButtonRow = ({ label, children }: ButtonRowProps) => (
   <div class={lineContainerClassName}>
-    <span class={lineTitleHeaderClassName}>{"Move:"}</span>
+    <span class={lineTitleHeaderClassName}>{label}</span>
     <div class="flex-grow" />
-    <div class={buttonsClassName}>
-      <CommandToolbarButton
-        small
-        command={nudgeCommandDefinitions["move.left"]}
-      />
-      <CommandToolbarButton
-        small
-        command={nudgeCommandDefinitions["move.right"]}
-      />
-      <CommandToolbarButton
-        small
-        command={nudgeCommandDefinitions["move.away"]}
-      />
-      <CommandToolbarButton
-        small
-        command={nudgeCommandDefinitions["move.towards"]}
-      />
-      <CommandToolbarButton
-        small
-        command={nudgeCommandDefinitions["move.up"]}
-      />
-      <CommandToolbarButton
-        small
-        command={nudgeCommandDefinitions["move.down"]}
-      />
-    </div>
-
-    <div class={lineContainerClassName}>
-      <span class={lineTitleHeaderClassName}>{"Grow:"}</span>
-      <div class="flex-grow" />
-      <div class={buttonsClassName}>
-        <CommandToolbarButton
-          small
-          command={nudgeCommandDefinitions["grow.left"]}
-        />
-        <CommandToolbarButton
-          small
-          command={nudgeCommandDefinitions["grow.right"]}
-        />
-        <CommandToolbarButton
-          small
-          command={nudgeCommandDefinitions["grow.away"]}
-        />
-        <CommandToolbarButton
-          small
-          command={nudgeCommandDefinitions["grow.towards"]}
-        />
-        <CommandToolbarButton
-          small
-          command={nudgeCommandDefinitions["grow.up"]}
-        />
-        <CommandToolbarButton
-          small
-          command={nudgeCommandDefinitions["grow.down"]}
-        />
-      </div>
-    </div>
-
-    <div class={lineContainerClassName}>
-      <span class={lineTitleHeaderClassName}>Shrink:</span>
-      <div class="flex-grow" />
-      <div class={buttonsClassName}>
-        <CommandToolbarButton
-          small
-          command={nudgeCommandDefinitions["shrink.right"]}
-        />
-        <CommandToolbarButton
-          small
-          command={nudgeCommandDefinitions["shrink.left"]}
-        />
-        <CommandToolbarButton
-          small
-          command={nudgeCommandDefinitions["shrink.towards"]}
-        />
-        <CommandToolbarButton
-          small
-          command={nudgeCommandDefinitions["shrink.away"]}
-        />
-        <CommandToolbarButton
-          small
-          command={nudgeCommandDefinitions["shrink.down"]}
-        />
-        <CommandToolbarButton
-          small
-          command={nudgeCommandDefinitions["shrink.up"]}
-        />
-      </div>
-    </div>
-
-    <div class={lineContainerClassName}>
-      <span class={lineTitleHeaderClassName}>Rotate:</span>
-      <div class="flex-grow" />
-      <div class={buttonsClassName}>
-        <CommandToolbarButton
-          small
-          command={nudgeCommandDefinitions["rotate.anticlockwise"]}
-        />
-        <CommandToolbarButton
-          small
-          command={nudgeCommandDefinitions["rotate.clockwise"]}
-        />
-      </div>
-    </div>
+    <div class={buttonsClassName}>{children}</div>
   </div>
+);
+
+export const NudgeButtons = () => (
+  <>
+    {nudgeKinds.map((nudgeKind) => {
+      const { label, directions } = nudgeRows[nudgeKind];
+      return (
+        <ButtonRow key={nudgeKind} label={label}>
+          {directions.map((direction) => (
+            <CommandToolbarButton
+              key={direction}
+              small
+              command={nudgeCommandDefinitions[`${nudgeKind}.${direction}`]}
+            />
+          ))}
+        </ButtonRow>
+      );
+    })}
+    <ButtonRow label="Rotate:">
+      <CommandToolbarButton
+        small
+        command={nudgeCommandDefinitions["rotate.anticlockwise"]}
+      />
+      <CommandToolbarButton
+        small
+        command={nudgeCommandDefinitions["rotate.clockwise"]}
+      />
+    </ButtonRow>
+  </>
 );

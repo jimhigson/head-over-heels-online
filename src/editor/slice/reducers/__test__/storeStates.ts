@@ -5,6 +5,7 @@ import { nowhereRoomId } from "../../../../model/json/ItemConfigMap";
 import { type EditorThunk } from "../../../../store/store";
 import { type EditorRoomId, type EditorRoomItemId } from "../../../editorTypes";
 import { type Tool } from "../../../RoomEditingArea/interactivity/Tool";
+import { type EditorPaneId, newEditorPane } from "../../EditorPane";
 import { initialLevelEditorSliceState } from "../../initialLevelEditorSliceState";
 import {
   levelEditorSlice,
@@ -30,8 +31,16 @@ export const doorItemToolWithoutAutoAddRooms: Tool = {
 export const testRoomId = "testRoomId" as EditorRoomId;
 export const wallItemId = "testWall" as EditorRoomItemId;
 
+/**
+ * the one pane the test states have mounted - editing the cursor room, and
+ * active
+ */
+export const testPaneId = "testPane" as EditorPaneId;
+
 export const editorStateWithOneRoomWithNoItems: LevelEditorState = {
   ...initialLevelEditorSliceState,
+  panes: { [testPaneId]: newEditorPane({ type: "cursorRoom" }, true) },
+  activePaneId: testPaneId,
   selectedRoomIds: [testRoomId],
   cursorRoom: { roomId: testRoomId, subRoomId: "*" },
   openRoomTabs: [{ roomId: testRoomId, isPreview: false, view: undefined }],
@@ -80,17 +89,21 @@ export const reduceLevelEditorActions = (
     }
 
     let current = state;
-    (
-      action as (
-        dispatch: (a: LevelEditorSliceAction) => void,
-        getState: () => { levelEditor: LevelEditorState },
-      ) => void
-    )(
-      (a) => {
-        current = levelEditorSlice.reducer(current, a);
-      },
-      () => ({ levelEditor: current }),
-    );
+    const getState = () => ({ levelEditor: current });
+    // thunks may dispatch further thunks:
+    const dispatch = (dispatched: ReducibleAction) => {
+      if (typeof dispatched === "function") {
+        (
+          dispatched as (
+            dispatch: (a: ReducibleAction) => void,
+            getState: () => { levelEditor: LevelEditorState },
+          ) => void
+        )(dispatch, getState);
+      } else {
+        current = levelEditorSlice.reducer(current, dispatched);
+      }
+    };
+    dispatch(action);
     return current;
   }, state);
 };

@@ -23,7 +23,7 @@ test("fixing a door to nowhere leaves no issues", () => {
   for (const [index, planet] of planets.entries()) {
     addCrown(start, planet, { x: 1 + index, y: 4, z: 0 });
   }
-  addDoor(start, "left", { toRoom: exitGameRoomId });
+  addDoor(start, "left", { toRoom: exitGameRoomId }, { x: 8, y: 3, z: 0 });
   addDoor(start, "away", { toRoom: nowhereRoomId }, { x: 3, y: 8, z: 0 });
 
   const { campaign } = fixAllVerificationIssues(campaignOf({ start }));
@@ -39,7 +39,7 @@ test("fixing a teleporter to nowhere leaves no issues", () => {
   for (const [index, planet] of planets.entries()) {
     addCrown(start, planet, { x: 1 + index, y: 4, z: 0 });
   }
-  addDoor(start, "left", { toRoom: exitGameRoomId });
+  addDoor(start, "left", { toRoom: exitGameRoomId }, { x: 8, y: 3, z: 0 });
   addItem(start, "tp", {
     type: "teleporter",
     config: { toRoom: nowhereRoomId },
@@ -60,7 +60,7 @@ test("fixing a door with no door back leaves no issues", () => {
   for (const [index, planet] of planets.entries()) {
     addCrown(start, planet, { x: 1 + index, y: 4, z: 0 });
   }
-  addDoor(start, "left", { toRoom: exitGameRoomId });
+  addDoor(start, "left", { toRoom: exitGameRoomId }, { x: 8, y: 3, z: 0 });
   addDoor(
     start,
     "away",
@@ -81,7 +81,7 @@ test("fixing a room too big for one map cell leaves no issues", () => {
   for (const [index, planet] of planets.entries()) {
     addCrown(start, planet, { x: 1 + index, y: 4, z: 0 });
   }
-  addDoor(start, "left", { toRoom: exitGameRoomId });
+  addDoor(start, "left", { toRoom: exitGameRoomId }, { x: 8, y: 3, z: 0 });
 
   const { campaign } = fixAllVerificationIssues(campaignOf({ start }));
 
@@ -101,7 +101,7 @@ test.for<[string, string]>([
     for (const [index, planet] of planets.entries()) {
       addCrown(start, planet, { x: 1 + index, y: 4, z: 0 });
     }
-    addDoor(start, "left", { toRoom: exitGameRoomId });
+    addDoor(start, "left", { toRoom: exitGameRoomId }, { x: 8, y: 3, z: 0 });
     addDoor(
       start,
       "away",
@@ -137,7 +137,7 @@ test.for<[string, string]>([
     for (const [index, planet] of planets.entries()) {
       addCrown(start, planet, { x: 1 + index, y: 4, z: 0 });
     }
-    addDoor(start, "left", { toRoom: exitGameRoomId });
+    addDoor(start, "left", { toRoom: exitGameRoomId }, { x: 8, y: 3, z: 0 });
     addDoor(
       start,
       "away",

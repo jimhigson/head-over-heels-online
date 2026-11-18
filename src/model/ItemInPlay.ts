@@ -116,6 +116,16 @@ type ItemInPlayConfigMap<
      * the direction this portal has to be hit (with a dot product in) to be walked through
      */
     direction: Xyz;
+    /**
+     * for a floor or ceiling portal: the sub-room cell it is the floor or
+     * ceiling of ("*" for an undivided room)
+     */
+    subRoom?: string;
+    /**
+     * for a floor or ceiling portal: the sub-room cell of the destination room
+     * it leads to, when its link names one
+     */
+    toSubRoom?: string;
   };
   lightBeam: {
     /** the direction this (straight segment of a) beam travels in */
