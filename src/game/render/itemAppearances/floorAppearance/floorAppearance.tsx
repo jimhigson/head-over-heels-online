@@ -1,4 +1,4 @@
-import { Container, Graphics, type Sprite, TilingSprite } from "pixi.js";
+import { Container, Graphics, Rectangle, type Sprite } from "pixi.js";
 
 import { type ItemInPlay } from "../../../../model/ItemInPlay";
 import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
@@ -11,6 +11,7 @@ import { frac } from "../../../../utils/maths/maths";
 import { rangesOverlap } from "../../../../utils/maths/numberPairs";
 import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
 import { renderContainerToSprite } from "../../../../utils/pixi/bakeContainerToSprite";
+import { tiledSprites } from "../../../../utils/pixi/tiledSprites";
 import { type UniqueTextureSprite } from "../../../../utils/pixi/UniqueTextureSprite";
 import { type Subset } from "../../../../utils/Subset";
 import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
@@ -556,12 +557,12 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
           tilesTop.y,
         );
 
-        const tilingSpriteRect = {
-          x: tilesMinX,
-          y: tilesMinY - tilesVerticalExtra,
-          width: tilesMaxX - tilesMinX,
-          height: tilesMaxY - tilesMinY + 2 * tilesVerticalExtra,
-        };
+        const tilesRectangle = new Rectangle(
+          tilesMinX,
+          tilesMinY - tilesVerticalExtra,
+          tilesMaxX - tilesMinX,
+          tilesMaxY - tilesMinY + 2 * tilesVerticalExtra,
+        );
 
         const tilePosition = subXy(
           projectBlockXyzToScreenXy(
@@ -571,18 +572,15 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
           // origin of the floor is at the bottom of its thickness,
           // so adjust in y to bring to the top
           { y: box.zd },
-          // tilePosition in pixijs is relative to the top-left corner
-          // of the tiling sprite, so we need to adjust it to be relative
-          // to the left/towards/top corner of the floor
-          tilingSpriteRect,
+          // tilePosition is relative to the top-left corner of the tiled
+          // rectangle, so we need to adjust it to be relative to the
+          // left/towards/top corner of the floor
+          tilesRectangle,
         );
 
-        const floorTilesTilingSprite = new TilingSprite({
-          texture: tileTexture,
-          tilePosition,
-          ...tilingSpriteRect,
-        });
-        tilesContainer.addChild(floorTilesTilingSprite);
+        tilesContainer.addChild(
+          tiledSprites(tileTexture, tilesRectangle, tilePosition),
+        );
 
         if (spritesheetMeta.showFloorOverDraw) {
           tilesContainer.addChild(

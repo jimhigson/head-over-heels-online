@@ -8,6 +8,215 @@ index b8f3fef4d30fa42012d7d8a0093b645ce950259c..6070bc8e8ebba9286c1d91c6f4b5568e
  import '../events/init.mjs';
  import '../spritesheet/init.mjs';
  import '../rendering/init.mjs';
+diff --git a/lib/filters/Filter.mjs b/lib/filters/Filter.mjs
+index db92397efe9be88e7a5a31d9f4c5dda887b3cebf..d46c5d168e9560aae362e028e1c5c77bb3612fa2 100644
+--- a/lib/filters/Filter.mjs
++++ b/lib/filters/Filter.mjs
+@@ -1,5 +1,4 @@
+ import { GlProgram } from '../rendering/renderers/gl/shader/GlProgram.mjs';
+-import { GpuProgram } from '../rendering/renderers/gpu/shader/GpuProgram.mjs';
+ import { Shader } from '../rendering/renderers/shared/shader/Shader.mjs';
+ import { State } from '../rendering/renderers/shared/state/State.mjs';
+ 
+@@ -60,17 +59,14 @@ const _Filter = class _Filter extends Shader {
+    * @returns A shiny new PixiJS filter!
+    */
+   static from(options) {
+-    const { gpu, gl, ...rest } = options;
+-    let gpuProgram;
++    // patched: any gpu program option is ignored - this build is webgl-only,
++    // so GpuProgram and its wgsl parsing can be tree-shaken
++    const { gpu: _gpu, gl, ...rest } = options;
+     let glProgram;
+-    if (gpu) {
+-      gpuProgram = GpuProgram.from(gpu);
+-    }
+     if (gl) {
+       glProgram = GlProgram.from(gl);
+     }
+     return new _Filter({
+-      gpuProgram,
+       glProgram,
+       ...rest
+     });
+diff --git a/lib/filters/defaults/alpha/AlphaFilter.mjs b/lib/filters/defaults/alpha/AlphaFilter.mjs
+index ced592b5391370c6ee39d7724ab8e35d7e1fc914..eca7218c515bc25bc2d0d2cb276937639ac5ae12 100644
+--- a/lib/filters/defaults/alpha/AlphaFilter.mjs
++++ b/lib/filters/defaults/alpha/AlphaFilter.mjs
+@@ -1,25 +1,15 @@
+ import { GlProgram } from '../../../rendering/renderers/gl/shader/GlProgram.mjs';
+-import { GpuProgram } from '../../../rendering/renderers/gpu/shader/GpuProgram.mjs';
+ import { UniformGroup } from '../../../rendering/renderers/shared/shader/UniformGroup.mjs';
+ import { Filter } from '../../Filter.mjs';
+ import vertex from '../defaultFilter.vert.mjs';
+ import fragment from './alpha.frag.mjs';
+-import source from './alpha.wgsl.mjs';
+ 
+ "use strict";
++// patched: webgpu program construction removed - this build is webgl-only,
++// so the wgsl shader source and GpuProgram machinery can be tree-shaken
+ const _AlphaFilter = class _AlphaFilter extends Filter {
+   constructor(options) {
+     options = { ..._AlphaFilter.defaultOptions, ...options };
+-    const gpuProgram = GpuProgram.from({
+-      vertex: {
+-        source,
+-        entryPoint: "mainVertex"
+-      },
+-      fragment: {
+-        source,
+-        entryPoint: "mainFragment"
+-      }
+-    });
+     const glProgram = GlProgram.from({
+       vertex,
+       fragment,
+@@ -31,7 +21,6 @@ const _AlphaFilter = class _AlphaFilter extends Filter {
+     });
+     super({
+       ...rest,
+-      gpuProgram,
+       glProgram,
+       resources: {
+         alphaUniforms
+diff --git a/lib/filters/defaults/color-matrix/ColorMatrixFilter.mjs b/lib/filters/defaults/color-matrix/ColorMatrixFilter.mjs
+index 6135c776bcafcb31d040267a371ee6dc3d09eb34..1393b6c01a9c59cbd6e3a65ac7d574026d6397d9 100644
+--- a/lib/filters/defaults/color-matrix/ColorMatrixFilter.mjs
++++ b/lib/filters/defaults/color-matrix/ColorMatrixFilter.mjs
+@@ -1,13 +1,13 @@
+ import { Color } from '../../../color/Color.mjs';
+ import { GlProgram } from '../../../rendering/renderers/gl/shader/GlProgram.mjs';
+-import { GpuProgram } from '../../../rendering/renderers/gpu/shader/GpuProgram.mjs';
+ import { UniformGroup } from '../../../rendering/renderers/shared/shader/UniformGroup.mjs';
+ import { Filter } from '../../Filter.mjs';
+ import vertex from '../defaultFilter.vert.mjs';
+ import fragment from './colorMatrixFilter.frag.mjs';
+-import source from './colorMatrixFilter.wgsl.mjs';
+ 
+ "use strict";
++// patched: webgpu program construction removed - this build is webgl-only,
++// so the wgsl shader source and GpuProgram machinery can be tree-shaken
+ class ColorMatrixFilter extends Filter {
+   constructor(options = {}) {
+     const colorMatrixUniforms = new UniformGroup({
+@@ -42,16 +42,6 @@ class ColorMatrixFilter extends Filter {
+         type: "f32"
+       }
+     });
+-    const gpuProgram = GpuProgram.from({
+-      vertex: {
+-        source,
+-        entryPoint: "mainVertex"
+-      },
+-      fragment: {
+-        source,
+-        entryPoint: "mainFragment"
+-      }
+-    });
+     const glProgram = GlProgram.from({
+       vertex,
+       fragment,
+@@ -59,7 +49,6 @@ class ColorMatrixFilter extends Filter {
+     });
+     super({
+       ...options,
+-      gpuProgram,
+       glProgram,
+       resources: {
+         colorMatrixUniforms
+diff --git a/lib/filters/defaults/passthrough/PassthroughFilter.mjs b/lib/filters/defaults/passthrough/PassthroughFilter.mjs
+index b5e0f6f4a0b776f053a82dfa8f7e83eec89bed50..698f05e1f8d6eeda436d0f1aa6780af41a7d4c9c 100644
+--- a/lib/filters/defaults/passthrough/PassthroughFilter.mjs
++++ b/lib/filters/defaults/passthrough/PassthroughFilter.mjs
+@@ -1,25 +1,19 @@
+ import { GlProgram } from '../../../rendering/renderers/gl/shader/GlProgram.mjs';
+-import { GpuProgram } from '../../../rendering/renderers/gpu/shader/GpuProgram.mjs';
+ import { Filter } from '../../Filter.mjs';
+ import vertex from '../defaultFilter.vert.mjs';
+ import fragment from './passthrough.frag.mjs';
+-import source from './passthrough.wgsl.mjs';
+ 
+ "use strict";
++// patched: webgpu program construction removed - this build is webgl-only,
++// so the wgsl shader source and GpuProgram machinery can be tree-shaken
+ class PassthroughFilter extends Filter {
+   constructor() {
+-    const gpuProgram = GpuProgram.from({
+-      vertex: { source, entryPoint: "mainVertex" },
+-      fragment: { source, entryPoint: "mainFragment" },
+-      name: "passthrough-filter"
+-    });
+     const glProgram = GlProgram.from({
+       vertex,
+       fragment,
+       name: "passthrough-filter"
+     });
+     super({
+-      gpuProgram,
+       glProgram
+     });
+   }
+diff --git a/lib/filters/mask/MaskFilter.mjs b/lib/filters/mask/MaskFilter.mjs
+index 69dabe494723770105b5741cbdc1b98fdb7cc67a..52d849edfdbcb34dfa93f4cfb189bb6edc3e1128 100644
+--- a/lib/filters/mask/MaskFilter.mjs
++++ b/lib/filters/mask/MaskFilter.mjs
+@@ -1,14 +1,14 @@
+ import { Matrix } from '../../maths/matrix/Matrix.mjs';
+ import { GlProgram } from '../../rendering/renderers/gl/shader/GlProgram.mjs';
+-import { GpuProgram } from '../../rendering/renderers/gpu/shader/GpuProgram.mjs';
+ import { UniformGroup } from '../../rendering/renderers/shared/shader/UniformGroup.mjs';
+ import { TextureMatrix } from '../../rendering/renderers/shared/texture/TextureMatrix.mjs';
+ import { Filter } from '../Filter.mjs';
+ import fragment from './mask.frag.mjs';
+ import vertex from './mask.vert.mjs';
+-import source from './mask.wgsl.mjs';
+ 
+ "use strict";
++// patched: webgpu program construction removed - this build is webgl-only,
++// so the wgsl shader source and GpuProgram machinery can be tree-shaken
+ class MaskFilter extends Filter {
+   constructor(options) {
+     const { sprite, ...rest } = options;
+@@ -19,16 +19,6 @@ class MaskFilter extends Filter {
+       uAlpha: { value: 1, type: "f32" },
+       uInverse: { value: options.inverse ? 1 : 0, type: "f32" }
+     });
+-    const gpuProgram = GpuProgram.from({
+-      vertex: {
+-        source,
+-        entryPoint: "mainVertex"
+-      },
+-      fragment: {
+-        source,
+-        entryPoint: "mainFragment"
+-      }
+-    });
+     const glProgram = GlProgram.from({
+       vertex,
+       fragment,
+@@ -36,7 +26,6 @@ class MaskFilter extends Filter {
+     });
+     super({
+       ...rest,
+-      gpuProgram,
+       glProgram,
+       clipToViewport: false,
+       resources: {
+diff --git a/lib/index.mjs b/lib/index.mjs
+index 2e92f734ee3a8f9fb1d6d5a0e59178e1cae42537..6a5ae3dc0327a4fc71f2a6b8e4f87c0e45737a37 100644
+--- a/lib/index.mjs
++++ b/lib/index.mjs
+@@ -622,7 +622,9 @@ export { sayHello } from './utils/sayHello.mjs';
+ export { earcut } from './utils/utils.mjs';
+ 
+ "use strict";
+-extensions.add(browserExt, webworkerExt);
++// patched: the webworker environment is not registered - the game only runs
++// in the browser
++extensions.add(browserExt);
+ 
+ export { browserExt, extensions, webworkerExt };
+ //# sourceMappingURL=index.mjs.map
 diff --git a/lib/rendering/batcher/shared/DefaultShader.mjs b/lib/rendering/batcher/shared/DefaultShader.mjs
 index 43a692c8104743427c5748ad69443765ee268307..90eb50ff8795124ab4ecfcf20b01c1bd5a7e5c9f 100644
 --- a/lib/rendering/batcher/shared/DefaultShader.mjs
@@ -121,6 +330,39 @@ index 300cfe066ea20316e21657a7551f0f54f285fc8c..ad3dfe99024f55e31a91ff6691ba50c4
  
  export { autoDetectRenderer };
 -//# sourceMappingURL=autoDetectRenderer.mjs.map
+diff --git a/lib/rendering/renderers/shared/shader/Shader.mjs b/lib/rendering/renderers/shared/shader/Shader.mjs
+index d345e03d148cf0d08f3c89a420d5c65e2cfed7ce..447476a52b10e570b7708e603c418fc4bd5f0c45 100644
+--- a/lib/rendering/renderers/shared/shader/Shader.mjs
++++ b/lib/rendering/renderers/shared/shader/Shader.mjs
+@@ -2,7 +2,6 @@ import EventEmitter from 'eventemitter3';
+ import { uid } from '../../../../utils/data/uid.mjs';
+ import { GlProgram } from '../../gl/shader/GlProgram.mjs';
+ import { BindGroup } from '../../gpu/shader/BindGroup.mjs';
+-import { GpuProgram } from '../../gpu/shader/GpuProgram.mjs';
+ import { RendererType } from '../../types.mjs';
+ import { UniformGroup } from './UniformGroup.mjs';
+ 
+@@ -164,17 +163,14 @@ class Shader extends EventEmitter {
+     this.groups = null;
+   }
+   static from(options) {
+-    const { gpu, gl, ...rest } = options;
+-    let gpuProgram;
++    // patched: any gpu program option is ignored - this build is webgl-only,
++    // so GpuProgram and its wgsl parsing can be tree-shaken
++    const { gpu: _gpu, gl, ...rest } = options;
+     let glProgram;
+-    if (gpu) {
+-      gpuProgram = GpuProgram.from(gpu);
+-    }
+     if (gl) {
+       glProgram = GlProgram.from(gl);
+     }
+     return new Shader({
+-      gpuProgram,
+       glProgram,
+       ...rest
+     });
 diff --git a/lib/scene/container/RenderGroup.js b/lib/scene/container/RenderGroup.js
 index 0b71077811b681a7909138189f0d6d757b4903b2..73615f8fc74f593eda2240d98afdc319b3b74540 100644
 --- a/lib/scene/container/RenderGroup.js
@@ -333,6 +575,19 @@ index 87ff6ec1c700da598c9fbbc46806e139e9977f4a..c5757168396ce314a1698ecf74eb259b
 -extensions.add(CanvasBitmapTextPipe);
 +// patched: canvas-renderer pipe removed - this build is webgl-only
  extensions.add(BitmapTextPipe);
+ //# sourceMappingURL=init.mjs.map
+diff --git a/lib/spritesheet/init.mjs b/lib/spritesheet/init.mjs
+index 1fdf7efdd2cc645cfcffd25eff7715f4b4d0ed25..6c569db1a62d6010aa90214abe67af7ab66a9a98 100644
+--- a/lib/spritesheet/init.mjs
++++ b/lib/spritesheet/init.mjs
+@@ -1,6 +1,5 @@
+-import { extensions } from '../extensions/Extensions.mjs';
+-import { spritesheetAsset } from './spritesheetAsset.mjs';
++// patched: spritesheet loading through Assets is not registered - the game
++// builds its spritesheets directly, so Assets and its Resolver can be tree-shaken
+ 
+ "use strict";
+-extensions.add(spritesheetAsset);
  //# sourceMappingURL=init.mjs.map
 diff --git a/lib/ticker/Ticker.js b/lib/ticker/Ticker.js
 index c7269f4db9a5e9f360a98eaaa6298854edc1de79..724ad2c19dac4797ce95b80c023ff74ede93c524 100644

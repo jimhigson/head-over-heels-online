@@ -166,7 +166,7 @@ overrides:
   postcss: 8.5.32
 
 patchedDependencies:
-  pixi.js: f826773b254612b58c4a67990b588c16a8ce5a37a265617833cc955eda633028
+  pixi.js: 51293a45813b26155e5975f985cc34ab61a9197253ca337d2eeed680cf150d76
   web-audio-test-api@0.5.2: 6c6d74924638170f83809b194c9d52e593b861e19c8530520078fc00094fc8c8
 
 importers:
@@ -175,7 +175,7 @@ importers:
     dependencies:
       '@blockstacking/jims-shaders':
         specifier: 2.0.0
-        version: 2.0.0(pixi.js@8.16.0(patch_hash=f826773b254612b58c4a67990b588c16a8ce5a37a265617833cc955eda633028))
+        version: 2.0.0(pixi.js@8.16.0(patch_hash=51293a45813b26155e5975f985cc34ab61a9197253ca337d2eeed680cf150d76))
       '@github/mini-throttle':
         specifier: ^2.1.1
         version: 2.1.1
@@ -223,7 +223,7 @@ importers:
         version: 2.0.2
       pixi.js:
         specifier: 8.16.0
-        version: 8.16.0(patch_hash=f826773b254612b58c4a67990b588c16a8ce5a37a265617833cc955eda633028)
+        version: 8.16.0(patch_hash=51293a45813b26155e5975f985cc34ab61a9197253ca337d2eeed680cf150d76)
       preact:
         specifier: 11.2.0
         version: 11.2.0(preact-render-to-string@6.8.3)
@@ -6882,9 +6882,9 @@ snapshots:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
 
-  '@blockstacking/jims-shaders@2.0.0(pixi.js@8.16.0(patch_hash=f826773b254612b58c4a67990b588c16a8ce5a37a265617833cc955eda633028))':
+  '@blockstacking/jims-shaders@2.0.0(pixi.js@8.16.0(patch_hash=51293a45813b26155e5975f985cc34ab61a9197253ca337d2eeed680cf150d76))':
     dependencies:
-      pixi.js: 8.16.0(patch_hash=f826773b254612b58c4a67990b588c16a8ce5a37a265617833cc955eda633028)
+      pixi.js: 8.16.0(patch_hash=51293a45813b26155e5975f985cc34ab61a9197253ca337d2eeed680cf150d76)
 
   '@borewit/text-codec@0.2.3': {}
 
@@ -10236,7 +10236,7 @@ snapshots:
     dependencies:
       pngjs: 6.0.0
 
-  pixi.js@8.16.0(patch_hash=f826773b254612b58c4a67990b588c16a8ce5a37a265617833cc955eda633028):
+  pixi.js@8.16.0(patch_hash=51293a45813b26155e5975f985cc34ab61a9197253ca337d2eeed680cf150d76):
     dependencies:
       '@pixi/colord': 2.9.6
       '@types/earcut': 3.0.0
