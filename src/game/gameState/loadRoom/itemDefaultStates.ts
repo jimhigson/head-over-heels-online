@@ -176,13 +176,16 @@ const stateBuilders: {
     ...baseState(jsonItem, aabb),
     activated: jsonItem.config.activated ?? true,
   }),
-  lift: (jsonItem, aabb) => ({
-    ...baseState(jsonItem, aabb),
-    // config copied into state, so switches can change it at run-time:
-    ...structuredClone(jsonItem.config),
-    direction: "up",
-    vels: { lift: originXyz },
-  }),
+  lift(jsonItem, aabb) {
+    const { startDirection = "up", ...config } = jsonItem.config;
+    return {
+      ...baseState(jsonItem, aabb),
+      // config copied into state, so switches can change it at run-time:
+      ...structuredClone(config),
+      direction: startDirection,
+      vels: { lift: originXyz },
+    };
+  },
   mirror: (jsonItem, aabb) => ({
     ...baseState(jsonItem, aabb),
     orientation: jsonItem.config.orientation,

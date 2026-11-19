@@ -86,6 +86,30 @@ describe("lifts", () => {
     );
   });
 
+  test("a lift configured to start going down descends first", () => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        // load needs a playable somewhere; kept well away from the lift
+        heels: {
+          type: "player",
+          config: { which: "heels" },
+          position: { x: 7, y: 7, z: 0 },
+        },
+        lift: {
+          type: "lift",
+          config: { bottom: 0, top: 6, startDirection: "down" },
+          position: { x: 0, y: 0, z: 3 },
+        },
+      },
+    });
+
+    playGameThrough(gameState, { forTime: 200 });
+
+    expect(itemState<"lift">(gameState, "lift").box.z).toBeLessThan(
+      3 * blockSizePx.z,
+    );
+  });
+
   test("player on a lift reaches lift height", () => {
     const gameState = setUpBasicGame(playerOnALift);
 

@@ -4,7 +4,7 @@ import { type SceneryName } from "../sprites/planets";
 import { type Xy, type Xyz } from "../utils/vectors/vectors";
 import { type ItemInPlayConfig, type SwitchSetting } from "./ItemInPlay";
 import { type UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
-import { type ItemConfigMap } from "./json/ItemConfigMap";
+import { type ItemConfigMap, type LiftDirection } from "./json/ItemConfigMap";
 import { type MirrorOrientation } from "./MirrorOrientation";
 import { type TimedRelationWithOtherItem } from "./TimedRelationWithOtherItem";
 
@@ -299,11 +299,14 @@ export type LiftState<
   RoomItemId extends string,
 > = Simplify<
   {
-    direction: "down" | "up";
+    direction: LiftDirection;
     vels: {
       lift: Xyz;
     };
-  } & ItemConfigMap<RoomId, RoomItemId, SceneryName>["lift"]
+  } & Omit<
+    ItemConfigMap<RoomId, RoomItemId, SceneryName>["lift"],
+    "startDirection"
+  >
 >;
 
 export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {

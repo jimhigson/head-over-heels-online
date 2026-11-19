@@ -22,7 +22,8 @@ export type ItemDirection = {
 export const directionForItem = (
   item: EditorJsonItemUnion,
 ): ItemDirection | undefined => {
-  if ("startDirection" in item.config) {
+  // a lift's start direction is up or down, not a facing:
+  if (item.type !== "lift" && "startDirection" in item.config) {
     return {
       field: "startDirection",
       supported: item.type === "sceneryPlayer" ? directionsXy8 : directionsXy4,
