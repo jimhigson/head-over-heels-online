@@ -4,9 +4,19 @@ import {
   type SliceSelectors,
 } from "@reduxjs/toolkit";
 
+import { type JsonItemType } from "../../../model/json/JsonItem";
+import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJsonItemIterators";
 import { type EditorRoomItemId } from "../../editorTypes";
+import {
+  itemTypeAndMaybeSubtype,
+  type ItemTypeAndSubtype,
+} from "../../itemTypeAndSubtype";
 import { commitPendingNudgeInPlace } from "../inPlaceMutators/commitPendingNudgeInPlace";
-import { selectCursorRoomSelectedJsonItemIdsFromLevelEditorState } from "../levelEditorSelectors";
+import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "../inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
+import {
+  selectCurrentCommittedRoomJsonFromLevelEditorState,
+  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+} from "../levelEditorSelectors";
 import { type HoveredItem, type LevelEditorState } from "../levelEditorSlice";
 import { type OpenRoomId } from "../OpenRoom";
 import {
@@ -140,6 +150,36 @@ export const selectionsReducers = {
       return;
     }
     openRoom.clickableAnnotationHovered = hovered;
+  },
+  /**
+   * select every item of the given type in the cursor room, narrowed to one
+   * subtype if given
+   */
+  selectAllOfTypeInCursorRoom(
+    _state,
+    {
+      payload: { itemType, subtype },
+    }: PayloadAction<
+      // undefined subtype selects every subtype:
+      { itemType: JsonItemType; subtype: undefined } | ItemTypeAndSubtype
+    >,
+  ) {
+    // DO REMOVE CAST - see setSelectedItemsInRoom
+    const state = _state as LevelEditorState;
+    commitPendingNudgeInPlace(state);
+    const roomJson = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
+    setSelectedJsonItemIdsOnCursorRoomInPlace(
+      state,
+      iterateRoomJsonItemsWithIds(roomJson.items, itemType)
+        .filter(
+          ([, item]) =>
+            subtype === undefined ||
+            itemTypeAndMaybeSubtype(item).subtype === subtype,
+        )
+        .map(([jsonItemId]) => jsonItemId)
+        .toArray(),
+    );
+    clearContextMenuXyInPlace(state);
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
 
