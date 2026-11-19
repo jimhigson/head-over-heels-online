@@ -7,11 +7,15 @@ import { type DirectionXyz4, type Xyz } from "../../../utils/vectors/vectors";
 import {
   type EditorJsonItemUnion,
   type EditorRoomId,
-  type EditorRoomItemId,
   type EditorRoomJson,
 } from "../../editorTypes";
+import { type SelectionEntry } from "../SelectionEntry";
 
-export type UndoItemEntry = readonly [EditorRoomItemId, EditorJsonItemUnion];
+/**
+ * an item, or one of its editor ghosts, that an undoable edit was to - with
+ * the item as it was
+ */
+export type UndoItemEntry = readonly [SelectionEntry, EditorJsonItemUnion];
 
 export type UndoDescription =
   | { kind: "changeColour" }
@@ -98,7 +102,10 @@ export const describeRoomJsonEdit = (
       const changedItems: UndoItemEntry[] = allIds
         .values()
         .filter((id) => !nanoEqual(prev.items[id], next.items[id]))
-        .map((id): UndoItemEntry => [id, next.items[id] ?? prev.items[id]])
+        .map((id): UndoItemEntry => [
+          { jsonItemId: id, whichEditorGhost: undefined },
+          next.items[id] ?? prev.items[id],
+        ])
         .toArray();
 
       return { kind: "editItems", items: changedItems };

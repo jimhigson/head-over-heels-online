@@ -2,7 +2,7 @@ import { useEditorAppSelector } from "../../../store/store";
 import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import {
   selectCurrentCommittedRoomJson,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   setSelectedItemsDisappearing,
 } from "../../slice/levelEditorSlice";
 
@@ -14,7 +14,7 @@ import {
  */
 export const DisappearingMenuItems = () => {
   const selectedJsonItemIds = useEditorAppSelector(
-    selectCursorRoomSelectedJsonItemIds,
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 

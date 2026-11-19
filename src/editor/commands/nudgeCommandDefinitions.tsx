@@ -12,6 +12,10 @@ import {
   originXyz,
   type Xyz,
 } from "../../utils/vectors/vectors";
+import {
+  isJsonItemWithEditorGhosts,
+  maybeEditorGhostEditorBehaviour,
+} from "../editorGhostEditorBehaviours";
 import { type EditorJsonItemUnion } from "../editorTypes";
 import { type RotationSense } from "../itemRotation";
 import { activeOpenRoomLoadedRoom } from "../loadedRoomCache/loadedRoomCaches";
@@ -20,7 +24,8 @@ import {
   type NudgeKind,
   nudgeKinds,
   selectCurrentCommittedRoomJson,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelection,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   selectTool,
 } from "../slice/levelEditorSlice";
 import {
@@ -43,20 +48,27 @@ import {
   selectSelectionOrToolItemIsRotatable,
 } from "./rotateSelectionOrToolItemThunk";
 
-const selectSelectedJsonItems = (
-  state: EditorRootState,
-): EditorJsonItemUnion[] => {
-  const roomJson = selectCurrentCommittedRoomJson(state);
-  return selectCursorRoomSelectedJsonItemIds(state)
-    .map((jsonItemId) => roomJson.items[jsonItemId])
-    .filter((item) => item !== undefined);
-};
-
-/** the axes every selected item can move along (1) or not (0) */
+/** the axes every selected item, and editor ghost, can move along (1) or not (0) */
 const selectMovableAxes = (state: EditorRootState): Xyz => {
-  const selectedItems = selectSelectedJsonItems(state);
-  return selectedItems.length > 0 ?
-      elementWiseProductXyz(...selectedItems.map(getMovableVector))
+  const roomJson = selectCurrentCommittedRoomJson(state);
+  const movableVectors = selectCursorRoomSelection(state).flatMap(
+    ({ jsonItemId, whichEditorGhost }) => {
+      const jsonItem = roomJson.items[jsonItemId];
+      // eg an item that exists only as a preview so far:
+      if (jsonItem === undefined) {
+        return [];
+      }
+      return [
+        whichEditorGhost === undefined ? getMovableVector(jsonItem)
+        : isJsonItemWithEditorGhosts(jsonItem) ?
+          (maybeEditorGhostEditorBehaviour(jsonItem, whichEditorGhost)
+            ?.movableVector ?? originXyz)
+        : originXyz,
+      ];
+    },
+  );
+  return movableVectors.length > 0 ?
+      elementWiseProductXyz(...movableVectors)
     : originXyz;
 };
 
@@ -126,7 +138,7 @@ const nudgeCommand = (
 const selectCanShrinkAlong = (state: EditorRootState, direction: Xyz) => {
   const { resizedItemIds, deletedItemIds } = multiplyPlan(
     selectCurrentCommittedRoomJson(state),
-    selectCursorRoomSelectedJsonItemIds(state),
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections(state),
     direction,
     "removeOrShrink",
   );
@@ -144,7 +156,7 @@ const selectSelectionIsMultipliable = (
   multiplyType === "multiplyOrGrow" ?
     canMultiplyAlong(
       selectCurrentCommittedRoomJson(state),
-      selectCursorRoomSelectedJsonItemIds(state),
+      selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections(state),
       direction,
     )
   : selectCanShrinkAlong(state, direction);

@@ -1,10 +1,7 @@
 import { isConsolidatable } from "../../consolidateItems/ConsolidatableJsonItem";
 import { type EditorRootState, useEditorAppSelector } from "../../store/store";
 import { twClass } from "../../utils/twClass.tsx" with { type: "macro" };
-import {
-  selectItem,
-  selectOpenRoomSelectedJsonItemIds,
-} from "../slice/levelEditorSlice";
+import { selectItem, selectOpenRoomSelection } from "../slice/levelEditorSlice";
 import { type OpenRoomId } from "../slice/OpenRoom";
 import { maybeLayoutNode } from "../slice/PaneLayout";
 import { resizeCursorForPointingAt } from "./cursor/resizeCursorForPointingAt";
@@ -50,11 +47,13 @@ const selectCursor = (
       }
     }
 
-    // if hovering on the selected item, use grab cursor to suggest can
-    // move it
+    // if hovering on the selected item or editor ghost, use grab cursor to
+    // suggest can move it
     if (
-      selectOpenRoomSelectedJsonItemIds(editorState, openRoomId).includes(
-        hoveredItem.jsonItemId,
+      selectOpenRoomSelection(editorState, openRoomId).some(
+        ({ jsonItemId, whichEditorGhost }) =>
+          jsonItemId === hoveredItem.jsonItemId &&
+          whichEditorGhost === hoveredItem.whichEditorGhost,
       )
     ) {
       return twClass("cursor-grab");

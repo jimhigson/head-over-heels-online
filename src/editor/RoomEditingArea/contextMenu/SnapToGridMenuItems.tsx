@@ -10,7 +10,7 @@ import {
 } from "../../selectionSnapResolutions";
 import {
   selectCurrentCommittedRoomJson,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   snapSelectedItemsToGrid,
 } from "../../slice/levelEditorSlice";
 
@@ -19,7 +19,7 @@ import {
  */
 const useSelectionSnapResolutions = (): SnapResolution[] => {
   const selectedJsonItemIds = useEditorAppSelector(
-    selectCursorRoomSelectedJsonItemIds,
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 

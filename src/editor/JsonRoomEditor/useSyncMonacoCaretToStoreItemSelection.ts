@@ -61,7 +61,12 @@ export const useSyncMonacoCaretToStoreItemSelection = (
         const [, jsonItemId] = path;
         dispatch(
           setSelectedItemsInRoom({
-            jsonItemIds: [jsonItemId as EditorRoomItemId],
+            selection: [
+              {
+                jsonItemId: jsonItemId as EditorRoomItemId,
+                whichEditorGhost: undefined,
+              },
+            ],
           }),
         );
       }

@@ -34,7 +34,9 @@ const teleporterAfterSetting = (toItemId: EditorRoomItemId | undefined) =>
   selectCurrentCommittedRoomJsonFromLevelEditorState(
     reduceLevelEditorActions(
       state0WithTeleporter,
-      setSelectedItemsInRoom({ jsonItemIds: [teleporterId] }),
+      setSelectedItemsInRoom({
+        selection: [{ jsonItemId: teleporterId, whichEditorGhost: undefined }],
+      }),
       setSelectedTeleportersDestination({
         toRoom: "destination" as EditorRoomId,
         toItemId,

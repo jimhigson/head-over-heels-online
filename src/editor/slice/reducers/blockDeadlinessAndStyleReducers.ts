@@ -7,7 +7,7 @@ import { type EditorJsonItem } from "../../editorTypes";
 import { type ItemTypeAndSubtype } from "../../itemTypeAndSubtype";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
@@ -97,11 +97,13 @@ export const blockDeadlinessAndStyleReducers = {
   ) {
     const roomJson = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
     const selectedJsonItemIds =
-      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state);
+      selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
+        state,
+      );
 
-    const items: UndoItemEntry[] = selectedJsonItemIds.map((id) => [
-      id,
-      roomJson.items[id],
+    const items: UndoItemEntry[] = selectedJsonItemIds.map((jsonItemId) => [
+      { jsonItemId, whichEditorGhost: undefined },
+      roomJson.items[jsonItemId],
     ]);
     pushUndoToCursorRoomInPlace(
       state,

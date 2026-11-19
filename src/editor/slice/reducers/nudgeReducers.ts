@@ -1,9 +1,14 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { type Xyz } from "../../../utils/vectors/vectors";
-import { addNudgeStepToPreviewInPlace } from "../inPlaceMutators/addNudgeStepToPreviewInPlace";
-import { selectCursorRoomSelectedJsonItemIdsFromLevelEditorState } from "../levelEditorSelectors";
+import { type EditorRoomJson } from "../../editorTypes";
+import {
+  addNudgeStepToPreviewInPlace,
+  type NudgeStep,
+} from "../inPlaceMutators/addNudgeStepToPreviewInPlace";
+import { selectCursorRoomSelectionFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { type SelectionEntry } from "../SelectionEntry";
 import { moveOrResizeOutcome } from "./moveOrResizeItemPreview/moveOrResizeOutcome";
 
 export type NudgeSelectedItemsPayload = {
@@ -15,6 +20,27 @@ export type NudgeSelectedItemsPayload = {
   timestamp: number;
 };
 
+/**
+ * one nudge of the selection: items and editor ghosts move (or items resize) as
+ * one move
+ */
+const nudgeStepForSelection = (
+  /**
+   * the cursor room, with the nudges already pending applied
+   */
+  nudgedRoomJson: EditorRoomJson,
+  selectionEntries: SelectionEntry[],
+  { positionDelta, timesDelta, timestamp }: NudgeSelectedItemsPayload,
+): NudgeStep => {
+  const outcome = moveOrResizeOutcome(nudgedRoomJson, {
+    selectionEntries,
+    positionDelta,
+    timesDelta,
+    timestamp,
+  });
+  return outcome.type === "valid" ? { edits: outcome.edits } : undefined;
+};
+
 export const nudgeReducers = {
   /**
    * move (or resize) the selected items one step, adding to the nudges being
@@ -22,9 +48,7 @@ export const nudgeReducers = {
    */
   nudgeSelectedItems(
     _state,
-    {
-      payload: { positionDelta, timesDelta, timestamp },
-    }: PayloadAction<NudgeSelectedItemsPayload>,
+    { payload }: PayloadAction<NudgeSelectedItemsPayload>,
   ) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
@@ -34,19 +58,13 @@ export const nudgeReducers = {
     addNudgeStepToPreviewInPlace(
       state,
       "move",
-      { positionDelta, timestamp },
-      (previewState) => {
-        const outcome = moveOrResizeOutcome(previewState, {
-          jsonItemIds:
-            selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(
-              previewState,
-            ),
-          positionDelta,
-          timesDelta,
-          timestamp,
-        });
-        return outcome.type === "valid" ? { edits: outcome.edits } : undefined;
-      },
+      { positionDelta: payload.positionDelta, timestamp: payload.timestamp },
+      (nudgedRoomJson) =>
+        nudgeStepForSelection(
+          nudgedRoomJson,
+          selectCursorRoomSelectionFromLevelEditorState(state),
+          payload,
+        ),
     );
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

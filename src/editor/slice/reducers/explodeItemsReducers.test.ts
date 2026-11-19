@@ -4,7 +4,7 @@ import { expect, test } from "vitest";
 import { type EditorRoomItemId } from "../../editorTypes";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "../levelEditorSelectors";
 import {
   explodeSelectedItems,
@@ -36,7 +36,11 @@ const state0MultipliedBlock = produce(
 
 const state1ExplodedBlock = reduceLevelEditorActions(
   state0MultipliedBlock,
-  setSelectedItemsInRoom({ jsonItemIds: ["bm"] as EditorRoomItemId[] }),
+  setSelectedItemsInRoom({
+    selection: [
+      { jsonItemId: "bm" as EditorRoomItemId, whichEditorGhost: undefined },
+    ],
+  }),
   openItemContextMenu({ openRoomId: testOpenRoomId, scrXy: { x: 1, y: 1 } }),
   explodeSelectedItems({ timestamp: 0 }),
 );
@@ -65,7 +69,7 @@ test("turns off auto-coalesce so the parts do not re-join", () => {
 
 test("selects the exploded parts", () => {
   expect(
-    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
       state1ExplodedBlock,
     ),
   ).toEqual(["bm", "bm1"]);
@@ -80,7 +84,9 @@ test("closes the context menu", () => {
 
 const state1ExplodedWall = reduceLevelEditorActions(
   editorStateWithOneRoomWithOneAwayWall,
-  setSelectedItemsInRoom({ jsonItemIds: [wallItemId] }),
+  setSelectedItemsInRoom({
+    selection: [{ jsonItemId: wallItemId, whichEditorGhost: undefined }],
+  }),
   explodeSelectedItems({ timestamp: 0 }),
 );
 

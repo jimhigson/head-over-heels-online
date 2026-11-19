@@ -9,7 +9,7 @@ import { type EditorRoomItemId, type EditorRoomState } from "./editorTypes";
 import { selectionSnapResolutions } from "./selectionSnapResolutions";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "./slice/levelEditorSelectors";
 import { setSelectedItemsInRoom } from "./slice/levelEditorSlice";
 import {
@@ -51,7 +51,12 @@ test("two touching off-grid blocks can be snapped to the grid together, each int
 
   const state1BothSelected = reduceLevelEditorActions(
     state0TwoOffGridBlocks,
-    setSelectedItemsInRoom({ jsonItemIds: [blockAId, blockBId] }),
+    setSelectedItemsInRoom({
+      selection: [blockAId, blockBId].map((jsonItemId) => ({
+        jsonItemId,
+        whichEditorGhost: undefined,
+      })),
+    }),
   );
   const roomJson =
     selectCurrentCommittedRoomJsonFromLevelEditorState(state1BothSelected);
@@ -68,7 +73,7 @@ test("two touching off-grid blocks can be snapped to the grid together, each int
         userSettings: emptyUserSettings,
       }) as EditorRoomState,
       roomJson,
-      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(
+      selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
         state1BothSelected,
       ),
     ),

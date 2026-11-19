@@ -51,8 +51,8 @@ const stateWithSelectedMonkeyOnFloor: LevelEditorState = produce(
       },
     };
     room.items[monkeyId] = monkey;
-    existingLayoutNode(draft.layout, testOpenRoomId).selectedJsonItemIds = [
-      monkeyId,
+    existingLayoutNode(draft.layout, testOpenRoomId).selection = [
+      { jsonItemId: monkeyId, whichEditorGhost: undefined },
     ];
   },
 );
@@ -118,7 +118,7 @@ test("multiplying selects the copies along with the originals", () => {
   );
 
   expect(
-    existingLayoutNode(state1.layout, testOpenRoomId).selectedJsonItemIds,
+    existingLayoutNode(state1.layout, testOpenRoomId).selection,
   ).toHaveLength(2);
 });
 
@@ -131,10 +131,10 @@ test("each of several scattered selected items gets its own copy", () => {
         ...monkey,
         position: { x: 5, y: 4, z: 0 },
       };
-      existingLayoutNode(draft.layout, testOpenRoomId).selectedJsonItemIds = [
+      existingLayoutNode(draft.layout, testOpenRoomId).selection = [
         monkeyId,
         otherMonkeyId,
-      ];
+      ].map((jsonItemId) => ({ jsonItemId, whichEditorGhost: undefined }));
     },
   );
 
@@ -163,10 +163,10 @@ test("a copy that would collide is left out, while the others are still made", (
         position: { x: 5, y: 5, z: 0 },
         config: { style: "organic" },
       };
-      existingLayoutNode(draft.layout, testOpenRoomId).selectedJsonItemIds = [
+      existingLayoutNode(draft.layout, testOpenRoomId).selection = [
         monkeyId,
         otherMonkeyId,
-      ];
+      ].map((jsonItemId) => ({ jsonItemId, whichEditorGhost: undefined }));
     },
   );
 
@@ -231,10 +231,10 @@ test("multiplying a block and a monster together grows the block and copies the 
         position: { x: 1, y: 4, z: 0 },
         config: { style: "organic" },
       };
-      existingLayoutNode(draft.layout, testOpenRoomId).selectedJsonItemIds = [
+      existingLayoutNode(draft.layout, testOpenRoomId).selection = [
         monkeyId,
         blockId,
-      ];
+      ].map((jsonItemId) => ({ jsonItemId, whichEditorGhost: undefined }));
       draft.autoCoalesce = false;
     },
   );

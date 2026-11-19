@@ -1,9 +1,11 @@
 import { type EmptyObject } from "type-fest";
 
+import { type WhichEditorGhostOfAnyItemType } from "../editor/WhichEditorGhostOf";
 import { type ItemBehaviour } from "../game/itemBehaviours/ItemBehaviour";
 import { type BracketedSegmentOptions } from "../sound/soundUtils/BracketedSound";
 import { type SceneryName } from "../sprites/planets";
 import { type Xy, type Xyz } from "../utils/vectors/vectors";
+import { type UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
 import { type ItemState } from "./ItemState";
 import { type ExitGameRoomId } from "./json/ItemConfigMap";
 import {
@@ -37,6 +39,10 @@ export const itemInPlayTypes = [
   "particle",
   /** a sound that plays from a point in a room */
   "soundEffect",
+  /**
+   * item drawn only for the editor, to mark up a position or similar in the room
+   */
+  "editorGhost",
   /**
    * an item that if touched, the toucher is deleted out of the universe - eg, it has been detected
    * now as out of bounds. Maybe because of falling below a room with no floor - if the player touches
@@ -132,6 +138,22 @@ type ItemInPlayConfigMap<
     direction: Xyz;
     /** the id of the lamp item this beam was emitted from */
     sourceItemId: RoomItemId;
+  };
+  editorGhost: {
+    /**
+     * the editor ghost is drawn as if it were this item
+     */
+    brushItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
+    /**
+     * drawn greyed out, or as the item is (eg particle dots)
+     */
+    drawnGreyedOut: boolean;
+    /**
+     * which of its json item's editor ghosts this is. Eg, if the ghost is a lift top
+     * or bottom, this info tells us to change config.top or config.bottom of the lift
+     * when moving it in the editor
+     */
+    whichEditorGhost: undefined | WhichEditorGhostOfAnyItemType;
   };
   particle: {
     forCharacter: "crown" | IndividualCharacterName;

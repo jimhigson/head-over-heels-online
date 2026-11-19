@@ -90,7 +90,9 @@ describe("describeRoomJsonEdit", () => {
     const result = describeRoomJsonEdit(baseRoom, next);
     expect(result).toEqual<UndoDescription>({
       kind: "editItems",
-      items: [[id("pi1"), changedPickup]],
+      items: [
+        [{ jsonItemId: id("pi1"), whichEditorGhost: undefined }, changedPickup],
+      ],
     });
   });
 
@@ -106,7 +108,9 @@ describe("describeRoomJsonEdit", () => {
     const result = describeRoomJsonEdit(baseRoom, next);
     expect(result).toEqual<UndoDescription>({
       kind: "editItems",
-      items: [[id("b1"), newBlock]],
+      items: [
+        [{ jsonItemId: id("b1"), whichEditorGhost: undefined }, newBlock],
+      ],
     });
   });
 
@@ -122,8 +126,12 @@ describe("describeRoomJsonEdit", () => {
     expect(result.kind).toBe("editItems");
     if (result.kind === "editItems") {
       expect(result.items).toHaveLength(2);
-      expect(result.items.map(([itemId]) => itemId)).toContain(id("pi1"));
-      expect(result.items.map(([itemId]) => itemId)).toContain(id("m1"));
+      expect(result.items.map(([{ jsonItemId }]) => jsonItemId)).toContain(
+        id("pi1"),
+      );
+      expect(result.items.map(([{ jsonItemId }]) => jsonItemId)).toContain(
+        id("m1"),
+      );
     }
   });
 

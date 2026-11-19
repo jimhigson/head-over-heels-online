@@ -126,6 +126,12 @@ const isPointableItemForTool =
       return false;
     }
 
+    if (item.type === "editorGhost") {
+      // editor ghosts are not solid, but the pointer selects them, and can modify
+      // the item they belong to by dragging the ghost
+      return tool.type === "pointer" && item.jsonItemId !== undefined;
+    }
+
     const itemIsSolid = !item[itemBehaviourKey].isNonSolid(item);
 
     if (tool.type === "item" && tool.item.type === "door") {

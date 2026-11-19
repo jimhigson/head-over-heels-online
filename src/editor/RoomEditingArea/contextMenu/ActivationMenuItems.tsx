@@ -7,7 +7,7 @@ import {
 } from "../../itemActivation";
 import {
   selectCurrentCommittedRoomJson,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   setSelectedItemsActivation,
 } from "../../slice/levelEditorSlice";
 
@@ -27,7 +27,7 @@ const activationStates = [
  */
 export const ActivationMenuItems = () => {
   const selectedJsonItemIds = useEditorAppSelector(
-    selectCursorRoomSelectedJsonItemIds,
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 

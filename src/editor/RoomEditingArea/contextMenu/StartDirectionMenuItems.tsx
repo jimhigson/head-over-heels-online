@@ -4,28 +4,29 @@ import { cn } from "../../../ui/cn";
 import { MenuItem } from "../../../ui/menuBar/MenuItem";
 import { camelToSpaced } from "../../../utils/camelToSpaced";
 import { directionXyz8Glyphs } from "../../../utils/vectors/directionGlyphs";
-import { type DirectionXy8 } from "../../../utils/vectors/vectors";
+import { type DirectionXyz8 } from "../../../utils/vectors/vectors";
 import { directionForItem } from "../../itemDirection";
 import {
   selectCurrentCommittedRoomJson,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   setSelectedItemsStartDirection,
 } from "../../slice/levelEditorSlice";
 
-const directionLabel = (direction: DirectionXy8): string =>
+const directionLabel = (direction: DirectionXyz8): string =>
   `${camelToSpaced(direction)} ${directionXyz8Glyphs[direction]}`;
 
 /**
  * Direction arrows for the selection, one per direction valid for every
  * selected item (4-way, or 8-way when all are sceneryPlayers), the current one
  * highlighted. Choosing an arrow sets it, leaving the menu open. Works for any item with an editable facing -
- * a monster's start direction or a lamp's beam direction (see directionForItem)
+ * a monster's start direction, a lamp's beam direction or a lift's up or down
+ * (see directionForItem)
  * - and is hidden unless every selected item has one.
  */
 export const StartDirectionMenuItems = () => {
   const dispatch = useAppDispatch();
   const selectedJsonItemIds = useEditorAppSelector(
-    selectCursorRoomSelectedJsonItemIds,
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 
@@ -33,8 +34,8 @@ export const StartDirectionMenuItems = () => {
     .map((id) => roomJson.items[id])
     .filter((item) => item !== undefined);
 
-  const supportedPerItem: (readonly DirectionXy8[])[] = [];
-  const currents = new Set<DirectionXy8>();
+  const supportedPerItem: (readonly DirectionXyz8[])[] = [];
+  const currents = new Set<DirectionXyz8>();
   for (const item of items) {
     const itemDirection = directionForItem(item);
     if (itemDirection === undefined) {

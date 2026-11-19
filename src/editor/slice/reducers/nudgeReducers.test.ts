@@ -51,8 +51,8 @@ const stateWithSelectedMonkey: LevelEditorState = produce(
         },
       };
     }
-    existingLayoutNode(draft.layout, testOpenRoomId).selectedJsonItemIds = [
-      monkeyId,
+    existingLayoutNode(draft.layout, testOpenRoomId).selection = [
+      { jsonItemId: monkeyId, whichEditorGhost: undefined },
     ];
   },
 );
@@ -96,7 +96,9 @@ test("changing the selection commits the nudges", () => {
     state0,
     nudge(unitVectors.left),
     nudge(unitVectors.left),
-    setSelectedItemsInRoom({ jsonItemIds: [otherMonkeyId] }),
+    setSelectedItemsInRoom({
+      selection: [{ jsonItemId: otherMonkeyId, whichEditorGhost: undefined }],
+    }),
   );
 
   expect({
@@ -140,4 +142,85 @@ test("nudging back to where the item started leaves no edit", () => {
   );
 
   expect(state1.history[testRoomId]?.undo ?? []).toHaveLength(0);
+});
+
+test("nudging a selected lift editor ghost down moves its lift's end, not the lift", () => {
+  const liftId = "lift" as EditorRoomItemId;
+  const state0WithLiftTopSelected = produce(
+    editorStateWithOneRoomWithNoItems,
+    (draft) => {
+      const room = draft.campaignInProgress.rooms[testRoomId];
+      room.items["floor" as EditorRoomItemId] = {
+        type: "floor",
+        position: { x: 0, y: 0, z: 0 },
+        config: {
+          floorType: "standable",
+          scenery: "blacktooth",
+          times: { x: 8, y: 8 },
+        },
+      };
+      room.items[liftId] = {
+        type: "lift",
+        position: { x: 1, y: 1, z: 0 },
+        config: { bottom: 0, top: 4 },
+      };
+      existingLayoutNode(draft.layout, testOpenRoomId).selection = [
+        { jsonItemId: liftId, whichEditorGhost: "liftTop" },
+      ];
+    },
+  );
+  const state1AfterNudgeDown = reduceLevelEditorActions(
+    state0WithLiftTopSelected,
+    nudge(unitVectors.down),
+    commitPendingNudge(),
+  );
+
+  expect(
+    state1AfterNudgeDown.campaignInProgress.rooms[testRoomId].items[liftId],
+  ).toEqual({
+    type: "lift",
+    position: { x: 1, y: 1, z: 0 },
+    config: { bottom: 0, top: 3 },
+  });
+});
+
+test("nudging a selected emitter's editor ghost moves the emitter", () => {
+  const emitterId = "emitter" as EditorRoomItemId;
+  const state0WithEmitterGhostSelected = produce(
+    editorStateWithOneRoomWithNoItems,
+    (draft) => {
+      const room = draft.campaignInProgress.rooms[testRoomId];
+      room.items["floor" as EditorRoomItemId] = {
+        type: "floor",
+        position: { x: 0, y: 0, z: 0 },
+        config: {
+          floorType: "standable",
+          scenery: "blacktooth",
+          times: { x: 8, y: 8 },
+        },
+      };
+      room.items[emitterId] = {
+        type: "emitter",
+        position: { x: 1, y: 1, z: 2 },
+        config: {
+          emits: { type: "portableBlock", config: { style: "cube" } },
+          period: 1_000,
+          maximum: null,
+        },
+      };
+      existingLayoutNode(draft.layout, testOpenRoomId).selection = [
+        { jsonItemId: emitterId, whichEditorGhost: "emittedItem" },
+      ];
+    },
+  );
+  const state1AfterNudgeLeft = reduceLevelEditorActions(
+    state0WithEmitterGhostSelected,
+    nudge(unitVectors.left),
+    commitPendingNudge(),
+  );
+
+  expect(
+    state1AfterNudgeLeft.campaignInProgress.rooms[testRoomId].items[emitterId]
+      ?.position,
+  ).toEqual({ x: 2, y: 1, z: 2 });
 });

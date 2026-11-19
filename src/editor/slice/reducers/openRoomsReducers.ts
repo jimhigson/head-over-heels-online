@@ -47,7 +47,10 @@ export const openRoomsReducers = {
         roomId,
         subRoomId: firstSubRoomId(roomJson),
         editable: false,
-        selectedJsonItemIds,
+        selection: selectedJsonItemIds.map((jsonItemId) => ({
+          jsonItemId,
+          whichEditorGhost: undefined,
+        })),
       };
       state.dialogOpenRoomIds.push(openRoomId);
     },

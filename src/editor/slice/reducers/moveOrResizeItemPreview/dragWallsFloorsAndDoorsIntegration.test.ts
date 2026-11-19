@@ -3265,7 +3265,9 @@ describe("changeWallsForFloorChangeInPlace", () => {
             description.kind === "itemAction" ?
               {
                 verb: description.verb,
-                itemIds: description.items.map(([itemId]) => itemId),
+                itemIds: description.items.map(
+                  ([{ jsonItemId }]) => jsonItemId,
+                ),
               }
             : description.kind,
         ),

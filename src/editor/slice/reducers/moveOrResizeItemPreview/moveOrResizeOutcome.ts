@@ -28,6 +28,7 @@ import {
   tangentAxis,
   type Xyz,
 } from "../../../../utils/vectors/vectors";
+import { jsonItemWithEditorGhostMoved } from "../../../editorGhostEditorBehaviours";
 import {
   type EditorJsonItem,
   type EditorJsonItemUnion,
@@ -40,15 +41,14 @@ import { movesOnlyInWholeBlocks } from "../../../snapGridResolution";
 import { generateWallHealingInPlaceOfDoor } from "../../inPlaceMutators/generateWallHealingInPlaceOfDoor";
 import { jsonItemsWithEdits } from "../../jsonItemsWithEdits";
 import {
-  selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectItemInLevelEditorState,
-} from "../../levelEditorSelectors";
-import {
-  type LevelEditorState,
   type PendingEdits,
   type PreviewedRoomItemEdits,
 } from "../../levelEditorSlice";
 import { perimeterGapFillingEdits } from "../../perimeterGapFillingEdits";
+import {
+  type EditorGhostSelectionEntry,
+  type SelectionEntry,
+} from "../../SelectionEntry";
 import { moveVerb, type UndoItemEntry } from "../undoDescription";
 import { wallAndDoorEditsForFloorChange } from "./wallAndDoorEditsForFloorChange";
 
@@ -401,7 +401,11 @@ const isValidEdit = (
 };
 
 export type MoveOrResizeItems = {
-  jsonItemIds: EditorRoomItemId[];
+  /**
+   * the items, and editor ghosts, to move or resize - an editor ghost of an
+   * item that is itself moving goes with it instead. Editor ghosts never resize
+   */
+  selectionEntries: SelectionEntry[];
   timesDelta?: Xyz;
   /**
    * the total offset from where the items were, not from any previous preview
@@ -434,9 +438,19 @@ export type MoveOrResizeOutcome =
  * drag can try out moves to find one that is valid
  */
 export const moveOrResizeOutcome = (
-  state: LevelEditorState,
-  { jsonItemIds, timesDelta, positionDelta, timestamp }: MoveOrResizeItems,
+  /**
+   * the room the items are in, as the move or resize is made to
+   */
+  room: EditorRoomJson,
+  { selectionEntries, timesDelta, positionDelta, timestamp }: MoveOrResizeItems,
 ): MoveOrResizeOutcome => {
+  const jsonItemIds = selectionEntries
+    .filter(({ whichEditorGhost }) => whichEditorGhost === undefined)
+    .map(({ jsonItemId }) => jsonItemId);
+  const editorGhosts = selectionEntries.filter(
+    (selectionEntry): selectionEntry is EditorGhostSelectionEntry =>
+      selectionEntry.whichEditorGhost !== undefined,
+  );
   // positionDelta is cumulative (total offset from the original position), so
   // each preview must be recomputed from the base room state, not layered on
   // top of a previous preview's edits (which may have modified surrounding
@@ -451,24 +465,23 @@ export const moveOrResizeOutcome = (
   }
 
   const verb = isResize ? "Resize" : moveVerb(positionDelta);
-  const items: UndoItemEntry[] = jsonItemIds.map((id) => {
-    const item = selectItemInLevelEditorState(state, id);
+  const items: UndoItemEntry[] = selectionEntries.map((selectionEntry) => {
+    const item = room.items[selectionEntry.jsonItemId];
     if (item === undefined) {
       throw new Error(
-        `no item found for id ${id} when generating undo description`,
+        `no item found for id ${selectionEntry.jsonItemId} when generating undo description`,
       );
     }
-    return [id, item];
+    return [selectionEntry, item];
   });
 
   const edits: PreviewedRoomItemEdits = {};
 
-  const room = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
   const isIntegerPosDelta = isExactIntegerXyz(positionDelta);
 
   for (const jsonItemId of jsonItemIds) {
     // get the json item we will be changing for the preview:
-    const jsonItem = selectItemInLevelEditorState(state, jsonItemId);
+    const jsonItem = room.items[jsonItemId];
 
     if (jsonItem === undefined) {
       throw new Error(
@@ -544,6 +557,25 @@ export const moveOrResizeOutcome = (
         previewedCopy.position,
       )) {
         edits[cutItemId] = cutItem;
+      }
+    }
+  }
+
+  if (!isResize) {
+    for (const editorGhost of editorGhosts) {
+      const { jsonItemId } = editorGhost;
+      if (jsonItemIds.includes(jsonItemId)) {
+        // moving with its whole item:
+        continue;
+      }
+      const movedJsonItem = jsonItemWithEditorGhostMoved(
+        // an item's other editor ghost may have moved already, so build on that:
+        edits[jsonItemId] ?? room.items[jsonItemId],
+        editorGhost.whichEditorGhost,
+        positionDelta,
+      );
+      if (movedJsonItem !== undefined) {
+        edits[jsonItemId] = movedJsonItem;
       }
     }
   }

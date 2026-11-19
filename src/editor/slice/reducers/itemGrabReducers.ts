@@ -11,6 +11,7 @@ import {
 import { type LevelEditorState, type PendingEdits } from "../levelEditorSlice";
 import { type OpenRoomId } from "../OpenRoom";
 import { maybeLayoutNode, tabGroupsIter, tabGroupTabs } from "../PaneLayout";
+import { type SelectionEntry } from "../SelectionEntry";
 import { type ItemDragAction } from "./dragToMoveReducers";
 
 /**
@@ -51,7 +52,11 @@ export type ItemGrab = {
    * where the pointer went down, in the source open room
    */
   mouseDownPointingAt: PointingAtItem;
-  jsonItemIds: EditorRoomItemId[];
+  /**
+   * the items grabbed - or a single editor ghost, which is dragged by itself,
+   * leaving its item where it is
+   */
+  grabbedItems: SelectionEntry[];
   /**
    * the open room the pointer is over, if any
    */
@@ -118,15 +123,18 @@ export const itemGrabReducers = {
   itemGrabPointerDown(
     state,
     {
-      payload: { sourceOpenRoomId, mouseDownPointingAt, jsonItemIds },
+      payload: { sourceOpenRoomId, mouseDownPointingAt, grabbedItems },
     }: PayloadAction<
-      Pick<ItemGrab, "jsonItemIds" | "mouseDownPointingAt" | "sourceOpenRoomId">
+      Pick<
+        ItemGrab,
+        "grabbedItems" | "mouseDownPointingAt" | "sourceOpenRoomId"
+      >
     >,
   ) {
     state.itemGrab = {
       sourceOpenRoomId,
       mouseDownPointingAt,
-      jsonItemIds,
+      grabbedItems,
       overOpenRoomId: sourceOpenRoomId,
       dragging: undefined,
       plane: undefined,
@@ -200,12 +208,21 @@ export const itemGrabReducers = {
       state.pendingEdits = undefined;
     }
 
-    const { sourceOpenRoomId, jsonItemIds, mouseDownPointingAt } = itemGrab;
-    if (
-      overOpenRoomId === sourceOpenRoomId ||
-      itemGrab.dragging !== "moveItems"
-    ) {
+    const { sourceOpenRoomId, grabbedItems, mouseDownPointingAt, dragging } =
+      itemGrab;
+    if (overOpenRoomId === sourceOpenRoomId) {
       return;
+    }
+    switch (dragging) {
+      case "moveItems":
+        break;
+      // only moved items leave their pane:
+      case "resizeItems":
+      case "moveEditorGhost":
+      case undefined:
+        return;
+      default:
+        dragging satisfies never;
     }
     // moved out of their room's pane, the items are hidden there until an
     // open room finds them somewhere to drop:
@@ -215,13 +232,16 @@ export const itemGrabReducers = {
     state.pendingEdits = {
       edits: {
         [mouseDownPointingAt.roomId]: Object.fromEntries(
-          jsonItemIds.map((itemId) => [itemId, null]),
+          grabbedItems.map(({ jsonItemId }) => [jsonItemId, null]),
         ),
       },
       description: {
         kind: "itemAction",
         verb: "Move",
-        items: jsonItemIds.map((itemId) => [itemId, sourceRoom.items[itemId]]),
+        items: grabbedItems.map((grabbedItem) => [
+          grabbedItem,
+          sourceRoom.items[grabbedItem.jsonItemId],
+        ]),
       },
       timestamp,
       madeBy: { type: "drag" },
@@ -255,7 +275,7 @@ export const itemGrabReducers = {
     if (itemGrab?.dropInto === undefined) {
       return;
     }
-    const { sourceOpenRoomId, dropInto } = itemGrab;
+    const { sourceOpenRoomId, dropInto, grabbedItems } = itemGrab;
     commitPendingEditsInPlace(state);
     state.itemGrab = undefined;
 
@@ -266,7 +286,7 @@ export const itemGrabReducers = {
       sourceOpenRoom.dragInProgress = undefined;
       if (dropIntoOpenRoom?.roomId !== sourceOpenRoom.roomId) {
         // the items are no longer in the room they came from:
-        sourceOpenRoom.selectedJsonItemIds = [];
+        sourceOpenRoom.selection = [];
       }
     }
     if (dropIntoOpenRoom === undefined) {
@@ -276,7 +296,18 @@ export const itemGrabReducers = {
     if (openRoomTab !== undefined) {
       focusTabInPlace(state, openRoomTab.tabGroup.id, openRoomTab.tab.id);
     }
-    dropIntoOpenRoom.selectedJsonItemIds = dropInto.movedItemIds;
+    dropIntoOpenRoom.selection =
+      // a dragged editor ghost stays selected:
+      (
+        grabbedItems.some(
+          ({ whichEditorGhost }) => whichEditorGhost !== undefined,
+        )
+      ) ?
+        grabbedItems
+      : dropInto.movedItemIds.map((jsonItemId) => ({
+          jsonItemId,
+          whichEditorGhost: undefined,
+        }));
   },
   /**
    * end the press without dropping anything: any drag's preview is discarded,

@@ -20,15 +20,16 @@ import {
   rotateCurrentToolItem,
   rotateSelectedItems,
   selectCurrentCommittedRoomJson,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   selectTool,
 } from "../slice/levelEditorSlice";
 
 const selectSelectionIsRotatable = (state: EditorRootState): boolean => {
   const roomJson = selectCurrentCommittedRoomJson(state);
-  const selectedItems = selectCursorRoomSelectedJsonItemIds(state).map(
-    (jsonItemId) => roomJson.items[jsonItemId],
-  );
+  const selectedItems =
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections(state).map(
+      (jsonItemId) => roomJson.items[jsonItemId],
+    );
   return (
     selectedItems.length > 0 &&
     selectedItems.every(
@@ -97,7 +98,9 @@ export const rotateSelectionOrToolItemThunk =
       roomState,
       roomJson,
       movesOrResizes: fromEntries(
-        selectCursorRoomSelectedJsonItemIds(state).map((jsonItemId) => [
+        selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections(
+          state,
+        ).map((jsonItemId) => [
           jsonItemId,
           rotationAsMoveOrResize(roomJson.items[jsonItemId], sense),
         ]),

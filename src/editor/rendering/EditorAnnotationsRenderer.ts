@@ -35,7 +35,7 @@ import {
 import { editorUiScale } from "../editorUiScale";
 import { type EditorViewport } from "../RoomEditingArea/viewport/EditorViewport";
 import {
-  selectOpenRoomSelectedJsonItemIds,
+  selectOpenRoomSelection,
   selectTool,
   setClickableAnnotationHovered,
 } from "../slice/levelEditorSlice";
@@ -373,6 +373,14 @@ class EditorAnnotationsRenderer<
         }
         break;
 
+      case "lift":
+        this.#addTextAnnotation({
+          annotationText:
+            directionXyz4Glyphs[item.config.startDirection ?? "up"],
+          yAdj: -12,
+        });
+        break;
+
       case "movingPlatform":
         {
           const {
@@ -550,6 +558,9 @@ class EditorAnnotationsRenderer<
     const item = this.renderContext.item as unknown as EditorItemInPlayUnion<T>;
 
     const { jsonItemId } = item;
+    // which of its item's editor ghosts this is, if it is one:
+    const whichEditorGhost =
+      item.type === "editorGhost" ? item.config.whichEditorGhost : undefined;
 
     const state = editorStore.getState();
     const openRoom = maybeLayoutNode(
@@ -564,19 +575,22 @@ class EditorAnnotationsRenderer<
     }
     const { clickableAnnotationHovered, hoveredItem: hoveredJsonItem } =
       openRoom;
-    const selectedJsonItemIds = selectOpenRoomSelectedJsonItemIds(
-      state,
-      this.#openRoomId,
-    );
+    const selection = selectOpenRoomSelection(state, this.#openRoomId);
     // a non-editable open room only ever points:
     const toolType = this.#editable ? selectTool(state).type : "pointer";
 
     const isHovered =
-      jsonItemId &&
+      jsonItemId !== undefined &&
       hoveredJsonItem?.jsonItemId === jsonItemId &&
+      hoveredJsonItem.whichEditorGhost === whichEditorGhost &&
       !clickableAnnotationHovered;
     const isSelected =
-      jsonItemId && (selectedJsonItemIds as string[]).includes(jsonItemId);
+      jsonItemId !== undefined &&
+      selection.some(
+        (selectionEntry) =>
+          selectionEntry.jsonItemId === jsonItemId &&
+          selectionEntry.whichEditorGhost === whichEditorGhost,
+      );
 
     // highlight what the hovered item controls, and what controls it:
     const showControlHighlight = () => {

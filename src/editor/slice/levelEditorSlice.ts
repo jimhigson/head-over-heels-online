@@ -6,7 +6,6 @@ import { type Xyz } from "../../utils/vectors/vectors";
 import {
   type EditorCampaign,
   type EditorRoomId,
-  type EditorRoomItemId,
   type EditorRoomJsonItems,
 } from "../editorTypes";
 import { type PlaytestOptions } from "../PlaytestOptions";
@@ -104,9 +103,12 @@ import {
   undoReducers,
   undoSelectors,
 } from "./reducers/undoReducers";
+import { type SelectionEntry } from "./SelectionEntry";
 
-export type HoveredItem = {
-  jsonItemId: EditorRoomItemId;
+/**
+ * the item (or one of its editor ghosts) the pointer is over, and where on it
+ */
+export type HoveredItem = SelectionEntry & {
   pointingAtOnItem: PointingAtOnItem;
 };
 
@@ -429,7 +431,8 @@ export const {
   selectPlaytestOptions,
   selectCmdKSearch,
   selectOpenRoomContextMenuXy,
-  selectOpenRoomSelectedJsonItemIds,
+  selectOpenRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
+  selectOpenRoomSelection,
   selectOpenRoomDragInProgress,
   selectActiveOpenRoomId,
   selectActiveOpenRoomDragInProgress,
@@ -459,7 +462,9 @@ export const {
   selectRoom,
   selectRoomHasUnsavedChanges,
   selectOpenRoomPaneSize,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
+  selectCursorRoomSelectionJsonItemIdsIncludingEditorGhostOwners,
+  selectCursorRoomSelection,
   selectTool,
   selectUndoHistory,
 } = levelEditorSlice.selectors;

@@ -11,7 +11,7 @@ import {
 import { dropItemsOnRoomThunk } from "../dropItemsOnRoomThunk";
 import {
   selectCursorRoomIdFromLevelEditorState,
-  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import {
@@ -191,7 +191,9 @@ test("selects the moved items in the destination", () => {
     }),
   );
   expect(
-    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state1),
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
+      state1,
+    ),
   ).toEqual(["block1"]);
 });
 

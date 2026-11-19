@@ -179,6 +179,7 @@ and we trust that to pre-load in the service worker for us, so the actual game e
  * extract a custom hook for any nameable piece of logic that groups multiple base hooks together (eg a `useMemo` + `useSelector` that computes a derived value). The hook name documents the intent.
  * instead of `<Fragment>`, write the shorthand `<>` instead where possible
  * do not use bare `PropsWithChildren` — its default type param is `unknown`, which silently widens props. If a component takes no props beyond `children`, write `PropsWithChildren<EmptyObject>` (importing `EmptyObject` from `type-fest`). Otherwise pass the actual props type as the generic.
+ * type-fest should be used in preference to manually reproducing rules such as `SetRequired`, `SetNonNullable` or anything else that `type-fest` provides out of the box
  * extract a named props type for components rather than writing the shape inline at the destructure site. Name it `<ComponentName>Props` and export it. Eg `type FooProps = { ... }; export const Foo = ({ x }: FooProps) => ...` — not `export const Foo = ({ x }: { x: number }) => ...`.
  * do not add an import, save, and then later add code  that uses it. The linter will remove the imports.
  * when using regex, use named captures where it makes the intent clearer (over array indexes in the match object)
@@ -471,6 +472,11 @@ Never padd off a test as 'flaky' as an excuse - a 'flaky' test is a broken test.
  * use `test.for` instead of `test.each` 
 
  * when asked to investigate, for any data that can reasonably be shown as a table, that is always the preferred format to give the findings to the user
+
+## RTK
+
+* we are using reselect 5, which includes weak map caching internally, use this instead of implementing our own weak map based cache when accessing the store
+* in fact, don't reimplement anything reselect or rtk already gives us if we can use the libraries we already have
 
  ### Testing store reducers and state transitions
 

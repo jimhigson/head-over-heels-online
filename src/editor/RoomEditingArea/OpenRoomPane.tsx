@@ -8,6 +8,7 @@ import { useEditorAppSelector } from "../../store/store";
 import { type EditorRoomId, type EditorRoomRenderer } from "../editorTypes";
 import { useLoadedRoomCache } from "../loadedRoomCache/useLoadedRoomCache";
 import { makeEditorAnnotationsDecorateItemRenderer } from "../rendering/EditorAnnotationsRenderer";
+import { editorGhostDecorateItemRenderer } from "../rendering/editorGhostDecorateItemRenderer";
 import { type OpenRoomId } from "../slice/OpenRoom";
 import { maybeLayoutNode, type TabGroupId } from "../slice/PaneLayout";
 import { ItemContextMenu } from "./contextMenu/ItemContextMenu";
@@ -43,6 +44,8 @@ const useEditorRoomRendererDecorators = (): RoomRendererDecorators => {
   return useMemo(
     () => ({
       itemDecorators: [
+        // creates editor ghosts' drawings, so before those wrapping a drawing:
+        editorGhostDecorateItemRenderer,
         makeEditorAnnotationsDecorateItemRenderer(
           viewport,
           openRoomId,

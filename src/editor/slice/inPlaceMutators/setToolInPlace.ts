@@ -2,12 +2,12 @@ import { type Tool } from "../../RoomEditingArea/interactivity/Tool";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { layoutNodesOfType } from "../PaneLayout";
 import { clearContextMenuXyInPlace } from "../reducers/contextMenuReducers";
-import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "./setSelectedJsonItemIdsOnCursorRoomInPlace";
+import { setSelectionOnCursorRoomInPlace } from "./setSelectionOnCursorRoomInPlace";
 
 export const setToolInPlace = (state: LevelEditorState, tool: Tool) => {
   // unselect if using an item tool
   if (tool.type === "item") {
-    setSelectedJsonItemIdsOnCursorRoomInPlace(state, []);
+    setSelectionOnCursorRoomInPlace(state, []);
     for (const openRoom of layoutNodesOfType(state.layout, "openRoom")) {
       openRoom.hoveredItem = undefined;
     }

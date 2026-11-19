@@ -10,10 +10,7 @@ import {
 } from "../../editorTypes";
 import { growArgs, shrinkArgs } from "../../toolbar/buttons/nudgeDirections";
 import { addNudgeStepToPreviewInPlace } from "../inPlaceMutators/addNudgeStepToPreviewInPlace";
-import {
-  selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
-} from "../levelEditorSelectors";
+import { selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState } from "../levelEditorSelectors";
 import {
   type LevelEditorState,
   type PreviewedRoomItemEdits,
@@ -62,7 +59,7 @@ export const multiplyItemsReducers = {
       state,
       multiplyType,
       { positionDelta: originXyz, timestamp },
-      (previewState) => {
+      (nudgedRoomJson) => {
         const edits: PreviewedRoomItemEdits = {};
 
         if (plan.resizedItemIds.length > 0) {
@@ -70,8 +67,11 @@ export const multiplyItemsReducers = {
             multiplyType === "multiplyOrGrow" ?
               growArgs(direction)
             : shrinkArgs(direction);
-          const resizeOutcome = moveOrResizeOutcome(previewState, {
-            jsonItemIds: plan.resizedItemIds,
+          const resizeOutcome = moveOrResizeOutcome(nudgedRoomJson, {
+            selectionEntries: plan.resizedItemIds.map((jsonItemId) => ({
+              jsonItemId,
+              whichEditorGhost: undefined,
+            })),
             positionDelta: posVector,
             timesDelta: { ...originXyz, ...timesDelta },
             timestamp,
@@ -81,12 +81,10 @@ export const multiplyItemsReducers = {
           }
         }
 
-        const roomJson =
-          selectCurrentCommittedRoomJsonFromLevelEditorState(previewState);
-        const takenIds = { ...roomJson.items, ...edits };
+        const takenIds = { ...nudgedRoomJson.items, ...edits };
         const copyIds: EditorRoomItemId[] = [];
         for (const copiedItemId of plan.copiedItemIds) {
-          const copiedItem = roomJson.items[copiedItemId];
+          const copiedItem = nudgedRoomJson.items[copiedItemId];
           const copyId = nextItemIdInItems(
             takenIds,
             typePrefix[copiedItem.type],
@@ -111,8 +109,8 @@ export const multiplyItemsReducers = {
         return {
           edits,
           selectedJsonItemIds: [
-            ...selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(
-              previewState,
+            ...selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
+              state,
             ).filter((id) => !deletedItemIds.has(id)),
             ...copyIds,
           ],

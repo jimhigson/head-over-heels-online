@@ -10,14 +10,14 @@ import {
   selectCurrentCampaignInProgress,
   selectCurrentCommittedRoomJson,
   selectCursorRoomId,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   setSelectedTeleportersDestination,
 } from "../../slice/levelEditorSlice";
 
 /** choose where the selected teleporters lead. Hidden unless all are teleporters */
 export const TeleporterDestinationMenuItem = () => {
   const selectedJsonItemIds = useEditorAppSelector(
-    selectCursorRoomSelectedJsonItemIds,
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   );
   const roomId = useEditorAppSelector(selectCursorRoomId);
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);

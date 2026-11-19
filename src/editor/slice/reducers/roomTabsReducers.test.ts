@@ -8,7 +8,7 @@ import {
 } from "../../editorTypes";
 import {
   selectCursorRoomIdFromLevelEditorState,
-  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "../levelEditorSelectors";
 import {
   changeToRoom,
@@ -233,13 +233,17 @@ test("each room keeps its own selection", () => {
   const state0 = baseState;
   const state1 = reduceLevelEditorActions(
     state0,
-    setSelectedItemsInRoom({ jsonItemIds: [blockId] }),
+    setSelectedItemsInRoom({
+      selection: [{ jsonItemId: blockId, whichEditorGhost: undefined }],
+    }),
     changeToRoom(roomB),
     changeToRoom(testRoomId),
   );
 
   expect(
-    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state1),
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
+      state1,
+    ),
   ).toEqual([blockId]);
 });
 
@@ -295,7 +299,9 @@ test("a split pane has an open room of its own, and is focused", () => {
   const state0 = baseState;
   const state1 = reduceLevelEditorActions(
     state0,
-    setSelectedItemsInRoom({ jsonItemIds: [blockId] }),
+    setSelectedItemsInRoom({
+      selection: [{ jsonItemId: blockId, whichEditorGhost: undefined }],
+    }),
     roomTabSplit({
       tabInGroup: focusedPaneTabOf(state0, testRoomId),
       side: "bottom",
@@ -305,7 +311,9 @@ test("a split pane has an open room of its own, and is focused", () => {
   expect({
     isOriginalPaneFocused: state1.focusedTabGroupId === testTabGroupId,
     cursorSelection:
-      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state1),
+      selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
+        state1,
+      ),
   }).toEqual({ isOriginalPaneFocused: false, cursorSelection: [] });
 });
 

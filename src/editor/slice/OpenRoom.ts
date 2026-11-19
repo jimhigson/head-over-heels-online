@@ -2,10 +2,11 @@ import { type Tagged } from "type-fest";
 
 import { cameraAngleBase } from "../../utils/vectors/cameraAngleVectors";
 import { type Xy } from "../../utils/vectors/vectors";
-import { type EditorRoomId, type EditorRoomItemId } from "../editorTypes";
+import { type EditorRoomId } from "../editorTypes";
 import { type EditorRoomView } from "./EditorRoomView";
 import { type HoveredItem } from "./levelEditorSlice";
 import { type DragInProgress } from "./reducers/dragToMoveReducers";
+import { type SelectionEntry } from "./SelectionEntry";
 
 /**
  * identifies an open room - the same room can be open more than once (eg in a
@@ -28,7 +29,7 @@ export type OpenRoom = {
    * an editable open room's
    */
   editable: boolean;
-  selectedJsonItemIds: EditorRoomItemId[];
+  selection: SelectionEntry[];
   hoveredItem: HoveredItem | undefined;
   clickableAnnotationHovered: boolean;
   /**
@@ -61,7 +62,7 @@ export type OpenRoom = {
  */
 export const openRoomDefaults = {
   type: "openRoom",
-  selectedJsonItemIds: [],
+  selection: [],
   hoveredItem: undefined,
   clickableAnnotationHovered: false,
   dragInProgress: undefined,

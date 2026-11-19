@@ -30,7 +30,11 @@ test("snaps the selected items across to the nearest point on the half grid, lea
 
   const state1Snapped = reduceLevelEditorActions(
     state0,
-    setSelectedItemsInRoom({ jsonItemIds: ["off"] as EditorRoomItemId[] }),
+    setSelectedItemsInRoom({
+      selection: [
+        { jsonItemId: "off" as EditorRoomItemId, whichEditorGhost: undefined },
+      ],
+    }),
     snapSelectedItemsToGrid({ gridResolution: 0.5, timestamp: 0 }),
   );
 

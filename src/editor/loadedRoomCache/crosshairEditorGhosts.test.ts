@@ -1,15 +1,21 @@
 import { expect, test } from "vitest";
 
+import { addItemToRoom } from "../../game/gameState/mutators/addItemToRoom";
 import { blockSizePx } from "../../game/physics/mechanicsConstants";
 import { cameraAngleBase } from "../../utils/vectors/cameraAngleVectors";
 import { type Xyz } from "../../utils/vectors/vectors";
 import {
+  type EditorJsonItem,
   type EditorRoomId,
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../editorTypes";
 import { loadEditorRoom } from "../slice/loadEditorRoom";
-import { crosshairParticles, jsonItemCentre } from "./crosshairParticles";
+import {
+  crosshairEditorGhosts,
+  selectionEntryCentre,
+} from "./crosshairEditorGhosts";
+import { editorGhostsOfLiftEndsAndConnectors } from "./editorGhostsOfLiftEndsAndConnectors";
 
 const roomId = "lShapedRoom" as EditorRoomId;
 const crosshairedItemId = "crosshaired" as EditorRoomItemId;
@@ -130,10 +136,10 @@ test.for([
     };
     const otherAxes = (["x", "y", "z"] as const).filter((a) => a !== axis);
 
-    const rayPositionsPx = crosshairParticles(
+    const rayPositionsPx = crosshairEditorGhosts(
       loadEditorRoom(roomId, roomJson),
       roomJson,
-      crosshairedItemId,
+      { jsonItemId: crosshairedItemId, whichEditorGhost: undefined },
       cameraAngleBase,
     )
       .map(({ state: { box } }) => box)
@@ -199,9 +205,9 @@ test.for([
     roomJson.items[crosshairedItemId] = jsonItem;
 
     expect(
-      jsonItemCentre(
+      selectionEntryCentre(
         loadEditorRoom(roomId, roomJson),
-        crosshairedItemId,
+        { jsonItemId: crosshairedItemId, whichEditorGhost: undefined },
         cameraAngle,
       ),
     ).toEqual({
@@ -221,10 +227,53 @@ test("the crosshair is centred on a two-block-high monster's bottom block", () =
   };
 
   expect(
-    jsonItemCentre(
+    selectionEntryCentre(
       loadEditorRoom(roomId, roomJson),
-      crosshairedItemId,
+      { jsonItemId: crosshairedItemId, whichEditorGhost: undefined },
       cameraAngleBase,
     )?.z,
   ).toEqual(0.5 * blockSizePx.z);
+});
+
+test("the crosshair centres on a lift's editor ghost when the editor ghost is its target", () => {
+  const lift: EditorJsonItem<"lift"> = {
+    type: "lift",
+    config: { bottom: 0, top: 4 },
+    position: { x: 2, y: 2, z: 0 },
+  };
+  const liftRoomJson: EditorRoomJson = {
+    planet: "blacktooth",
+    color: { hue: "cyan", shade: "basic" },
+    items: {
+      ["floor" as EditorRoomItemId]: {
+        type: "floor",
+        config: {
+          floorType: "standable",
+          scenery: "blacktooth",
+          times: { x: 8, y: 8 },
+        },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      ["lift" as EditorRoomItemId]: lift,
+    },
+  };
+  const roomState = loadEditorRoom("liftRoom" as EditorRoomId, liftRoomJson);
+  for (const ghostItem of editorGhostsOfLiftEndsAndConnectors(
+    "lift" as EditorRoomItemId,
+    lift,
+    liftRoomJson,
+  )) {
+    addItemToRoom({ room: roomState, item: ghostItem });
+  }
+
+  expect<number | undefined>(
+    selectionEntryCentre(
+      roomState,
+      {
+        jsonItemId: "lift" as EditorRoomItemId,
+        whichEditorGhost: "liftTop",
+      },
+      cameraAngleBase,
+    )?.z,
+  ).toEqual<number>(4.5 * blockSizePx.z);
 });

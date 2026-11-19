@@ -4,7 +4,7 @@ import { useEditorAppSelector } from "../../../store/store";
 import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import {
   selectCurrentCommittedRoomJson,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   setSelectedMonstersMovement,
 } from "../../slice/levelEditorSlice";
 
@@ -18,7 +18,7 @@ const movementLabel = (movement: JsonMovement): string =>
  */
 export const MonsterMovementMenuItems = () => {
   const selectedJsonItemIds = useEditorAppSelector(
-    selectCursorRoomSelectedJsonItemIds,
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 

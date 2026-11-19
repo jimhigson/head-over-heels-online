@@ -991,7 +991,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r21"
+                    "$ref": "#/definitions/r22"
                   },
                   "position": {
                     "$ref": "#/definitions/r47"
@@ -2286,7 +2286,7 @@
     "r6": {
       "anyOf": [
         {
-          "$ref": "#/definitions/r21"
+          "$ref": "#/definitions/r22"
         },
         {
           "$ref": "#/definitions/r84"
@@ -2594,7 +2594,7 @@
     "r17": {
       "description": "if given, the item will disappear only if stood/touched by items of this type. Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player or ['head'] eg for doughnuts that only head can collect",
       "items": {
-        "$ref": "#/definitions/r22"
+        "$ref": "#/definitions/r21"
       },
       "type": "array"
     },
@@ -2669,23 +2669,6 @@
       "type": "object"
     },
     "r21": {
-      "additionalProperties": false,
-      "properties": {
-        "appearanceRoomTime": {
-          "description": "the room time when this floating text starts; used to calculate the rise animation age. if not given, will start right away at time zero. if given, will delay starting until this time",
-          "type": "number"
-        },
-        "sway": {
-          "$ref": "#/definitions/r89"
-        },
-        "textLines": {
-          "$ref": "#/definitions/r82"
-        }
-      },
-      "required": ["textLines"],
-      "type": "object"
-    },
-    "r22": {
       "enum": [
         "ball",
         "barrier",
@@ -2698,6 +2681,7 @@
         "deadlyBlock",
         "doorFrame",
         "doorLegs",
+        "editorGhost",
         "emitter",
         "firedDoughnut",
         "floatingText",
@@ -2735,6 +2719,23 @@
         "wall"
       ],
       "type": "string"
+    },
+    "r22": {
+      "additionalProperties": false,
+      "properties": {
+        "appearanceRoomTime": {
+          "description": "the room time when this floating text starts; used to calculate the rise animation age. if not given, will start right away at time zero. if given, will delay starting until this time",
+          "type": "number"
+        },
+        "sway": {
+          "$ref": "#/definitions/r89"
+        },
+        "textLines": {
+          "$ref": "#/definitions/r82"
+        }
+      },
+      "required": ["textLines"],
+      "type": "object"
     },
     "r23": {
       "additionalProperties": false,

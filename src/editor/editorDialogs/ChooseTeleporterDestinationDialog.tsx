@@ -24,7 +24,7 @@ import { LazyDialogRoomArea } from "../RoomEditingArea/DialogRoomArea.lazy";
 import {
   dialogRoomClosed,
   dialogRoomOpened,
-  selectOpenRoomSelectedJsonItemIds,
+  selectOpenRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   selectRoom,
   setSelectedItemsInRoom,
 } from "../slice/levelEditorSlice";
@@ -127,7 +127,10 @@ export const ChooseTeleporterDestinationDialog = ({
 
   const pickedItemId = useEditorAppSelector((state) =>
     pickerOpenRoomId === undefined ? undefined : (
-      selectOpenRoomSelectedJsonItemIds(state, pickerOpenRoomId)[0]
+      selectOpenRoomSelectionJsonItemIdsWithoutEditorGhostSelections(
+        state,
+        pickerOpenRoomId,
+      )[0]
     ),
   );
   const roomJson = useEditorAppSelector((state) =>
@@ -231,7 +234,7 @@ export const ChooseTeleporterDestinationDialog = ({
             <Button
               aria-label="Clear item"
               onClick={() =>
-                dispatch(setSelectedItemsInRoom({ jsonItemIds: [] }))
+                dispatch(setSelectedItemsInRoom({ selection: [] }))
               }
               disabled={pickedItemId === undefined}
               class="px-1 py-half self-stretch"

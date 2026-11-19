@@ -13,6 +13,7 @@ import { type EditorAppStore, type EditorRootState } from "../../store/store";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import { type Xy } from "../../utils/vectors/vectors";
 import {
+  type EditorItemInPlayUnion,
   type EditorJsonItemUnion,
   type EditorRoomId,
   type EditorRoomItemId,
@@ -25,8 +26,10 @@ import { selectRoom } from "../slice/levelEditorSlice";
 import { loadEditorRoom } from "../slice/loadEditorRoom";
 import { type OpenRoomId } from "../slice/OpenRoom";
 import { maybeLayoutNode } from "../slice/PaneLayout";
-import { selectCrosshairJsonItemId } from "../slice/selectCrosshairJsonItemId";
-import { crosshairParticles } from "./crosshairParticles";
+import { selectCrosshairSelectionEntry } from "../slice/selectCrosshairSelectionEntry";
+import { type SelectionEntry } from "../slice/SelectionEntry";
+import { crosshairEditorGhosts } from "./crosshairEditorGhosts";
+import { editorGhostsForJsonItem } from "./editorGhostsForJsonItem";
 
 /**
  * the json an open room's loaded room follows. Both come from caching
@@ -45,13 +48,13 @@ type RoomJsons = {
 };
 
 type Crosshair = {
-  jsonItemId: EditorRoomItemId;
+  selectionEntry: SelectionEntry;
   /**
    * the open room's camera angle it was made for
    */
   cameraAngle: Xy;
   roomState: EditorRoomState;
-  particles: EditorUnionOfAllItemInPlayTypes[];
+  editorGhosts: EditorItemInPlayUnion<"editorGhost">[];
 };
 
 type LoadedRoom = {
@@ -97,7 +100,7 @@ export class LoadedRoomCache {
   #failedRoomJsonWithPreviews: EditorRoomJson | undefined = undefined;
   #revision = 0;
   /**
-   * the particles of the crosshair shown on an item, in the loaded room they
+   * the editor ghosts of the crosshair shown on an item, in the loaded room they
    * were added to
    */
   #crosshair: Crosshair | undefined = undefined;
@@ -210,7 +213,10 @@ export class LoadedRoomCache {
      */
     roomChanged: boolean,
   ): boolean {
-    const jsonItemId = selectCrosshairJsonItemId(state, this.#openRoomId);
+    const selectionEntry = selectCrosshairSelectionEntry(
+      state,
+      this.#openRoomId,
+    );
     const openRoom = maybeLayoutNode(
       state.levelEditor.layout,
       this.#openRoomId,
@@ -220,11 +226,18 @@ export class LoadedRoomCache {
     }
     const { cameraAngle } = openRoom;
     const prevCrosshair = this.#crosshair;
-    if (
-      !roomChanged &&
-      jsonItemId === prevCrosshair?.jsonItemId &&
-      (prevCrosshair === undefined || cameraAngle === prevCrosshair.cameraAngle)
-    ) {
+    // still nothing to show a crosshair on:
+    const stillNoCrosshair =
+      prevCrosshair === undefined && selectionEntry === undefined;
+    // the crosshair is on the same item (or editor ghost), seen from the same angle:
+    const crosshairUnmoved =
+      prevCrosshair !== undefined &&
+      selectionEntry !== undefined &&
+      selectionEntry.jsonItemId === prevCrosshair.selectionEntry.jsonItemId &&
+      selectionEntry.whichEditorGhost ===
+        prevCrosshair.selectionEntry.whichEditorGhost &&
+      cameraAngle === prevCrosshair.cameraAngle;
+    if (!roomChanged && (stillNoCrosshair || crosshairUnmoved)) {
       return false;
     }
 
@@ -232,31 +245,34 @@ export class LoadedRoomCache {
       prevCrosshair !== undefined &&
       prevCrosshair.roomState === this.#loaded?.roomState
     ) {
-      for (const particle of prevCrosshair.particles) {
-        deleteItemFromRoom({ room: prevCrosshair.roomState, item: particle });
+      for (const editorGhost of prevCrosshair.editorGhosts) {
+        deleteItemFromRoom({
+          room: prevCrosshair.roomState,
+          item: editorGhost,
+        });
       }
     }
     this.#crosshair = undefined;
 
     const loaded = this.#loaded;
-    if (jsonItemId === undefined || loaded === undefined) {
+    if (selectionEntry === undefined || loaded === undefined) {
       return prevCrosshair !== undefined;
     }
 
-    const particles = crosshairParticles(
+    const editorGhosts = crosshairEditorGhosts(
       loaded.roomState,
       loaded.roomJsonWithPreviews,
-      jsonItemId,
+      selectionEntry,
       cameraAngle,
     );
-    for (const particle of particles) {
-      addItemToRoom({ room: loaded.roomState, item: particle });
+    for (const editorGhost of editorGhosts) {
+      addItemToRoom({ room: loaded.roomState, item: editorGhost });
     }
     this.#crosshair = {
-      jsonItemId,
+      selectionEntry,
       cameraAngle,
       roomState: loaded.roomState,
-      particles,
+      editorGhosts,
     };
     return true;
   }
@@ -325,8 +341,20 @@ export class LoadedRoomCache {
     committedRoomJson,
   }: RoomJsons): LoadedRoom | undefined {
     try {
+      const roomState = loadEditorRoom(roomId, roomJsonWithPreviews);
+      for (const [jsonItemId, jsonItem] of roomJsonItemsEntriesIterable(
+        roomJsonWithPreviews.items,
+      )) {
+        for (const editorGhost of editorGhostsForJsonItem(
+          jsonItemId,
+          jsonItem,
+          roomJsonWithPreviews,
+        )) {
+          addItemToRoom({ room: roomState, item: editorGhost });
+        }
+      }
       return {
-        roomState: loadEditorRoom(roomId, roomJsonWithPreviews),
+        roomState,
         roomJsonWithPreviews,
         committedRoomJson,
       };
@@ -388,6 +416,13 @@ const patchLoadedRoomInPlace = (
         room: loadedRoomState,
         item: newItem as EditorUnionOfAllItemInPlayTypes,
       });
+    }
+    for (const editorGhost of editorGhostsForJsonItem(
+      jsonItemId,
+      jsonItem,
+      roomJsonWithPreviews,
+    )) {
+      addItemToRoom({ room: loadedRoomState, item: editorGhost });
     }
   };
 

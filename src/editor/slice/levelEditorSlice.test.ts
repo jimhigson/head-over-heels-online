@@ -5,7 +5,7 @@ import { type EditorRoomId } from "../editorTypes";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
   selectCursorRoomIdFromLevelEditorState,
-  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "./levelEditorSelectors";
 import {
   addRoom,
@@ -82,14 +82,16 @@ describe(
       ).find(([, item]) => item.type === "block")!;
 
       const a2 = setSelectedItemsInRoom({
-        jsonItemIds: [addedBlockId],
+        selection: [{ jsonItemId: addedBlockId, whichEditorGhost: undefined }],
       });
 
       const state3 = reduce(state2, a2);
 
       // should have selected that item:
       expect(
-        selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state3),
+        selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
+          state3,
+        ),
       ).toEqual([addedBlockId]);
 
       const a3 = undo();
@@ -103,7 +105,9 @@ describe(
       expect(state4HasBlock).toBe(false);
 
       expect(
-        selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state4),
+        selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
+          state4,
+        ),
       ).toEqual([]);
     });
 
@@ -229,7 +233,11 @@ describe(
 
       const state3 = reduce(
         state2,
-        setSelectedItemsInRoom({ jsonItemIds: [addedBlockId] }),
+        setSelectedItemsInRoom({
+          selection: [
+            { jsonItemId: addedBlockId, whichEditorGhost: undefined },
+          ],
+        }),
       );
       const state4 = reduce(state3, deleteSelected({ timestamp: 0 }));
 
@@ -239,7 +247,7 @@ describe(
       if (desc.kind === "itemAction") {
         expect(desc.verb).toBe("Delete");
         expect(desc.items).toHaveLength(1);
-        const [[deletedId, deletedItem]] = desc.items;
+        const [[{ jsonItemId: deletedId }, deletedItem]] = desc.items;
         expect(deletedId).toBe(addedBlockId);
         expect(deletedItem.type).toBe("block");
       }

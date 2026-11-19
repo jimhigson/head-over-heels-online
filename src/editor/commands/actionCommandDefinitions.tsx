@@ -22,7 +22,7 @@ import {
   selectActiveOpenRoomId,
   selectCampaignHasUnsavedChanges,
   selectCurrentCampaignInProgress,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   selectHistoryRoomsBackwards,
   selectHistoryRoomsForwards,
   selectRedoHistory,
@@ -47,7 +47,8 @@ import { type EditorCommandDefinition } from "./EditorCommand";
 import { SaveIcon } from "./SaveIcon";
 
 const selectSomethingSelected = (state: EditorRootState) =>
-  selectCursorRoomSelectedJsonItemIds(state).length > 0;
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections(state)
+    .length > 0;
 
 const selectCampaignIsNamed = (state: EditorRootState) =>
   campaignIsNamed(selectCurrentCampaignInProgress(state));

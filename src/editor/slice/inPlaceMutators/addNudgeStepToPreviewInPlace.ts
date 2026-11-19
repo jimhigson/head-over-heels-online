@@ -12,13 +12,14 @@ import {
 } from "../../../utils/vectors/vectors";
 import {
   type EditorRoomItemId,
+  type EditorRoomJson,
   type EditorRoomJsonItems,
 } from "../../editorTypes";
 import { jsonItemsWithEdits } from "../jsonItemsWithEdits";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomIdFromLevelEditorState,
-  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+  selectCursorRoomSelectionFromLevelEditorState,
 } from "../levelEditorSelectors";
 import {
   type LevelEditorState,
@@ -27,7 +28,7 @@ import {
 } from "../levelEditorSlice";
 import { moveVerb, type UndoItemEntry } from "../reducers/undoDescription";
 import { commitPendingNudgeInPlace } from "./commitPendingNudgeInPlace";
-import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "./setSelectedJsonItemIdsOnCursorRoomInPlace";
+import { setSelectionOnCursorRoomInPlace } from "./setSelectionOnCursorRoomInPlace";
 
 /**
  * what one nudge does to the room as previewed - or undefined if it can't be
@@ -87,9 +88,9 @@ export const addNudgeStepToPreviewInPlace = (
     timestamp: number;
   },
   /**
-   * the nudge, made to the state with the room as previewed
+   * the nudge, made to the cursor room with the nudges already pending applied
    */
-  nudgeStep: (previewState: LevelEditorState) => NudgeStep,
+  nudgeStep: (nudgedRoomJson: EditorRoomJson) => NudgeStep,
 ) => {
   commitPendingNudgeInPlace(state, kind);
 
@@ -103,37 +104,31 @@ export const addNudgeStepToPreviewInPlace = (
     : undefined;
   // a nudge is only ever to the cursor room:
   const pendingNudgeEdits = pendingNudge?.edits[cursorRoomId];
-  const previewRoom =
+  const nudgedRoomJson: EditorRoomJson =
     pendingNudgeEdits === undefined ? committedRoom : (
       {
         ...committedRoom,
         items: jsonItemsWithEdits(committedRoom.items, pendingNudgeEdits),
       }
     );
-  const previewState: LevelEditorState = {
-    ...stateNow,
-    campaignInProgress: {
-      ...stateNow.campaignInProgress,
-      rooms: {
-        ...stateNow.campaignInProgress.rooms,
-        [cursorRoomId]: previewRoom,
-      },
-    },
-    pendingEdits: undefined,
-  };
-
-  const step = nudgeStep(previewState);
+  const step = nudgeStep(nudgedRoomJson);
   if (step === undefined) {
     return;
   }
 
   if (step.selectedJsonItemIds !== undefined) {
-    setSelectedJsonItemIdsOnCursorRoomInPlace(state, step.selectedJsonItemIds);
+    setSelectionOnCursorRoomInPlace(
+      state,
+      step.selectedJsonItemIds.map((jsonItemId) => ({
+        jsonItemId,
+        whichEditorGhost: undefined,
+      })),
+    );
   }
 
   const edits = editsBetween(
     committedRoom.items,
-    jsonItemsWithEdits(previewRoom.items, step.edits),
+    jsonItemsWithEdits(nudgedRoomJson.items, step.edits),
   );
   if (keys(edits).length === 0) {
     // nudged back to where the room was committed:
@@ -149,10 +144,10 @@ export const addNudgeStepToPreviewInPlace = (
   const items: UndoItemEntry[] =
     pendingNudge?.description.kind === "itemAction" ?
       pendingNudge.description.items
-    : selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(stateNow).flatMap(
-        (id): UndoItemEntry[] => {
-          const item = committedRoom.items[id];
-          return item === undefined ? emptyArray : [[id, item]];
+    : selectCursorRoomSelectionFromLevelEditorState(stateNow).flatMap(
+        (selectionEntry): UndoItemEntry[] => {
+          const item = committedRoom.items[selectionEntry.jsonItemId];
+          return item === undefined ? emptyArray : [[selectionEntry, item]];
         },
       );
 

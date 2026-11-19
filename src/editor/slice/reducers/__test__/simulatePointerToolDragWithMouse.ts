@@ -83,7 +83,12 @@ export const simulatePointerToolDragWithMouse = (
   return reduceLevelEditorActions(
     state,
     changeWallsFloorsLocked(false),
-    setSelectedItemsInRoom({ jsonItemIds }),
+    setSelectedItemsInRoom({
+      selection: jsonItemIds.map((jsonItemId) => ({
+        jsonItemId,
+        whichEditorGhost: undefined,
+      })),
+    }),
     handler.handleMouseDown({
       openRoomId: testOpenRoomId,
       roomState,

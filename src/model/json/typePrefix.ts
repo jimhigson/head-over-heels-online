@@ -20,6 +20,7 @@ export const typePrefix = {
   door: "d",
   doorFrame: "df",
   doorLegs: "dl",
+  editorGhost: "eg",
   emitter: "e",
   firedDoughnut: "fd",
   floatingText: "ft",
