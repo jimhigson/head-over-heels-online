@@ -41,9 +41,11 @@ import { switchAppearance } from "./switchAppearance";
 import { teleporterAppearance } from "./teleporterAppearance";
 import { wallAppearance } from "./wallAppearance";
 
-const itemAppearancesMap: {
+type ItemAppearancesMap = {
   [T in ItemInPlayType]?: ItemAppearanceOutsideView<T>;
-} = {
+};
+
+const itemAppearancesMap = {
   // casts allow these appearances to use Container specialisations as their output without
   // clashing with the `itemAppearances` types
   doorFrame: itemAppearanceOutsideView(doorFrameAppearance),
@@ -446,7 +448,12 @@ const itemAppearancesMap: {
       );
     },
   ),
-};
+} satisfies ItemAppearancesMap;
+
+/**
+ * the item types that have an appearance
+ */
+export type ItemTypeWithAppearance = keyof typeof itemAppearancesMap;
 
 /**
  * for any given item, return the appearance for that item, or undefined if we
@@ -455,4 +462,4 @@ const itemAppearancesMap: {
 export const appearanceForItem = <T extends ItemInPlayType>(
   item: ItemTypeUnion<T, string, string>,
 ): ItemAppearanceOutsideView<T> | undefined =>
-  itemAppearancesMap[item.type as T];
+  (itemAppearancesMap as ItemAppearancesMap)[item.type as T];

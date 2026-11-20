@@ -72,6 +72,6 @@ export const useSyncMonacoCaretToStoreItemSelection = (
       }
     });
 
-    return disposable.dispose;
+    return () => disposable.dispose();
   }, [dispatch, editor, monaco]);
 };
