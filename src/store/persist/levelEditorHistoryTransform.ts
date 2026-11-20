@@ -2,19 +2,72 @@ import { applyPatch, compare, type Operation } from "fast-json-patch";
 import createTransform from "redux-persist/es/createTransform";
 
 import {
+  type EditorJsonItemUnion,
   type EditorRoomId,
+  type EditorRoomItemId,
   type EditorRoomJson,
 } from "../../editor/editorTypes";
 import { type LevelEditorState } from "../../editor/slice/levelEditorSlice";
 import {
-  type RoomUndoHistory,
+  type UndoDescription,
+  type UndoItemEntry,
+} from "../../editor/slice/reducers/undoDescription";
+import {
   type UndoEntry,
   type UndoLink,
 } from "../../editor/slice/reducers/undoReducers";
+import { type SelectionEntry } from "../../editor/slice/SelectionEntry";
 import { emptyArray } from "../../utils/empty";
 import { entries, fromAllEntries } from "../../utils/entries";
 
 type History = LevelEditorState["history"];
+
+/**
+ * a selection entry as stored - json leaves out an undefined editor ghost
+ */
+type StoredSelectionEntry = Omit<SelectionEntry, "whichEditorGhost"> &
+  Partial<Pick<SelectionEntry, "whichEditorGhost">>;
+
+/**
+ * an undo item as stored: by selection entry, or in the older stored form,
+ * by its bare json id
+ */
+type StoredUndoItemEntry =
+  | readonly [EditorRoomItemId, EditorJsonItemUnion]
+  | readonly [StoredSelectionEntry, EditorJsonItemUnion];
+
+type WithStoredUndoItems<D> =
+  D extends { items: UndoItemEntry[] } ?
+    Omit<D, "items"> & { items: StoredUndoItemEntry[] }
+  : D;
+
+type StoredUndoDescription = WithStoredUndoItems<UndoDescription>;
+
+const undoItemEntryFromStored = ([
+  storedSelectionEntryOrJsonItemId,
+  item,
+]: StoredUndoItemEntry): UndoItemEntry => [
+  typeof storedSelectionEntryOrJsonItemId === "string" ?
+    {
+      jsonItemId: storedSelectionEntryOrJsonItemId,
+      whichEditorGhost: undefined,
+    }
+  : {
+      jsonItemId: storedSelectionEntryOrJsonItemId.jsonItemId,
+      whichEditorGhost: storedSelectionEntryOrJsonItemId.whichEditorGhost,
+    },
+  item,
+];
+
+const undoDescriptionFromStored = (
+  storedUndoDescription: StoredUndoDescription,
+): UndoDescription =>
+  "items" in storedUndoDescription ?
+    {
+      ...storedUndoDescription,
+      items: storedUndoDescription.items.map(undoItemEntryFromStored),
+    }
+  : storedUndoDescription;
 
 /**
  * an undo or redo stack as stored: the newest entry's room in full, and every
@@ -25,7 +78,8 @@ type History = LevelEditorState["history"];
 type StoredUndoStack = {
   newestRoom: EditorRoomJson | undefined;
   entries: Array<
-    Omit<UndoEntry, "link" | "room"> & {
+    Omit<UndoEntry, "description" | "link" | "room"> & {
+      description: StoredUndoDescription;
       /**
        * absent where the entry has none, as json leaves out undefined
        */
@@ -43,11 +97,18 @@ type StoredRoomUndoHistory = {
   redo: StoredUndoStack;
 };
 
+type LegacyStoredUndoEntry = Omit<UndoEntry, "description"> & {
+  description: StoredUndoDescription;
+};
+
 /**
  * the older stored form of a room's history: every entry with its room in
- * full. Read back as it is
+ * full
  */
-type LegacyStoredRoomUndoHistory = RoomUndoHistory;
+type LegacyStoredRoomUndoHistory = {
+  undo: LegacyStoredUndoEntry[];
+  redo: LegacyStoredUndoEntry[];
+};
 
 type StoredHistory = Record<
   EditorRoomId,
@@ -94,17 +155,30 @@ const undoStackFromStored = ({
   const stack: UndoEntry[] = [];
   let nextRoom = newestRoom!;
   for (let index = storedEntries.length - 1; index >= 0; index--) {
-    const { patchFromNext, link, ...entry } = storedEntries[index];
+    const { patchFromNext, link, description, ...entry } = storedEntries[index];
     const room =
       patchFromNext.length === 0 ?
         nextRoom
       : (applyPatch(nextRoom, patchFromNext, false, false)
           .newDocument as EditorRoomJson);
-    stack[index] = { ...entry, link, room };
+    stack[index] = {
+      ...entry,
+      description: undoDescriptionFromStored(description),
+      link,
+      room,
+    };
     nextRoom = room;
   }
   return stack;
 };
+
+const undoEntryFromLegacyStored = ({
+  description,
+  ...entry
+}: LegacyStoredUndoEntry): UndoEntry => ({
+  ...entry,
+  description: undoDescriptionFromStored(description),
+});
 
 const isLegacyStoredRoomUndoHistory = (
   roomHistory: LegacyStoredRoomUndoHistory | StoredRoomUndoHistory,
@@ -130,12 +204,15 @@ export const levelEditorHistoryTransform = createTransform<
     fromAllEntries(
       entries(storedHistory).map(([roomId, roomHistory]) => [
         roomId,
-        isLegacyStoredRoomUndoHistory(roomHistory) ? roomHistory : (
+        isLegacyStoredRoomUndoHistory(roomHistory) ?
           {
+            undo: roomHistory.undo.map(undoEntryFromLegacyStored),
+            redo: roomHistory.redo.map(undoEntryFromLegacyStored),
+          }
+        : {
             undo: undoStackFromStored(roomHistory.undo),
             redo: undoStackFromStored(roomHistory.redo),
-          }
-        ),
+          },
       ]),
     ),
   { whitelist: ["history"] },

@@ -18,8 +18,18 @@ import {
   type UndoHistoryItem,
   type UndoLink,
 } from "../../slice/reducers/undoReducers";
+import { type WhichEditorGhostOfAnyItemType } from "../../WhichEditorGhostOf";
 
 const maxIcons = 3;
+
+/**
+ * names an editor ghost after its item's own description, eg "lift 'l' top"
+ */
+const editorGhostDescriptions = {
+  liftTop: "top",
+  liftBottom: "bottom",
+  emittedItem: "emitted item",
+} as const satisfies Record<WhichEditorGhostOfAnyItemType, string>;
 
 const verbClass = "text-highlightBeige";
 const idClass = "text-pastelBlue";
@@ -48,19 +58,30 @@ const ItemIcons = ({
   scenery: SceneryName;
 }) => (
   <span>
-    {items.slice(0, maxIcons).map(([id, item]) => (
-      <ItemIcon key={id} item={item} scenery={scenery} />
-    ))}
+    {items
+      .slice(0, maxIcons)
+      .map(([{ jsonItemId, whichEditorGhost }, item]) => (
+        <ItemIcon
+          key={`${jsonItemId}-${whichEditorGhost}`}
+          item={item}
+          scenery={scenery}
+        />
+      ))}
   </span>
 );
 
 const ItemDescriptions = ({ items }: { items: UndoItemEntry[] }) => {
   if (items.length === 1) {
-    const [[id, item]] = items;
+    const [[{ jsonItemId, whichEditorGhost }, item]] = items;
     return (
       <span>
         <span class="text-single-line">{describeItem(item)} </span>
-        <span class={`${idClass} text-single-line`}>{`'${id}'`}</span>
+        <span class={`${idClass} text-single-line`}>{`'${jsonItemId}'`}</span>
+        {whichEditorGhost !== undefined && (
+          <span class="text-single-line">
+            {` ${editorGhostDescriptions[whichEditorGhost]}`}
+          </span>
+        )}
       </span>
     );
   }

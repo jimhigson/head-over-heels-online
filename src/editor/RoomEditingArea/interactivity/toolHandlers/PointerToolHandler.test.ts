@@ -877,7 +877,10 @@ test("releasing a drag records it as one undoable move", () => {
   expect(
     state1Released.history[testRoomId]?.undo.map(({ description }) =>
       description.kind === "itemAction" ?
-        { verb: description.verb, itemIds: description.items.map(([id]) => id) }
+        {
+          verb: description.verb,
+          itemIds: description.items.map(([{ jsonItemId }]) => jsonItemId),
+        }
       : description.kind,
     ),
   ).toEqual([{ verb: "↖ Move", itemIds: [blockId] }]);
@@ -910,7 +913,14 @@ test.for([
       changeToRoom("otherRoomId" as EditorRoomId),
       changeWallsFloorsLocked(false),
       // anything done in the other room since:
-      setSelectedItemsInRoom({ jsonItemIds: ["floor" as EditorRoomItemId] }),
+      setSelectedItemsInRoom({
+        selection: [
+          {
+            jsonItemId: "floor" as EditorRoomItemId,
+            whichEditorGhost: undefined,
+          },
+        ],
+      }),
       deleteSelected({ timestamp: 0 }),
       changeToRoom(testRoomId),
     ],

@@ -35,8 +35,11 @@ import {
   xyzEqual,
 } from "../../../../utils/vectors/vectors";
 import {
+  isJsonItemWithEditorGhosts,
+  maybeEditorGhostEditorBehaviour,
+} from "../../../editorGhostEditorBehaviours";
+import {
   type EditorJsonItemUnion,
-  type EditorRoomItemId,
   type EditorRoomJson,
   type EditorRoomState,
 } from "../../../editorTypes";
@@ -56,7 +59,7 @@ import {
   type LevelEditorState,
   openItemContextMenu,
   selectItem,
-  selectOpenRoomSelectedJsonItemIds,
+  selectOpenRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   setHoveredItemInRoom,
   setSelectedItemsInRoom,
   toggleSelectedItemInRoom,
@@ -71,6 +74,10 @@ import {
 } from "../../../slice/reducers/itemGrabReducers";
 import { getMovableVector } from "../../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import { moveOrResizeOutcome } from "../../../slice/reducers/moveOrResizeItemPreview/moveOrResizeOutcome";
+import {
+  type EditorGhostSelectionEntry,
+  type SelectionEntry,
+} from "../../../slice/SelectionEntry";
 import { snapGridResolution } from "../../../snapGridResolution";
 import {
   itemMoveOrResizeWouldCollide,
@@ -104,14 +111,14 @@ const dragMinimumDistance = 5; // pixels
 
 /**
  * interpret which item(s) the user wants the current operation to affect
- *  - either single or multiple
+ *  - either single or multiple, or a single item's editor ghost by itself
  */
-const getJsonItemIdsToUseForPointingAt = (
+const getGrabbedItemsForPointingAt = (
   storeState: EditorRootState,
   openRoomId: OpenRoomId,
   roomState: EditorRoomState,
   mouseDownPointingAt: MaybePointingAtSomething | undefined,
-): EditorRoomItemId[] => {
+): SelectionEntry[] => {
   const mouseDownItemInPlayId = mouseDownPointingAt?.world?.itemId;
 
   if (mouseDownItemInPlayId === undefined) {
@@ -119,32 +126,54 @@ const getJsonItemIdsToUseForPointingAt = (
     return emptyArray;
   }
 
-  const mouseDownJsonItemId = findItemInPlayForPicking(
+  const mouseDownItem = findItemInPlayForPicking(
     roomState,
     mouseDownItemInPlayId,
-  )?.jsonItemId;
-
-  if (mouseDownJsonItemId === undefined) {
+  );
+  if (mouseDownItem?.jsonItemId === undefined) {
     // item not in the room - this shouldn't normally happen
     return emptyArray;
   }
+  const mouseDownJsonItemId = mouseDownItem.jsonItemId;
 
-  const selectedJsonItemIds = selectOpenRoomSelectedJsonItemIds(
-    storeState,
-    openRoomId,
-  );
+  if (
+    mouseDownItem.type === "editorGhost" &&
+    mouseDownItem.config.whichEditorGhost !== undefined
+  ) {
+    // an editor ghost is dragged by itself:
+    return [
+      {
+        jsonItemId: mouseDownJsonItemId,
+        whichEditorGhost: mouseDownItem.config.whichEditorGhost,
+      },
+    ];
+  }
 
-  return selectedJsonItemIds.includes(mouseDownJsonItemId) ?
+  const selectedJsonItemIds =
+    selectOpenRoomSelectionJsonItemIdsWithoutEditorGhostSelections(
+      storeState,
+      openRoomId,
+    );
+
+  return (
+    selectedJsonItemIds.includes(mouseDownJsonItemId) ?
       // interacted with an already selected item - use all selected items:
       selectedJsonItemIds
       // interacted with an unselected item - use just that one:
-    : [mouseDownJsonItemId];
+    : [mouseDownJsonItemId]).map((jsonItemId) => ({
+    jsonItemId,
+    whichEditorGhost: undefined,
+  }));
 };
 
 const getDragPlaneNormal = (
   mouseDownPointingAt: MaybePointingAtSomething,
   modifierPressed: boolean,
   jsonItems: Iterable<EditorJsonItemUnion>,
+  /**
+   * the editor ghost being dragged, if one is dragged rather than whole items
+   */
+  grabbedEditorGhost: EditorGhostSelectionEntry | undefined,
 ): undefined | Xyz => {
   const edgePlane = mouseDownPointingAt.world?.onItem.edge;
 
@@ -161,16 +190,31 @@ const getDragPlaneNormal = (
     consolidatableVector,
   );
 
-  if (lengthXyz(resizeDirection) > 0) {
+  if (grabbedEditorGhost === undefined && lengthXyz(resizeDirection) > 0) {
     // dragging will be resizing - use the plane of the edge under the mouse:
     return edgePlane!.normal;
   }
 
   // not all items can be moved in all directions - get the legal directions
   // for the current selections:
-  const movableVector = elementWiseProductXyz(
-    ...Iterator.from(jsonItems).map((jsonItem) => getMovableVector(jsonItem)),
-  );
+  const movableVector =
+    grabbedEditorGhost === undefined ?
+      elementWiseProductXyz(
+        ...Iterator.from(jsonItems).map((jsonItem) =>
+          getMovableVector(jsonItem),
+        ),
+      )
+    : elementWiseProductXyz(
+        ...Iterator.from(jsonItems).map(
+          (jsonItem) =>
+            (isJsonItemWithEditorGhosts(jsonItem) &&
+              maybeEditorGhostEditorBehaviour(
+                jsonItem,
+                grabbedEditorGhost.whichEditorGhost,
+              )?.movableVector) ||
+            originXyz,
+        ),
+      );
 
   const movableVectorDesc = planeAxesDesc(movableVector);
 
@@ -319,7 +363,7 @@ type DragPreviewArgs = {
 const dragPreviewInItemsRoom = (
   {
     levelEditorState,
-    itemGrab: { jsonItemIds, mouseDownPointingAt },
+    itemGrab: { grabbedItems, mouseDownPointingAt },
     openRoomId,
     roomState,
     blockDragVector,
@@ -331,6 +375,11 @@ const dragPreviewInItemsRoom = (
    */
   resizeEdge: Plane | undefined,
 ): ItemGrabPreviewedIntoPayload | undefined => {
+  const jsonItemIds = grabbedItems.map(({ jsonItemId }) => jsonItemId);
+  // a grabbed editor ghost moves by itself, leaving its item where it is:
+  const wholeJsonItemIds = grabbedItems
+    .filter(({ whichEditorGhost }) => whichEditorGhost === undefined)
+    .map(({ jsonItemId }) => jsonItemId);
   const roomJson = levelEditorState.campaignInProgress.rooms[
     mouseDownPointingAt.roomId
   ] as EditorRoomJson;
@@ -381,7 +430,7 @@ const dragPreviewInItemsRoom = (
       itemMoveOrResizeWouldCollide({
         roomState,
         roomJson,
-        movesOrResizes: sameMoveOrResizeForEach(jsonItemIds, {
+        movesOrResizes: sameMoveOrResizeForEach(wholeJsonItemIds, {
           blockPositionDelta: moveToTry,
           timesDelta,
         }),
@@ -389,8 +438,8 @@ const dragPreviewInItemsRoom = (
     ) {
       continue;
     }
-    const outcome = moveOrResizeOutcome(levelEditorState, {
-      jsonItemIds,
+    const outcome = moveOrResizeOutcome(roomJson, {
+      selectionEntries: grabbedItems,
       positionDelta: moveToTry,
       timesDelta,
       timestamp: Date.now(),
@@ -422,13 +471,14 @@ const dragPreviewInItemsRoom = (
  */
 const dragPreviewInOtherRoom = ({
   levelEditorState,
-  itemGrab: { jsonItemIds, mouseDownPointingAt },
+  itemGrab: { grabbedItems, mouseDownPointingAt },
   openRoomId,
   roomState,
   blockDragVector,
   gridResolution,
   cameraAngle,
 }: DragPreviewArgs): ItemGrabPreviewedIntoPayload | undefined => {
+  const jsonItemIds = grabbedItems.map(({ jsonItemId }) => jsonItemId);
   const { rooms } = levelEditorState.campaignInProgress;
   const { roomId: toRoomId } = existingLayoutNode(
     levelEditorState.layout,
@@ -546,7 +596,8 @@ export class PointerToolHandler implements ToolHandler {
         return;
       }
 
-      const { jsonItemIds, mouseDownPointingAt } = itemGrab;
+      const { grabbedItems, mouseDownPointingAt } = itemGrab;
+      const jsonItemIds = grabbedItems.map(({ jsonItemId }) => jsonItemId);
       const fromRoom = storeState.levelEditor.campaignInProgress.rooms[
         mouseDownPointingAt.roomId
       ] as EditorRoomJson;
@@ -556,20 +607,36 @@ export class PointerToolHandler implements ToolHandler {
         return;
       }
 
-      // grabbing an edge resizes, if every item can be resized:
+      const grabbedEditorGhost = grabbedItems.find(
+        (grabbedItem): grabbedItem is EditorGhostSelectionEntry =>
+          grabbedItem.whichEditorGhost !== undefined,
+      );
+      // grabbing an edge resizes, if every item can be resized - an editor ghost
+      // never is:
       const resizeEdge =
-        jsonItems.every((jsonItem) => isConsolidatable(jsonItem)) ?
+        (
+          grabbedEditorGhost === undefined &&
+          jsonItems.every((jsonItem) => isConsolidatable(jsonItem))
+        ) ?
           mouseDownPointingAt.world.onItem.edge
         : undefined;
       const dragAction: ItemDragAction =
-        resizeEdge === undefined ? "moveItems" : "resizeItems";
+        grabbedEditorGhost !== undefined ? "moveEditorGhost"
+        : resizeEdge === undefined ? "moveItems"
+        : "resizeItems";
       const isItemsRoom = openRoom.roomId === mouseDownPointingAt.roomId;
-      if (
-        dragAction === "resizeItems" &&
-        openRoomId !== itemGrab.sourceOpenRoomId
-      ) {
-        // a resize stays in its own pane
-        return;
+      switch (dragAction) {
+        case "moveItems":
+          break;
+        // a resize, or an editor ghost's drag, stays in its own pane:
+        case "resizeItems":
+        case "moveEditorGhost":
+          if (openRoomId !== itemGrab.sourceOpenRoomId) {
+            return;
+          }
+          break;
+        default:
+          dragAction satisfies never;
       }
 
       const modifierPressed = mouseEvent.metaKey || mouseEvent.shiftKey;
@@ -577,6 +644,7 @@ export class PointerToolHandler implements ToolHandler {
         mouseDownPointingAt,
         modifierPressed,
         jsonItems,
+        grabbedEditorGhost,
       );
       if (normal === undefined) {
         // can't move in any direction
@@ -602,14 +670,29 @@ export class PointerToolHandler implements ToolHandler {
       }
       if (itemGrab.dragging === undefined) {
         dispatch(itemGrabDragStarted({ dragging: dragAction, plane }));
-        if (
+        if (grabbedEditorGhost !== undefined) {
+          // once we are dragging an editor ghost, select it:
+          dispatch(
+            setSelectedItemsInRoom({
+              selection: [grabbedEditorGhost],
+            }),
+          );
+        } else if (
           jsonItemIds.length === 1 &&
-          !selectOpenRoomSelectedJsonItemIds(storeState, openRoomId).includes(
-            jsonItemIds[0],
-          )
+          !selectOpenRoomSelectionJsonItemIdsWithoutEditorGhostSelections(
+            storeState,
+            openRoomId,
+          ).includes(jsonItemIds[0])
         ) {
           // once we are dragging an item, select it:
-          dispatch(setSelectedItemsInRoom({ jsonItemIds }));
+          dispatch(
+            setSelectedItemsInRoom({
+              selection: jsonItemIds.map((jsonItemId) => ({
+                jsonItemId,
+                whichEditorGhost: undefined,
+              })),
+            }),
+          );
         }
       } else if (plane !== itemGrab.plane) {
         dispatch(itemGrabPlaneChanged(plane));
@@ -680,14 +763,26 @@ export class PointerToolHandler implements ToolHandler {
             undefined
           : findItemInPlayForPicking(roomState, pointingAt.world.itemId);
 
+        const clickedSelectionEntry =
+          clickedOnItem?.jsonItemId === undefined ?
+            undefined
+          : {
+              jsonItemId: clickedOnItem.jsonItemId,
+              whichEditorGhost:
+                clickedOnItem.type === "editorGhost" ?
+                  clickedOnItem.config.whichEditorGhost
+                : undefined,
+            };
+
         if (
-          clickedOnItem?.jsonItemId === undefined ||
+          clickedOnItem === undefined ||
+          clickedSelectionEntry === undefined ||
           (editable && itemsAreLocked(storeState, clickedOnItem))
         ) {
           // clicking on nothing (or something with no json id) (or a locked floor/wall) unselects:
           dispatch(
             setSelectedItemsInRoom({
-              jsonItemIds: [],
+              selection: [],
             }),
           );
           return;
@@ -698,25 +793,30 @@ export class PointerToolHandler implements ToolHandler {
         // right-clicking within the selection opens the menu for all of it:
         const keepsSelection =
           isRightClick &&
-          selectOpenRoomSelectedJsonItemIds(storeState, openRoomId).includes(
-            clickedOnItem.jsonItemId,
-          );
+          selectOpenRoomSelectionJsonItemIdsWithoutEditorGhostSelections(
+            storeState,
+            openRoomId,
+          ).includes(clickedSelectionEntry.jsonItemId);
 
         if (!keepsSelection) {
           dispatch(
             // a non-editable open room picks a single item:
             editable && (mouseEvent.ctrlKey || mouseEvent.metaKey) ?
               toggleSelectedItemInRoom({
-                jsonItemId: clickedOnItem.jsonItemId,
+                selectionEntry: clickedSelectionEntry,
                 onlySelect: isRightClick,
               })
             : setSelectedItemsInRoom({
-                jsonItemIds: [clickedOnItem.jsonItemId],
+                selection: [clickedSelectionEntry],
               }),
           );
         }
 
-        if (isRightClick) {
+        // only an item itself has a context menu, not its editor ghosts:
+        if (
+          isRightClick &&
+          clickedSelectionEntry.whichEditorGhost === undefined
+        ) {
           // a right-click selects the item the same way a left-click does (above),
           // unless it is already selected, then additionally opens the context
           // menu for the resulting selection
@@ -748,7 +848,7 @@ export class PointerToolHandler implements ToolHandler {
         itemGrabPointerDown({
           sourceOpenRoomId: openRoomId,
           mouseDownPointingAt: pointingAt,
-          jsonItemIds: getJsonItemIdsToUseForPointingAt(
+          grabbedItems: getGrabbedItemsForPointingAt(
             storeState,
             openRoomId,
             roomState,
@@ -769,12 +869,12 @@ export class PointerToolHandler implements ToolHandler {
     }
     // a drag is used (to move/resize) only when it starts on unlocked item(s) -
     // the same conditions handleMouseMove bails on:
-    const jsonItemIds = getJsonItemIdsToUseForPointingAt(
+    const jsonItemIds = getGrabbedItemsForPointingAt(
       storeState,
       openRoomId,
       roomState,
       pointingAt,
-    );
+    ).map(({ jsonItemId }) => jsonItemId);
     if (jsonItemIds.length === 0) {
       return false;
     }

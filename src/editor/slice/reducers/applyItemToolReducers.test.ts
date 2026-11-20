@@ -567,7 +567,9 @@ describe("applying tools", () => {
 
       const state3WithoutCyberman = reduceLevelEditorActions(
         state2WithCyberman,
-        setSelectedItemsInRoom({ jsonItemIds: [cybermanId] }),
+        setSelectedItemsInRoom({
+          selection: [{ jsonItemId: cybermanId, whichEditorGhost: undefined }],
+        }),
         deleteSelected({ timestamp: 0 }),
       );
 

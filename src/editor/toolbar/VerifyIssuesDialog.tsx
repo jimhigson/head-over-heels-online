@@ -117,7 +117,12 @@ export const VerifyIssuesDialog = ({ onClose }: VerifyIssuesDialogProps) => {
       // select the items to update - safe because they live in the room we
       // just navigated to
       store.dispatch(
-        setSelectedItemsInRoom({ jsonItemIds: itemIds as EditorRoomItemId[] }),
+        setSelectedItemsInRoom({
+          selection: (itemIds as EditorRoomItemId[]).map((jsonItemId) => ({
+            jsonItemId,
+            whichEditorGhost: undefined,
+          })),
+        }),
       );
     }
     onClose();

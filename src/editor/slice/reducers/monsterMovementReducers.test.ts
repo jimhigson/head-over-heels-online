@@ -39,7 +39,9 @@ const state0MonsterAndBlock = produce(
 const state1MovementSet = reduceLevelEditorActions(
   state0MonsterAndBlock,
   setSelectedItemsInRoom({
-    jsonItemIds: ["monkey", "block"] as EditorRoomItemId[],
+    selection: (["monkey", "block"] as EditorRoomItemId[]).map(
+      (jsonItemId) => ({ jsonItemId, whichEditorGhost: undefined }),
+    ),
   }),
   setSelectedMonstersMovement({
     movement: "towards-on-shortest-axis-xy4",

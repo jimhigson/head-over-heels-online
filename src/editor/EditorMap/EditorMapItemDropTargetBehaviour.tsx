@@ -10,7 +10,7 @@ import { findItemsDropPlacement } from "../slice/findItemsDropPlacement";
 import {
   selectActiveOpenRoomDragInProgress,
   selectCursorRoomId,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   selectCursorSubRoomId,
 } from "../slice/levelEditorSlice";
 
@@ -45,10 +45,20 @@ const useEditorMapItemDropTarget = ({
 
     const isDraggingItemsFromAnotherRoom = () => {
       const editorState = editorStore.getState();
-      return (
-        selectActiveOpenRoomDragInProgress(editorState) === "moveItems" &&
-        selectCursorRoomId(editorState) !== roomId
-      );
+      const dragInProgress = selectActiveOpenRoomDragInProgress(editorState);
+      switch (dragInProgress) {
+        case "moveItems":
+          return selectCursorRoomId(editorState) !== roomId;
+        // only moved items can be dropped into another room:
+        case "resizeItems":
+        case "moveEditorGhost":
+        case "pan":
+        case undefined:
+          return false;
+        default:
+          dragInProgress satisfies never;
+          throw new Error(`unexpected drag in progress ${dragInProgress}`);
+      }
     };
 
     const handlePointerEnter = () => {
@@ -60,7 +70,10 @@ const useEditorMapItemDropTarget = ({
         findItemsDropPlacement(editorState.levelEditor, {
           fromRoomId: selectCursorRoomId(editorState),
           fromSubRoomId: selectCursorSubRoomId(editorState),
-          itemIds: selectCursorRoomSelectedJsonItemIds(editorState),
+          itemIds:
+            selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections(
+              editorState,
+            ),
           toRoomId: roomId,
           toSubRoomId: subRoomId,
         }) !== undefined;
@@ -84,7 +97,10 @@ const useEditorMapItemDropTarget = ({
           dropItemsOnRoomThunk({
             fromRoomId: selectCursorRoomId(editorState),
             fromSubRoomId: selectCursorSubRoomId(editorState),
-            itemIds: selectCursorRoomSelectedJsonItemIds(editorState),
+            itemIds:
+              selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections(
+                editorState,
+              ),
             toRoomId: roomId,
             toSubRoomId: subRoomId,
           }),

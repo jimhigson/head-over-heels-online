@@ -4,7 +4,7 @@ import { expect, test } from "vitest";
 import { type EditorRoomItemId } from "../../editorTypes";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "../levelEditorSelectors";
 import {
   coalesceSelectedItems,
@@ -38,7 +38,12 @@ const state0WithTwoAdjacentBlocks = produce(
 const coalesceBothBlocks = (): LevelEditorState =>
   reduceLevelEditorActions(
     state0WithTwoAdjacentBlocks,
-    setSelectedItemsInRoom({ jsonItemIds: ["b0", "b1"] as EditorRoomItemId[] }),
+    setSelectedItemsInRoom({
+      selection: (["b0", "b1"] as EditorRoomItemId[]).map((jsonItemId) => ({
+        jsonItemId,
+        whichEditorGhost: undefined,
+      })),
+    }),
     coalesceSelectedItems({ timestamp: 0 }),
   );
 
@@ -59,7 +64,9 @@ test("selects the resulting coalesced item", () => {
   const state1 = coalesceBothBlocks();
 
   expect(
-    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state1),
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
+      state1,
+    ),
   ).toHaveLength(1);
 });
 

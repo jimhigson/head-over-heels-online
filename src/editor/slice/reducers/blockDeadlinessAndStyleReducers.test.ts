@@ -37,7 +37,11 @@ test("makes an organic block a deadly volcano, keeping its times", () => {
   );
   const state1AfterMakeDeadly = reduceLevelEditorActions(
     state0WithBlock,
-    setSelectedItemsInRoom({ jsonItemIds: ["i" as EditorRoomItemId] }),
+    setSelectedItemsInRoom({
+      selection: [
+        { jsonItemId: "i" as EditorRoomItemId, whichEditorGhost: undefined },
+      ],
+    }),
     setSelectedBlocksDeadly({ makeDeadly: true, timestamp: 0 }),
   );
 
@@ -66,7 +70,11 @@ test("makes a deadly toaster a safe artificial block, dropping disabled", () => 
   );
   const state1AfterMakeSafe = reduceLevelEditorActions(
     state0WithDeadly,
-    setSelectedItemsInRoom({ jsonItemIds: ["i" as EditorRoomItemId] }),
+    setSelectedItemsInRoom({
+      selection: [
+        { jsonItemId: "i" as EditorRoomItemId, whichEditorGhost: undefined },
+      ],
+    }),
     setSelectedBlocksDeadly({ makeDeadly: false, timestamp: 0 }),
   );
 
@@ -95,7 +103,11 @@ test("undo restores a block made deadly", () => {
   );
   const state1AfterMakeDeadlyAndUndo = reduceLevelEditorActions(
     state0WithBlock,
-    setSelectedItemsInRoom({ jsonItemIds: ["i" as EditorRoomItemId] }),
+    setSelectedItemsInRoom({
+      selection: [
+        { jsonItemId: "i" as EditorRoomItemId, whichEditorGhost: undefined },
+      ],
+    }),
     setSelectedBlocksDeadly({ makeDeadly: true, timestamp: 0 }),
     undo(),
   );
@@ -126,7 +138,11 @@ test("restyles a z-repeating block as a tower", () => {
   );
   const state1AfterTower = reduceLevelEditorActions(
     state0WithBlock,
-    setSelectedItemsInRoom({ jsonItemIds: ["i" as EditorRoomItemId] }),
+    setSelectedItemsInRoom({
+      selection: [
+        { jsonItemId: "i" as EditorRoomItemId, whichEditorGhost: undefined },
+      ],
+    }),
     setSelectedItemsSubtype({
       itemType: "block",
       subtype: "tower",
@@ -160,7 +176,11 @@ test("does not make an x-repeating block a tower", () => {
   );
   const state1AfterTower = reduceLevelEditorActions(
     state0WithBlock,
-    setSelectedItemsInRoom({ jsonItemIds: ["i" as EditorRoomItemId] }),
+    setSelectedItemsInRoom({
+      selection: [
+        { jsonItemId: "i" as EditorRoomItemId, whichEditorGhost: undefined },
+      ],
+    }),
     setSelectedItemsSubtype({
       itemType: "block",
       subtype: "tower",
@@ -194,7 +214,11 @@ test("restyles a deadly block", () => {
   );
   const state1AfterVolcano = reduceLevelEditorActions(
     state0WithDeadly,
-    setSelectedItemsInRoom({ jsonItemIds: ["i" as EditorRoomItemId] }),
+    setSelectedItemsInRoom({
+      selection: [
+        { jsonItemId: "i" as EditorRoomItemId, whichEditorGhost: undefined },
+      ],
+    }),
     setSelectedItemsSubtype({
       itemType: "deadlyBlock",
       subtype: "volcano",
@@ -227,7 +251,11 @@ test("restyles a portable block", () => {
   );
   const state1AfterDrum = reduceLevelEditorActions(
     state0WithPortable,
-    setSelectedItemsInRoom({ jsonItemIds: ["i" as EditorRoomItemId] }),
+    setSelectedItemsInRoom({
+      selection: [
+        { jsonItemId: "i" as EditorRoomItemId, whichEditorGhost: undefined },
+      ],
+    }),
     setSelectedItemsSubtype({
       itemType: "portableBlock",
       subtype: "drum",

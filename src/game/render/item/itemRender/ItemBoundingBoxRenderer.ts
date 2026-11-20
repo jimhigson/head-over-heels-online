@@ -78,6 +78,7 @@ const bbColors: Record<ItemInPlayType, string> = {
 
   // visual effects / non-physical
   particle: "#DD88FF",
+  editorGhost: "#CCCCCC",
   floatingText: "#8000FF",
   soundEffect: "#B060D0",
   sceneryPlayer: "#FFB060",

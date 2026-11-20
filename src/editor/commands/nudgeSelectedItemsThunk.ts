@@ -8,7 +8,7 @@ import {
 import { selectCurrentEditingRoomJsonWithPreviews } from "../slice/levelEditorSelectors";
 import {
   nudgeSelectedItems,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelection,
 } from "../slice/levelEditorSlice";
 import { snapGridResolution } from "../snapGridResolution";
 import { type NudgeArgs } from "../toolbar/buttons/nudgeDirections";
@@ -59,10 +59,15 @@ export const nudgeSelectedItemsThunk =
       // the pointer is dragging the items:
       return;
     }
-    const jsonItemIds = selectCursorRoomSelectedJsonItemIds(editorState);
-    if (jsonItemIds.length === 0) {
+    const selection = selectCursorRoomSelection(editorState);
+    if (selection.length === 0) {
       return;
     }
+    // only whole items snap to the grid or can collide - selected editor
+    // editor ghosts do neither:
+    const jsonItemIds = selection
+      .filter(({ whichEditorGhost }) => whichEditorGhost === undefined)
+      .map(({ jsonItemId }) => jsonItemId);
     // nudges still being previewed are built on:
     const roomJson = selectCurrentEditingRoomJsonWithPreviews(editorState);
     const step = snapGridResolution(
@@ -75,8 +80,9 @@ export const nudgeSelectedItemsThunk =
 
     const [leadJsonItemId] = jsonItemIds;
     const positionDelta =
-      timesDelta ? posVector : (
-        deltaToNextGridLine(
+      timesDelta !== undefined || leadJsonItemId === undefined ?
+        posVector
+      : deltaToNextGridLine(
           roomJson.items[leadJsonItemId].position,
           posVector,
           {
@@ -84,8 +90,7 @@ export const nudgeSelectedItemsThunk =
             y: step,
             z: 1,
           },
-        )
-      );
+        );
     const fullTimesDelta = { ...originXyz, ...timesDelta };
 
     const collides = itemMoveOrResizeWouldCollide({

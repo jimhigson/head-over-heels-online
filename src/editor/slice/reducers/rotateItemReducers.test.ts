@@ -50,7 +50,11 @@ const rotateSelected = (
   selectCurrentCommittedRoomJsonFromLevelEditorState(
     reduceLevelEditorActions(
       stateWithItem(item),
-      setSelectedItemsInRoom({ jsonItemIds: ["i" as EditorRoomItemId] }),
+      setSelectedItemsInRoom({
+        selection: [
+          { jsonItemId: "i" as EditorRoomItemId, whichEditorGhost: undefined },
+        ],
+      }),
       rotateSelectedItems({ sense, timestamp: 0 }),
     ),
   ).items["i" as EditorRoomItemId];
@@ -360,7 +364,9 @@ test("a multi-block conveyor turns about its middle and back, but not into an it
       preview: false,
       timestamp: 0,
     }),
-    setSelectedItemsInRoom({ jsonItemIds: [conveyorId] }),
+    setSelectedItemsInRoom({
+      selection: [{ jsonItemId: conveyorId, whichEditorGhost: undefined }],
+    }),
   );
   expect(
     roomJsonItemsIterable(
@@ -436,7 +442,12 @@ test("two selected conveyors turn together, each into the space the other leaves
 
   const state1BothRotated = reduceLevelEditorActions(
     state0TwoConveyors,
-    setSelectedItemsInRoom({ jsonItemIds: [conveyorAId, conveyorBId] }),
+    setSelectedItemsInRoom({
+      selection: [conveyorAId, conveyorBId].map((jsonItemId) => ({
+        jsonItemId,
+        whichEditorGhost: undefined,
+      })),
+    }),
     rotateSelectionOrToolItemThunk(
       "clockwise",
       loadRoom({

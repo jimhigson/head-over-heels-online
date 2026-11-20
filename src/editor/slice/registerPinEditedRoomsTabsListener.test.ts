@@ -83,7 +83,9 @@ afterEach(() => {
 test("a room's preview tab is kept once the room is edited", () => {
   expect(
     isRoomBTabPreviewAfter(
-      setSelectedItemsInRoom({ jsonItemIds: [blockId] }),
+      setSelectedItemsInRoom({
+        selection: [{ jsonItemId: blockId, whichEditorGhost: undefined }],
+      }),
       deleteSelected({ timestamp: 0 }),
     ),
   ).toBe(false);

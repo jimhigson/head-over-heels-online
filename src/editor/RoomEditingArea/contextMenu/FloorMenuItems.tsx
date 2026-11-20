@@ -6,7 +6,7 @@ import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import { type EditorJsonItem } from "../../editorTypes";
 import {
   selectCurrentCommittedRoomJson,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   setSelectedFloorsScenery,
   setSelectedFloorsType,
 } from "../../slice/levelEditorSlice";
@@ -23,7 +23,7 @@ const floorTypeLabels = {
  */
 export const FloorMenuItems = () => {
   const selectedJsonItemIds = useEditorAppSelector(
-    selectCursorRoomSelectedJsonItemIds,
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 

@@ -20,6 +20,7 @@ import {
   selectActiveCursorRoomEditingOpenRoomFromLevelEditorState,
   selectFrontOpenRoomFromLevelEditorState,
 } from "./PaneLayout";
+import { type SelectionEntry } from "./SelectionEntry";
 
 /** whether the campaign being edited differs from as last saved (or loaded) */
 export const selectCampaignHasUnsavedChangesFromLevelEditorState = ({
@@ -91,14 +92,34 @@ export const selectItemInLevelEditorState = (
   ]?.items[itemId] as EditorJsonItemUnion | undefined;
 
 /**
- * the items selected in the cursor room - the selection that commands act on.
- * Empty unless the active open room is the front tab's
+ * what is selected in the cursor room, editor ghosts and all. Empty unless the active
+ * open room is the front tab's
  */
-export const selectCursorRoomSelectedJsonItemIdsFromLevelEditorState = (
+export const selectCursorRoomSelectionFromLevelEditorState = (
   state: LevelEditorState,
-): EditorRoomItemId[] =>
-  selectActiveCursorRoomEditingOpenRoomFromLevelEditorState(state)
-    ?.selectedJsonItemIds ?? emptyArray;
+): SelectionEntry[] =>
+  selectActiveCursorRoomEditingOpenRoomFromLevelEditorState(state)?.selection ??
+  emptyArray;
+
+/**
+ * the json items selected themselves in the cursor room - the selection that
+ * commands act on - leaving out selected editor ghosts
+ */
+export const selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState =
+  createSelector([selectCursorRoomSelectionFromLevelEditorState], (selection) =>
+    selection
+      .filter(({ whichEditorGhost }) => whichEditorGhost === undefined)
+      .map(({ jsonItemId }) => jsonItemId),
+  );
+
+/**
+ * the json items selected in the cursor room, themselves or through one of
+ * their editor ghosts - each once
+ */
+export const selectCursorRoomSelectionJsonItemIdsIncludingEditorGhostOwnersFromLevelEditorState =
+  createSelector([selectCursorRoomSelectionFromLevelEditorState], (selection) =>
+    Array.from(new Set(selection.map(({ jsonItemId }) => jsonItemId))),
+  );
 
 /**
  * the json ids of items that exist only as an uncommitted preview - ie, the

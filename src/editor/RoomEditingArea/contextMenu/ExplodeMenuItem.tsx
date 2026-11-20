@@ -4,7 +4,7 @@ import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import {
   explodeSelectedItems,
   selectCurrentCommittedRoomJson,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
 } from "../../slice/levelEditorSlice";
 
 /**
@@ -13,7 +13,7 @@ import {
  */
 export const ExplodeMenuItem = () => {
   const selectedJsonItemIds = useEditorAppSelector(
-    selectCursorRoomSelectedJsonItemIds,
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 

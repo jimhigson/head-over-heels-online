@@ -6,7 +6,7 @@ import { useEditorAppSelector } from "../../../store/store";
 import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import {
   selectCurrentCommittedRoomJson,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   setSelectedItemsMirrorOrientation,
 } from "../../slice/levelEditorSlice";
 
@@ -24,7 +24,7 @@ const orientationGlyph = {
  */
 export const MirrorOrientationMenuItems = () => {
   const selectedJsonItemIds = useEditorAppSelector(
-    selectCursorRoomSelectedJsonItemIds,
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 

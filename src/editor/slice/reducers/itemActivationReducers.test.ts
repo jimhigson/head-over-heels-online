@@ -31,7 +31,11 @@ const setActivation = (
   selectCurrentCommittedRoomJsonFromLevelEditorState(
     reduceLevelEditorActions(
       stateWithItem(item),
-      setSelectedItemsInRoom({ jsonItemIds: ["i" as EditorRoomItemId] }),
+      setSelectedItemsInRoom({
+        selection: [
+          { jsonItemId: "i" as EditorRoomItemId, whichEditorGhost: undefined },
+        ],
+      }),
       setSelectedItemsActivation({ activation, timestamp: 0 }),
     ),
   ).items["i" as EditorRoomItemId];

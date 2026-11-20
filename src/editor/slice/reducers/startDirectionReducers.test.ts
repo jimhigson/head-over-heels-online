@@ -1,7 +1,10 @@
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
-import { type EditorRoomItemId } from "../../editorTypes";
+import {
+  type EditorJsonItemUnion,
+  type EditorRoomItemId,
+} from "../../editorTypes";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
   setSelectedItemsInRoom,
@@ -42,7 +45,9 @@ const state0PlatformPlayerAndBlock = produce(
 const state1DirectionSet = reduceLevelEditorActions(
   state0PlatformPlayerAndBlock,
   setSelectedItemsInRoom({
-    jsonItemIds: ["platform", "player", "block"] as EditorRoomItemId[],
+    selection: (["platform", "player", "block"] as EditorRoomItemId[]).map(
+      (jsonItemId) => ({ jsonItemId, whichEditorGhost: undefined }),
+    ),
   }),
   setSelectedItemsStartDirection({ startDirection: "left", timestamp: 0 }),
 );
@@ -85,7 +90,11 @@ const state0Lamp = produce(editorStateWithOneRoomWithNoItems, (draft) => {
 
 const state1LampDirectionSet = reduceLevelEditorActions(
   state0Lamp,
-  setSelectedItemsInRoom({ jsonItemIds: ["lamp"] as EditorRoomItemId[] }),
+  setSelectedItemsInRoom({
+    selection: [
+      { jsonItemId: "lamp" as EditorRoomItemId, whichEditorGhost: undefined },
+    ],
+  }),
   setSelectedItemsStartDirection({ startDirection: "left", timestamp: 0 }),
 );
 
@@ -97,6 +106,37 @@ test("sets a lamp's beam direction (its `direction` field, not startDirection)",
   expect(lampSetDirection["lamp" as EditorRoomItemId]).toEqual({
     type: "lamp",
     config: { direction: "left", activated: true },
+    position: { x: 0, y: 0, z: 0 },
+  });
+});
+
+test("sets a selected lift to start going down", () => {
+  const state0WithLift = produce(editorStateWithOneRoomWithNoItems, (draft) => {
+    draft.campaignInProgress.rooms[testRoomId].items[
+      "lift" as EditorRoomItemId
+    ] = {
+      type: "lift",
+      config: { bottom: 0, top: 4 },
+      position: { x: 0, y: 0, z: 0 },
+    };
+  });
+  const state1AfterDown = reduceLevelEditorActions(
+    state0WithLift,
+    setSelectedItemsInRoom({
+      selection: [
+        { jsonItemId: "lift" as EditorRoomItemId, whichEditorGhost: undefined },
+      ],
+    }),
+    setSelectedItemsStartDirection({ startDirection: "down", timestamp: 0 }),
+  );
+
+  expect<EditorJsonItemUnion | undefined>(
+    selectCurrentCommittedRoomJsonFromLevelEditorState(state1AfterDown).items[
+      "lift" as EditorRoomItemId
+    ],
+  ).toEqual<EditorJsonItemUnion>({
+    type: "lift",
+    config: { bottom: 0, top: 4, startDirection: "down" },
     position: { x: 0, y: 0, z: 0 },
   });
 });

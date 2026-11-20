@@ -196,6 +196,8 @@ const behaviours = new Map<ItemBehaviourCacheKey, ItemBehaviour>(
     moveableDeadly: new FreeItemBehaviour({
       isDeadly: true,
     }),
+    // ghosts are drawn by the editor only, so never get in anything's way:
+    editorGhost: new ItemBehaviour({ isNonSolid: true }),
     outOfBounds: new OutOfBoundsBehaviour(),
     particle: new ItemBehaviour({ isNonSolid: true }),
     portableBlock: new PortableBlockBehaviour({ isPortable: true }),

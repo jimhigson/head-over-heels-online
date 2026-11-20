@@ -44,6 +44,10 @@ export const setHoveredItemIfChangedThunk =
         newHoveredItemJsonId === undefined ? undefined : (
           {
             jsonItemId: newHoveredItemJsonId,
+            whichEditorGhost:
+              hoveredInPlayItem.type === "editorGhost" ?
+                hoveredInPlayItem.config.whichEditorGhost
+              : undefined,
             pointingAtOnItem: pointingAt.world!.onItem,
           }
         );

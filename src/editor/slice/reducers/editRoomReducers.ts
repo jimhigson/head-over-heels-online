@@ -47,11 +47,12 @@ import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomIn
 import { changeRoomIdInPlace } from "../inPlaceMutators/changeRoomIdInPlace";
 import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
 import { deleteItemInPlace } from "../inPlaceMutators/deleteItemInPlace";
-import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "../inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
+import { setSelectionOnCursorRoomInPlace } from "../inPlaceMutators/setSelectionOnCursorRoomInPlace";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomIdFromLevelEditorState,
-  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+  selectCursorRoomSelectionFromLevelEditorState,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
   selectCursorSubRoomIdFromLevelEditorState,
   selectRoomFromLevelEditorState,
 } from "../levelEditorSelectors";
@@ -459,21 +460,19 @@ export const editRoomReducers = {
     rooms[cursorRoomId] = newRoomJson;
 
     // selected items may no longer exist in the room after reloading - remove these selections:
-    const selectedJsonItemIdsThatStillExist =
-      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state).filter(
-        (id) => newRoomJson.items[id] !== undefined,
+    const selectionThatStillExists =
+      selectCursorRoomSelectionFromLevelEditorState(state).filter(
+        (selectionEntry) =>
+          newRoomJson.items[selectionEntry.jsonItemId] !== undefined,
       );
     if (
       // check first for removals, since state.foo = state.foo.filter() creates a state change even
       // if all items are kept
-      selectedJsonItemIdsThatStillExist.length !==
-      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state).length
+      selectionThatStillExists.length !==
+      selectCursorRoomSelectionFromLevelEditorState(state).length
     ) {
       // some items were removed, so update the selection
-      setSelectedJsonItemIdsOnCursorRoomInPlace(
-        state,
-        selectedJsonItemIdsThatStillExist,
-      );
+      setSelectionOnCursorRoomInPlace(state, selectionThatStillExists);
     }
 
     clearContextMenuXyInPlace(state);
@@ -603,22 +602,25 @@ export const editRoomReducers = {
     const roomJson = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
 
     const items: UndoItemEntry[] =
-      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state).map(
-        (id) => [id, roomJson.items[id]],
-      );
+      selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
+        state,
+      ).map((jsonItemId) => [
+        { jsonItemId, whichEditorGhost: undefined },
+        roomJson.items[jsonItemId],
+      ]);
     pushUndoToCursorRoomInPlace(
       state,
       { kind: "itemAction", verb: "Delete", items },
       timestamp,
     );
 
-    for (const id of selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(
+    for (const id of selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
       state,
     )) {
       deleteItemInPlace(roomJson, id);
     }
 
-    setSelectedJsonItemIdsOnCursorRoomInPlace(state, []);
+    setSelectionOnCursorRoomInPlace(state, []);
     clearContextMenuXyInPlace(state);
 
     if (state.autoCoalesce) {
@@ -641,7 +643,9 @@ export const editRoomReducers = {
 
     const roomJson = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
     const [floorId] =
-      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state);
+      selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
+        state,
+      );
     const floor = roomJson.items[floorId];
     if (floor?.type !== "floor" || !canMakeHoleInFloor(floor)) {
       return;
@@ -649,7 +653,11 @@ export const editRoomReducers = {
 
     pushUndoToCursorRoomInPlace(
       state,
-      { kind: "itemAction", verb: "Make hole", items: [[floorId, floor]] },
+      {
+        kind: "itemAction",
+        verb: "Make hole",
+        items: [[{ jsonItemId: floorId, whichEditorGhost: undefined }, floor]],
+      },
       timestamp,
     );
 
@@ -672,7 +680,9 @@ export const editRoomReducers = {
       );
     }
 
-    setSelectedJsonItemIdsOnCursorRoomInPlace(state, [holeId]);
+    setSelectionOnCursorRoomInPlace(state, [
+      { jsonItemId: holeId, whichEditorGhost: undefined },
+    ]);
     clearContextMenuXyInPlace(state);
   },
   clearRoom(
@@ -697,10 +707,10 @@ export const editRoomReducers = {
       ) {
         // remove all items except the floor and walls
         delete roomJson.items[k];
-        setSelectedJsonItemIdsOnCursorRoomInPlace(
+        setSelectionOnCursorRoomInPlace(
           state,
-          selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state).filter(
-            (id) => id !== k,
+          selectCursorRoomSelectionFromLevelEditorState(state).filter(
+            ({ jsonItemId }) => jsonItemId !== k,
           ),
         );
       }

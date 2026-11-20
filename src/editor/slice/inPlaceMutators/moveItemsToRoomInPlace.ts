@@ -238,7 +238,10 @@ export const itemsMoveBetweenRoomsDescription = (
     toRoomId,
     items: newIds
       .keys()
-      .map((itemId): UndoItemEntry => [itemId, fromRoom.items[itemId]!])
+      .map((jsonItemId): UndoItemEntry => [
+        { jsonItemId, whichEditorGhost: undefined },
+        fromRoom.items[jsonItemId]!,
+      ])
       .toArray(),
   };
 };

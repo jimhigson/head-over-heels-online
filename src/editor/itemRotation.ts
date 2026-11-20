@@ -44,7 +44,8 @@ const rotateFacingInPlace = (
     return;
   }
   const itemDirection = directionForItem(item);
-  if (itemDirection === undefined) {
+  // only directions on the floor's plane turn with the item:
+  if (itemDirection?.type !== "facingOnXyPlane") {
     return;
   }
   // turn by one step of the item's own granularity: scenery players face all
@@ -118,7 +119,7 @@ export const isRotatable = (item: EditorJsonItemUnion): boolean => {
     item.type === "mirror" ||
     item.type === "barrier" ||
     item.type === "conveyor" ||
-    directionForItem(item) !== undefined;
+    directionForItem(item)?.type === "facingOnXyPlane";
   return (
     (hasFacing || isMultiBlockInXy(item)) && timesFitAfterQuarterTurn(item)
   );

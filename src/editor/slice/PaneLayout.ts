@@ -1,13 +1,15 @@
+import { createSelector } from "@reduxjs/toolkit";
 import { type Tagged } from "type-fest";
 
 import { firstSubRoomId } from "../../model/firstSubRoomId";
 import { emptyArray } from "../../utils/empty";
 import { valuesIter } from "../../utils/entries";
 import { omit } from "../../utils/pick";
-import { type EditorRoomId, type EditorRoomItemId } from "../editorTypes";
+import { type EditorRoomId } from "../editorTypes";
 import { newIdInPlace } from "./inPlaceMutators/newIdInPlace";
 import { type LevelEditorState } from "./levelEditorSlice";
 import { type OpenRoom, openRoomDefaults, type OpenRoomId } from "./OpenRoom";
+import { type SelectionEntry } from "./SelectionEntry";
 import { startingRoomId } from "./startingRoomId";
 
 export type TabId = Tagged<`tab-${string}`, "TabId">;
@@ -171,12 +173,26 @@ export const layoutNodesOfType = <Type extends LayoutNode["type"]>(
     (node): node is Extract<LayoutNode, { type: Type }> => node.type === type,
   );
 
-export const selectOpenRoomSelectedJsonItemIdsFromLevelEditorState = (
+/**
+ * select what is selected in the given open room
+ */
+export const selectOpenRoomSelectionFromLevelEditorState = (
   state: LevelEditorState,
   openRoomId: OpenRoomId,
-): EditorRoomItemId[] =>
+): SelectionEntry[] =>
   // check the room wasn't closed (in case we have a stale openRoomId reference)
-  maybeLayoutNode(state.layout, openRoomId)?.selectedJsonItemIds ?? emptyArray;
+  maybeLayoutNode(state.layout, openRoomId)?.selection ?? emptyArray;
+
+/**
+ * the json items selected themselves in an open room, leaving out selected
+ * editor ghosts
+ */
+export const selectOpenRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState =
+  createSelector([selectOpenRoomSelectionFromLevelEditorState], (selection) =>
+    selection
+      .filter(({ whichEditorGhost }) => whichEditorGhost === undefined)
+      .map(({ jsonItemId }) => jsonItemId),
+  );
 
 /**
  * return every open room's selection, hover, drag, context menu, size and

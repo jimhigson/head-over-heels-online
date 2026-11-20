@@ -1,58 +1,36 @@
 import { collisionBoxes } from "../../game/collision/aabbCollision";
-import { defaultBaseState } from "../../game/gameState/loadRoom/itemDefaultStates";
-import { getBehaviourForItemTypeAndConfig } from "../../game/itemBehaviours/attachBehaviourToItem";
 import { blockSizePx } from "../../game/physics/mechanicsConstants";
 import { cameraReversedAxes } from "../../game/render/itemAppearances/adjustNearCornerForCameraAngle";
 import { defaultRoomHeightBlocks } from "../../model/defaultRoomHeightBlocks";
-import { itemBehaviourKey, type ItemInPlay } from "../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../model/ItemInPlay";
 import { isXyInFootprints, roomFootprints } from "../../model/roomFootprints";
 import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
 import { roomSpatialIndexKey } from "../../model/RoomState";
 import { getItemInPlayTimes } from "../../model/times";
-import { hashXyzToNumber0to1 } from "../../utils/maths/hashing";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
   addXyz,
   boxWithSize,
   directionsXyz4,
   elementWiseProductXyz,
-  originXyz,
   scaleXyz,
   type Xy,
   type Xyz,
   type XyzBox,
 } from "../../utils/vectors/vectors";
 import {
-  type EditorRoomId,
-  type EditorRoomItemId,
+  type EditorItemInPlayUnion,
   type EditorRoomJson,
   type EditorRoomState,
   type EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
+import { type SelectionEntry } from "../slice/SelectionEntry";
+import { editorGhostOfParticleDot } from "./editorGhostOfParticleDot";
 
 /**
- * the spacing of the crosshair's particles, in px on each axis
+ * the spacing of the crosshair's editor ghosts, in px on each axis
  */
 const crosshairStepPx = scaleXyz(blockSizePx, 0.25);
-
-let crosshairParticlesMade = 0;
-
-const crosshairParticle = (
-  position: Xyz,
-): ItemInPlay<"particle", EditorRoomId, EditorRoomItemId> => {
-  const config = { forCharacter: "head" as "head", animated: false };
-  return {
-    hash: hashXyzToNumber0to1(position),
-    id: `crosshair.${crosshairParticlesMade++}` as EditorRoomItemId,
-    type: "particle",
-    config,
-    [itemBehaviourKey]: getBehaviourForItemTypeAndConfig("particle", config),
-    state: {
-      ...defaultBaseState<EditorRoomItemId>(),
-      box: boxWithSize(position, originXyz),
-    },
-  };
-};
 
 /**
  * an in-play item's first block: at its camera-closest bottom corner, one
@@ -81,15 +59,23 @@ const firstBlockBox = (
 
 /**
  * the centre of the box around the first blocks of all the in-play items
- * loaded from a json item, or undefined if none are
+ * a selection entry selects, or undefined if there are none
  */
-export const jsonItemCentre = (
+export const selectionEntryCentre = (
   roomState: EditorRoomState,
-  jsonItemId: EditorRoomItemId,
+  selectionEntry: SelectionEntry,
   cameraAngle: Xy,
 ): undefined | Xyz => {
   const boxes = roomItemsIterable(roomState.items)
-    .filter((item) => item.jsonItemId === jsonItemId)
+    // the in-play items loaded from the json item, or the one editor ghost of it:
+    .filter(
+      (item) =>
+        item.jsonItemId === selectionEntry.jsonItemId &&
+        (selectionEntry.whichEditorGhost === undefined ?
+          item.type !== "editorGhost"
+        : item.type === "editorGhost" &&
+          item.config.whichEditorGhost === selectionEntry.whichEditorGhost),
+    )
     .map((item) => firstBlockBox(item, cameraAngle))
     .toArray();
   if (boxes.length === 0) {
@@ -106,24 +92,24 @@ export const jsonItemCentre = (
 };
 
 /**
- * particles marking where a json item is in 3d: every quarter block out from the
+ * editor ghosts of particle dots, marking where a json item (or editor ghost) is in 3d: every quarter block out from the
  * centre of its first block along x, y and z, both ways, to the room's floor and
  * height, and on across its sub-rooms until leaving all of their footprints -
  * leaving out any inside a solid item
  */
-export const crosshairParticles = (
+export const crosshairEditorGhosts = (
   roomState: EditorRoomState,
   /**
    * the json the loaded room is loaded from, previews included
    */
   roomJson: EditorRoomJson,
-  jsonItemId: EditorRoomItemId,
+  selectionEntry: SelectionEntry,
   /**
    * the crosshair starts from the item's block closest to the camera
    */
   cameraAngle: Xy,
-): EditorUnionOfAllItemInPlayTypes[] => {
-  const centre = jsonItemCentre(roomState, jsonItemId, cameraAngle);
+): EditorItemInPlayUnion<"editorGhost">[] => {
+  const centre = selectionEntryCentre(roomState, selectionEntry, cameraAngle);
   if (centre === undefined) {
     return [];
   }
@@ -154,7 +140,7 @@ export const crosshairParticles = (
       undefined,
     ) !== undefined;
 
-  const particles: EditorUnionOfAllItemInPlayTypes[] = [];
+  const crosshairEditorGhosts: EditorItemInPlayUnion<"editorGhost">[] = [];
   for (const direction of directionsXyz4) {
     const step = elementWiseProductXyz(unitVectors[direction], crosshairStepPx);
     for (
@@ -163,9 +149,11 @@ export const crosshairParticles = (
       position = addXyz(position, step)
     ) {
       if (!isInsideSolidItem(position)) {
-        particles.push(crosshairParticle(position));
+        crosshairEditorGhosts.push(
+          editorGhostOfParticleDot(position, undefined),
+        );
       }
     }
   }
-  return particles;
+  return crosshairEditorGhosts;
 };

@@ -6,16 +6,17 @@ import {
 
 import { type JsonItemType } from "../../../model/json/JsonItem";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJsonItemIterators";
-import { type EditorRoomItemId } from "../../editorTypes";
 import {
   itemTypeAndMaybeSubtype,
   type ItemTypeAndSubtype,
 } from "../../itemTypeAndSubtype";
 import { commitPendingNudgeInPlace } from "../inPlaceMutators/commitPendingNudgeInPlace";
-import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "../inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
+import { setSelectionOnCursorRoomInPlace } from "../inPlaceMutators/setSelectionOnCursorRoomInPlace";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+  selectCursorRoomSelectionFromLevelEditorState,
+  selectCursorRoomSelectionJsonItemIdsIncludingEditorGhostOwnersFromLevelEditorState,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "../levelEditorSelectors";
 import { type HoveredItem, type LevelEditorState } from "../levelEditorSlice";
 import { type OpenRoomId } from "../OpenRoom";
@@ -23,8 +24,10 @@ import {
   layoutNodesOfType,
   maybeLayoutNode,
   selectActiveOpenRoomFromLevelEditorState,
-  selectOpenRoomSelectedJsonItemIdsFromLevelEditorState,
+  selectOpenRoomSelectionFromLevelEditorState,
+  selectOpenRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "../PaneLayout";
+import { type SelectionEntry } from "../SelectionEntry";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 
 /**
@@ -41,12 +44,12 @@ export const removeNonExistingItemsFromSelection = (
   for (const openRoom of layoutNodesOfType(state.layout, "openRoom")) {
     const roomItems = state.campaignInProgress.rooms[openRoom.roomId].items;
     if (
-      openRoom.selectedJsonItemIds.some(
-        (jsonItemId) => !(jsonItemId in roomItems),
+      openRoom.selection.some(
+        (selectionEntry) => !(selectionEntry.jsonItemId in roomItems),
       )
     ) {
-      openRoom.selectedJsonItemIds = openRoom.selectedJsonItemIds.filter(
-        (jsonItemId) => jsonItemId in roomItems,
+      openRoom.selection = openRoom.selection.filter(
+        (selectionEntry) => selectionEntry.jsonItemId in roomItems,
       );
     }
   }
@@ -59,10 +62,12 @@ export const selectionsReducers = {
   setSelectedItemsInRoom(
     _state,
     {
-      payload: { jsonItemIds },
+      payload: { selection },
     }: PayloadAction<{
-      /** Sets the selection to the provided jsonItemIds, replacing any existing selection. */
-      jsonItemIds: EditorRoomItemId[];
+      /**
+       * replaces any existing selection
+       */
+      selection: SelectionEntry[];
     }>,
   ) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
@@ -74,7 +79,8 @@ export const selectionsReducers = {
     commitPendingNudgeInPlace(state);
     const { roomId } = activeOpenRoom;
     const roomItems = state.campaignInProgress.rooms[roomId].items;
-    for (const jsonItemId of jsonItemIds) {
+    for (const selectionEntry of selection) {
+      const { jsonItemId } = selectionEntry;
       if (!roomItems[jsonItemId]) {
         throw new Error(
           `Item with json item id "${jsonItemId}" is not in the active open room's room "${roomId}"`,
@@ -82,19 +88,19 @@ export const selectionsReducers = {
       }
     }
 
-    activeOpenRoom.selectedJsonItemIds = jsonItemIds;
+    activeOpenRoom.selection = selection;
     clearContextMenuXyInPlace(state);
   },
 
   /**
-   * toggle the selection of a single item, in the active open room
+   * toggle the selection of a single item (or editor ghost), in the active open room
    */
   toggleSelectedItemInRoom(
     _state,
     {
-      payload: { jsonItemId, onlySelect = false },
+      payload: { selectionEntry, onlySelect = false },
     }: PayloadAction<{
-      jsonItemId: EditorRoomItemId;
+      selectionEntry: SelectionEntry;
       /**
        * when true, an already-selected item is left selected rather than being
        * removed - ie, the toggle only ever adds to the selection
@@ -109,14 +115,22 @@ export const selectionsReducers = {
     const activeOpenRoom = selectActiveOpenRoomFromLevelEditorState(state);
     // nudges act on the selection, so a new one ends them:
     commitPendingNudgeInPlace(state);
-    const { selectedJsonItemIds } = activeOpenRoom;
-    if (!selectedJsonItemIds.includes(jsonItemId)) {
+    const { selection } = activeOpenRoom;
+    if (
+      !selection.some(
+        (selected) =>
+          selected.jsonItemId === selectionEntry.jsonItemId &&
+          selected.whichEditorGhost === selectionEntry.whichEditorGhost,
+      )
+    ) {
       // not selected, add it
-      activeOpenRoom.selectedJsonItemIds = [...selectedJsonItemIds, jsonItemId];
+      activeOpenRoom.selection = [...selection, selectionEntry];
     } else if (!onlySelect) {
       // already selected, remove it
-      activeOpenRoom.selectedJsonItemIds = selectedJsonItemIds.filter(
-        (selectedJsonItemId) => selectedJsonItemId !== jsonItemId,
+      activeOpenRoom.selection = selection.filter(
+        (selected) =>
+          selected.jsonItemId !== selectionEntry.jsonItemId ||
+          selected.whichEditorGhost !== selectionEntry.whichEditorGhost,
       );
     }
     clearContextMenuXyInPlace(state);
@@ -168,7 +182,7 @@ export const selectionsReducers = {
     const state = _state as LevelEditorState;
     commitPendingNudgeInPlace(state);
     const roomJson = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
-    setSelectedJsonItemIdsOnCursorRoomInPlace(
+    setSelectionOnCursorRoomInPlace(
       state,
       iterateRoomJsonItemsWithIds(roomJson.items, itemType)
         .filter(
@@ -176,7 +190,7 @@ export const selectionsReducers = {
             subtype === undefined ||
             itemTypeAndMaybeSubtype(item).subtype === subtype,
         )
-        .map(([jsonItemId]) => jsonItemId)
+        .map(([jsonItemId]) => ({ jsonItemId, whichEditorGhost: undefined }))
         .toArray(),
     );
     clearContextMenuXyInPlace(state);
@@ -184,10 +198,14 @@ export const selectionsReducers = {
 } satisfies SliceCaseReducers<LevelEditorState>;
 
 export const selectionsSelectors = {
-  selectCursorRoomSelectedJsonItemIds:
-    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
-  selectOpenRoomSelectedJsonItemIds:
-    selectOpenRoomSelectedJsonItemIdsFromLevelEditorState,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections:
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
+  selectCursorRoomSelectionJsonItemIdsIncludingEditorGhostOwners:
+    selectCursorRoomSelectionJsonItemIdsIncludingEditorGhostOwnersFromLevelEditorState,
+  selectCursorRoomSelection: selectCursorRoomSelectionFromLevelEditorState,
+  selectOpenRoomSelectionJsonItemIdsWithoutEditorGhostSelections:
+    selectOpenRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
+  selectOpenRoomSelection: selectOpenRoomSelectionFromLevelEditorState,
   selectOpenRoomHoveredItem(state: LevelEditorState, openRoomId: OpenRoomId) {
     return maybeLayoutNode(state.layout, openRoomId)?.hoveredItem;
   },

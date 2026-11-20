@@ -41,7 +41,7 @@ import {
   selectCurrentCampaignInProgress,
   selectCurrentCommittedRoomJson,
   selectCursorRoomId,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   selectCursorSubRoomId,
   selectFocusedTabGroupId,
   selectItem,
@@ -325,10 +325,9 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
       const editorState = editorStore.getState();
       return jsonResult(
         Object.fromEntries(
-          selectCursorRoomSelectedJsonItemIds(editorState).map((itemId) => [
-            itemId,
-            selectItem(editorState, itemId),
-          ]),
+          selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections(
+            editorState,
+          ).map((itemId) => [itemId, selectItem(editorState, itemId)]),
         ),
       );
     },
@@ -502,7 +501,9 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
           itemIds:
             Array.isArray(itemIds) ?
               (itemIds as EditorRoomItemId[])
-            : selectCursorRoomSelectedJsonItemIds(editorState),
+            : selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections(
+                editorState,
+              ),
           toRoomId: roomId as EditorRoomId,
           toSubRoomId: typeof subRoomId === "string" ? subRoomId : "*",
         }),
@@ -513,9 +514,10 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
           )
         : jsonResult({
             currentRoomId: selectCursorRoomId(editorStore.getState()),
-            movedItemIds: selectCursorRoomSelectedJsonItemIds(
-              editorStore.getState(),
-            ),
+            movedItemIds:
+              selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections(
+                editorStore.getState(),
+              ),
           });
     },
   },

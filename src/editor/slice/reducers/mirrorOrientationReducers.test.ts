@@ -31,7 +31,11 @@ const setOrientation = (
   selectCurrentCommittedRoomJsonFromLevelEditorState(
     reduceLevelEditorActions(
       stateWithItem(item),
-      setSelectedItemsInRoom({ jsonItemIds: ["i" as EditorRoomItemId] }),
+      setSelectedItemsInRoom({
+        selection: [
+          { jsonItemId: "i" as EditorRoomItemId, whichEditorGhost: undefined },
+        ],
+      }),
       setSelectedItemsMirrorOrientation({ orientation, timestamp: 0 }),
     ),
   ).items["i" as EditorRoomItemId];

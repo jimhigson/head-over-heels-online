@@ -3,10 +3,10 @@ import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 import { explodeItem } from "../../../consolidateItems/reconsolidateItems";
 import { keys } from "../../../utils/entries";
 import { type EditorRoomItemId } from "../../editorTypes";
-import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "../inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
+import { setSelectionOnCursorRoomInPlace } from "../inPlaceMutators/setSelectionOnCursorRoomInPlace";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
@@ -31,9 +31,12 @@ export const explodeItemsReducers = {
     const roomJson = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
 
     const items: UndoItemEntry[] =
-      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state).map(
-        (id) => [id, roomJson.items[id]],
-      );
+      selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
+        state,
+      ).map((jsonItemId) => [
+        { jsonItemId, whichEditorGhost: undefined },
+        roomJson.items[jsonItemId],
+      ]);
     pushUndoToCursorRoomInPlace(
       state,
       { kind: "itemAction", verb: "Explode", items },
@@ -42,7 +45,7 @@ export const explodeItemsReducers = {
 
     const reserved = new Set<EditorRoomItemId>(keys(roomJson.items));
     const explodedSelection: EditorRoomItemId[] = [];
-    for (const id of selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(
+    for (const id of selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
       state,
     )) {
       const item = roomJson.items[id];
@@ -57,7 +60,13 @@ export const explodeItemsReducers = {
       explodedSelection.push(...keys(fragments));
     }
 
-    setSelectedJsonItemIdsOnCursorRoomInPlace(state, explodedSelection);
+    setSelectionOnCursorRoomInPlace(
+      state,
+      explodedSelection.map((jsonItemId) => ({
+        jsonItemId,
+        whichEditorGhost: undefined,
+      })),
+    );
 
     // without this the freshly separated parts would immediately re-coalesce:
     state.autoCoalesce = false;

@@ -10,7 +10,7 @@ import { type OpenRoomId } from "../OpenRoom";
 import {
   layoutNodesOfType,
   maybeLayoutNode,
-  selectOpenRoomSelectedJsonItemIdsFromLevelEditorState,
+  selectOpenRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "../PaneLayout";
 
 /**
@@ -43,8 +43,10 @@ export const contextMenuReducers = {
     }
     // only show a context menu when there is a selection to provide context for:
     if (
-      selectOpenRoomSelectedJsonItemIdsFromLevelEditorState(state, openRoomId)
-        .length > 0
+      selectOpenRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
+        state,
+        openRoomId,
+      ).length > 0
     ) {
       openRoom.contextMenuXy = scrXy;
     }

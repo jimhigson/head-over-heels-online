@@ -3,7 +3,7 @@ import { useEditorAppSelector } from "../../../store/store";
 import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import {
   selectCurrentCommittedRoomJson,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   setSelectedDoorsToGameEnd,
 } from "../../slice/levelEditorSlice";
 
@@ -13,7 +13,7 @@ import {
  */
 export const DoorGameEndMenuItem = () => {
   const selectedJsonItemIds = useEditorAppSelector(
-    selectCursorRoomSelectedJsonItemIds,
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 

@@ -1,7 +1,7 @@
 import { useEditorAppSelector } from "../../../store/store";
 import {
   selectCurrentCommittedRoomJson,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
 } from "../../slice/levelEditorSlice";
 
 /**
@@ -10,7 +10,7 @@ import {
  */
 export const useSelectionLabel = (): string => {
   const selectedJsonItemIds = useEditorAppSelector(
-    selectCursorRoomSelectedJsonItemIds,
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 

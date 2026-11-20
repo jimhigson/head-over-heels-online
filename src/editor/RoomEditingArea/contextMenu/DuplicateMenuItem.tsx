@@ -3,7 +3,7 @@ import { MenuItemGlyphIcon } from "../../../ui/menuBar/MenuItemGlyphIcon";
 import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import {
   selectCurrentCommittedRoomJson,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
 } from "../../slice/levelEditorSlice";
 
 /**
@@ -12,7 +12,7 @@ import {
  */
 export const DuplicateMenuItem = () => {
   const selectedJsonItemIds = useEditorAppSelector(
-    selectCursorRoomSelectedJsonItemIds,
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 

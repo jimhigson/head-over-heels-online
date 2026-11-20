@@ -5,13 +5,17 @@ import {
   type MonsterJsonConfig,
 } from "../../../model/json/MonsterJsonConfig";
 import { type Xyz } from "../../../utils/vectors/vectors";
-import { type EditorJsonItemUnion, type EditorRoomId } from "../../editorTypes";
+import {
+  type EditorJsonItemUnion,
+  type EditorRoomId,
+  type EditorRoomItemId,
+} from "../../editorTypes";
 import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import { addDoorInPlace } from "../inPlaceMutators/addDoorInPlace";
 import { addItemInPlace } from "../inPlaceMutators/addItemInPlace";
 import { commitPendingNudgeInPlace } from "../inPlaceMutators/commitPendingNudgeInPlace";
 import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
-import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "../inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
+import { setSelectionOnCursorRoomInPlace } from "../inPlaceMutators/setSelectionOnCursorRoomInPlace";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { type UndoItemEntry } from "./undoDescription";
@@ -89,10 +93,10 @@ export const applyItemToolReducers = {
       };
     }
     if (isCursorRoom) {
-      setSelectedJsonItemIdsOnCursorRoomInPlace(state, []);
+      setSelectionOnCursorRoomInPlace(state, []);
     }
 
-    let addedEntry: UndoItemEntry;
+    let addedEntry: readonly [EditorRoomItemId, EditorJsonItemUnion];
 
     switch (true) {
       case isDoorTool(tool.item): {
@@ -130,7 +134,7 @@ export const applyItemToolReducers = {
           },
           blockPosition,
           preview,
-        ) as UndoItemEntry;
+        ) as readonly [EditorRoomItemId, EditorJsonItemUnion];
         break;
       }
 
@@ -142,7 +146,7 @@ export const applyItemToolReducers = {
           tool.item,
           blockPosition,
           preview,
-        ) as UndoItemEntry;
+        ) as readonly [EditorRoomItemId, EditorJsonItemUnion];
       }
     }
 
@@ -150,7 +154,9 @@ export const applyItemToolReducers = {
     const description = {
       kind: "itemAction" as const,
       verb: "Add",
-      items: [[addedId, addedItem]] as UndoItemEntry[],
+      items: [
+        [{ jsonItemId: addedId, whichEditorGhost: undefined }, addedItem],
+      ] as UndoItemEntry[],
     };
 
     if (!preview) {

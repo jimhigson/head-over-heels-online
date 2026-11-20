@@ -5,7 +5,7 @@ import {
   type MoveItemsToRoomArgs,
   moveItemsToRoomInPlace,
 } from "../inPlaceMutators/moveItemsToRoomInPlace";
-import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "../inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
+import { setSelectionOnCursorRoomInPlace } from "../inPlaceMutators/setSelectionOnCursorRoomInPlace";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { layoutNodesOfType } from "../PaneLayout";
 
@@ -30,10 +30,16 @@ export const moveItemsToRoomReducers = {
     // the moved items were the selection where they came from, and are gone:
     for (const openRoom of layoutNodesOfType(editorState.layout, "openRoom")) {
       if (openRoom.roomId === moveArgs.fromRoomId) {
-        openRoom.selectedJsonItemIds = [];
+        openRoom.selection = [];
       }
     }
     changeCurrentRoomInPlace(editorState, moveArgs.toRoomId, toSubRoomId);
-    setSelectedJsonItemIdsOnCursorRoomInPlace(editorState, movedItemIds);
+    setSelectionOnCursorRoomInPlace(
+      editorState,
+      movedItemIds.map((jsonItemId) => ({
+        jsonItemId,
+        whichEditorGhost: undefined,
+      })),
+    );
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

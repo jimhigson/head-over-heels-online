@@ -84,7 +84,9 @@ test('deleting a door "heals" the void where the door once stood by extending an
 
       dispatch(
         setSelectedItemsInRoom({
-          jsonItemIds: [doorEntry[0]],
+          selection: [
+            { jsonItemId: doorEntry[0], whichEditorGhost: undefined },
+          ],
         }),
       );
     },
@@ -808,7 +810,7 @@ describe("undo descriptions for JSON edits", () => {
     expect(description.kind).toBe("editItems");
     if (description.kind === "editItems") {
       expect(description.items).toHaveLength(1);
-      const [[editedId, editedItem]] = description.items;
+      const [[{ jsonItemId: editedId }, editedItem]] = description.items;
       expect(editedId).toBe(pickupId);
       expect(editedItem.type).toBe("pickup");
     }
@@ -835,7 +837,7 @@ describe("undo descriptions for JSON edits", () => {
     expect(description.kind).toBe("editItems");
     if (description.kind === "editItems") {
       expect(description.items).toHaveLength(2);
-      const ids = description.items.map(([id]) => id);
+      const ids = description.items.map(([{ jsonItemId }]) => jsonItemId);
       expect(ids).toContain(pickupId);
       expect(ids).toContain(monsterId);
     }
@@ -898,8 +900,8 @@ describe("makeHoleInSelectedFloor", () => {
           times: { x: 6, y: 7 },
         },
       };
-      existingLayoutNode(draft.layout, testOpenRoomId).selectedJsonItemIds = [
-        floorId,
+      existingLayoutNode(draft.layout, testOpenRoomId).selection = [
+        { jsonItemId: floorId, whichEditorGhost: undefined },
       ];
     },
   );
@@ -1015,8 +1017,8 @@ describe("makeHoleInSelectedFloor", () => {
           },
         };
         existingLayoutNode(draft.layout, testOpenRoomId).subRoomId = "a";
-        existingLayoutNode(draft.layout, testOpenRoomId).selectedJsonItemIds = [
-          floorId,
+        existingLayoutNode(draft.layout, testOpenRoomId).selection = [
+          { jsonItemId: floorId, whichEditorGhost: undefined },
         ];
       },
     );

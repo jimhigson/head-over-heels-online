@@ -3,10 +3,10 @@ import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
 import { keys } from "../../../utils/entries";
 import { type EditorRoomJsonItems } from "../../editorTypes";
-import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "../inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
+import { setSelectionOnCursorRoomInPlace } from "../inPlaceMutators/setSelectionOnCursorRoomInPlace";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
@@ -31,7 +31,9 @@ export const coalesceItemsReducers = {
     const roomJson = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
 
     const selectedById = Object.fromEntries(
-      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state)
+      selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
+        state,
+      )
         .map((id) => [id, roomJson.items[id]] as const)
         .filter(([, item]) => item !== undefined),
     ) as EditorRoomJsonItems;
@@ -39,23 +41,32 @@ export const coalesceItemsReducers = {
     const coalesced = consolidateItemsMap(selectedById);
 
     const items: UndoItemEntry[] =
-      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state).map(
-        (id) => [id, roomJson.items[id]],
-      );
+      selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
+        state,
+      ).map((jsonItemId) => [
+        { jsonItemId, whichEditorGhost: undefined },
+        roomJson.items[jsonItemId],
+      ]);
     pushUndoToCursorRoomInPlace(
       state,
       { kind: "itemAction", verb: "Coalesce", items },
       timestamp,
     );
 
-    for (const id of selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(
+    for (const id of selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
       state,
     )) {
       delete roomJson.items[id];
     }
     Object.assign(roomJson.items, coalesced);
 
-    setSelectedJsonItemIdsOnCursorRoomInPlace(state, keys(coalesced));
+    setSelectionOnCursorRoomInPlace(
+      state,
+      keys(coalesced).map((jsonItemId) => ({
+        jsonItemId,
+        whichEditorGhost: undefined,
+      })),
+    );
     clearContextMenuXyInPlace(state);
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

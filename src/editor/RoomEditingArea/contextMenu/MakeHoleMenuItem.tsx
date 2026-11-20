@@ -3,7 +3,7 @@ import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import {
   makeHoleInSelectedFloor,
   selectCurrentCommittedRoomJson,
-  selectCursorRoomSelectedJsonItemIds,
+  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
 } from "../../slice/levelEditorSlice";
 import { canMakeHoleInFloor } from "../../slice/reducers/editRoomReducers";
 
@@ -13,7 +13,7 @@ import { canMakeHoleInFloor } from "../../slice/reducers/editRoomReducers";
  */
 export const MakeHoleMenuItem = () => {
   const selectedJsonItemIds = useEditorAppSelector(
-    selectCursorRoomSelectedJsonItemIds,
+    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
   );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 
