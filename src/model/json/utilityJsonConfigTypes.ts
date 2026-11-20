@@ -1,6 +1,7 @@
 import { type Xyz } from "../../utils/vectors/vectors";
 
-export type BlockStyle = "artificial" | "book" | "organic" | "tower";
+export const blockStyles = ["organic", "artificial", "book", "tower"] as const;
+export type BlockStyle = (typeof blockStyles)[number];
 
 /**
  * how a monster or moving platform moves itself, from its config's `movement`.

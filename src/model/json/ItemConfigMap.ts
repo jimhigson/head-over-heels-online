@@ -90,8 +90,10 @@ export type EmittableItemJson = Extract<
 
 export type EmittableItemRecipe = Omit<EmittableItemJson, "position">;
 
-type PortableBlockStyle = "cube" | "drum" | "sticks";
-type DeadlyBlockStyle = "toaster" | "volcano";
+export const portableBlockStyles = ["cube", "drum", "sticks"] as const;
+export type PortableBlockStyle = (typeof portableBlockStyles)[number];
+export const deadlyBlockStyles = ["volcano", "toaster"] as const;
+export type DeadlyBlockStyle = (typeof deadlyBlockStyles)[number];
 
 export const liftDirections = ["up", "down"] as const satisfies DirectionXyz4[];
 export type LiftDirection = (typeof liftDirections)[number];

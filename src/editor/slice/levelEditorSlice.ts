@@ -30,6 +30,7 @@ import { type OpenRoomId } from "./OpenRoom";
 import { type PaneLayout, type TabGroupId } from "./PaneLayout";
 import { addOrRemoveRoomReducers } from "./reducers/addOrRemoveRoomReducers";
 import { applyItemToolReducers } from "./reducers/applyItemToolReducers";
+import { blockDeadlinessAndStyleReducers } from "./reducers/blockDeadlinessAndStyleReducers";
 import { campaignManagementReducers } from "./reducers/campaignManagementReducers";
 import {
   changeRoomReducers,
@@ -259,6 +260,7 @@ export const levelEditorSlice = createSlice({
     ...explodeItemsReducers,
     ...itemActivationReducers,
     ...disappearingReducers,
+    ...blockDeadlinessAndStyleReducers,
     ...floorReducers,
     ...itemGrabReducers,
     ...monsterMovementReducers,
@@ -394,6 +396,8 @@ export const {
   makeHoleInSelectedFloor,
   setSelectedItemsActivation,
   setSelectedItemsDisappearing,
+  setSelectedBlocksDeadly,
+  setSelectedItemsSubtype,
   setSelectedFloorsScenery,
   setSelectedFloorsType,
   itemGrabDropped,
@@ -404,6 +408,7 @@ export const {
   itemGrabPreviewedInto,
   itemGrabDragStarted,
   itemGrabRounded,
+  selectAllOfTypeInCursorRoom,
   setSelectedItemsInRoom,
   setSelectedItemsMirrorOrientation,
   snapSelectedItemsToGrid,
