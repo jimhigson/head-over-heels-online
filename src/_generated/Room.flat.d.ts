@@ -1816,6 +1816,10 @@ export type RoomJsonSchema = {
         config: {
           top: number;
           bottom: number;
+          /**
+           * which way the lift starts going - defaults to 'up' if not given
+           */
+          startDirection?: "down" | "up";
         };
       }
     | {

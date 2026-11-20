@@ -1172,6 +1172,11 @@
                       "bottom": {
                         "type": "number"
                       },
+                      "startDirection": {
+                        "description": "which way the lift starts going - defaults to 'up' if not given",
+                        "enum": ["down", "up"],
+                        "type": "string"
+                      },
                       "top": {
                         "type": "number"
                       }

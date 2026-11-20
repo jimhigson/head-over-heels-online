@@ -6,6 +6,7 @@ import {
   type AxisXy,
   type DirectionXy4,
   type DirectionXy8,
+  type DirectionXyz4,
   type Xy,
   type Xyz,
 } from "../../utils/vectors/vectors";
@@ -91,6 +92,9 @@ export type EmittableItemRecipe = Omit<EmittableItemJson, "position">;
 
 type PortableBlockStyle = "cube" | "drum" | "sticks";
 type DeadlyBlockStyle = "toaster" | "volcano";
+
+export const liftDirections = ["up", "down"] as const satisfies DirectionXyz4[];
+export type LiftDirection = (typeof liftDirections)[number];
 
 export type FloorType = "deadly" | "none" | "standable";
 
@@ -293,6 +297,10 @@ export type ItemConfigMap<
   lift: {
     top: number;
     bottom: number;
+    /**
+     * which way the lift starts going - defaults to 'up' if not given
+     */
+    startDirection?: LiftDirection;
   };
   bubbles: {
     // actually not using any other styles, the game looks better with just white,
