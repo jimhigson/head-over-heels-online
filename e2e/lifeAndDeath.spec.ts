@@ -1,6 +1,6 @@
 import { expect } from "@playwright/test";
 
-import { type ItemInPlay } from "../src/model/ItemInPlay";
+import type { ItemInPlay } from "../src/model/ItemInPlay";
 import { advanceUntilInPage } from "./testUtils/advanceGameTime";
 import {
   clickCheat,

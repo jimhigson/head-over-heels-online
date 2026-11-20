@@ -1,8 +1,8 @@
 import { createContext } from "preact";
-import { type PropsWithChildren } from "preact/compat";
+import type { PropsWithChildren } from "preact/compat";
 import { useContext } from "preact/hooks";
 
-import { type GameApi } from "../GameApi";
+import type { GameApi } from "../GameApi";
 
 const GameApiContext = createContext<
   | GameApi<string>

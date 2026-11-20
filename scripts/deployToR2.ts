@@ -1,3 +1,5 @@
+#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
+
 import {
   DeleteObjectsCommand,
   ListObjectsV2Command,

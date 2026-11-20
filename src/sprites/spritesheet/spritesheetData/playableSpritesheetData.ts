@@ -1,6 +1,6 @@
-import { type SpritesheetData, type SpritesheetFrameData } from "pixi.js";
+import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 
-import { type CharacterName } from "../../../model/modelTypes";
+import type { CharacterName } from "../../../model/modelTypes";
 import { zxSpectrumFrameRate } from "../../../originalGame";
 import { fromEntries } from "../../../utils/entries";
 import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection";
@@ -10,16 +10,16 @@ import {
   type DirectionXy8,
   type Xy,
 } from "../../../utils/vectors/vectors";
-import { type AnimationsOfFrames } from "./AnimationsOfFrames";
-import { type FramesWithSpeed } from "./makeSpritesheetData";
+import type { AnimationsOfFrames } from "./AnimationsOfFrames";
+import type { FramesWithSpeed } from "./makeSpritesheetData";
 import {
   seriesOfAnimationFrameTextureIds,
   seriesOfNumberedTextures,
 } from "./spriteGenerators";
-import {
-  type PlayableDirectionFrames,
-  type PlayableSpritesheetFrames,
-  type PlayableSpritesheetMetaData,
+import type {
+  PlayableDirectionFrames,
+  PlayableSpritesheetFrames,
+  PlayableSpritesheetMetaData,
 } from "./spritesheetMetaData";
 import {
   largeItemGridLocation,

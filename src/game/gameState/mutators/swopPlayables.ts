@@ -1,9 +1,9 @@
-import { type FreeItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { FreeItem } from "../../../model/ItemInPlayNarrowedUnions";
 import {
   type IndividualCharacterName,
   otherIndividualCharacterName,
 } from "../../../model/modelTypes";
-import { type RoomState } from "../../../model/RoomState";
+import type { RoomState } from "../../../model/RoomState";
 import { store } from "../../../store/store";
 import { epsilon } from "../../../utils/epsilon";
 import {
@@ -16,7 +16,7 @@ import {
 } from "../../../utils/vectors/vectors";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { moveItem } from "../../physics/moveItem/moveItem";
-import { type GameState } from "../GameState";
+import type { GameState } from "../GameState";
 import { selectCanCombine } from "../gameStateSelectors/selectCanCombine";
 import { selectPlayableItem } from "../gameStateSelectors/selectPlayableItem";
 import { saveGameThunk } from "../saving/saveGameThunk";

@@ -1,7 +1,7 @@
 import { expect, type Page, test } from "@playwright/test";
 import chalk from "chalk";
 
-import { type DialogId } from "../../src/game/components/dialogs/menuDialog/DialogId";
+import type { DialogId } from "../../src/game/components/dialogs/menuDialog/DialogId";
 import {
   type SpritesheetName,
   spritesheetNameValues,

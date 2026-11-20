@@ -4,12 +4,12 @@ import {
   dropRedundantToSubRoomInPlace,
   toSubRoomRedundancy,
 } from "../../../map/toSubRoomRedundancy";
-import { type CampaignVerifier } from "../CampaignVerification";
+import type { CampaignVerifier } from "../CampaignVerification";
 import { allDoors } from "../helpers/doorPartner";
 import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
-import {
-  type VerificationRoomId,
-  type VerificationRoomItemId,
+import type {
+  VerificationRoomId,
+  VerificationRoomItemId,
 } from "../verificationTypes";
 
 type RedundantToSubRoom = {

@@ -15,10 +15,10 @@ import {
   type ShortcutKeys,
   useKeyboardShortcut,
 } from "../../ui/useKeyboardShortcut";
-import {
-  type EditorCampaign,
-  type EditorRoomId,
-  type EditorRoomItemId,
+import type {
+  EditorCampaign,
+  EditorRoomId,
+  EditorRoomItemId,
 } from "../editorTypes";
 import { LazyDialogRoomArea } from "../RoomEditingArea/DialogRoomArea.lazy";
 import {
@@ -28,11 +28,11 @@ import {
   selectRoom,
   setSelectedItemsInRoom,
 } from "../slice/levelEditorSlice";
-import { type OpenRoomId } from "../slice/OpenRoom";
-import { type DialogRoom } from "../slice/reducers/openRoomsReducers";
+import type { OpenRoomId } from "../slice/OpenRoom";
+import type { DialogRoom } from "../slice/reducers/openRoomsReducers";
 import { buttonSmallHeightClassNames } from "../toolbar/buttonSizeClassNames";
 import { ChooseRoomMap } from "./ChooseRoomMap";
-import { type TeleporterDestination } from "./chooseTeleporterDestination";
+import type { TeleporterDestination } from "./chooseTeleporterDestination";
 import { teleporterDefaultLandingItemId } from "./teleporterDefaultLandingItemId";
 
 type DestinationTab = "map" | "room";

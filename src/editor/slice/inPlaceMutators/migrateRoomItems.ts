@@ -1,7 +1,7 @@
 import { migrateTeleporterActivationInPlace } from "../../../model/inPlaceMutators/migrateTeleporterActivationInPlace";
 import { migrateWallTilesInPlace } from "../../../model/inPlaceMutators/migrateWallTilesInPlace";
 import { valuesIter } from "../../../utils/entries";
-import { type EditorCampaign } from "../../editorTypes";
+import type { EditorCampaign } from "../../editorTypes";
 
 /**
  * bring every item of a loaded campaign up to the current json format,

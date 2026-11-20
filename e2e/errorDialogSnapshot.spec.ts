@@ -1,9 +1,9 @@
 import { expect } from "@playwright/test";
 
 import { campaignToDataParam } from "../src/db/campaignToDataParam";
-import { type Campaign } from "../src/model/modelTypes";
-import { type SpritesheetName } from "../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type setEmulatedResolution } from "../src/store/slices/userSettings/userSettingsSlice";
+import type { Campaign } from "../src/model/modelTypes";
+import type { SpritesheetName } from "../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { setEmulatedResolution } from "../src/store/slices/userSettings/userSettingsSlice";
 import { dispatchToStore } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/osSlowness";
 import { setupE2ePage } from "./testUtils/pageSetup";

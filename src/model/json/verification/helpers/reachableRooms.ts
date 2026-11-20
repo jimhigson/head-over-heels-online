@@ -1,10 +1,10 @@
 import { entries } from "../../../../utils/entries";
 import { reachableNodes } from "../../../../utils/graph/reachableNodes";
-import { type RoomGraph } from "../../../map/roomGridPositions";
+import type { RoomGraph } from "../../../map/roomGridPositions";
 import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
-import {
-  type VerificationCampaign,
-  type VerificationRoomId,
+import type {
+  VerificationCampaign,
+  VerificationRoomId,
 } from "../verificationTypes";
 
 /** the rooms a player (head, heels or joined) starts in */

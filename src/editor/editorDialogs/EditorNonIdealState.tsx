@@ -5,7 +5,7 @@ import { useAppDispatch } from "../../store/hooks";
 import { clearAllData } from "../../store/slices/clearAllData";
 import { Button } from "../../ui/Button";
 import { ErrorDialog, ErrorDialogReport } from "../../ui/ErrorDialog";
-import { type SerialisableError } from "../../utils/redux/createSerialisableErrors";
+import type { SerialisableError } from "../../utils/redux/createSerialisableErrors";
 
 const markdownIntro = (
   whatCrashed: string,

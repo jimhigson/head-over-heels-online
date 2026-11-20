@@ -1,4 +1,4 @@
-import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import { terminalVelocityPixPerMs } from "../physics/mechanicsConstants";
 import { FreeItemBehaviour } from "./freeItem/FreeItemBehaviour";
 

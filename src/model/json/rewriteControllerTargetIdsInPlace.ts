@@ -1,4 +1,4 @@
-import { type JsonItemUnion } from "./JsonItem";
+import type { JsonItemUnion } from "./JsonItem";
 
 /**
  * rewrite each item id a switch / button / timer / joystick explicitly targets

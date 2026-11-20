@@ -1,4 +1,4 @@
-import { type Page, type Request } from "@playwright/test";
+import type { Page, Request } from "@playwright/test";
 import chalk from "chalk";
 
 import { elapsed, formatDuration } from "./logging";

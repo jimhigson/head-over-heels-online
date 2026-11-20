@@ -1,4 +1,4 @@
-import { type TypedURLSearchParams } from "../../options/queryParams";
+import type { TypedURLSearchParams } from "../../options/queryParams";
 import { editorStore } from "../../store/store";
 
 /** put a link that plays the campaign (as last saved) on the clipboard */

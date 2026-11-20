@@ -1,8 +1,8 @@
-import { type VNode } from "preact";
+import type { VNode } from "preact";
 
-import {
-  type AnimatedTextureTailwindClass,
-  type TextureTailwindClass,
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
 } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { twClass } from "../../../utils/twClass.tsx";
 import { buttonSpriteRevertColourClasses } from "../buttonSizeClassNames";

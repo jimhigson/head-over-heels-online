@@ -2,7 +2,7 @@ import { isConsolidatable } from "../../consolidateItems/ConsolidatableJsonItem"
 import { type EditorRootState, useEditorAppSelector } from "../../store/store";
 import { twClass } from "../../utils/twClass.tsx" with { type: "macro" };
 import { selectItem, selectOpenRoomSelection } from "../slice/levelEditorSlice";
-import { type OpenRoomId } from "../slice/OpenRoom";
+import type { OpenRoomId } from "../slice/OpenRoom";
 import { maybeLayoutNode } from "../slice/PaneLayout";
 import { resizeCursorForPointingAt } from "./cursor/resizeCursorForPointingAt";
 import { useOpenRoomPane } from "./useOpenRoomPane";

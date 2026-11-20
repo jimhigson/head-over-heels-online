@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { fuzzyMatchRank } from "../../ui/command/fuzzyMatch";
-import { type ActionCommand } from "../commands/EditorCommand";
+import type { ActionCommand } from "../commands/EditorCommand";
 import { cmdKSearchText } from "./cmdKSearchText";
 
 const shieldCommand: ActionCommand = {

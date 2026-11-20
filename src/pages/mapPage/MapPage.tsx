@@ -1,13 +1,13 @@
 import { useEffect, useState } from "preact/hooks";
 
-import { loadOriginalCampaign } from "../../_generated/originalCampaign/loadOriginalCampaign";
 import { type Bounds, MapSvg } from "../../map/Map.svg";
 import { getMapColoursClass } from "../../map/mapColours";
 import { mapSvgMarginX } from "../../map/mapConstants";
 import { MapContextProvider } from "../../map/MapContext";
 import { mapDialogColourClasses } from "../../map/mapDialogColourClasses";
 import { useCampaignMap } from "../../map/useCampaignMap";
-import { type Campaign } from "../../model/modelTypes";
+import type { Campaign } from "../../model/modelTypes";
+import { loadOriginalCampaign } from "../../originalCampaign/loadOriginalCampaign";
 import { mapSettingsHooks } from "../../store/mapSettingsHooks";
 import { emptyArray } from "../../utils/empty";
 import { useElementSize } from "../../utils/preact/useElementSize";

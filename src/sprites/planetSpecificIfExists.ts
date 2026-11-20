@@ -1,11 +1,11 @@
-import { type RemovePrefix } from "type-fest";
+import type { RemovePrefix } from "type-fest";
 
 import { isTextureId } from "./assertIsTextureId";
-import { type SceneryName } from "./planets";
-import { type AppSpritesheetData } from "./spritesheet/AppSpritesheet";
-import {
-  type BaseTextureId,
-  type TextureId,
+import type { SceneryName } from "./planets";
+import type { AppSpritesheetData } from "./spritesheet/AppSpritesheet";
+import type {
+  BaseTextureId,
+  TextureId,
 } from "./spritesheet/spritesheetData/makeSpritesheetData";
 
 type GenericTextureSuffix = RemovePrefix<

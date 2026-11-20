@@ -7,7 +7,7 @@ import {
 import { buildRoomJsonDirectionalIndex } from "../../../game/gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import { type JsonItemType } from "../../../model/json/JsonItem";
+import type { JsonItemType } from "../../../model/json/JsonItem";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { roomSpatialIndexKey } from "../../../model/RoomState";
@@ -15,16 +15,16 @@ import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlayS
 import { fromEntries, objectEntriesIter } from "../../../utils/entries";
 import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
-import {
-  type EditorJsonItemUnion,
-  type EditorJsonItemWithTimes,
-  type EditorRoomItemId,
-  type EditorRoomJson,
-  type EditorRoomState,
-  type EditorUnionOfAllItemInPlayTypes,
+import type {
+  EditorJsonItemUnion,
+  EditorJsonItemWithTimes,
+  EditorRoomItemId,
+  EditorRoomJson,
+  EditorRoomState,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
 import { addTimesDeltaToJsonItemInPlace } from "../../slice/reducers/moveOrResizeItemPreview/moveOrResizeOutcome";
-import { type ItemTool } from "../interactivity/Tool";
+import type { ItemTool } from "../interactivity/Tool";
 
 /**
  * find items that items being (added to/moved in/resized in) a room would

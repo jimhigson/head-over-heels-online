@@ -1,5 +1,5 @@
-import { type RefObject } from "preact";
-import { type PropsWithChildren } from "preact/compat";
+import type { RefObject } from "preact";
+import type { PropsWithChildren } from "preact/compat";
 import { useCallback, useEffect, useRef } from "preact/hooks";
 import { twMerge } from "tailwind-merge";
 

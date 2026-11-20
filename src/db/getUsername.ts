@@ -1,4 +1,4 @@
-import { type CampaignDbClient } from "./CampaignDbClient";
+import type { CampaignDbClient } from "./CampaignDbClient";
 
 /**
  * The display name for a user id, or null if they have no profile row. Lightweight

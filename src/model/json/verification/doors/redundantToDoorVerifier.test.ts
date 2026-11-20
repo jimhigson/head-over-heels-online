@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { addDoor, campaignOf, newRoom, runCheck } from "../testUtils";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 import { redundantToDoorVerifier } from "./redundantToDoorVerifier";
 
 test("flags a toDoor the link would resolve to anyway", () => {

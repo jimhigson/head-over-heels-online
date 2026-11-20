@@ -1,9 +1,5 @@
-import { type SceneryName, type Wall } from "../../sprites/planets";
-import {
-  type DirectionXy4,
-  type Xy,
-  type Xyz,
-} from "../../utils/vectors/vectors";
+import type { SceneryName, Wall } from "../../sprites/planets";
+import type { DirectionXy4, Xy, Xyz } from "../../utils/vectors/vectors";
 
 /**
  * the json config for a wall.

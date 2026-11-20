@@ -1,4 +1,4 @@
-import { type Writable } from "type-fest";
+import type { Writable } from "type-fest";
 import { expect, test } from "vitest";
 
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
@@ -10,14 +10,14 @@ import {
   quarterTurnAnticlockwise,
   quarterTurnClockwise,
 } from "../../../utils/vectors/cameraAngleVectors";
-import { type Xy, type XyzBox } from "../../../utils/vectors/vectors";
+import type { Xy, XyzBox } from "../../../utils/vectors/vectors";
 import { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
 import { projectWorldXyzToScreenXy } from "../projections";
-import { type RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
+import type { RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { graphEdgeStrings } from "./__test__/graphEdgeStrings";
 import { populatedBroadPhase } from "./__test__/populatedBroadPhase";
 import { worldBoxToCameraSpace } from "./__test__/worldBoxToCameraSpace";
-import { type DrawOrderComparable } from "./DrawOrderComparable";
+import type { DrawOrderComparable } from "./DrawOrderComparable";
 import { updateZEdges } from "./updateZEdges";
 
 // --- worldBoxToCameraSpace: hand-computed expectations, so this is not circular

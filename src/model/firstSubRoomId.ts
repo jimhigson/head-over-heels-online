@@ -1,4 +1,4 @@
-import { type RoomJson } from "./RoomJson";
+import type { RoomJson } from "./RoomJson";
 
 export const firstSubRoomId = (roomJson: RoomJson<string, string>): string => {
   const subRoomKeys =

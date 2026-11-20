@@ -1,8 +1,8 @@
 import { rotatingSceneryTiles } from "../../../model/inPlaceMutators/rotatingSceneryTiles";
-import { type WallJsonConfig } from "../../../model/json/WallJsonConfig";
-import { type SceneryName } from "../../../sprites/planets";
+import type { WallJsonConfig } from "../../../model/json/WallJsonConfig";
+import type { SceneryName } from "../../../sprites/planets";
 import { doorAlongAxis } from "../../../utils/vectors/vectors";
-import { type EditorJsonItem, type EditorRoomItemId } from "../../editorTypes";
+import type { EditorJsonItem, EditorRoomItemId } from "../../editorTypes";
 import { nextItemIdForItemTool } from "./addItemInPlace";
 
 export function* generateWallHealingInPlaceOfDoor(

@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import { type SpritesheetName } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { SpritesheetName } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { clearAllData } from "./clearAllData";
 
 type SpritesheetOverrideState = {

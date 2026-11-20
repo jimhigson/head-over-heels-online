@@ -1,7 +1,7 @@
 import { expect, type Page } from "@playwright/test";
 
-import { type PokeableNumber } from "../src/model/ItemStateMap";
-import { type CharacterName } from "../src/model/modelTypes";
+import type { PokeableNumber } from "../src/model/ItemStateMap";
+import type { CharacterName } from "../src/model/modelTypes";
 import { advanceUntilTrue, whilePainting } from "./testUtils/advanceGameTime";
 import {
   clickCheat,

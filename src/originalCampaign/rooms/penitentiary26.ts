@@ -1,0 +1,107 @@
+import { inferRoomJson, type RoomJson } from "../../model/RoomJson.ts";
+import type { OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
+
+export const room = inferRoomJson({
+  color: { hue: "white", shade: "dimmed" },
+  items: {
+    b: {
+      config: { style: "organic", times: { y: 2 } },
+      position: { x: 0, y: 3, z: 0 },
+      type: "block",
+    },
+    b1: {
+      config: { style: "organic", times: { x: 2 } },
+      position: { x: 3, y: 0, z: 0 },
+      type: "block",
+    },
+    d: {
+      config: { direction: "right", toRoom: "penitentiary27" },
+      position: { x: 0, y: 3, z: 1 },
+      type: "door",
+    },
+    d1: {
+      config: { direction: "towards", toRoom: "penitentiary25" },
+      position: { x: 3, y: 0, z: 1 },
+      type: "door",
+    },
+    db: {
+      config: { style: "volcano" },
+      position: { x: 0, y: 7, z: 1 },
+      type: "deadlyBlock",
+    },
+    db1: {
+      config: { style: "volcano", times: { z: 2 } },
+      position: { x: 7, y: 3, z: 0 },
+      type: "deadlyBlock",
+    },
+    f: {
+      config: { floorType: "deadly", times: { x: 8, y: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "floor",
+    },
+    mp: {
+      config: {
+        activated: "on-stand",
+        movement: "clockwise",
+        startDirection: "away",
+      },
+      position: { x: 4, y: 1, z: 0 },
+      type: "movingPlatform",
+    },
+    w: {
+      config: { direction: "right", tiles: ["loop", "loop", "skeleton"] },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    w1: {
+      config: { direction: "towards", tiles: ["loop", "loop", "skeleton"] },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    w2: {
+      config: { direction: "right", tiles: ["skeleton", "loop", "loop"] },
+      position: { x: 0, y: 5, z: 0 },
+      type: "wall",
+    },
+    w3: {
+      config: {
+        direction: "away",
+        tiles: [
+          "loop",
+          "loop",
+          "skeleton",
+          "loop",
+          "loop",
+          "skeleton",
+          "loop",
+          "loop",
+        ],
+      },
+      position: { x: 0, y: 8, z: 0 },
+      type: "wall",
+    },
+    w4: {
+      config: { direction: "towards", tiles: ["skeleton", "loop", "loop"] },
+      position: { x: 5, y: 0, z: 0 },
+      type: "wall",
+    },
+    w5: {
+      config: {
+        direction: "left",
+        tiles: [
+          "loop",
+          "loop",
+          "skeleton",
+          "loop",
+          "loop",
+          "skeleton",
+          "loop",
+          "loop",
+        ],
+      },
+      position: { x: 8, y: 0, z: 0 },
+      type: "wall",
+    },
+  },
+  planet: "penitentiary",
+}) satisfies RoomJson<OriginalCampaignRoomId, string, "penitentiary">;

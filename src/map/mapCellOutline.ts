@@ -1,4 +1,4 @@
-import { type RoomNode } from "../model/map/roomGridPositions";
+import type { RoomNode } from "../model/map/roomGridPositions";
 import {
   isWholeRoomSubRooms,
   type RoomJson,

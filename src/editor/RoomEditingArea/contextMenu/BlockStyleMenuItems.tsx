@@ -2,18 +2,18 @@ import {
   deadlyBlockStyles,
   portableBlockStyles,
 } from "../../../model/json/ItemConfigMap";
-import { type JsonItemType } from "../../../model/json/JsonItem";
+import type { JsonItemType } from "../../../model/json/JsonItem";
 import { blockStyles } from "../../../model/json/utilityJsonConfigTypes";
 import { canBlockBeTower } from "../../canBlockBeTower";
 import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
-import { type EditorCommandDispatchable } from "../../commands/EditorCommand";
+import type { EditorCommandDispatchable } from "../../commands/EditorCommand";
 import {
   type ItemSubtype,
   itemTypeAndMaybeSubtype,
   type SubtypeOfItemType,
 } from "../../itemTypeAndSubtype";
 import { setSelectedItemsSubtype } from "../../slice/levelEditorSlice";
-import { type RestylableItemType } from "../../slice/reducers/blockDeadlinessAndStyleReducers";
+import type { RestylableItemType } from "../../slice/reducers/blockDeadlinessAndStyleReducers";
 import { useSelectedJsonItems } from "./useSelectedJsonItems";
 
 type Restyling<T extends RestylableItemType> = {

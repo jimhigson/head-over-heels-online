@@ -3,8 +3,8 @@ import {
   forEachRoomItem,
   roomItemsArray,
 } from "../../model/roomItemsInPlayIterators";
-import { type Xyz } from "../../utils/vectors/vectors";
-import { type GameState } from "../gameState/GameState";
+import type { Xyz } from "../../utils/vectors/vectors";
+import type { GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { assignLatentMovementFromStandingOn } from "../gameState/mutators/assignLatentMovement";

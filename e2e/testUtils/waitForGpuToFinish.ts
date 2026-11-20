@@ -1,4 +1,4 @@
-import { type Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
 
 /**
  * block until the GPU has executed every command the game has issued so far.

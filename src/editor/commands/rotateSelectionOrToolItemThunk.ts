@@ -1,10 +1,10 @@
 import { produce } from "immer";
 
 import { getJsonItemTimes } from "../../model/times";
-import { type EditorRootState, type EditorThunk } from "../../store/store";
+import type { EditorRootState, EditorThunk } from "../../store/store";
 import { fromEntries } from "../../utils/entries";
 import { subXyz } from "../../utils/vectors/vectors";
-import { type EditorJsonItemUnion, type EditorRoomState } from "../editorTypes";
+import type { EditorJsonItemUnion, EditorRoomState } from "../editorTypes";
 import {
   isPlacedItemRotatable,
   isRotatable,

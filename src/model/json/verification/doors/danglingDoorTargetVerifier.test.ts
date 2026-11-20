@@ -1,9 +1,9 @@
 import { expect, test } from "vitest";
 
 import { addDoor, campaignOf, newRoom, runCheck } from "../testUtils";
-import {
-  type VerificationRoomId,
-  type VerificationRoomItemId,
+import type {
+  VerificationRoomId,
+  VerificationRoomItemId,
 } from "../verificationTypes";
 import { danglingDoorTargetVerifier } from "./danglingDoorTargetVerifier";
 

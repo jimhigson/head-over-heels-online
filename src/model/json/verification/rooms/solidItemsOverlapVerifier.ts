@@ -13,15 +13,15 @@ import {
 import { blockSizePx } from "../../../blockSizePx";
 import { defaultRoomHeightBlocks } from "../../../defaultRoomHeightBlocks";
 import { itemBehaviourKey } from "../../../ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../../ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../../ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../roomItemsInPlayIterators";
 import { roomSpatialIndexKey } from "../../../RoomState";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
-import {
-  type VerificationRoomId,
-  type VerificationRoomItemId,
-  type VerificationRoomJson,
+import type {
+  VerificationRoomId,
+  VerificationRoomItemId,
+  VerificationRoomJson,
 } from "../verificationTypes";
 
 type SolidItemsOverlap = {

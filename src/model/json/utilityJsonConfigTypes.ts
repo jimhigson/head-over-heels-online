@@ -1,4 +1,4 @@
-import { type Xyz } from "../../utils/vectors/vectors";
+import type { Xyz } from "../../utils/vectors/vectors";
 
 export const blockStyles = ["organic", "artificial", "book", "tower"] as const;
 export type BlockStyle = (typeof blockStyles)[number];

@@ -1,5 +1,5 @@
-import { type ExportedSoundId } from "../../_generated/sfxdex/soundIds";
-import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type { ExportedSoundId } from "../../_generated/sfxdex/soundIds";
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import { nonRenderingItemFixedZIndex } from "../render/sortZ/fixedZIndexes";
 import { ItemBehaviour } from "./ItemBehaviour";
 

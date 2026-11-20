@@ -1,4 +1,4 @@
-import { type PropsWithChildren } from "preact/compat";
+import type { PropsWithChildren } from "preact/compat";
 
 import { CssSpritesVariables } from "./CssSpritesVariables";
 import { CssUpscaleVariables } from "./CssUpscaleVariables";

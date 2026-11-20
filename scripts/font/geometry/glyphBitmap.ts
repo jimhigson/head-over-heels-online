@@ -1,4 +1,4 @@
-import { type HudGlyph } from "../hudGlyphs";
+import type { HudGlyph } from "../hudGlyphs";
 
 /** rgba pixels, however the host happened to decode them */
 export type DecodedImage = {

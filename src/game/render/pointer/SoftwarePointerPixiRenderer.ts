@@ -1,7 +1,7 @@
 import { Point, type Renderer, type Sprite } from "pixi.js";
 
-import { type Spritesheets } from "../../../sprites/spritesheet/Spritesheets";
-import { type PointerTracker } from "../../input/PointerTracker";
+import type { Spritesheets } from "../../../sprites/spritesheet/Spritesheets";
+import type { PointerTracker } from "../../input/PointerTracker";
 import { createSprite } from "../createSprite";
 
 /**

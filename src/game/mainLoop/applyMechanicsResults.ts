@@ -1,8 +1,8 @@
-import { type KeysOfUnion } from "type-fest";
+import type { KeysOfUnion } from "type-fest";
 
-import { type ItemInPlayType } from "../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
-import { type RoomState } from "../../model/RoomState";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import type { RoomState } from "../../model/RoomState";
 import {
   addXyz,
   addXyzInPlace,
@@ -10,7 +10,7 @@ import {
   resetXyzInPlace,
   type Xyz,
 } from "../../utils/vectors/vectors";
-import { type MechanicResult } from "../physics/MechanicResult";
+import type { MechanicResult } from "../physics/MechanicResult";
 
 export const applyMechanicsResults = <
   RoomId extends string,

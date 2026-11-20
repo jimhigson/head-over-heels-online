@@ -2,7 +2,7 @@ import { memo } from "preact/compat";
 
 import { useEditorAppSelector } from "../../store/store";
 import { RoomSelect } from "../../ui/RoomSelect";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import { buttonSmallHeightClassNames } from "../toolbar/buttonSizeClassNames";
 import {
   selectEditorMapAreaFirstRoomHues,

@@ -1,14 +1,14 @@
-import { type SpritesheetData } from "pixi.js";
+import type { SpritesheetData } from "pixi.js";
 
-import { type AnimationsOfFrames } from "./AnimationsOfFrames";
-import { type AppSpriteFrame } from "./AppSpriteFrame";
-import { type doorSpritesheetData } from "./doorSpritesheetData";
-import { type editorSpritesheetData } from "./editorSpritesheetData";
-import { type itemsSpritesheetData } from "./itemsSpritesheetData";
+import type { AnimationsOfFrames } from "./AnimationsOfFrames";
+import type { AppSpriteFrame } from "./AppSpriteFrame";
+import type { doorSpritesheetData } from "./doorSpritesheetData";
+import type { editorSpritesheetData } from "./editorSpritesheetData";
+import type { itemsSpritesheetData } from "./itemsSpritesheetData";
 import { makeBaseSpritesheetData } from "./makeBaseSpritesheetData";
-import { type playableSpritesheetData } from "./playableSpritesheetData";
-import { type scenerySpritesheetData } from "./scenerySpritesheetData";
-import { type SpritesheetMetadata } from "./spritesheetMetaData";
+import type { playableSpritesheetData } from "./playableSpritesheetData";
+import type { scenerySpritesheetData } from "./scenerySpritesheetData";
+import type { SpritesheetMetadata } from "./spritesheetMetaData";
 import {
   type VariantAnimationId,
   variantSpritesheetData,

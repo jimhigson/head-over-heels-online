@@ -1,7 +1,7 @@
 import { type AnimatedSprite, Container, type Renderer } from "pixi.js";
 
-import { type RoomState } from "../../../../../model/RoomState";
-import { type Spritesheets } from "../../../../../sprites/spritesheet/Spritesheets";
+import type { RoomState } from "../../../../../model/RoomState";
+import type { Spritesheets } from "../../../../../sprites/spritesheet/Spritesheets";
 import { teleporterIsActive } from "../../../../physics/mechanics/teleporterIsActive";
 import {
   createSprite,

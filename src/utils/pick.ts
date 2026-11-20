@@ -1,4 +1,4 @@
-import { type DistributedOmit, type KeysOfUnion } from "type-fest";
+import type { DistributedOmit, KeysOfUnion } from "type-fest";
 
 export const pick = <O extends object, KS extends keyof O>(
   o: O,

@@ -1,0 +1,81 @@
+import { inferRoomJson, type RoomJson } from "../../model/RoomJson.ts";
+import type { OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
+
+export const room = inferRoomJson({
+  color: { hue: "yellow", shade: "basic" },
+  items: {
+    d: {
+      config: { direction: "left", toRoom: "bookworld31" },
+      position: { x: 8, y: 3, z: 1 },
+      type: "door",
+    },
+    f: {
+      config: { floorType: "none", times: { x: 8, y: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "floor",
+    },
+    w: {
+      config: {
+        direction: "right",
+        tiles: [
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+        ],
+      },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    w1: {
+      config: {
+        direction: "towards",
+        tiles: [
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+        ],
+      },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    w2: {
+      config: {
+        direction: "away",
+        tiles: [
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+        ],
+      },
+      position: { x: 0, y: 8, z: 0 },
+      type: "wall",
+    },
+    w3: {
+      config: { direction: "left", tiles: ["book", "book", "cowboy"] },
+      position: { x: 8, y: 0, z: 0 },
+      type: "wall",
+    },
+    w4: {
+      config: { direction: "left", tiles: ["cowboy", "book", "book"] },
+      position: { x: 8, y: 5, z: 0 },
+      type: "wall",
+    },
+  },
+  meta: { subRooms: { "*": { below: { room: "bookworld33" } } } },
+  planet: "bookworld",
+}) satisfies RoomJson<OriginalCampaignRoomId, string, "bookworld">;

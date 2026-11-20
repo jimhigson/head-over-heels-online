@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { describe, test } from "vitest";
 
-import {
-  type AnimationId,
-  type TextureId,
+import type {
+  AnimationId,
+  TextureId,
 } from "./spritesheetData/makeSpritesheetData";
 import { variantTextureId } from "./variantTextureId";
 

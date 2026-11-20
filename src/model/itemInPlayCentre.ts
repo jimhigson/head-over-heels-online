@@ -1,4 +1,4 @@
-import { type UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
 
 export const itemInPlayCentre = (item: UnionOfAllItemInPlayTypes) => {
   const { box } = item.state;

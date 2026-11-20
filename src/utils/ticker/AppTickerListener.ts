@@ -1,4 +1,4 @@
-import { type AppTicker, type AppTickerCallback } from "./AppTicker";
+import type { AppTicker, AppTickerCallback } from "./AppTicker";
 
 /**
  * one subscription in {@link AppTicker}'s list

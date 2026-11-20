@@ -1,7 +1,7 @@
-import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
-import {
-  type BaseTextureId,
-  type FramesWithSpeed,
+import type { AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
+import type {
+  BaseTextureId,
+  FramesWithSpeed,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { useCurrentSpritesheetData } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { entries, keys } from "../../utils/entries";

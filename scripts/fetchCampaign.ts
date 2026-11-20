@@ -1,3 +1,5 @@
+#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
+
 import { createClient } from "@supabase/supabase-js";
 import { gunzipSync } from "node:zlib";
 
@@ -6,7 +8,7 @@ import { jimAtBlockstackingUserId } from "../src/gameInfo";
 
 const [, , campaignName] = process.argv;
 if (!campaignName) {
-  console.error("usage: tsx scripts/fetchCampaign.ts <campaignName> [userId]");
+  console.error("usage: ./scripts/fetchCampaign.ts <campaignName> [userId]");
   process.exit(1);
 }
 

@@ -5,9 +5,9 @@ import { exitGameRoomId } from "../../../../model/json/ItemConfigMap";
 import { findSubRoomForItem } from "../../../../model/map/itemIsInSubRoom";
 import { isWholeRoomSubRooms } from "../../../../model/RoomJson";
 import { pixiContainerToString } from "../../../../utils/pixi/pixiContainerToString";
-import { type GameState } from "../../../gameState/GameState";
+import type { GameState } from "../../../gameState/GameState";
 import { changeCharacterRoom } from "../../../gameState/mutators/changeCharacterRoom";
-import { type DecorateItemMaybeRenderer } from "./DecorateItemRenderer";
+import type { DecorateItemMaybeRenderer } from "./DecorateItemRenderer";
 
 export const debugPointerDecorateItemRenderer: DecorateItemMaybeRenderer = (
   itemRenderContext,

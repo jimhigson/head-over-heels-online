@@ -1,12 +1,12 @@
-import { type Sprite } from "pixi.js";
+import type { Sprite } from "pixi.js";
 
-import {
-  type CharacterName,
-  type IndividualCharacterName,
+import type {
+  CharacterName,
+  IndividualCharacterName,
 } from "../../../../model/modelTypes";
 import { isTextureId } from "../../../../sprites/assertIsTextureId";
-import { type AppSpritesheet } from "../../../../sprites/spritesheet/AppSpritesheet";
-import { type BaseTextureIdWithPrefix } from "../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import type { AppSpritesheet } from "../../../../sprites/spritesheet/AppSpritesheet";
+import type { BaseTextureIdWithPrefix } from "../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { rotateXy } from "../../../../utils/vectors/rotateXy";
 import {
   type DirectionIndexXy4,
@@ -17,7 +17,7 @@ import {
 } from "../../../../utils/vectors/vectors";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
-import { type ItemAppearance } from "../ItemAppearance";
+import type { ItemAppearance } from "../ItemAppearance";
 import { characterAction } from "../playable/characterAction";
 
 type RenderPropsXy4 = {

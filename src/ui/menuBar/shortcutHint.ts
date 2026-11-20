@@ -1,5 +1,5 @@
 import { formatShortcutKey } from "../enhanceTooltipWithHotkeys";
-import { type ShortcutKeys } from "../useKeyboardShortcut";
+import type { ShortcutKeys } from "../useKeyboardShortcut";
 
 const isApplePlatform = /Mac|iPhone|iPad/.test(navigator.platform);
 

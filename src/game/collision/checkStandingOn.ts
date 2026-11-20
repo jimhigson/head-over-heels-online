@@ -1,9 +1,9 @@
-import { type WritableDeep } from "type-fest";
+import type { WritableDeep } from "type-fest";
 
 import { itemBehaviourKey } from "../../model/ItemInPlay";
-import {
-  type FreeItem,
-  type UnionOfAllItemInPlayTypes,
+import type {
+  FreeItem,
+  UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlayNarrowedUnions";
 import { epsilon } from "../../utils/epsilon";
 import { collisionsPriorityComparator } from "../physics/collisionsOrder";

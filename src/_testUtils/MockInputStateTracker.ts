@@ -1,17 +1,17 @@
-import { type OverrideProperties } from "type-fest";
+import type { OverrideProperties } from "type-fest";
 import { vi } from "vitest";
 
-import { type GameState } from "../game/gameState/GameState";
-import { type BooleanAction } from "../game/input/actions";
-import { type HudInputState } from "../game/input/hudInputState";
-import { type InputPress } from "../game/input/InputAssignment";
-import {
-  type InputStateTrackerInterface,
-  type PressStatus,
+import type { GameState } from "../game/gameState/GameState";
+import type { BooleanAction } from "../game/input/actions";
+import type { HudInputState } from "../game/input/hudInputState";
+import type { InputPress } from "../game/input/InputAssignment";
+import type {
+  InputStateTrackerInterface,
+  PressStatus,
 } from "../game/input/InputStateTracker";
 import { unitVectors } from "../utils/vectors/unitVectors";
 import { type DirectionXy4, originXyz } from "../utils/vectors/vectors";
-import { type TestRoomId } from "./basicRoom";
+import type { TestRoomId } from "./basicRoom";
 
 export class MockInputStateTracker implements InputStateTrackerInterface {
   /** returns any new taps since the last frame */

@@ -1,5 +1,5 @@
 import { exportedSfxUrls } from "../_generated/sfxdex/sfx";
-import { type ExportedSoundId } from "../_generated/sfxdex/soundIds";
+import type { ExportedSoundId } from "../_generated/sfxdex/soundIds";
 import { loadAndDecode } from "./loadAndDecode";
 
 const soundCategories = {

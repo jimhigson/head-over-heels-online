@@ -3,15 +3,15 @@ import { blockSizePx } from "../../game/physics/mechanicsConstants";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { xyzEqual } from "../../utils/vectors/vectors";
 import { editorGhostEditorBehaviours } from "../editorGhostEditorBehaviours";
-import {
-  type EditorItemInPlayUnion,
-  type EditorJsonItem,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
-  type EditorUnionOfAllItemInPlayTypes,
+import type {
+  EditorItemInPlayUnion,
+  EditorJsonItem,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
-import { type WhichEditorGhostOf } from "../WhichEditorGhostOf";
+import type { WhichEditorGhostOf } from "../WhichEditorGhostOf";
 import { editorGhostOfParticleDot } from "./editorGhostOfParticleDot";
 import { editorGhostWithBrushItem } from "./editorGhostWithBrushItem";
 

@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { type EditorCampaign } from "../../editor/editorTypes";
+import type { EditorCampaign } from "../../editor/editorTypes";
 import { levelEditorCampaignMigrationTransform } from "./levelEditorCampaignMigrationTransform";
 
 test("a campaign restored from storage has its teleporters' store-path conditions migrated", () => {

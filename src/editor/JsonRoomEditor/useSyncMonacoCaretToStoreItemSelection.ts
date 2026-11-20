@@ -1,10 +1,10 @@
 import { getLocation } from "jsonc-parser";
-import { type editor } from "monaco-editor";
+import type { editor } from "monaco-editor";
 import { useEffect } from "preact/hooks";
 
-import { type AnyRoomJson } from "../../model/RoomJson";
+import type { AnyRoomJson } from "../../model/RoomJson";
 import { useAppDispatch } from "../../store/hooks";
-import { type EditorRoomItemId } from "../editorTypes";
+import type { EditorRoomItemId } from "../editorTypes";
 import { setSelectedItemsInRoom } from "../slice/levelEditorSlice";
 import { useLoadMonaco } from "./useLoadMonaco";
 

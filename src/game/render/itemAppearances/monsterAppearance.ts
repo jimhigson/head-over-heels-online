@@ -1,11 +1,11 @@
-import { type Container, type Sprite } from "pixi.js";
+import type { Container, Sprite } from "pixi.js";
 
-import { type ItemInPlay } from "../../../model/ItemInPlay";
-import { type RoomState } from "../../../model/RoomState";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { RoomState } from "../../../model/RoomState";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
-import { type AppSpritesheet } from "../../../sprites/spritesheet/AppSpritesheet";
-import { type BaseAnimationId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type DoughnuttableId } from "../../../sprites/spritesheet/spritesheetData/variantSpritesheetData";
+import type { AppSpritesheet } from "../../../sprites/spritesheet/AppSpritesheet";
+import type { BaseAnimationId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import type { DoughnuttableId } from "../../../sprites/spritesheet/spritesheetData/variantSpritesheetData";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { renderBobSine } from "../../../utils/maths/renderBob";
 import {
@@ -27,7 +27,7 @@ import {
   type StackedSpritesContainer,
   stackedTopSymbol,
 } from "./createStackedSprites";
-import { type ItemAppearance } from "./ItemAppearance";
+import type { ItemAppearance } from "./ItemAppearance";
 
 /** resolve the dalek animation id, using the dark variant if available for this room's scenery */
 const dalekAnimationId = (

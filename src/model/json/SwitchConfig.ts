@@ -1,11 +1,11 @@
-import { type DistributedPick } from "type-fest";
+import type { DistributedPick } from "type-fest";
 
-import { type UserSettingsBooleanPaths } from "../../store/slices/userSettings/userSettingsSlice";
-import { type Subset } from "../../utils/Subset";
-import { type DirectionXy4 } from "../../utils/vectors/vectors";
-import { type SwitchSetting } from "../ItemInPlay";
-import { type ItemState } from "../ItemState";
-import { type ItemStateMap } from "../ItemStateMap";
+import type { UserSettingsBooleanPaths } from "../../store/slices/userSettings/userSettingsSlice";
+import type { Subset } from "../../utils/Subset";
+import type { DirectionXy4 } from "../../utils/vectors/vectors";
+import type { SwitchSetting } from "../ItemInPlay";
+import type { ItemState } from "../ItemState";
+import type { ItemStateMap } from "../ItemStateMap";
 
 // switches are 'on rails' with a fairly restricted range of things they can change for the sake of avoiding
 // errors in the json but this could be added to as needed. Technically, the engine can change any property

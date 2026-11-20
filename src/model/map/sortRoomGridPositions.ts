@@ -1,5 +1,5 @@
 import { fromAllEntries } from "../../utils/entries";
-import { type RoomNode } from "./roomGridPositions";
+import type { RoomNode } from "./roomGridPositions";
 
 export type SortedObjectOfRoomGridPositionSpecs<RoomId extends string> = Record<
   `${RoomId}/${string}`,

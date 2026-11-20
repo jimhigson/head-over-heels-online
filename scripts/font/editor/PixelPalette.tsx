@@ -10,7 +10,7 @@ import { type PixelChoice, pixelChoices } from "../geometry/pixelChoices";
 import { type PixelRules, rulesAt } from "../geometry/pixelRuleIndex";
 import { ruleLabel } from "../geometry/ruleTree";
 import { contoursPath } from "./contourPath";
-import { type EditorGlyph } from "./useGlyphs";
+import type { EditorGlyph } from "./useGlyphs";
 
 export type PixelPaletteProps = {
   glyph: EditorGlyph;

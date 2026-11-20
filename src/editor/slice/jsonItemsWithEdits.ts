@@ -1,6 +1,6 @@
 import { entries } from "../../utils/entries";
-import { type EditorRoomJsonItems } from "../editorTypes";
-import { type PreviewedRoomItemEdits } from "./levelEditorSlice";
+import type { EditorRoomJsonItems } from "../editorTypes";
+import type { PreviewedRoomItemEdits } from "./levelEditorSlice";
 
 /**
  * create a copy of a room's items with edits applied

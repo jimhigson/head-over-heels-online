@@ -1,7 +1,7 @@
-import { type FreeItem } from "../../../model/ItemInPlayNarrowedUnions";
-import { type RoomState } from "../../../model/RoomState";
+import type { FreeItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { RoomState } from "../../../model/RoomState";
 import { scaleXyz, type Xyz } from "../../../utils/vectors/vectors";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 
 export type ApplicableLatentMovement<RoomItemId extends string> = {
   posDelta: Xyz;

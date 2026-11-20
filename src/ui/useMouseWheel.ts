@@ -1,5 +1,5 @@
 import normalizeWheel from "normalize-wheel-es";
-import { type RefObject } from "preact";
+import type { RefObject } from "preact";
 import { useCallback, useEffect, useRef } from "preact/hooks";
 
 /** normalised mouse wheel handler */

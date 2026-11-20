@@ -1,4 +1,4 @@
-import { type SceneryName, type Wall } from "../../sprites/planets";
+import type { SceneryName, Wall } from "../../sprites/planets";
 import { valuesIter } from "../../utils/entries";
 import {
   alongAxisOfDirectionXy,
@@ -7,7 +7,7 @@ import {
   type Xy,
   type Xyz,
 } from "../../utils/vectors/vectors";
-import { type AnyRoomJson } from "../RoomJson";
+import type { AnyRoomJson } from "../RoomJson";
 import { rotatingSceneryTiles } from "./rotatingSceneryTiles";
 
 /**

@@ -6,9 +6,9 @@ import { roomGridPositions } from "../../model/map/roomGridPositions";
 import { sortRoomGridPositions } from "../../model/map/sortRoomGridPositions";
 import { roomJsonItemsIterable } from "../../model/RoomJsonItemIterators";
 import { keys } from "../../utils/entries";
-import { type DirectionXy4 } from "../../utils/vectors/vectors";
+import type { DirectionXy4 } from "../../utils/vectors/vectors";
 import { areRoomsCoalesceable } from "../EditorMap/areRoomsCoalesceable";
-import { type EditorRoomId, type EditorRoomJson } from "../editorTypes";
+import type { EditorRoomId, EditorRoomJson } from "../editorTypes";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
   selectCursorRoomFromLevelEditorState,

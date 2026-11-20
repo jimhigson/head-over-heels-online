@@ -1,4 +1,4 @@
-import { type RefObject } from "preact";
+import type { RefObject } from "preact";
 import { useEffect, useState } from "preact/hooks";
 
 import { rotateInputVector45 } from "../game/input/analogueControlAdjustments";

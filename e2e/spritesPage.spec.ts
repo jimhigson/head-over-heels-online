@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 import { createHash } from "crypto";
 
-import { type TextureId } from "../src/sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import type { TextureId } from "../src/sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { progressLogHeader } from "./testUtils/logging";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { test } from "./testUtils/test";

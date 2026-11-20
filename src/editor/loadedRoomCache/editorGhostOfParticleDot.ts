@@ -3,10 +3,7 @@ import { getBehaviourForItemTypeAndConfig } from "../../game/itemBehaviours/atta
 import { itemBehaviourKey } from "../../model/ItemInPlay";
 import { hashXyzToNumber0to1 } from "../../utils/maths/hashing";
 import { boxWithSize, originXyz, type Xyz } from "../../utils/vectors/vectors";
-import {
-  type EditorItemInPlayUnion,
-  type EditorRoomItemId,
-} from "../editorTypes";
+import type { EditorItemInPlayUnion, EditorRoomItemId } from "../editorTypes";
 import { editorGhostWithBrushItem } from "./editorGhostWithBrushItem";
 
 let editorParticleDotsMade = 0;

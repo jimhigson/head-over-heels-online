@@ -1,6 +1,6 @@
 import { originXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
-import { type JsonItem } from "../json/JsonItem";
-import { type RoomJson, type RoomJsonItems } from "../RoomJson";
+import type { JsonItem } from "../json/JsonItem";
+import type { RoomJson, RoomJsonItems } from "../RoomJson";
 import { rotatingSceneryTiles } from "./rotatingSceneryTiles";
 
 const starterRoomWallItems = <RoomId extends string, RoomItemId extends string>(

@@ -1,17 +1,17 @@
-import { type Color } from "pixi.js";
+import type { Color } from "pixi.js";
 
-import { type ZxSpectrumRoomHue } from "../../../originalGame";
+import type { ZxSpectrumRoomHue } from "../../../originalGame";
 import { maybeDimPixiPalette } from "../../../sprites/palette/pixiPalette";
-import {
-  type BlockstackPaletteColourName,
-  type ToppyPaletteColourName,
+import type {
+  BlockstackPaletteColourName,
+  ToppyPaletteColourName,
 } from "../../../sprites/palette/spritesheetPalette";
 import {
   blockstackPixiPalettes,
   toppyPixiPalettes,
 } from "../../../sprites/palette/spritesheetPixiPalettes";
-import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type NamedPixiColours } from "../../../utils/palette/palette";
+import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { NamedPixiColours } from "../../../utils/palette/palette";
 import { zxSpectrumPixiColors } from "../palette/zxSpectrumPixiColours";
 
 export const blockstackGameColour = (

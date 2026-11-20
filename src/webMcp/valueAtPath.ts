@@ -1,4 +1,4 @@
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 
 /**
  * the value found by following a dotted path (eg `gameMenus.openMenus.0`)

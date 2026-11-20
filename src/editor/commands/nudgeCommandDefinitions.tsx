@@ -1,6 +1,6 @@
 import { getConsolidatableVector } from "../../consolidateItems/ConsolidatableJsonItem";
 import { getJsonItemTimes } from "../../model/times";
-import { type EditorRootState } from "../../store/store";
+import type { EditorRootState } from "../../store/store";
 import { fromAllEntries } from "../../utils/entries";
 import { twClass } from "../../utils/twClass.tsx" with { type: "macro" };
 import { directionXyz4Glyphs } from "../../utils/vectors/directionGlyphs";
@@ -16,8 +16,8 @@ import {
   isJsonItemWithEditorGhosts,
   maybeEditorGhostEditorBehaviour,
 } from "../editorGhostEditorBehaviours";
-import { type EditorJsonItemUnion } from "../editorTypes";
-import { type RotationSense } from "../itemRotation";
+import type { EditorJsonItemUnion } from "../editorTypes";
+import type { RotationSense } from "../itemRotation";
 import { activeOpenRoomLoadedRoom } from "../loadedRoomCache/loadedRoomCaches";
 import {
   multiplyCurrentToolItem,
@@ -40,7 +40,7 @@ import {
   directionAxis,
   type NudgeArgs,
 } from "../toolbar/buttons/nudgeDirections";
-import { type ActionCommand } from "./EditorCommand";
+import type { ActionCommand } from "./EditorCommand";
 import { multiplySelectedItemsThunk } from "./multiplySelectedItemsThunk";
 import { nudgeSelectedItemsThunk } from "./nudgeSelectedItemsThunk";
 import {

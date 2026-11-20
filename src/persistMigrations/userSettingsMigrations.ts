@@ -1,7 +1,7 @@
 import { createMigrate } from "redux-persist";
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 
-import { type PokesEnabled } from "../store/slices/userSettings/userSettingsSlice";
+import type { PokesEnabled } from "../store/slices/userSettings/userSettingsSlice";
 
 /**
  * the userSettings slice's schema migrations, by the persist version that

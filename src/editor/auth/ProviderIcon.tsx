@@ -1,4 +1,4 @@
-import { type Provider } from "@supabase/supabase-js";
+import type { Provider } from "@supabase/supabase-js";
 
 import {
   nerdFontAppleChar,

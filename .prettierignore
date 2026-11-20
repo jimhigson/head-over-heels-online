@@ -19,4 +19,4 @@ src/_generated/font/manifest.json
 src/_generated/font/manifest-smooth.json
 src/_generated/db.d.ts
 # columnar original-campaign blob - must stay minified (it ships to clients as-is)
-src/_generated/originalCampaign/campaign.columnar.json
+src/originalCampaign/campaign.columnar.json

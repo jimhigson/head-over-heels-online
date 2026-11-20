@@ -1,4 +1,4 @@
-import { type Xy, type Xyz } from "./vectors";
+import type { Xy, Xyz } from "./vectors";
 
 /**
  * the camera-angle vector for "no rotation" (the default view), taken as

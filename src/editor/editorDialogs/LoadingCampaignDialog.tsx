@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { useAppSelector } from "../../store/hooks";
 import { campaignsApiSlice } from "../../store/slices/campaigns/campaignsApiSlice";
-import { type GameRootState } from "../../store/store";
+import type { GameRootState } from "../../store/store";
 import { Dialog } from "../../ui/Dialog";
 import { DialogPortal } from "../../ui/DialogPortal";
 import { LoadingBorder } from "../../ui/LoadingBorder";

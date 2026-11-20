@@ -1,8 +1,8 @@
 import { Container, Graphics } from "pixi.js";
-import { type SetRequired } from "type-fest";
+import type { SetRequired } from "type-fest";
 
-import { type RoomState } from "../../../model/RoomState";
-import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { RoomState } from "../../../model/RoomState";
+import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
 import { epsilon } from "../../../utils/epsilon";
 import { neverTime } from "../../../utils/neverTime";
@@ -25,14 +25,14 @@ import {
 import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { hermiteEase } from "../../mainLoop/transitionCameraAngle";
 import { projectWorldXyzToScreenXy } from "../projections";
-import { type SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
-import {
-  type RoomRenderContextInGame,
-  type RoomTickContext,
+import type { SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
+import type {
+  RoomRenderContextInGame,
+  RoomTickContext,
 } from "./RoomRenderContexts";
-import {
-  type RoomRendererType,
-  type RoomRendererTypeInGameOnly,
+import type {
+  RoomRendererType,
+  RoomRendererTypeInGameOnly,
 } from "./RoomRendererType";
 import { roomRenderExtent } from "./roomRenderExtent";
 

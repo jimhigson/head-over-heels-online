@@ -1,14 +1,14 @@
 import nanoEqual from "nano-equal";
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 
-import { type SaveResult } from "../../db/campaign";
+import type { SaveResult } from "../../db/campaign";
 import { sequelCampaignLocator } from "../../gameInfo";
 import { allVerifiers } from "../../model/json/verification/allVerifiers";
-import { type CampaignVerificationIssue } from "../../model/json/verification/CampaignVerification";
+import type { CampaignVerificationIssue } from "../../model/json/verification/CampaignVerification";
 import { fixAllVerificationIssues } from "../../model/json/verification/fixAllVerificationIssues";
 import { verificationGraph } from "../../model/json/verification/helpers/verificationGraph";
-import { type VerificationCampaign } from "../../model/json/verification/verificationTypes";
-import { type CampaignLocator } from "../../model/modelTypes";
+import type { VerificationCampaign } from "../../model/json/verification/verificationTypes";
+import type { CampaignLocator } from "../../model/modelTypes";
 import { editorCampaignsApiSlice } from "../../store/slices/campaigns/editorCampaignsApiSlice";
 import { type EditorRootState, editorStore } from "../../store/store";
 import { objectEntriesIter, valuesIter } from "../../utils/entries";

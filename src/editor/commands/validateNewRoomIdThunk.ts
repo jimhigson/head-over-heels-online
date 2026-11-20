@@ -1,6 +1,6 @@
 import { exitGameRoomId } from "../../model/json/ItemConfigMap";
-import { type EditorThunk } from "../../store/store";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorThunk } from "../../store/store";
+import type { EditorRoomId } from "../editorTypes";
 
 /**
  * validates an id for a room to be renamed to: the reason it can't be taken,

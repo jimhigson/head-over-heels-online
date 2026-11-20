@@ -16,7 +16,7 @@ Text search cannot find these patterns reliably (types span lines, key unions ar
 
 ## 2. Scripts
 
-Run with Node that can execute TypeScript directly (22.18+ / 23.6+, or `tsx`): `node <skill-dir>/scripts/<name>.ts <options>`. They load the project's own `typescript`, so they see types as its compiler does. Typecheck the scripts themselves with `tsc -p <skill-dir>`.
+Run with a Node that runs TypeScript directly (22.18+ / 23.6+): `node <skill-dir>/scripts/<name>.ts <options>`. They load the project's own `typescript`, so they see types as its compiler does. Typecheck the scripts themselves with `tsc -p <skill-dir>`.
 
 Scan options (both scan scripts): `--root <dir>` (default: cwd), `--tsconfig <file>` relative to root, repeatable (default `tsconfig.json`; pass every project's tsconfig), `--exclude <text>` repeatable (path substring to skip; `node_modules` is always skipped). Output: one JSON object per line.
 
@@ -41,7 +41,7 @@ Scan options (both scan scripts): `--root <dir>` (default: cwd), `--tsconfig <fi
 - to claim a new type equals the old one, write a probe that must live inside a tsconfig's `include`: `export const check: IsEqual<NewType, OldType> = true;` (`IsEqual` from type-fest), typecheck, then delete it. Probe the real instantiations, not `Parameters<typeof fn>[0]` of a generic function (false negatives)
 - if the changed types feed a generated artefact (JSON schema, API report, docs), regenerate it and diff. Any diff means behaviour changed outside the type system: stop and decide
 - run the linter and formatter on the changed files only, then the test suite and any circular-dependency check
-- type-only imports (`import { type X } from "type-fest"`) keep type-fest out of the runtime bundle
+- import with `import type { X } from "type-fest"`: it is erased entirely, so type-fest stays out of the runtime bundle
 
 ## 5. Pattern to utility
 
@@ -74,4 +74,3 @@ Scan options (both scan scripts): `--root <dir>` (default: cwd), `--tsconfig <fi
 - `UnknownRecord` is `Record<PropertyKey, unknown>`: helpers that infer a key type from the record then infer `PropertyKey` and break callers indexing with `string`. Convert one match at a time and keep what compiles
 - `Readonly<T[]>` is the built-in `ReadonlyArray<T>`, and `Readonly<T[]> | T[]` is redundant
 - replacing an `Omit<Union, K>` with a distributed form can change generated schemas or validators even though it typechecks: regenerate and diff
-- never commit, push or stage on the user's behalf unless asked; do not use `git reset`/`git checkout` on files you did not change

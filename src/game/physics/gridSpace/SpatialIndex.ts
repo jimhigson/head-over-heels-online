@@ -1,6 +1,6 @@
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { emptyArray } from "../../../utils/empty";
-import { type XyzBox } from "../../../utils/vectors/vectors";
+import type { XyzBox } from "../../../utils/vectors/vectors";
 import { blockSizePx } from "../mechanicsConstants";
 
 /** two cell coords packed into one 32-bit int (16 bits each) - see {@link makeCellKey} */

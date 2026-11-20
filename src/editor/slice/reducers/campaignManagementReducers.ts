@@ -1,9 +1,9 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { pick } from "../../../utils/pick";
-import { type EditorCampaign } from "../../editorTypes";
+import type { EditorCampaign } from "../../editorTypes";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { levelEditorSliceCampaignTransientFields } from "../levelEditorSliceTransientFields";
 import { closeRoomsNotInCampaignInPlace } from "../PaneLayout";
 

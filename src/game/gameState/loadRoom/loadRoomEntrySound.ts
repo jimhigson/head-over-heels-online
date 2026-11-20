@@ -1,12 +1,12 @@
-import { type ExportedSoundId } from "../../../_generated/sfxdex/soundIds";
+import type { ExportedSoundId } from "../../../_generated/sfxdex/soundIds";
 import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
-import { type RoomJson } from "../../../model/RoomJson";
+import type { RoomJson } from "../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
-import { type SceneryName } from "../../../sprites/planets";
+import type { SceneryName } from "../../../sprites/planets";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
-import {
-  type RoomEntryTunesSetting,
-  type UserSettings,
+import type {
+  RoomEntryTunesSetting,
+  UserSettings,
 } from "../../../store/slices/userSettings/userSettingsSlice";
 import {
   boxWithSize,

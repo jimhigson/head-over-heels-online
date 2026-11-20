@@ -1,4 +1,4 @@
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 
 /**
  * shorten a room id to the first letter of each word, keeping any numbers

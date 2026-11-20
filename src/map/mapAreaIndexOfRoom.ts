@@ -1,6 +1,6 @@
-import { type RoomNode } from "../model/map/roomGridPositions";
+import type { RoomNode } from "../model/map/roomGridPositions";
 import { valuesIter } from "../utils/entries";
-import { type MapArea } from "./MapData";
+import type { MapArea } from "./MapData";
 
 /** which of the map's areas holds the room */
 export const mapAreaIndexOfRoom = <RoomId extends string>(

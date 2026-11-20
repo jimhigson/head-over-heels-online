@@ -1,11 +1,11 @@
-import {
-  type JsonItem,
-  type JsonItemConfig,
-  type JsonItemType,
-  type JsonItemUnion,
+import type {
+  JsonItem,
+  JsonItemConfig,
+  JsonItemType,
+  JsonItemUnion,
 } from "../../../model/json/JsonItem";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
-import { type RoomState } from "../../../model/RoomState";
+import type { RoomState } from "../../../model/RoomState";
 import { selectRoomPickupsCollected } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { originXyz, type Xyz } from "../../../utils/vectors/vectors";

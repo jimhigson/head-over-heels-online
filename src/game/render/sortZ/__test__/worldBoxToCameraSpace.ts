@@ -1,5 +1,5 @@
 import { cameraAngleBase } from "../../../../utils/vectors/cameraAngleVectors";
-import { type Xy, type XyzBox } from "../../../../utils/vectors/vectors";
+import type { Xy, XyzBox } from "../../../../utils/vectors/vectors";
 
 /**
  * Test oracle (not used by production): rotate an axis-aligned world box about the

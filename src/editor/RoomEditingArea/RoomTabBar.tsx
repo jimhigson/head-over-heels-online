@@ -5,7 +5,7 @@ import { editorStore, store, useEditorAppSelector } from "../../store/store";
 import { Tab, type TabMenuItem } from "../../ui/tabs/Tab";
 import { TabBar } from "../../ui/tabs/TabBar";
 import { validateNewRoomIdThunk } from "../commands/validateNewRoomIdThunk";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import { RoomPreviewTipContents } from "../roomPreview/RoomPreviewTipContents";
 import {
   closeOtherRoomTabs,

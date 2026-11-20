@@ -1,7 +1,7 @@
 import { campaignToDataParam } from "../db/campaignToDataParam";
-import { type TypedURLSearchParams } from "../options/queryParams";
-import { type EditorRootState } from "../store/store";
-import { type PlaytestOptions } from "./PlaytestOptions";
+import type { TypedURLSearchParams } from "../options/queryParams";
+import type { EditorRootState } from "../store/store";
+import type { PlaytestOptions } from "./PlaytestOptions";
 import {
   selectCurrentCampaignInProgress,
   selectCursorRoomId,

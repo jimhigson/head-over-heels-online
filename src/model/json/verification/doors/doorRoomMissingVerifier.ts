@@ -6,15 +6,15 @@ import { createNewRoom } from "../../../inPlaceMutators/createNewRoom";
 import { findSubRoomForItem } from "../../../map/itemIsInSubRoom";
 import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import { exitGameRoomId, nowhereRoomId } from "../../ItemConfigMap";
-import { type CampaignVerifier } from "../CampaignVerification";
+import type { CampaignVerifier } from "../CampaignVerification";
 import { allDoors } from "../helpers/doorPartner";
 import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
-import {
-  type VerificationCampaign,
-  type VerificationJsonItem,
-  type VerificationRoomId,
-  type VerificationRoomItemId,
-  type VerificationRoomJson,
+import type {
+  VerificationCampaign,
+  VerificationJsonItem,
+  VerificationRoomId,
+  VerificationRoomItemId,
+  VerificationRoomJson,
 } from "../verificationTypes";
 
 type DoorRoomMissing = {

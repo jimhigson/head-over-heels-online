@@ -1,6 +1,6 @@
-import { type ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
-import { type ConsolidatableJsonItemType } from "../consolidateItems/ConsolidatableJsonItem";
-import { type SceneryName } from "../sprites/planets";
+import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
+import type { ConsolidatableJsonItemType } from "../consolidateItems/ConsolidatableJsonItem";
+import type { SceneryName } from "../sprites/planets";
 import {
   alongAxisOfDirectionXy,
   type AxisXy,
@@ -9,10 +9,10 @@ import {
   type Xy,
   type Xyz,
 } from "../utils/vectors/vectors";
-import { type ItemInPlayConfig } from "./ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
-import { type JsonItemUnion } from "./json/JsonItem";
-import { type WallJsonConfig } from "./json/WallJsonConfig";
+import type { ItemInPlayConfig } from "./ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
+import type { JsonItemUnion } from "./json/JsonItem";
+import type { WallJsonConfig } from "./json/WallJsonConfig";
 
 const wallTimesAlong = (alongAxis: AxisXy, tileCount: number): Partial<Xy> => ({
   x: alongAxis === "x" ? tileCount : 1,

@@ -1,8 +1,8 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { type TeleporterLandingConfig } from "../../../model/json/resolveTeleporterLanding";
-import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { TeleporterLandingConfig } from "../../../model/json/resolveTeleporterLanding";
+import type { EditorRoomId, EditorRoomItemId } from "../../editorTypes";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
 

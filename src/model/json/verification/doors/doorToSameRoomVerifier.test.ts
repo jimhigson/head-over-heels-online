@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { addDoor, campaignOf, newRoom, runCheck } from "../testUtils";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 import { doorToSameRoomVerifier } from "./doorToSameRoomVerifier";
 
 test("flags a door pointing at its own room", () => {

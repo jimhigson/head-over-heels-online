@@ -1,4 +1,4 @@
-import { type HexColour } from "./utils/colour/HexColour";
+import type { HexColour } from "./utils/colour/HexColour";
 
 export const zxSpectrumRoomHue = [
   "yellow",

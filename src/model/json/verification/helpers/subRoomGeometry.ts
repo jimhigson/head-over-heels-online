@@ -4,7 +4,7 @@ import {
   type SubRoom,
   type SubRooms,
 } from "../../../RoomJson";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 
 export type DividedCellRef = {
   cellId: string;

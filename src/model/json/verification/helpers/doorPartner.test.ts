@@ -2,9 +2,9 @@ import { expect, test } from "vitest";
 
 import { exitGameRoomId } from "../../ItemConfigMap";
 import { addDoor, campaignOf, newRoom } from "../testUtils";
-import {
-  type VerificationCampaign,
-  type VerificationRoomId,
+import type {
+  VerificationCampaign,
+  VerificationRoomId,
 } from "../verificationTypes";
 import {
   allDoors,

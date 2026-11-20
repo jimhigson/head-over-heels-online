@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 
 import { basicEmptyRoom } from "../../_testUtils/basicRoom";
-import { type FreeItem } from "../../model/ItemInPlayNarrowedUnions";
+import type { FreeItem } from "../../model/ItemInPlayNarrowedUnions";
 import { roomJsonItemsIterable } from "../../model/RoomJsonItemIterators";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { boxAt, originXyz } from "../../utils/vectors/vectors";

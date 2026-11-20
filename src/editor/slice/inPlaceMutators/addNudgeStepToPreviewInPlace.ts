@@ -10,10 +10,10 @@ import {
   type Xyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
-import {
-  type EditorRoomItemId,
-  type EditorRoomJson,
-  type EditorRoomJsonItems,
+import type {
+  EditorRoomItemId,
+  EditorRoomJson,
+  EditorRoomJsonItems,
 } from "../../editorTypes";
 import { jsonItemsWithEdits } from "../jsonItemsWithEdits";
 import {
@@ -21,10 +21,10 @@ import {
   selectCursorRoomIdFromLevelEditorState,
   selectCursorRoomSelectionFromLevelEditorState,
 } from "../levelEditorSelectors";
-import {
-  type LevelEditorState,
-  type NudgeKind,
-  type PreviewedRoomItemEdits,
+import type {
+  LevelEditorState,
+  NudgeKind,
+  PreviewedRoomItemEdits,
 } from "../levelEditorSlice";
 import { moveVerb, type UndoItemEntry } from "../reducers/undoDescription";
 import { commitPendingNudgeInPlace } from "./commitPendingNudgeInPlace";

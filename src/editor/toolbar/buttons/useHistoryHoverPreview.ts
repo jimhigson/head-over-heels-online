@@ -2,7 +2,7 @@ import { useEffect, useRef } from "preact/hooks";
 
 import { useAppDispatch } from "../../../store/hooks";
 import { undoHovered } from "../../slice/levelEditorSlice";
-import { type HistoryDirection } from "../../slice/reducers/undoReducers";
+import type { HistoryDirection } from "../../slice/reducers/undoReducers";
 
 /**
  * while hovered, previews undoing (or redoing) back to an entry of the cursor

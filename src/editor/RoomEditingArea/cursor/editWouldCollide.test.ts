@@ -1,11 +1,11 @@
 import { describe, expect, test } from "vitest";
 
 import { loadRoom } from "../../../game/gameState/loadRoom/loadRoom";
-import { type AnyRoomJson } from "../../../model/RoomJson";
+import type { AnyRoomJson } from "../../../model/RoomJson";
 import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { emptyUserSettings } from "../../../store/slices/userSettings/emptyUserSettings";
-import { type Xyz } from "../../../utils/vectors/vectors";
-import { type EditorRoomItemId, type EditorRoomState } from "../../editorTypes";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import type { EditorRoomItemId, EditorRoomState } from "../../editorTypes";
 import { itemMoveOrResizeWouldCollide } from "./editWouldCollide";
 
 const xyz = (x: number, y: number, z: number): Xyz => ({ x, y, z });

@@ -8,12 +8,12 @@ import {
   perpendicularAxisXy,
   type Xyz,
 } from "../../../../utils/vectors/vectors";
-import {
-  type EditorJsonItem,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorJsonItem,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../../../editorTypes";
-import { type PreviewedRoomItemEdits } from "../../levelEditorSlice";
+import type { PreviewedRoomItemEdits } from "../../levelEditorSlice";
 import { floorEdgeLineCoord } from "../../perimeterGapFillingEdits";
 
 /**

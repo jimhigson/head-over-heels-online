@@ -1,7 +1,7 @@
-import { type JsonItemUnion } from "../model/json/JsonItem";
+import type { JsonItemUnion } from "../model/json/JsonItem";
 import { jsonItemIsInSubRoom } from "../model/map/itemIsInSubRoom";
-import { type RoomJson } from "../model/RoomJson";
-import { type NotableItem } from "./NotableItem";
+import type { RoomJson } from "../model/RoomJson";
+import type { NotableItem } from "./NotableItem";
 
 /** should the item be rendered on the map? */
 export const jsonItemIsNotable = <RoomId extends string>(

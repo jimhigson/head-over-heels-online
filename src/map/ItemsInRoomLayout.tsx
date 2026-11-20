@@ -1,15 +1,15 @@
-import { type VNode } from "preact";
+import type { VNode } from "preact";
 import { useMemo } from "preact/hooks";
 
 import { blockSizePx } from "../game/physics/mechanicsConstants";
 import { itemInPlayCentre } from "../model/itemInPlayCentre";
-import { type PlayableItem } from "../model/ItemInPlayNarrowedUnions";
-import { type JsonItemUnion } from "../model/json/JsonItem";
+import type { PlayableItem } from "../model/ItemInPlayNarrowedUnions";
+import type { JsonItemUnion } from "../model/json/JsonItem";
 import {
   type ConsolidatableConfig,
   timesNotMultiplied,
 } from "../model/json/utilityJsonConfigTypes";
-import { type IndividualCharacterName } from "../model/modelTypes";
+import type { IndividualCharacterName } from "../model/modelTypes";
 import { isWholeRoomSubRooms, type RoomJson } from "../model/RoomJson";
 import { roomJsonFloorsExtent } from "../model/roomJsonFloorsExtent";
 import { emptyObject } from "../utils/empty";

@@ -1,10 +1,10 @@
 import { useRef, useState } from "preact/hooks";
 
-import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
-import { type TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
+import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useFacingTowardsPointer } from "../../../../../../ui/useFacingTowardsPointer";
 import { PlayAudio } from "../../../../../../utils/sound/PlayAudio";
-import { type DirectionXy8 } from "../../../../../../utils/vectors/vectors";
+import type { DirectionXy8 } from "../../../../../../utils/vectors/vectors";
 import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/playableTailwindSpriteClassname";
 
 const walkGain = 0.8;

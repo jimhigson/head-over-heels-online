@@ -1,8 +1,8 @@
 import { useEffect } from "preact/hooks";
 
-import {
-  type RoomBehaviourComponent,
-  type RoomBehaviourProps,
+import type {
+  RoomBehaviourComponent,
+  RoomBehaviourProps,
 } from "./RoomDecoratorProps";
 
 export const createClickableRoomBehaviour = <RoomId extends string>(

@@ -1,4 +1,4 @@
-import { type EditorJsonItem } from "./editorTypes";
+import type { EditorJsonItem } from "./editorTypes";
 
 /**
  * towers only repeat vertically, so a block repeating along x or y can't be one

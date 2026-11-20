@@ -1,4 +1,4 @@
-import { type EditorThunk } from "../../store/store";
+import type { EditorThunk } from "../../store/store";
 import {
   findItemsDropPlacement,
   type ItemsDrop,

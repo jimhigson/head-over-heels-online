@@ -2,26 +2,26 @@ import {
   itemBehaviourKey,
   type ItemInPlayType,
 } from "../../../model/ItemInPlay";
-import {
-  type PlayableItem,
-  type UnionOfAllItemInPlayTypes,
+import type {
+  PlayableItem,
+  UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
 import {
   type CharacterName,
   otherIndividualCharacterName,
 } from "../../../model/modelTypes";
-import { type RoomState } from "../../../model/RoomState";
+import type { RoomState } from "../../../model/RoomState";
 import { lostLife } from "../../../store/slices/gameInPlay/gameInPlaySlice";
-import { type DeathMenuParam } from "../../../store/slices/gameMenus/gameMenusSlice";
+import type { DeathMenuParam } from "../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../store/store";
 import { rotateVectorTowards } from "../../../utils/vectors/rotateVectorTowards";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { selectPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { saveGameThunk } from "../../gameState/saving/saveGameThunk";
-import { type ItemTouchEvent } from "../../physics/handleTouch/ItemTouchEvent";
-import { type MechanicResult } from "../../physics/MechanicResult";
+import type { ItemTouchEvent } from "../../physics/handleTouch/ItemTouchEvent";
+import type { MechanicResult } from "../../physics/MechanicResult";
 import { jumping } from "../../physics/mechanics/jumping";
 import { pickingUp } from "../../physics/mechanics/pickingUp";
 import { puttingDown } from "../../physics/mechanics/puttingDown";
@@ -34,7 +34,7 @@ import {
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 import { shadowPlayable } from "../../render/shadows/shadowCastTextures";
 import { FreeItemBehaviour } from "../freeItem/FreeItemBehaviour";
-import { type ItemBehaviourConstructorOptions } from "../ItemBehaviour";
+import type { ItemBehaviourConstructorOptions } from "../ItemBehaviour";
 import { firing } from "./firing";
 
 const playableTurnVisualAngularVelocityRadiansPerMs = 0.009;

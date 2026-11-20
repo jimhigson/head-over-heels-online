@@ -1,6 +1,6 @@
 import { audioCtx } from "../audioCtx";
-import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
-import { type ItemSoundRenderer } from "../ItemSoundRenderer";
+import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import { BracketedSound } from "../soundUtils/BracketedSound";
 import { activationBracketedSoundOptions } from "./generic/activationBracketedSoundOptions";
 

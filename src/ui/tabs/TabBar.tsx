@@ -1,4 +1,4 @@
-import { type ComponentChildren } from "preact";
+import type { ComponentChildren } from "preact";
 import { useMemo, useRef, useState } from "preact/hooks";
 
 import { useOverflowsAtFullSize } from "../useOverflowsAtFullSize";

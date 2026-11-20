@@ -1,8 +1,5 @@
 import { setTool } from "../slice/levelEditorSlice";
-import {
-  type EditorCommand,
-  type EditorCommandDispatchable,
-} from "./EditorCommand";
+import type { EditorCommand, EditorCommandDispatchable } from "./EditorCommand";
 
 /** get the dispatchable for running the command */
 export const commandAction = (

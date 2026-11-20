@@ -1,18 +1,18 @@
 // type-only: erased at build time, so this doesn't pull the library into the
 // bundle - the classes themselves are lazily loaded via loadCrtFilterLibrary
-import {
-  type GlowFilter,
-  type RasterFilter,
-  type SignalFilter,
-  type SwitchOnClock,
-  type TubeFilter,
-  type TubeFilterOptions,
+import type {
+  GlowFilter,
+  RasterFilter,
+  SignalFilter,
+  SwitchOnClock,
+  TubeFilter,
+  TubeFilterOptions,
 } from "@blockstacking/jims-shaders";
 import { Container, type Filter, Rectangle } from "pixi.js";
 
-import { type Upscale } from "../../store/slices/upscale/Upscale";
-import { type DisplaySettings } from "../../store/slices/userSettings/userSettingsSlice";
-import { type GameState } from "../gameState/GameState";
+import type { Upscale } from "../../store/slices/upscale/Upscale";
+import type { DisplaySettings } from "../../store/slices/userSettings/userSettingsSlice";
+import type { GameState } from "../gameState/GameState";
 import { playerDiedRecently } from "../gameState/gameStateSelectors/playerDiedRecently";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { noFilters } from "../render/filters/standardFilters";

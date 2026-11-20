@@ -4,9 +4,9 @@ import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { isItemOverFloor, needsFloorUnder } from "../helpers/isItemOverFloor";
 import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import { floorSquares } from "../helpers/roomPerimeter";
-import {
-  type VerificationRoomId,
-  type VerificationRoomItemId,
+import type {
+  VerificationRoomId,
+  VerificationRoomItemId,
 } from "../verificationTypes";
 
 type ItemOffFloor = {

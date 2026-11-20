@@ -1,9 +1,9 @@
 import { zxSpectrumFrameRate } from "../../originalGame";
-import { type AppSpritesheetData } from "../spritesheet/AppSpritesheet";
-import { type AppSpriteFrame } from "../spritesheet/spritesheetData/AppSpriteFrame";
-import {
-  type BaseTextureId,
-  type FramesWithSpeed,
+import type { AppSpritesheetData } from "../spritesheet/AppSpritesheet";
+import type { AppSpriteFrame } from "../spritesheet/spritesheetData/AppSpriteFrame";
+import type {
+  BaseTextureId,
+  FramesWithSpeed,
 } from "../spritesheet/spritesheetData/makeSpritesheetData";
 
 type Sanitise = (s: string) => string;

@@ -1,6 +1,6 @@
 import { useEffect } from "preact/hooks";
 
-import { type ExportedSoundId } from "../../_generated/sfxdex/soundIds";
+import type { ExportedSoundId } from "../../_generated/sfxdex/soundIds";
 import { audioCtx } from "../../sound/audioCtx";
 import { loadSound } from "../../sound/soundsLoader";
 import { connectWithGain } from "../../sound/soundUtils/connectWithGain";

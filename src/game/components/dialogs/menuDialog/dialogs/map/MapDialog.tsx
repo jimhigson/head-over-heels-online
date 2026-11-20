@@ -5,7 +5,7 @@ import { MapSvg } from "../../../../../../map/Map.svg";
 import { getMapColoursClass } from "../../../../../../map/mapColours";
 import { MapContextProvider } from "../../../../../../map/MapContext";
 import { mapDialogColourClasses } from "../../../../../../map/mapDialogColourClasses";
-import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
+import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
 import { useCheatsOn } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";

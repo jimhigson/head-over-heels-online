@@ -1,6 +1,6 @@
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import { type Xy } from "../../../utils/vectors/vectors";
-import { type DrawOrderComparable } from "./DrawOrderComparable";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { DrawOrderComparable } from "./DrawOrderComparable";
 
 /*
  * floating text appears above all 'normal' items. This number must be larger than the

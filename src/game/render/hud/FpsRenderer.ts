@@ -1,17 +1,17 @@
 import { Container } from "pixi.js";
 
 import { maybeDimPixiPalette } from "../../../sprites/palette/pixiPalette";
-import { type BlockstackPaletteColourName } from "../../../sprites/palette/spritesheetPalette";
+import type { BlockstackPaletteColourName } from "../../../sprites/palette/spritesheetPalette";
 import { blockstackPixiPalettes } from "../../../sprites/palette/spritesheetPixiPalettes";
 import { hudCharTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
-import { type FrameTimingStatsEvent } from "../../mainLoop/frameTiming/FrameTimingStats";
+import type { FrameTimingStatsEvent } from "../../mainLoop/frameTiming/FrameTimingStats";
 import {
   loadedFrameTimingStats,
   loadFrameTimingStats,
 } from "../../mainLoop/frameTiming/lazyFrameTimingStats";
-import { type Renderer } from "../Renderer";
+import type { Renderer } from "../Renderer";
 import { TextContainer } from "../text/TextContainer";
-import { type HudRenderContext } from "./hudRendererContexts";
+import type { HudRenderContext } from "./hudRendererContexts";
 
 export class FpsRenderer implements Renderer<
   HudRenderContext<string>,

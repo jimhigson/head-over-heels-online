@@ -1,6 +1,6 @@
 import { getJsonItemTimes } from "../model/times";
-import { type Xyz } from "../utils/vectors/vectors";
-import { type ConsolidatableItemWithId } from "./consolidateItems";
+import type { Xyz } from "../utils/vectors/vectors";
+import type { ConsolidatableItemWithId } from "./consolidateItems";
 
 export class Grid<T> {
   #cells: Set<T>[][][];

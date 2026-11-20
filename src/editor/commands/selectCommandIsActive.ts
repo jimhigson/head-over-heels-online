@@ -1,8 +1,8 @@
 import nanoEqual from "nano-equal";
 
-import { type EditorRootState } from "../../store/store";
+import type { EditorRootState } from "../../store/store";
 import { selectTool } from "../slice/levelEditorSlice";
-import { type EditorCommand } from "./EditorCommand";
+import type { EditorCommand } from "./EditorCommand";
 
 /**
  * whether the command shows as active - for an item tool, whether it is the

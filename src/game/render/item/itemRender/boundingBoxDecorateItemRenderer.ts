@@ -1,5 +1,5 @@
 import { CompositeItemGraphicsRenderer } from "./CompositeItemGraphicsRenderer";
-import { type DecorateItemMaybeRenderer } from "./DecorateItemRenderer";
+import type { DecorateItemMaybeRenderer } from "./DecorateItemRenderer";
 import { ItemBoundingBoxRenderer } from "./ItemBoundingBoxRenderer";
 
 export const boundingBoxDecorateItemRenderer: DecorateItemMaybeRenderer = (

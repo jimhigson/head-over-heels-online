@@ -1,9 +1,9 @@
-import { type ItemInPlay } from "../../../model/ItemInPlay";
-import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import { addPokeableNumbers } from "../../../model/ItemStateMap";
-import { type CharacterName } from "../../../model/modelTypes";
-import { type RoomState } from "../../../model/RoomState";
-import { type GameState } from "../../gameState/GameState";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
+import type { GameState } from "../../gameState/GameState";
 import { selectHeadAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { PickupBehaviour } from "./PickupBehaviour";
 

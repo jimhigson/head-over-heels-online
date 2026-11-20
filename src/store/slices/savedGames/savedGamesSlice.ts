@@ -5,11 +5,11 @@ import {
 } from "@reduxjs/toolkit";
 import { canonicalize } from "json-canonicalize";
 
-import {
-  type SavedGame,
-  type SavedStoreGameInPlay,
+import type {
+  SavedGame,
+  SavedStoreGameInPlay,
 } from "../../../game/gameState/saving/SavedGameState";
-import { type CampaignLocator } from "../../../model/modelTypes";
+import type { CampaignLocator } from "../../../model/modelTypes";
 import { pick } from "../../../utils/pick";
 import { clearAllData } from "../clearAllData";
 

@@ -1,6 +1,6 @@
-import { type CharacterName } from "../../model/modelTypes";
-import { type SpritesheetName } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type Xy } from "../../utils/vectors/vectors";
+import type { CharacterName } from "../../model/modelTypes";
+import type { SpritesheetName } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { Xy } from "../../utils/vectors/vectors";
 
 export type E2EEventBusPayloadMap = {
   characterChanged: { characterName: CharacterName };

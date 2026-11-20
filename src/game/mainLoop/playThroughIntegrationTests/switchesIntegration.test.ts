@@ -4,9 +4,9 @@ import { setUpBasicGame, type TestRoomId } from "../../../_testUtils/basicRoom";
 import { heelsState, itemState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import {
-  type SwitchConfig,
-  type SwitchInRoomConfig,
+import type {
+  SwitchConfig,
+  SwitchInRoomConfig,
 } from "../../../model/json/SwitchConfig";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { oppositeDirection, tangentAxis } from "../../../utils/vectors/vectors";

@@ -1,9 +1,9 @@
 import { createContext } from "preact";
 import { useContext } from "preact/hooks";
 
-import { type EditorRoomId } from "../editorTypes";
-import { type LoadedRoomCache } from "../loadedRoomCache/LoadedRoomCache";
-import { type OpenRoomId } from "../slice/OpenRoom";
+import type { EditorRoomId } from "../editorTypes";
+import type { LoadedRoomCache } from "../loadedRoomCache/LoadedRoomCache";
+import type { OpenRoomId } from "../slice/OpenRoom";
 
 /**
  * the open room a pane draws, for the many hooks and components inside the

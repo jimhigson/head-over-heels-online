@@ -1,10 +1,10 @@
-import { type SwitchSetting } from "../../../model/ItemInPlay";
-import { type SwitchConfig } from "../../../model/json/SwitchConfig";
+import type { SwitchSetting } from "../../../model/ItemInPlay";
+import type { SwitchConfig } from "../../../model/json/SwitchConfig";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { selectBooleanUserSetting } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { createSprite } from "../createSprite";
-import { type ItemAppearance } from "./ItemAppearance";
+import type { ItemAppearance } from "./ItemAppearance";
 
 type SwitchRenderProps = {
   setting: SwitchSetting;

@@ -1,9 +1,9 @@
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import { allTeleporters, teleporterLanding } from "../helpers/teleporterTarget";
-import {
-  type VerificationRoomId,
-  type VerificationRoomItemId,
+import type {
+  VerificationRoomId,
+  VerificationRoomItemId,
 } from "../verificationTypes";
 
 type TeleporterLandingUnresolvable = {

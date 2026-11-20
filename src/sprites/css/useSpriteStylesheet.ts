@@ -1,6 +1,6 @@
 import { useLayoutEffect } from "preact/hooks";
 
-import { type AppSpritesheetData } from "../spritesheet/AppSpritesheet";
+import type { AppSpritesheetData } from "../spritesheet/AppSpritesheet";
 import { spriteCssText } from "./spriteCssText";
 
 type SheetCacheEntry = { sheet: CSSStyleSheet; refCount: number };

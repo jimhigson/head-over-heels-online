@@ -3,17 +3,17 @@ import { type Color, Container } from "pixi.js";
 import { OutlineFilter } from "../../game/render/filters/OutlineFilter";
 import { RevertColouriseFilter } from "../../game/render/filters/RevertColouriseFilter";
 import { noFilters } from "../../game/render/filters/standardFilters";
-import { type DecorateItemMaybeRenderer } from "../../game/render/item/itemRender/DecorateItemRenderer";
-import { type ItemChainPixiRenderer } from "../../game/render/item/itemRender/ItemPixiRenderer";
-import {
-  type ItemRenderContext,
-  type ItemTickContext,
+import type { DecorateItemMaybeRenderer } from "../../game/render/item/itemRender/DecorateItemRenderer";
+import type { ItemChainPixiRenderer } from "../../game/render/item/itemRender/ItemPixiRenderer";
+import type {
+  ItemRenderContext,
+  ItemTickContext,
 } from "../../game/render/ItemRenderContexts";
 import { TextContainer } from "../../game/render/text/TextContainer";
-import { type ItemInPlayType } from "../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
 import { getControlTargetJsonItemsInRoom } from "../../model/json/getControlTargetJsonItemsInRoom";
 import { exitGameRoomId } from "../../model/json/ItemConfigMap";
-import { type JsonMovement } from "../../model/json/utilityJsonConfigTypes";
+import type { JsonMovement } from "../../model/json/utilityJsonConfigTypes";
 import { blockstackPixiPalettes } from "../../sprites/palette/spritesheetPixiPalettes";
 import { editorStore, store } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
@@ -27,19 +27,19 @@ import {
   nonZeroVectorClosestDirectionXy4,
   type Xy,
 } from "../../utils/vectors/vectors";
-import {
-  type EditorItemInPlayUnion,
-  type EditorRoomId,
-  type EditorUnionOfAllItemInPlayTypes,
+import type {
+  EditorItemInPlayUnion,
+  EditorRoomId,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
 import { editorUiScale } from "../editorUiScale";
-import { type EditorViewport } from "../RoomEditingArea/viewport/EditorViewport";
+import type { EditorViewport } from "../RoomEditingArea/viewport/EditorViewport";
 import {
   selectOpenRoomSelection,
   selectTool,
   setClickableAnnotationHovered,
 } from "../slice/levelEditorSlice";
-import { type OpenRoomId } from "../slice/OpenRoom";
+import type { OpenRoomId } from "../slice/OpenRoom";
 import { maybeLayoutNode } from "../slice/PaneLayout";
 
 const selectionColour = blockstackPixiPalettes.basic.pastelBlue;

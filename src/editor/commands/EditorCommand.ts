@@ -1,11 +1,11 @@
-import { type ComponentChildren, type VNode } from "preact";
+import type { ComponentChildren, VNode } from "preact";
 
-import { type TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import { type EditorRootState, type EditorThunk } from "../../store/store";
-import { type ShortcutKeys } from "../../ui/useKeyboardShortcut";
-import { type ItemTool } from "../RoomEditingArea/interactivity/Tool";
-import { type EditorSaveSliceAction } from "../slice/editorSaveSlice";
-import { type LevelEditorSliceAction } from "../slice/levelEditorSlice";
+import type { TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import type { EditorRootState, EditorThunk } from "../../store/store";
+import type { ShortcutKeys } from "../../ui/useKeyboardShortcut";
+import type { ItemTool } from "../RoomEditingArea/interactivity/Tool";
+import type { EditorSaveSliceAction } from "../slice/editorSaveSlice";
+import type { LevelEditorSliceAction } from "../slice/levelEditorSlice";
 
 /** what running a command dispatches */
 export type EditorCommandDispatchable =

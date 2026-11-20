@@ -1,15 +1,15 @@
-import { type SpritesheetData } from "pixi.js";
+import type { SpritesheetData } from "pixi.js";
 
 import { objectEntriesIter } from "../../../utils/entries";
-import { type AnimationsOfFrames } from "./AnimationsOfFrames";
-import { type AppSpriteFrame } from "./AppSpriteFrame";
+import type { AnimationsOfFrames } from "./AnimationsOfFrames";
+import type { AppSpriteFrame } from "./AppSpriteFrame";
 import { doorSpritesheetData } from "./doorSpritesheetData";
 import { editorSpritesheetData } from "./editorSpritesheetData";
 import { itemsSpritesheetData } from "./itemsSpritesheetData";
-import { type TextureId } from "./makeSpritesheetData";
+import type { TextureId } from "./makeSpritesheetData";
 import { playableSpritesheetData } from "./playableSpritesheetData";
 import { scenerySpritesheetData } from "./scenerySpritesheetData";
-import { type SpritesheetMetadata } from "./spritesheetMetaData";
+import type { SpritesheetMetadata } from "./spritesheetMetaData";
 
 export const spritesheetSize = { w: 1_024, h: 1_024 };
 

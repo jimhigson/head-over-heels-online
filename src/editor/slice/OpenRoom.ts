@@ -1,12 +1,12 @@
-import { type Tagged } from "type-fest";
+import type { Tagged } from "type-fest";
 
 import { cameraAngleBase } from "../../utils/vectors/cameraAngleVectors";
-import { type Xy } from "../../utils/vectors/vectors";
-import { type EditorRoomId } from "../editorTypes";
-import { type EditorRoomView } from "./EditorRoomView";
-import { type HoveredItem } from "./levelEditorSlice";
-import { type DragInProgress } from "./reducers/dragToMoveReducers";
-import { type SelectionEntry } from "./SelectionEntry";
+import type { Xy } from "../../utils/vectors/vectors";
+import type { EditorRoomId } from "../editorTypes";
+import type { EditorRoomView } from "./EditorRoomView";
+import type { HoveredItem } from "./levelEditorSlice";
+import type { DragInProgress } from "./reducers/dragToMoveReducers";
+import type { SelectionEntry } from "./SelectionEntry";
 
 /**
  * identifies an open room - the same room can be open more than once (eg in a

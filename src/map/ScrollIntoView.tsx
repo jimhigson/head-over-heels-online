@@ -1,4 +1,4 @@
-import { type RefObject } from "preact";
+import type { RefObject } from "preact";
 import { useLayoutEffect, useRef } from "preact/hooks";
 
 /** tiny component that scrolls itself into view, and does nothing else */

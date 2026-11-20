@@ -1,5 +1,5 @@
 import { keysIter } from "../../utils/entries";
-import { type TextureId } from "./spritesheetData/makeSpritesheetData";
+import type { TextureId } from "./spritesheetData/makeSpritesheetData";
 
 type TexturesPredicate<Id extends string = TextureId> = (
   candidate: Id,

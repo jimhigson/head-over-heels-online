@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
+import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
 import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectPlanetsLiberatedCount,
@@ -8,7 +8,7 @@ import {
   usePickupsCollected,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
-import { type GameRootState } from "../../../../../../store/store";
+import type { GameRootState } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";

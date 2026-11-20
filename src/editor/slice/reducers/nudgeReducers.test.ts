@@ -3,7 +3,7 @@ import { expect, test } from "vitest";
 
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { originXyz, type Xyz } from "../../../utils/vectors/vectors";
-import { type EditorRoomItemId } from "../../editorTypes";
+import type { EditorRoomItemId } from "../../editorTypes";
 import {
   commitPendingNudge,
   deleteSelected,

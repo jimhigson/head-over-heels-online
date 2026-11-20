@@ -1,16 +1,13 @@
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import {
-  type FreeItem,
-  type FreeItemTypes,
+import type {
+  FreeItem,
+  FreeItemTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
-import { type RoomState } from "../../../model/RoomState";
+import type { RoomState } from "../../../model/RoomState";
 import { originXyz } from "../../../utils/vectors/vectors";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 import { liftVelZ } from "../../physics/liftVelZ";
-import {
-  type Mechanic,
-  type MechanicResult,
-} from "../../physics/MechanicResult";
+import type { Mechanic, MechanicResult } from "../../physics/MechanicResult";
 import { fallG } from "../../physics/mechanicsConstants";
 
 const notFalling = {

@@ -3,7 +3,7 @@ import { useRef } from "preact/hooks";
 import { useIsUncolourised } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { roomTabDrag } from "../RoomEditingArea/roomTabDrag";
 import { setRoomTabDragImage } from "../RoomEditingArea/setRoomTabDragImage";
-import { type DraggedRoomTab } from "../slice/PaneLayout";
+import type { DraggedRoomTab } from "../slice/PaneLayout";
 import { roomDraggedFrom } from "./roomDraggedFrom";
 
 /**

@@ -1,9 +1,9 @@
 import { usePlayableTailwindSpriteClassname } from "../game/components/tailwindSprites/playableTailwindSpriteClassname";
-import { type JsonItem } from "../model/json/JsonItem";
-import { type IndividualCharacterName } from "../model/modelTypes";
-import {
-  type AnimatedTextureTailwindClass,
-  type TextureTailwindClass,
+import type { JsonItem } from "../model/json/JsonItem";
+import type { IndividualCharacterName } from "../model/modelTypes";
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
 } from "../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import {
   nonZeroVectorClosestDirectionXy8,

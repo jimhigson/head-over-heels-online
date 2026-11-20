@@ -1,14 +1,14 @@
-import { type SetOptional } from "type-fest";
+import type { SetOptional } from "type-fest";
 
-import { type Tables } from "../_generated/db";
-import { type EditorCampaign } from "../editor/editorTypes";
+import type { Tables } from "../_generated/db";
+import type { EditorCampaign } from "../editor/editorTypes";
 import { migrateCampaignInPlace } from "../model/inPlaceMutators/migrateCampaignInPlace";
-import {
-  type Campaign,
-  type CampaignLocator,
-  type DbCampaign,
+import type {
+  Campaign,
+  CampaignLocator,
+  DbCampaign,
 } from "../model/modelTypes";
-import { type CampaignDbClient } from "./CampaignDbClient";
+import type { CampaignDbClient } from "./CampaignDbClient";
 import {
   compressCampaignObject,
   decompressCampaignObject,

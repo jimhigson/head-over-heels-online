@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
-import { type Xy } from "../../../utils/vectors/vectors";
+import type { Xy } from "../../../utils/vectors/vectors";
 import { makeItemRenderBoxAtCameraAngle } from "./makeItemRenderBoxAtCameraAngle";
 
 // head, per the itemRenderExtents table: physical 12×12×12, draws 15×15×13

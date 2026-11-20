@@ -15,7 +15,7 @@ import {
   projectWorldXyzToScreenX,
   projectWorldXyzToScreenY,
 } from "../../projections";
-import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
+import type { ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 /**
  * The outermost link of an item's graphics chain: the container placed in the

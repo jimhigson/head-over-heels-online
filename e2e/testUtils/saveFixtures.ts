@@ -1,7 +1,7 @@
-import { type Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 
 /**
  * a captured save-game fixture: the complete `persist:`-prefixed localStorage

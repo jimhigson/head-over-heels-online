@@ -1,21 +1,21 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { nextItemIdInItems } from "../../../model/inPlaceMutators/nextItemId";
 import { typePrefix } from "../../../model/json/typePrefix";
 import { keys } from "../../../utils/entries";
 import { addXyz, originXyz, type Xyz } from "../../../utils/vectors/vectors";
-import {
-  type EditorJsonItemWithTimes,
-  type EditorRoomItemId,
+import type {
+  EditorJsonItemWithTimes,
+  EditorRoomItemId,
 } from "../../editorTypes";
 import { growArgs, shrinkArgs } from "../../toolbar/buttons/nudgeDirections";
 import { addNudgeStepToPreviewInPlace } from "../inPlaceMutators/addNudgeStepToPreviewInPlace";
 import { selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState } from "../levelEditorSelectors";
-import {
-  type LevelEditorState,
-  type PreviewedRoomItemEdits,
+import type {
+  LevelEditorState,
+  PreviewedRoomItemEdits,
 } from "../levelEditorSlice";
-import { type MultiplyPlan, type MultiplyType } from "../multiplyPlan";
+import type { MultiplyPlan, MultiplyType } from "../multiplyPlan";
 import { previewedItemsIter } from "../previewedItemsIter";
 import {
   addTimesDeltaToJsonItemInPlace,

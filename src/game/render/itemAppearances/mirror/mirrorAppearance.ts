@@ -7,7 +7,7 @@ import {
   asItemRenderContext,
   type ItemLeafRenderContext,
 } from "../../ItemRenderContexts";
-import { type ItemAppearance } from "../ItemAppearance";
+import type { ItemAppearance } from "../ItemAppearance";
 import { ReflectionRenderers } from "./ReflectionRenderers";
 import {
   type MirrorPaneNumber,

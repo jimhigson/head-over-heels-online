@@ -1,10 +1,10 @@
-import { type ItemInPlay } from "../../../model/ItemInPlay";
-import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
-import { type CharacterName } from "../../../model/modelTypes";
-import { type RoomState } from "../../../model/RoomState";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
 import { reincarnationFishEaten } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { store } from "../../../store/store";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 import { createSavedGame } from "../../gameState/saving/createSavedGame";
 import { PickupBehaviour } from "./PickupBehaviour";
 

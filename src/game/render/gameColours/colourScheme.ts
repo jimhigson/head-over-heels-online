@@ -1,10 +1,10 @@
-import { type Color } from "pixi.js";
+import type { Color } from "pixi.js";
 
-import { type UnknownRoomState } from "../../../model/RoomState";
-import {
-  type ZxSpectrumRoomColour,
-  type ZxSpectrumRoomHue,
-  type ZxSpectrumShade,
+import type { UnknownRoomState } from "../../../model/RoomState";
+import type {
+  ZxSpectrumRoomColour,
+  ZxSpectrumRoomHue,
+  ZxSpectrumShade,
 } from "../../../originalGame";
 import { zxSpectrumPixiColor } from "../palette/zxSpectrumPixiColours";
 

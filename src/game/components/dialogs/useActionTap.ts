@@ -1,11 +1,11 @@
 import { useLayoutEffect, useMemo } from "preact/hooks";
 
 import { appTicker } from "../../../utils/ticker/appTickerInstance";
-import { type DirectionXy4 } from "../../../utils/vectors/vectors";
-import { type BooleanAction } from "../../input/actions";
-import { type InputPress } from "../../input/InputAssignment";
+import type { DirectionXy4 } from "../../../utils/vectors/vectors";
+import type { BooleanAction } from "../../input/actions";
+import type { InputPress } from "../../input/InputAssignment";
 import { useInputStateTracker } from "../../input/InputStateProvider";
-import { type InputStateTrackerInterface } from "../../input/InputStateTracker";
+import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
 
 export type UseActionInputProps = {
   /** MUST be cached using useCallback or useMemo, or will re-assign on every render

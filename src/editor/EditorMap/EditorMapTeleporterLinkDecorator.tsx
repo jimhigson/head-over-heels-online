@@ -2,13 +2,13 @@ import { blockSizePx } from "../../game/physics/mechanicsConstants";
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
 import { notableItemSlotPositions } from "../../map/ItemsInRoomLayout";
 import { useMapContext } from "../../map/MapContext";
-import { type RoomDecoratorProps } from "../../map/RoomDecoratorProps";
+import type { RoomDecoratorProps } from "../../map/RoomDecoratorProps";
 import { roomWorldPosition } from "../../map/roomWorldPosition";
 import { translateXyz } from "../../map/svgHelpers";
 import { useRoomNode } from "../../map/useRoomNode";
-import {
-  type TeleporterCell,
-  type TeleporterLink,
+import type {
+  TeleporterCell,
+  TeleporterLink,
 } from "../../model/map/teleporterLinks";
 import {
   addXy,
@@ -17,7 +17,7 @@ import {
   subXy,
   type Xy,
 } from "../../utils/vectors/vectors";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import {
   alongPerp,
   arrowShaftWidth,

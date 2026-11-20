@@ -7,13 +7,13 @@ import {
   rotatedYMaxOverRect,
   rotatedYMinOverRect,
 } from "../../../utils/vectors/rotatedOverRect";
-import { type Xyz, type XyzBox } from "../../../utils/vectors/vectors";
-import {
-  type RenderBox,
-  type RenderBoxes,
+import type { Xyz, XyzBox } from "../../../utils/vectors/vectors";
+import type {
+  RenderBox,
+  RenderBoxes,
 } from "../renderBox/makeItemRenderBoxAtCameraAngle";
-import { type DrawOrderBroadPhase } from "./DrawOrderBroadPhase";
-import { type DrawOrderComparable } from "./DrawOrderComparable";
+import type { DrawOrderBroadPhase } from "./DrawOrderBroadPhase";
+import type { DrawOrderComparable } from "./DrawOrderComparable";
 import { participatesInDrawOrder } from "./fixedZIndexes";
 import {
   ADJACENT_X,

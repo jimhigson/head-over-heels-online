@@ -1,8 +1,8 @@
-import { type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { coalesceRoomsInPlace } from "../inPlaceMutators/coalesceRoomsInPlace";
 import { commitPendingNudgeInPlace } from "../inPlaceMutators/commitPendingNudgeInPlace";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 
 export const coalesceRoomsReducers = {
   coalesceSelectedRooms(_state) {

@@ -1,7 +1,7 @@
 import { Fragment } from "preact";
 
-import { type CampaignDirectory } from "../../../../../../db/getAllUsersLatestCampaigns";
-import { type CampaignLocator } from "../../../../../../model/modelTypes";
+import type { CampaignDirectory } from "../../../../../../db/getAllUsersLatestCampaigns";
+import type { CampaignLocator } from "../../../../../../model/modelTypes";
 import { gameStarted } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { timeAgo } from "../../../../../../utils/timeAgo";

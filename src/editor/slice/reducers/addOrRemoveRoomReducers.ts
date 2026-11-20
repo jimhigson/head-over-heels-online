@@ -1,11 +1,11 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJsonItemIterators";
 import { keysIter } from "../../../utils/entries";
 import { first } from "../../../utils/iterators/first";
-import { type DirectionXy4, type Xy } from "../../../utils/vectors/vectors";
-import { type EditorRoomId } from "../../editorTypes";
+import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
+import type { EditorRoomId } from "../../editorTypes";
 import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
 import { deleteRoomsInPlace } from "../inPlaceMutators/deleteRoomsInPlace";
@@ -16,7 +16,7 @@ import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomIdFromLevelEditorState,
 } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 
 export const addOrRemoveRoomReducers = {
   addRoom(

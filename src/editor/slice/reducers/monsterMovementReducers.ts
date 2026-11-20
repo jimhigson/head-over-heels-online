@@ -1,7 +1,7 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { type JsonMovement } from "../../../model/json/utilityJsonConfigTypes";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { JsonMovement } from "../../../model/json/utilityJsonConfigTypes";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
 
 export const monsterMovementReducers = {

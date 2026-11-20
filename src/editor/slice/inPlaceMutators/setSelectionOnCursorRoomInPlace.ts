@@ -1,6 +1,6 @@
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { selectActiveCursorRoomEditingOpenRoomFromLevelEditorState } from "../PaneLayout";
-import { type SelectionEntry } from "../SelectionEntry";
+import type { SelectionEntry } from "../SelectionEntry";
 
 /**
  * set what is selected in the cursor room - a no-op unless the active

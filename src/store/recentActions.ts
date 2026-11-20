@@ -1,4 +1,4 @@
-import { type Middleware, type UnknownAction } from "@reduxjs/toolkit";
+import type { Middleware, UnknownAction } from "@reduxjs/toolkit";
 
 import { errorCaught, errorDismissed } from "./slices/errors/errorsSlice";
 

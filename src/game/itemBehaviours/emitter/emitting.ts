@@ -1,5 +1,5 @@
 import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
-import { type EmittableItemJson } from "../../../model/json/ItemConfigMap";
+import type { EmittableItemJson } from "../../../model/json/ItemConfigMap";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
@@ -17,7 +17,7 @@ import {
   collision2Items,
   hasCollisionItemWithIndex,
 } from "../../collision/aabbCollision";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 import { buildRoomJsonDirectionalIndex } from "../../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";

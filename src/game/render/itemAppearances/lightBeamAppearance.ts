@@ -1,6 +1,6 @@
 import { type AnimatedSprite, Container } from "pixi.js";
 
-import { type LightBeamEnd } from "../../../model/ItemStateMap";
+import type { LightBeamEnd } from "../../../model/ItemStateMap";
 import { originalGameFrameDuration } from "../../../originalGame";
 import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
@@ -21,7 +21,7 @@ import {
 } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
 import { projectWorldXyzToScreenXy } from "../projections";
-import { type ItemAppearance } from "./ItemAppearance";
+import type { ItemAppearance } from "./ItemAppearance";
 
 type LightBeamRenderProps = {
   direction: Xyz;

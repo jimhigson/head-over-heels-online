@@ -1,7 +1,7 @@
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
-import { type CharacterName } from "../../../model/modelTypes";
-import { type RoomState } from "../../../model/RoomState";
+import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
 import {
   getEffectivelyStandingOnItemIdForPlayable,
   stoodOnItem,
@@ -22,11 +22,11 @@ import {
   type Xyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 import { fastStepsRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
-import { type PressStatus } from "../../input/InputStateTracker";
+import type { PressStatus } from "../../input/InputStateTracker";
 import { currentQuarterCameraAngle } from "../../mainLoop/tickCameraTransition";
-import { type Mechanic, type MechanicResult } from "../MechanicResult";
+import type { Mechanic, MechanicResult } from "../MechanicResult";
 import {
   heelsJumpForwardDecel,
   heelsJumpForwardSpeedFraction,

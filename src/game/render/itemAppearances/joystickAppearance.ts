@@ -1,6 +1,6 @@
 import { Container, type Sprite } from "pixi.js";
 
-import { type AppSpritesheetWithVariants } from "../../../sprites/spritesheet/AppSpritesheet";
+import type { AppSpritesheetWithVariants } from "../../../sprites/spritesheet/AppSpritesheet";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import {
   resolveCameraRelativeIndexXy4,
@@ -13,7 +13,7 @@ import {
   type Xy,
 } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
-import { type ItemAppearance } from "./ItemAppearance";
+import type { ItemAppearance } from "./ItemAppearance";
 
 type JoystickRenderProps = {
   /** the on-screen push direction ring index the ball is nudged towards,

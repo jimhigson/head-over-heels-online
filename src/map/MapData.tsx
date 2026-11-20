@@ -1,6 +1,6 @@
-import { type SortedObjectOfRoomGridPositionSpecs } from "../model/map/sortRoomGridPositions";
-import { type SceneryName } from "../sprites/planets";
-import { type Bounds } from "./Map.svg";
+import type { SortedObjectOfRoomGridPositionSpecs } from "../model/map/sortRoomGridPositions";
+import type { SceneryName } from "../sprites/planets";
+import type { Bounds } from "./Map.svg";
 
 /**
  * everything needed to load the map -

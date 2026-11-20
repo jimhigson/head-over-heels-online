@@ -2,14 +2,14 @@ import {
   blockSizePx,
   defaultRoomHeightBlocks,
 } from "../game/physics/mechanicsConstants";
-import { type ItemTickContext } from "../game/render/ItemRenderContexts";
+import type { ItemTickContext } from "../game/render/ItemRenderContexts";
 import { projectWorldXyzToScreenX } from "../game/render/projections";
-import { type ItemInPlayType } from "../model/ItemInPlay";
+import type { ItemInPlayType } from "../model/ItemInPlay";
 import { roomItemsIterable } from "../model/roomItemsInPlayIterators";
 import { rotateXyz } from "../utils/vectors/rotateXy";
 import { audioCtx } from "./audioCtx";
-import { type ItemSoundRenderContext } from "./ItemSoundRenderContext";
-import { type ItemSoundRenderer } from "./ItemSoundRenderer";
+import type { ItemSoundRenderContext } from "./ItemSoundRenderContext";
+import type { ItemSoundRenderer } from "./ItemSoundRenderer";
 
 // TODO: this doesn't account for scrolling!
 

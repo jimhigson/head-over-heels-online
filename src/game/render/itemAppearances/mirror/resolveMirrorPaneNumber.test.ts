@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
-import { type MirrorOrientation } from "../../../../model/MirrorOrientation";
-import { type Xy } from "../../../../utils/vectors/vectors";
+import type { MirrorOrientation } from "../../../../model/MirrorOrientation";
+import type { Xy } from "../../../../utils/vectors/vectors";
 import {
   mirrorFlipMs,
   resolveMirrorPaneNumber,

@@ -4,8 +4,8 @@
  * game code depends on it and the behaviours' own imports can't loop back here
  */
 
-import { type ItemInPlayType } from "../../model/ItemInPlay";
-import { type MonsterWhich } from "../../model/json/MonsterJsonConfig";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { MonsterWhich } from "../../model/json/MonsterJsonConfig";
 import { emptyObject } from "../../utils/empty";
 import { entries } from "../../utils/entries";
 import {
@@ -62,10 +62,7 @@ import { DoughnutsPickupBehaviour } from "./pickups/DoughnutsPickupBehaviour";
 import { ExtraLifePickupBehaviour } from "./pickups/ExtraLifePickupBehaviour";
 import { FastStepsPickupBehaviour } from "./pickups/FastStepsPickupBehaviour";
 import { HooterPickupBehaviour } from "./pickups/HooterPickupBehaviour";
-import {
-  type PickupBehaviour,
-  type PickupGives,
-} from "./pickups/PickupBehaviour";
+import type { PickupBehaviour, PickupGives } from "./pickups/PickupBehaviour";
 import { ReincarnationPickupBehaviour } from "./pickups/ReincarnationPickupBehaviour";
 import { ScrollPickupBehaviour } from "./pickups/ScrollPickupBehaviour";
 import { ShieldPickupBehaviour } from "./pickups/ShieldPickupBehaviour";

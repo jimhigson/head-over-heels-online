@@ -1,6 +1,6 @@
 import { glyphOutline, type GlyphOutline } from "./glyphOutline";
 import { type GlyphOverride, pixelAt, type PixelKey } from "./glyphOverrides";
-import { type KernelMatch } from "./kernelRules";
+import type { KernelMatch } from "./kernelRules";
 import { activeCellsOf, reachedCellsOf } from "./pixelRuleIndex";
 import { withPixelRules } from "./withPixelRules";
 

@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { type AnyRoomJson } from "../RoomJson";
+import type { AnyRoomJson } from "../RoomJson";
 import { migrateTowersInPlace } from "./migrateTowersInPlace";
 
 const roomWithItems = (items: AnyRoomJson["items"]): AnyRoomJson =>

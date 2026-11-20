@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { type Plane, type Xy, type Xyz } from "../../../utils/vectors/vectors";
+import type { Plane, Xy, Xyz } from "../../../utils/vectors/vectors";
 import {
   betweenLeftAndTowards,
   betweenRightAndAway,

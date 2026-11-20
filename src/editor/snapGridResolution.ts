@@ -1,6 +1,6 @@
 import { isRoomStructureItemType } from "../model/json/isRoomStructureItemType";
-import { type JsonItemType } from "../model/json/JsonItem";
-import { type GridResolution } from "./slice/levelEditorSlice";
+import type { JsonItemType } from "../model/json/JsonItem";
+import type { GridResolution } from "./slice/levelEditorSlice";
 
 /**
  * whether items of this type can only be placed or moved by whole blocks,

@@ -1,4 +1,4 @@
-import { type ComponentChildren } from "preact";
+import type { ComponentChildren } from "preact";
 import { useCallback, useState } from "preact/hooks";
 
 import { Border } from "../../ui/Border";

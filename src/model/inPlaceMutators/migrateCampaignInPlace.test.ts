@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { valuesIter } from "../../utils/entries";
-import { type AnyRoomJson } from "../RoomJson";
+import type { AnyRoomJson } from "../RoomJson";
 import { migrateCampaignInPlace } from "./migrateCampaignInPlace";
 
 /** a room with a single legacy wall: a near (towards) wall sized by `times`, no tiles */

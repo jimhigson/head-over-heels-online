@@ -1,7 +1,7 @@
 import "vitest";
 
-import { type Xy } from "../../../utils/vectors/vectors";
-import { type DrawOrderComparable } from "./DrawOrderComparable";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { DrawOrderComparable } from "./DrawOrderComparable";
 
 /** which camera angle to evaluate the draw-order relationship at */
 type AtAngle = { whenAtAngle: Xy };

@@ -8,8 +8,8 @@ import { defineConfig, type PluginOption } from "vite";
 import glsl from "vite-plugin-glsl";
 import { VitePWA } from "vite-plugin-pwa";
 
-import { hmrOnlyPreact } from "./hmrOnlyPreact";
-import { postcssPruneUnused } from "./postcssPruneUnused";
+import { hmrOnlyPreact } from "./buildTools/hmrOnlyPreact";
+import { postcssPruneUnused } from "./buildTools/postcssPruneUnused";
 
 const oneWeekInSeconds = 60 * 60 * 24 * 7;
 

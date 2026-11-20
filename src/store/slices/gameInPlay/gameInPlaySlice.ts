@@ -4,21 +4,21 @@ import {
   type PayloadAction,
 } from "@reduxjs/toolkit";
 
-import {
-  type SavedGame,
-  type SavedStoreGameInPlay,
+import type {
+  SavedGame,
+  SavedStoreGameInPlay,
 } from "../../../game/gameState/saving/SavedGameState";
-import { type MarkdownPageName } from "../../../manual/pages";
-import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
-import { type ScrollConfig } from "../../../model/json/ItemConfigMap";
-import {
-  type CampaignLocator,
-  type CharacterName,
-  type IndividualCharacterName,
+import type { MarkdownPageName } from "../../../manual/pages";
+import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { ScrollConfig } from "../../../model/json/ItemConfigMap";
+import type {
+  CampaignLocator,
+  CharacterName,
+  IndividualCharacterName,
 } from "../../../model/modelTypes";
-import { type PlanetName } from "../../../sprites/planets";
+import type { PlanetName } from "../../../sprites/planets";
 import { clearAllData } from "../clearAllData";
-import { type DeathMenuParam } from "../gameMenus/gameMenusSlice";
+import type { DeathMenuParam } from "../gameMenus/gameMenusSlice";
 import { savedGameLoadedOnAppLoad } from "../savedGames/savedGamesSlice";
 
 export type ScrollsRead = {

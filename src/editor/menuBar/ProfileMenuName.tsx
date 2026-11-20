@@ -1,5 +1,5 @@
 import { skipToken } from "@reduxjs/toolkit/query/react";
-import { type Provider } from "@supabase/supabase-js";
+import type { Provider } from "@supabase/supabase-js";
 
 import { useGetUsernameQuery } from "../../store/slices/campaigns/editorCampaignsApiSlice";
 import { ProviderIcon } from "../auth/ProviderIcon";

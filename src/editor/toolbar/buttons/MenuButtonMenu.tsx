@@ -1,5 +1,5 @@
-import { type PropsWithChildren } from "preact/compat";
-import { type EmptyObject } from "type-fest";
+import type { PropsWithChildren } from "preact/compat";
+import type { EmptyObject } from "type-fest";
 
 import { Command } from "../../../ui/command/Command";
 import { CommandList } from "../../../ui/command/CommandList";

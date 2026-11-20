@@ -1,15 +1,15 @@
 import { Sprite } from "pixi.js";
 
-import { type ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
-import {
-  type ItemInPlayConfig,
-  type ItemInPlayType,
+import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
+import type {
+  ItemInPlayConfig,
+  ItemInPlayType,
 } from "../../../../model/ItemInPlay";
-import { type MonsterJsonConfig } from "../../../../model/json/MonsterJsonConfig";
+import type { MonsterJsonConfig } from "../../../../model/json/MonsterJsonConfig";
 import { isMultipliedItem, itemInPlayTimes } from "../../../../model/times";
-import {
-  type BaseAnimationIdWithPrefix,
-  type BaseTextureIdWithPrefix,
+import type {
+  BaseAnimationIdWithPrefix,
+  BaseTextureIdWithPrefix,
 } from "../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import {
   maybeRenderContainerToSprite,
@@ -24,7 +24,7 @@ import {
   type Xy,
 } from "../../../../utils/vectors/vectors";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
-import { type AppearanceReturn } from "../../appearance/Appearance";
+import type { AppearanceReturn } from "../../appearance/Appearance";
 import {
   createSprite,
   type SpecifiedTextureCreateSpriteOptions,

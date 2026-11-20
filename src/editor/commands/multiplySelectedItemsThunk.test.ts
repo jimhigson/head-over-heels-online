@@ -3,18 +3,15 @@ import { expect, test } from "vitest";
 
 import { iterateRoomJsonItemsWithIds } from "../../model/RoomJsonItemIterators";
 import { unitVectors } from "../../utils/vectors/unitVectors";
-import { type Xyz } from "../../utils/vectors/vectors";
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomItemId,
-} from "../editorTypes";
+import type { Xyz } from "../../utils/vectors/vectors";
+import type { EditorJsonItemUnion, EditorRoomItemId } from "../editorTypes";
 import { selectCurrentEditingRoomJsonWithPreviews } from "../slice/levelEditorSelectors";
 import {
   commitPendingNudge,
   type LevelEditorState,
 } from "../slice/levelEditorSlice";
 import { loadEditorRoom } from "../slice/loadEditorRoom";
-import { type MultiplyType } from "../slice/multiplyPlan";
+import type { MultiplyType } from "../slice/multiplyPlan";
 import { existingLayoutNode } from "../slice/PaneLayout";
 import {
   editorStateWithOneRoomWithNoItems,

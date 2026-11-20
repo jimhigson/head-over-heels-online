@@ -1,16 +1,16 @@
-import { type EditorThunk } from "../../../../store/store";
+import type { EditorThunk } from "../../../../store/store";
 import { noopFunction } from "../../../../utils/empty";
 import { setTool } from "../../../slice/levelEditorSlice";
 import { maybeLayoutNode } from "../../../slice/PaneLayout";
 import { itemsAreLocked } from "../itemsAreLocked";
 import { jsonItemAndIdForInPlayItem } from "../jsonItemAndIdForInPlayItem";
 import { setHoveredItemIfChangedThunk } from "../setHoveredItemIfChangedThunk";
-import {
-  type MouseDownParams,
-  type MouseLeaveParams,
-  type MouseMoveParams,
-  type MouseUpParams,
-  type ToolHandler,
+import type {
+  MouseDownParams,
+  MouseLeaveParams,
+  MouseMoveParams,
+  MouseUpParams,
+  ToolHandler,
 } from "./ToolHandler";
 
 export class EyeDropperToolHandler implements ToolHandler {

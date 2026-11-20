@@ -1,9 +1,9 @@
-import { type EditorThunk } from "../../../store/store";
+import type { EditorThunk } from "../../../store/store";
 import {
   openRoomViewZoomed,
   selectOpenRoomView,
 } from "../../slice/levelEditorSlice";
-import { type OpenRoomId } from "../../slice/OpenRoom";
+import type { OpenRoomId } from "../../slice/OpenRoom";
 import { maybeLayoutNode } from "../../slice/PaneLayout";
 import { zoomLadder } from "./zoomLadder";
 

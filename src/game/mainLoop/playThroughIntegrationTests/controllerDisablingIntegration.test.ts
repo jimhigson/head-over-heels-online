@@ -8,8 +8,8 @@ import {
 import { itemState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import { type SwitchConfig } from "../../../model/json/SwitchConfig";
-import { type MirrorOrientation } from "../../../model/MirrorOrientation";
+import type { SwitchConfig } from "../../../model/json/SwitchConfig";
+import type { MirrorOrientation } from "../../../model/MirrorOrientation";
 
 beforeEach(() => {
   resetStore();

@@ -11,11 +11,11 @@
  * census entry for review against the utility list, not a claim.
  */
 import { relative } from "node:path";
-import {
-  type ConditionalTypeNode,
-  type Node,
-  type Program,
-  type TypeNode,
+import type {
+  ConditionalTypeNode,
+  Node,
+  Program,
+  TypeNode,
 } from "typescript";
 
 import {

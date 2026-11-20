@@ -1,15 +1,15 @@
 import { produce } from "immer";
 
 import { starterRoom } from "../../model/inPlaceMutators/starterRoom";
-import {
-  type EditorCampaign,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorCampaign,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../editorTypes";
-import { type LevelEditorState } from "./levelEditorSlice";
+import type { LevelEditorState } from "./levelEditorSlice";
 import { openRoomDefaults, type OpenRoomId } from "./OpenRoom";
-import { type TabGroupId, type TabId } from "./PaneLayout";
+import type { TabGroupId, TabId } from "./PaneLayout";
 
 const initialRoomId = "room_0" as EditorRoomId;
 const initialOpenRoomId = "openRoom-initial" as OpenRoomId;

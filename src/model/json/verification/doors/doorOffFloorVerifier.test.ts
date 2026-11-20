@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { addDoor, campaignOf, newRoom, runCheck } from "../testUtils";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 import { doorOffFloorVerifier } from "./doorOffFloorVerifier";
 
 test("flags a door hanging half off the end of the floor", () => {

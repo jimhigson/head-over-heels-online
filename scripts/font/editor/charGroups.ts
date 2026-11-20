@@ -1,4 +1,4 @@
-import { type EditorGlyph } from "./useGlyphs";
+import type { EditorGlyph } from "./useGlyphs";
 
 /**
  * The bands the character strip is broken into.

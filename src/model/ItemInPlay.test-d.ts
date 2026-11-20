@@ -1,16 +1,13 @@
 import { expectTypeOf, test } from "vitest";
 
-import { type ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
-import { type ItemInPlay, type ItemInPlayType } from "./ItemInPlay";
-import {
-  type FreeItemTypes,
-  type UnionOfAllItemInPlayTypes,
+import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
+import type { ItemInPlay, ItemInPlayType } from "./ItemInPlay";
+import type {
+  FreeItemTypes,
+  UnionOfAllItemInPlayTypes,
 } from "./ItemInPlayNarrowedUnions";
-import {
-  type EmittableItemJson,
-  type ExitGameRoomId,
-} from "./json/ItemConfigMap";
-import { type JsonItemType } from "./json/JsonItem";
+import type { EmittableItemJson, ExitGameRoomId } from "./json/ItemConfigMap";
+import type { JsonItemType } from "./json/JsonItem";
 
 type ItemId = "ball" | "bat";
 

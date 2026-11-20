@@ -1,14 +1,14 @@
-import { type Container } from "pixi.js";
+import type { Container } from "pixi.js";
 
-import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
-import { type RoomState } from "../../../model/RoomState";
-import { type Xy } from "../../../utils/vectors/vectors";
-import { type BooleanAction } from "../../input/actions";
-import { type InputStateTrackerInterface } from "../../input/InputStateTracker";
-import { type Appearance } from "../appearance/Appearance";
+import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { RoomState } from "../../../model/RoomState";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { BooleanAction } from "../../input/actions";
+import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
+import type { Appearance } from "../appearance/Appearance";
 import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
-import { type FilterCache } from "../filters/FilterCache";
-import { type GeneralRenderContext } from "../room/RoomRenderContexts";
+import type { FilterCache } from "../filters/FilterCache";
+import type { GeneralRenderContext } from "../room/RoomRenderContexts";
 
 export type ButtonId =
   | "carry"

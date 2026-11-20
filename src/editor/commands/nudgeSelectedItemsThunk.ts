@@ -1,6 +1,6 @@
-import { type EditorThunk } from "../../store/store";
+import type { EditorThunk } from "../../store/store";
 import { type AxisXyz, originXyz, type Xyz } from "../../utils/vectors/vectors";
-import { type EditorRoomState } from "../editorTypes";
+import type { EditorRoomState } from "../editorTypes";
 import {
   itemMoveOrResizeWouldCollide,
   sameMoveOrResizeForEach,
@@ -11,7 +11,7 @@ import {
   selectCursorRoomSelection,
 } from "../slice/levelEditorSlice";
 import { snapGridResolution } from "../snapGridResolution";
-import { type NudgeArgs } from "../toolbar/buttons/nudgeDirections";
+import type { NudgeArgs } from "../toolbar/buttons/nudgeDirections";
 
 /**
  * how far to move from `position` to the next line of the grid along each

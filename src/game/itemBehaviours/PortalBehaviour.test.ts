@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 
 import { basicEmptyRoom } from "../../_testUtils/basicRoom";
 import { itemBehaviourKey } from "../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import { boxWithSize, originXyz } from "../../utils/vectors/vectors";

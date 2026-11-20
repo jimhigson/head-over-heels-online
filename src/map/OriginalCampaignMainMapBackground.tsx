@@ -1,10 +1,10 @@
-import { type OriginalCampaignRoomId } from "../_generated/originalCampaign/OriginalCampaignRoomId";
 import { projectWorldXyzToScreenXy } from "../game/render/projections";
-import { type SortedObjectOfRoomGridPositionSpecs } from "../model/map/sortRoomGridPositions";
+import type { SortedObjectOfRoomGridPositionSpecs } from "../model/map/sortRoomGridPositions";
+import type { OriginalCampaignRoomId } from "../originalCampaign/OriginalCampaignRoomId";
 import { MapBackgroundSection } from "./MapBackgroundSection";
 import { mapClasses } from "./mapColours";
 import { mapSvgMarginY } from "./mapConstants";
-import { type MapArea } from "./MapData";
+import type { MapArea } from "./MapData";
 import { MarketSpecialBackground } from "./MarketSpecialBackground";
 import { roomWorldPosition } from "./roomWorldPosition";
 

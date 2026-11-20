@@ -1,8 +1,8 @@
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
-import { type Program, type SourceFile, type default as ts } from "typescript";
+import type { Program, SourceFile, default as ts } from "typescript";
 
-import { type ScanOptions } from "./scanArgs.ts";
+import type { ScanOptions } from "./scanArgs.ts";
 
 export type TypeScript = typeof ts;
 

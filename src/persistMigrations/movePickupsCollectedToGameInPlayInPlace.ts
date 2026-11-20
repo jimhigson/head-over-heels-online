@@ -1,4 +1,4 @@
-import { type PickupsCollected } from "../store/slices/gameInPlay/gameInPlaySlice";
+import type { PickupsCollected } from "../store/slices/gameInPlay/gameInPlaySlice";
 
 /**
  * a save as written before v28, which kept pickupsCollected in its gameState

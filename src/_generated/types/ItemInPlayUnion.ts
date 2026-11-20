@@ -1,5 +1,5 @@
-import { type ItemInPlay, type ItemInPlayType } from "../../model/ItemInPlay";
-import { type SceneryName } from "../../sprites/planets";
+import type { ItemInPlay, ItemInPlayType } from "../../model/ItemInPlay";
+import type { SceneryName } from "../../sprites/planets";
 
 /** this union is only here to check that it is equal to the 'live' one in the codebase */
 type GeneratedTypeUnion =

@@ -2,7 +2,7 @@ import { entries } from "../../../../utils/entries";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { valueMd } from "../helpers/messageMarkdown";
 import { reachableRoomIds, startRoomIds } from "../helpers/reachableRooms";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 
 type UnreachableRoom = {
   roomId: VerificationRoomId;

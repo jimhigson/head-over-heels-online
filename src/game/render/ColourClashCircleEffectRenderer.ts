@@ -1,23 +1,23 @@
 import { Container } from "pixi.js";
-import { type SetRequired } from "type-fest";
+import type { SetRequired } from "type-fest";
 
-import { type PlayableItem } from "../../model/ItemInPlayNarrowedUnions";
+import type { PlayableItem } from "../../model/ItemInPlayNarrowedUnions";
 import { characterNames } from "../../model/modelTypes";
-import { type RoomStateItems } from "../../model/RoomState";
+import type { RoomStateItems } from "../../model/RoomState";
 import { store } from "../../store/store";
 import { emptyArray } from "../../utils/empty";
 import { fadeInOrOutDuration } from "./animationTimings";
 import { ColourClashCircleEffectFilter } from "./filters/ColourClashCircleEffectFilter";
 import { projectWorldXyzToScreenXy } from "./projections";
-import {
-  type RoomRenderContextInGame,
-  type RoomTickContext,
+import type {
+  RoomRenderContextInGame,
+  RoomTickContext,
 } from "./room/RoomRenderContexts";
-import {
-  type RoomRendererType,
-  type RoomRendererTypeInGameOnly,
+import type {
+  RoomRendererType,
+  RoomRendererTypeInGameOnly,
 } from "./room/RoomRendererType";
-import { type SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
+import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
 
 const effectProgress01 = (
   roomTime: number,

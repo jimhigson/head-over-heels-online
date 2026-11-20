@@ -1,5 +1,5 @@
 import { rotateXy } from "../../../../utils/vectors/rotateXy";
-import { type Xy } from "../../../../utils/vectors/vectors";
+import type { Xy } from "../../../../utils/vectors/vectors";
 
 /**
  * geometry-angle offsets (degrees anticlockwise) around a settled quarter, used

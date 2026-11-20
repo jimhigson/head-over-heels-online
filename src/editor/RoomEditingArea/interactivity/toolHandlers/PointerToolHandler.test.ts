@@ -5,12 +5,12 @@ import { expect, test } from "vitest";
 import { projectWorldXyzToScreenXy } from "../../../../game/render/projections";
 import { blockSizePx } from "../../../../model/blockSizePx";
 import { getJsonItemTimes } from "../../../../model/times";
-import { type EditorRootState } from "../../../../store/store";
+import type { EditorRootState } from "../../../../store/store";
 import { addXyz, type Xyz } from "../../../../utils/vectors/vectors";
-import {
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../../../editorTypes";
 import {
   selectCurrentEditingRoomJsonWithPreviews,
@@ -37,7 +37,7 @@ import {
   testRoomId,
 } from "../../../slice/reducers/__test__/storeStates";
 import { betweenUpAndLeft } from "../../cursor/pointerIntersectionEdge";
-import { type PointingAtItem } from "../../cursor/PointingAt";
+import type { PointingAtItem } from "../../cursor/PointingAt";
 import { EditorViewport } from "../../viewport/EditorViewport";
 import { PointerToolHandler } from "./PointerToolHandler";
 

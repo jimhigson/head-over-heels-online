@@ -1,4 +1,4 @@
-import { type WritableDeep } from "type-fest";
+import type { WritableDeep } from "type-fest";
 
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import {

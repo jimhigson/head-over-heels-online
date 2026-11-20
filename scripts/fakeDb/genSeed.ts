@@ -1,9 +1,11 @@
+#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
+
 import { createClient, type Provider } from "@supabase/supabase-js";
 import { createHash } from "node:crypto";
 import { writeFile } from "node:fs/promises";
 import { loadEnv } from "vite";
 
-import { type Database } from "../../src/_generated/db";
+import type { Database } from "../../src/_generated/db";
 import {
   jimAtBlockstackingUserId,
   sequelCampaignLocator,

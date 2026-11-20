@@ -3,7 +3,7 @@ import {
   type ItemInPlay,
   type ItemInPlayConfig,
 } from "../../../model/ItemInPlay";
-import { type JsonItem } from "../../../model/json/JsonItem";
+import type { JsonItem } from "../../../model/json/JsonItem";
 import { emptyObject } from "../../../utils/empty";
 import { valuesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -16,7 +16,7 @@ import {
 } from "../../../utils/vectors/vectors";
 import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
 import { blockXyzToFineXyz } from "../../render/projections";
-import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
+import type { RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { defaultBaseState } from "./itemDefaultStates";
 
 const cubeSetbackBlocks = 9 / 12;

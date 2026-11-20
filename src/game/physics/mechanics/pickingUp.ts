@@ -5,14 +5,14 @@ import {
   type PlayableItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
-import { type HeelsAbilities } from "../../../model/ItemStateMap";
-import { type CharacterName } from "../../../model/modelTypes";
+import type { HeelsAbilities } from "../../../model/ItemStateMap";
+import type { CharacterName } from "../../../model/modelTypes";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
-import { type RoomState } from "../../../model/RoomState";
+import type { RoomState } from "../../../model/RoomState";
 import { getEffectivelyStandingOnItemIdForPlayable } from "../../../model/stoodOnItemsLookup";
 import { originXyz } from "../../../utils/vectors/vectors";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { selectHeelsAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { deleteItemFromRoom } from "../../gameState/mutators/deleteItemFromRoom";

@@ -4,7 +4,7 @@ import { blockSizePx } from "../../../game/physics/mechanicsConstants";
 import { projectWorldXyzToScreenXy } from "../../../game/render/projections";
 import { quarterCameraAngles } from "../../../utils/vectors/cameraAngleVectors";
 import { addXy, addXyz, type Xy } from "../../../utils/vectors/vectors";
-import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
+import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import {
   apparentSilhouette,
   blockRoom,

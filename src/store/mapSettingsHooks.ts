@@ -1,4 +1,4 @@
-import { type MapSettingsHooks } from "../map/MapContext";
+import type { MapSettingsHooks } from "../map/MapContext";
 import { useCurrentSpritesheetData } from "./slices/gameMenus/gameMenusSelectors";
 import { useTotalUpscale } from "./slices/upscale/upscaleSelectors";
 import { useCurrentSpritesheetArtUrl } from "./useCurrentSpritesheetArtUrl";

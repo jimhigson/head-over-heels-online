@@ -1,6 +1,6 @@
 import { emptyObject } from "../utils/empty";
 import { entries } from "../utils/entries";
-import { type Xy } from "../utils/vectors/vectors";
+import type { Xy } from "../utils/vectors/vectors";
 
 const possiblePositions: Xy[] = [
   { x: 0, y: 0 },

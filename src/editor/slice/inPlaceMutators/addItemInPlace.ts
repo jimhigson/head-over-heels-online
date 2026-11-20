@@ -1,24 +1,24 @@
 import { nextItemId } from "../../../model/inPlaceMutators/nextItemId";
-import {
-  type JsonItemConfig,
-  type JsonItemType,
+import type {
+  JsonItemConfig,
+  JsonItemType,
 } from "../../../model/json/JsonItem";
 import { typePrefix } from "../../../model/json/typePrefix";
 import { keys } from "../../../utils/entries";
-import { type Xyz } from "../../../utils/vectors/vectors";
-import {
-  type EditorJsonItem,
-  type EditorJsonItemUnion,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
-  type EditorRoomJsonItems,
+import type { Xyz } from "../../../utils/vectors/vectors";
+import type {
+  EditorJsonItem,
+  EditorJsonItemUnion,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
+  EditorRoomJsonItems,
 } from "../../editorTypes";
-import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
+import type { ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
-import {
-  type LevelEditorState,
-  type PreviewedRoomItemEdits,
+import type {
+  LevelEditorState,
+  PreviewedRoomItemEdits,
 } from "../levelEditorSlice";
 
 export const nextItemIdForItemTool = <T extends JsonItemType = JsonItemType>(

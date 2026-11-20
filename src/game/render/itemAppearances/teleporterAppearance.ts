@@ -7,7 +7,7 @@ import {
 } from "../../../utils/pixi/bakeContainerToSprite";
 import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
-import { type Xy } from "../../../utils/vectors/vectors";
+import type { Xy } from "../../../utils/vectors/vectors";
 import { teleporterIsActive } from "../../physics/mechanics/teleporterIsActive";
 import { createSprite } from "../createSprite";
 import { cameraQuarterAngleEqual, type ItemAppearance } from "./ItemAppearance";

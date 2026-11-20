@@ -1,19 +1,19 @@
 import { Container, Graphics, Rectangle, type Sprite } from "pixi.js";
 
-import { type ItemInPlay } from "../../../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
+import type { ItemInPlay } from "../../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
-import { type RoomState } from "../../../../model/RoomState";
+import type { RoomState } from "../../../../model/RoomState";
 import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
 import { spritesheetPixiPalettes } from "../../../../sprites/palette/spritesheetPixiPalettes";
-import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
+import type { AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
 import { frac } from "../../../../utils/maths/maths";
 import { rangesOverlap } from "../../../../utils/maths/numberPairs";
 import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
 import { renderContainerToSprite } from "../../../../utils/pixi/bakeContainerToSprite";
 import { tiledSprites } from "../../../../utils/pixi/tiledSprites";
-import { type UniqueTextureSprite } from "../../../../utils/pixi/UniqueTextureSprite";
-import { type Subset } from "../../../../utils/Subset";
+import type { UniqueTextureSprite } from "../../../../utils/pixi/UniqueTextureSprite";
+import type { Subset } from "../../../../utils/Subset";
 import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import {
   axisProjectsReversed,
@@ -45,7 +45,7 @@ import {
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
 import { ColourClashFilter } from "../../filters/ColourClashFilter";
-import { type FilterCache } from "../../filters/FilterCache";
+import type { FilterCache } from "../../filters/FilterCache";
 import { OutlineFilter } from "../../filters/OutlineFilter";
 import { floorTextureId } from "../../floorTextureId";
 import { edgeOriginalGameColour } from "../../gameColours/colourScheme";

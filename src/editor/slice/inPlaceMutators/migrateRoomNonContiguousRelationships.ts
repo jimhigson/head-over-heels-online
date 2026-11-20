@@ -1,4 +1,4 @@
-import { type MergeDeep } from "type-fest";
+import type { MergeDeep } from "type-fest";
 
 import {
   isWholeRoomSubRooms,
@@ -6,10 +6,10 @@ import {
   type SubRoom,
 } from "../../../model/RoomJson";
 import { objectEntriesIter, valuesIter } from "../../../utils/entries";
-import {
-  type EditorCampaign,
-  type EditorRoomId,
-  type EditorRoomJson,
+import type {
+  EditorCampaign,
+  EditorRoomId,
+  EditorRoomJson,
 } from "../../editorTypes";
 
 /**

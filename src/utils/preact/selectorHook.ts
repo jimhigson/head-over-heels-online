@@ -1,5 +1,5 @@
 import { useAppSelector } from "../../store/hooks";
-import { type GameRootState } from "../../store/store";
+import type { GameRootState } from "../../store/store";
 
 /**
  * for the sake of the hooks made here, I'm going to assume all slices are loaded, and

@@ -1,8 +1,8 @@
 import { Fragment } from "preact";
 
-import {
-  type CampaignDirectory,
-  type CampaignInfoInDirectory,
+import type {
+  CampaignDirectory,
+  CampaignInfoInDirectory,
 } from "../../db/getAllUsersLatestCampaigns";
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import {
@@ -10,7 +10,7 @@ import {
   originalCampaignName,
   originalUserId,
 } from "../../gameInfo";
-import { type CampaignLocator } from "../../model/modelTypes";
+import type { CampaignLocator } from "../../model/modelTypes";
 import { releaseDateIso8601 } from "../../originalGame";
 import { Button } from "../../ui/Button";
 import { timeAgo } from "../../utils/timeAgo";

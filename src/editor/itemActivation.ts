@@ -1,4 +1,4 @@
-import { type EditorJsonItemUnion } from "./editorTypes";
+import type { EditorJsonItemUnion } from "./editorTypes";
 
 /**
  * the distinct enable/disable states the editor can put an item into, regardless

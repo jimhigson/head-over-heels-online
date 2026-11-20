@@ -1,6 +1,6 @@
 import { useMemo } from "preact/hooks";
 
-import { type CustomLeaderComponent } from "../MenuItem";
+import type { CustomLeaderComponent } from "../MenuItem";
 
 export const customTextLeader =
   (text: string): CustomLeaderComponent =>

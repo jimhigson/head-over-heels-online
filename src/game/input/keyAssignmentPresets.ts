@@ -12,7 +12,7 @@ import {
   wired8BitDoUltimate2cControllerLayout,
 } from "./controllers";
 import { emptyInputAssignment } from "./emptyInputAssignment";
-import { type InputAssignmentPreset } from "./InputAssignment";
+import type { InputAssignmentPreset } from "./InputAssignment";
 
 //standard keys that are used in all presets:
 const standardKeyAssignment = {

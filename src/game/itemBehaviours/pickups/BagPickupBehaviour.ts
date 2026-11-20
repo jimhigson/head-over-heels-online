@@ -1,8 +1,8 @@
-import { type ItemInPlay } from "../../../model/ItemInPlay";
-import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
-import { type CharacterName } from "../../../model/modelTypes";
-import { type RoomState } from "../../../model/RoomState";
-import { type GameState } from "../../gameState/GameState";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
+import type { GameState } from "../../gameState/GameState";
 import { selectHeelsAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { PickupBehaviour } from "./PickupBehaviour";
 

@@ -1,4 +1,4 @@
-import { type Xyz } from "../utils/vectors/vectors";
+import type { Xyz } from "../utils/vectors/vectors";
 
 /**
  * mirrors sit at 45° to the orthogonal axes - the orientation is the

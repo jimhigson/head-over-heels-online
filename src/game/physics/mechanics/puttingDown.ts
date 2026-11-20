@@ -5,7 +5,7 @@ import {
   type PlayableItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
-import { type CharacterName } from "../../../model/modelTypes";
+import type { CharacterName } from "../../../model/modelTypes";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { epsilon } from "../../../utils/epsilon";
 import {
@@ -21,11 +21,11 @@ import {
   collisionBoxWithIndex,
   findCollisionBoxWithIndex,
 } from "../../collision/aabbCollision";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 import { selectHeelsAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
-import { type SpatialIndex } from "../gridSpace/SpatialIndex";
+import type { SpatialIndex } from "../gridSpace/SpatialIndex";
 import { moveItem } from "../moveItem/moveItem";
 import { moveItemInSteps } from "../moveItem/moveItemInSteps";
 import { mtv } from "../mtv";

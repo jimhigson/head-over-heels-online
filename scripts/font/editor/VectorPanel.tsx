@@ -13,7 +13,7 @@ import {
   toggleCurve,
   turnSide,
 } from "../geometry/vectorEdits";
-import { type Selection } from "./GlyphView";
+import type { Selection } from "./GlyphView";
 
 export type VectorPanelProps = {
   shapes: readonly VectorShape[];

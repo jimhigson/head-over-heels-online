@@ -1,6 +1,6 @@
 import { objectEntriesIter } from "../../utils/entries";
-import { type AppSpritesheetDataWithVariants } from "./AppSpritesheet";
-import { type FrameRect } from "./composeSpritesheetForUpscale";
+import type { AppSpritesheetDataWithVariants } from "./AppSpritesheet";
+import type { FrameRect } from "./composeSpritesheetForUpscale";
 
 /**
  * Pure function that produces a frames map (like on a pixi Spritesheet) but a new version with the

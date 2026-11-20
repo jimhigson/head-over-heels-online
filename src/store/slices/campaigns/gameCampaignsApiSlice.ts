@@ -1,13 +1,13 @@
-import { type BaseQueryFn, type EndpointBuilder } from "@reduxjs/toolkit/query";
+import type { BaseQueryFn, EndpointBuilder } from "@reduxjs/toolkit/query";
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { type CampaignGetLocator } from "../../../db/campaign";
+import type { CampaignGetLocator } from "../../../db/campaign";
 import { importCampaignDbClient } from "../../../db/campaignDbClient.import";
-import { type CampaignDirectory } from "../../../db/getAllUsersLatestCampaigns";
+import type { CampaignDirectory } from "../../../db/getAllUsersLatestCampaigns";
 import { importGetAllUsersLatestCampaignsCachedOnce } from "../../../db/getAllUsersLatestCampaignsCached.import";
-import { type Campaign, type CampaignLocator } from "../../../model/modelTypes";
+import type { Campaign, CampaignLocator } from "../../../model/modelTypes";
 import { createSerialisableErrors } from "../../../utils/redux/createSerialisableErrors";
-import { type GameRootState } from "../../store";
+import type { GameRootState } from "../../store";
 import { importLoadCampaignOnce } from "./loadCampaign.import";
 
 // subset of just the endpoints needed for the game, not sufficient for the editor

@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { type Tool } from "../../RoomEditingArea/interactivity/Tool";
+import type { Tool } from "../../RoomEditingArea/interactivity/Tool";
 import { multiplyCurrentToolItem, setTool } from "../levelEditorSlice";
 import {
   editorStateWithOneRoomWithNoItems,

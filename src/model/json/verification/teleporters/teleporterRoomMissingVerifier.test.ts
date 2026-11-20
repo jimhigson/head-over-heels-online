@@ -4,7 +4,7 @@ import { keys } from "../../../../utils/entries";
 import { roomJsonItemsIterable } from "../../../RoomJsonItemIterators";
 import { exitGameRoomId, nowhereRoomId } from "../../ItemConfigMap";
 import { addItem, campaignOf, newRoom, runCheck } from "../testUtils";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 import { teleporterRoomMissingVerifier } from "./teleporterRoomMissingVerifier";
 
 const teleporter = (toRoom?: string) => ({

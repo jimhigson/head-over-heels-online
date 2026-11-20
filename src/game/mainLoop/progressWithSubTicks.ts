@@ -1,5 +1,5 @@
-import { type GameState } from "../gameState/GameState";
-import { type ProgressGameState } from "./progressGameState";
+import type { GameState } from "../gameState/GameState";
+import type { ProgressGameState } from "./progressGameState";
 import { swopPlayablesIfInput } from "./swopPlayablesIfInput";
 
 export const progressWithSubTicks =

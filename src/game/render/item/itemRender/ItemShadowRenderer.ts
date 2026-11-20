@@ -1,12 +1,12 @@
 import { AlphaFilter, Container, Sprite } from "pixi.js";
-import { type WritableDeep } from "type-fest";
+import type { WritableDeep } from "type-fest";
 
 import {
   itemBehaviourKey,
   type ItemInPlayType,
 } from "../../../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
-import { type ConsolidatableConfig } from "../../../../model/json/utilityJsonConfigTypes";
+import type { UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
+import type { ConsolidatableConfig } from "../../../../model/json/utilityJsonConfigTypes";
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
 import { wallInPlayTimes } from "../../../../model/times";
 import { store } from "../../../../store/store";
@@ -27,7 +27,7 @@ import {
   collisionItemWithIndex,
 } from "../../../collision/aabbCollision";
 import { veryHighZ } from "../../../physics/mechanicsConstants";
-import { type SpecifiedTextureCreateSpriteOptions } from "../../createSprite";
+import type { SpecifiedTextureCreateSpriteOptions } from "../../createSprite";
 import { nearCornerOffsetWorldXyz } from "../../itemAppearances/adjustNearCornerForCameraAngle";
 import {
   type ItemShadowAppearanceOutsideView,
@@ -40,9 +40,9 @@ import {
   type ItemTickContext,
 } from "../../ItemRenderContexts";
 import { projectWorldXyzToScreenXy } from "../../projections";
-import { type RenderBox } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
+import type { RenderBox } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
-import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
+import type { ItemChainPixiRenderer } from "./ItemPixiRenderer";
 import { wholeShadowCastersCoverReceiver } from "./wholeShadowCastersCoverReceiver";
 
 const shadowAlpha = 0.66;

@@ -2,10 +2,10 @@ import { produce } from "immer";
 import { describe, expect, test } from "vitest";
 
 import { createNewRoom } from "../../../model/inPlaceMutators/createNewRoom";
-import { type VerificationCampaign } from "../../../model/json/verification/verificationTypes";
+import type { VerificationCampaign } from "../../../model/json/verification/verificationTypes";
 import { verifyCampaign } from "../../../model/json/verification/verifyCampaign";
-import { type WallJsonConfig } from "../../../model/json/WallJsonConfig";
-import { type AnyRoomJson } from "../../../model/RoomJson";
+import type { WallJsonConfig } from "../../../model/json/WallJsonConfig";
+import type { AnyRoomJson } from "../../../model/RoomJson";
 import {
   iterateRoomJsonItemIds,
   iterateRoomJsonItemsWithIds,
@@ -14,14 +14,14 @@ import {
 import { zxSpectrumRoomHue, zxSpectrumShades } from "../../../originalGame";
 import { keys } from "../../../utils/entries";
 import { originXyz } from "../../../utils/vectors/vectors";
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
-  type EditorRoomJsonItems,
+import type {
+  EditorJsonItemUnion,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
+  EditorRoomJsonItems,
 } from "../../editorTypes";
-import { type Tool } from "../../RoomEditingArea/interactivity/Tool";
+import type { Tool } from "../../RoomEditingArea/interactivity/Tool";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import {
@@ -44,7 +44,7 @@ import {
   testRoomId,
   wallItemId,
 } from "./__test__/storeStates";
-import { type ApplyToolToRoomJsonPayload } from "./applyItemToolReducers";
+import type { ApplyToolToRoomJsonPayload } from "./applyItemToolReducers";
 
 describe("applying tools", () => {
   describe("applying items", () => {

@@ -1,5 +1,5 @@
-import { type PropsWithChildren } from "preact/compat";
-import { type EmptyObject } from "type-fest";
+import type { PropsWithChildren } from "preact/compat";
+import type { EmptyObject } from "type-fest";
 
 /**
  * a `MenuBar`'s title, between its menus, with equal gaps either side that

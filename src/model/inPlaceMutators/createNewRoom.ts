@@ -1,11 +1,11 @@
 import { consolidateItemsMap } from "../../consolidateItems/consolidateItems";
 import { buildRoomJsonDirectionalIndex } from "../../game/gameState/loadRoom/buildRoomJsonDirectionalIndex";
-import { type ZxSpectrumRoomColour } from "../../originalGame";
-import { type SceneryName } from "../../sprites/planets";
+import type { ZxSpectrumRoomColour } from "../../originalGame";
+import type { SceneryName } from "../../sprites/planets";
 import { originXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
-import { type JsonItemUnion } from "../json/JsonItem";
+import type { JsonItemUnion } from "../json/JsonItem";
 import { typePrefix } from "../json/typePrefix";
-import { type RoomJson } from "../RoomJson";
+import type { RoomJson } from "../RoomJson";
 import { roomJsonItemsIterable } from "../RoomJsonItemIterators";
 import { changeRoomSceneryInPlace } from "./changeRoomSceneryInPlace";
 import { nextItemIdSet } from "./nextItemId";

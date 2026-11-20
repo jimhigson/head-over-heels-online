@@ -1,6 +1,6 @@
 import { charBands } from "./charGroups";
 import { contoursPath } from "./contourPath";
-import { type EditorGlyph } from "./useGlyphs";
+import type { EditorGlyph } from "./useGlyphs";
 
 export type CharStripProps = {
   glyphs: EditorGlyph[];

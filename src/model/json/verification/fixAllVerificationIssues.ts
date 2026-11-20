@@ -1,4 +1,4 @@
-import { type VerificationCampaign } from "./verificationTypes";
+import type { VerificationCampaign } from "./verificationTypes";
 import { verifyCampaign } from "./verifyCampaign";
 
 export type FixAllResult = {

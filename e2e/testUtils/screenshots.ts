@@ -7,13 +7,13 @@ import {
 import chalk from "chalk";
 
 import blockstackPaletteColours from "../../src/_generated/palette/spritesheetBlockstackPalette.json" with { type: "json" };
-import { type DialogId } from "../../src/game/components/dialogs/menuDialog/DialogId";
+import type { DialogId } from "../../src/game/components/dialogs/menuDialog/DialogId";
 import {
   menuItemDataAttributeDisabled,
   menuItemDataAttributeHidden,
   menuItemDataAttributeId,
 } from "../../src/game/components/dialogs/menuDialog/dialogs/menus/menuItemDataAttributes";
-import { type SpritesheetName } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { SpritesheetName } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { elapsed, formatDuration } from "./logging";
 import { osSlowness } from "./osSlowness";
 

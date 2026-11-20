@@ -1,14 +1,14 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { type Xyz } from "../../../utils/vectors/vectors";
-import { type EditorRoomJson } from "../../editorTypes";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import type { EditorRoomJson } from "../../editorTypes";
 import {
   addNudgeStepToPreviewInPlace,
   type NudgeStep,
 } from "../inPlaceMutators/addNudgeStepToPreviewInPlace";
 import { selectCursorRoomSelectionFromLevelEditorState } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
-import { type SelectionEntry } from "../SelectionEntry";
+import type { LevelEditorState } from "../levelEditorSlice";
+import type { SelectionEntry } from "../SelectionEntry";
 import { moveOrResizeOutcome } from "./moveOrResizeItemPreview/moveOrResizeOutcome";
 
 export type NudgeSelectedItemsPayload = {

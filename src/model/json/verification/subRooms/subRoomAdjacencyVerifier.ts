@@ -6,7 +6,7 @@ import {
   gridAdjacent,
   physicallyAdjacent,
 } from "../helpers/subRoomGeometry";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 
 type SubRoomAdjacency = {
   roomId: VerificationRoomId;

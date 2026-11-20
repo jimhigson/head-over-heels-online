@@ -3,10 +3,10 @@ import { twMerge } from "tailwind-merge";
 import { useAppSelector } from "../../../../store/hooks";
 import { selectInputAssignment } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { emptyArray } from "../../../../utils/empty";
-import { type BooleanAction } from "../../../input/actions";
+import type { BooleanAction } from "../../../input/actions";
 import { actionToAxisAndDirection } from "../../../input/actionToAxisAndDirection";
 import { standardControllerButtonNames } from "../../../input/controllers";
-import { type Key } from "../../../input/keys";
+import type { Key } from "../../../input/keys";
 
 const specialCharClassName =
   "text-mossHalfbrite zx:text-zxGreen toppy:text-toppyCool2 selectedMenuItem:text-moss zx:selectedMenuItem:text-zxGreen toppy:selectedMenuItem:text-toppyCool2";

@@ -2,8 +2,8 @@ import { memo } from "preact/compat";
 import { useMemo, useRef } from "preact/hooks";
 
 import { projectWorldXyzToScreenXy } from "../game/render/projections";
-import { type Boundaries } from "../model/map/roomGridPositions";
-import { type IndividualCharacterName } from "../model/modelTypes";
+import type { Boundaries } from "../model/map/roomGridPositions";
+import type { IndividualCharacterName } from "../model/modelTypes";
 import { hudCharTextureSize } from "../sprites/spritesheet/spritesheetData/textureSizes";
 import { range } from "../utils/iterators/range";
 import { useUniqueId } from "../utils/preact/useUniqueId";

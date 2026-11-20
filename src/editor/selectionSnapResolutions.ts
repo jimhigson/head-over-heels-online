@@ -1,17 +1,17 @@
 import { fromEntries, keysIter } from "../utils/entries";
 import { isEmpty } from "../utils/iterators/isEmpty";
 import { originXyz, subXyz, xyzEqual } from "../utils/vectors/vectors";
-import {
-  type EditorRoomItemId,
-  type EditorRoomJson,
-  type EditorRoomState,
+import type {
+  EditorRoomItemId,
+  EditorRoomJson,
+  EditorRoomState,
 } from "./editorTypes";
 import {
   type ItemMoveOrResize,
   itemMoveOrResizeWouldCollide,
   type ItemMovesOrResizes,
 } from "./RoomEditingArea/cursor/editWouldCollide";
-import { type GridResolution } from "./slice/levelEditorSlice";
+import type { GridResolution } from "./slice/levelEditorSlice";
 import { snapGridResolution } from "./snapGridResolution";
 import { snappedToGridXy } from "./snappedToGridXy";
 

@@ -3,16 +3,16 @@ import { produce } from "immer";
 import { entries } from "../../../../utils/entries";
 import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import { exitGameRoomId } from "../../ItemConfigMap";
-import { type CampaignVerifier } from "../CampaignVerification";
+import type { CampaignVerifier } from "../CampaignVerification";
 import {
   candidatePartners,
   type DoorRef,
   inferredPartner,
 } from "../helpers/doorPartner";
 import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
-import {
-  type VerificationRoomId,
-  type VerificationRoomItemId,
+import type {
+  VerificationRoomId,
+  VerificationRoomItemId,
 } from "../verificationTypes";
 
 type DanglingDoorTarget = {

@@ -6,8 +6,8 @@ import {
 } from "@reduxjs/toolkit";
 
 import { firstSubRoomId } from "../../../model/firstSubRoomId";
-import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { EditorRoomId, EditorRoomItemId } from "../../editorTypes";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { openRoomDefaults, type OpenRoomId } from "../OpenRoom";
 import {
   closeRoomsNotInCampaignInPlace,

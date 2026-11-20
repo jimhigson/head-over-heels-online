@@ -3,13 +3,13 @@ import { produce } from "immer";
 import { firstUntakenRoomId } from "../../../firstUntakenRoomId";
 import { createNewRoom } from "../../../inPlaceMutators/createNewRoom";
 import { exitGameRoomId, nowhereRoomId } from "../../ItemConfigMap";
-import { type TeleporterLandingConfig } from "../../resolveTeleporterLanding";
-import { type CampaignVerifier } from "../CampaignVerification";
+import type { TeleporterLandingConfig } from "../../resolveTeleporterLanding";
+import type { CampaignVerifier } from "../CampaignVerification";
 import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import { allTeleporters, teleportersInRoom } from "../helpers/teleporterTarget";
-import {
-  type VerificationRoomId,
-  type VerificationRoomItemId,
+import type {
+  VerificationRoomId,
+  VerificationRoomItemId,
 } from "../verificationTypes";
 
 type TeleporterRoomMissing = {

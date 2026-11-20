@@ -1,6 +1,6 @@
-import { type BaseQueryFn, type EndpointBuilder } from "@reduxjs/toolkit/query";
+import type { BaseQueryFn, EndpointBuilder } from "@reduxjs/toolkit/query";
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { type Provider, type User } from "@supabase/supabase-js";
+import type { Provider, User } from "@supabase/supabase-js";
 
 import {
   getLatestCampaignVersion,
@@ -11,10 +11,10 @@ import { importCampaignDbClient } from "../../../db/campaignDbClient.import";
 import { importGetEnabledAuthProviders } from "../../../db/getEnabledAuthProviders.import";
 import { importGetSupabaseUser } from "../../../db/getSupabaseUser.import";
 import { getUsername } from "../../../db/getUsername";
-import { type EditorCampaign } from "../../../editor/editorTypes";
-import { type Campaign, type CampaignLocator } from "../../../model/modelTypes";
+import type { EditorCampaign } from "../../../editor/editorTypes";
+import type { Campaign, CampaignLocator } from "../../../model/modelTypes";
 import { createSerialisableErrors } from "../../../utils/redux/createSerialisableErrors";
-import { type GameRootState } from "../../store";
+import type { GameRootState } from "../../store";
 import { gameCampaignEndpoints } from "./gameCampaignsApiSlice";
 
 // the endpoints the game needs, *plus* some extra ones that the editor also needs (saving etc)

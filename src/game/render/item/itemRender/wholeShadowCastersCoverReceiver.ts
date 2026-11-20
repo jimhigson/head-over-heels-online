@@ -1,8 +1,8 @@
 import { itemBehaviourKey } from "../../../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
 import { epsilon } from "../../../../utils/epsilon";
-import { type Xy } from "../../../../utils/vectors/vectors";
-import { type CollideableItem } from "../../../collision/aabbCollision";
+import type { Xy } from "../../../../utils/vectors/vectors";
+import type { CollideableItem } from "../../../collision/aabbCollision";
 
 // scratch reused across calls to avoid per-frame allocation in the render loop. Safe as
 // module state because these functions are only ever called synchronously and reset their

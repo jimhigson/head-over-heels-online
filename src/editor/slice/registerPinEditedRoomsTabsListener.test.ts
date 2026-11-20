@@ -4,10 +4,10 @@ import { afterEach, beforeEach, expect, test } from "vitest";
 
 import { listenerMiddleware } from "../../store/listenerMiddleware";
 import { originXyz } from "../../utils/vectors/vectors";
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomId,
-  type EditorRoomItemId,
+import type {
+  EditorJsonItemUnion,
+  EditorRoomId,
+  EditorRoomItemId,
 } from "../editorTypes";
 import {
   applyItemTool,

@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { campaignOf, newRoom, runCheck, setWholeRoomCell } from "../testUtils";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 import { mapGeometryVerifier } from "./mapGeometryVerifier";
 
 const ncrTo = (

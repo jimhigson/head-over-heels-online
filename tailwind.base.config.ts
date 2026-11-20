@@ -1,5 +1,5 @@
 import scrollbar from "tailwind-scrollbar";
-import { type Config } from "tailwindcss";
+import type { Config } from "tailwindcss";
 
 import { resolutions } from "./src/originalGame";
 import { anchorPopovers } from "./src/tailwind/plugins/anchorPopovers";

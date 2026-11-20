@@ -1,9 +1,9 @@
-import { type ItemInPlayType } from "../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../model/ItemInPlay";
 import { isWallDirectionHiddenAtAngle } from "../../../model/json/WallJsonConfig";
-import {
-  type ItemRenderExtentKey,
-  type ItemRenderExtents,
-  type SpritesheetMetadata,
+import type {
+  ItemRenderExtentKey,
+  ItemRenderExtents,
+  SpritesheetMetadata,
 } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { axisProjectsReversed } from "../../../utils/vectors/resolveCameraRelativeVector";
 import {

@@ -1,4 +1,4 @@
-#!/usr/bin/env -S pnpm tsx
+#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
 import { buildGlyphs, designFor } from "./font/geometry/fontDesign";
 import { outlineContoursFor } from "./font/geometry/glyphOutline";
 import { squareGlyphContours } from "./font/geometry/squareGlyphContours";

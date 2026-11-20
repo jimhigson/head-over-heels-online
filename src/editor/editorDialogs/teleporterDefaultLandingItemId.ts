@@ -1,9 +1,9 @@
 import { resolveTeleporterLanding } from "../../model/json/resolveTeleporterLanding";
 import { iterateRoomJsonItemIds } from "../../model/RoomJsonItemIterators";
-import {
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../editorTypes";
 
 /**

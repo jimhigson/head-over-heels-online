@@ -1,17 +1,17 @@
-import { type Arrayable } from "type-fest";
+import type { Arrayable } from "type-fest";
 
 import { selectCurrentRoomState } from "../game/gameState/gameStateSelectors/selectCurrentRoomState";
 import { progressGameState } from "../game/mainLoop/progressGameState";
 import { progressWithSubTicks } from "../game/mainLoop/progressWithSubTicks";
 import { maxSubTickDeltaMs } from "../game/physics/mechanicsConstants";
-import { type ItemTickContext } from "../game/render/ItemRenderContexts";
+import type { ItemTickContext } from "../game/render/ItemRenderContexts";
 import { cycle } from "../utils/iterators/cycle";
-import { type TestRenderer, type TestRenderState } from "./makeTestRenderState";
-import {
-  type GameStateWithMockInput,
-  type MockInputStateTracker,
+import type { TestRenderer, TestRenderState } from "./makeTestRenderState";
+import type {
+  GameStateWithMockInput,
+  MockInputStateTracker,
 } from "./MockInputStateTracker";
-import { type FrameRateSpec } from "./testFrameRates";
+import type { FrameRateSpec } from "./testFrameRates";
 
 type FrameCallback = (
   gameState: GameStateWithMockInput,

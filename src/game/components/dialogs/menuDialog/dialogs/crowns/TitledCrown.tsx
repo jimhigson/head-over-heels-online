@@ -1,5 +1,5 @@
-import { type PlanetName } from "../../../../../../sprites/planets";
-import { type TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import type { PlanetName } from "../../../../../../sprites/planets";
+import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { useIsUncolourised } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { twClass } from "../../../../../../utils/twClass.tsx" with { type: "macro" };

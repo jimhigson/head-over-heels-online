@@ -1,7 +1,7 @@
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
 import { spriteSpecificCssVars } from "../../sprites/css/spriteCss";
-import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
-import { type BaseTextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import type { AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
+import type { BaseTextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { useIsUncolourised } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { SpriteName } from "./SpriteName";
 

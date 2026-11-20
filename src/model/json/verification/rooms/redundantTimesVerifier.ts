@@ -1,15 +1,15 @@
 import { produce } from "immer";
 
 import { entries } from "../../../../utils/entries";
-import { type Xyz } from "../../../../utils/vectors/vectors";
+import type { Xyz } from "../../../../utils/vectors/vectors";
 import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import { completeTimesXyz, optimiseTimesXyz } from "../../../times";
-import { type JsonItemUnion } from "../../JsonItem";
-import { type CampaignVerifier } from "../CampaignVerification";
+import type { JsonItemUnion } from "../../JsonItem";
+import type { CampaignVerifier } from "../CampaignVerification";
 import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
-import {
-  type VerificationRoomId,
-  type VerificationRoomItemId,
+import type {
+  VerificationRoomId,
+  VerificationRoomItemId,
 } from "../verificationTypes";
 
 type RedundantTimes = {

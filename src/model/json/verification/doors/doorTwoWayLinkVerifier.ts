@@ -5,10 +5,10 @@ import {
   resolveDoorPartner,
 } from "../helpers/doorPartner";
 import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
-import {
-  type VerificationCampaign,
-  type VerificationRoomId,
-  type VerificationRoomItemId,
+import type {
+  VerificationCampaign,
+  VerificationRoomId,
+  VerificationRoomItemId,
 } from "../verificationTypes";
 
 type DoorTwoWayLink = {

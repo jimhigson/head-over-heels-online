@@ -1,12 +1,12 @@
-import { type ItemInPlayType } from "../../../../model/ItemInPlay";
-import { type ItemSoundRenderer } from "../../../../sound/ItemSoundRenderer";
-import {
-  type ItemRenderContext,
-  type ItemTickContext,
+import type { ItemInPlayType } from "../../../../model/ItemInPlay";
+import type { ItemSoundRenderer } from "../../../../sound/ItemSoundRenderer";
+import type {
+  ItemRenderContext,
+  ItemTickContext,
 } from "../../ItemRenderContexts";
-import { type Renderer } from "../../Renderer";
-import { type SoundAndGraphicsOutput } from "../../SoundAndGraphicsOutput";
-import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
+import type { Renderer } from "../../Renderer";
+import type { SoundAndGraphicsOutput } from "../../SoundAndGraphicsOutput";
+import type { ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 export class ItemSoundAndGraphicsRenderer<
   T extends ItemInPlayType,

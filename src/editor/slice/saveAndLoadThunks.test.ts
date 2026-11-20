@@ -1,12 +1,12 @@
 import { produce } from "immer";
-import { type AsyncReturnType } from "type-fest";
+import type { AsyncReturnType } from "type-fest";
 import { expect, test, vi } from "vitest";
 
 import {
   getLatestCampaignVersionViaApi,
   saveCampaignViaApi,
 } from "../../store/slices/campaigns/campaignApiHelpers";
-import { type EditorRootState } from "../../store/store";
+import type { EditorRootState } from "../../store/store";
 import {
   levelEditorSlice,
   type LevelEditorSliceAction,

@@ -1,4 +1,4 @@
-import { type Xy } from "./vectors";
+import type { Xy } from "./vectors";
 
 /**
  * extents of the rotated components over an axis-aligned rect

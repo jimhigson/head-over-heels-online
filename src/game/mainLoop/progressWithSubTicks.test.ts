@@ -2,8 +2,8 @@ import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
 import { setUpBasicGame, type TestRoomId } from "../../_testUtils/basicRoom";
 import { resetStore } from "../../_testUtils/initStoreForTests";
-import { type GameState } from "../gameState/GameState";
-import { type ProgressGameState } from "./progressGameState";
+import type { GameState } from "../gameState/GameState";
+import type { ProgressGameState } from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
 
 const createGameState = (): GameState<TestRoomId> => ({

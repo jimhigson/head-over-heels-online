@@ -1,14 +1,14 @@
-import { type FunctionComponent } from "preact";
+import type { FunctionComponent } from "preact";
 import { memo, Suspense } from "preact/compat";
 import { useMemo } from "preact/hooks";
-import { type ValueOf } from "type-fest";
+import type { ValueOf } from "type-fest";
 
 import { MapBackground } from "./MapBackground";
 import { mapSvgMarginX, mapSvgMarginY } from "./mapConstants";
 import { useMapContext } from "./MapContext";
-import { type MapArea } from "./MapData";
+import type { MapArea } from "./MapData";
 import { RoomSvg } from "./Room.svg";
-import { type RoomDecoratorProps } from "./RoomDecoratorProps";
+import type { RoomDecoratorProps } from "./RoomDecoratorProps";
 import { roomWorldPosition } from "./roomWorldPosition";
 import { ScrollIntoView } from "./ScrollIntoView";
 import { translateXyz } from "./svgHelpers";

@@ -10,7 +10,7 @@ import { useElementSize } from "../../utils/preact/useElementSize";
 import { LazyEditorMapNonContiguousRelationshipDecorator } from "../EditorMap/LazyEditorMapNonContiguousRelationshipDecorator";
 import { LazyEditorMapTeleporterLinkDecorator } from "../EditorMap/LazyEditorMapTeleporterLinkDecorator";
 import { MapAreaSwitcher } from "../EditorMap/MapAreaSwitcher";
-import { type EditorCampaign, type EditorRoomId } from "../editorTypes";
+import type { EditorCampaign, EditorRoomId } from "../editorTypes";
 import { EditorMapRoomTooltipBehaviour } from "../roomPreview/EditorMapRoomTooltipBehaviour";
 
 const chooseRoomMapPrefixDecorators = [

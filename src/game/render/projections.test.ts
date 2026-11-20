@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 
 import { quarterCameraAngles } from "../../utils/vectors/cameraAngleVectors";
-import { type Xyz } from "../../utils/vectors/vectors";
+import type { Xyz } from "../../utils/vectors/vectors";
 import {
   projectWorldXyzToScreenXy,
   unprojectScreenXyToWorldXyz,

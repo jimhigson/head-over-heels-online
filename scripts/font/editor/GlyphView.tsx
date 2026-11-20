@@ -13,7 +13,7 @@ import { slopeLabel, slopeOf } from "../geometry/slopes";
 import { movePoint, translateSide } from "../geometry/vectorEdits";
 import { contoursPath } from "./contourPath";
 import { PixelCell } from "./PixelCell";
-import { type EditorGlyph } from "./useGlyphs";
+import type { EditorGlyph } from "./useGlyphs";
 
 /** what the pointer is currently working on, if anything */
 export type Selection = {

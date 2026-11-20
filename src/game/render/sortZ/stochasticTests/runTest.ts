@@ -1,13 +1,13 @@
-import { type Writable } from "type-fest";
+import type { Writable } from "type-fest";
 
 import { populatedBroadPhase } from "../__test__/populatedBroadPhase";
 import { itemBehaviourKey } from "../../../../model/ItemInPlay";
 import { Graph } from "../../../../utils/graph/Graph";
 import { cameraAngleBase } from "../../../../utils/vectors/cameraAngleVectors";
-import { type Xy } from "../../../../utils/vectors/vectors";
+import type { Xy } from "../../../../utils/vectors/vectors";
 import { ItemBehaviour } from "../../../itemBehaviours/ItemBehaviour";
-import { type RenderBox } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
-import { type DrawOrderComparable } from "../DrawOrderComparable";
+import type { RenderBox } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
+import type { DrawOrderComparable } from "../DrawOrderComparable";
 import { updateZEdges } from "../updateZEdges";
 
 export const itemCount = 100;

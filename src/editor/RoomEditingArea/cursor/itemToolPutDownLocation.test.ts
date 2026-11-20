@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
-import { type EditorRoomItemId } from "../../editorTypes";
-import { type ItemTool, type Tool } from "../interactivity/Tool";
+import type { EditorRoomItemId } from "../../editorTypes";
+import type { ItemTool, Tool } from "../interactivity/Tool";
 import {
   blockPositionBlocks,
   blockRoom,

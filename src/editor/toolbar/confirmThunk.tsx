@@ -1,6 +1,6 @@
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
-import { type EditorThunk } from "../../store/store";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorThunk } from "../../store/store";
+import type { EditorRoomId } from "../editorTypes";
 import {
   clearRoom,
   type LevelEditorSliceAction,

@@ -5,7 +5,7 @@ import { loadRoom } from "../game/gameState/loadRoom/loadRoom";
 import { noPlanetsLiberated } from "../store/slices/gameInPlay/gameInPlaySlice";
 import { emptyUserSettings } from "../store/slices/userSettings/emptyUserSettings";
 import { originXyz } from "../utils/vectors/vectors";
-import { type EditorRoomItemId, type EditorRoomState } from "./editorTypes";
+import type { EditorRoomItemId, EditorRoomState } from "./editorTypes";
 import { selectionSnapResolutions } from "./selectionSnapResolutions";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,

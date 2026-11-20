@@ -1,7 +1,7 @@
-import {
-  type CampaignDbClient,
-  type DbFunctionReturns,
-  type RpcError,
+import type {
+  CampaignDbClient,
+  DbFunctionReturns,
+  RpcError,
 } from "./CampaignDbClient";
 import { supabaseAnonKey, supabaseUrl } from "./supabaseEnvironmentVariables";
 

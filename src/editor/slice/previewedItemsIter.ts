@@ -1,6 +1,6 @@
 import { valuesIter } from "../../utils/entries";
-import { type EditorJsonItemUnion } from "../editorTypes";
-import { type PendingEdits } from "./levelEditorSlice";
+import type { EditorJsonItemUnion } from "../editorTypes";
+import type { PendingEdits } from "./levelEditorSlice";
 
 /**
  * every item previewed by pending edits, in whichever room - but not those

@@ -1,5 +1,5 @@
 import { produce } from "immer";
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 
 import { entries, keys } from "../entries";
 import { setAtPath } from "../getAtPath";

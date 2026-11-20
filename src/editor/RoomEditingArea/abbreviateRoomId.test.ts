@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import { abbreviateRoomId } from "./abbreviateRoomId";
 
 test.for([

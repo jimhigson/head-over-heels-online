@@ -1,22 +1,22 @@
 import { Container } from "pixi.js";
-import { type WritableDeep } from "type-fest";
+import type { WritableDeep } from "type-fest";
 
-import { type ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
-import { type ItemInPlayType } from "../../../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
+import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
+import type { ItemInPlayType } from "../../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
 import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import { rotateXy } from "../../../../utils/vectors/rotateXy";
-import { type Xy } from "../../../../utils/vectors/vectors";
+import type { Xy } from "../../../../utils/vectors/vectors";
 import {
   type CollideableItem,
   collisionItemWithIndex,
 } from "../../../collision/aabbCollision";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
-import { type ItemLeafPixiRenderer } from "../../item/itemRender/ItemPixiRenderer";
-import {
-  type ItemLeafTickContext,
-  type ItemRenderContext,
+import type { ItemLeafPixiRenderer } from "../../item/itemRender/ItemPixiRenderer";
+import type {
+  ItemLeafTickContext,
+  ItemRenderContext,
 } from "../../ItemRenderContexts";
 import {
   projectFootprintScreenXExtent,

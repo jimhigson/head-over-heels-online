@@ -1,8 +1,8 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { type DirectionXyz8 } from "../../../utils/vectors/vectors";
+import type { DirectionXyz8 } from "../../../utils/vectors/vectors";
 import { setItemDirectionInPlace } from "../../itemDirection";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
 
 export const startDirectionReducers = {

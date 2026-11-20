@@ -50,7 +50,7 @@ Rules of the house style:
 
 ## Isometric drawing notes (large block cells)
 
-Classic 2:1 isometric. For a full block in a `32×28` large cell, the world→texture mapping (used by `scripts/genLightItemSprites.ts`) is:
+Classic 2:1 isometric. For a full block in a `32×28` large cell, the world→texture mapping is:
 
 ```
 tx = (y - x) + 16
@@ -60,8 +60,6 @@ ty = 28 - (x + y) / 2 - z
 - The **left half** (`tx < 16`) shows the `y = 0` face; the **right half** the `x = 0` face.
 - The **top diamond** spans `ty` rows `0..15`; its half-width at row `ty` is `2*(ty+1)` for `ty<8`, else `2*(16-ty)`.
 - The two visible side faces run `ty` from `~8+depth/2` to `~20+depth/2`, where `depth = tx<16 ? tx : 31-tx`.
-
-`scripts/genLightItemSprites.ts` has reusable helpers (`sideFaceBounds`, `topDiamondHalfWidth`, `inTopDiamond`, `inSideFaces`, `outlineBlockSilhouette`) if drawing blocks programmatically.
 
 ## The conversion pipeline (forward: IFF → webp)
 
@@ -86,34 +84,3 @@ Requires `ffmpeg`, `magick` (ImageMagick 7), `pngquant`, `jq` on PATH.
 4. Save back as **IFF, same 32-colour palette, ByteRun1 compression**. Do not change image size, bit depth, or palette order (the `CMAP`/`CAMG`/`CRNG` chunks carry colour-cycling ranges — leave them intact).
 5. Regenerate outputs: `pnpm iff2png`.
 6. Commit `gfx/spritesBlockstack.iff` **and** `gfx/spritesBlockstack.borders.png` together (plus `gfx/spritesBlockstack.webp` / icons / palette JSONs if they changed). `check-iff2png` will verify the IFF and outputs agree.
-
-## Practical steps: baking webp-only art back into the IFF (reverse)
-
-Sometimes new art is added straight to `spritesBlockstack.webp` (e.g. programmatically by `scripts/genLightItemSprites.ts`) and the IFF needs to catch up so it stays the source of truth and can be hand-edited. Use:
-
-```sh
-pnpm tsx scripts/bakeWebpIntoIff.ts
-```
-
-It maps every opaque `spritesBlockstack.webp` pixel to a palette index and writes it into the IFF's bitplanes, **in place**:
-
-- Preserves all original chunks (`BMHD CMAP CAMG CRNG×6 BODY`) and every original palette index outside the changed pixels.
-- Transparent webp pixels that fall inside a **new frame's backing rectangle** are written as `ss_alphaKey` (to follow the grid convention above); transparent pixels elsewhere keep their original IFF index, so your canvas/gutters and existing art are untouched.
-- Only the scanlines the new art touches are re-compressed; all other plane-rows keep their original ByteRun1 bytes verbatim.
-- It **refuses to run** (throws) if any opaque webp pixel is off-palette or semi-transparent — that is the correctness guard. It self-checks by re-decoding the new IFF to the intended indices.
-
-The list of new-frame rectangles is hard-coded in `bakeWebpIntoIff.ts` (`newFrameRects`), mirroring the frame positions/sizes in `genLightItemSprites.ts` / `itemsSpritesheetData.ts` (32×28 lamps/mirrors/corners, 16×16 beam tiles, 16×24 terminus). If you bake a *different* set of new sprites, update that list (or the convention won't be applied to them — harmless to the game, untidy in DPaint). Run from the pristine committed IFF (`git checkout -- gfx/spritesBlockstack.iff` first) so the result is reproducible.
-
-This is safe because the palette has no duplicate colours, so webp-pixel → palette-index is an unambiguous bijection.
-
-**Verify the bake (do this every time):**
-
-```sh
-git show HEAD:gfx/spritesBlockstack.webp > /tmp/target.webp   # the intended pixels
-pnpm iff2png                                        # regenerate from the new IFF
-magick compare -metric AE gfx/spritesBlockstack.webp /tmp/target.webp null:   # must print 0
-```
-
-`iff2png`'s `revert_noop` step will report `REVERT … spritesBlockstack.webp (pixels identical)` when the IFF reproduces the webp exactly. `spritesBlockstack.borders.png` will legitimately show a `KEEP` with the new pixels — commit it.
-
-**After baking, do not run `genLightItemSprites.ts` for BlockStack again** — it paints `spritesBlockstack.webp` directly and would bypass (and clobber) the IFF. The IFF is the source from then on; hand-edit it and run `pnpm iff2png`.

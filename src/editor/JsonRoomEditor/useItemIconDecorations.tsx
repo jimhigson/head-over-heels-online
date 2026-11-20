@@ -1,15 +1,14 @@
-import type * as Monaco from "monaco-editor";
-
 import { findNodeAtLocation } from "jsonc-parser";
-import { type editor } from "monaco-editor";
+import type * as Monaco from "monaco-editor";
+import type { editor } from "monaco-editor";
 import { useEffect, useRef } from "preact/hooks";
 
-import { type SceneryName } from "../../sprites/planets";
+import type { SceneryName } from "../../sprites/planets";
 import { textureForItem } from "../../sprites/textureForItem";
 import { useEditorAppSelector } from "../../store/store";
 import { keys } from "../../utils/entries";
 import { twClass } from "../../utils/twClass.tsx";
-import { type EditorRoomJsonItems } from "../editorTypes";
+import type { EditorRoomJsonItems } from "../editorTypes";
 import { selectCurrentCommittedRoomJson } from "../slice/levelEditorSlice";
 import { getParsedJsonFromEditor } from "./getParsedJsonFromEditor";
 import { useLoadMonaco } from "./useLoadMonaco";

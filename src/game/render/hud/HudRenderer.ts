@@ -1,24 +1,24 @@
 import { type Color, Container, Sprite, type Texture } from "pixi.js";
 
 import { blockSizePx } from "../../../model/blockSizePx";
-import { type ItemInPlayType } from "../../../model/ItemInPlay";
-import {
-  type HeadAbilities,
-  type HeelsAbilities,
+import type { ItemInPlayType } from "../../../model/ItemInPlay";
+import type {
+  HeadAbilities,
+  HeelsAbilities,
 } from "../../../model/ItemStateMap";
 import {
   type CharacterName,
   type IndividualCharacterName,
   individualCharacterNames,
 } from "../../../model/modelTypes";
-import { type RoomState } from "../../../model/RoomState";
-import { type ZxSpectrumRoomColour } from "../../../originalGame";
+import type { RoomState } from "../../../model/RoomState";
+import type { ZxSpectrumRoomColour } from "../../../originalGame";
 import { effectPixiColour } from "../../../sprites/palette/pixiPalette";
-import {
-  type BaseTextureId,
-  type BaseTextureIdWithPrefix,
+import type {
+  BaseTextureId,
+  BaseTextureIdWithPrefix,
 } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import {
   hudCharTextureSize,
   smallItemTextureSize,
@@ -36,7 +36,7 @@ import {
   type Xy,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 import {
   fastStepsRemaining,
   shieldRemainingForAbilities,
@@ -49,22 +49,22 @@ import { destroyFilterCache, type FilterCache } from "../filters/FilterCache";
 import { blackOutlineFilter } from "../filters/OutlineFilter";
 import { getRoomColorScheme } from "../gameColours/colourScheme";
 import { createItemLeafPixiRenderer } from "../item/itemRender/createItemLeafPixiRenderer";
-import { type ItemLeafPixiRenderer } from "../item/itemRender/ItemPixiRenderer";
+import type { ItemLeafPixiRenderer } from "../item/itemRender/ItemPixiRenderer";
 import { zxSpectrumPixiColor } from "../palette/zxSpectrumPixiColours";
-import { type Renderer } from "../Renderer";
+import type { Renderer } from "../Renderer";
 import { TextContainer } from "../text/TextContainer";
 import { mapButtonAppearance } from "./buttonAppearances/mapButtonAppearance";
 import { menuButtonAppearance } from "./buttonAppearances/menuButtonAppearance";
 import { rotateButtonAppearance } from "./buttonAppearances/rotateButtonAppearance";
 import { FpsRenderer } from "./FpsRenderer";
 import { HudButtonRenderer } from "./HudButtonRenderer";
-import {
-  type HudRenderContext,
-  type HudRendererTickContext,
-  type HudRendererTickContextWithRoom,
+import type {
+  HudRenderContext,
+  HudRendererTickContext,
+  HudRendererTickContextWithRoom,
 } from "./hudRendererContexts";
-import { type OnScreenControls } from "./onScreenControls/OnScreenControls";
-import { type OnScreenControlsModule } from "./onScreenControls/OnScreenControls.import";
+import type { OnScreenControls } from "./onScreenControls/OnScreenControls";
+import type { OnScreenControlsModule } from "./onScreenControls/OnScreenControls.import";
 import {
   tintForHud,
   tintForHudIfUncolourised,

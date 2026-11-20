@@ -1,8 +1,8 @@
-import { type FloorConfig } from "../../model/json/ItemConfigMap";
+import type { FloorConfig } from "../../model/json/ItemConfigMap";
 import { isTextureId } from "../../sprites/assertIsTextureId";
-import { type SceneryName } from "../../sprites/planets";
-import { type AppSpritesheetData } from "../../sprites/spritesheet/AppSpritesheet";
-import { type BaseTextureIdWithPrefix } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import type { SceneryName } from "../../sprites/planets";
+import type { AppSpritesheetData } from "../../sprites/spritesheet/AppSpritesheet";
+import type { BaseTextureIdWithPrefix } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 
 type FloorTextureId = BaseTextureIdWithPrefix<
   `${SceneryName}${".dark" | ""}.floor` | `generic${".dark" | ""}.floor`

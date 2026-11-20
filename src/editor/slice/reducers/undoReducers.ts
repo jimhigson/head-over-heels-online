@@ -6,7 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 
 import { emptyObject } from "../../../utils/empty";
-import { type EditorRoomId, type EditorRoomJson } from "../../editorTypes";
+import type { EditorRoomId, EditorRoomJson } from "../../editorTypes";
 import { changeRoomIdInPlace } from "../inPlaceMutators/changeRoomIdInPlace";
 import { commitPendingNudgeInPlace } from "../inPlaceMutators/commitPendingNudgeInPlace";
 import {
@@ -17,9 +17,9 @@ import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomIdFromLevelEditorState,
 } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { removeNonExistingItemsFromSelection } from "./selectionsReducers";
-import { type UndoDescription } from "./undoDescription";
+import type { UndoDescription } from "./undoDescription";
 
 /**
  * ties together the undo entries one edit made in several rooms, so they undo

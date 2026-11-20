@@ -1,18 +1,18 @@
-import { type Renderer } from "pixi.js";
-import { type SetRequired } from "type-fest";
+import type { Renderer } from "pixi.js";
+import type { SetRequired } from "type-fest";
 
-import { type RoomState } from "../../../model/RoomState";
-import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type Spritesheets } from "../../../sprites/spritesheet/Spritesheets";
-import { type PlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
-import { type Upscale } from "../../../store/slices/upscale/Upscale";
-import {
-  type DisplaySettings,
-  type SoundSettings,
+import type { RoomState } from "../../../model/RoomState";
+import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { Spritesheets } from "../../../sprites/spritesheet/Spritesheets";
+import type { PlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import type { Upscale } from "../../../store/slices/upscale/Upscale";
+import type {
+  DisplaySettings,
+  SoundSettings,
 } from "../../../store/slices/userSettings/userSettingsSlice";
-import { type Xy } from "../../../utils/vectors/vectors";
-import { type GameState } from "../../gameState/GameState";
-import { type SceneGraphPhaseRecorder } from "../../mainLoop/frameTiming/FrameTimingStats";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { GameState } from "../../gameState/GameState";
+import type { SceneGraphPhaseRecorder } from "../../mainLoop/frameTiming/FrameTimingStats";
 
 /**
  * some context that most renderers need, to be composed into their contexts

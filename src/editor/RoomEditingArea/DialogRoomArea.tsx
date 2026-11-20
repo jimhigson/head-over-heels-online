@@ -1,5 +1,5 @@
-import { type EditorRoomId } from "../editorTypes";
-import { type OpenRoomId } from "../slice/OpenRoom";
+import type { EditorRoomId } from "../editorTypes";
+import type { OpenRoomId } from "../slice/OpenRoom";
 import { OpenRoomPane } from "./OpenRoomPane";
 import { PixiApplicationProvider } from "./PixiApplicationProvider";
 import { useSpritesheets } from "./useSpritesheets";

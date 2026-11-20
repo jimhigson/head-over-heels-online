@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { campaign } from "../_generated/originalCampaign/campaign";
+import { campaign } from "../originalCampaign/campaign";
 import {
   compressCampaignObject,
   decompressCampaignObject,

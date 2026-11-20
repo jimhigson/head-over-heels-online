@@ -1,5 +1,5 @@
-import { type ItemInPlay } from "../../model/ItemInPlay";
-import { type FreeItem } from "../../model/ItemInPlayNarrowedUnions";
+import type { ItemInPlay } from "../../model/ItemInPlay";
+import type { FreeItem } from "../../model/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
 import {
   scaleXyz,
@@ -7,7 +7,7 @@ import {
   type Xy,
 } from "../../utils/vectors/vectors";
 import { assignLatentMovement } from "../gameState/mutators/assignLatentMovement";
-import { type ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";
+import type { ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";
 import { moveSpeedPixPerMs } from "../physics/mechanicsConstants";
 import { mtv } from "../physics/mtv";
 import { recordActedOnBy } from "../physics/recordActedOnBy";

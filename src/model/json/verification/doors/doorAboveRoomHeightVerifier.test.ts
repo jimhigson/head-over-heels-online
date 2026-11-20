@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { addDoor, campaignOf, newRoom, runCheck } from "../testUtils";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 import { doorAboveRoomHeightVerifier } from "./doorAboveRoomHeightVerifier";
 
 test("flags a door at or above the default room height", () => {

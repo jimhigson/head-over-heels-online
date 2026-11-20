@@ -1,9 +1,9 @@
 import { useState } from "preact/hooks";
 
 import { Switch } from "../../../src/ui/Switch";
-import { type GlyphOverride, type PixelKey } from "../geometry/glyphOverrides";
+import type { GlyphOverride, PixelKey } from "../geometry/glyphOverrides";
 import { ruleNamed } from "../geometry/kernelRules";
-import { type PixelRules } from "../geometry/pixelRuleIndex";
+import type { PixelRules } from "../geometry/pixelRuleIndex";
 import {
   type RuleBranch,
   ruleLabel,
@@ -12,7 +12,7 @@ import {
 } from "../geometry/ruleTree";
 import { charLabel } from "./charLabel";
 import { KernelShape } from "./KernelShape";
-import { type EditorGlyph } from "./useGlyphs";
+import type { EditorGlyph } from "./useGlyphs";
 
 export type RulePanelProps = {
   glyph: EditorGlyph;

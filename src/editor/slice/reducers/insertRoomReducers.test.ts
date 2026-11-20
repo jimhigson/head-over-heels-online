@@ -4,10 +4,10 @@ import { describe, expect, test } from "vitest";
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
 import { roomGridPositions } from "../../../model/map/roomGridPositions";
 import { subRoomById } from "../../../model/RoomJson";
-import {
-  type EditorJsonItem,
-  type EditorRoomId,
-  type EditorRoomItemId,
+import type {
+  EditorJsonItem,
+  EditorRoomId,
+  EditorRoomItemId,
 } from "../../editorTypes";
 import {
   selectCursorRoomFromLevelEditorState,

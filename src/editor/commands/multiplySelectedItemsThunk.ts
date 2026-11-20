@@ -3,10 +3,10 @@ import {
   needsFloorUnder,
 } from "../../model/json/verification/helpers/isItemOverFloor";
 import { floorSquares } from "../../model/json/verification/helpers/roomPerimeter";
-import { type EditorThunk } from "../../store/store";
+import type { EditorThunk } from "../../store/store";
 import { emptyArray } from "../../utils/empty";
 import { addXyz, originXyz, type Xyz } from "../../utils/vectors/vectors";
-import { type EditorRoomItemId, type EditorRoomState } from "../editorTypes";
+import type { EditorRoomItemId, EditorRoomState } from "../editorTypes";
 import {
   addingItemCollisionCheck,
   itemMoveOrResizeWouldCollide,

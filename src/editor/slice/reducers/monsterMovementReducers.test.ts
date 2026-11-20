@@ -1,8 +1,8 @@
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
-import { type JsonItem } from "../../../model/json/JsonItem";
-import { type EditorRoomItemId } from "../../editorTypes";
+import type { JsonItem } from "../../../model/json/JsonItem";
+import type { EditorRoomItemId } from "../../editorTypes";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
   setSelectedItemsInRoom,

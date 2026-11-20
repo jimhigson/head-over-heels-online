@@ -1,17 +1,17 @@
-import {
-  type PayloadAction,
-  type SliceCaseReducers,
-  type SliceSelectors,
+import type {
+  PayloadAction,
+  SliceCaseReducers,
+  SliceSelectors,
 } from "@reduxjs/toolkit";
 
-import { type Xy } from "../../../utils/vectors/vectors";
+import type { Xy } from "../../../utils/vectors/vectors";
 import {
   type EditorRoomView,
   panEditorRoomView,
   zoomEditorRoomView,
 } from "../EditorRoomView";
-import { type LevelEditorState } from "../levelEditorSlice";
-import { type OpenRoomId } from "../OpenRoom";
+import type { LevelEditorState } from "../levelEditorSlice";
+import type { OpenRoomId } from "../OpenRoom";
 import { maybeLayoutNode } from "../PaneLayout";
 
 export const roomViewReducers = {

@@ -1,4 +1,4 @@
-import { type EditorThunk } from "../../../store/store";
+import type { EditorThunk } from "../../../store/store";
 import { findLoadedRoomCache } from "../../loadedRoomCache/loadedRoomCaches";
 import { fitEditorRoomView } from "../../slice/EditorRoomView";
 import {
@@ -6,7 +6,7 @@ import {
   selectOpenRoomCameraAngle,
   selectOpenRoomPaneSize,
 } from "../../slice/levelEditorSlice";
-import { type OpenRoomId } from "../../slice/OpenRoom";
+import type { OpenRoomId } from "../../slice/OpenRoom";
 import { editorRoomRenderDimensions } from "../editorRoomRenderDimensions";
 
 /**

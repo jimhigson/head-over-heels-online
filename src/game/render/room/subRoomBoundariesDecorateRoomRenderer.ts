@@ -8,7 +8,7 @@ import { objectEntriesIter } from "../../../utils/entries";
 import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { projectBlockXyzToScreenXy } from "../projections";
 import { TextContainer } from "../text/TextContainer";
-import { type DecorateRoomRenderer } from "./DecorateRoomRenderer";
+import type { DecorateRoomRenderer } from "./DecorateRoomRenderer";
 
 const subRoomColours = [
   blockstackPixiPalettes.basic.metallicBlue,

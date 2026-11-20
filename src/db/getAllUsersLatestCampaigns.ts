@@ -1,4 +1,4 @@
-import { type CampaignDbClient } from "./CampaignDbClient";
+import type { CampaignDbClient } from "./CampaignDbClient";
 
 export type CampaignInfoInDirectory = {
   name: string;

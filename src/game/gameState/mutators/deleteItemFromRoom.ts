@@ -1,11 +1,11 @@
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import {
   itemIsStandingOnSomething,
   iterateStoodOnByItems,
 } from "../../../model/stoodOnItemsLookup";
-import { type UnindexedRoomState } from "../saving/SavedGameState";
+import type { UnindexedRoomState } from "../saving/SavedGameState";
 import { removeStandingOn } from "./standingOn/removeStandingOn";
 
 export const deleteItemFromRoom = <

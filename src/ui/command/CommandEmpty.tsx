@@ -1,4 +1,4 @@
-import { type ComponentProps } from "preact";
+import type { ComponentProps } from "preact";
 
 import { cn } from "../cn";
 import { useCommandContext } from "./useCommandContext";

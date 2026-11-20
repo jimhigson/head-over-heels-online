@@ -6,7 +6,7 @@ import {
 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { type Xy, xyEqual } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
-import { type ItemAppearance } from "./ItemAppearance";
+import type { ItemAppearance } from "./ItemAppearance";
 
 type LampRenderProps = {
   activated: boolean;

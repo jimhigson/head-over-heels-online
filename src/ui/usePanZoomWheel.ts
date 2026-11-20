@@ -1,8 +1,8 @@
 import normalizeWheel from "normalize-wheel-es";
-import { type RefObject } from "preact";
+import type { RefObject } from "preact";
 import { useEffect } from "preact/hooks";
 
-import { type Xy } from "../utils/vectors/vectors";
+import type { Xy } from "../utils/vectors/vectors";
 
 /**
  * how strongly wheel deltas zoom: a pinch's deltaY is scaled so that

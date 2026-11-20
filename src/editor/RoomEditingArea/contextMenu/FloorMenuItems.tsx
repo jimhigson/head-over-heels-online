@@ -1,9 +1,9 @@
-import { type FloorType } from "../../../model/json/ItemConfigMap";
+import type { FloorType } from "../../../model/json/ItemConfigMap";
 import { sceneryNames } from "../../../sprites/planets";
 import { useEditorAppSelector } from "../../../store/store";
 import { keys } from "../../../utils/entries";
 import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
-import { type EditorJsonItem } from "../../editorTypes";
+import type { EditorJsonItem } from "../../editorTypes";
 import {
   selectCurrentCommittedRoomJson,
   selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,

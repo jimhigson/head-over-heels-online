@@ -1,18 +1,18 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { type DeadlyBlockStyle } from "../../../model/json/ItemConfigMap";
-import { type BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
+import type { DeadlyBlockStyle } from "../../../model/json/ItemConfigMap";
+import type { BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
 import { canBlockBeTower } from "../../canBlockBeTower";
-import { type EditorJsonItem } from "../../editorTypes";
-import { type ItemTypeAndSubtype } from "../../itemTypeAndSubtype";
+import type { EditorJsonItem } from "../../editorTypes";
+import type { ItemTypeAndSubtype } from "../../itemTypeAndSubtype";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
-import { type UndoItemEntry } from "./undoDescription";
+import type { UndoItemEntry } from "./undoDescription";
 import { pushUndoToCursorRoomInPlace } from "./undoReducers";
 
 type BlockConfig = EditorJsonItem<"block">["config"];

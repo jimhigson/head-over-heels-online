@@ -1,8 +1,8 @@
 import { Container, type FederatedPointerEvent, Graphics } from "pixi.js";
 
-import { type RoomState } from "../../../../model/RoomState";
+import type { RoomState } from "../../../../model/RoomState";
 import { selectTotalUpscale } from "../../../../store/slices/upscale/upscaleSlice";
-import { type InputDirectionMode } from "../../../../store/slices/userSettings/userSettingsSlice";
+import type { InputDirectionMode } from "../../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../../store/store";
 import { objectEntriesIter } from "../../../../utils/entries";
 import {
@@ -24,12 +24,12 @@ import {
   type InputStateTrackerInterface,
 } from "../../../input/InputStateTracker";
 import { createSprite } from "../../createSprite";
-import { type Renderer } from "../../Renderer";
-import { type GeneralRenderContext } from "../../room/RoomRenderContexts";
+import type { Renderer } from "../../Renderer";
+import type { GeneralRenderContext } from "../../room/RoomRenderContexts";
 import { TextContainer } from "../../text/TextContainer";
-import { type HudRendererTickContextWithRoom } from "../hudRendererContexts";
+import type { HudRendererTickContextWithRoom } from "../hudRendererContexts";
 import { tintForHud } from "../spritesheetVariantForHud";
-import { type OnScreenLookRenderer } from "./look/OnScreenLookRenderer";
+import type { OnScreenLookRenderer } from "./look/OnScreenLookRenderer";
 import { setPointerXyMaybeRotated } from "./look/setPointerXyMaybeRotated";
 
 const joystickArrowOffset = 14;

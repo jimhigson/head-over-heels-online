@@ -1,7 +1,7 @@
-import {
-  type PayloadAction,
-  type SliceCaseReducers,
-  type SliceSelectors,
+import type {
+  PayloadAction,
+  SliceCaseReducers,
+  SliceSelectors,
 } from "@reduxjs/toolkit";
 
 import {
@@ -13,9 +13,9 @@ import {
   rotateXy,
   rotationVectorsByDirectionXy4,
 } from "../../../utils/vectors/rotateXy";
-import { type DirectionXy4, type Xy } from "../../../utils/vectors/vectors";
-import { type LevelEditorState } from "../levelEditorSlice";
-import { type OpenRoom, type OpenRoomId } from "../OpenRoom";
+import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
+import type { LevelEditorState } from "../levelEditorSlice";
+import type { OpenRoom, OpenRoomId } from "../OpenRoom";
 import {
   maybeLayoutNode,
   selectActiveOpenRoomFromLevelEditorState,

@@ -1,4 +1,4 @@
-#!/usr/bin/env -S pnpm tsx
+#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
 
 import { makeSpritesheetData } from "../src/sprites/spritesheet/spritesheetData/makeSpritesheetData";
 // not macro-imported: this script runs under node, with no build step

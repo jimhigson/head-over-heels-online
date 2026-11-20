@@ -1,4 +1,4 @@
-import { type AnyRoomJson } from "../RoomJson";
+import type { AnyRoomJson } from "../RoomJson";
 
 /**
  * a room's json as it was saved while rooms also held their own id - the same

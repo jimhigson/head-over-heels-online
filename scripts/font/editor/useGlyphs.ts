@@ -3,10 +3,10 @@ import { useMemo } from "preact/hooks";
 import { fontGlyphs } from "../geometry/fontDesign";
 import { type DecodedImage, glyphBitmap } from "../geometry/glyphBitmap";
 import { type GlyphOutline, glyphOutline } from "../geometry/glyphOutline";
-import { type GlyphOverrides, type PixelKey } from "../geometry/glyphOverrides";
+import type { GlyphOverrides, PixelKey } from "../geometry/glyphOverrides";
 import { kernelRulesForChar } from "../geometry/kernelRules";
 import { pixelRuleIndex, type PixelRules } from "../geometry/pixelRuleIndex";
-import { type HudGlyph } from "../hudGlyphs";
+import type { HudGlyph } from "../hudGlyphs";
 
 export type EditorGlyph = {
   char: string;

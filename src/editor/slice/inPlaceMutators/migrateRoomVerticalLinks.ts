@@ -1,9 +1,9 @@
 import { isWholeRoomSubRooms, type SubRoom } from "../../../model/RoomJson";
 import { objectEntriesIter, valuesIter } from "../../../utils/entries";
-import {
-  type EditorCampaign,
-  type EditorRoomId,
-  type EditorRoomJson,
+import type {
+  EditorCampaign,
+  EditorRoomId,
+  EditorRoomJson,
 } from "../../editorTypes";
 
 /**

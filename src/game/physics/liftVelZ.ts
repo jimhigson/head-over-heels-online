@@ -1,5 +1,5 @@
-import { type FreeItem } from "../../model/ItemInPlayNarrowedUnions";
-import { type RoomState } from "../../model/RoomState";
+import type { FreeItem } from "../../model/ItemInPlayNarrowedUnions";
+import type { RoomState } from "../../model/RoomState";
 import { epsilon } from "../../utils/epsilon";
 
 /**

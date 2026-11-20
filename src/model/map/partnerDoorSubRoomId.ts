@@ -1,6 +1,6 @@
 import { candidatePartnerDoors } from "../json/candidatePartnerDoors";
-import { type JsonItem } from "../json/JsonItem";
-import { type Campaign } from "../modelTypes";
+import type { JsonItem } from "../json/JsonItem";
+import type { Campaign } from "../modelTypes";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
 
 /**

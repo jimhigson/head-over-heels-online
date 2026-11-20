@@ -1,8 +1,8 @@
 import { expect, test } from "vitest";
 
-import { campaign } from "../../../_generated/originalCampaign/campaign";
+import { campaign } from "../../../originalCampaign/campaign";
 import { quarterTurnAnticlockwise } from "../../../utils/vectors/cameraAngleVectors";
-import { type Xy } from "../../../utils/vectors/vectors";
+import type { Xy } from "../../../utils/vectors/vectors";
 import { roomZGraphAt } from "./__test__/roomZGraphAt";
 
 /**

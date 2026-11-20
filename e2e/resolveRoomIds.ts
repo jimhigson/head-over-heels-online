@@ -1,8 +1,5 @@
-import {
-  type JsonItemType,
-  type JsonItemUnion,
-} from "../src/model/json/JsonItem";
-import { type Campaign } from "../src/model/modelTypes";
+import type { JsonItemType, JsonItemUnion } from "../src/model/json/JsonItem";
+import type { Campaign } from "../src/model/modelTypes";
 import { entries } from "../src/utils/entries";
 
 /** Resolves which room IDs to include based on filter parameters. */

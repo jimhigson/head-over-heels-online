@@ -2,7 +2,7 @@ import { useEffect } from "preact/hooks";
 
 import { useAppDispatch } from "../../store/hooks";
 import { useEditorAppSelector } from "../../store/store";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import { selectRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 import {
   roomPreviewRequested,

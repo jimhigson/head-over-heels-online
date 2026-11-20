@@ -1,6 +1,6 @@
-import { type RoomJson } from "../RoomJson";
+import type { RoomJson } from "../RoomJson";
 import { iterateRoomJsonItemIds } from "../RoomJsonItemIterators";
-import { type JsonItemType, type JsonItemUnion } from "./JsonItem";
+import type { JsonItemType, JsonItemUnion } from "./JsonItem";
 
 function* implicitTargets<RoomId extends string, RoomItemId extends string>(
   roomJson: RoomJson<RoomId, RoomItemId> | undefined,

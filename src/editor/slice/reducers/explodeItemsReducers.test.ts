@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
-import { type EditorRoomItemId } from "../../editorTypes";
+import type { EditorRoomItemId } from "../../editorTypes";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,

@@ -1,12 +1,12 @@
 import { Container } from "pixi.js";
 
 import { RevertColouriseFilter } from "../../game/render/filters/RevertColouriseFilter";
-import { type ItemLeafPixiRenderer } from "../../game/render/item/itemRender/ItemPixiRenderer";
-import {
-  type ItemLeafRenderContext,
-  type ItemLeafTickContext,
+import type { ItemLeafPixiRenderer } from "../../game/render/item/itemRender/ItemPixiRenderer";
+import type {
+  ItemLeafRenderContext,
+  ItemLeafTickContext,
 } from "../../game/render/ItemRenderContexts";
-import { type ItemInPlayType } from "../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
 import { blockstackPixiPalettes } from "../../sprites/palette/spritesheetPixiPalettes";
 
 /**

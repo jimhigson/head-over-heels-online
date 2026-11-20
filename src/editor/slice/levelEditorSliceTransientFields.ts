@@ -1,4 +1,4 @@
-import { type LevelEditorState } from "./levelEditorSlice";
+import type { LevelEditorState } from "./levelEditorSlice";
 
 /**
  * fields that belong to the campaign being edited but are not kept - reset

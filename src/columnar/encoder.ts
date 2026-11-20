@@ -1,4 +1,4 @@
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 
 import { entries, keys } from "../utils/entries";
 import { type ColumnarEncoded, columnarVersion } from "./decoder";

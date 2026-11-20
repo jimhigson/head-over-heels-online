@@ -1,5 +1,5 @@
 import { deploymentTypes } from "../src/utils/detectEnv/detectDeploymentType";
-import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
+import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import { elapsed, formatProjectName, logUpscale } from "./testUtils/logging";
 import {
   clickOriginalCampaign,

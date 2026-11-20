@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { addItem, campaignOf, newRoom, runCheck } from "../testUtils";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 import { redundantTeleporterItemVerifier } from "./redundantTeleporterItemVerifier";
 
 const teleporter = (toRoom: string, toItemId?: string) => ({

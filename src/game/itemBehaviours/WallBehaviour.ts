@@ -1,4 +1,4 @@
-import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import { isWallDirectionHiddenAtAngle } from "../../model/json/WallJsonConfig";
 import { alongAxisOfDirectionXy, type Xy } from "../../utils/vectors/vectors";
 import { shadowWallX, shadowWallY } from "../render/shadows/shadowCastTextures";

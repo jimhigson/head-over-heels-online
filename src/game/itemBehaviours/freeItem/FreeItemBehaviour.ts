@@ -8,11 +8,11 @@ import {
   isPlayableItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
-import { type RoomState } from "../../../model/RoomState";
+import type { RoomState } from "../../../model/RoomState";
 import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 import { originXyz } from "../../../utils/vectors/vectors";
-import { type GameState } from "../../gameState/GameState";
-import { type MechanicResult } from "../../physics/MechanicResult";
+import type { GameState } from "../../gameState/GameState";
+import type { MechanicResult } from "../../physics/MechanicResult";
 import { terminalVelocityPixPerMs } from "../../physics/mechanicsConstants";
 import { recordActedOnBy } from "../../physics/recordActedOnBy";
 import { ItemBehaviour } from "../ItemBehaviour";

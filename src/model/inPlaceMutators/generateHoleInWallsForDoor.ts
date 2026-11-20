@@ -10,7 +10,7 @@ import {
   type Xy,
   type Xyz,
 } from "../../utils/vectors/vectors";
-import { type JsonItem, type JsonItemUnion } from "../json/JsonItem";
+import type { JsonItem, JsonItemUnion } from "../json/JsonItem";
 import { completeTimesXy, wallTimes } from "../times";
 
 export function* generateHoleInWallsForDoor<

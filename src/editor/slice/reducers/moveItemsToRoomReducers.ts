@@ -1,4 +1,4 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
 import {
@@ -6,7 +6,7 @@ import {
   moveItemsToRoomInPlace,
 } from "../inPlaceMutators/moveItemsToRoomInPlace";
 import { setSelectionOnCursorRoomInPlace } from "../inPlaceMutators/setSelectionOnCursorRoomInPlace";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { layoutNodesOfType } from "../PaneLayout";
 
 export type MoveItemsToRoomPayload = MoveItemsToRoomArgs & {

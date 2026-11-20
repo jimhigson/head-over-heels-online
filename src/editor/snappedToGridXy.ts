@@ -1,6 +1,6 @@
 import { roundToNearest } from "../utils/maths/maths";
-import { type Xyz } from "../utils/vectors/vectors";
-import { type GridResolution } from "./slice/levelEditorSlice";
+import type { Xyz } from "../utils/vectors/vectors";
+import type { GridResolution } from "./slice/levelEditorSlice";
 
 /**
  * a position moved across (in x and y, not z) to the nearest point on the grid

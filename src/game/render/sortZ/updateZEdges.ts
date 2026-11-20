@@ -1,9 +1,9 @@
 //# allFunctionsCalledOnLoad
 
-import { type Graph } from "../../../utils/graph/Graph";
-import { type RenderBoxes } from "../renderBox/makeItemRenderBoxAtCameraAngle";
-import { type DrawOrderBroadPhase } from "./DrawOrderBroadPhase";
-import { type DrawOrderComparable } from "./DrawOrderComparable";
+import type { Graph } from "../../../utils/graph/Graph";
+import type { RenderBoxes } from "../renderBox/makeItemRenderBoxAtCameraAngle";
+import type { DrawOrderBroadPhase } from "./DrawOrderBroadPhase";
+import type { DrawOrderComparable } from "./DrawOrderComparable";
 import { zComparator } from "./zComparator";
 
 /**

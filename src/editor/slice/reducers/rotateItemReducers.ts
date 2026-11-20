@@ -1,6 +1,6 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { type EditorJsonItemUnion } from "../../editorTypes";
+import type { EditorJsonItemUnion } from "../../editorTypes";
 import {
   isPlacedItemRotatable,
   rotateItemInPlace,
@@ -8,7 +8,7 @@ import {
   type RotationSense,
 } from "../../itemRotation";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { previewedItemsIter } from "../previewedItemsIter";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";

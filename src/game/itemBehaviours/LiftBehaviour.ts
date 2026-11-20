@@ -1,10 +1,10 @@
-import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import { type ItemInPlayType } from "../../model/ItemInPlay";
-import { type RoomState } from "../../model/RoomState";
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { RoomState } from "../../model/RoomState";
 import { veryClose } from "../../utils/epsilon";
 import { originXyz } from "../../utils/vectors/vectors";
-import { type GameState } from "../gameState/GameState";
-import { type MechanicResult } from "../physics/MechanicResult";
+import type { GameState } from "../gameState/GameState";
+import type { MechanicResult } from "../physics/MechanicResult";
 import {
   blockSizePx,
   liftMass,

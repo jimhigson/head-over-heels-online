@@ -1,4 +1,4 @@
-import { type Ticker as PixiTicker } from "pixi.js";
+import type { Ticker as PixiTicker } from "pixi.js";
 
 import { AppTickerListener } from "./AppTickerListener";
 

@@ -1,20 +1,20 @@
-import { type Simplify } from "type-fest";
+import type { Simplify } from "type-fest";
 
 import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
 import { debugSpritesheetMeta } from "../../../../gfx/spritesheetMeta/debugSpritesheetMeta";
 import { speccySpritesheetMeta } from "../../../../gfx/spritesheetMeta/speccySpritesheetMeta";
 import { toppySpritesheetMeta } from "../../../../gfx/spritesheetMeta/toppySpritesheetMeta";
-import { type ButtonId } from "../../../game/render/hud/HudButtonRenderer";
-import { type ItemInPlayType } from "../../../model/ItemInPlay";
-import { type JsonItemConfig } from "../../../model/json/JsonItem";
-import { type ZxSpectrumPaletteColour } from "../../../originalGame";
+import type { ButtonId } from "../../../game/render/hud/HudButtonRenderer";
+import type { ItemInPlayType } from "../../../model/ItemInPlay";
+import type { JsonItemConfig } from "../../../model/json/JsonItem";
+import type { ZxSpectrumPaletteColour } from "../../../originalGame";
 import { entries } from "../../../utils/entries";
-import {
-  type NamedHexColours,
-  type NamedSwops,
+import type {
+  NamedHexColours,
+  NamedSwops,
 } from "../../../utils/palette/palette";
-import { type DirectionXy8 } from "../../../utils/vectors/vectors";
-import { type BaseTextureId } from "./makeSpritesheetData";
+import type { DirectionXy8 } from "../../../utils/vectors/vectors";
+import type { BaseTextureId } from "./makeSpritesheetData";
 
 type SpriteOverrides = Partial<
   Record<

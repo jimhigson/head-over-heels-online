@@ -1,10 +1,6 @@
-import { type Campaign } from "../../modelTypes";
-import { type RoomJson } from "../../RoomJson";
-import {
-  type JsonItem,
-  type JsonItemType,
-  type JsonItemUnion,
-} from "../JsonItem";
+import type { Campaign } from "../../modelTypes";
+import type { RoomJson } from "../../RoomJson";
+import type { JsonItem, JsonItemType, JsonItemUnion } from "../JsonItem";
 
 /**
  * the campaign verification layer runs against any campaign - the original game,

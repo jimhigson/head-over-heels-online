@@ -1,5 +1,5 @@
-import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import { type ItemInPlayType } from "../../model/ItemInPlay";
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
 import {
   alongAxisOfDirectionXy,
   perpendicularAxisXy,

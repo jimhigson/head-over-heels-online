@@ -1,5 +1,5 @@
-import { type EditorRoomId } from "../editorTypes";
-import { type DraggedRoomTab } from "../slice/PaneLayout";
+import type { EditorRoomId } from "../editorTypes";
+import type { DraggedRoomTab } from "../slice/PaneLayout";
 
 /**
  * the room a drag starting on this element (eg the target of the pointer

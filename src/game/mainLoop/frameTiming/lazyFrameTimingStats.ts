@@ -1,5 +1,5 @@
 import { importOnce } from "../../../utils/importOnce";
-import { type FrameTimingStats } from "./FrameTimingStats";
+import type { FrameTimingStats } from "./FrameTimingStats";
 
 let loadedStats: FrameTimingStats | undefined;
 

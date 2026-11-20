@@ -1,8 +1,8 @@
-import { type RoomGraph } from "../../map/roomGridPositions";
-import {
-  type VerificationCampaign,
-  type VerificationRoomId,
-  type VerificationRoomItemId,
+import type { RoomGraph } from "../../map/roomGridPositions";
+import type {
+  VerificationCampaign,
+  VerificationRoomId,
+  VerificationRoomItemId,
 } from "./verificationTypes";
 
 /**

@@ -4,13 +4,13 @@ import {
   candidatePartnerDoors,
   doorLinkNeedsToDoor,
 } from "../json/candidatePartnerDoors";
-import { type JsonItem } from "../json/JsonItem";
+import type { JsonItem } from "../json/JsonItem";
 import { typePrefix } from "../json/typePrefix";
 import { doorWidth } from "../json/verification/helpers/roomPerimeter";
 import { findSubRoomForItem } from "../map/itemIsInSubRoom";
 import { dropRedundantToSubRoomInPlace } from "../map/toSubRoomRedundancy";
-import { type Campaign } from "../modelTypes";
-import { type RoomJson } from "../RoomJson";
+import type { Campaign } from "../modelTypes";
+import type { RoomJson } from "../RoomJson";
 import { roomWallBounds } from "../roomWallBounds";
 import { generateHoleInWallsForDoor } from "./generateHoleInWallsForDoor";
 import { nextItemId } from "./nextItemId";

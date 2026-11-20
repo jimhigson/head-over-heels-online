@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 
 import { blockSizePx } from "../src/game/physics/mechanicsConstants";
-import { type DirectionXy4, type Xyz } from "../src/utils/vectors/vectors";
+import type { DirectionXy4, Xyz } from "../src/utils/vectors/vectors";
 import {
   editorCameraAngle,
   editorPointingAt,

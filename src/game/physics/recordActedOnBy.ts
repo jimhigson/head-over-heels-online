@@ -3,7 +3,7 @@ import {
   isFreeItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlayNarrowedUnions";
-import { type RoomState } from "../../model/RoomState";
+import type { RoomState } from "../../model/RoomState";
 
 export const recordActedOnBy = <
   RoomId extends string,

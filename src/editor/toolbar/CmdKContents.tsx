@@ -11,9 +11,9 @@ import { CommandMatch } from "../../ui/command/CommandMatch";
 import { shortcutHint } from "../../ui/menuBar/shortcutHint";
 import { useTip } from "../../ui/tip/useTip";
 import { entries } from "../../utils/entries";
-import {
-  type EditorCommand,
-  type EditorCommandDefinition,
+import type {
+  EditorCommand,
+  EditorCommandDefinition,
 } from "../commands/EditorCommand";
 import { buttonSizeClassNames } from "./buttonSizeClassNames";
 import { cmdKSearchText } from "./cmdKSearchText";

@@ -3,7 +3,7 @@ import {
   selectInputAssignment,
   selectInputDirectionMode,
 } from "../../store/slices/gameMenus/gameMenusSelectors";
-import { type DirectionsRelativeToMode } from "../../store/slices/userSettings/directionsRelativeToModes";
+import type { DirectionsRelativeToMode } from "../../store/slices/userSettings/directionsRelativeToModes";
 import { store } from "../../store/store";
 import { emptyArray } from "../../utils/empty";
 import { updatePriority } from "../../utils/ticker/AppTicker";
@@ -27,10 +27,10 @@ import {
   snapXyFnMap,
 } from "./analogueControlAdjustments";
 import { extractGamepadsState, type GamepadState } from "./GamepadState";
-import { type HudInputState } from "./hudInputState";
-import { type AxisAssignableAction, type InputPress } from "./InputAssignment";
-import { type KeyboardStateMap } from "./keyboardState";
-import { type Key } from "./keys";
+import type { HudInputState } from "./hudInputState";
+import type { AxisAssignableAction, InputPress } from "./InputAssignment";
+import type { KeyboardStateMap } from "./keyboardState";
+import type { Key } from "./keys";
 import { lookUnitVectors } from "./lookUnitVectors";
 import { radialAxisToXy } from "./radialAxisToXy";
 

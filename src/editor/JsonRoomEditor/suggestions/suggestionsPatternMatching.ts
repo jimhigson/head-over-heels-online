@@ -2,9 +2,9 @@ import { findNodeAtLocation, type Node } from "jsonc-parser";
 
 import { matchesJsonPatternPart } from "../../../utils/jsonPattern/matchesJsonPatternPart";
 import { splitJsonPattern } from "../../../utils/jsonPattern/splitJsonPattern";
-import {
-  type SuggestionGenerator,
-  type SuggestionPatterns,
+import type {
+  SuggestionGenerator,
+  SuggestionPatterns,
 } from "./suggestionPatterns";
 
 const log = 0;

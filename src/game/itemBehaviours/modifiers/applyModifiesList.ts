@@ -1,14 +1,14 @@
-import { type OverrideProperties, type UnknownRecord } from "type-fest";
+import type { OverrideProperties, UnknownRecord } from "type-fest";
 
-import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import {
   itemBehaviourKey,
   type SwitchSetting,
 } from "../../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
-import { type SwitchItemModificationUnion } from "../../../model/json/SwitchConfig";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { SwitchItemModificationUnion } from "../../../model/json/SwitchConfig";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
-import { type RoomState } from "../../../model/RoomState";
+import type { RoomState } from "../../../model/RoomState";
 import { getNewStateForControlledItem } from "./getNewStateForControlledItem";
 
 export const applyModifiesList = <

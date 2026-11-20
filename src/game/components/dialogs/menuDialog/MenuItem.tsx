@@ -1,4 +1,4 @@
-import { type VNode } from "preact";
+import type { VNode } from "preact";
 import { useCallback } from "preact/hooks";
 import { twMerge } from "tailwind-merge";
 
@@ -6,7 +6,7 @@ import { useAppDispatch } from "../../../../store/hooks";
 import { goToSubmenu } from "../../../../store/slices/gameMenus/gameMenusSlice";
 import { detectDeviceType } from "../../../../utils/detectEnv/detectDeviceType";
 import { openExternal } from "../../../../utils/tauri/openExternalLink";
-import { type DialogId } from "./DialogId";
+import type { DialogId } from "./DialogId";
 import { useMenuItem } from "./dialogs/menus/useMenuItem";
 import { StandardMenuItemLeader } from "./dialogs/StandardMenuItemLeader";
 

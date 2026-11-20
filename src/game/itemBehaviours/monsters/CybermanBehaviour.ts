@@ -1,6 +1,6 @@
-import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
-import { type RoomState } from "../../../model/RoomState";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { RoomState } from "../../../model/RoomState";
 import { MonsterBehaviour } from "./MonsterBehaviour";
 
 export class CybermanBehaviour extends MonsterBehaviour {

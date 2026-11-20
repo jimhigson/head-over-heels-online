@@ -1,4 +1,4 @@
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
 import { migrateLegacySavedGames } from "./migrateLegacySavedGames";

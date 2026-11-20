@@ -1,29 +1,26 @@
-import { type PersistedState } from "redux-persist/es/types";
+import type { PersistedState } from "redux-persist/es/types";
 import { expect, test } from "vitest";
 
-import { campaign } from "../../_generated/originalCampaign/campaign";
-import { type OriginalCampaignRoomId } from "../../_generated/originalCampaign/OriginalCampaignRoomId";
 import blacktooth33v25 from "../../../e2e/fixtures/saves/v25/blacktooth33.json";
 import bookworld21v25 from "../../../e2e/fixtures/saves/v25/bookworld21.json";
 import finalroomV25 from "../../../e2e/fixtures/saves/v25/finalroom.json";
 import { isFreeItem } from "../../model/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
 import { type Progression, roomSpatialIndexKey } from "../../model/RoomState";
+import { campaign } from "../../originalCampaign/campaign";
+import type { OriginalCampaignRoomId } from "../../originalCampaign/OriginalCampaignRoomId";
 import { savedGamesMigrations } from "../../persistMigrations/savedGamesMigrations";
 import { persistVersion } from "../../store/persist/persist";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
-import { type SavedGamesSliceState } from "../../store/slices/savedGames/savedGamesSlice";
+import type { SavedGamesSliceState } from "../../store/slices/savedGames/savedGamesSlice";
 import { badJsonClone } from "../../utils/badJsonClone";
 import { valuesIter } from "../../utils/entries";
 import { xyzEqual } from "../../utils/vectors/vectors";
-import { type HudInputState } from "../input/hudInputState";
+import type { HudInputState } from "../input/hudInputState";
 import { InputStateTracker } from "../input/InputStateTracker";
 import { loadGameState } from "./loadGameState";
 import { loadPlayer } from "./loadRoom/loadPlayer";
-import {
-  type SavedGame,
-  type UnindexedRoomState,
-} from "./saving/SavedGameState";
+import type { SavedGame, UnindexedRoomState } from "./saving/SavedGameState";
 
 test("if there is a saved game with both characters in the same room, only load one copy of that room", () => {
   const savedRoom: UnindexedRoomState<OriginalCampaignRoomId, string> = {

@@ -1,7 +1,7 @@
 import { autoDetectRenderer, Rectangle, type Renderer } from "pixi.js";
 
 import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
-import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
+import type { GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
 import {
   noRoomRendererDecorators,
   RoomRenderer,
@@ -16,10 +16,10 @@ import { emptyUserSettings } from "../../store/slices/userSettings/emptyUserSett
 import { store } from "../../store/store";
 import { emptyObject } from "../../utils/empty";
 import { cameraAngleBase } from "../../utils/vectors/cameraAngleVectors";
-import {
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../editorTypes";
 
 export const previewWidthPx = 320;

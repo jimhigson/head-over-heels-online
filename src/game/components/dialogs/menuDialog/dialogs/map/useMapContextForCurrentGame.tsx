@@ -2,20 +2,20 @@ import { useMemo } from "preact/hooks";
 
 import { originalUserId } from "../../../../../../gameInfo";
 import { findMapBounds } from "../../../../../../map/findMapBounds";
-import {
-  type CellPlayables,
-  type MapContextValue,
+import type {
+  CellPlayables,
+  MapContextValue,
 } from "../../../../../../map/MapContext";
-import { type MapArea, type MapData } from "../../../../../../map/MapData";
-import { type RoomBehaviourComponent } from "../../../../../../map/RoomDecoratorProps";
+import type { MapArea, MapData } from "../../../../../../map/MapData";
+import type { RoomBehaviourComponent } from "../../../../../../map/RoomDecoratorProps";
 import { selectNotableItems } from "../../../../../../map/selectNotableItems";
-import { type PlayableItem } from "../../../../../../model/ItemInPlayNarrowedUnions";
+import type { PlayableItem } from "../../../../../../model/ItemInPlayNarrowedUnions";
 import { findSubRoomForItem } from "../../../../../../model/map/itemIsInSubRoom";
 import { roomGridPositions } from "../../../../../../model/map/roomGridPositions";
 import { sortRoomGridPositions } from "../../../../../../model/map/sortRoomGridPositions";
-import {
-  type CharacterName,
-  type IndividualCharacterName,
+import type {
+  CharacterName,
+  IndividualCharacterName,
 } from "../../../../../../model/modelTypes";
 import { getRoomItem } from "../../../../../../model/RoomState";
 import { mapSettingsHooks } from "../../../../../../store/mapSettingsHooks";
@@ -25,7 +25,7 @@ import {
   useRoomsExplored,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { emptyArray, emptyObject } from "../../../../../../utils/empty";
-import { type CharacterRooms } from "../../../../../gameState/GameState";
+import type { CharacterRooms } from "../../../../../gameState/GameState";
 import { selectCurrentRoomState } from "../../../../../gameState/gameStateSelectors/selectCurrentRoomState";
 import { findStartingRoomsInCampaign } from "../../../../../gameState/loadGameState";
 import { useGameApi } from "../../../../GameApiContext";

@@ -2,8 +2,8 @@ import { produce } from "immer";
 import { expect, test } from "vitest";
 
 import { nowhereRoomId } from "../../model/json/ItemConfigMap";
-import { type Xyz } from "../../utils/vectors/vectors";
-import { type EditorRoomId, type EditorRoomItemId } from "../editorTypes";
+import type { Xyz } from "../../utils/vectors/vectors";
+import type { EditorRoomId, EditorRoomItemId } from "../editorTypes";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../slice/levelEditorSelectors";
 import {
   commitPendingNudge,

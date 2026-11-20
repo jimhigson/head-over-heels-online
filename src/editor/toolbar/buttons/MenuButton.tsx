@@ -1,7 +1,7 @@
-import { type RefObject, type VNode } from "preact";
-import { type PropsWithChildren } from "preact/compat";
+import type { RefObject, VNode } from "preact";
+import type { PropsWithChildren } from "preact/compat";
 import { useState } from "preact/hooks";
-import { type EmptyObject } from "type-fest";
+import type { EmptyObject } from "type-fest";
 
 import { Button, type ButtonProps } from "../../../ui/Button";
 import { cn } from "../../../ui/cn";

@@ -8,11 +8,11 @@ import {
   resolveTeleporterLanding,
   type TeleporterLanding,
 } from "../../resolveTeleporterLanding";
-import {
-  type VerificationCampaign,
-  type VerificationJsonItem,
-  type VerificationRoomId,
-  type VerificationRoomItemId,
+import type {
+  VerificationCampaign,
+  VerificationJsonItem,
+  VerificationRoomId,
+  VerificationRoomItemId,
 } from "../verificationTypes";
 
 export type TeleporterConfig = VerificationJsonItem<"teleporter">["config"];

@@ -1,10 +1,10 @@
 import { expect, test } from "vitest";
 
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorJsonItemUnion,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../editorTypes";
 import { teleporterDefaultLandingItemId } from "./teleporterDefaultLandingItemId";
 

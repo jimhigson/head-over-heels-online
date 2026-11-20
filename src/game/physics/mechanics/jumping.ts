@@ -1,13 +1,13 @@
-import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import {
   itemBehaviourKey,
   type ItemInPlayType,
 } from "../../../model/ItemInPlay";
-import {
-  type PlayableItem,
-  type UnionOfAllItemInPlayTypes,
+import type {
+  PlayableItem,
+  UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
-import { type CharacterName } from "../../../model/modelTypes";
+import type { CharacterName } from "../../../model/modelTypes";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { getEffectivelyStandingOnItemIdForPlayable } from "../../../model/stoodOnItemsLookup";
 import { originalGameFrameDuration } from "../../../originalGame";
@@ -16,7 +16,7 @@ import {
   hasCollisionItemWithIndex,
 } from "../../collision/aabbCollision";
 import { smallItemAabb } from "../../collision/boundingBoxes";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
 import {

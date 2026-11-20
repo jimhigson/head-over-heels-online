@@ -1,7 +1,7 @@
 import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
 import { RoomSelect } from "../../../ui/RoomSelect";
-import { type EditorRoomId } from "../../editorTypes";
+import type { EditorRoomId } from "../../editorTypes";
 import {
   selectCursorRoomIdFromLevelEditorState,
   selectCursorSubRoomVerticalLink,

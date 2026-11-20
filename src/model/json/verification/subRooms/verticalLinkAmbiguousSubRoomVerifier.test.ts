@@ -7,7 +7,7 @@ import {
   setSubRoomCell,
   setWholeRoomCell,
 } from "../testUtils";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 import { verticalLinkAmbiguousSubRoomVerifier } from "./verticalLinkAmbiguousSubRoomVerifier";
 
 test("flags a link naming no sub-room of a room with two sub-rooms linking back", () => {

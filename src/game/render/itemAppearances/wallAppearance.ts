@@ -1,5 +1,5 @@
 import { Container } from "pixi.js";
-import { type WritableDeep } from "type-fest";
+import type { WritableDeep } from "type-fest";
 
 import { roomSpatialIndexKey } from "../../../model/RoomState";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";

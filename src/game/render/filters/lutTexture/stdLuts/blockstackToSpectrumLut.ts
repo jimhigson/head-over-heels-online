@@ -1,4 +1,4 @@
-import { type Texture } from "pixi.js";
+import type { Texture } from "pixi.js";
 
 import { blockStackSpritesheetMeta } from "../../../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
 import { sparseLut } from "../sparseLut";

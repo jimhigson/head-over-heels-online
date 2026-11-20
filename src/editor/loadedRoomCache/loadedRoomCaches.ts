@@ -1,7 +1,7 @@
 import { startEditorListening } from "../../store/listenerMiddleware";
 import { editorStore } from "../../store/store";
 import { selectActiveOpenRoomId } from "../slice/levelEditorSlice";
-import { type OpenRoomId } from "../slice/OpenRoom";
+import type { OpenRoomId } from "../slice/OpenRoom";
 import { layoutNodesOfType, type PaneLayout } from "../slice/PaneLayout";
 import { LoadedRoomCache } from "./LoadedRoomCache";
 

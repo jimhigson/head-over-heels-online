@@ -3,17 +3,17 @@ import { useMemo } from "preact/hooks";
 import { sanitiseForClassName } from "../game/components/tailwindSprites/SanitiseForClassName";
 import { zxSpectrumFrameRate } from "../originalGame";
 import { animationIsUniformlyFlipped } from "../sprites/css/spriteCss";
-import { type AppSpritesheetData } from "../sprites/spritesheet/AppSpritesheet";
-import { type AppSpriteFrame } from "../sprites/spritesheet/spritesheetData/AppSpriteFrame";
+import type { AppSpritesheetData } from "../sprites/spritesheet/AppSpritesheet";
+import type { AppSpriteFrame } from "../sprites/spritesheet/spritesheetData/AppSpriteFrame";
 import { spritesheetSize } from "../sprites/spritesheet/spritesheetData/makeBaseSpritesheetData";
-import {
-  type BaseAnimationId,
-  type BaseTextureId,
-  type FramesWithSpeed,
+import type {
+  BaseAnimationId,
+  BaseTextureId,
+  FramesWithSpeed,
 } from "../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import {
-  type AnimatedTextureTailwindClass,
-  type TextureTailwindClass,
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
 } from "../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { keys } from "../utils/entries";
 import { useMapContext } from "./MapContext";

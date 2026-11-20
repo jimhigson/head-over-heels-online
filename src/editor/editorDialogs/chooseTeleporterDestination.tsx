@@ -1,7 +1,7 @@
-import {
-  type EditorCampaign,
-  type EditorRoomId,
-  type EditorRoomItemId,
+import type {
+  EditorCampaign,
+  EditorRoomId,
+  EditorRoomItemId,
 } from "../editorTypes";
 import { showDialog } from "../toolbar/showDialog";
 import { ChooseTeleporterDestinationDialog } from "./ChooseTeleporterDestinationDialog";

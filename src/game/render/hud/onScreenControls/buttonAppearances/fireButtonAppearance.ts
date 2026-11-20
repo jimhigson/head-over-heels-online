@@ -4,8 +4,8 @@ import {
   type PokeableNumber,
   pokeableToNumber,
 } from "../../../../../model/ItemStateMap";
-import { type RoomState } from "../../../../../model/RoomState";
-import { type AppSpritesheetWithVariants } from "../../../../../sprites/spritesheet/AppSpritesheet";
+import type { RoomState } from "../../../../../model/RoomState";
+import type { AppSpritesheetWithVariants } from "../../../../../sprites/spritesheet/AppSpritesheet";
 import { variantTextureId } from "../../../../../sprites/spritesheet/variantTextureId";
 import { selectHeadAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import { createSprite } from "../../../createSprite";

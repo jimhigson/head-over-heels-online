@@ -1,6 +1,6 @@
-import { type CSSProperties } from "preact/compat";
+import type { CSSProperties } from "preact/compat";
 
-import { type AnimatedTextureTailwindClass } from "../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import type { AnimatedTextureTailwindClass } from "../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
 type NonIdealStateProps = {
   text: string;

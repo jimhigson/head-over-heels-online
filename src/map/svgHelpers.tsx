@@ -1,5 +1,5 @@
 import { projectWorldXyzToScreenXy } from "../game/render/projections";
-import { type Xy, type Xyz } from "../utils/vectors/vectors";
+import type { Xy, Xyz } from "../utils/vectors/vectors";
 
 export const roundForSvg = (n: number) => {
   return Math.round(n * 10) / 10;

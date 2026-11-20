@@ -1,4 +1,4 @@
-import { type ComponentChildren } from "preact";
+import type { ComponentChildren } from "preact";
 
 export type MenuItemIconSpaceProps = {
   /** the icon, centred in the space - wider ones spill out evenly either side */

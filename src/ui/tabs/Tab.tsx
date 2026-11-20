@@ -1,8 +1,8 @@
-import { type ComponentChildren } from "preact";
-import { type CSSProperties } from "preact/compat";
+import type { ComponentChildren } from "preact";
+import type { CSSProperties } from "preact/compat";
 import { useCallback, useContext, useState } from "preact/hooks";
 
-import { type Xy } from "../../utils/vectors/vectors";
+import type { Xy } from "../../utils/vectors/vectors";
 import { ContextMenu } from "../command/ContextMenu";
 import { ContextMenuItem } from "../command/ContextMenuItem";
 import { useTip } from "../tip/useTip";

@@ -1,22 +1,22 @@
 import { createContext } from "preact";
-import { type PropsWithChildren } from "preact/compat";
+import type { PropsWithChildren } from "preact/compat";
 import { useContext } from "preact/hooks";
 
-import { type PlayableItem } from "../model/ItemInPlayNarrowedUnions";
-import { type TeleporterLink } from "../model/map/teleporterLinks";
-import {
-  type CharacterName,
-  type IndividualCharacterName,
+import type { PlayableItem } from "../model/ItemInPlayNarrowedUnions";
+import type { TeleporterLink } from "../model/map/teleporterLinks";
+import type {
+  CharacterName,
+  IndividualCharacterName,
 } from "../model/modelTypes";
-import { type RoomJson } from "../model/RoomJson";
-import { type SceneryName } from "../sprites/planets";
-import { type AppSpritesheetData } from "../sprites/spritesheet/AppSpritesheet";
-import { type MapArea } from "./MapData";
-import { type NotableItemsInCell } from "./NotableItem";
-import {
-  type PostfixRoomDecoratorComponent,
-  type PrefixRoomDecoratorComponent,
-  type RoomBehaviourComponent,
+import type { RoomJson } from "../model/RoomJson";
+import type { SceneryName } from "../sprites/planets";
+import type { AppSpritesheetData } from "../sprites/spritesheet/AppSpritesheet";
+import type { MapArea } from "./MapData";
+import type { NotableItemsInCell } from "./NotableItem";
+import type {
+  PostfixRoomDecoratorComponent,
+  PrefixRoomDecoratorComponent,
+  RoomBehaviourComponent,
 } from "./RoomDecoratorProps";
 
 /**

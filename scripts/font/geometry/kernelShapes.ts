@@ -1,4 +1,4 @@
-import { type CornerName } from "./corners";
+import type { CornerName } from "./corners";
 import {
   baselineFromTop,
   cellCentre,

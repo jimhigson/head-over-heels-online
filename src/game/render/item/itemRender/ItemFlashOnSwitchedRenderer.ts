@@ -1,6 +1,6 @@
 import { type Color, Container, type Filter } from "pixi.js";
 
-import { type ItemInPlayType } from "../../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import { isInRoomModifierItem } from "../../../../model/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import { effectPixiColour } from "../../../../sprites/palette/pixiPalette";
@@ -8,16 +8,16 @@ import { spritesheetPixiPalettes } from "../../../../sprites/palette/spritesheet
 import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
 import { OneColourFilter } from "../../filters/OneColourFilter";
 import { OutlineFilter } from "../../filters/OutlineFilter";
-import {
-  type ItemRenderContext,
-  type ItemTickContext,
+import type {
+  ItemRenderContext,
+  ItemTickContext,
 } from "../../ItemRenderContexts";
 import {
   zxSpectrumPixiColor,
   zxSpectrumPixiColors,
 } from "../../palette/zxSpectrumPixiColours";
-import { type DecorateItemRenderer } from "./DecorateItemRenderer";
-import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
+import type { DecorateItemRenderer } from "./DecorateItemRenderer";
+import type { ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 const flashDurationMs = 75;
 

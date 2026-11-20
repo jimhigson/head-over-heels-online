@@ -31,7 +31,7 @@ import {
   doorHueSuffixes,
   type VariantSuffix,
 } from "./spritesheetData/variantSpritesheetData";
-import { type VariantBuildContext } from "./VariantBuildContext";
+import type { VariantBuildContext } from "./VariantBuildContext";
 
 const isDoorHueSuffix = (group: string): group is DoorHueSuffix =>
   (doorHueSuffixes as readonly string[]).includes(group);

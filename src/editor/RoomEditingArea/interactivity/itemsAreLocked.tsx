@@ -1,7 +1,7 @@
-import { type EditorRootState } from "../../../store/store";
-import {
-  type EditorJsonItemUnion,
-  type EditorUnionOfAllItemInPlayTypes,
+import type { EditorRootState } from "../../../store/store";
+import type {
+  EditorJsonItemUnion,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
 import { isSceneryItem } from "./isSceneryItem";
 

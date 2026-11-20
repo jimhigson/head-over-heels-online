@@ -20,18 +20,18 @@ import {
   type Xyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
-import {
-  type EditorJsonItem,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorJsonItem,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../../editorTypes";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomIdFromLevelEditorState,
   selectCursorSubRoomIdFromLevelEditorState,
 } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { type AddedRoom, addNewRoomInPlace } from "./addNewRoomInPlace";
 import { changeCurrentRoomInPlace } from "./changeCurrentRoomInPlace";
 import { cutHoleInWallsForDoorsInPlace } from "./cutHoleInWallsForDoorsInPlace";

@@ -1,5 +1,5 @@
-import { type Xyz } from "../utils/vectors/vectors";
-import { type AnyRoomJson } from "./RoomJson";
+import type { Xyz } from "../utils/vectors/vectors";
+import type { AnyRoomJson } from "./RoomJson";
 import { roomJsonItemsIterable } from "./RoomJsonItemIterators";
 
 export type RoomJsonFloorsExtent = {

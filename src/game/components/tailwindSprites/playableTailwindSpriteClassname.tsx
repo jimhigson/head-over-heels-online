@@ -1,16 +1,16 @@
-import { type IndividualCharacterName } from "../../../model/modelTypes";
+import type { IndividualCharacterName } from "../../../model/modelTypes";
 import {
   spritesheetMetas,
   type SpritesheetName,
 } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import {
-  type AnimatedTextureTailwindClass,
-  type TextureTailwindClass,
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
 } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppSelector } from "../../../store/hooks";
 import { selectSpritesheetName } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { twClass } from "../../../utils/twClass.tsx" with { type: "macro" };
-import { type DirectionXy8 } from "../../../utils/vectors/vectors";
+import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 
 const idleHeadClass = (
   facingXy8: DirectionXy8,

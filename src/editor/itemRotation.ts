@@ -10,11 +10,11 @@ import {
   rotateDirectionXy8,
   type Xyz,
 } from "../utils/vectors/vectors";
-import {
-  type EditorJsonItem,
-  type EditorJsonItemUnion,
-  type EditorJsonItemWithTimes,
-  type EditorRoomJson,
+import type {
+  EditorJsonItem,
+  EditorJsonItemUnion,
+  EditorJsonItemWithTimes,
+  EditorRoomJson,
 } from "./editorTypes";
 import { directionForItem, setItemDirectionInPlace } from "./itemDirection";
 

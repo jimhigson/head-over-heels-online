@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { campaignOf, newRoom, runCheck, setWholeRoomCell } from "../testUtils";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 import { verticalLinkOneWayVerifier } from "./verticalLinkOneWayVerifier";
 
 test("flags a below link whose target doesn't link back up", () => {

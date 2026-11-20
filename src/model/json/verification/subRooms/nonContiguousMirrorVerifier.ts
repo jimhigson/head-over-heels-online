@@ -2,7 +2,7 @@ import { roomNonContiguousRelationship } from "../../../RoomJson";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { valueMd } from "../helpers/messageMarkdown";
 import { subRoomCells } from "../helpers/verticalLinks";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 
 type NonContiguousMirror = {
   roomId: VerificationRoomId;

@@ -1,6 +1,6 @@
-import { type PlayableItem } from "../../model/ItemInPlayNarrowedUnions";
-import { type CharacterName } from "../../model/modelTypes";
-import { type GameState } from "../gameState/GameState";
+import type { PlayableItem } from "../../model/ItemInPlayNarrowedUnions";
+import type { CharacterName } from "../../model/modelTypes";
+import type { GameState } from "../gameState/GameState";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 
 /**

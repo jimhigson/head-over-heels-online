@@ -1,5 +1,5 @@
 import { forEachRoomItem } from "../../model/roomItemsInPlayIterators";
-import { type RoomState } from "../../model/RoomState";
+import type { RoomState } from "../../model/RoomState";
 import { xyzSnapIfCloseToIntegers } from "../../utils/vectors/vectors";
 import { updateItemPosition } from "../gameState/mutators/updateItemBox";
 

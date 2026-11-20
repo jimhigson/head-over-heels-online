@@ -7,14 +7,14 @@ import {
   type Xyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
-import {
-  type EditorJsonItem,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorJsonItem,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../../editorTypes";
-import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { ItemTool } from "../../RoomEditingArea/interactivity/Tool";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { addItemInPlace } from "./addItemInPlace";
 import { type AddedRoom, addNewRoomInPlace } from "./addNewRoomInPlace";
 import { cutHoleInWallsForDoorsInPlace } from "./cutHoleInWallsForDoorsInPlace";

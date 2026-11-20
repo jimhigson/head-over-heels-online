@@ -12,10 +12,7 @@ import {
   roomFootprints,
 } from "../../../../model/roomFootprints";
 import { getJsonItemTimes } from "../../../../model/times";
-import {
-  type EditorRootState,
-  type EditorThunk,
-} from "../../../../store/store";
+import type { EditorRootState, EditorThunk } from "../../../../store/store";
 import { emptyArray } from "../../../../utils/empty";
 import { planeAxesDesc } from "../../../../utils/vectors/orthoPlane";
 import {
@@ -38,10 +35,10 @@ import {
   isJsonItemWithEditorGhosts,
   maybeEditorGhostEditorBehaviour,
 } from "../../../editorGhostEditorBehaviours";
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomJson,
-  type EditorRoomState,
+import type {
+  EditorJsonItemUnion,
+  EditorRoomJson,
+  EditorRoomState,
 } from "../../../editorTypes";
 import {
   itemsMoveBetweenRoomsDescription,
@@ -64,19 +61,19 @@ import {
   setSelectedItemsInRoom,
   toggleSelectedItemInRoom,
 } from "../../../slice/levelEditorSlice";
-import { type OpenRoomId } from "../../../slice/OpenRoom";
+import type { OpenRoomId } from "../../../slice/OpenRoom";
 import { existingLayoutNode, maybeLayoutNode } from "../../../slice/PaneLayout";
-import { type ItemDragAction } from "../../../slice/reducers/dragToMoveReducers";
-import {
-  type ItemDragPlane,
-  type ItemGrab,
-  type ItemGrabPreviewedIntoPayload,
+import type { ItemDragAction } from "../../../slice/reducers/dragToMoveReducers";
+import type {
+  ItemDragPlane,
+  ItemGrab,
+  ItemGrabPreviewedIntoPayload,
 } from "../../../slice/reducers/itemGrabReducers";
 import { getMovableVector } from "../../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import { moveOrResizeOutcome } from "../../../slice/reducers/moveOrResizeItemPreview/moveOrResizeOutcome";
-import {
-  type EditorGhostSelectionEntry,
-  type SelectionEntry,
+import type {
+  EditorGhostSelectionEntry,
+  SelectionEntry,
 } from "../../../slice/SelectionEntry";
 import { snapGridResolution } from "../../../snapGridResolution";
 import {
@@ -84,7 +81,7 @@ import {
   sameMoveOrResizeForEach,
 } from "../../cursor/editWouldCollide";
 import { roundXyzProjection } from "../../cursor/findPointerPointingAt";
-import { type MaybePointingAtSomething } from "../../cursor/PointingAt";
+import type { MaybePointingAtSomething } from "../../cursor/PointingAt";
 import {
   viewportMouseMovement,
   viewportMousePosition,
@@ -99,12 +96,12 @@ import {
 } from "../nearestCandidatesFirst";
 import { setHoveredItemIfChangedThunk } from "../setHoveredItemIfChangedThunk";
 import { findItemInPlayForPicking } from "./ItemToolHandler";
-import {
-  type MouseDownParams,
-  type MouseLeaveParams,
-  type MouseMoveParams,
-  type MouseUpParams,
-  type ToolHandler,
+import type {
+  MouseDownParams,
+  MouseLeaveParams,
+  MouseMoveParams,
+  MouseUpParams,
+  ToolHandler,
 } from "./ToolHandler";
 
 const dragMinimumDistance = 5; // pixels

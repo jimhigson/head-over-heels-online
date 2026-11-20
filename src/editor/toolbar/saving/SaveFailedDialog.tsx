@@ -1,6 +1,6 @@
 import { useState } from "preact/hooks";
 
-import { type SaveFailure } from "../../../db/campaign";
+import type { SaveFailure } from "../../../db/campaign";
 import { Border } from "../../../ui/Border";
 import { Button } from "../../../ui/Button";
 import { Dialog } from "../../../ui/Dialog";

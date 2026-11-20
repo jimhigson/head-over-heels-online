@@ -3,13 +3,13 @@ import {
   type ItemInPlay,
   type ItemInPlayConfig,
 } from "../../../model/ItemInPlay";
-import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import {
   addPokeableNumbers,
   pokeableToNumber,
 } from "../../../model/ItemStateMap";
-import { type CharacterName } from "../../../model/modelTypes";
-import { type RoomState } from "../../../model/RoomState";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
 import { emptyObject } from "../../../utils/empty";
 import {
   addXyz,
@@ -19,7 +19,7 @@ import {
   unitVector,
 } from "../../../utils/vectors/vectors";
 import { smallItemAabb } from "../../collision/boundingBoxes";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 import { selectHeadAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";

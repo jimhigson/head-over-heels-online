@@ -1,12 +1,12 @@
 import { memo } from "preact/compat";
 import { useEffect } from "preact/hooks";
 
-import { type Key } from "../../game/input/keys";
+import type { Key } from "../../game/input/keys";
 import { createClickableRoomBehaviour } from "../../map/createClickableRoomBehaviour";
 import { MapSvg } from "../../map/Map.svg";
 import { MapContextProvider } from "../../map/MapContext";
-import { type RoomBehaviourComponent } from "../../map/RoomDecoratorProps";
-import { type SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRoomGridPositions";
+import type { RoomBehaviourComponent } from "../../map/RoomDecoratorProps";
+import type { SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRoomGridPositions";
 import { startAppListening } from "../../store/listenerMiddleware";
 import { editorStore, store, useEditorAppSelector } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
@@ -18,7 +18,7 @@ import {
   xyzEqual,
 } from "../../utils/vectors/vectors";
 import { EditorErrorBoundary } from "../EditorErrorBoundary";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import { EditorMapRoomTooltipBehaviour } from "../roomPreview/EditorMapRoomTooltipBehaviour";
 import { insertRoomInDirectionThunk } from "../slice/insertRoomInDirectionThunk";
 import { selectCursorRoomFromLevelEditorState } from "../slice/levelEditorSelectors";

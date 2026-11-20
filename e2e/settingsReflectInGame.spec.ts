@@ -1,9 +1,9 @@
 import { expect, type Page } from "@playwright/test";
 import chalk from "chalk";
 
-import { type SpritesheetName } from "../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type toggleUserSetting } from "../src/store/slices/userSettings/userSettingsSlice";
-import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
+import type { SpritesheetName } from "../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { toggleUserSetting } from "../src/store/slices/userSettings/userSettingsSlice";
+import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import { paintFrame } from "./testUtils/advanceGameTime";
 import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import {

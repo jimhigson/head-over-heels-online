@@ -1,24 +1,24 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
-import {
-  type CybermanConfig,
-  type MonsterJsonConfig,
+import type {
+  CybermanConfig,
+  MonsterJsonConfig,
 } from "../../../model/json/MonsterJsonConfig";
-import { type Xyz } from "../../../utils/vectors/vectors";
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomId,
-  type EditorRoomItemId,
+import type { Xyz } from "../../../utils/vectors/vectors";
+import type {
+  EditorJsonItemUnion,
+  EditorRoomId,
+  EditorRoomItemId,
 } from "../../editorTypes";
-import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
+import type { ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import { addDoorInPlace } from "../inPlaceMutators/addDoorInPlace";
 import { addItemInPlace } from "../inPlaceMutators/addItemInPlace";
 import { commitPendingNudgeInPlace } from "../inPlaceMutators/commitPendingNudgeInPlace";
 import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
 import { setSelectionOnCursorRoomInPlace } from "../inPlaceMutators/setSelectionOnCursorRoomInPlace";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
-import { type UndoItemEntry } from "./undoDescription";
+import type { LevelEditorState } from "../levelEditorSlice";
+import type { UndoItemEntry } from "./undoDescription";
 import { snapshotRoomForUndo } from "./undoReducers";
 
 const isDoorTool = (itemTool: ItemTool): itemTool is ItemTool<"door"> => {

@@ -1,3 +1,5 @@
+#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
+
 import { chromium } from "@playwright/test";
 import { parseArgs } from "node:util";
 
@@ -14,7 +16,7 @@ import { captureSaveFixtures } from "../e2e/testUtils/captureSaveFixtures";
  *   git worktree add /tmp/hoh-v22 v22.0.0
  *   cd /tmp/hoh-v22 && pnpm install && pnpm exec vite build --config vite.game.config.ts --mode visual-regression
  *   pnpm exec vite preview --config vite.game.config.ts --port 4222 &
- *   cd - && pnpm tsx scripts/captureSavesFromBuild.ts --baseUrl=http://localhost:4222 --version=22.0.0
+ *   cd - && ./scripts/captureSavesFromBuild.ts --baseUrl=http://localhost:4222 --version=22.0.0
  *
  * (the build must expose the e2e window globals: v23+ needs
  * `--mode visual-regression`; v22 exposes them unconditionally)
@@ -31,7 +33,7 @@ const {
 
 if (baseUrl === undefined || version === undefined) {
   throw new Error(
-    "usage: pnpm tsx scripts/captureSavesFromBuild.ts --baseUrl=http://localhost:4222 --version=22.0.0",
+    "usage: ./scripts/captureSavesFromBuild.ts --baseUrl=http://localhost:4222 --version=22.0.0",
   );
 }
 

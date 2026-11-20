@@ -1,6 +1,6 @@
 import { produce } from "immer";
 
-import { type CampaignVerifier } from "../CampaignVerification";
+import type { CampaignVerifier } from "../CampaignVerification";
 import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import {
   allTeleporters,
@@ -8,10 +8,10 @@ import {
   teleporterLanding,
   teleporterToItemId,
 } from "../helpers/teleporterTarget";
-import {
-  type VerificationCampaign,
-  type VerificationRoomId,
-  type VerificationRoomItemId,
+import type {
+  VerificationCampaign,
+  VerificationRoomId,
+  VerificationRoomItemId,
 } from "../verificationTypes";
 
 type RedundantTeleporterItem = {

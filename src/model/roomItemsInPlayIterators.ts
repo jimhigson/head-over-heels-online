@@ -1,10 +1,10 @@
-import { type ValueOf } from "type-fest";
+import type { ValueOf } from "type-fest";
 
-import { type SceneryName } from "../sprites/planets";
+import type { SceneryName } from "../sprites/planets";
 import { objectEntriesIter, valuesIter } from "../utils/entries";
-import { type ItemInPlay } from "./ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
-import { type RoomStateItems } from "./RoomState";
+import type { ItemInPlay } from "./ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
+import type { RoomStateItems } from "./RoomState";
 
 export const roomItemsArray = <
   RoomId extends string,

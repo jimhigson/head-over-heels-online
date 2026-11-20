@@ -1,4 +1,4 @@
-import { type ShortcutKeys } from "./useKeyboardShortcut";
+import type { ShortcutKeys } from "./useKeyboardShortcut";
 
 const isLetterKey = (shortcutKey: string) => /^[a-z]$/i.test(shortcutKey);
 

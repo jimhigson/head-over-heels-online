@@ -1,4 +1,4 @@
-import { type Get, type Paths, type UnknownRecord } from "type-fest";
+import type { Get, Paths, UnknownRecord } from "type-fest";
 
 /** the default split strategy: a dot-delimited path, eg `a.b.c` */
 const splitDotPath = (path: string): string[] => path.split(".");

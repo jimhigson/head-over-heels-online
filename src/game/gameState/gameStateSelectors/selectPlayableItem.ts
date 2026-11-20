@@ -1,13 +1,13 @@
-import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
-import {
-  type HeadAbilities,
-  type HeelsAbilities,
+import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type {
+  HeadAbilities,
+  HeelsAbilities,
 } from "../../../model/ItemStateMap";
-import {
-  type CharacterName,
-  type IndividualCharacterName,
+import type {
+  CharacterName,
+  IndividualCharacterName,
 } from "../../../model/modelTypes";
-import { type GameState } from "../GameState";
+import type { GameState } from "../GameState";
 
 export const selectPlayableItem = <
   C extends CharacterName = CharacterName,

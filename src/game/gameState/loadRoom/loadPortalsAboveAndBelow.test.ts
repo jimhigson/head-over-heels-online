@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
-import { type RoomJson } from "../../../model/RoomJson";
+import type { RoomJson } from "../../../model/RoomJson";
 import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { xyzEqual } from "../../../utils/vectors/vectors";

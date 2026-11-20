@@ -1,12 +1,12 @@
 import { expect, test } from "vitest";
 
-import {
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../../editor/editorTypes";
-import { type LevelEditorState } from "../../editor/slice/levelEditorSlice";
-import { type UndoDescription } from "../../editor/slice/reducers/undoDescription";
+import type { LevelEditorState } from "../../editor/slice/levelEditorSlice";
+import type { UndoDescription } from "../../editor/slice/reducers/undoDescription";
 import { levelEditorHistoryTransform } from "./levelEditorHistoryTransform";
 
 const roomId = "room" as EditorRoomId;

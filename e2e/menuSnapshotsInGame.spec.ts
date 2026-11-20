@@ -1,7 +1,7 @@
 import chalk from "chalk";
 
-import { type goToSubmenu } from "../src/store/slices/gameMenus/gameMenusSlice";
-import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
+import type { goToSubmenu } from "../src/store/slices/gameMenus/gameMenusSlice";
+import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import { dispatchToStore } from "./testUtils/gameStateQueries";
 import { elapsed, formatProjectName, logUpscale } from "./testUtils/logging";

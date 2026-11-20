@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "preact/hooks";
-import { type EmptyObject } from "type-fest";
+import type { EmptyObject } from "type-fest";
 
 import { useMaybeGameApi } from "../game/components/GameApiContext";
 import { useInputStateTracker } from "../game/input/InputStateProvider";

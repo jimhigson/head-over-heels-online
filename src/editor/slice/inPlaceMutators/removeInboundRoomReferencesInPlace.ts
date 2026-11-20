@@ -1,12 +1,12 @@
 import { roomVerticalLinkHolders } from "../../../model/RoomJson";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJsonItemIterators";
 import { valuesIter } from "../../../utils/entries";
-import {
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../../editorTypes";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { deleteItemInPlace } from "./deleteItemInPlace";
 
 export const removeInboundRoomReferencesInPlace = (

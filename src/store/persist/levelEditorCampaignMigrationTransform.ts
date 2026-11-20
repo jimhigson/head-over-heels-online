@@ -1,6 +1,6 @@
 import createTransform from "redux-persist/es/createTransform";
 
-import { type EditorCampaign } from "../../editor/editorTypes";
+import type { EditorCampaign } from "../../editor/editorTypes";
 import { migrateRoomIdInPlace } from "../../model/inPlaceMutators/migrateRoomIdInPlace";
 import { migrateTeleporterActivationInPlace } from "../../model/inPlaceMutators/migrateTeleporterActivationInPlace";
 import { valuesIter } from "../../utils/entries";

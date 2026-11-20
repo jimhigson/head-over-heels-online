@@ -1,5 +1,5 @@
 import { valuesIter } from "../../utils/entries";
-import { type AnyRoomJson } from "../RoomJson";
+import type { AnyRoomJson } from "../RoomJson";
 import { migrateRoomIdInPlace } from "./migrateRoomIdInPlace";
 import { migrateTeleporterActivationInPlace } from "./migrateTeleporterActivationInPlace";
 import { migrateTowersInPlace } from "./migrateTowersInPlace";

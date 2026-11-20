@@ -1,4 +1,4 @@
-import { type EditorThunk } from "../../../store/store";
+import type { EditorThunk } from "../../../store/store";
 import { showDialog } from "../../toolbar/showDialog";
 
 /**

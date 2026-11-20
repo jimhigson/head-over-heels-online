@@ -1,6 +1,6 @@
 import { expect } from "@playwright/test";
 
-import { type OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
+import type { OriginalCampaignRoomId } from "../src/originalCampaign/OriginalCampaignRoomId";
 import { elapsed, formatProjectName } from "./testUtils/logging";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import {

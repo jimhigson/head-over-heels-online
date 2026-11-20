@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { subRoomById, type SubRooms } from "../../../RoomJson";
-import { type CampaignVerifier } from "../CampaignVerification";
+import type { CampaignVerifier } from "../CampaignVerification";
 import { dividedCells } from "../helpers/subRoomGeometry";
 import { subRoomAdjacencyVerifier } from "../subRooms/subRoomAdjacencyVerifier";
 import { subRoomInvertedExtentVerifier } from "../subRooms/subRoomInvertedExtentVerifier";
@@ -13,7 +13,7 @@ import {
   setSubRoomCell,
   setWholeRoomCell,
 } from "../testUtils";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 import { mapGeometryVerifier } from "./mapGeometryVerifier";
 import { subRoomsFitFloorVerifier } from "./subRoomsFitFloorVerifier";
 

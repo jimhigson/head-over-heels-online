@@ -1,8 +1,8 @@
-import { type ComponentChildren } from "preact";
+import type { ComponentChildren } from "preact";
 import { useLayoutEffect, useRef } from "preact/hooks";
 
 import { CssVariables } from "../../game/components/CssVariables";
-import { type Xy } from "../../utils/vectors/vectors";
+import type { Xy } from "../../utils/vectors/vectors";
 import { Command, type CommandProps } from "./Command";
 import { CommandList } from "./CommandList";
 

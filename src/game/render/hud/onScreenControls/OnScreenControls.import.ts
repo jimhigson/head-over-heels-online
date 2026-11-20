@@ -1,4 +1,4 @@
-import { type AsyncReturnType } from "type-fest";
+import type { AsyncReturnType } from "type-fest";
 
 import { importOnce } from "../../../../utils/importOnce";
 

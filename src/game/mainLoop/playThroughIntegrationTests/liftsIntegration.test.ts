@@ -19,7 +19,7 @@ import {
   isFreeItem,
   type PlayableItem,
 } from "../../../model/ItemInPlayNarrowedUnions";
-import { type LiftState } from "../../../model/ItemStateMap";
+import type { LiftState } from "../../../model/ItemStateMap";
 import {
   iterateRoomItemEntries,
   roomItemsIterable,

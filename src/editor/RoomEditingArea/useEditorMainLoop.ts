@@ -1,27 +1,27 @@
 import { Container, Graphics, type Renderer } from "pixi.js";
-import { type RefObject } from "preact";
+import type { RefObject } from "preact";
 import { useEffect } from "preact/hooks";
 
-import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
+import type { GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
 import {
   RoomRenderer,
   type RoomRendererDecorators,
 } from "../../game/render/room/RoomRenderer";
 import { blockstackPixiPalettes } from "../../sprites/palette/spritesheetPixiPalettes";
 import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
+import type { Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
-import { type Upscale } from "../../store/slices/upscale/Upscale";
+import type { Upscale } from "../../store/slices/upscale/Upscale";
 import { store } from "../../store/store";
-import { type AppTicker } from "../../utils/ticker/AppTicker";
+import type { AppTicker } from "../../utils/ticker/AppTicker";
 import { appTicker } from "../../utils/ticker/appTickerInstance";
-import {
-  type EditorRoomId,
-  type EditorRoomRenderer,
-  type EditorRoomState,
+import type {
+  EditorRoomId,
+  EditorRoomRenderer,
+  EditorRoomState,
 } from "../editorTypes";
 import { selectOpenRoomCameraAngle } from "../slice/levelEditorSlice";
-import { type OpenRoomId } from "../slice/OpenRoom";
+import type { OpenRoomId } from "../slice/OpenRoom";
 import { useEditorLoadedRoom } from "../useEditorLoadedRoom";
 import { useEditorRoomRenderDimensions } from "./editorRoomRenderDimensions";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";

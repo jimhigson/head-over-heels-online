@@ -1,20 +1,17 @@
-import { type Tagged } from "type-fest";
+import type { Tagged } from "type-fest";
 
-import { type ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
-import { type RoomRenderer } from "../game/render/room/RoomRenderer";
-import { type ItemInPlayType } from "../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../model/ItemInPlayNarrowedUnions";
-import {
-  type JsonItem,
-  type JsonItemType,
-  type JsonItemUnion,
+import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
+import type { RoomRenderer } from "../game/render/room/RoomRenderer";
+import type { ItemInPlayType } from "../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../model/ItemInPlayNarrowedUnions";
+import type {
+  JsonItem,
+  JsonItemType,
+  JsonItemUnion,
 } from "../model/json/JsonItem";
-import {
-  type Campaign,
-  type OptionallyNamedCampaign,
-} from "../model/modelTypes";
-import { type RoomJson, type RoomJsonItems } from "../model/RoomJson";
-import { type RoomState, type RoomStateItems } from "../model/RoomState";
+import type { Campaign, OptionallyNamedCampaign } from "../model/modelTypes";
+import type { RoomJson, RoomJsonItems } from "../model/RoomJson";
+import type { RoomState, RoomStateItems } from "../model/RoomState";
 
 export type NamedEditorCampaign = Campaign<EditorRoomId>;
 

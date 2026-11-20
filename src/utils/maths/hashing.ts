@@ -1,4 +1,4 @@
-import { type Xyz } from "../vectors/vectors";
+import type { Xyz } from "../vectors/vectors";
 
 const fnvInitialSeed = 0x81_1c_9d_c5;
 

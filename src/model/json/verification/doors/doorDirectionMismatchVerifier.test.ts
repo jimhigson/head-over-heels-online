@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { addDoor, campaignOf, newRoom, runCheck } from "../testUtils";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 import { doorDirectionMismatchVerifier } from "./doorDirectionMismatchVerifier";
 
 test("flags a return door facing the wrong way", () => {

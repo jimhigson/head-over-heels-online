@@ -192,7 +192,7 @@ echo "🤖 tagging spritesBlockstack.png as Display P3"
 magick "$TMP_DIR/spritesBlockstack.png" -profile gfx/DisplayP3-v2-micro.icc "$TMP_DIR/spritesBlockstack.png"
 
 #make the icon (from the p3-tagged png, before we convert to webp):
-ICON_FRAME=$(scripts/iconLocationOnSpriteSheet.ts)
+ICON_FRAME=$(./scripts/iconLocationOnSpriteSheet.ts)
 echo "🤖 ✂️ cutting out icon at frame (XxY+W+H) is $ICON_FRAME"
 # crop out
 magick $TMP_DIR/spritesBlockstack.png -crop $ICON_FRAME +repage $TMP_DIR_ICONS/icon.png
@@ -233,7 +233,7 @@ echo "🤖 masking non-sprite areas to transparent"
 # input and shifts every rgb value off-palette, which breaks palette swapping.
 # Untagged, sharp is an sRGB identity; re-tag P3 after (assign, pixels unchanged).
 magick "$TMP_DIR/spritesBlockstack.png" -strip "$TMP_DIR/spritesBlockstack.png"
-node_modules/.bin/tsx scripts/maskNonSpriteAreas.ts "$TMP_DIR/spritesBlockstack.png"
+./scripts/maskNonSpriteAreas.ts "$TMP_DIR/spritesBlockstack.png"
 magick "$TMP_DIR/spritesBlockstack.png" -profile gfx/DisplayP3-v2-micro.icc "$TMP_DIR/spritesBlockstack.png"
 
 echo "🤖 converting sprites to webp (lossless, cwebp -z 9)"

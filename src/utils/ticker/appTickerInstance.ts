@@ -1,4 +1,4 @@
-import { type AppTicker } from "./AppTicker";
+import type { AppTicker } from "./AppTicker";
 import { BrowserClockAppTicker } from "./BrowserClockAppTicker";
 import { TestDrivenAppTicker } from "./TestDrivenAppTicker";
 

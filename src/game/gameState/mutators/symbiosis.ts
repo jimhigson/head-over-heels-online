@@ -2,8 +2,8 @@ import {
   itemBehaviourKey,
   type ItemInPlayConfig,
 } from "../../../model/ItemInPlay";
-import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
-import { type IndividualCharacterName } from "../../../model/modelTypes";
+import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { IndividualCharacterName } from "../../../model/modelTypes";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { pick } from "../../../utils/pick";

@@ -3,12 +3,12 @@ import { describe, expect, test } from "vitest";
 import { blockSizePx } from "../../../game/physics/mechanicsConstants";
 import { projectWorldXyzToScreenXy } from "../../../game/render/projections";
 import { quarterCameraAngles } from "../../../utils/vectors/cameraAngleVectors";
-import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
-import {
-  type EditorRoomItemId,
-  type EditorUnionOfAllItemInPlayTypes,
+import type { Xy, Xyz } from "../../../utils/vectors/vectors";
+import type {
+  EditorRoomItemId,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
-import { type Tool } from "../interactivity/Tool";
+import type { Tool } from "../interactivity/Tool";
 import {
   blockJsonItemId,
   blockPositionBlocks,

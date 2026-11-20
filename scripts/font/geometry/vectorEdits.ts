@@ -1,7 +1,7 @@
-import {
-  type CornerTreatment,
-  type VectorContour,
-  type VectorPoint,
+import type {
+  CornerTreatment,
+  VectorContour,
+  VectorPoint,
 } from "./glyphOverrides";
 import { directionOf, legalSlopes, type Slope, slopeOf } from "./slopes";
 

@@ -1,4 +1,4 @@
-import { type RoomBehaviourProps } from "../../../../../../map/RoomDecoratorProps";
+import type { RoomBehaviourProps } from "../../../../../../map/RoomDecoratorProps";
 import { useIsCurrentCell } from "../../../../../../map/useIsCurrentCell";
 import { Tip } from "../../../../../../ui/tip/Tip";
 

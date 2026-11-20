@@ -7,10 +7,10 @@ import {
   animationIsUniformlyFlipped,
   keyframesForAnimatedSprite,
 } from "../../sprites/css/spriteCss";
-import { type AppSpritesheetData } from "../../sprites/spritesheet/AppSpritesheet";
-import {
-  type BaseTextureId,
-  type FramesWithSpeed,
+import type { AppSpritesheetData } from "../../sprites/spritesheet/AppSpritesheet";
+import type {
+  BaseTextureId,
+  FramesWithSpeed,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { useIsUncolourised } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { useTip } from "../../ui/tip/useTip";

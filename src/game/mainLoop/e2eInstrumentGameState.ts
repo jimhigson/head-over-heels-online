@@ -1,5 +1,5 @@
-import { type CharacterName } from "../../model/modelTypes";
-import { type GameState } from "../gameState/GameState";
+import type { CharacterName } from "../../model/modelTypes";
+import type { GameState } from "../gameState/GameState";
 import { E2EEventBus } from "./E2EEventBus";
 
 /**

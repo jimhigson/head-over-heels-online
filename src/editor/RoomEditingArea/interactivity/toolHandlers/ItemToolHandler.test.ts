@@ -2,11 +2,8 @@ import { produce } from "immer";
 import { expect, test } from "vitest";
 
 import { blockSizePx } from "../../../../game/physics/mechanicsConstants";
-import {
-  type EditorRoomItemId,
-  type EditorRoomJson,
-} from "../../../editorTypes";
-import { type LevelEditorState } from "../../../slice/levelEditorSlice";
+import type { EditorRoomItemId, EditorRoomJson } from "../../../editorTypes";
+import type { LevelEditorState } from "../../../slice/levelEditorSlice";
 import { loadEditorRoom } from "../../../slice/loadEditorRoom";
 import {
   editorStateWithOneRoomWithNoItems,
@@ -14,9 +11,9 @@ import {
   testOpenRoomId,
   testRoomId,
 } from "../../../slice/reducers/__test__/storeStates";
-import { type PointingAtItem } from "../../cursor/PointingAt";
-import { type EditorViewport } from "../../viewport/EditorViewport";
-import { type Tool } from "../Tool";
+import type { PointingAtItem } from "../../cursor/PointingAt";
+import type { EditorViewport } from "../../viewport/EditorViewport";
+import type { Tool } from "../Tool";
 import { ItemToolHandler } from "./ItemToolHandler";
 
 test("hovering the item tool where its item would collide previews it at the nearest spot that fits instead", () => {

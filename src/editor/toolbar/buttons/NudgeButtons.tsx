@@ -1,7 +1,7 @@
-import { type ComponentChildren } from "preact";
+import type { ComponentChildren } from "preact";
 
 import { twClass } from "../../../utils/twClass.tsx" with { type: "macro" };
-import { type DirectionXyz4 } from "../../../utils/vectors/vectors";
+import type { DirectionXyz4 } from "../../../utils/vectors/vectors";
 import { CommandToolbarButton } from "../../commands/CommandToolbarButton";
 import { nudgeCommandDefinitions } from "../../commands/nudgeCommandDefinitions";
 import { type NudgeKind, nudgeKinds } from "../../slice/levelEditorSlice";

@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { type VectorContour } from "./glyphOverrides";
+import type { VectorContour } from "./glyphOverrides";
 import { validateVectorGlyph } from "./validateVectorGlyph";
 
 const square: VectorContour = {

@@ -1,35 +1,35 @@
-import { type Arrayable } from "type-fest";
+import type { Arrayable } from "type-fest";
 
-import { type ExportedSoundId } from "../../_generated/sfxdex/soundIds";
-import { type MarkdownPageName } from "../../manual/pages";
-import { type PlanetName, type SceneryName } from "../../sprites/planets";
-import { type Subset } from "../../utils/Subset";
-import {
-  type AxisXy,
-  type DirectionXy4,
-  type DirectionXy8,
-  type DirectionXyz4,
-  type Xy,
-  type Xyz,
+import type { ExportedSoundId } from "../../_generated/sfxdex/soundIds";
+import type { MarkdownPageName } from "../../manual/pages";
+import type { PlanetName, SceneryName } from "../../sprites/planets";
+import type { Subset } from "../../utils/Subset";
+import type {
+  AxisXy,
+  DirectionXy4,
+  DirectionXy8,
+  DirectionXyz4,
+  Xy,
+  Xyz,
 } from "../../utils/vectors/vectors";
-import { type Disappear } from "../Disappear";
-import { type SwitchSetting } from "../ItemInPlay";
-import { type MirrorOrientation } from "../MirrorOrientation";
-import { type CharacterName } from "../modelTypes";
-import { type JsonItemUnion } from "./JsonItem";
-import { type MonsterJsonConfig } from "./MonsterJsonConfig";
-import {
-  type ButtonConfig,
-  type SwitchConfig,
-  type SwitchItemModificationUnion,
+import type { Disappear } from "../Disappear";
+import type { SwitchSetting } from "../ItemInPlay";
+import type { MirrorOrientation } from "../MirrorOrientation";
+import type { CharacterName } from "../modelTypes";
+import type { JsonItemUnion } from "./JsonItem";
+import type { MonsterJsonConfig } from "./MonsterJsonConfig";
+import type {
+  ButtonConfig,
+  SwitchConfig,
+  SwitchItemModificationUnion,
 } from "./SwitchConfig";
-import {
-  type ActivatedWhenSubset,
-  type BlockStyle,
-  type ConsolidatableConfig,
-  type MovementsSubset,
+import type {
+  ActivatedWhenSubset,
+  BlockStyle,
+  ConsolidatableConfig,
+  MovementsSubset,
 } from "./utilityJsonConfigTypes";
-import { type WallJsonConfig } from "./WallJsonConfig";
+import type { WallJsonConfig } from "./WallJsonConfig";
 
 export type ScrollConfig =
   | {

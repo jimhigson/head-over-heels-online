@@ -9,25 +9,25 @@ import {
 } from "../../model/RoomJsonItemIterators";
 import { errorCaught } from "../../store/slices/errors/errorsSlice";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
-import { type EditorAppStore, type EditorRootState } from "../../store/store";
+import type { EditorAppStore, EditorRootState } from "../../store/store";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
-import { type Xy } from "../../utils/vectors/vectors";
-import {
-  type EditorItemInPlayUnion,
-  type EditorJsonItemUnion,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
-  type EditorRoomState,
-  type EditorUnionOfAllItemInPlayTypes,
+import type { Xy } from "../../utils/vectors/vectors";
+import type {
+  EditorItemInPlayUnion,
+  EditorJsonItemUnion,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
+  EditorRoomState,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
 import { selectRoomJsonWithPreviews } from "../slice/levelEditorSelectors";
 import { selectRoom } from "../slice/levelEditorSlice";
 import { loadEditorRoom } from "../slice/loadEditorRoom";
-import { type OpenRoomId } from "../slice/OpenRoom";
+import type { OpenRoomId } from "../slice/OpenRoom";
 import { maybeLayoutNode } from "../slice/PaneLayout";
 import { selectCrosshairSelectionEntry } from "../slice/selectCrosshairSelectionEntry";
-import { type SelectionEntry } from "../slice/SelectionEntry";
+import type { SelectionEntry } from "../slice/SelectionEntry";
 import { crosshairEditorGhosts } from "./crosshairEditorGhosts";
 import { editorGhostsForJsonItem } from "./editorGhostsForJsonItem";
 

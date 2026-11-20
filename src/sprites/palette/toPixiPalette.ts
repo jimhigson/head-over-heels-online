@@ -1,8 +1,8 @@
 import { Color } from "pixi.js";
 
-import {
-  type NamedHexColours,
-  type NamedPixiColours,
+import type {
+  NamedHexColours,
+  NamedPixiColours,
 } from "../../utils/palette/palette";
 import { transformObject } from "../../utils/transformObject";
 

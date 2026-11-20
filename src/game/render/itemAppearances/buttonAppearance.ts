@@ -1,6 +1,6 @@
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { createSprite } from "../createSprite";
-import { type ItemAppearance } from "./ItemAppearance";
+import type { ItemAppearance } from "./ItemAppearance";
 
 type ButtonRenderProps = {
   pressed: boolean;

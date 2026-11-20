@@ -1,8 +1,8 @@
 import { createMigrate } from "redux-persist";
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 
 import { migrateSavedCharacterRoomsInPlace } from "../game/gameState/saving/migrateSavedCharacterRoomsInPlace";
-import { type SavedCharacterRooms } from "../game/gameState/saving/SavedGameState";
+import type { SavedCharacterRooms } from "../game/gameState/saving/SavedGameState";
 import { valuesIter } from "../utils/entries";
 import {
   type LegacyPickupsSavedGame,

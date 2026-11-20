@@ -1,11 +1,11 @@
 import jsonBlockstackPalette from "../../_generated/palette/spritesheetBlockstackPalette.json" with { type: "json" };
 import jsonBlockstackPaletteDim from "../../_generated/palette/spritesheetBlockstackPaletteDim.json" with { type: "json" };
 import jsonToppyPalette from "../../_generated/palette/spritesheetToppyPalette.json" with { type: "json" };
-import { type HexColour } from "../../utils/colour/HexColour";
-import { type NamedHexColours } from "../../utils/palette/palette";
-import {
-  type EffectColourName,
-  type SpritesheetMetadata,
+import type { HexColour } from "../../utils/colour/HexColour";
+import type { NamedHexColours } from "../../utils/palette/palette";
+import type {
+  EffectColourName,
+  SpritesheetMetadata,
 } from "../spritesheet/spritesheetData/spritesheetMetaData";
 
 // the generator writes only hex codes, but json imports type them as string

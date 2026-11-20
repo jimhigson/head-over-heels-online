@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from "preact/compat";
 
-import { type OpenRoomId } from "../slice/OpenRoom";
-import { type LoadedRoomCache } from "./LoadedRoomCache";
+import type { OpenRoomId } from "../slice/OpenRoom";
+import type { LoadedRoomCache } from "./LoadedRoomCache";
 import {
   findLoadedRoomCache,
   subscribeToLoadedRoomCaches,

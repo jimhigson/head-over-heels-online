@@ -5,11 +5,11 @@ import {
   unitXyz,
   type Xyz,
 } from "../utils/vectors/vectors";
-import { type EditorJsonItem, type EditorJsonItemUnion } from "./editorTypes";
-import {
-  type ItemTypeWithEditorGhosts,
-  type WhichEditorGhostOf,
-  type WhichEditorGhostOfAnyItemType,
+import type { EditorJsonItem, EditorJsonItemUnion } from "./editorTypes";
+import type {
+  ItemTypeWithEditorGhosts,
+  WhichEditorGhostOf,
+  WhichEditorGhostOfAnyItemType,
 } from "./WhichEditorGhostOf";
 
 /**

@@ -3,7 +3,7 @@ import { describe, expect, test } from "vitest";
 
 import { createNewRoom } from "../../../model/inPlaceMutators/createNewRoom";
 import { nowhereRoomId } from "../../../model/json/ItemConfigMap";
-import { type VerificationCampaign } from "../../../model/json/verification/verificationTypes";
+import type { VerificationCampaign } from "../../../model/json/verification/verificationTypes";
 import { verifyCampaign } from "../../../model/json/verification/verifyCampaign";
 import {
   roomNonContiguousRelationship,
@@ -16,12 +16,12 @@ import {
   roomJsonItemsIterable,
 } from "../../../model/RoomJsonItemIterators";
 import { keys } from "../../../utils/entries";
-import {
-  type EditorJsonItem,
-  type EditorJsonItemUnion,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorJsonItem,
+  EditorJsonItemUnion,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../../editorTypes";
 
 /** the room id linked above/below a room's primary sub-room */

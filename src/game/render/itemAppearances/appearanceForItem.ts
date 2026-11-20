@@ -1,7 +1,7 @@
 import { Container } from "pixi.js";
 
-import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import { type ItemInPlayType } from "../../../model/ItemInPlay";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { ItemInPlayType } from "../../../model/ItemInPlay";
 import { smallItemTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import {

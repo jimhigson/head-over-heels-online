@@ -1,4 +1,4 @@
-import { type Sprite } from "pixi.js";
+import type { Sprite } from "pixi.js";
 
 import { isPlayableItem } from "../../../../model/ItemInPlayNarrowedUnions";
 import { iterateStoodOnByItems } from "../../../../model/stoodOnItemsLookup";
@@ -6,7 +6,7 @@ import { maybeRenderContainerToSprite } from "../../../../utils/pixi/bakeContain
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
 import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import { teleporterIsActive } from "../../../physics/mechanics/teleporterIsActive";
-import { type ItemAppearance } from "../ItemAppearance";
+import type { ItemAppearance } from "../ItemAppearance";
 
 type RenderProps = {
   flashing: boolean;

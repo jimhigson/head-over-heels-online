@@ -1,4 +1,4 @@
-import { type VectorPoint } from "./glyphOverrides";
+import type { VectorPoint } from "./glyphOverrides";
 
 /**
  * The directions a straight side of a hand-authored glyph is meant to run in:

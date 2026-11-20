@@ -1,7 +1,7 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { type MirrorOrientation } from "../../../model/MirrorOrientation";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { MirrorOrientation } from "../../../model/MirrorOrientation";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
 
 export const mirrorOrientationReducers = {

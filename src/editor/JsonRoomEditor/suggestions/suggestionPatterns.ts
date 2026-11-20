@@ -1,17 +1,17 @@
-import { type Node } from "jsonc-parser";
+import type { Node } from "jsonc-parser";
 
-import { type JsonItemType } from "../../../model/json/JsonItem";
+import type { JsonItemType } from "../../../model/json/JsonItem";
 import {
   iterateRoomJsonItemIds,
   iterateRoomJsonItemsWithIds,
 } from "../../../model/RoomJsonItemIterators";
-import { type EditorRootState } from "../../../store/store";
+import type { EditorRootState } from "../../../store/store";
 import { emptyArray, emptySet } from "../../../utils/empty";
 import {
   type DirectionXy4,
   oppositeDirection,
 } from "../../../utils/vectors/vectors";
-import { type EditorRoomId, type EditorRoomJson } from "../../editorTypes";
+import type { EditorRoomId, EditorRoomJson } from "../../editorTypes";
 import { selectCursorRoomIdFromLevelEditorState } from "../../slice/levelEditorSelectors";
 import { getNodePropertyValue } from "./getNodePropertyValue";
 

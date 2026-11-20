@@ -1,14 +1,14 @@
 import { produce } from "immer";
 
-import { type DirectionXy4 } from "../../../../utils/vectors/vectors";
+import type { DirectionXy4 } from "../../../../utils/vectors/vectors";
 import { exitGameRoomId } from "../../ItemConfigMap";
-import { type CampaignVerifier } from "../CampaignVerification";
+import type { CampaignVerifier } from "../CampaignVerification";
 import { allDoors, candidatePartners } from "../helpers/doorPartner";
 import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
-import {
-  type VerificationCampaign,
-  type VerificationRoomId,
-  type VerificationRoomItemId,
+import type {
+  VerificationCampaign,
+  VerificationRoomId,
+  VerificationRoomItemId,
 } from "../verificationTypes";
 
 type RedundantToDoor = {

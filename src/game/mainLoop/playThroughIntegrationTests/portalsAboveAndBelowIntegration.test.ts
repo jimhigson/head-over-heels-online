@@ -11,7 +11,7 @@ import {
   isInRoom,
   isStandingOn,
 } from "../../../_testUtils/playThroughUntilHelpers";
-import { type Xyz } from "../../../utils/vectors/vectors";
+import type { Xyz } from "../../../utils/vectors/vectors";
 import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
 
 beforeEach(() => {

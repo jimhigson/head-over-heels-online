@@ -1,14 +1,14 @@
-import { type Application } from "pixi.js";
+import type { Application } from "pixi.js";
 
-import { type EditorE2eApi } from "./src/editor/RoomEditingArea/useEditorE2eApi";
-import { type GameApi } from "./src/game/GameApi";
-import { type E2EEventBus } from "./src/game/mainLoop/E2EEventBus";
-import { type PlayableItem } from "./src/model/ItemInPlayNarrowedUnions";
-import {
-  type CharacterName,
-  type IndividualCharacterName,
+import type { EditorE2eApi } from "./src/editor/RoomEditingArea/useEditorE2eApi";
+import type { GameApi } from "./src/game/GameApi";
+import type { E2EEventBus } from "./src/game/mainLoop/E2EEventBus";
+import type { PlayableItem } from "./src/model/ItemInPlayNarrowedUnions";
+import type {
+  CharacterName,
+  IndividualCharacterName,
 } from "./src/model/modelTypes";
-import { type AppStore } from "./src/store/store";
+import type { AppStore } from "./src/store/store";
 
 declare global {
   interface Window {

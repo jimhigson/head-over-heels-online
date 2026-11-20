@@ -1,4 +1,4 @@
-import { type DistributedOmit } from "type-fest";
+import type { DistributedOmit } from "type-fest";
 import { beforeEach, describe, expect, test } from "vitest";
 
 import {
@@ -16,11 +16,11 @@ import {
   itemState,
 } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
-import { type GameStateWithMockInput } from "../../../_testUtils/MockInputStateTracker";
+import type { GameStateWithMockInput } from "../../../_testUtils/MockInputStateTracker";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { currentRoomIs } from "../../../_testUtils/playThroughUntilHelpers";
 import { isFreeItem } from "../../../model/ItemInPlayNarrowedUnions";
-import { type JsonItemUnion } from "../../../model/json/JsonItem";
+import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { store } from "../../../store/store";

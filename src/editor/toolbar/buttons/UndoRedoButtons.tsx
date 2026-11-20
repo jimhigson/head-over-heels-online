@@ -1,4 +1,4 @@
-import { type SceneryName } from "../../../sprites/planets";
+import type { SceneryName } from "../../../sprites/planets";
 import { useAppDispatch } from "../../../store/hooks";
 import {
   type EditorRootState,
@@ -14,9 +14,9 @@ import {
   selectUndoHistory,
   undo,
 } from "../../slice/levelEditorSlice";
-import {
-  type HistoryDirection,
-  type UndoHistoryItem,
+import type {
+  HistoryDirection,
+  UndoHistoryItem,
 } from "../../slice/reducers/undoReducers";
 import { MenuButton, MenuItemButton } from "./MenuButton";
 import {

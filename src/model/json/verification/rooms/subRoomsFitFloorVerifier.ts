@@ -1,10 +1,10 @@
 import { produce } from "immer";
 
 import { entries } from "../../../../utils/entries";
-import { type Xy } from "../../../../utils/vectors/vectors";
+import type { Xy } from "../../../../utils/vectors/vectors";
 import { isWholeRoomSubRooms, type SubRoom } from "../../../RoomJson";
 import { roomJsonItemsIterable } from "../../../RoomJsonItemIterators";
-import { type CampaignVerifier } from "../CampaignVerification";
+import type { CampaignVerifier } from "../CampaignVerification";
 import { valueMd } from "../helpers/messageMarkdown";
 import { floorSquares } from "../helpers/roomPerimeter";
 import {
@@ -12,9 +12,9 @@ import {
   type DividedCellRef,
   dividedCells,
 } from "../helpers/subRoomGeometry";
-import {
-  type VerificationRoomId,
-  type VerificationRoomJson,
+import type {
+  VerificationRoomId,
+  VerificationRoomJson,
 } from "../verificationTypes";
 
 /** the most blocks a room can span on either axis and still be one map cell */

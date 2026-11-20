@@ -7,7 +7,7 @@ import {
   newRoom,
   runCheck,
 } from "../testUtils";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 import { unreachableRoomVerifier } from "./unreachableRoomVerifier";
 
 test("flags a room not connected to the start room", () => {

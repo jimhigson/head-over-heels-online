@@ -1,3 +1,5 @@
+#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
+
 import sharp from "sharp";
 
 import { blockStackSpritesheetMeta } from "../gfx/spritesheetMeta/blockStackSpritesheetMeta";
@@ -10,7 +12,7 @@ import { makeSpritesheetData } from "../src/sprites/spritesheet/spritesheetData/
  * and any stray off-frame art that the game never samples. Called by iff2png on
  * the mid-pipeline png, before the cwebp encode.
  *
- * Usage: tsx scripts/maskNonSpriteAreas.ts <pngPath>
+ * Usage: ./scripts/maskNonSpriteAreas.ts <pngPath>
  */
 
 const [, , pngPath] = process.argv;

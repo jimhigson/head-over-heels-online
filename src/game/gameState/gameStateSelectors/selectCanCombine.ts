@@ -1,5 +1,5 @@
 import { spatiallyCheckStandingOn } from "../../collision/checkStandingOn";
-import { type GameState } from "../GameState";
+import type { GameState } from "../GameState";
 import { selectPlayableItem } from "./selectPlayableItem";
 
 export const selectCanCombine = <RoomId extends string>(

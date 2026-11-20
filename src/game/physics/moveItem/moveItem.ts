@@ -28,7 +28,7 @@ import {
   collision2Items,
   collisionItemWithIndex,
 } from "../../collision/aabbCollision";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
 import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import {

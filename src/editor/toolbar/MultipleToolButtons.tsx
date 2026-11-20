@@ -2,7 +2,7 @@ import { cloneElement, type VNode } from "preact";
 import { useRef, useState } from "preact/hooks";
 
 import { useMouseWheelOptions } from "../../ui/useMouseWheel";
-import { type CommandToolbarButtonProps } from "../commands/CommandToolbarButton";
+import type { CommandToolbarButtonProps } from "../commands/CommandToolbarButton";
 import { MenuButton } from "./buttons/MenuButton";
 
 export interface MultipleToolButtonsProps {

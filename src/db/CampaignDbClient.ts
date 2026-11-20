@@ -1,4 +1,4 @@
-import { type Database } from "../_generated/db";
+import type { Database } from "../_generated/db";
 
 type DbFunctions = Database["public"]["Functions"];
 

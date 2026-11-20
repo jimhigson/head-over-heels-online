@@ -8,13 +8,13 @@ import { getRoomItem } from "../../../../model/RoomState";
 import { effectPixiColour } from "../../../../sprites/palette/pixiPalette";
 import { selectHeelsAbilities } from "../../../gameState/gameStateSelectors/selectPlayableItem";
 import { OutlineFilter } from "../../filters/OutlineFilter";
-import {
-  type ItemRenderContext,
-  type ItemTickContext,
+import type {
+  ItemRenderContext,
+  ItemTickContext,
 } from "../../ItemRenderContexts";
 import { zxSpectrumPixiColor } from "../../palette/zxSpectrumPixiColours";
-import { type DecorateItemRenderer } from "./DecorateItemRenderer";
-import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
+import type { DecorateItemRenderer } from "./DecorateItemRenderer";
+import type { ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 class PortableItemPickUpNextHighlightRenderer<
   T extends ItemInPlayType,

@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { type Campaign } from "../model/modelTypes";
+import type { Campaign } from "../model/modelTypes";
 import {
   campaignToDbCampaign,
   classifySaveError,

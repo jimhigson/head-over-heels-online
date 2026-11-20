@@ -1,4 +1,4 @@
-import { type Campaign } from "../model/modelTypes";
+import type { Campaign } from "../model/modelTypes";
 import { gameCampaignsApiSlice } from "../store/slices/campaigns/gameCampaignsApiSlice";
 import { gameStarted } from "../store/slices/gameInPlay/gameInPlaySlice";
 import { store } from "../store/store";

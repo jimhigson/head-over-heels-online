@@ -1,17 +1,12 @@
-import {
-  type EmptyObject,
-  type Merge,
-  type SetProperty,
-  type Simplify,
-} from "type-fest";
+import type { EmptyObject, Merge, SetProperty, Simplify } from "type-fest";
 
-import { type SceneryName } from "../sprites/planets";
-import { type Xy, type Xyz } from "../utils/vectors/vectors";
-import { type ItemInPlayConfig, type SwitchSetting } from "./ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
-import { type ItemConfigMap, type LiftDirection } from "./json/ItemConfigMap";
-import { type MirrorOrientation } from "./MirrorOrientation";
-import { type TimedRelationWithOtherItem } from "./TimedRelationWithOtherItem";
+import type { SceneryName } from "../sprites/planets";
+import type { Xy, Xyz } from "../utils/vectors/vectors";
+import type { ItemInPlayConfig, SwitchSetting } from "./ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
+import type { ItemConfigMap, LiftDirection } from "./json/ItemConfigMap";
+import type { MirrorOrientation } from "./MirrorOrientation";
+import type { TimedRelationWithOtherItem } from "./TimedRelationWithOtherItem";
 
 /**
  * how a light beam segment ends:

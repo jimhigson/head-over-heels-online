@@ -1,19 +1,19 @@
 import { Container, type Sprite } from "pixi.js";
 
-import { type ItemInPlayType } from "../../../../../model/ItemInPlay";
-import {
-  type PlayableItem,
-  type UnionOfAllItemInPlayTypes,
+import type { ItemInPlayType } from "../../../../../model/ItemInPlay";
+import type {
+  PlayableItem,
+  UnionOfAllItemInPlayTypes,
 } from "../../../../../model/ItemInPlayNarrowedUnions";
-import { type RoomState } from "../../../../../model/RoomState";
-import { type AppSpritesheetWithVariants } from "../../../../../sprites/spritesheet/AppSpritesheet";
+import type { RoomState } from "../../../../../model/RoomState";
+import type { AppSpritesheetWithVariants } from "../../../../../sprites/spritesheet/AppSpritesheet";
 import { variantTextureId } from "../../../../../sprites/spritesheet/variantTextureId";
 import { selectHeelsAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import { findItemToPickup } from "../../../../physics/mechanics/pickingUp";
 import { createSprite } from "../../../createSprite";
 import { createItemLeafPixiRenderer } from "../../../item/itemRender/createItemLeafPixiRenderer";
-import { type ItemLeafPixiRenderer } from "../../../item/itemRender/ItemPixiRenderer";
-import { type ButtonAppearance } from "../../HudButtonRenderer";
+import type { ItemLeafPixiRenderer } from "../../../item/itemRender/ItemPixiRenderer";
+import type { ButtonAppearance } from "../../HudButtonRenderer";
 import { ArcadeStyleButtonContainer } from "../ArcadeStyleButtonContainer";
 import { buttonActionsPressed } from "./buttonActionsPressed";
 

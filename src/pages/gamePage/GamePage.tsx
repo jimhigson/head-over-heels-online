@@ -2,14 +2,13 @@ import { lazy, Suspense } from "preact/compat";
 import { useEffect, useState } from "preact/hooks";
 import { shallowEqual } from "react-redux";
 
-import type Cheats from "../../game/components/cheats/Cheats.tsx";
-
 import { AddAnalyticsToStore } from "../../analytics/AddAnalyticsToStore.tsx";
 import { importCheats } from "../../game/components/cheats/Cheats.import.ts";
+import type Cheats from "../../game/components/cheats/Cheats.tsx";
 import { Dialogs } from "../../game/components/dialogs/menuDialog/Dialogs.tsx";
 // setting TextureStyle this helps containers with cacheAsTexture turned on to not go blurry when rendered:
 import { GameApiProvider } from "../../game/components/GameApiContext.tsx";
-import { type GameApi } from "../../game/GameApi.tsx";
+import type { GameApi } from "../../game/GameApi.tsx";
 import { importGameMainOnce } from "../../game/gameMain.import.ts";
 import {
   useInputStateTracker,

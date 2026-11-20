@@ -1,5 +1,5 @@
 import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
-import { type ShadowCastSpriteOptions } from "../ShadowCastSpriteOptions";
+import type { ShadowCastSpriteOptions } from "../ShadowCastSpriteOptions";
 
 export const shadowLift: ShadowCastSpriteOptions = Object.freeze({
   animationId: "shadow.lift",

@@ -4,7 +4,7 @@ import {
   quarterTurnAnticlockwise,
   quarterTurnClockwise,
 } from "./cameraAngleVectors";
-import { type DirectionXy4, type Xy, type Xyz } from "./vectors";
+import type { DirectionXy4, Xy, Xyz } from "./vectors";
 
 /**
  * the rotation (camera-angle) vector at which world "away" renders in each

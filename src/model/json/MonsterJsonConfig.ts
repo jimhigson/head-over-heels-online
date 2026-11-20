@@ -1,7 +1,7 @@
-import { type DirectionXy4 } from "../../utils/vectors/vectors";
-import {
-  type ActivatedWhenSubset,
-  type JsonMovement,
+import type { DirectionXy4 } from "../../utils/vectors/vectors";
+import type {
+  ActivatedWhenSubset,
+  JsonMovement,
 } from "./utilityJsonConfigTypes";
 
 /**

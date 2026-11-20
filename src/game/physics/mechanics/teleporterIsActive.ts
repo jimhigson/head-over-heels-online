@@ -1,6 +1,6 @@
-import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
-import { type PlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { PlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 
 /** whether the item is a teleporter, fixed or portable - whether active or not */
 export const isTeleporter = <RoomId extends string, RoomItemId extends string>(
