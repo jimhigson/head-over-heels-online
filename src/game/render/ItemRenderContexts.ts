@@ -6,8 +6,8 @@ import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUn
 import { type RoomState } from "../../model/RoomState";
 import { type Graph } from "../../utils/graph/Graph";
 import { type FilterCache } from "./filters/FilterCache";
+import { type createItemLeafPixiRenderer } from "./item/itemRender/createItemLeafPixiRenderer";
 import { type ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
-import { type ItemLeafPixiRenderer } from "./item/itemRender/ItemPixiRenderer";
 import { type RenderBoxes } from "./renderBox/makeItemRenderBoxAtCameraAngle";
 import { type GeneralRenderContext } from "./room/RoomRenderContexts";
 
@@ -80,9 +80,7 @@ export type ItemRenderContext<T extends ItemInPlayType> =
      * to create a renderer for another item - lets a room item (eg
      * a mirror rendering reflections) render other items
      */
-    createItemLeafPixiRenderer: <U extends ItemInPlayType>(
-      renderContext: ItemLeafRenderContext<U>,
-    ) => ItemLeafPixiRenderer<U> | undefined;
+    createItemLeafPixiRenderer: typeof createItemLeafPixiRenderer;
   };
 
 /**

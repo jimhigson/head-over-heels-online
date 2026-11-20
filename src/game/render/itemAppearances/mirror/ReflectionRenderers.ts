@@ -62,7 +62,7 @@ const reflectionDepthCondense = 0.5;
  * items that never show in reflections: room structure, invisible/utility
  * items, and other mirrors (so two facing mirrors cannot recurse)
  */
-const unreflectedItemTypes = new Set<ItemInPlayType>([
+const unreflectedItemTypesList = [
   "floor",
   "wall",
   "doorFrame",
@@ -79,9 +79,23 @@ const unreflectedItemTypes = new Set<ItemInPlayType>([
   "bubbles",
   "mirror",
   "lightBeam",
-]);
+  "editorGhost",
+] as const satisfies readonly ItemInPlayType[];
 
-const isReflectedItemType = (item: UnionOfAllItemInPlayTypes<string, string>) =>
+const unreflectedItemTypes = new Set<ItemInPlayType>(unreflectedItemTypesList);
+
+/**
+ * every reflected type must have a leaf renderer, else creating its reflection
+ * fails to typecheck
+ */
+type ReflectedItemType = Exclude<
+  ItemInPlayType,
+  (typeof unreflectedItemTypesList)[number]
+>;
+
+const isReflectedItemType = (
+  item: UnionOfAllItemInPlayTypes<string, string>,
+): item is ItemTypeUnion<ReflectedItemType, string, string> =>
   !unreflectedItemTypes.has(item.type);
 
 type ReflectionRenderer = ItemLeafPixiRenderer<ItemInPlayType>;
@@ -264,9 +278,6 @@ export class ReflectionRenderers {
           item,
           isReflection: true,
         });
-        if (renderer === undefined) {
-          throw new Error(`no renderer for reflected item "${item.id}"`);
-        }
         entry = { renderer, lastSeenTick: thisTick };
         this.#reflectedItemRenderers.set(item, entry);
         this.container.addChild(renderer.output);
