@@ -123,6 +123,48 @@ test.describe("Main menu at each browser's own size", () => {
       console.log(`${formattedName} ${elapsed()}: smooth ui in place`);
     });
 
+    // the smoothed sheet is made after the font, and slowly where rendering
+    // is in software - the css sprites draw from it once its url is set
+    await test.step("wait for the css sprites to draw smoothed", async () => {
+      const smoothedArtUrl = await page.waitForFunction(
+        () => {
+          /**
+           * the blob url inside a css `url(...)`, or false if it holds
+           * another kind of url - browsers may re-quote it, with either
+           * quote or none, when they serialise it
+           */
+          const blobUrlInCssUrl = (cssUrl: string): false | string =>
+            /url\(["']?(?<blobUrl>blob:[^"')]+)/.exec(cssUrl)?.groups
+              ?.blobUrl ?? false;
+
+          const varsElement = document.querySelector(".set-spritesheet-vars");
+          return blobUrlInCssUrl(
+            varsElement === null ? "" : (
+              getComputedStyle(varsElement).getPropertyValue(
+                "--spritesheetArtUrl",
+              )
+            ),
+          );
+        },
+        undefined,
+        { timeout: testTimeout },
+      );
+      // false only means not yet, which the wait has already waited out
+      const blobUrl = await smoothedArtUrl.jsonValue();
+      if (blobUrl === false) {
+        throw new Error(
+          "the wait for the smoothed sheet's url ended without one",
+        );
+      }
+      // decoded before the capture, so it cannot catch the image half-loaded
+      await page.evaluate(async (blobUrl) => {
+        const smoothedArt = new Image();
+        smoothedArt.src = blobUrl;
+        await smoothedArt.decode();
+      }, blobUrl);
+      console.log(`${formattedName} ${elapsed()}: smoothed sprites in place`);
+    });
+
     await takeDialogScreenshot(
       page,
       "mainMenu",

@@ -10,11 +10,9 @@ const sheetPaths = [
 ] as const;
 
 /**
- * The side length, in pixels, of the game's spritesheets on-disk.
- *
- * import using `with { type: "macro" };` since uses node code to get the number
+ * the side length every sheet shares, checked against each of them
  */
-export const spritesheetSideLength = (): number => {
+const sharedSideLength = (): number => {
   const sizes = sheetPaths.map((path) => {
     const { width, height } = imageSize(readFileSync(path));
     if (width === undefined || height === undefined || width !== height) {
@@ -31,3 +29,10 @@ export const spritesheetSideLength = (): number => {
   }
   return sideLength;
 };
+
+/**
+ * The side length, in pixels, of the game's spritesheets on-disk.
+ *
+ * import using `with { type: "macro" };` since uses node code to get the number
+ */
+export const spritesheetSideLength = sharedSideLength();

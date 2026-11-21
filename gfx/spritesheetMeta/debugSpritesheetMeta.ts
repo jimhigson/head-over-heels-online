@@ -1,4 +1,5 @@
 import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import artUrl from "../spritesDebug.webp";
 import { blockStackSpritesheetMeta } from "./blockStackSpritesheetMeta";
 
 export type DebugPaletteColourName = "cyan" | "red";
@@ -23,6 +24,7 @@ export const debugSpritesheetMeta: SpritesheetMetadata<
   "debug"
 > = {
   name: "debug",
+  artUrl,
   spritesheetWhenPaused: "debug",
   palettes: {
     basic: {

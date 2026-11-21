@@ -1,11 +1,17 @@
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useReducer, useState } from "preact/hooks";
 import { type EmptyObject } from "type-fest";
 
 import { type MarkdownPageName } from "../../../../manual/pages";
 import { loadSoundCategory } from "../../../../sound/soundsLoader";
 import { useAppSelector } from "../../../../store/hooks";
 import { AssetLoading } from "../../../../store/slices/assetsLoading/AssetLoading";
+import { type OpenMenu } from "../../../../store/slices/gameMenus/gameMenusSlice";
+import {
+  msUntilDrawnMenuChanges,
+  selectMenuToDraw,
+} from "../../../../store/slices/gameMenus/selectDrawnMenu";
 import { Dialog } from "../../../../ui/Dialog";
+import { appTicker } from "../../../../utils/ticker/appTickerInstance";
 import { type DialogId } from "./DialogId";
 import { LazyAboutDialog } from "./dialogs/about/AboutDialog.lazy";
 import { LazyCommunityGamesDialog } from "./dialogs/communityGames/CommunityGamesDialog.lazy";
@@ -29,6 +35,7 @@ import { LazyQuitGameConfirmDialog } from "./dialogs/quitGameConfirm/QuitGameCon
 import { LazyReadTheManualDialog } from "./dialogs/ReadTheManualDialog.lazy";
 import { LazyReincarnatedRestartDialog } from "./dialogs/reincarnatedRestart/ReincarnatedRestartDialog.lazy";
 import { LazyScoreDialog } from "./dialogs/score/ScoreDialog.lazy";
+import { SmoothingDialog } from "./dialogs/smoothing/SmoothingDialog";
 import { LazySoundDialog } from "./dialogs/sound/SoundDialog.lazy";
 import { WhichGameDialog } from "./dialogs/whichGame/WhichGameDialog";
 
@@ -36,10 +43,34 @@ const isMarkdownPage = <D extends DialogId>(
   menuId: D,
 ): menuId is Extract<D, `markdown/${string}`> => menuId.startsWith("markdown/");
 
-export const Dialogs = (_emptyProps: EmptyObject) => {
-  const topOpenMenu = useAppSelector((state) =>
-    state.gameMenus.openMenus.at(0),
+/**
+ * the menu to draw now, re-rendering whenever a show delay runs out - the
+ * store doesn't change then, so nothing else would
+ */
+const useDrawnMenu = (): OpenMenu | undefined => {
+  const [renders, rerender] = useReducer(
+    (count: number, _rerendered: void) => count + 1,
+    0,
   );
+  const gameMenus = useAppSelector((state) => state.gameMenus);
+  // a new selector each render, so it is read again at the time of the render
+  const drawnMenu = useAppSelector((state) =>
+    selectMenuToDraw(state, appTicker.time),
+  );
+
+  useEffect(() => {
+    const changesInMs = msUntilDrawnMenuChanges(gameMenus, appTicker.time);
+    if (changesInMs === undefined) {
+      return;
+    }
+    return appTicker.setTimeout(changesInMs, rerender);
+  }, [gameMenus, renders]);
+
+  return drawnMenu;
+};
+
+export const Dialogs = (_emptyProps: EmptyObject) => {
+  const topOpenMenu = useDrawnMenu();
   const [areSoundsLoaded, setAreSoundsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
@@ -136,6 +167,8 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <LazyScoreDialog />;
     case "displayOptions":
       return <LazyDisplayOptionsDialog />;
+    case "smoothing":
+      return <SmoothingDialog />;
     case "sound":
       return <LazySoundDialog />;
     case "whichGame":

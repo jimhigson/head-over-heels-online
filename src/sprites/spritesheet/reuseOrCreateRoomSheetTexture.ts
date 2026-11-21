@@ -1,20 +1,13 @@
 import { RenderTexture } from "pixi.js";
 
-import { spritesheetSize } from "./spritesheetData/makeBaseSpritesheetData";
-
-/**
- * every room sheet bakes into a square (power-of-two) atlas holding the whole
- * freshly-packed layout. The pack must fit; the throw below catches it if it
- * outgrows this.
- */
-const sheetTargetHeight = spritesheetSize.h;
+import { spritesheetSideLength } from "../../../gfx/spritesheetMeta/spritesheetSize.macro.ts" with { type: "macro" };
 
 /**
  * the GPU texture a room sheet is baked into: reuses the previous room's
  * texture (the bake's first pass clears it, so no pixels survive between
  * rooms), avoiding a GPU free+alloc on every room change.
  */
-export const reuseOrCreateSheetTarget = (
+export const reuseOrCreateRoomSheetTexture = (
   previousTarget: RenderTexture | undefined,
   /** total rows the packed layout uses, from y=0 */
   requiredHeight: number,
@@ -24,9 +17,9 @@ export const reuseOrCreateSheetTarget = (
    */
   resolution: number,
 ): RenderTexture => {
-  if (import.meta.env.DEV && requiredHeight > sheetTargetHeight) {
+  if (import.meta.env.DEV && requiredHeight > spritesheetSideLength) {
     throw new Error(
-      `packed sheet (${requiredHeight} rows) does not fit the ${sheetTargetHeight}-row target`,
+      `packed sheet (${requiredHeight} rows) does not fit the ${spritesheetSideLength}-row target`,
     );
   }
 
@@ -39,8 +32,8 @@ export const reuseOrCreateSheetTarget = (
   previousTarget?.destroy(true);
 
   return RenderTexture.create({
-    width: spritesheetSize.w,
-    height: sheetTargetHeight,
+    width: spritesheetSideLength,
+    height: spritesheetSideLength,
     resolution,
     antialias: false,
     autoGenerateMipmaps: false,

@@ -1,0 +1,22 @@
+{
+  /*
+   * Build-time macros (`*.macro.ts`, imported `with { type: "macro" }`) run in
+   * node, so they are typed with node's types. The app references this
+   * project, so it types them from the declarations emitted here rather than
+   * checking their source as browser code
+   */
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "types": ["umami", "node"],
+    "composite": true,
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "outDir": "node_modules/.cache/tsMacros",
+    "tsBuildInfoFile": "node_modules/.cache/tsMacros/tsconfig.macros.tsbuildinfo",
+    "rootDir": ".",
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*.macro.ts", "src/parseMajorVersion.ts", "package.json"],
+  // the app's own exclude would leave out the macros themselves
+  "exclude": []
+}

@@ -7,4 +7,5 @@ import { optionsDialogColourClasses } from "../optionsDialogColourClasses";
 export const LazyControlOptionsDialog = LazyDialogHoc(
   lazy(importOnce(() => import("./ControlOptionsDialog"))),
   optionsDialogColourClasses,
+  "controlOptions",
 );

@@ -1,4 +1,4 @@
-import { createSlice, type Dispatch } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 import { clearAllData } from "../clearAllData";
 
@@ -38,20 +38,3 @@ export const assetsLoadingSlice = createSlice({
 export const { assetsLoadingStarted, assetsLoadingFinished } =
   assetsLoadingSlice.actions;
 export const { selectAssetsLoadingCount } = assetsLoadingSlice.selectors;
-
-/**
- * thunk that runs `work` while the assets-loading indicator is shown: dispatches
- * assetsLoadingStarted before, and assetsLoadingFinished in a finally once it
- * settles (success or failure). Any error from `work` is re-thrown, not
- * swallowed, so the caller can still handle it.
- */
-export const withLoadingCaptured =
-  <T>(work: () => Promise<T> | T) =>
-  async (dispatch: Dispatch): Promise<Awaited<T>> => {
-    dispatch(assetsLoadingStarted());
-    try {
-      return await work();
-    } finally {
-      dispatch(assetsLoadingFinished());
-    }
-  };

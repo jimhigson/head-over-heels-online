@@ -15,7 +15,7 @@ import { CssVariables } from "./CssVariables.tsx";
 import { importNotFound404Page } from "./NotFound404Page.import.ts";
 import { Route } from "./router/Route.tsx";
 import { Switch } from "./router/Switch.tsx";
-import { useUpscaledSpritesAndSmoothFontInCss } from "./upscaledSpritesUi/useUpscaledSpritesAndSmoothFontInCss.ts";
+import { useUiFontForSmoothUpscale } from "./useUiFontForSmoothUpscale.ts";
 import { importWantedEditor404 } from "./WantedEditor404.import.ts";
 
 const LazyLutPage = lazy(importLutPage);
@@ -31,7 +31,7 @@ if (window.location.pathname !== "/map") {
 
 const AppInner = () => {
   const uncolourised = useIsUncolourised();
-  useUpscaledSpritesAndSmoothFontInCss();
+  useUiFontForSmoothUpscale();
   useEffect(() => {
     // note that this isn't done before the first load, since we don't have the store then!
     document.body.classList.toggle("zx", uncolourised);

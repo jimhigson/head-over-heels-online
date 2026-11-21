@@ -7,4 +7,5 @@ import { markdownDialogColourClasses } from "./markdownDialogColourClasses";
 export const LazyReadTheManualDialog = LazyDialogHoc(
   lazy(importOnce(() => import("./ReadTheManualDialog"))),
   markdownDialogColourClasses,
+  "readTheManual",
 );

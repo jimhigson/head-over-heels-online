@@ -77,7 +77,7 @@ export const floatingTextAppearance: ItemAppearance<
       const textLine = textLines[i];
       const lineContainer = new TextContainer({
         pixiRenderer,
-        resolution: spritesheets.spritesheetUpscale,
+        resolution: spritesheets.spritesheetSmoothUpscale,
         y: i * lineHeightPx,
         outline: true,
         text: textLine,

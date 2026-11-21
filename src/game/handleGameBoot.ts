@@ -12,6 +12,7 @@ import {
 } from "../store/slices/savedGames/savedGamesSlice";
 import { store } from "../store/store";
 import { isRehydrateFor } from "../utils/redux/isRehydrateFor";
+import { appTicker } from "../utils/ticker/appTickerInstance";
 
 /**
  * Build a complete CampaignLocator from URL params, or `undefined` if the URL
@@ -48,7 +49,12 @@ const routeFromSavedGames = (
     const savedForParam =
       savedGames?.saves[gameStateLocatorKey(paramCampaignLocator)];
     if (savedForParam) {
-      store.dispatch(savedGameLoadedOnAppLoad(savedForParam.gameInPlay));
+      store.dispatch(
+        savedGameLoadedOnAppLoad({
+          gameInPlay: savedForParam.gameInPlay,
+          openedAt: appTicker.time,
+        }),
+      );
     } else {
       // URL names a campaign but no save for it — start a fresh game
       // through `gameStarted` so the crowns intro is shown, matching
@@ -63,7 +69,12 @@ const routeFromSavedGames = (
     lastSavedCampaignLocator &&
     savedGames.saves[gameStateLocatorKey(lastSavedCampaignLocator)];
   if (inPlaySave) {
-    store.dispatch(savedGameLoadedOnAppLoad(inPlaySave.gameInPlay));
+    store.dispatch(
+      savedGameLoadedOnAppLoad({
+        gameInPlay: inPlaySave.gameInPlay,
+        openedAt: appTicker.time,
+      }),
+    );
   }
 };
 

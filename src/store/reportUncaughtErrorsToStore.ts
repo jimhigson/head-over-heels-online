@@ -1,4 +1,5 @@
 import { createSerialisableErrors } from "../utils/redux/createSerialisableErrors";
+import { appTicker } from "../utils/ticker/appTickerInstance";
 import { errorCaught } from "./slices/errors/errorsSlice";
 import { type AppStore } from "./store";
 
@@ -25,7 +26,12 @@ export const reportUncaughtErrorsToStore = (store: AppStore) => {
     if (error === null) {
       return;
     }
-    store.dispatch(errorCaught(createSerialisableErrors(error)));
+    store.dispatch(
+      errorCaught({
+        caughtErrors: createSerialisableErrors(error),
+        openedAt: appTicker.time,
+      }),
+    );
   });
   window.addEventListener(
     "unhandledrejection",
@@ -33,7 +39,12 @@ export const reportUncaughtErrorsToStore = (store: AppStore) => {
       if (isCancellation(reason)) {
         return;
       }
-      store.dispatch(errorCaught(createSerialisableErrors(reason)));
+      store.dispatch(
+        errorCaught({
+          caughtErrors: createSerialisableErrors(reason),
+          openedAt: appTicker.time,
+        }),
+      );
     },
   );
 };

@@ -7,4 +7,5 @@ import { proclaimEmperorDialogColourClasses } from "./proclaimEmperorDialogColou
 export const LazyProclaimEmperorDialog = LazyDialogHoc(
   lazy(importOnce(() => import("./ProclaimEmperorDialog"))),
   proclaimEmperorDialogColourClasses,
+  "proclaimEmperor",
 );

@@ -10,6 +10,7 @@ import {
 } from "@blockstacking/jims-shaders";
 import { Container, type Filter, Rectangle } from "pixi.js";
 
+import { palPixelAspect } from "../../originalGame";
 import { type Upscale } from "../../store/slices/upscale/Upscale";
 import { type DisplaySettings } from "../../store/slices/userSettings/userSettingsSlice";
 import { type GameState } from "../gameState/GameState";
@@ -31,9 +32,6 @@ const brightnessIncrease = 1.2;
  * the single incorrect frame the filter chain swap renders
  */
 const crtFilterToggleHideMs = 100;
-
-// a PAL television drew the Spectrum's 7 MHz pixels this much wider than tall
-const crtPixelAspect = 59 / 56;
 
 /**
  * the filter classes from @blockstacking/jims-shaders, lazily loaded via
@@ -299,7 +297,7 @@ export class CrtEffectContainer<RoomId extends string> extends Container {
       // squashed about the middle, uncovering more of the world above and below
       squash.pivot[axis] = centre;
       squash.position[axis] = centre;
-      squash.scale[axis] = 1 / crtPixelAspect;
+      squash.scale[axis] = 1 / palPixelAspect;
     }
   }
 

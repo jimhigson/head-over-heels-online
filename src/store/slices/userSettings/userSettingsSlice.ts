@@ -310,7 +310,7 @@ export const userSettingsSlice = createSlice({
     /**
      * Applies a named key-assignment preset to userSettings.inputAssignment.
      * The menu-pop dispatch is the responsibility of the caller (sibling
-     * dispatch of `backToParentMenu`) so this reducer stays intra-slice.
+     * dispatch of `closeMenuThunk`) so this reducer stays intra-slice.
      */
     keyAssignmentPresetApplied(
       state,

@@ -1,6 +1,7 @@
 import { originalCampaignLocator } from "../../gameInfo";
 import { selectAssetsLoadingCount } from "../slices/assetsLoading/assetsLoadingSlice";
 import { campaignsApiSlice } from "../slices/campaigns/campaignsApiSlice";
+import { selectIsSmoothingInProgress } from "../slices/smoothing/smoothingSlice";
 import { type GameRootState } from "../store";
 
 /**
@@ -35,8 +36,9 @@ const selectCampaignQueryStatus =
  * like the community campaigns list.
  */
 export const selectIsGameLoading = (state: GameRootState): boolean => {
-  // Check if game assets are loading
-  const hasAssetsLoading = selectAssetsLoadingCount(state) > 0;
+  // Check if game assets are loading, or the spritesheet being smoothed
+  const hasAssetsLoading =
+    selectAssetsLoadingCount(state) > 0 || selectIsSmoothingInProgress(state);
   if (hasAssetsLoading) {
     return true;
   }

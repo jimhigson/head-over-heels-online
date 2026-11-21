@@ -15,7 +15,7 @@ import { waitForGpuToFinish } from "./waitForGpuToFinish";
  * sheet re-baked and the renderers rebuilt over the ticks that follow. A frame
  * reporting the upscaled bake back is how that landing is known.
  */
-export const enableUpscaledSprites = async (page: Page) => {
+export const enableSmoothUpscaledSprites = async (page: Page) => {
   // captured before the dispatch, so a frame drawing the upscaled sheet before
   // this wait is set up is still matched from the log:
   const afterId = await snapshotE2eCursor(page);
@@ -29,7 +29,7 @@ export const enableUpscaledSprites = async (page: Page) => {
     name: "frameRendered",
     afterId,
     arg: undefined,
-    match: (payload) => payload.spritesheetUpscale > 1,
+    match: (payload) => payload.spritesheetSmoothUpscale > 1,
   });
   // the bake is heavy GPU work, often still running after the frame reports
   await waitForGpuToFinish(page);

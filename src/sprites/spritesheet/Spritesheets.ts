@@ -1,4 +1,5 @@
 import {
+  BufferImageSource,
   Container,
   Graphics,
   ImageSource,
@@ -8,23 +9,15 @@ import {
   Sprite,
   Spritesheet,
   Texture,
+  type WebGLRenderer,
 } from "pixi.js";
 
-import blockstackSpritesheetArtUrl from "../../../gfx/spritesBlockstack.webp";
-import debugSpritesheetArtUrl from "../../../gfx/spritesDebug.webp";
-import toppySpritesheetArtUrl from "../../../gfx/spritesToppy.webp";
 import { invertRedToAlphaFilter } from "../../game/render/filters/shadows/invertRedToAlphaFilter";
-import { type bakeUpscaledSpritesheetTexture } from "../../game/render/filters/upscale/bakeUpscaledSpritesheetTexture";
-import { importBakeUpscaledSpritesheetTextureOnce } from "../../game/render/filters/upscale/bakeUpscaledSpritesheetTexture.import";
 import { type ZxSpectrumRoomColour } from "../../originalGame";
-import { selectSpritesheetOverrideBlobUrl } from "../../store/slices/spritesheetOverrideSlice";
 import { store } from "../../store/store";
 import { detectDeviceType } from "../../utils/detectEnv/detectDeviceType";
 import { objectEntriesIter } from "../../utils/entries";
-import { stripIccProfilePng } from "../../utils/image/stripIccProfilePng";
-import { stripIccProfileWebp } from "../../utils/image/stripIccProfileWebp";
 import { type SceneryName } from "../planets";
-import { applySpritesheetFlips } from "./applySpritesheetFlips";
 import {
   type AppSpritesheet,
   type AppSpritesheetDataWithVariants,
@@ -32,18 +25,29 @@ import {
   withVariantsBaked,
 } from "./AppSpritesheet";
 import { buildRoomSheet } from "./buildRoomSheet";
+import { type FrameRect } from "./repackSpritesheetForSmoothUpscale";
+import { type SmoothedSpritesheetPixels } from "./smoothing/smoothingAlgorithm";
+import { spritesheetSmoothingManagerLoader } from "./smoothing/spritesheetSmoothingManagerLoader";
+import { spritesheetArtLoader } from "./spritesheetArtLoader";
+import { spritesheetArtSourceUrl } from "./spritesheetArtSourceUrl";
 import {
-  composeSpritesheetForUpscale,
-  type FrameRect,
-} from "./composeSpritesheetForUpscale";
-import { makeSpritesheetData } from "./spritesheetData/makeSpritesheetData";
+  makeSpritesheetData,
+  type TextureId,
+} from "./spritesheetData/makeSpritesheetData";
 import {
   spritesheetArtName,
   type SpritesheetMetadata,
   spritesheetMetas,
   type SpritesheetName,
 } from "./spritesheetData/spritesheetMetaData";
+import { spritesheetOverBakedTexture } from "./spritesheetOverBakedTexture";
 import { withRepackedRects } from "./withRepackedRects";
+
+type SmoothedSheet = {
+  spritesheetSmoothUpscale: number;
+  baseTexture: RenderTexture;
+  repackedFrameRects: ReadonlyMap<TextureId, FrameRect>;
+};
 
 const destroySpritesheet = (
   sheet: AppSpritesheet | AppSpritesheetWithVariants | undefined,
@@ -54,6 +58,43 @@ const destroySpritesheet = (
   }
 };
 
+/**
+ * Put an upscaled sheet's pixels on the GPU as a texture of its logical size,
+ * backed at its resolution.
+ *
+ * The pixels go up at 1:1 first, then are drawn texel-for-texel into the
+ * texture at the resolution - a buffer source uploads at its logical size, so
+ * it cannot carry a resolution itself. Both steps keep the pixels
+ * premultiplied, so the texture holds exactly what the smoothing drew.
+ */
+const uploadSmoothedSpritesheetPixels = (
+  pixiRenderer: WebGLRenderer,
+  { pixels, pixelWidth, pixelHeight, resolution }: SmoothedSpritesheetPixels,
+): RenderTexture => {
+  const uploaded = new Texture({
+    source: new BufferImageSource({
+      resource: pixels,
+      width: pixelWidth,
+      height: pixelHeight,
+      format: "rgba8unorm",
+      alphaMode: "premultiplied-alpha",
+      scaleMode: "nearest",
+    }),
+  });
+  const width = pixelWidth / resolution;
+  const height = pixelHeight / resolution;
+  const target = RenderTexture.create({ width, height, resolution });
+  // sized again, to whole pixels: the logical height times the resolution
+  // can come out a hair under the whole number
+  target.resize(width, height, resolution);
+  const copy = new Sprite(uploaded);
+  copy.scale.set(1 / resolution);
+  pixiRenderer.render({ container: copy, target, clear: true });
+  copy.destroy();
+  uploaded.destroy(true);
+  return target;
+};
+
 export class Spritesheets {
   #loadImageAbortController: AbortController | undefined;
   /**
@@ -61,20 +102,14 @@ export class Spritesheets {
    */
   #spritesheetArtName: SpritesheetName | undefined;
   /**
-   * Original decoded source image (cpu-side only, not on gpu)
-   * - repeated upscaling will come from this original
+   * the decoded art (cpu-side only, not on gpu), kept to rebuild the 1x
+   * original sheet from
    */
-  #spritesheetArt: HTMLImageElement | undefined;
+  #spritesheetArt: ImageBitmap | undefined;
   /**
    * how much this spritesheet has been upscaled above the source image
    */
-  #spritesheetUpscale = 1;
-  /**
-   * the upscaled version of the texture, if turned on - the palette swopping
-   * will be based on this if it exists
-   */
-  #bakeUpscaledSpritesheetTexture:
-    typeof bakeUpscaledSpritesheetTexture | undefined;
+  #spritesheetSmoothUpscale = 1;
   /**
    * the pristine GPU source: the loaded image with the shadow preprocess baked
    * in, never room-swopped. Built by loadImage (the raw decoded texture is
@@ -84,19 +119,19 @@ export class Spritesheets {
   /**
    * the sheet all in-room rendering samples, rebuilt per room, built from #originalSpritesheet
    */
-  #currentSpritesheet: AppSpritesheetWithVariants | undefined;
+  #currentRoomSpritesheet: AppSpritesheetWithVariants | undefined;
   /**
-   * the GPU texture #currentSpritesheet is baked into, kept across rebuilds
+   * the GPU texture #currentRoomSpritesheet is baked into, kept across rebuilds
    * so each room change re-bakes into the same memory rather than a GPU
    * free+alloc. The bake's first pass clears it, so no pixels survive between
    * rooms.
    */
-  #currentSheetTarget: RenderTexture | undefined;
+  #currentRoomSheetTexture: RenderTexture | undefined;
   /**
-   * what #currentSpritesheet was baked for - a rebuild asking for the same
+   * what #currentRoomSpritesheet was baked for - a rebuild asking for the same
    * again keeps it, rather than baking an identical sheet
    */
-  #currentSpritesheetBakedFor:
+  #currentRoomSheetBakedFor:
     | {
         originalSpritesheet: AppSpritesheetWithVariants;
         roomScenery: SceneryName;
@@ -107,95 +142,109 @@ export class Spritesheets {
   /**
    * maps textureId → where that frame now sits after the sheet is re-composed for upscaling
    */
-  #repackedFrameRects: ReadonlyMap<string, FrameRect> | undefined;
+  #repackedFrameRects: ReadonlyMap<TextureId, FrameRect> | undefined;
+  /**
+   * an upscaled base texture {@link uploadSmoothUpscaledToGpu} has finished, waiting for
+   * {@link rebuild} to build the original sheet from it
+   */
+  #smoothedSheet: SmoothedSheet | undefined;
 
   isTextureLoaded(spritesheetArtName: SpritesheetName): boolean {
     return this.#spritesheetArtName === spritesheetArtName;
   }
 
-  get spritesheetUpscale(): number {
-    return this.#spritesheetUpscale;
+  get spritesheetSmoothUpscale(): number {
+    return this.#spritesheetSmoothUpscale;
   }
 
   /**
-   * whether {@link loadUpscaleBakeModule} has resolved, so a sheet can be baked at a
-   * factor above 1
+   * whether {@link rebuild} can be called at this factor: the sheet is
+   * already at it, or needs no smoothing, or {@link uploadSmoothUpscaledToGpu} has uploaded it
    */
-  get isUpscaleBakeModuleLoaded(): boolean {
-    return this.#bakeUpscaledSpritesheetTexture !== undefined;
+  isSmoothedAt(spritesheetSmoothUpscale: number): boolean {
+    return (
+      spritesheetSmoothUpscale === 1 ||
+      spritesheetSmoothUpscale === this.#spritesheetSmoothUpscale ||
+      spritesheetSmoothUpscale === this.#smoothedSheet?.spritesheetSmoothUpscale
+    );
   }
 
   /**
-   * fetch the upscale bake, which only an upscaled sheet needs - so a player
-   * who leaves smoothing off never downloads it. Must have resolved before
-   * {@link rebuild} is called with a factor above 1.
+   * upload the finished smoothing of the loaded art to the GPU, ready for
+   * {@link rebuild} at its upscale. The upscaled sheet is in a layout of its
+   * own, with aprons around the tiled frames, in a texture whose backing store
+   * is the upscale times its logical size
    */
-  async loadUpscaleBakeModule(): Promise<void> {
-    ({ bakeUpscaledSpritesheetTexture: this.#bakeUpscaledSpritesheetTexture } =
-      await importBakeUpscaledSpritesheetTextureOnce());
+  uploadSmoothUpscaledToGpu(pixiRenderer: WebGLRenderer): void {
+    if (import.meta.env.DEV && this.#spritesheetArt === undefined) {
+      throw new Error("cannot upload a smoothing before image load");
+    }
+    if (
+      import.meta.env.DEV &&
+      spritesheetSmoothingManagerLoader.loaded()?.currentSmoothedSpritesheet ===
+        undefined
+    ) {
+      throw new Error("cannot upload a smoothing before it is done");
+    }
+    const upscaled =
+      spritesheetSmoothingManagerLoader.loaded()!.currentSmoothedSpritesheet!;
+    this.#discardSmoothedSheet();
+    this.#smoothedSheet = {
+      spritesheetSmoothUpscale: upscaled.smoothUpscale.x,
+      baseTexture: uploadSmoothedSpritesheetPixels(pixiRenderer, upscaled),
+      repackedFrameRects: upscaled.repackedFrameRects,
+    };
+  }
+
+  #discardSmoothedSheet() {
+    this.#smoothedSheet?.baseTexture.destroy(true);
+    this.#smoothedSheet = undefined;
   }
 
   /**
-   * replace {@link #originalSpritesheet} with one baked from the retained
-   * source image at the given baked upscale factor: the frames are composed
-   * into a layout of our own, with aprons around the tiled ones, then that
-   * sheet is upscaled (into a texture whose backing store is
-   * `spritesheetUpscale` times its logical size) before the shadow preprocess bakes
-   * over it
+   * replace {@link #originalSpritesheet} with one at the given smoothed upscale
+   * factor - from the retained source image at 1x, otherwise from what
+   * {@link uploadSmoothUpscaledToGpu} uploaded - with the shadow preprocess baked over it
    */
-  #rebakeOriginalAtUpscale(
+  #rebuildOriginalAtSmoothUpscale(
     pixiRenderer: Renderer,
-    spritesheetUpscale: number,
+    spritesheetSmoothUpscale: number,
   ): void {
     if (import.meta.env.DEV && this.#spritesheetArt === undefined) {
       throw new Error("cannot re-bake the original sheet before image load");
     }
     if (
       import.meta.env.DEV &&
-      spritesheetUpscale !== 1 &&
-      this.#bakeUpscaledSpritesheetTexture === undefined
+      spritesheetSmoothUpscale !== 1 &&
+      this.#smoothedSheet?.spritesheetSmoothUpscale !== spritesheetSmoothUpscale
     ) {
       throw new Error(
-        "cannot bake above 1x before loadUpscaleBakeModule() has resolved",
+        `cannot rebuild at ${spritesheetSmoothUpscale}x before uploadSmoothUpscaledToGpu() has uploaded it`,
       );
     }
-    const rawTexture = new Texture({
-      source: new ImageSource({ resource: this.#spritesheetArt! }),
-    });
-    // the composition only matters to the upscale, which is what reads across
-    // a frame's edges - the plain sheet is already right at 1x
-    const repacked =
-      spritesheetUpscale === 1 ? undefined : (
-        composeSpritesheetForUpscale(
-          pixiRenderer,
-          rawTexture,
-          makeSpritesheetData(spritesheetMetas[this.#spritesheetArtName!])
-            .frames,
-        )
-      );
-    const spritesheetToUpscale = repacked?.texture ?? rawTexture;
+    // the plain image is already right at 1x: the composition only matters
+    // to the upscale, which is what reads across a frame's edges
+    const smoothedSheet =
+      spritesheetSmoothUpscale === 1 ? undefined : this.#smoothedSheet!;
+    if (smoothedSheet === undefined) {
+      this.#discardSmoothedSheet();
+    }
+    this.#smoothedSheet = undefined;
     const baseTexture =
-      spritesheetUpscale === 1 ? rawTexture : (
-        this.#bakeUpscaledSpritesheetTexture!(
-          pixiRenderer,
-          spritesheetToUpscale,
-          spritesheetUpscale,
-        )
-      );
+      smoothedSheet?.baseTexture ??
+      new Texture({
+        source: new ImageSource({ resource: this.#spritesheetArt! }),
+      });
     destroySpritesheet(this.#originalSpritesheet);
     this.#originalSpritesheet = this.#buildOriginal(
       pixiRenderer,
       this.#spritesheetArtName!,
       baseTexture,
-      repacked?.repackedFrameRects,
+      smoothedSheet?.repackedFrameRects,
     );
     baseTexture.destroy(true);
-    repacked?.texture.destroy(true);
-    if (baseTexture !== rawTexture) {
-      rawTexture.destroy(true);
-    }
-    this.#spritesheetUpscale = spritesheetUpscale;
-    this.#repackedFrameRects = repacked?.repackedFrameRects;
+    this.#spritesheetSmoothUpscale = spritesheetSmoothUpscale;
+    this.#repackedFrameRects = smoothedSheet?.repackedFrameRects;
   }
 
   rebuild(
@@ -204,10 +253,11 @@ export class Spritesheets {
     roomColor: ZxSpectrumRoomColour,
     spritesheetMeta: SpritesheetMetadata,
     /**
-     * baked upscale factor to bake into the original sheet (and so the
-     * room sheet); 1 = no upscaling
+     * smoothed upscale factor to build the original sheet at (and so the
+     * room sheet); 1 = no upscaling. Above 1, {@link uploadSmoothUpscaledToGpu} must have
+     * uploaded it first
      */
-    spritesheetUpscale: number,
+    spritesheetSmoothUpscale: number,
     /**
      * @returns whether the original spritesheet instance was recreated -
      * consumers holding sprites built from it (eg the hud) must be rebuilt
@@ -225,16 +275,19 @@ export class Spritesheets {
 
     const originalRebuilt =
       this.#spritesheetArt !== undefined &&
-      spritesheetUpscale !== this.#spritesheetUpscale;
+      spritesheetSmoothUpscale !== this.#spritesheetSmoothUpscale;
     if (originalRebuilt) {
-      this.#rebakeOriginalAtUpscale(pixiRenderer, spritesheetUpscale);
+      this.#rebuildOriginalAtSmoothUpscale(
+        pixiRenderer,
+        spritesheetSmoothUpscale,
+      );
     }
 
     const orig = this.#originalSpritesheet;
 
-    const bakedFor = this.#currentSpritesheetBakedFor;
+    const bakedFor = this.#currentRoomSheetBakedFor;
     if (
-      this.#currentSpritesheet !== undefined &&
+      this.#currentRoomSpritesheet !== undefined &&
       bakedFor !== undefined &&
       bakedFor.originalSpritesheet === orig &&
       bakedFor.roomScenery === roomScenery &&
@@ -251,10 +304,10 @@ export class Spritesheets {
     const bt = new Texture({ source: orig.textureSource });
 
     // dispose the previous room's sheet and its per-frame textures, but keep
-    // its backing texture (#currentSheetTarget) for the new bake to render
+    // its backing texture (#currentRoomSheetTexture) for the new bake to render
     // into:
-    this.#currentSpritesheet?.destroy(false);
-    this.#currentSpritesheet = undefined;
+    this.#currentRoomSpritesheet?.destroy(false);
+    this.#currentRoomSpritesheet = undefined;
 
     const built = buildRoomSheet(
       {
@@ -264,13 +317,13 @@ export class Spritesheets {
         spritesheetMetaData: spritesheetMeta,
       },
       bt,
-      this.#currentSheetTarget,
+      this.#currentRoomSheetTexture,
       this.#repackedFrameRects,
     );
 
-    this.#currentSpritesheet = built.sheet;
-    this.#currentSheetTarget = built.target;
-    this.#currentSpritesheetBakedFor = {
+    this.#currentRoomSpritesheet = built.sheet;
+    this.#currentRoomSheetTexture = built.target;
+    this.#currentRoomSheetBakedFor = {
       originalSpritesheet: orig,
       roomScenery,
       // copied, since the room's own colour may change after:
@@ -303,12 +356,12 @@ export class Spritesheets {
   }
 
   get spritesheetForCurrentRoom(): AppSpritesheetWithVariants {
-    if (this.#currentSpritesheet === undefined) {
+    if (this.#currentRoomSpritesheet === undefined) {
       throw new Error(
         "spritesheetForCurrentRoom not available — rebuild() not yet called",
       );
     }
-    return this.#currentSpritesheet;
+    return this.#currentRoomSpritesheet;
   }
 
   async loadImage(
@@ -320,40 +373,15 @@ export class Spritesheets {
     }
 
     this.#loadImageAbortController?.abort();
+    this.#discardSmoothedSheet();
     const abortController = new AbortController();
     this.#loadImageAbortController = abortController;
     const { signal } = abortController;
 
-    const overrideBlobUrl =
-      import.meta.env.VITE_APP === "editor" ?
-        undefined
-      : selectSpritesheetOverrideBlobUrl(store.getState(), spritesheetArtName);
-    const url =
-      overrideBlobUrl ??
-      (spritesheetArtName === "blockstack" ? blockstackSpritesheetArtUrl
-      : spritesheetArtName === "debug" ? debugSpritesheetArtUrl
-      : toppySpritesheetArtUrl);
-    let strippedImageObjectUrl: string | undefined = undefined;
+    const url = spritesheetArtSourceUrl(store.getState(), spritesheetArtName);
 
     try {
-      const response = await fetch(url, { signal });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status} - ${response.statusText}`);
-      }
-      const buffer = await response.arrayBuffer();
-      const contentType = response.headers.get("content-type")!;
-      const isPng = contentType.includes("png");
-      const strippedBuffer =
-        isPng ? stripIccProfilePng(buffer) : stripIccProfileWebp(buffer);
-      const blob = new Blob([strippedBuffer], {
-        type: isPng ? "image/png" : "image/webp",
-      });
-
-      strippedImageObjectUrl = URL.createObjectURL(blob);
-      const img = new Image();
-      img.src = strippedImageObjectUrl;
-      await img.decode();
+      const art = await spritesheetArtLoader.load(url);
 
       if (signal.aborted) {
         return;
@@ -361,9 +389,9 @@ export class Spritesheets {
 
       // bake the pristine original sheet immediately, then discard the raw
       // decoded texture - the original is the only full-image copy kept on
-      // the GPU (the decoded image itself is retained cpu-side, so the
-      // original can later be re-baked at a different factor):
-      const decodedTexture = Texture.from(img);
+      // the GPU (the decoded art itself is retained cpu-side, so the
+      // original can later be rebuilt at 1x from it):
+      const decodedTexture = Texture.from(art);
       destroySpritesheet(this.#originalSpritesheet);
       this.#originalSpritesheet = this.#buildOriginal(
         pixiRenderer,
@@ -371,8 +399,8 @@ export class Spritesheets {
         decodedTexture,
       );
       decodedTexture.destroy(true);
-      this.#spritesheetArt = img;
-      this.#spritesheetUpscale = 1;
+      this.#spritesheetArt = art;
+      this.#spritesheetSmoothUpscale = 1;
       this.#repackedFrameRects = undefined;
       this.#spritesheetArtName = spritesheetArtName;
       this.#loadImageAbortController = undefined;
@@ -391,7 +419,7 @@ export class Spritesheets {
           Texture.EMPTY,
         );
         this.#spritesheetArt = undefined;
-        this.#spritesheetUpscale = 1;
+        this.#spritesheetSmoothUpscale = 1;
         this.#repackedFrameRects = undefined;
         this.#spritesheetArtName = spritesheetArtName;
         this.#loadImageAbortController = undefined;
@@ -399,10 +427,6 @@ export class Spritesheets {
         throw new Error(`failed to load spritesheet from ${url}`, {
           cause: e,
         });
-      }
-    } finally {
-      if (strippedImageObjectUrl !== undefined) {
-        URL.revokeObjectURL(strippedImageObjectUrl);
       }
     }
   }
@@ -416,17 +440,13 @@ export class Spritesheets {
      * composed for the upscale rather than taken straight from the authored
      * image
      */
-    repackedFrameRects?: ReadonlyMap<string, FrameRect>,
+    repackedFrameRects?: ReadonlyMap<TextureId, FrameRect>,
   ): AppSpritesheetWithVariants {
     const spritesheetMeta = spritesheetMetas[spritesheetArtName];
-    const rawSheetData = makeSpritesheetData(spritesheetMeta);
-    const spriteSheetData: AppSpritesheetDataWithVariants =
-      repackedFrameRects === undefined ? rawSheetData : (
-        {
-          ...rawSheetData,
-          frames: withRepackedRects(rawSheetData.frames, repackedFrameRects),
-        }
-      );
+    const spriteSheetData: AppSpritesheetDataWithVariants = withRepackedRects(
+      makeSpritesheetData(spritesheetMeta),
+      repackedFrameRects,
+    );
 
     if (decodedTexture.width === 0) {
       // running under node with no real image (Texture.EMPTY): a sheet over
@@ -496,19 +516,12 @@ export class Spritesheets {
       clear: false,
     });
 
-    const spriteSheet = new Spritesheet(
+    const spriteSheet = spritesheetOverBakedTexture(
       processedTexture,
       spriteSheetData,
-    ) as AppSpritesheet;
-    // pixi's Spritesheet applies the sheet data's meta.scale (1) to the
-    // texture source, wiping any bake resolution - restore it
-    // before parsing so frame UVs are computed against the logical 1x size:
-    spriteSheet.textureSource.resolution = decodedTexture.source.resolution;
-    spriteSheet.parseSync();
-    spriteSheet.textureSource.scaleMode = "nearest";
-    spriteSheet.spritesheetArtName = spritesheetArtName;
-    spriteSheet.spritesheetMeta = spritesheetMeta;
-    applySpritesheetFlips(spriteSheet);
+      spritesheetArtName,
+      spritesheetMeta,
+    );
 
     eraser.destroy();
     for (const frameSprite of shadowFrameSprites) {
@@ -527,34 +540,36 @@ export class Spritesheets {
    * source image) is also reset so the main loop's isTextureLoaded check
    * refetches via loadImage, which re-bakes the original.
    */
-  invalidateUpscaledTextures() {
+  discardTexturesAfterContextLoss() {
+    this.#discardSmoothedSheet();
     destroySpritesheet(this.#originalSpritesheet);
     this.#originalSpritesheet = undefined;
     this.#spritesheetArtName = undefined;
     this.#spritesheetArt = undefined;
-    this.#spritesheetUpscale = 1;
+    this.#spritesheetSmoothUpscale = 1;
     this.#repackedFrameRects = undefined;
-    this.#destroyCurrentSheet();
+    this.#destroyCurrentRoomSheet();
   }
 
   /** the current sheet and its backing texture, destroyed together */
-  #destroyCurrentSheet() {
-    this.#currentSpritesheet?.destroy(false);
-    this.#currentSpritesheet = undefined;
-    this.#currentSheetTarget?.destroy(true);
-    this.#currentSheetTarget = undefined;
-    this.#currentSpritesheetBakedFor = undefined;
+  #destroyCurrentRoomSheet() {
+    this.#currentRoomSpritesheet?.destroy(false);
+    this.#currentRoomSpritesheet = undefined;
+    this.#currentRoomSheetTexture?.destroy(true);
+    this.#currentRoomSheetTexture = undefined;
+    this.#currentRoomSheetBakedFor = undefined;
   }
 
   destroy() {
+    this.#discardSmoothedSheet();
     this.#loadImageAbortController?.abort();
     this.#loadImageAbortController = undefined;
     this.#spritesheetArtName = undefined;
     this.#spritesheetArt = undefined;
-    this.#spritesheetUpscale = 1;
+    this.#spritesheetSmoothUpscale = 1;
     this.#repackedFrameRects = undefined;
     destroySpritesheet(this.#originalSpritesheet);
     this.#originalSpritesheet = undefined;
-    this.#destroyCurrentSheet();
+    this.#destroyCurrentRoomSheet();
   }
 }

@@ -1,11 +1,11 @@
 import { useCallback, useState } from "preact/hooks";
 
+import { closeMenuThunk } from "../../../../../../store/slices/gameMenus/closeMenuThunk";
 import {
   selectIsAssigningKeys,
   useInputDirectionMode,
   useIsAssigningKeys,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import {
   doneAssigningInput,
   inputAddedDuringAssignment,
@@ -100,10 +100,11 @@ const ControlOptionsDialog = () => {
     <DialogPortal>
       <Border
         class="bg-lightGrey zx:bg-zxRedDimmed toppy:bg-toppyGrey1"
-        onClick={useDispatchActionCallback(backToParentMenu)}
+        onClick={useDispatchActionCallback(closeMenuThunk, "controlOptions")}
       />
       <Dialog fullScreen class={optionsDialogClasses} dialogId="controlOptions">
         <DialogTitleBar
+          dialogId="controlOptions"
           path={["Options", "Controls"]}
           class={titleBarClasses}
         />

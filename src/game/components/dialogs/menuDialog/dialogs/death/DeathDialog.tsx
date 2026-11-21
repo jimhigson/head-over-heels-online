@@ -1,8 +1,6 @@
 import { pokeableToNumber } from "../../../../../../model/ItemStateMap";
-import {
-  backToParentMenu,
-  type DeathMenuParam,
-} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { closeMenuThunk } from "../../../../../../store/slices/gameMenus/closeMenuThunk";
+import { type DeathMenuParam } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
@@ -167,7 +165,7 @@ const actionText = (outcome: DeathOutcome): string => {
 export type DeathDialogProps = DeathMenuParam;
 
 const DeathDialog = (props: DeathDialogProps) => {
-  const dismiss = useDispatchActionCallback(backToParentMenu);
+  const dismiss = useDispatchActionCallback(closeMenuThunk, "death");
   const outcome = deathOutcome(props);
   const action = actionText(outcome);
 

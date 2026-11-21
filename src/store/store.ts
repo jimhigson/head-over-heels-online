@@ -42,6 +42,7 @@ import { levelEditorPersistedReducer } from "./persist/levelEditorPersist";
 import { migrateLegacySavedGames } from "./persist/migrateLegacySavedGames";
 import {
   savedGamesPersistedReducer,
+  smoothingPersistedReducer,
   spritesheetOverridePersistedReducer,
   userSettingsPersistedReducer,
 } from "./persist/persist";
@@ -60,6 +61,7 @@ import { githubApiSlice } from "./slices/githubApiSlice";
 import { registerRtkQueryClearAllDataListeners } from "./slices/registerRtkQueryClearAllDataListeners";
 import { registerSavedGamesListeners } from "./slices/savedGames/savedGamesListeners";
 import { savedGamesSlice } from "./slices/savedGames/savedGamesSlice";
+import { smoothingSlice } from "./slices/smoothing/smoothingSlice";
 import { spritesheetOverrideSlice } from "./slices/spritesheetOverrideSlice";
 import { upscaleSlice } from "./slices/upscale/upscaleSlice";
 import { userSettingsSlice } from "./slices/userSettings/userSettingsSlice";
@@ -93,6 +95,7 @@ const appReducer = combineSlices({
       [gameInPlaySlice.reducerPath]: gameInPlaySlice.reducer,
       [savedGamesSlice.reducerPath]: savedGamesPersistedReducer,
       [gameMenusSlice.reducerPath]: gameMenusSlice.reducer,
+      [smoothingSlice.reducerPath]: smoothingPersistedReducer,
       [gameCampaignsApiSlice.reducerPath]: gameCampaignsApiSlice.reducer,
       [debugSlice.reducerPath]: debugSlice.reducer,
     }),

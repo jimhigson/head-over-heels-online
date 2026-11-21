@@ -16,7 +16,7 @@ import {
   usePointerTracker,
 } from "../../game/input/InputStateProvider.tsx";
 import { useAppSelector } from "../../store/hooks.ts";
-import { withLoadingCaptured } from "../../store/slices/assetsLoading/assetsLoadingSlice.ts";
+import { withLoadingCapturedThunk } from "../../store/slices/assetsLoading/withLoadingCapturedThunk.ts";
 import { errorCaught } from "../../store/slices/errors/errorsSlice.ts";
 import {
   useCheatsOn,
@@ -37,6 +37,7 @@ import {
   useCanvasInlineStyle,
   useMaybeRotated,
 } from "../../utils/scaledRendering/useCanvasInlineStyle.tsx";
+import { appTicker } from "../../utils/ticker/appTickerInstance";
 import { importWebMcpTools } from "../../webMcp/WebMcpTools.import.ts";
 import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 
@@ -79,11 +80,11 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
           );
         }
 
-        // withLoadingCaptured shows the loading indicator for the whole load
+        // withLoadingCapturedThunk shows the loading indicator for the whole load
         // (game code + campaign + sounds + pixi) and re-throws into the catch
         // below on failure
         thisEffectGameApi = await store.dispatch(
-          withLoadingCaptured(async () => {
+          withLoadingCapturedThunk(async () => {
             const gameMain = (await importGameMainOnce()).default;
             return gameMain(currentCampaignLocator, inputState, pointerTracker);
           }),
@@ -103,13 +104,14 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
         // also put on console - sometimes stack trace is easier to read there
         console.error(thrown);
         store.dispatch(
-          errorCaught(
-            createSerialisableErrors(
+          errorCaught({
+            caughtErrors: createSerialisableErrors(
               new Error("error in loading game assets or state", {
                 cause: thrown,
               }),
             ),
-          ),
+            openedAt: appTicker.time,
+          }),
         );
       }
     };
