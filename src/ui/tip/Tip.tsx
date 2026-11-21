@@ -3,7 +3,7 @@ import { createPortal } from "preact/compat";
 import { useEffect, useRef, useState } from "preact/hooks";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
-import { CssVariables } from "../../game/components/CssVariables";
+import { CssUpscaleVariables } from "../../game/components/CssUpscaleVariables";
 import { cn } from "../cn";
 
 declare module "preact" {
@@ -81,10 +81,10 @@ export const Tip = ({
   }, [svgInvoker, offset]);
 
   const tip = (
-    // CssVariables wraps the popover from outside: custom properties inherit
+    // CssUpscaleVariables wraps the popover from outside: custom properties inherit
     // through the DOM tree (top layer included), so --block/--scale resolve
     // for the popover's own padding and drop shadow
-    <CssVariables scaleFactor={2}>
+    <CssUpscaleVariables scaleFactor={2}>
       <div
         id={id}
         popover="hint"
@@ -104,7 +104,7 @@ export const Tip = ({
           </div>
         : children}
       </div>
-    </CssVariables>
+    </CssUpscaleVariables>
   );
 
   // a <div> can't live inside the svg tree; the top layer positions it anyway

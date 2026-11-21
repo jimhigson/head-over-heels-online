@@ -3,8 +3,11 @@
 import type { ComponentChildren } from "preact";
 import { createPortal } from "preact/compat";
 
-import { CssVariables } from "../game/components/CssVariables";
+import { CssUpscaleVariables } from "../game/components/CssUpscaleVariables";
 
 export const DialogPortal = ({ children }: { children: ComponentChildren }) => {
-  return createPortal(<CssVariables>{children}</CssVariables>, document.body);
+  return createPortal(
+    <CssUpscaleVariables>{children}</CssUpscaleVariables>,
+    document.body,
+  );
 };

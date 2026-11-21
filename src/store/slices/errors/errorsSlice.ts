@@ -23,7 +23,15 @@ export const errorsSlice = createSlice({
   reducers: {
     errorCaught(
       state,
-      { payload: caughtErrors }: PayloadAction<Array<SerialisableError>>,
+      {
+        payload: { caughtErrors },
+      }: PayloadAction<{
+        caughtErrors: Array<SerialisableError>;
+        /**
+         * when the error dialog it opens was opened, by the app ticker's `time`
+         */
+        openedAt: number;
+      }>,
     ) {
       state.caughtErrors = caughtErrors;
     },

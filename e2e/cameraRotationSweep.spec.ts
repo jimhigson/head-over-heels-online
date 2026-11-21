@@ -13,7 +13,7 @@ import { defaultEmulatedResolution } from "../src/store/slices/userSettings/defa
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
 import { skiHeadsMeetingRoomCampaign } from "./fixtures/skiHeadsMeetingRoom";
 import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
-import { enableUpscaledSprites } from "./testUtils/enableUpscaledSprites";
+import { enableSmoothUpscaledSprites } from "./testUtils/enableSmoothUpscaledSprites";
 import {
   changeRoomViaApi,
   dispatchToStore,
@@ -197,7 +197,7 @@ type SweepScenario<C extends SweepCampaign = SweepCampaign> = {
   /**
    * turns on upscaled smooth sprites
    */
-  upscaledSprites?: boolean;
+  smoothUpscaledSprites?: boolean;
 
   /** playwright snapshot settings */
   screenshotOptions?: Partial<PageAssertionsToHaveScreenshotOptions>;
@@ -528,7 +528,7 @@ const scenarios: readonly SweepScenario[] = [
     character: "head",
     angles: [0, 90],
     emulatedResolution: "$$default",
-    upscaledSprites: true,
+    smoothUpscaledSprites: true,
     screenshotOptions: {
       maxDiffPixels: undefined,
       maxDiffPixelRatio: upscaledSpritesHudTextMaxDiffPixelRatio,
@@ -542,7 +542,7 @@ const scenarios: readonly SweepScenario[] = [
     character: "head",
     angles: [0, 90],
     emulatedResolution: "$$default",
-    upscaledSprites: true,
+    smoothUpscaledSprites: true,
     screenshotOptions: {
       maxDiffPixels: undefined,
       maxDiffPixelRatio: upscaledSpritesHudTextMaxDiffPixelRatio,
@@ -556,7 +556,7 @@ const scenarios: readonly SweepScenario[] = [
     character: "head",
     angles: [0, 90],
     emulatedResolution: "$$default",
-    upscaledSprites: true,
+    smoothUpscaledSprites: true,
     screenshotOptions: {
       maxDiffPixels: undefined,
       maxDiffPixelRatio: upscaledSpritesHudTextMaxDiffPixelRatio,
@@ -755,10 +755,10 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
 
   await enterRoom(page, scenario);
 
-  if (scenario.upscaledSprites) {
+  if (scenario.smoothUpscaledSprites) {
     // set after entering so the upscaled-sheet wait inside is satisfied by the
     // swept room's own stage, not a boot room passed through:
-    await enableUpscaledSprites(page);
+    await enableSmoothUpscaledSprites(page);
   }
 };
 
@@ -773,7 +773,7 @@ const scenarioBaseName = (
     character,
     enterFrom,
     emulatedResolution,
-    upscaledSprites,
+    smoothUpscaledSprites: upscaledSprites,
   }: SweepScenario,
   projectName?: string,
 ): string =>
@@ -874,7 +874,7 @@ for (const scenario of scenarios) {
     // smooth-sprites scenarios need longer: software-rendered environments
     // (SwiftShader in CI or a sandbox) are very slow to compile the upscale
     // shader on first bake:
-    test.setTimeout(scenario.upscaledSprites ? 600_000 : 360_000);
+    test.setTimeout(scenario.smoothUpscaledSprites ? 600_000 : 360_000);
     await bootScenario(page, scenario);
 
     const spritesheetNames: ReadonlyArray<SpritesheetName | undefined> =

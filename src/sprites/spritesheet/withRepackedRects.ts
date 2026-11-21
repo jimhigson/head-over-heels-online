@@ -1,22 +1,37 @@
 import { objectEntriesIter } from "../../utils/entries";
-import type { AppSpritesheetDataWithVariants } from "./AppSpritesheet";
-import type { FrameRect } from "./composeSpritesheetForUpscale";
+import type { FrameRect } from "./repackSpritesheetForSmoothUpscale";
+import type { TextureId } from "./spritesheetData/makeSpritesheetData";
 
 /**
- * Pure function that produces a frames map (like on a pixi Spritesheet) but a new version with the
- * frames where they are on a repacked sheet, defined by overrides, not their original position.
+ * Pure function giving spritesheet data in the layout of the image drawn: as
+ * it is, or a new version with its frames where a repacked sheet has them,
+ * not at their original positions.
  */
-export const withRepackedRects = (
-  frames: AppSpritesheetDataWithVariants["frames"],
-  overrides: ReadonlyMap<string, FrameRect>,
-): AppSpritesheetDataWithVariants["frames"] => {
-  const repacked = {} as AppSpritesheetDataWithVariants["frames"];
-  for (const [id, entry] of objectEntriesIter(frames)) {
-    const override = overrides.get(id);
+export const withRepackedRects = <
+  SpritesheetData extends {
+    frames: Partial<Record<TextureId, { frame: FrameRect }>>;
+  },
+>(
+  spritesheetData: SpritesheetData,
+  /**
+   * where each frame is on the repacked sheet - undefined if the sheet drawn
+   * is not repacked
+   */
+  repackedFrameRects: ReadonlyMap<TextureId, FrameRect> | undefined,
+): SpritesheetData => {
+  if (repackedFrameRects === undefined) {
+    return spritesheetData;
+  }
+  const repacked: Partial<Record<TextureId, { frame: FrameRect }>> = {};
+  for (const [id, entry] of objectEntriesIter(spritesheetData.frames)) {
+    const override = repackedFrameRects.get(id);
     repacked[id] =
       override === undefined ? entry : (
         { ...entry, frame: { ...entry.frame, ...override } }
       );
   }
-  return repacked;
+  return {
+    ...spritesheetData,
+    frames: repacked as SpritesheetData["frames"],
+  };
 };

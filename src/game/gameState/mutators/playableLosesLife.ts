@@ -1,7 +1,6 @@
 import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import {
   addPokeableNumbers,
-  type PokeableNumber,
   pokeableToNumber,
 } from "../../../model/ItemStateMap";
 import {
@@ -28,53 +27,12 @@ import { loadRoom } from "../loadRoom/loadRoom";
 import { entryState } from "../PlayableEntryState";
 import { saveGameThunk } from "../saving/saveGameThunk";
 import { addItemToRoom } from "./addItemToRoom";
+import { livesAfterLosingLife } from "./livesAfterLosingLife";
 import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
 import {
   combinePlayablesInSymbiosis,
   uncombinePlayablesFromSymbiosis,
 } from "./symbiosis";
-
-/**
- * copy the innovation from Retrospec to avoid an unwinnable game when one
- * character loses all their lives but the other is still playing while still
- * making getting down to zero lives a problem
- * */
-const loseLifeWithRetrospecModelLivesTransfer = (
-  characterLosingLifeState: { lives: PokeableNumber },
-  otherCharacterState: { lives: PokeableNumber } | undefined,
-  livesLost: -1 | 0,
-) => {
-  characterLosingLifeState.lives = addPokeableNumbers(
-    characterLosingLifeState.lives,
-    livesLost,
-  );
-
-  // allow the other player to send one of their lives over - this is the Retrospec revised lives model
-  // and avoids an unwinnable situation where one player has lost all their lives but the other continues playing
-  // an unwinnable game:
-  if (
-    characterLosingLifeState.lives === 0 &&
-    otherCharacterState !== undefined
-  ) {
-    const otherCharacterLives = pokeableToNumber(otherCharacterState.lives);
-
-    if (otherCharacterLives >= 2) {
-      characterLosingLifeState.lives = addPokeableNumbers(
-        characterLosingLifeState.lives,
-        1,
-      );
-      otherCharacterState.lives = addPokeableNumbers(
-        otherCharacterState.lives,
-        otherCharacterLives > 2 ?
-          // sacrifice two to continue with one:
-          -2
-          // make an exception if the other character has exactly 2 lives left -
-          // they can give one life but keep one so they can continue playing:
-        : -1,
-      );
-    }
-  }
-};
 
 const dropCarriedItemIfAny = <RoomId extends string>(
   room: RoomState<RoomId, string>,
@@ -111,17 +69,19 @@ const combinedPlayableLosesLife = <RoomId extends string>(
 ) => {
   const room = gameState.characterRooms["headOverHeels"]!;
 
-  loseLifeWithRetrospecModelLivesTransfer(
-    headOverHeels.state.head,
-    headOverHeels.state.heels,
+  // in symbiosis both lose a life: head first, then heels
+  const afterHeadLoses = livesAfterLosingLife(
+    headOverHeels.state.head.lives,
+    headOverHeels.state.heels.lives,
     livesLost,
   );
-
-  loseLifeWithRetrospecModelLivesTransfer(
-    headOverHeels.state.heels,
-    headOverHeels.state.head,
+  const afterHeelsLoses = livesAfterLosingLife(
+    afterHeadLoses.otherLives,
+    afterHeadLoses.losingLives,
     livesLost,
   );
+  headOverHeels.state.head.lives = afterHeelsLoses.otherLives;
+  headOverHeels.state.heels.lives = afterHeelsLoses.losingLives;
 
   if (livesLost) {
     headOverHeels.state.head.lastDiedAt = headOverHeels.state.head.gameTime;
@@ -304,11 +264,15 @@ const individualPlayableLosesLife = <
     characterLosingLife.state.lastDiedAt = characterLosingLife.state.gameTime;
   }
 
-  loseLifeWithRetrospecModelLivesTransfer(
-    characterLosingLife.state,
-    otherCharacter?.state,
+  const livesAfter = livesAfterLosingLife(
+    characterLosingLife.state.lives,
+    otherCharacter?.state.lives ?? 0,
     livesLost,
   );
+  characterLosingLife.state.lives = livesAfter.losingLives;
+  if (otherCharacter !== undefined) {
+    otherCharacter.state.lives = livesAfter.otherLives;
+  }
 
   if (characterLosingLife.state.lives === 0) {
     delete gameState.characterRooms[characterLosingLife.id as CharacterName];

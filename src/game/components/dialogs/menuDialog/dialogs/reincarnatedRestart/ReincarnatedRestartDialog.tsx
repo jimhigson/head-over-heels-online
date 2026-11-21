@@ -1,5 +1,5 @@
 import type { AnimatedTextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { closeMenuThunk } from "../../../../../../store/slices/gameMenus/closeMenuThunk";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
@@ -14,7 +14,10 @@ const ReincarnatedRestartDialog = () => {
         class="!h-min !w-max text-center p-0 bg-transparent"
         // need to be able to click/tap on the hold dialog to exit, or it
         // isn't possible to leave it on devices with no keyboard/gamepad:
-        onClick={useDispatchActionCallback(backToParentMenu)}
+        onClick={useDispatchActionCallback(
+          closeMenuThunk,
+          "reincarnatedRestart",
+        )}
         dialogId="reincarnatedRestart"
       >
         <span class="text-multi-line text-midRed zx:text-zxRed toppy:text-toppyPink2 block w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix">
@@ -35,7 +38,7 @@ const ReincarnatedRestartDialog = () => {
           class={`sprite mx-auto bg-zxBlack ${"texture-animated-fish" satisfies AnimatedTextureTailwindClass} zx:sprite-revert-to-white`}
         />
         <MenuItems class="hidden">
-          <BackMenuItem />
+          <BackMenuItem dialogId="reincarnatedRestart" />
         </MenuItems>
       </Dialog>
     </DialogPortal>

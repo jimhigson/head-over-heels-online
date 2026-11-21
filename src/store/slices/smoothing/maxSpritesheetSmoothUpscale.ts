@@ -1,11 +1,11 @@
-import { spritesheetSideLength } from "../../../../../gfx/spritesheetMeta/spritesheetSize.ts" with { type: "macro" };
+import { spritesheetSideLength } from "../../../../gfx/spritesheetMeta/spritesheetSize.macro.ts" with { type: "macro" };
 
 /**
  * what to assume where the hardware cannot be asked - server-side rendering,
  * or a context that will not open. Four is what this cap used to be fixed at:
  * a 4096² backing store, which every gpu the game can run on will hold
  */
-const assumedSpritesheetUpscale = 4;
+const assumedSpritesheetSmoothUpscale = 4;
 
 /** the largest texture this gpu will hold, or undefined if it cannot be asked
  *
@@ -32,15 +32,15 @@ const askHardwareForLargestTextureSize = (): number | undefined => {
 const computeFactor = (): number => {
   const largestTextureSize = askHardwareForLargestTextureSize();
   return largestTextureSize === undefined ?
-      assumedSpritesheetUpscale
-    : Math.max(1, Math.ceil(largestTextureSize / spritesheetSideLength()));
+      assumedSpritesheetSmoothUpscale
+    : Math.max(1, Math.ceil(largestTextureSize / spritesheetSideLength));
 };
 
 let cachedAnswer: number | undefined;
 
 /**
- * How many times over the spritesheet may be upscaled before the baked
+ * How many times over the spritesheet may be upscaled before the smoothed
  * texture is larger than the hardware will hold.
  */
-export const maxSpritesheetUpscale = (): number =>
+export const maxSpritesheetSmoothUpscale = (): number =>
   (cachedAnswer ??= computeFactor());

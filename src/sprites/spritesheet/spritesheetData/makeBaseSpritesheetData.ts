@@ -11,8 +11,6 @@ import { playableSpritesheetData } from "./playableSpritesheetData";
 import { scenerySpritesheetData } from "./scenerySpritesheetData";
 import type { SpritesheetMetadata } from "./spritesheetMetaData";
 
-export const spritesheetSize = { w: 1_024, h: 1_024 };
-
 /**
  * the sheet data over only the ids drawn as pixels in the source image - what
  * the html/css sprites (tailwind's `.texture-*` utilities, the sprites page)

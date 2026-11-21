@@ -8,6 +8,10 @@ import {
   savedGamesSlice,
   type SavedGamesSliceState,
 } from "../slices/savedGames/savedGamesSlice";
+import {
+  smoothingSlice,
+  type SmoothingState,
+} from "../slices/smoothing/smoothingSlice";
 import { spritesheetOverrideSlice } from "../slices/spritesheetOverrideSlice";
 import {
   userSettingsSlice,
@@ -66,4 +70,16 @@ const spritesheetOverridePersistConfig: PersistConfig<
 export const spritesheetOverridePersistedReducer = persistReducer(
   spritesheetOverridePersistConfig,
   spritesheetOverrideSlice.reducer,
+);
+
+const smoothingPersistConfig: PersistConfig<SmoothingState> = {
+  key: "hohol/smoothing",
+  version: persistVersion,
+  storage,
+  // a smoothing in progress or held is gone with the page; failures are not
+  whitelist: ["failures"],
+};
+export const smoothingPersistedReducer = persistReducer(
+  smoothingPersistConfig,
+  smoothingSlice.reducer,
 );

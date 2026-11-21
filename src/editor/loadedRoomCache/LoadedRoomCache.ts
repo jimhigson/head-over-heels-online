@@ -11,6 +11,7 @@ import { errorCaught } from "../../store/slices/errors/errorsSlice";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import type { EditorAppStore, EditorRootState } from "../../store/store";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
+import { appTicker } from "../../utils/ticker/appTickerInstance";
 import type { Xy } from "../../utils/vectors/vectors";
 import type {
   EditorItemInPlayUnion,
@@ -362,7 +363,12 @@ export class LoadedRoomCache {
       // marked failed before dispatching, since the dispatch re-enters #bringUpToDate:
       this.#loaded = undefined;
       this.#failedRoomJsonWithPreviews = roomJsonWithPreviews;
-      this.#store.dispatch(errorCaught(createSerialisableErrors(e)));
+      this.#store.dispatch(
+        errorCaught({
+          caughtErrors: createSerialisableErrors(e),
+          openedAt: appTicker.time,
+        }),
+      );
       return undefined;
     }
   }

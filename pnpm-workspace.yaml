@@ -21,3 +21,5 @@ overrides:
 patchedDependencies:
   pixi.js: patches/pixi.js.patch
   web-audio-test-api@0.5.2: patches/web-audio-test-api@0.5.2.patch
+# scripts run in the same bash-like shell on every os, so eg `FOO=1 cmd` works on windows
+shellEmulator: true

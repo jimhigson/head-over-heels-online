@@ -7,4 +7,5 @@ import { optionsDialogColourClasses } from "../optionsDialogColourClasses";
 export const LazyEmulatedResolutionDialog = LazyDialogHoc(
   lazy(importOnce(() => import("./EmulatedResolutionDialog"))),
   optionsDialogColourClasses,
+  "emulatedResolution",
 );

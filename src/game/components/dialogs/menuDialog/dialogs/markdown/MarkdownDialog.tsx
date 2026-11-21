@@ -5,7 +5,7 @@ import {
   markdownPages,
 } from "../../../../../../manual/pages";
 import { useAppSelector } from "../../../../../../store/hooks";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { closeMenuThunk } from "../../../../../../store/slices/gameMenus/closeMenuThunk";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
@@ -42,7 +42,10 @@ const MarkdownDialog = (
     return openMenus.length === 1;
   });
 
-  const goBackCallback = useDispatchActionCallback(backToParentMenu);
+  const goBackCallback = useDispatchActionCallback(
+    closeMenuThunk,
+    props.dialogId,
+  );
 
   return (
     <DialogPortal>
@@ -63,6 +66,7 @@ const MarkdownDialog = (
         dialogId={props.dialogId}
       >
         <DialogTitleBar
+          dialogId={props.dialogId}
           class={`pl-1 mobile:px-3 ${isTopLevelMenu ? "hidden" : "pt-1"}`}
           path={isSubmenuFromManual ? ["Manual"] : []}
         />

@@ -1,3 +1,4 @@
+import { appTicker } from "../../../utils/ticker/appTickerInstance";
 import { startAppListening } from "../../listenerMiddleware";
 import {
   crownCollected,
@@ -32,7 +33,12 @@ export const registerGameMenusListeners = () => {
   startAppListening({
     actionCreator: scrollRead,
     effect(action, { dispatch }) {
-      dispatch(scrollContentMenuShown(action.payload));
+      dispatch(
+        scrollContentMenuShown({
+          scrollConfig: action.payload,
+          openedAt: appTicker.time,
+        }),
+      );
     },
   });
 
@@ -49,7 +55,13 @@ export const registerGameMenusListeners = () => {
         userSettings.userSettings.soundSettings.mute ??
         defaultUserSettings.soundSettings.mute;
 
-      dispatch(crownsMenuShown({ playMusic: !muted, allCrowns }));
+      dispatch(
+        crownsMenuShown({
+          playMusic: !muted,
+          allCrowns,
+          openedAt: appTicker.time,
+        }),
+      );
     },
   });
 
@@ -58,7 +70,10 @@ export const registerGameMenusListeners = () => {
     actionCreator: gameStarted,
     effect(action, { dispatch }) {
       dispatch(
-        gameStartedMenusOpened({ showCrowns: !action.payload.noShowCrowns }),
+        gameStartedMenusOpened({
+          showCrowns: !action.payload.noShowCrowns,
+          openedAt: appTicker.time,
+        }),
       );
     },
   });
@@ -71,7 +86,12 @@ export const registerGameMenusListeners = () => {
       const offerReincarnation =
         getState().gameInPlay.gameInPlay.reincarnationPoint !== undefined;
       if (offerReincarnation) {
-        dispatch(gameEndedMenusOpened({ offerReincarnation: true }));
+        dispatch(
+          gameEndedMenusOpened({
+            offerReincarnation: true,
+            openedAt: appTicker.time,
+          }),
+        );
       } else {
         dispatch(gameOver({ reincarnationDeclined: false }));
       }
@@ -88,6 +108,7 @@ export const registerGameMenusListeners = () => {
         gameEndedMenusOpened({
           offerReincarnation: false,
           scoreAlreadyShown: action.payload.reincarnationDeclined,
+          openedAt: appTicker.time,
         }),
       );
     },
@@ -97,7 +118,12 @@ export const registerGameMenusListeners = () => {
   startAppListening({
     actionCreator: lostLife,
     effect(action, { dispatch }) {
-      dispatch(deathDialogShown(action.payload.deathMenuParam));
+      dispatch(
+        deathDialogShown({
+          deathMenuParam: action.payload.deathMenuParam,
+          openedAt: appTicker.time,
+        }),
+      );
     },
   });
 
@@ -105,7 +131,7 @@ export const registerGameMenusListeners = () => {
   startAppListening({
     actionCreator: reincarnationAccepted,
     effect(_action, { dispatch }) {
-      dispatch(reincarnationRestartMenuShown());
+      dispatch(reincarnationRestartMenuShown({ openedAt: appTicker.time }));
     },
   });
 };

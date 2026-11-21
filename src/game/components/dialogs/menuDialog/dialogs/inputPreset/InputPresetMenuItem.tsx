@@ -1,7 +1,7 @@
 import { useCallback } from "preact/hooks";
 
 import { useAppDispatch } from "../../../../../../store/hooks";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { closeMenuThunk } from "../../../../../../store/slices/gameMenus/closeMenuThunk";
 import { keyAssignmentPresetApplied } from "../../../../../../store/slices/userSettings/userSettingsSlice";
 import {
   type KeyAssignmentPresetName,
@@ -21,7 +21,7 @@ export const InputPresetMenuItem = ({
     // choose the option:
     dispatch(keyAssignmentPresetApplied(presetName));
     // close the preset menu:
-    dispatch(backToParentMenu());
+    dispatch(closeMenuThunk("inputPreset"));
   }, [dispatch, presetName]);
   return (
     <MenuItem

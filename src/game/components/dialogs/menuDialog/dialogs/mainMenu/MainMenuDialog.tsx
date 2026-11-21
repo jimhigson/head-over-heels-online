@@ -11,10 +11,10 @@ import {
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   closeAllMenus,
-  goToSubmenu,
   menuOpenOrExitPressed,
   setFocussedMenuItemId,
 } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { openMenuThunk } from "../../../../../../store/slices/gameMenus/openMenuThunk";
 import { persistor } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
@@ -182,8 +182,13 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
 
   const isGameRunning = useIsGameRunning();
 
-  const showCrowns = useDispatchActionCallback(goToSubmenu, "crowns");
-  const showScore = useDispatchActionCallback(goToSubmenu, "score");
+  const dispatch = useAppDispatch();
+  const showCrowns = useCallback(() => {
+    dispatch(openMenuThunk({ dialogId: "crowns" }));
+  }, [dispatch]);
+  const showScore = useCallback(() => {
+    dispatch(openMenuThunk({ dialogId: "score" }));
+  }, [dispatch]);
 
   const showProgress = useCallback(() => {
     showCrowns();

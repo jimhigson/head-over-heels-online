@@ -9,6 +9,7 @@ import {
 import { objectEntriesIter } from "../../utils/entries";
 import type { Xy } from "../../utils/vectors/vectors";
 import type { AppSpritesheetDataWithVariants } from "./AppSpritesheet";
+import type { TextureId } from "./spritesheetData/makeSpritesheetData";
 import { packAllFrames } from "./spritesheetData/packAllFrames";
 import { apronWidth, tilingOffsets } from "./spritesheetData/tilingOffsets";
 
@@ -16,11 +17,16 @@ import { apronWidth, tilingOffsets } from "./spritesheetData/tilingOffsets";
 export type FrameRect = { x: number; y: number; w: number; h: number };
 type Rect = FrameRect;
 
-export type ComposedSpritesheet = {
+export type RepackedSpritesheet = {
   /** the sheet to upscale in place of the authored one */
   texture: RenderTexture;
   /** where each frame's art now lives, by texture id */
-  repackedFrameRects: ReadonlyMap<string, FrameRect>;
+  repackedFrameRects: ReadonlyMap<TextureId, FrameRect>;
+  /**
+   * each frame's whole cell, by texture id: its art and, for a tiled frame,
+   * the apron around it
+   */
+  repackedCellRects: ReadonlyMap<TextureId, FrameRect>;
 };
 
 const intersect = (a: Rect, b: Rect): Rect | undefined => {
@@ -93,11 +99,11 @@ const outside = (rect: Rect, hole: Rect): ReadonlyArray<Rect> => {
  * that could differ between renderers - so it stays a single draw of plain
  * quads.
  */
-export const composeSpritesheetForUpscale = (
+export const repackSpritesheetForSmoothUpscale = (
   pixiRenderer: Renderer,
   sourceTexture: Texture,
   frames: AppSpritesheetDataWithVariants["frames"],
-): ComposedSpritesheet => {
+): RepackedSpritesheet => {
   const { width: sheetWidth, height: sheetHeight } = sourceTexture;
 
   const neighbourOffsetsOf = new Map<string, ReadonlyArray<Xy>>();
@@ -152,7 +158,8 @@ export const composeSpritesheetForUpscale = (
     indices.push(i, i + 1, i + 2, i, i + 2, i + 3);
   };
 
-  const repackedFrameRects = new Map<string, FrameRect>();
+  const repackedFrameRects = new Map<TextureId, FrameRect>();
+  const repackedCellRects = new Map<TextureId, FrameRect>();
   for (const { source, dest, ids } of pack.cells) {
     const neighbourOffsets = neighbourOffsetsOf.get(ids[0]) ?? [];
     const tiled = neighbourOffsets.length > 0;
@@ -171,8 +178,10 @@ export const composeSpritesheetForUpscale = (
       w: art.w,
       h: art.h,
     };
+    const cell = { x: dest.x, y: dest.y, w: source.w, h: source.h };
     for (const id of ids) {
       repackedFrameRects.set(id, art);
+      repackedCellRects.set(id, cell);
     }
 
     quad(art, from);
@@ -221,5 +230,5 @@ export const composeSpritesheetForUpscale = (
   mesh.destroy();
   geometry.destroy();
 
-  return { texture, repackedFrameRects };
+  return { texture, repackedFrameRects, repackedCellRects };
 };

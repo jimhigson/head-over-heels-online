@@ -1,15 +1,21 @@
 import { twMerge } from "tailwind-merge";
 
 import { emptyArray } from "../../../../../utils/empty";
+import type { DialogId } from "../DialogId";
 import { MenuItems } from "../MenuItems";
 import { MobileStyleBackButton } from "./MobileStyleBackButton";
 
 export type DialogTitleBarProps = {
+  /**
+   * the dialog this bar is in, which its back button closes
+   */
+  dialogId: DialogId;
   path?: string[];
   class?: string;
 };
 
 export const DialogTitleBar = ({
+  dialogId,
   path = emptyArray,
   class: className,
 }: DialogTitleBarProps) => {
@@ -22,7 +28,7 @@ export const DialogTitleBar = ({
       )}
     >
       <MenuItems inline role="menubar">
-        <MobileStyleBackButton />
+        <MobileStyleBackButton dialogId={dialogId} />
       </MenuItems>
       <div class="flex flex-row items-center">
         {path.slice(0, -1).map((p, i) => (

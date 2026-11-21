@@ -5,6 +5,7 @@ import type { EmptyObject } from "type-fest";
 import { errorCaught } from "../../store/slices/errors/errorsSlice";
 import { store } from "../../store/store";
 import { createSerialisableErrors } from "../redux/createSerialisableErrors";
+import { appTicker } from "../ticker/appTickerInstance";
 
 type ErrorBoundaryProps = PropsWithChildren<EmptyObject>;
 
@@ -24,7 +25,12 @@ export class DispatchingErrorBoundary extends Component<
 
   override componentDidCatch(error: Error, _info: ErrorInfo) {
     console.error("Error caught in DispatchingErrorBoundary:", error);
-    store.dispatch(errorCaught(createSerialisableErrors(error)));
+    store.dispatch(
+      errorCaught({
+        caughtErrors: createSerialisableErrors(error),
+        openedAt: appTicker.time,
+      }),
+    );
   }
 
   render() {

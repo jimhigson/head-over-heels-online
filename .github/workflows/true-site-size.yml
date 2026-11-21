@@ -56,7 +56,7 @@ jobs:
           { "row": "open map", "mark": "open map", "emoji": "🗺️" },
           { "keys": "M" },
           { "keys": "Y" },
-          { "row": "turn smoothing on", "mark": "smooth-ui-ready", "emoji": "✨" },
+          { "row": "turn smoothing on", "mark": "smooth-ui-ready", "emoji": "✨", "markTimeoutMs": 300000, "since": "a5c0a843547c8b51b74fe9e90e423bcf1ea5c7be" },
           { "startAgain": "editor" },
           { "goto": "/editor/" },
           { "row": "editor", "marks": ["editor-monaco-ready", "editor-map-ready"], "emoji": "🛠️" }
@@ -80,7 +80,7 @@ jobs:
           compression-level: 11
           ignore-url-patterns: '["supabase\\.co"]'
           ignore-low-priority: "true"
-          mark-timeout-ms: "20000"
+          mark-timeout-ms: "60000"
           # 5h30 - inside the 6h job limit; the backfill stops cleanly before
           # starting a commit that would overrun, and a rerun continues it
           timeout-ms: "19800000"
@@ -109,7 +109,7 @@ jobs:
           { "row": "open map", "mark": "open map", "emoji": "🗺️" },
           { "keys": "M" },
           { "keys": "Y" },
-          { "row": "turn smoothing on", "mark": "smooth-ui-ready", "emoji": "✨" },
+          { "row": "turn smoothing on", "mark": "smooth-ui-ready", "emoji": "✨", "markTimeoutMs": 300000, "since": "a5c0a843547c8b51b74fe9e90e423bcf1ea5c7be" },
           { "startAgain": "editor" },
           { "goto": "/editor/" },
           { "row": "editor", "marks": ["editor-monaco-ready", "editor-map-ready"], "emoji": "🛠️" }
@@ -231,10 +231,11 @@ jobs:
           # speculative preloads (fetched with priority "low") aren't needed to get ready
           ignore-low-priority: "true"
           minimum-change-threshold: 50
-          mark-timeout-ms: "20000"
+          mark-timeout-ms: "60000"
           # each ref now builds both apps in one go, so allow longer than the
-          # action's 15-minute default before the whole-run watchdog fires
-          timeout-ms: "1800000"
+          # action's 15-minute default before the whole-run watchdog fires. The
+          # smoothing row's bake takes minutes per run in software rendering
+          timeout-ms: "2400000"
           # a normal PR compares vs main (its merge target), the last release
           # and the release before that. a release-please PR
           # only bumps the build number over main, so a vs-main comparison is
@@ -259,10 +260,11 @@ jobs:
           # speculative preloads (fetched with priority "low") aren't needed to get ready
           ignore-low-priority: "true"
           minimum-change-threshold: 50
-          mark-timeout-ms: "20000"
+          mark-timeout-ms: "60000"
           # each ref now builds both apps in one go, so allow longer than the
-          # action's 15-minute default before the whole-run watchdog fires
-          timeout-ms: "1800000"
+          # action's 15-minute default before the whole-run watchdog fires. The
+          # smoothing row's bake takes minutes per run in software rendering
+          timeout-ms: "2400000"
           # a push to main *is* main, so it only compares vs the last release
           # and the release before that
           base-refs: ${{ steps.base-refs.outputs.json }}

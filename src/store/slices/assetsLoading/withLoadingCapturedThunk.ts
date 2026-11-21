@@ -1,0 +1,24 @@
+import type { Promisable } from "type-fest";
+
+import type { AppThunk } from "../../store";
+import {
+  assetsLoadingFinished,
+  assetsLoadingStarted,
+} from "./assetsLoadingSlice";
+
+/**
+ * runs `work` while the assets-loading indicator is shown: dispatches
+ * assetsLoadingStarted before, and assetsLoadingFinished in a finally once it
+ * settles (success or failure). Any error from `work` is re-thrown, not
+ * swallowed, so the caller can still handle it.
+ */
+export const withLoadingCapturedThunk =
+  <T>(work: () => Promisable<T>): AppThunk<Promise<Awaited<T>>> =>
+  async (dispatch): Promise<Awaited<T>> => {
+    dispatch(assetsLoadingStarted());
+    try {
+      return await work();
+    } finally {
+      dispatch(assetsLoadingFinished());
+    }
+  };

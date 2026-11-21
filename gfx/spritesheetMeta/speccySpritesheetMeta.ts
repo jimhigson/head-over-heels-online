@@ -11,6 +11,7 @@ export const speccySpritesheetMeta: SpritesheetMetadata<
 > = {
   name: "speccy",
   isUncolourisedOf: "blockstack",
+  artUrl: blockStackSpritesheetMeta.artUrl,
   spritesheetWhenPaused: "speccy",
   palettes: { basic: zxSpectrumHexPaletteColours },
   playable: blockStackSpritesheetMeta.playable,

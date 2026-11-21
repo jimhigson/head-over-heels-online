@@ -1,7 +1,7 @@
 import type { ComponentChildren } from "preact";
 
 import { cssForRoomColour } from "../editor/toolbar/buttons/RoomColourSelect";
-import { CssVariables } from "../game/components/CssVariables";
+import { CssUpscaleVariables } from "../game/components/CssUpscaleVariables";
 import { usePlayableTailwindSpriteClassname } from "../game/components/tailwindSprites/playableTailwindSpriteClassname";
 import type { RoomHues } from "../model/roomHues";
 import { useIsUncolourised } from "../store/slices/gameMenus/gameMenusSelectors";
@@ -79,18 +79,18 @@ export function RoomSelect<RoomId extends string>({
           >
             <CurrentMarker isCurrent={isCurrent} uncoloured />
             {headRoomId === itemValue && (
-              <CssVariables scaleFactor={1}>
+              <CssUpscaleVariables scaleFactor={1}>
                 <span
                   class={`sprite mr-1 my-1 ${spriteClassname({ character: "head", action: "idle", facingXy8: "towards" })}`}
                 />
-              </CssVariables>
+              </CssUpscaleVariables>
             )}
             {heelsRoomId === itemValue && (
-              <CssVariables scaleFactor={1}>
+              <CssUpscaleVariables scaleFactor={1}>
                 <span
                   class={`sprite mr-1 my-1 ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towards" })}`}
                 />
-              </CssVariables>
+              </CssUpscaleVariables>
             )}
             <CommandMatch text={roomLabel(itemValue)} />
             {roomDetail && (

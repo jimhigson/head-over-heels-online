@@ -111,7 +111,8 @@ const useAddTrackingToStore = () => {
         const gameTimeSeconds =
           gameState ? Math.round(gameState.gameTime / 1_000) : undefined;
 
-        const [firstError] = errorCaught.match(action) ? action.payload : [];
+        const [firstError] =
+          errorCaught.match(action) ? action.payload.caughtErrors : [];
 
         const payloadProperties =
           crownCollected.match(action) ? { crownForPlanet: action.payload }

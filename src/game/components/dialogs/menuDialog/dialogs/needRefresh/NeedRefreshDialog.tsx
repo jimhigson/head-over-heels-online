@@ -1,5 +1,5 @@
 import { continueWithRefresh } from "../../../../../../store/slices/continueWithRefresh";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { closeMenuThunk } from "../../../../../../store/slices/gameMenus/closeMenuThunk";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
@@ -15,7 +15,7 @@ const NeedRefreshDialog = () => {
     <DialogPortal>
       <Border
         class="bg-metallicBlue zx:bg-zxBlue toppy:bg-toppyCool3"
-        onClick={useDispatchActionCallback(backToParentMenu)}
+        onClick={useDispatchActionCallback(closeMenuThunk, "needRefresh")}
       />
       <Dialog
         class={`${needRefreshDialogColourClasses} px-1 py-1 w-max max-w-24`}
@@ -35,7 +35,7 @@ const NeedRefreshDialog = () => {
           <MenuItem
             id="no"
             label="Not now"
-            onSelect={useDispatchActionCallback(backToParentMenu)}
+            onSelect={useDispatchActionCallback(closeMenuThunk, "needRefresh")}
             doubleHeightWhenFocussed
           />
         </MenuItems>

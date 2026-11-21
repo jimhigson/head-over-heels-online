@@ -306,7 +306,7 @@ export class ItemBoundingBoxRenderer<
         textNode.addChild(
           new TextContainer({
             pixiRenderer,
-            resolution: spritesheets.spritesheetUpscale,
+            resolution: spritesheets.spritesheetSmoothUpscale,
             text: line,
             colour: new Color(color),
             y: i * 10,

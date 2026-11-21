@@ -7,4 +7,5 @@ import { optionsDialogColourClasses } from "../optionsDialogColourClasses";
 export const LazyInputPresetDialog = LazyDialogHoc(
   lazy(importOnce(() => import("./InputPresetDialog"))),
   optionsDialogColourClasses,
+  "inputPreset",
 );

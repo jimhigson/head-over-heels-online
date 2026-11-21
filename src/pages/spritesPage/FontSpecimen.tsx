@@ -1,4 +1,4 @@
-import { CssVariables } from "../../game/components/CssVariables";
+import { CssUpscaleVariables } from "../../game/components/CssUpscaleVariables";
 import { twClass } from "../../utils/twClass.tsx" with { type: "macro" };
 
 const emSpace = "\u2003";
@@ -25,7 +25,7 @@ export const FontSpecimen = ({ scale }: FontSpecimenProps) => (
     data-font-specimen
   >
     {[scale, scale * 2].map((scaleFactor, scaleIndex) => (
-      <CssVariables scaleFactor={scaleFactor} key={scaleFactor}>
+      <CssUpscaleVariables scaleFactor={scaleFactor} key={scaleFactor}>
         <div
           class={`text-multi-line whitespace-pre ${colourClasses[scaleIndex % colourClasses.length]}`}
         >
@@ -45,7 +45,7 @@ export const FontSpecimen = ({ scale }: FontSpecimenProps) => (
         >
           The Quick Brown Fox Jumps Over The Lazy Dog
         </div>
-      </CssVariables>
+      </CssUpscaleVariables>
     ))}
   </div>
 );

@@ -2,13 +2,14 @@ import preact from "@preact/preset-vite";
 import path from "path";
 import { visualizer } from "rollup-plugin-visualizer";
 import tailwindcss from "tailwindcss";
-import { unrunRunner } from "unplugin-macros";
 import Macros from "unplugin-macros/vite";
 import { defineConfig, type PluginOption } from "vite";
 import glsl from "vite-plugin-glsl";
 import { VitePWA } from "vite-plugin-pwa";
 
+import { glslShortenIdentifiers } from "./buildTools/glslShortenIdentifiers";
 import { hmrOnlyPreact } from "./buildTools/hmrOnlyPreact";
+import { macroRunner } from "./buildTools/macroRunner";
 import { postcssPruneUnused } from "./buildTools/postcssPruneUnused";
 
 const oneWeekInSeconds = 60 * 60 * 24 * 7;
@@ -68,7 +69,7 @@ export default defineConfig(({ mode: _mode }) => {
     },
 
     plugins: [
-      Macros({ runner: unrunRunner() }),
+      Macros({ runner: macroRunner() }),
       hmrOnlyPreact(),
       preact({
         devtoolsInProd: false,
@@ -136,6 +137,7 @@ export default defineConfig(({ mode: _mode }) => {
         }),
       glsl({
         minify: true,
+        onComplete: glslShortenIdentifiers(path.resolve(__dirname, "src")),
       }),
     ],
 
