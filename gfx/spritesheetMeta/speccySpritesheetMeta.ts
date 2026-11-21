@@ -2,7 +2,7 @@ import {
   zxSpectrumHexPaletteColours,
   type ZxSpectrumPaletteColour,
 } from "../../src/originalGame";
-import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { blockStackSpritesheetMeta } from "./blockStackSpritesheetMeta";
 
 export const speccySpritesheetMeta: SpritesheetMetadata<

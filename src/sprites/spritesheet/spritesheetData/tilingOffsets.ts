@@ -1,6 +1,6 @@
 import { projectBlockXyzToScreenXy } from "../../../game/render/projections";
 import { emptyArray } from "../../../utils/empty";
-import { type Xy } from "../../../utils/vectors/vectors";
+import type { Xy } from "../../../utils/vectors/vectors";
 import { floorTileSize } from "./textureSizes";
 
 /**

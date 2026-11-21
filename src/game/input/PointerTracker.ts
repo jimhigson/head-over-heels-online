@@ -2,7 +2,7 @@ import mitt from "mitt";
 
 import { IdleTracker } from "../../utils/idle/IdleTracker";
 import { originXyz, xyzEqual } from "../../utils/vectors/vectors";
-import { type InputStateTrackerInterface } from "./InputStateTracker";
+import type { InputStateTrackerInterface } from "./InputStateTracker";
 
 /**
  * every mouse action counts as the pointer being in use, not only movement -

@@ -1,4 +1,4 @@
-import { type PropsWithChildren } from "preact/compat";
+import type { PropsWithChildren } from "preact/compat";
 import { twMerge } from "tailwind-merge";
 
 export type DialogHeaderProps = PropsWithChildren<{ class?: string }>;

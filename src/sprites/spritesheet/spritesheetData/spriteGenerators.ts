@@ -1,6 +1,6 @@
-import { type SpritesheetFrameData } from "pixi.js";
+import type { SpritesheetFrameData } from "pixi.js";
 
-import { type SpriteSize } from "../../../model/modelTypes";
+import type { SpriteSize } from "../../../model/modelTypes";
 import { range } from "../../../utils/iterators/range";
 import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
 import {

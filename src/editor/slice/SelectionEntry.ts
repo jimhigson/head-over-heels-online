@@ -1,7 +1,7 @@
-import { type SetNonNullable } from "type-fest";
+import type { SetNonNullable } from "type-fest";
 
-import { type EditorRoomItemId } from "../editorTypes";
-import { type WhichEditorGhostOfAnyItemType } from "../WhichEditorGhostOf";
+import type { EditorRoomItemId } from "../editorTypes";
+import type { WhichEditorGhostOfAnyItemType } from "../WhichEditorGhostOf";
 
 /**
  * one thing selected in an open room: a json item, or one of its editor ghosts

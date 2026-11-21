@@ -1,11 +1,11 @@
-import { type ComponentChildren, type VNode } from "preact";
+import type { ComponentChildren, VNode } from "preact";
 
-import { type TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import type { TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { cn } from "../cn";
 import { CommandItem } from "../command/CommandItem";
 import { CurrentMarker } from "../CurrentMarker";
 import { ShortcutUnderlinedLabel } from "../ShortcutUnderlinedLabel";
-import { type ShortcutKeys } from "../useKeyboardShortcut";
+import type { ShortcutKeys } from "../useKeyboardShortcut";
 import { MenuItemIconSpace } from "./MenuItemIconSpace";
 import { shortcutHint } from "./shortcutHint";
 

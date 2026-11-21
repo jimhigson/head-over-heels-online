@@ -18,13 +18,13 @@ import {
   type Xyz,
   type XyzBox,
 } from "../../utils/vectors/vectors";
-import {
-  type EditorItemInPlayUnion,
-  type EditorRoomJson,
-  type EditorRoomState,
-  type EditorUnionOfAllItemInPlayTypes,
+import type {
+  EditorItemInPlayUnion,
+  EditorRoomJson,
+  EditorRoomState,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
-import { type SelectionEntry } from "../slice/SelectionEntry";
+import type { SelectionEntry } from "../slice/SelectionEntry";
 import { editorGhostOfParticleDot } from "./editorGhostOfParticleDot";
 
 /**

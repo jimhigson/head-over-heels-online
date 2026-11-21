@@ -1,4 +1,4 @@
-import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import {
   addPokeableNumbers,
   type PokeableNumber,
@@ -9,7 +9,7 @@ import {
   type IndividualCharacterName,
   otherIndividualCharacterName,
 } from "../../../model/modelTypes";
-import { type RoomState } from "../../../model/RoomState";
+import type { RoomState } from "../../../model/RoomState";
 import { lostAllLives } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import {
   selectCurrentCampaign,
@@ -18,7 +18,7 @@ import {
 import { store } from "../../../store/store";
 import { neverTime } from "../../../utils/neverTime";
 import { collision2Items } from "../../collision/aabbCollision";
-import { type GameState } from "../GameState";
+import type { GameState } from "../GameState";
 import {
   selectCurrentPlayableItem,
   selectHeelsAbilities,

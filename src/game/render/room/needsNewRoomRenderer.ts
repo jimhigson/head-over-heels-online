@@ -1,9 +1,9 @@
-import { type Upscale } from "../../../store/slices/upscale/Upscale";
-import {
-  type DisplaySettings,
-  type SoundSettings,
+import type { Upscale } from "../../../store/slices/upscale/Upscale";
+import type {
+  DisplaySettings,
+  SoundSettings,
 } from "../../../store/slices/userSettings/userSettingsSlice";
-import { type RoomRendererType } from "./RoomRendererType";
+import type { RoomRendererType } from "./RoomRendererType";
 
 /**
  * a camera angle change is NOT grounds for a new renderer: the renderer

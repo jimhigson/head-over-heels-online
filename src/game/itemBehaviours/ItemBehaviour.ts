@@ -1,21 +1,21 @@
-import { type ExportedSoundId } from "../../_generated/sfxdex/soundIds";
+import type { ExportedSoundId } from "../../_generated/sfxdex/soundIds";
 import { itemBehaviourKey, type ItemInPlayType } from "../../model/ItemInPlay";
-import {
-  type FreeItem,
-  type PositionlessItem,
-  type UnionOfAllItemInPlayTypes,
+import type {
+  FreeItem,
+  PositionlessItem,
+  UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlayNarrowedUnions";
-import { type SwitchItemModificationUnion } from "../../model/json/SwitchConfig";
-import { type Campaign } from "../../model/modelTypes";
-import { type RoomState } from "../../model/RoomState";
+import type { SwitchItemModificationUnion } from "../../model/json/SwitchConfig";
+import type { Campaign } from "../../model/modelTypes";
+import type { RoomState } from "../../model/RoomState";
 import { emptyArray } from "../../utils/empty";
-import { type Xy, type Xyz } from "../../utils/vectors/vectors";
-import { type GameState } from "../gameState/GameState";
-import { type ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";
-import { type MechanicResult } from "../physics/MechanicResult";
+import type { Xy, Xyz } from "../../utils/vectors/vectors";
+import type { GameState } from "../gameState/GameState";
+import type { ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";
+import type { MechanicResult } from "../physics/MechanicResult";
 import { defaultItemMass } from "../physics/mechanicsConstants";
-import { type ShadowCastSpriteOptions } from "../render/ShadowCastSpriteOptions";
-import { type DrawOrderComparable } from "../render/sortZ/DrawOrderComparable";
+import type { ShadowCastSpriteOptions } from "../render/ShadowCastSpriteOptions";
+import type { DrawOrderComparable } from "../render/sortZ/DrawOrderComparable";
 
 /**
  * the constants a behaviour is made with - each sets the field, or the

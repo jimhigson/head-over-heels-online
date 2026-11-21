@@ -1,5 +1,5 @@
 import { veryClose } from "../epsilon";
-import { type Xyz } from "./vectors";
+import type { Xyz } from "./vectors";
 
 /**
  * For when a text description of a plane is easier to work with,

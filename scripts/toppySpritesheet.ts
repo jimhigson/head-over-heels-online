@@ -1,4 +1,4 @@
-#!/usr/bin/env -S pnpm tsx
+#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
 
 import { Command, Option } from "@commander-js/extra-typings";
 import { $ } from "execa";

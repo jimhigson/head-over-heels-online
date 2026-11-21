@@ -1,6 +1,6 @@
-import {
-  type AnimatedTextureTailwindClass,
-  type TextureTailwindClass,
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
 } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useDirectionsRelativeTo } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { assignInputStart } from "../../../../../../store/slices/userSettings/userSettingsSlice";

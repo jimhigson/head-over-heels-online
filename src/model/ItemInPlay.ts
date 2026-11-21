@@ -1,18 +1,18 @@
-import {
-  type DistributedOmit,
-  type EmptyObject,
-  type Merge,
-  type OverrideProperties,
+import type {
+  DistributedOmit,
+  EmptyObject,
+  Merge,
+  OverrideProperties,
 } from "type-fest";
 
-import { type WhichEditorGhostOfAnyItemType } from "../editor/WhichEditorGhostOf";
-import { type ItemBehaviour } from "../game/itemBehaviours/ItemBehaviour";
-import { type BracketedSegmentOptions } from "../sound/soundUtils/BracketedSound";
-import { type SceneryName } from "../sprites/planets";
-import { type Xy, type Xyz } from "../utils/vectors/vectors";
-import { type UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
-import { type ItemState } from "./ItemState";
-import { type ExitGameRoomId } from "./json/ItemConfigMap";
+import type { WhichEditorGhostOfAnyItemType } from "../editor/WhichEditorGhostOf";
+import type { ItemBehaviour } from "../game/itemBehaviours/ItemBehaviour";
+import type { BracketedSegmentOptions } from "../sound/soundUtils/BracketedSound";
+import type { SceneryName } from "../sprites/planets";
+import type { Xy, Xyz } from "../utils/vectors/vectors";
+import type { UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
+import type { ItemState } from "./ItemState";
+import type { ExitGameRoomId } from "./json/ItemConfigMap";
 import {
   type JsonItemConfig,
   type JsonItemType,

@@ -1,4 +1,4 @@
-import { type VNode } from "preact";
+import type { VNode } from "preact";
 
 export type ColourCycleTextProps = {
   children: string;

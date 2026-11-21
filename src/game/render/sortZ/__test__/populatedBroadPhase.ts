@@ -1,12 +1,12 @@
 import { cameraAngleBase } from "../../../../utils/vectors/cameraAngleVectors";
-import { type Xy } from "../../../../utils/vectors/vectors";
-import { type Indexable } from "../../../physics/gridSpace/SpatialIndex";
-import {
-  type RenderBoxableItem,
-  type RenderBoxes,
+import type { Xy } from "../../../../utils/vectors/vectors";
+import type { Indexable } from "../../../physics/gridSpace/SpatialIndex";
+import type {
+  RenderBoxableItem,
+  RenderBoxes,
 } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
 import { DrawOrderBroadPhase } from "../DrawOrderBroadPhase";
-import { type DrawOrderComparable } from "../DrawOrderComparable";
+import type { DrawOrderComparable } from "../DrawOrderComparable";
 
 /**
  * a DrawOrderBroadPhase pre-populated with items - test convenience for the

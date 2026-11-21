@@ -1,12 +1,12 @@
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
-import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
-import { type Indexable } from "../../physics/gridSpace/SpatialIndex";
-import {
-  type RenderBox,
-  type RenderBoxableItem,
-  type RenderBoxes,
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { Xy, Xyz } from "../../../utils/vectors/vectors";
+import type { Indexable } from "../../physics/gridSpace/SpatialIndex";
+import type {
+  RenderBox,
+  RenderBoxableItem,
+  RenderBoxes,
 } from "../renderBox/makeItemRenderBoxAtCameraAngle";
-import { type DrawOrderComparable } from "./DrawOrderComparable";
+import type { DrawOrderComparable } from "./DrawOrderComparable";
 import { participatesInDrawOrder } from "./fixedZIndexes";
 import { projectAabbAxes, type ProjectionOnAxes } from "./projectAabbCorners";
 

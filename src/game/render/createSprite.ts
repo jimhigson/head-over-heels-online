@@ -7,15 +7,15 @@ import {
   type SpritesheetFrameData,
   Texture,
 } from "pixi.js";
-import { type Arrayable } from "type-fest";
+import type { Arrayable } from "type-fest";
 
 import { completeTimesXyz } from "../../model/times";
 import { originalGameFrameDuration } from "../../originalGame";
-import { type AppSpritesheetWithVariants } from "../../sprites/spritesheet/AppSpritesheet";
-import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
-import {
-  type AnimationId,
-  type TextureId,
+import type { AppSpritesheetWithVariants } from "../../sprites/spritesheet/AppSpritesheet";
+import type { AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
+import type {
+  AnimationId,
+  TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { phaseForSubItem } from "../../utils/maths/hashing";
 import { appTicker } from "../../utils/ticker/appTickerInstance";

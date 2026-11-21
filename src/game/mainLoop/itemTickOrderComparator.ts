@@ -1,5 +1,5 @@
-import { type ItemInPlayType } from "../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
 
 const scores: Partial<Record<ItemInPlayType, number>> = {
   // lower number = processed first

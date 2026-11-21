@@ -1,7 +1,7 @@
 import { AnimatedSprite, Container } from "pixi.js";
 
 import { isStoodOn } from "../../../model/StoodOnBy";
-import { type AppSpritesheetWithVariants } from "../../../sprites/spritesheet/AppSpritesheet";
+import type { AppSpritesheetWithVariants } from "../../../sprites/spritesheet/AppSpritesheet";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { neverTime } from "../../../utils/neverTime";
 import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/bakeContainerToSprite";
@@ -18,7 +18,7 @@ import {
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
-import { type ItemAppearance } from "./ItemAppearance";
+import type { ItemAppearance } from "./ItemAppearance";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 
 const slowdownTimeMs = 250;

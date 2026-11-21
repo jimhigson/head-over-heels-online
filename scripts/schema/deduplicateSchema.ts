@@ -1,7 +1,7 @@
-#!/usr/bin/env -S pnpm tsx
+#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
 
 import { readFileSync, writeFileSync } from "fs";
-import { type JsonArray, type JsonObject, type JsonValue } from "type-fest";
+import type { JsonArray, JsonObject, JsonValue } from "type-fest";
 
 const [, , inputFile, outputFile] = process.argv;
 

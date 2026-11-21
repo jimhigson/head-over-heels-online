@@ -5,10 +5,10 @@ import { isRoomStructureItemType } from "../../model/json/isRoomStructureItemTyp
 import { getJsonItemTimes } from "../../model/times";
 import { emptyArray } from "../../utils/empty";
 import { addXyz, scaleXyz, type Xyz } from "../../utils/vectors/vectors";
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorJsonItemUnion,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../editorTypes";
 import { directionAxis } from "../toolbar/buttons/nudgeDirections";
 

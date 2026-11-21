@@ -1,10 +1,10 @@
-import { type XyzBox } from "../utils/vectors/vectors";
-import { type Disappear } from "./Disappear";
-import { type ItemInPlayType, type SwitchSetting } from "./ItemInPlay";
-import { type ItemStateMap } from "./ItemStateMap";
-import { type Progression } from "./RoomState";
-import { type StoodOnBy } from "./StoodOnBy";
-import { type TimedRelationWithOtherItemOnAxis } from "./TimedRelationWithOtherItem";
+import type { XyzBox } from "../utils/vectors/vectors";
+import type { Disappear } from "./Disappear";
+import type { ItemInPlayType, SwitchSetting } from "./ItemInPlay";
+import type { ItemStateMap } from "./ItemStateMap";
+import type { Progression } from "./RoomState";
+import type { StoodOnBy } from "./StoodOnBy";
+import type { TimedRelationWithOtherItemOnAxis } from "./TimedRelationWithOtherItem";
 
 export type BaseItemState<RoomItemId extends string = string> = {
   /**

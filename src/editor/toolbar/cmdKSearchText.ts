@@ -1,4 +1,4 @@
-import { type EditorCommand } from "../commands/EditorCommand";
+import type { EditorCommand } from "../commands/EditorCommand";
 
 /**
  * what the cmd-k search matches a command against: its label, its dotted key

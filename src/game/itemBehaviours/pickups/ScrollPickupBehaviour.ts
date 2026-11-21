@@ -1,9 +1,9 @@
-import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
-import { type CharacterName } from "../../../model/modelTypes";
-import { type RoomState } from "../../../model/RoomState";
+import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
 import { scrollRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { store } from "../../../store/store";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 import { shadowScroll } from "../../render/shadows/shadowCastTextures";
 import { PickupBehaviour, type PickupThatGives } from "./PickupBehaviour";
 

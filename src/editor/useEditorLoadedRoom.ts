@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from "preact/compat";
 import { useMemo } from "preact/hooks";
 
-import { type EditorRoomState } from "./editorTypes";
+import type { EditorRoomState } from "./editorTypes";
 import { useOpenRoomPane } from "./RoomEditingArea/useOpenRoomPane";
 
 /**

@@ -1,14 +1,14 @@
 import { Container } from "pixi.js";
 
-import { type InputDirectionMode } from "../../../../store/slices/userSettings/userSettingsSlice";
+import type { InputDirectionMode } from "../../../../store/slices/userSettings/userSettingsSlice";
 import { valuesIter } from "../../../../utils/entries";
-import { type Xy } from "../../../../utils/vectors/vectors";
+import type { Xy } from "../../../../utils/vectors/vectors";
 import { selectCurrentPlayableItem } from "../../../gameState/gameStateSelectors/selectPlayableItem";
-import { type FilterCache } from "../../filters/FilterCache";
-import { type Renderer } from "../../Renderer";
-import { type InGameGeneralRenderContext } from "../../room/RoomRenderContexts";
+import type { FilterCache } from "../../filters/FilterCache";
+import type { Renderer } from "../../Renderer";
+import type { InGameGeneralRenderContext } from "../../room/RoomRenderContexts";
 import { HudButtonRenderer } from "../HudButtonRenderer";
-import { type HudRendererTickContextWithRoom } from "../hudRendererContexts";
+import type { HudRendererTickContextWithRoom } from "../hudRendererContexts";
 import { carryAndJumpButtonAppearance } from "./buttonAppearances/carryAndJumpButtonAppearance";
 import { carryButtonAppearance } from "./buttonAppearances/carryButtonAppearance";
 import { fireButtonAppearance } from "./buttonAppearances/fireButtonAppearance";

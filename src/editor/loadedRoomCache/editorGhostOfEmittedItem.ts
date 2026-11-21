@@ -1,13 +1,13 @@
 import { loadItemFromJson } from "../../game/gameState/loadRoom/loadItemFromJson";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
-import {
-  type EditorItemInPlayUnion,
-  type EditorJsonItem,
-  type EditorJsonItemUnion,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
-  type EditorUnionOfAllItemInPlayTypes,
+import type {
+  EditorItemInPlayUnion,
+  EditorJsonItem,
+  EditorJsonItemUnion,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
 import { editorGhostWithBrushItem } from "./editorGhostWithBrushItem";
 

@@ -1,7 +1,7 @@
 import { Color } from "pixi.js";
 
-import { type ZxSpectrumRoomColour } from "../../../originalGame";
-import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { ZxSpectrumRoomColour } from "../../../originalGame";
+import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { getRoomColorScheme } from "../gameColours/colourScheme";
 import {
   blockstackReplacementColour,

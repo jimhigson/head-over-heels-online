@@ -1,6 +1,6 @@
 import { expectTypeOf, test } from "vitest";
 
-import { type EscapedForTailwind } from "./escapeCharForTailwind";
+import type { EscapedForTailwind } from "./escapeCharForTailwind";
 
 test("types", () => {
   expectTypeOf<EscapedForTailwind<"S">>().toEqualTypeOf<"S">();

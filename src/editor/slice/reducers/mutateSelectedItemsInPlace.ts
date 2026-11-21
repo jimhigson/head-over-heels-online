@@ -1,10 +1,10 @@
-import { type EditorJsonItemUnion } from "../../editorTypes";
+import type { EditorJsonItemUnion } from "../../editorTypes";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
-import { type UndoItemEntry } from "./undoDescription";
+import type { LevelEditorState } from "../levelEditorSlice";
+import type { UndoItemEntry } from "./undoDescription";
 import { pushUndoToCursorRoomInPlace } from "./undoReducers";
 
 /**

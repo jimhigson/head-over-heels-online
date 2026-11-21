@@ -1,4 +1,4 @@
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 
 export const pathArgSchema = {
   type: "object",

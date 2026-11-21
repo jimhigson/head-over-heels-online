@@ -1,7 +1,7 @@
 import { itemBehaviourKey } from "../model/ItemInPlay";
-import { type Campaign } from "../model/modelTypes";
+import type { Campaign } from "../model/modelTypes";
 import { roomItemsIterable } from "../model/roomItemsInPlayIterators";
-import { type RoomState } from "../model/RoomState";
+import type { RoomState } from "../model/RoomState";
 import { loadSound } from "./soundsLoader";
 
 /**

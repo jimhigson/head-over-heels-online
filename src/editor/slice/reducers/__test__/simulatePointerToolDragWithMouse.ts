@@ -6,11 +6,8 @@ import {
   unitXyz_z,
   type Xyz,
 } from "../../../../utils/vectors/vectors";
-import {
-  type EditorRoomItemId,
-  type EditorRoomJson,
-} from "../../../editorTypes";
-import { type PointingAtItem } from "../../../RoomEditingArea/cursor/PointingAt";
+import type { EditorRoomItemId, EditorRoomJson } from "../../../editorTypes";
+import type { PointingAtItem } from "../../../RoomEditingArea/cursor/PointingAt";
 import { PointerToolHandler } from "../../../RoomEditingArea/interactivity/toolHandlers/PointerToolHandler";
 import { EditorViewport } from "../../../RoomEditingArea/viewport/EditorViewport";
 import {

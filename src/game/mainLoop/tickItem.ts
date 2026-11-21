@@ -1,11 +1,11 @@
-import { type KeysOfUnion } from "type-fest";
+import type { KeysOfUnion } from "type-fest";
 
 import { itemBehaviourKey, type ItemInPlayType } from "../../model/ItemInPlay";
 import {
   isFreeItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlayNarrowedUnions";
-import { type RoomState } from "../../model/RoomState";
+import type { RoomState } from "../../model/RoomState";
 import {
   itemIsStandingOnSomething,
   stoodOnItem,
@@ -15,9 +15,9 @@ import {
   scaleXyzWriteInto,
   type Xyz,
 } from "../../utils/vectors/vectors";
-import { type GameState } from "../gameState/GameState";
+import type { GameState } from "../gameState/GameState";
 import { makeItemFadeOut } from "../gameState/mutators/makeItemFadeOut";
-import { type MechanicResult } from "../physics/MechanicResult";
+import type { MechanicResult } from "../physics/MechanicResult";
 import { latentMovement } from "../physics/mechanics/latentMovement";
 import { moveItem } from "../physics/moveItem/moveItem";
 import { recordActedOnBy } from "../physics/recordActedOnBy";

@@ -5,7 +5,7 @@ import {
 } from "../../sprites/palette/spritesheetPalette";
 import { useSpritesheetName } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { useTip } from "../../ui/tip/useTip";
-import { type HexColour } from "../../utils/colour/HexColour";
+import type { HexColour } from "../../utils/colour/HexColour";
 import { srgbHexToP3 } from "../../utils/colour/srgbHexToP3";
 import { objectEntriesIter } from "../../utils/entries";
 

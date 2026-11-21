@@ -1,4 +1,4 @@
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
 import { epsilon } from "../../utils/epsilon";
 import {
   lengthXy,

@@ -1,10 +1,10 @@
-import { type ExportedSoundId } from "../../../_generated/sfxdex/soundIds";
-import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
-import { type CharacterName } from "../../../model/modelTypes";
-import { type RoomState } from "../../../model/RoomState";
+import type { ExportedSoundId } from "../../../_generated/sfxdex/soundIds";
+import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
 import { crownCollected } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { store } from "../../../store/store";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 import { addParticlesAroundCrown } from "../../mainLoop/addParticlesToRoom";
 import { PickupBehaviour, type PickupThatGives } from "./PickupBehaviour";
 

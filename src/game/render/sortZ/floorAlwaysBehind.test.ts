@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 
 import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import { type Xy } from "../../../utils/vectors/vectors";
+import type { Xy } from "../../../utils/vectors/vectors";
 import { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
 import {
   makeItemRenderBoxAtCameraAngle,
@@ -13,7 +13,7 @@ import {
   midTransitionGeometryOffsetsDegrees,
 } from "./__test__/geometryAngleAtQuarterOffset";
 import { populatedBroadPhase } from "./__test__/populatedBroadPhase";
-import { type DrawOrderComparable } from "./DrawOrderComparable";
+import type { DrawOrderComparable } from "./DrawOrderComparable";
 import { zComparator } from "./zComparator";
 
 /**

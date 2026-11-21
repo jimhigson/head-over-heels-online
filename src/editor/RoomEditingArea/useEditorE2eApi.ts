@@ -1,22 +1,22 @@
-import { type RefObject } from "preact";
+import type { RefObject } from "preact";
 import { useEffect } from "preact/hooks";
 
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
 import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
 import { editorStore } from "../../store/store";
-import { type Xy, type Xyz, type XyzBox } from "../../utils/vectors/vectors";
-import {
-  type EditorRoomItemId,
-  type EditorUnionOfAllItemInPlayTypes,
+import type { Xy, Xyz, XyzBox } from "../../utils/vectors/vectors";
+import type {
+  EditorRoomItemId,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
-import { type LoadedRoomCache } from "../loadedRoomCache/LoadedRoomCache";
+import type { LoadedRoomCache } from "../loadedRoomCache/LoadedRoomCache";
 import {
   selectActiveOpenRoomId,
   selectOpenRoomCameraAngle,
 } from "../slice/levelEditorSlice";
-import { type OpenRoomId } from "../slice/OpenRoom";
-import { type MaybePointingAtSomething } from "./cursor/PointingAt";
-import { type EditorViewport } from "./viewport/EditorViewport";
+import type { OpenRoomId } from "../slice/OpenRoom";
+import type { MaybePointingAtSomething } from "./cursor/PointingAt";
+import type { EditorViewport } from "./viewport/EditorViewport";
 
 /** an item in the room, as much of it as pointing at things needs to be described */
 export type EditorE2eItem = {

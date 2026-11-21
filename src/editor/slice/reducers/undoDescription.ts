@@ -3,13 +3,13 @@ import nanoEqual from "nano-equal";
 import { camelToSpaced } from "../../../utils/camelToSpaced";
 import { keys } from "../../../utils/entries";
 import { directionXyz4Glyphs } from "../../../utils/vectors/directionGlyphs";
-import { type DirectionXyz4, type Xyz } from "../../../utils/vectors/vectors";
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomId,
-  type EditorRoomJson,
+import type { DirectionXyz4, Xyz } from "../../../utils/vectors/vectors";
+import type {
+  EditorJsonItemUnion,
+  EditorRoomId,
+  EditorRoomJson,
 } from "../../editorTypes";
-import { type SelectionEntry } from "../SelectionEntry";
+import type { SelectionEntry } from "../SelectionEntry";
 
 /**
  * an item, or one of its editor ghosts, that an undoable edit was to - with

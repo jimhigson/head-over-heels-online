@@ -1,12 +1,12 @@
-import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import { nextItemIdInItems } from "../../model/inPlaceMutators/nextItemId";
 import {
   itemBehaviourKey,
   type ItemInPlay,
   type ItemInPlayType,
 } from "../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
-import { type LightBeamEnd } from "../../model/ItemStateMap";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import type { LightBeamEnd } from "../../model/ItemStateMap";
 import { typePrefix } from "../../model/json/typePrefix";
 import { reflectedFacingVector } from "../../model/MirrorOrientation";
 import { roomSpatialIndexKey, type RoomState } from "../../model/RoomState";
@@ -22,7 +22,7 @@ import {
   type XyzBox,
   xyzBoxEqual,
 } from "../../utils/vectors/vectors";
-import { type GameState } from "../gameState/GameState";
+import type { GameState } from "../gameState/GameState";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../gameState/mutators/addItemToRoom";
 import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
@@ -30,7 +30,7 @@ import {
   stampWithMovedProgression,
   updateItemBox,
 } from "../gameState/mutators/updateItemBox";
-import { type MechanicResult } from "../physics/MechanicResult";
+import type { MechanicResult } from "../physics/MechanicResult";
 import {
   blockSizePx,
   lightBeamHeightPx,

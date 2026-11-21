@@ -1,13 +1,13 @@
-import { type Constructor } from "type-fest";
+import type { Constructor } from "type-fest";
 
-import { type ExportedSoundId } from "../../_generated/sfxdex/soundIds";
-import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import { type Campaign } from "../../model/modelTypes";
+import type { ExportedSoundId } from "../../_generated/sfxdex/soundIds";
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type { Campaign } from "../../model/modelTypes";
 import { store } from "../../store/store";
 import { emptyArray } from "../../utils/empty";
 import { teleporterIsActive } from "../physics/mechanics/teleporterIsActive";
 import { entryTuneSoundsForRoom } from "./entryTuneSoundsForRoom";
-import { type ItemBehaviour } from "./ItemBehaviour";
+import type { ItemBehaviour } from "./ItemBehaviour";
 
 type TeleporterItem<
   RoomId extends string,

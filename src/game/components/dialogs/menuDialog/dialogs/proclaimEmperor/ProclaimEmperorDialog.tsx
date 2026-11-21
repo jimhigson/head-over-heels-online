@@ -1,6 +1,6 @@
-import {
-  type AnimatedTextureTailwindClass,
-  type TextureTailwindClass,
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
 } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";

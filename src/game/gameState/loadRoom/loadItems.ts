@@ -1,14 +1,14 @@
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
-import { type JsonItemUnion } from "../../../model/json/JsonItem";
-import { type RoomJson } from "../../../model/RoomJson";
-import {
-  type PlanetsLiberated,
-  type RoomPickupsCollected,
-  type ScrollsRead,
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { JsonItemUnion } from "../../../model/json/JsonItem";
+import type { RoomJson } from "../../../model/RoomJson";
+import type {
+  PlanetsLiberated,
+  RoomPickupsCollected,
+  ScrollsRead,
 } from "../../../store/slices/gameInPlay/gameInPlaySlice";
-import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
+import type { PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { entries } from "../../../utils/entries";
-import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
+import type { RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "./loadItemFromJson";
 
 export function* loadItems<RoomId extends string, RoomItemId extends string>(

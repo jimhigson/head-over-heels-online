@@ -15,14 +15,14 @@
  *   Omit-of-union, Pick-of-union              these collapse a union to its shared keys
  */
 import { relative } from "node:path";
-import {
-  type InterfaceDeclaration,
-  type Node,
-  type Program,
-  type SourceFile,
-  type Type,
-  type TypeNode,
-  type TypeReferenceNode,
+import type {
+  InterfaceDeclaration,
+  Node,
+  Program,
+  SourceFile,
+  Type,
+  TypeNode,
+  TypeReferenceNode,
 } from "typescript";
 
 import {

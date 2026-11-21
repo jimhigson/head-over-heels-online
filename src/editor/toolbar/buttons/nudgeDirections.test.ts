@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { type Xy } from "../../../utils/vectors/vectors";
+import type { Xy } from "../../../utils/vectors/vectors";
 import { apparentMoveVector, growArgs, shrinkArgs } from "./nudgeDirections";
 
 const cameraAngleBase: Xy = { x: 1, y: 0 };

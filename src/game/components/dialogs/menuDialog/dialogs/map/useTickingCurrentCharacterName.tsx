@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 
-import { type CharacterName } from "../../../../../../model/modelTypes";
+import type { CharacterName } from "../../../../../../model/modelTypes";
 import { appTicker } from "../../../../../../utils/ticker/appTickerInstance";
 import { swopPlayablesIfInput } from "../../../../../mainLoop/swopPlayablesIfInput";
 import { useGameApi } from "../../../../GameApiContext";

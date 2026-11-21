@@ -1,6 +1,6 @@
-import {
-  type FreeItem,
-  type UnionOfAllItemInPlayTypes,
+import type {
+  FreeItem,
+  UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlayNarrowedUnions";
 import { shadowFullBlock } from "../render/shadows/shadowCastTextures";
 import { LocomotiveBehaviour } from "./locomotion/LocomotiveBehaviour";

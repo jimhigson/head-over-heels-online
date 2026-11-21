@@ -1,6 +1,6 @@
 import { debounce } from "@github/mini-throttle";
-import { type OnChange } from "@monaco-editor/react";
-import { type editor } from "monaco-editor";
+import type { OnChange } from "@monaco-editor/react";
+import type { editor } from "monaco-editor";
 import nanoEqual from "nano-equal";
 import { useMemo } from "preact/hooks";
 

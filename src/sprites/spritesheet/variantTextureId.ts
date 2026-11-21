@@ -1,14 +1,14 @@
-import {
-  type BaseAnimationId,
-  type BaseTextureId,
+import type {
+  BaseAnimationId,
+  BaseTextureId,
 } from "./spritesheetData/makeSpritesheetData";
-import {
-  type ArcadeButtonAction,
-  type DeactivatableId,
-  type DoughnuttableId,
-  type ReflectableId,
-  type SceneryPlayerableId,
-  type VariantTextureId,
+import type {
+  ArcadeButtonAction,
+  DeactivatableId,
+  DoughnuttableId,
+  ReflectableId,
+  SceneryPlayerableId,
+  VariantTextureId,
 } from "./spritesheetData/variantSpritesheetData";
 
 /**

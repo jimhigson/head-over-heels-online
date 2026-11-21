@@ -1,4 +1,4 @@
-import { type EditorJsonItemUnion } from "./editorTypes";
+import type { EditorJsonItemUnion } from "./editorTypes";
 
 /**
  * an item's type, with the config value that sets it apart from others of its

@@ -1,5 +1,5 @@
 import { epsilon } from "../epsilon";
-import { type Xyz } from "./vectors";
+import type { Xyz } from "./vectors";
 
 export const rotateVectorTowards = (
   from: Xyz,

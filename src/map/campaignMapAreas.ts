@@ -3,14 +3,14 @@ import {
   type RoomNode,
 } from "../model/map/roomGridPositions";
 import { sortRoomGridPositions } from "../model/map/sortRoomGridPositions";
-import { type Campaign, type CharacterName } from "../model/modelTypes";
+import type { Campaign, CharacterName } from "../model/modelTypes";
 import { iterateRoomJsonItemsWithIds } from "../model/RoomJsonItemIterators";
 import { keys } from "../utils/entries";
 import { naturalCompare } from "../utils/naturalCompare";
 import { createSerialisableErrors } from "../utils/redux/createSerialisableErrors";
 import { findMapBounds } from "./findMapBounds";
 import { lowestRoomIdOfArea } from "./lowestRoomIdOfArea";
-import { type MapArea, type MapData, type MapDataError } from "./MapData";
+import type { MapArea, MapData, MapDataError } from "./MapData";
 
 /**
  * the parts of the map that depend only on the campaign, not on which room is

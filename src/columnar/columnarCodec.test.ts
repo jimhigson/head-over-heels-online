@@ -1,9 +1,9 @@
 import { canonicalize } from "json-canonicalize";
 import { expect, test } from "vitest";
 
-import { campaign as originalCampaign } from "../_generated/originalCampaign/campaign";
-import generatedBlob from "../_generated/originalCampaign/campaign.columnar.json";
-import { type Campaign } from "../model/modelTypes";
+import type { Campaign } from "../model/modelTypes";
+import { campaign as originalCampaign } from "../originalCampaign/campaign";
+import generatedBlob from "../originalCampaign/campaign.columnar.json";
 import { entries } from "../utils/entries";
 import adversarial from "./__fixtures__/adversarial.json";
 import sequel25 from "./__fixtures__/sequel_25.json";
@@ -14,7 +14,7 @@ import {
 } from "./decoder";
 import { columnarEncode, referencedItemIds } from "./encoder";
 
-// real DB campaign (captured via `pnpm tsx scripts/fetchCampaign.ts sequel_25`)
+// real DB campaign (captured via `./scripts/fetchCampaign.ts sequel_25`)
 // and a hand-built campaign packing the codec's sharp edges into a few rooms:
 // a null config value, an empty config, a fractional position, a value that
 // equals the default absent-marker, and config keys present on some siblings

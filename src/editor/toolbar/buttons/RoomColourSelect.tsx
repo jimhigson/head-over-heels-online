@@ -1,4 +1,4 @@
-import { type CSSProperties } from "preact/compat";
+import type { CSSProperties } from "preact/compat";
 import { capitalize } from "string-transform";
 
 import {

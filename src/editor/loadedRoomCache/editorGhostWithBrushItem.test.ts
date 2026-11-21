@@ -3,12 +3,12 @@ import { expect, test } from "vitest";
 import { loadItemFromJson } from "../../game/gameState/loadRoom/loadItemFromJson";
 import { itemBehaviourKey } from "../../model/ItemInPlay";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
-import {
-  type EditorJsonItem,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
-  type EditorUnionOfAllItemInPlayTypes,
+import type {
+  EditorJsonItem,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
 import { editorGhostWithBrushItem } from "./editorGhostWithBrushItem";
 

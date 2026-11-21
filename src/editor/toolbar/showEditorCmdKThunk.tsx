@@ -1,4 +1,4 @@
-import { type EditorThunk } from "../../store/store";
+import type { EditorThunk } from "../../store/store";
 import { showDialog } from "./showDialog";
 
 /** open the editor's command palette, resolving once it closes */

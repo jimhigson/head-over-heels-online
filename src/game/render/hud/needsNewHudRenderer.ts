@@ -1,7 +1,7 @@
-import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type Upscale } from "../../../store/slices/upscale/Upscale";
-import { type InputDirectionMode } from "../../../store/slices/userSettings/userSettingsSlice";
-import { type HudRenderer } from "./HudRenderer";
+import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { Upscale } from "../../../store/slices/upscale/Upscale";
+import type { InputDirectionMode } from "../../../store/slices/userSettings/userSettingsSlice";
+import type { HudRenderer } from "./HudRenderer";
 
 export const needsNewHudRenderer = <
   RoomId extends string,

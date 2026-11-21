@@ -1,7 +1,7 @@
 import { roomHues } from "../../model/roomHues";
-import { type EditorRootState } from "../../store/store";
+import type { EditorRootState } from "../../store/store";
 import { createShallowStableSelector } from "../../utils/redux/createShallowStableSelector";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 
 /**
  * each room's hue in the campaign being edited - unchanged by edits that

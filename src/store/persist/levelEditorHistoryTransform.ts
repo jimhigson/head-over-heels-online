@@ -1,28 +1,23 @@
 import { applyPatch, compare, type Operation } from "fast-json-patch";
 import createTransform from "redux-persist/es/createTransform";
-import {
-  type Except,
-  type Merge,
-  type OverrideProperties,
-  type SetOptional,
-} from "type-fest";
+import type { Except, Merge, OverrideProperties, SetOptional } from "type-fest";
 
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorJsonItemUnion,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../../editor/editorTypes";
-import { type LevelEditorState } from "../../editor/slice/levelEditorSlice";
-import {
-  type UndoDescription,
-  type UndoItemEntry,
+import type { LevelEditorState } from "../../editor/slice/levelEditorSlice";
+import type {
+  UndoDescription,
+  UndoItemEntry,
 } from "../../editor/slice/reducers/undoDescription";
-import {
-  type UndoEntry,
-  type UndoLink,
+import type {
+  UndoEntry,
+  UndoLink,
 } from "../../editor/slice/reducers/undoReducers";
-import { type SelectionEntry } from "../../editor/slice/SelectionEntry";
+import type { SelectionEntry } from "../../editor/slice/SelectionEntry";
 import { emptyArray } from "../../utils/empty";
 import { entries, fromAllEntries } from "../../utils/entries";
 

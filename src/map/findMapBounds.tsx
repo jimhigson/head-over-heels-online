@@ -1,6 +1,6 @@
 import { projectWorldXyzToScreenXy } from "../game/render/projections";
-import { type RoomNode } from "../model/map/roomGridPositions";
-import { type Bounds } from "./Map.svg";
+import type { RoomNode } from "../model/map/roomGridPositions";
+import type { Bounds } from "./Map.svg";
 import { roomWorldPosition } from "./roomWorldPosition";
 
 /**

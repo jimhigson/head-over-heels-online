@@ -1,6 +1,6 @@
 import { useEditorAppSelector } from "../../store/store";
 import { MenuItem } from "../../ui/menuBar/MenuItem";
-import { type EditorCommand } from "./EditorCommand";
+import type { EditorCommand } from "./EditorCommand";
 import { runCommand } from "./runCommand";
 import { selectCommandIsActive } from "./selectCommandIsActive";
 import { selectCommandIsAvailable } from "./selectCommandIsAvailable";

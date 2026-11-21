@@ -1,7 +1,7 @@
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
-import { type SceneryName, type Wall } from "../../sprites/planets";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import type { SceneryName, Wall } from "../../sprites/planets";
 import { type AxisXy, boxMaxOnAxis } from "../../utils/vectors/vectors";
-import { type ItemZGraph } from "./ItemRenderContexts";
+import type { ItemZGraph } from "./ItemRenderContexts";
 
 /** whether two items' extents overlap on a single axis (touching does not count) */
 const overlapsOnAxis = (

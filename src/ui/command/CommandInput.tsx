@@ -1,5 +1,5 @@
-import { type ComponentProps } from "preact";
-import { type Merge } from "type-fest";
+import type { ComponentProps } from "preact";
+import type { Merge } from "type-fest";
 
 import { cn } from "../cn";
 import { useAutoFocus } from "../useAutoFocus";

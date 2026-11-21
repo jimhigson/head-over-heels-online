@@ -1,6 +1,6 @@
-import { type ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
-import { type CharacterName } from "../../../../model/modelTypes";
-import { type GameState } from "../../../gameState/GameState";
+import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
+import type { CharacterName } from "../../../../model/modelTypes";
+import type { GameState } from "../../../gameState/GameState";
 import { switchCharacterHighlightTime } from "../../../physics/mechanicsConstants";
 
 const isHighlighted = (

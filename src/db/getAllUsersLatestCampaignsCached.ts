@@ -1,5 +1,5 @@
 import { withLocalStorageCache } from "../utils/io/withLocalStorageCache";
-import { type CampaignDbClient } from "./CampaignDbClient";
+import type { CampaignDbClient } from "./CampaignDbClient";
 import { getAllUsersLatestCampaigns } from "./getAllUsersLatestCampaigns";
 import { withLoggingOfTiming } from "./withLoggingOfTiming";
 

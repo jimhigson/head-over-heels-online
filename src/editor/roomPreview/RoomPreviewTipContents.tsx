@@ -1,6 +1,6 @@
 import { useIsUncolourised } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { useEditorAppSelector } from "../../store/store";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import { cssForRoomColour } from "../toolbar/buttons/RoomColourSelect";
 import { RoomPreview } from "./RoomPreview";
 

@@ -1,7 +1,7 @@
-import { type ComponentProps } from "preact";
-import { type KeyboardEvent } from "preact/compat";
+import type { ComponentProps } from "preact";
+import type { KeyboardEvent } from "preact/compat";
 import { useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
-import { type Merge } from "type-fest";
+import type { Merge } from "type-fest";
 
 import { cn } from "../cn";
 import { CommandContext } from "./commandContext";

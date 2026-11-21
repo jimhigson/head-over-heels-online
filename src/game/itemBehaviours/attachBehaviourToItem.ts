@@ -1,13 +1,13 @@
-import { type DistributedOmit } from "type-fest";
+import type { DistributedOmit } from "type-fest";
 
-import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import {
   itemBehaviourKey,
   type ItemBehaviourKey,
   type ItemInPlayConfig,
   type ItemInPlayType,
 } from "../../model/ItemInPlay";
-import { type ItemBehaviour } from "./ItemBehaviour";
+import type { ItemBehaviour } from "./ItemBehaviour";
 
 /**
  * an item type and its config, as a parameter list - so checking the type

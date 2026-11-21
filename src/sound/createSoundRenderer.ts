@@ -1,8 +1,8 @@
-import { type ItemInPlayType } from "../model/ItemInPlay";
-import { type ItemSoundRenderContext } from "./ItemSoundRenderContext";
-import {
-  type ItemSoundRenderer,
-  type ItemSoundRendererConstructableClass,
+import type { ItemInPlayType } from "../model/ItemInPlay";
+import type { ItemSoundRenderContext } from "./ItemSoundRenderContext";
+import type {
+  ItemSoundRenderer,
+  ItemSoundRendererConstructableClass,
 } from "./ItemSoundRenderer";
 import { BallSoundRenderer } from "./itemSoundRenderers/BallSoundRenderer";
 import { BubblesSoundRenderer } from "./itemSoundRenderers/BubblesSoundRenderer";

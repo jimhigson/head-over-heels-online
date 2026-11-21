@@ -2,7 +2,7 @@ import { useState } from "preact/hooks";
 
 import { type ItemInPlayType, itemInPlayTypes } from "../../model/ItemInPlay";
 import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
-import { type RoomStateItems } from "../../model/RoomState";
+import type { RoomStateItems } from "../../model/RoomState";
 import { useAppDispatch } from "../../store/hooks";
 import {
   useShowBoundingBoxTypes,

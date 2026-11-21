@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { campaignOf, newRoom, runCheck, setSubRoomCell } from "../testUtils";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 import { verticalLinkCollisionVerifier } from "./verticalLinkCollisionVerifier";
 
 const dividedRoom = (): ReturnType<typeof newRoom> =>

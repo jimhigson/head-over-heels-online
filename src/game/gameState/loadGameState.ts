@@ -1,8 +1,8 @@
 import { isPlayableItem } from "../../model/ItemInPlayNarrowedUnions";
-import {
-  type Campaign,
-  type CharacterName,
-  type IndividualCharacterName,
+import type {
+  Campaign,
+  CharacterName,
+  IndividualCharacterName,
 } from "../../model/modelTypes";
 import {
   iterateRoomItemEntries,
@@ -24,18 +24,15 @@ import {
   cheatRoomIdFromUrlHash,
   cheatsOn,
 } from "../components/cheats/cheatRoomIdFromUrlHash";
-import { type InputStateTrackerInterface } from "../input/InputStateTracker";
+import type { InputStateTrackerInterface } from "../input/InputStateTracker";
 import { attachBehaviourToItem } from "../itemBehaviours/attachBehaviourToItem";
 import { SpatialIndex } from "../physics/gridSpace/SpatialIndex";
-import { type CharacterRooms, type GameState } from "./GameState";
+import type { CharacterRooms, GameState } from "./GameState";
 import { selectHeelsAbilities } from "./gameStateSelectors/selectPlayableItem";
 import { loadRoom, type LoadRoomOptions } from "./loadRoom/loadRoom";
 import { changeCharacterRoom } from "./mutators/changeCharacterRoom";
 import { entryState } from "./PlayableEntryState";
-import {
-  type SavedCharacterRooms,
-  type SavedGame,
-} from "./saving/SavedGameState";
+import type { SavedCharacterRooms, SavedGame } from "./saving/SavedGameState";
 
 export type StartingRooms<RoomId extends string> = Partial<
   Record<CharacterName, RoomId>

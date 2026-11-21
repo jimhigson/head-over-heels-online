@@ -1,8 +1,4 @@
-import {
-  type VectorContour,
-  type VectorPoint,
-  type VectorShape,
-} from "./glyphOverrides";
+import type { VectorContour, VectorPoint, VectorShape } from "./glyphOverrides";
 import { slopeOf } from "./slopes";
 import { snapGrid } from "./vectorEdits";
 

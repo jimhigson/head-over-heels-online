@@ -1,18 +1,18 @@
-import { type Container } from "pixi.js";
-import {
-  type DistributedOmit,
-  type EmptyObject,
-  type OverrideProperties,
+import type { Container } from "pixi.js";
+import type {
+  DistributedOmit,
+  EmptyObject,
+  OverrideProperties,
 } from "type-fest";
 
-import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import { type ItemInPlayType } from "../../../model/ItemInPlay";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { ItemInPlayType } from "../../../model/ItemInPlay";
 import { isMultipliedItem, itemInPlayTimes } from "../../../model/times";
-import {
-  type BaseAnimationId,
-  type BaseTextureId,
+import type {
+  BaseAnimationId,
+  BaseTextureId,
 } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type ReflectableId } from "../../../sprites/spritesheet/spritesheetData/variantSpritesheetData";
+import type { ReflectableId } from "../../../sprites/spritesheet/spritesheetData/variantSpritesheetData";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import {
   asReuseSprite,
@@ -21,17 +21,17 @@ import {
 import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { type Xy, xyEqual } from "../../../utils/vectors/vectors";
-import {
-  type AppearanceOptions,
-  type AppearanceReturn,
+import type {
+  AppearanceOptions,
+  AppearanceReturn,
 } from "../appearance/Appearance";
 import {
   type AnimatedCreateSpriteOptions,
   createSprite,
 } from "../createSprite";
-import {
-  type ItemLeafRenderContext,
-  type ItemLeafTickContext,
+import type {
+  ItemLeafRenderContext,
+  ItemLeafTickContext,
 } from "../ItemRenderContexts";
 
 export type ItemAppearanceOptions<

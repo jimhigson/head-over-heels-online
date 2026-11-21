@@ -1,4 +1,4 @@
-import { type MouseEvent } from "preact/compat";
+import type { MouseEvent } from "preact/compat";
 
 import { importTauriOpener } from "./dynamicLoad";
 

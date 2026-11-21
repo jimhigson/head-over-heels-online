@@ -1,6 +1,6 @@
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
-import { type RoomState } from "../../../model/RoomState";
-import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { RoomState } from "../../../model/RoomState";
+import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";
 import { addXyz, originXyz, type Xy } from "../../../utils/vectors/vectors";
 import {

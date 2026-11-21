@@ -2,7 +2,7 @@ import { render } from "preact";
 
 import { store } from "../../store/store";
 import { Tab } from "../../ui/tabs/Tab";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import { cssForRoomColour } from "../toolbar/buttons/RoomColourSelect";
 import { buttonSmallHeightClassNames } from "../toolbar/buttonSizeClassNames";
 import { abbreviateRoomId } from "./abbreviateRoomId";

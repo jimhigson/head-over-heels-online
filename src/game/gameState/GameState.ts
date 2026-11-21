@@ -1,11 +1,11 @@
-import {
-  type CharacterName,
-  type IndividualCharacterName,
+import type {
+  CharacterName,
+  IndividualCharacterName,
 } from "../../model/modelTypes";
-import { type RoomState } from "../../model/RoomState";
-import { type Xy } from "../../utils/vectors/vectors";
-import { type InputStateTrackerInterface } from "../input/InputStateTracker";
-import { type PlayableEntryState } from "./PlayableEntryState";
+import type { RoomState } from "../../model/RoomState";
+import type { Xy } from "../../utils/vectors/vectors";
+import type { InputStateTrackerInterface } from "../input/InputStateTracker";
+import type { PlayableEntryState } from "./PlayableEntryState";
 
 /**
  * which room each character is in

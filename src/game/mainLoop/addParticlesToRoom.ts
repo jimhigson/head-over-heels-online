@@ -1,13 +1,13 @@
-import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import {
   itemBehaviourKey,
   type ItemInPlay,
   type ItemInPlayConfig,
 } from "../../model/ItemInPlay";
 import { itemInPlayCentre } from "../../model/itemInPlayCentre";
-import { type PlayableItem } from "../../model/ItemInPlayNarrowedUnions";
+import type { PlayableItem } from "../../model/ItemInPlayNarrowedUnions";
 import { playablesInRoom } from "../../model/roomItemsInPlayIterators";
-import { type RoomState } from "../../model/RoomState";
+import type { RoomState } from "../../model/RoomState";
 import { epsilon } from "../../utils/epsilon";
 import {
   hashNumberToNumber0to1,

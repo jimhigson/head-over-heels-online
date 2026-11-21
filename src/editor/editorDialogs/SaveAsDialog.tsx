@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
-import { type TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import type { TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useGetAllUsersLatestCampaignsQuery } from "../../store/slices/campaigns/editorCampaignsApiSlice";
 import { editorStore, useEditorAppSelector } from "../../store/store";
 import { Border } from "../../ui/Border";

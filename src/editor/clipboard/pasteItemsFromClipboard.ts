@@ -5,7 +5,7 @@ import {
   roomJsonEdited,
   selectCurrentCommittedRoomJson,
 } from "../slice/levelEditorSlice";
-import { type UndoDescription } from "../slice/reducers/undoDescription";
+import type { UndoDescription } from "../slice/reducers/undoDescription";
 
 /** add items copied (as json) from any room to the current room */
 export const pasteItemsFromClipboard = async () => {

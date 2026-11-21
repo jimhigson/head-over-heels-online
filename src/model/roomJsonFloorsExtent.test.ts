@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { type AnyRoomJson } from "./RoomJson";
+import type { AnyRoomJson } from "./RoomJson";
 import {
   type RoomJsonFloorsExtent,
   roomJsonFloorsExtent,

@@ -10,10 +10,10 @@ import {
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
-import { type RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
+import type { RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { populatedBroadPhase } from "./__test__/populatedBroadPhase";
 import { worldBoxToCameraSpace } from "./__test__/worldBoxToCameraSpace";
-import { type DrawOrderComparable } from "./DrawOrderComparable";
+import type { DrawOrderComparable } from "./DrawOrderComparable";
 import {
   floatingTextFixedZIndex,
   nonRenderingItemFixedZIndex,

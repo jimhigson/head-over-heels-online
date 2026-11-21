@@ -4,7 +4,7 @@ import {
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
-import { type RoomJson } from "../../../model/RoomJson";
+import type { RoomJson } from "../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import {
   type Progression,
@@ -12,13 +12,13 @@ import {
   type RoomState,
   type RoomStateItems,
 } from "../../../model/RoomState";
-import { type SceneryName } from "../../../sprites/planets";
-import {
-  type PlanetsLiberated,
-  type RoomPickupsCollected,
-  type ScrollsRead,
+import type { SceneryName } from "../../../sprites/planets";
+import type {
+  PlanetsLiberated,
+  RoomPickupsCollected,
+  ScrollsRead,
 } from "../../../store/slices/gameInPlay/gameInPlaySlice";
-import { type UserSettings } from "../../../store/slices/userSettings/userSettingsSlice";
+import type { UserSettings } from "../../../store/slices/userSettings/userSettingsSlice";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { SpatialIndex } from "../../physics/gridSpace/SpatialIndex";
 import { setStandingOnWithoutRemovingOldFirst } from "../mutators/standingOn/setStandingOnWithoutRemovingOldFirst";

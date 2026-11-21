@@ -1,5 +1,5 @@
-import { type Xy } from "../../../utils/vectors/vectors";
-import { type EditorViewport } from "../viewport/EditorViewport";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { EditorViewport } from "../viewport/EditorViewport";
 
 const mouseEventPaneXy = (event: MouseEvent): Xy => {
   const paneElement =

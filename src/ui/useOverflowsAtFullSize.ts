@@ -1,4 +1,4 @@
-import { type RefObject } from "preact";
+import type { RefObject } from "preact";
 import { useLayoutEffect, useRef, useState } from "preact/hooks";
 
 /**

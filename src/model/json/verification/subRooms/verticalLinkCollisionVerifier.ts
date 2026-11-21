@@ -4,7 +4,7 @@ import {
   type VerticalDirection,
   verticalLinks,
 } from "../helpers/verticalLinks";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 
 type VerticalLinkCollision = {
   roomId: VerificationRoomId;

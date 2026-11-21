@@ -6,16 +6,16 @@ import {
   campaignMapAreas,
   type CampaignMapAreas,
 } from "../../map/campaignMapAreas";
-import { type MapDataError } from "../../map/MapData";
-import { type RoomNode } from "../../model/map/roomGridPositions";
-import { type RoomHues } from "../../model/roomHues";
-import { type RoomJson } from "../../model/RoomJson";
+import type { MapDataError } from "../../map/MapData";
+import type { RoomNode } from "../../model/map/roomGridPositions";
+import type { RoomHues } from "../../model/roomHues";
+import type { RoomJson } from "../../model/RoomJson";
 import { iterateRoomJsonItemsWithIds } from "../../model/RoomJsonItemIterators";
-import { type EditorRootState } from "../../store/store";
+import type { EditorRootState } from "../../store/store";
 import { emptyArray, emptyObject } from "../../utils/empty";
 import { fromAllEntries, keys, valuesIter } from "../../utils/entries";
 import { createShallowStableSelector } from "../../utils/redux/createShallowStableSelector";
-import { type EditorCampaign, type EditorRoomId } from "../editorTypes";
+import type { EditorCampaign, EditorRoomId } from "../editorTypes";
 import { selectCursorRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 import { selectRoomHues } from "../slice/selectRoomHues";
 

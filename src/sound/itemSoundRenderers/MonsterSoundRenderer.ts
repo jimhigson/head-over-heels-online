@@ -1,5 +1,5 @@
-import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
-import { type MonsterWhich } from "../../model/json/MonsterJsonConfig";
+import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
+import type { MonsterWhich } from "../../model/json/MonsterJsonConfig";
 import {
   type DirectionIndexXy8,
   nonZeroClosestDirectionIndexXy8,
@@ -7,8 +7,8 @@ import {
   xyzEqual,
 } from "../../utils/vectors/vectors";
 import { audioCtx } from "../audioCtx";
-import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
-import { type ItemSoundRenderer } from "../ItemSoundRenderer";
+import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import {
   type BracketedSegmentOptions,
   BracketedSound,

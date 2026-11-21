@@ -1,7 +1,7 @@
 import { roomJsonItemsIterable } from "../../model/RoomJsonItemIterators";
 import { keysIter, objectEntriesIter } from "../../utils/entries";
 import { first } from "../../utils/iterators/first";
-import { type EditorCampaign, type EditorRoomId } from "../editorTypes";
+import type { EditorCampaign, EditorRoomId } from "../editorTypes";
 
 /**
  * the room to start editing a campaign in: head's room (the traditional

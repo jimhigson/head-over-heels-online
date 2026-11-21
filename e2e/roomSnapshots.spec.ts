@@ -1,13 +1,13 @@
 import { expect, type Page } from "@playwright/test";
 import chalk from "chalk";
 
-import { campaign } from "../src/_generated/originalCampaign/campaign";
-import { type OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
-import { type SpritesheetName } from "../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type toggleUserSetting } from "../src/store/slices/userSettings/userSettingsSlice";
+import { campaign } from "../src/originalCampaign/campaign";
+import type { OriginalCampaignRoomId } from "../src/originalCampaign/OriginalCampaignRoomId";
+import type { SpritesheetName } from "../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { toggleUserSetting } from "../src/store/slices/userSettings/userSettingsSlice";
 import { keys } from "../src/utils/entries";
 import { resolveRoomIds } from "./resolveRoomIds";
-import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
+import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import {
   changeRoomViaApi,
   dispatchToStore,

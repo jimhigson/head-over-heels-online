@@ -13,9 +13,9 @@ import {
   type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
-import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
-import { type ItemTool } from "../interactivity/Tool";
-import { type PointingAtItem } from "./PointingAt";
+import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
+import type { ItemTool } from "../interactivity/Tool";
+import type { PointingAtItem } from "./PointingAt";
 
 /**
  * where, in blocks, the item tool would put its item down, given what the

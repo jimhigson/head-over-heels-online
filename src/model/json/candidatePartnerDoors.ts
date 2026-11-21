@@ -2,9 +2,9 @@ import {
   type DirectionXy4,
   oppositeDirection,
 } from "../../utils/vectors/vectors";
-import { type Campaign } from "../modelTypes";
+import type { Campaign } from "../modelTypes";
 import { iterateRoomJsonItemsWithIds } from "../RoomJsonItemIterators";
-import { type JsonItem } from "./JsonItem";
+import type { JsonItem } from "./JsonItem";
 
 /** a door, together with the room and id it lives under */
 export type DoorRef<RoomId extends string> = {

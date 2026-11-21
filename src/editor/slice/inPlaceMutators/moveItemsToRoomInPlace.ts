@@ -13,23 +13,23 @@ import {
 } from "../../../model/RoomJsonItemIterators";
 import { keys, objectEntriesIter, valuesIter } from "../../../utils/entries";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
-import {
-  type EditorJsonItem,
-  type EditorJsonItemUnion,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorJsonItem,
+  EditorJsonItemUnion,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../../editorTypes";
 import { isMovableBetweenRooms } from "../isMovableBetweenRooms";
-import {
-  type LevelEditorState,
-  type PreviewedEditsByRoom,
-  type PreviewedRoomItemEdits,
+import type {
+  LevelEditorState,
+  PreviewedEditsByRoom,
+  PreviewedRoomItemEdits,
 } from "../levelEditorSlice";
 import { layoutNodesOfType } from "../PaneLayout";
-import {
-  type UndoDescription,
-  type UndoItemEntry,
+import type {
+  UndoDescription,
+  UndoItemEntry,
 } from "../reducers/undoDescription";
 import {
   commitPendingEditsInPlace,

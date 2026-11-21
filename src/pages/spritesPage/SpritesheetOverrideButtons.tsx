@@ -1,4 +1,4 @@
-import { type ChangeEvent } from "preact/compat";
+import type { ChangeEvent } from "preact/compat";
 import { useCallback, useRef } from "preact/hooks";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";

@@ -12,11 +12,11 @@ import {
   tangentAxis,
   type Xy,
 } from "../../utils/vectors/vectors";
-import {
-  type EditorJsonItem,
-  type EditorRoomItemId,
-  type EditorRoomJson,
-  type EditorRoomJsonItems,
+import type {
+  EditorJsonItem,
+  EditorRoomItemId,
+  EditorRoomJson,
+  EditorRoomJsonItems,
 } from "../editorTypes";
 import { nextItemIdForItemTool } from "./inPlaceMutators/addItemInPlace";
 

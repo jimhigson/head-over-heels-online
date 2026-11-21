@@ -1,7 +1,7 @@
 import { useEffect, useState } from "preact/hooks";
 
 import spritesheetArtBordersUrl from "../../../gfx/spritesBlockstack.borders.png?url";
-import { type DecodedImage } from "../geometry/glyphBitmap";
+import type { DecodedImage } from "../geometry/glyphBitmap";
 
 /**
  * the unmasked reference sheet, decoded through a canvas - the browser's

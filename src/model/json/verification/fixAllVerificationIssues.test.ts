@@ -12,7 +12,7 @@ import {
   campaignOf,
   newRoom,
 } from "./testUtils";
-import { type VerificationRoomId } from "./verificationTypes";
+import type { VerificationRoomId } from "./verificationTypes";
 import { verifyCampaign } from "./verifyCampaign";
 
 test("fixing a door to nowhere leaves no issues", () => {

@@ -1,15 +1,15 @@
 import { entries } from "../../../../utils/entries";
-import { type DirectionXy4 } from "../../../../utils/vectors/vectors";
+import type { DirectionXy4 } from "../../../../utils/vectors/vectors";
 import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import {
   candidatePartnerDoors,
   type DoorRef as PartnerDoorRef,
 } from "../../candidatePartnerDoors";
 import { exitGameRoomId } from "../../ItemConfigMap";
-import {
-  type VerificationCampaign,
-  type VerificationRoomId,
-  type VerificationRoomItemId,
+import type {
+  VerificationCampaign,
+  VerificationRoomId,
+  VerificationRoomItemId,
 } from "../verificationTypes";
 
 export type DoorRef = PartnerDoorRef<VerificationRoomId>;

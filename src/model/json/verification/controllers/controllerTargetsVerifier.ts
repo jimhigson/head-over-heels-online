@@ -4,16 +4,16 @@ import { entries } from "../../../../utils/entries";
 import { roomJsonItemsEntriesIterable } from "../../../RoomJsonItemIterators";
 import { getControlTargetJsonItemsInRoom } from "../../getControlTargetJsonItemsInRoom";
 import { rewriteControllerTargetIdsInPlace } from "../../rewriteControllerTargetIdsInPlace";
-import {
-  type CampaignVerificationIssue,
-  type CampaignVerifier,
+import type {
+  CampaignVerificationIssue,
+  CampaignVerifier,
 } from "../CampaignVerification";
 import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
-import {
-  type VerificationJsonItemUnion,
-  type VerificationRoomId,
-  type VerificationRoomItemId,
-  type VerificationRoomJson,
+import type {
+  VerificationJsonItemUnion,
+  VerificationRoomId,
+  VerificationRoomItemId,
+  VerificationRoomJson,
 } from "../verificationTypes";
 
 type ControllerTargetIssue =

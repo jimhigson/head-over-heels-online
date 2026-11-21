@@ -1,4 +1,4 @@
-import { type ComponentChildren } from "preact";
+import type { ComponentChildren } from "preact";
 import { type FC, Suspense } from "preact/compat";
 
 import { AssetLoading } from "../store/slices/assetsLoading/AssetLoading";

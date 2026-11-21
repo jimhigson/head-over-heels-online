@@ -1,4 +1,4 @@
-import { type ComponentChildren } from "preact";
+import type { ComponentChildren } from "preact";
 import { useEffect, useRef } from "preact/hooks";
 
 import { CssVariables } from "../game/components/CssVariables";

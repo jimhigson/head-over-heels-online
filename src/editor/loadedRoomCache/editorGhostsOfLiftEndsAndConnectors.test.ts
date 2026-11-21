@@ -1,12 +1,12 @@
 import { expect, test } from "vitest";
 
 import { blockSizePx } from "../../game/physics/mechanicsConstants";
-import {
-  type EditorJsonItem,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorJsonItem,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../editorTypes";
-import { type WhichEditorGhostOfAnyItemType } from "../WhichEditorGhostOf";
+import type { WhichEditorGhostOfAnyItemType } from "../WhichEditorGhostOf";
 import { editorGhostsOfLiftEndsAndConnectors } from "./editorGhostsOfLiftEndsAndConnectors";
 
 const roomWithLift = (lift: EditorJsonItem<"lift">): EditorRoomJson => ({

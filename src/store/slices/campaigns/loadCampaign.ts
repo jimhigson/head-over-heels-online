@@ -1,10 +1,10 @@
-import { loadOriginalCampaign } from "../../../_generated/originalCampaign/loadOriginalCampaign";
-import { type CampaignGetLocator } from "../../../db/campaign";
+import type { CampaignGetLocator } from "../../../db/campaign";
 import { loadCampaignFromDbCached } from "../../../db/campaignCached";
 import { importCampaignDbClient } from "../../../db/campaignDbClient.import";
 import { decompressCampaignObject } from "../../../db/compressCampaignObject";
 import { migrateCampaignInPlace } from "../../../model/inPlaceMutators/migrateCampaignInPlace";
-import { type Campaign } from "../../../model/modelTypes";
+import type { Campaign } from "../../../model/modelTypes";
+import { loadOriginalCampaign } from "../../../originalCampaign/loadOriginalCampaign";
 
 /**
  * load a campaign from wherever its locator says it lives

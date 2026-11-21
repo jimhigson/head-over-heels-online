@@ -1,10 +1,10 @@
 import { current } from "@reduxjs/toolkit";
 
-import { type EditorRoomId, type EditorRoomJson } from "../../editorTypes";
+import type { EditorRoomId, EditorRoomJson } from "../../editorTypes";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
-import { type UndoDescription } from "../reducers/undoDescription";
-import { type RoomUndoHistory, type UndoLink } from "../reducers/undoReducers";
+import type { LevelEditorState } from "../levelEditorSlice";
+import type { UndoDescription } from "../reducers/undoDescription";
+import type { RoomUndoHistory, UndoLink } from "../reducers/undoReducers";
 
 export const roomHistory = (
   state: LevelEditorState,

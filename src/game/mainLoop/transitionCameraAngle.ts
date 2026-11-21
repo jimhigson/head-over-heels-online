@@ -1,5 +1,5 @@
 import { rotateXy } from "../../utils/vectors/rotateXy";
-import { type Xy } from "../../utils/vectors/vectors";
+import type { Xy } from "../../utils/vectors/vectors";
 
 /**
  * cubic-Hermite easing: h(0)=0, h(1)=1, h'(0)=`startSlope`, h'(1)=0. With

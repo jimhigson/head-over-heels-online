@@ -1,7 +1,7 @@
-import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import { type JsonItem } from "../../../model/json/JsonItem";
-import { type StoodOnBy } from "../../../model/StoodOnBy";
+import type { JsonItem } from "../../../model/json/JsonItem";
+import type { StoodOnBy } from "../../../model/StoodOnBy";
 import { wallTimes } from "../../../model/times";
 import { emptyObject } from "../../../utils/empty";
 import { hashXyzToNumber0to1 } from "../../../utils/maths/hashing";

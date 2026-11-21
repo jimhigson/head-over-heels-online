@@ -1,19 +1,19 @@
 import { type AnimatedSprite, Container, type Filter } from "pixi.js";
 
-import { type PlayableItem } from "../../../../model/ItemInPlayNarrowedUnions";
-import { type PlayableActionState } from "../../../../model/ItemStateMap";
-import {
-  type CharacterName,
-  type IndividualCharacterName,
+import type { PlayableItem } from "../../../../model/ItemInPlayNarrowedUnions";
+import type { PlayableActionState } from "../../../../model/ItemStateMap";
+import type {
+  CharacterName,
+  IndividualCharacterName,
 } from "../../../../model/modelTypes";
-import { type ZxSpectrumRoomColour } from "../../../../originalGame";
+import type { ZxSpectrumRoomColour } from "../../../../originalGame";
 import {
   isAnimationId,
   isTextureId,
 } from "../../../../sprites/assertIsTextureId";
 import { effectPixiColour } from "../../../../sprites/palette/pixiPalette";
-import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
-import { type SpritesheetMetadata } from "../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
+import type { SpritesheetMetadata } from "../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { variantTextureId } from "../../../../sprites/spritesheet/variantTextureId";
 import { isEmptyObject } from "../../../../utils/empty";
 import {
@@ -31,15 +31,15 @@ import {
   afterDeathInvulnerabilityFlashPhaseDuration,
 } from "../../../physics/mechanicsConstants";
 import { createSprite, type CreateSpriteOptions } from "../../createSprite";
-import { type FilterCache } from "../../filters/FilterCache";
+import type { FilterCache } from "../../filters/FilterCache";
 import { OneColourFilter } from "../../filters/OneColourFilter";
 import { OutlineFilter } from "../../filters/OutlineFilter";
 import { stackSprites } from "../../itemAppearances/createStackedSprites";
 import { characterAction } from "../../itemAppearances/playable/characterAction";
 import { isHighlightedPlayableItem } from "../../itemAppearances/playable/isHighlightedPlayableItem";
-import { type ItemLeafRenderContext } from "../../ItemRenderContexts";
+import type { ItemLeafRenderContext } from "../../ItemRenderContexts";
 import { zxSpectrumPixiColor } from "../../palette/zxSpectrumPixiColours";
-import { type ItemLeafPixiRenderer } from "./ItemPixiRenderer";
+import type { ItemLeafPixiRenderer } from "./ItemPixiRenderer";
 
 /** the character's current state that a body sprite is picked from */
 type BodySpriteOptions = {

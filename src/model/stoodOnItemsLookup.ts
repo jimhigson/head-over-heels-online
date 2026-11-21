@@ -1,14 +1,14 @@
-import { type UnindexedRoomState } from "../game/gameState/saving/SavedGameState";
+import type { UnindexedRoomState } from "../game/gameState/saving/SavedGameState";
 import { coyoteTime } from "../game/physics/mechanicsConstants";
 import { emptyIterator, isEmptyObject } from "../utils/empty";
 import { keysIter } from "../utils/entries";
-import {
-  type FreeItem,
-  type UnionOfAllItemInPlayTypes,
+import type {
+  FreeItem,
+  UnionOfAllItemInPlayTypes,
 } from "./ItemInPlayNarrowedUnions";
-import { type PlayableState } from "./ItemStateMap";
-import { type RoomState } from "./RoomState";
-import { type StoodOnBy } from "./StoodOnBy";
+import type { PlayableState } from "./ItemStateMap";
+import type { RoomState } from "./RoomState";
+import type { StoodOnBy } from "./StoodOnBy";
 
 export const itemIsStandingOnSomething = <
   RoomId extends string,

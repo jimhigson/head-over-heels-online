@@ -1,15 +1,15 @@
 import { type Color, Container } from "pixi.js";
 
 import { spritesheetPixiPalettes } from "../../../sprites/palette/spritesheetPixiPalettes";
-import { type AppSpritesheet } from "../../../sprites/spritesheet/AppSpritesheet";
-import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { AppSpritesheet } from "../../../sprites/spritesheet/AppSpritesheet";
+import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { getAmbientSwoppedColour } from "../../../utils/palette/palette";
 import {
   blockSizePx,
   moveSpeedPixPerMs,
 } from "../../physics/mechanicsConstants";
 import { TextContainer } from "../text/TextContainer";
-import { type ItemAppearance } from "./ItemAppearance";
+import type { ItemAppearance } from "./ItemAppearance";
 
 const floatingTextRiseSpeedPxPerMs = moveSpeedPixPerMs.floatingText;
 const lineHeightPx = 12;

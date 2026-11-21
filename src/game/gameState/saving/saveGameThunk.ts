@@ -1,7 +1,7 @@
 import { saveGameRecorded } from "../../../store/slices/savedGames/savedGamesSlice";
-import { type AppThunk } from "../../../store/store";
+import type { AppThunk } from "../../../store/store";
 import { isInPlaytestMode } from "../../isInPlaytestMode";
-import { type GameState } from "../GameState";
+import type { GameState } from "../GameState";
 import { createSavedGame } from "./createSavedGame";
 
 /**

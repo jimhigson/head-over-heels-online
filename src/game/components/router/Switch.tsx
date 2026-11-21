@@ -1,6 +1,6 @@
 import { type ComponentChildren, toChildArray } from "preact";
 
-import { type RouteProps } from "./Route.tsx";
+import type { RouteProps } from "./Route.tsx";
 import { useRoutePath } from "./useRoutePath.ts";
 
 export type SwitchProps = {

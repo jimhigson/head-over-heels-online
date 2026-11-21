@@ -1,19 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { type ValueOf } from "type-fest";
+import type { ValueOf } from "type-fest";
 
 import { clearAllData } from "../../store/slices/clearAllData";
-import { type Xyz } from "../../utils/vectors/vectors";
-import {
-  type EditorCampaign,
-  type EditorRoomId,
-  type EditorRoomJsonItems,
+import type { Xyz } from "../../utils/vectors/vectors";
+import type {
+  EditorCampaign,
+  EditorRoomId,
+  EditorRoomJsonItems,
 } from "../editorTypes";
-import { type PlaytestOptions } from "../PlaytestOptions";
-import { type PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
-import {
-  type ItemTool,
-  type Tool,
-} from "../RoomEditingArea/interactivity/Tool";
+import type { PlaytestOptions } from "../PlaytestOptions";
+import type { PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
+import type { ItemTool, Tool } from "../RoomEditingArea/interactivity/Tool";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
   selectCampaignHasUnsavedChangesFromLevelEditorState,
@@ -25,8 +22,8 @@ import {
   selectRoomFromLevelEditorState,
   selectRoomHasUnsavedChangesFromLevelEditorState,
 } from "./levelEditorSelectors";
-import { type OpenRoomId } from "./OpenRoom";
-import { type PaneLayout, type TabGroupId } from "./PaneLayout";
+import type { OpenRoomId } from "./OpenRoom";
+import type { PaneLayout, TabGroupId } from "./PaneLayout";
 import { addOrRemoveRoomReducers } from "./reducers/addOrRemoveRoomReducers";
 import { applyItemToolReducers } from "./reducers/applyItemToolReducers";
 import { blockDeadlinessAndStyleReducers } from "./reducers/blockDeadlinessAndStyleReducers";
@@ -97,13 +94,13 @@ import { setToolReducers, setToolSelectors } from "./reducers/setToolReducers";
 import { snapToGridReducers } from "./reducers/snapToGridReducers";
 import { startDirectionReducers } from "./reducers/startDirectionReducers";
 import { teleporterDestinationReducers } from "./reducers/teleporterDestinationReducers";
-import { type UndoDescription } from "./reducers/undoDescription";
+import type { UndoDescription } from "./reducers/undoDescription";
 import {
   type UndoEntry,
   undoReducers,
   undoSelectors,
 } from "./reducers/undoReducers";
-import { type SelectionEntry } from "./SelectionEntry";
+import type { SelectionEntry } from "./SelectionEntry";
 
 /**
  * the item (or one of its editor ghosts) the pointer is over, and where on it

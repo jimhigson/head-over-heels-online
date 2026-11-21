@@ -1,4 +1,4 @@
-import { type Provider } from "@supabase/supabase-js";
+import type { Provider } from "@supabase/supabase-js";
 
 /**
  * The OAuth providers the local dev stack fakes. The dev fake-auth plugin

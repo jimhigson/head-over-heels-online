@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { doorItemTool } from "../../RoomEditingArea/interactivity/doorItemTool";
-import { type Tool } from "../../RoomEditingArea/interactivity/Tool";
+import type { Tool } from "../../RoomEditingArea/interactivity/Tool";
 import {
   changeDoorAutoAddsRoom,
   selectTool,

@@ -1,11 +1,11 @@
-#!/usr/bin/env -S pnpm tsx
+#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
 
 import { Command } from "commander";
 import * as path from "path";
 import { type JSDoc, Project, type Type, type TypeChecker } from "ts-morph";
 import { fileURLToPath } from "url";
 
-import { normalizeTypeOutput } from "./normalizeTypeOutput.js";
+import { normalizeTypeOutput } from "./normalizeTypeOutput";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

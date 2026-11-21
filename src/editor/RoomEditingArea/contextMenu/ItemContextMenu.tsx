@@ -4,7 +4,7 @@ import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
 import { ContextMenu } from "../../../ui/command/ContextMenu";
 import { MenuHeader } from "../../../ui/menuBar/MenuHeader";
-import { type Xy } from "../../../utils/vectors/vectors";
+import type { Xy } from "../../../utils/vectors/vectors";
 import {
   closeItemContextMenu,
   selectOpenRoomContextMenuXy,

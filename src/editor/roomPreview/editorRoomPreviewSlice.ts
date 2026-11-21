@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 
 export type RoomPreviewSnapshot =
   | { readonly status: "error" }

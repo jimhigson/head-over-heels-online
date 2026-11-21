@@ -1,10 +1,10 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
 import {
   commitPendingEditsInPlace,
   commitPendingNudgeInPlace,
 } from "../inPlaceMutators/commitPendingNudgeInPlace";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 
 export const itemPreviewReducers = {
   setAutoCoalesce(_state: LevelEditorState, action: PayloadAction<boolean>) {

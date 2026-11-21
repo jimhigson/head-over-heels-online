@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 
 import { roomJsonItemsIterable } from "../../../RoomJsonItemIterators";
 import { addDoor, campaignOf, newRoom, runCheck } from "../testUtils";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 import { doorNoReturnVerifier } from "./doorNoReturnVerifier";
 
 test("flags a door whose destination has no door back", () => {

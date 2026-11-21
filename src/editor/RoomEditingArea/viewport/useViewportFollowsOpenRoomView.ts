@@ -1,7 +1,7 @@
 import { useEffect } from "preact/hooks";
 
 import { editorStore } from "../../../store/store";
-import { type EditorRoomView } from "../../slice/EditorRoomView";
+import type { EditorRoomView } from "../../slice/EditorRoomView";
 import { selectOpenRoomView } from "../../slice/levelEditorSlice";
 import { useOpenRoomPane } from "../useOpenRoomPane";
 import { useEditorViewport } from "./EditorViewportProvider";

@@ -1,9 +1,9 @@
 "use client";
 
-import { type ComponentChildren, type Ref } from "preact";
+import type { ComponentChildren, Ref } from "preact";
 import { twMerge } from "tailwind-merge";
 
-import { type DialogId } from "../game/components/dialogs/menuDialog/DialogId";
+import type { DialogId } from "../game/components/dialogs/menuDialog/DialogId";
 
 export type DialogProps = {
   children?: ComponentChildren;

@@ -3,11 +3,7 @@ import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
-import {
-  type DirectionXy4,
-  type Xy,
-  type Xyz,
-} from "../../../utils/vectors/vectors";
+import type { DirectionXy4, Xy, Xyz } from "../../../utils/vectors/vectors";
 import { hasCollisionItemWithIndex } from "../../collision/aabbCollision";
 import { makeRoomJsonWithDoors } from "./__testUtils/makeRoomJsonWithDoors";
 import { loadRoom } from "./loadRoom";

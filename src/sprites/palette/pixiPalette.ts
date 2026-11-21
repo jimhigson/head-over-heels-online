@@ -1,9 +1,9 @@
-import { type Color } from "pixi.js";
+import type { Color } from "pixi.js";
 
-import { type NamedPixiColours } from "../../utils/palette/palette";
-import {
-  type EffectColourName,
-  type SpritesheetMetadata,
+import type { NamedPixiColours } from "../../utils/palette/palette";
+import type {
+  EffectColourName,
+  SpritesheetMetadata,
 } from "../spritesheet/spritesheetData/spritesheetMetaData";
 import {
   type PixiPalettes,

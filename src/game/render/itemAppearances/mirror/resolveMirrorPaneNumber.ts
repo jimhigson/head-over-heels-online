@@ -1,5 +1,5 @@
-import { type MirrorOrientation } from "../../../../model/MirrorOrientation";
-import { type Xy } from "../../../../utils/vectors/vectors";
+import type { MirrorOrientation } from "../../../../model/MirrorOrientation";
+import type { Xy } from "../../../../utils/vectors/vectors";
 
 /**
  * how long the 90° spin animates when an item knocks a mirror round, in ms -

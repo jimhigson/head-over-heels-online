@@ -1,7 +1,7 @@
-import { type Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
 import chalk from "chalk";
 
-import { type PokeableNumber } from "../../src/model/ItemStateMap";
+import type { PokeableNumber } from "../../src/model/ItemStateMap";
 import { defaultUserSettings } from "../../src/store/slices/userSettings/defaultUserSettings";
 import {
   advanceUntil,

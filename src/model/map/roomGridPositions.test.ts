@@ -1,12 +1,12 @@
 import { expect, test } from "vitest";
 
-import { campaign } from "../../_generated/originalCampaign/campaign";
+import { campaign } from "../../originalCampaign/campaign";
 import { exitGameRoomId } from "../json/ItemConfigMap";
 import { addDoor, campaignOf, newRoom } from "../json/verification/testUtils";
-import { type AnyRoomJson } from "../RoomJson";
+import type { AnyRoomJson } from "../RoomJson";
 import { roomGridPositions } from "./roomGridPositions";
 import { sortRoomGridPositions } from "./sortRoomGridPositions";
-import { type TeleporterLink } from "./teleporterLinks";
+import type { TeleporterLink } from "./teleporterLinks";
 
 test("traversing original campaign from the start room", () => {
   expect(

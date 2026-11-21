@@ -1,4 +1,4 @@
-import { type PropsWithChildren } from "preact/compat";
+import type { PropsWithChildren } from "preact/compat";
 
 import { useTotalUpscale } from "../../store/slices/upscale/upscaleSelectors";
 

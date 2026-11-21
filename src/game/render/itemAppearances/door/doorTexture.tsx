@@ -1,12 +1,12 @@
-import { type UnknownRoomState } from "../../../../model/RoomState";
-import { type ZxSpectrumRoomHue } from "../../../../originalGame";
+import type { UnknownRoomState } from "../../../../model/RoomState";
+import type { ZxSpectrumRoomHue } from "../../../../originalGame";
 import { isTextureId } from "../../../../sprites/assertIsTextureId";
-import { type SceneryName } from "../../../../sprites/planets";
-import { type AppSpritesheetData } from "../../../../sprites/spritesheet/AppSpritesheet";
-import { type SceneryWithOwnDoors } from "../../../../sprites/spritesheet/spritesheetData/doorSpritesheetData";
-import {
-  type DoorFrameId,
-  type DoorHueSuffix,
+import type { SceneryName } from "../../../../sprites/planets";
+import type { AppSpritesheetData } from "../../../../sprites/spritesheet/AppSpritesheet";
+import type { SceneryWithOwnDoors } from "../../../../sprites/spritesheet/spritesheetData/doorSpritesheetData";
+import type {
+  DoorFrameId,
+  DoorHueSuffix,
 } from "../../../../sprites/spritesheet/spritesheetData/variantSpritesheetData";
 
 /** only the sceneries with door art of their own have a frame of their own */

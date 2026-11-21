@@ -1,7 +1,7 @@
 import { allVerifiers } from "./allVerifiers";
-import { type CampaignVerificationIssue } from "./CampaignVerification";
+import type { CampaignVerificationIssue } from "./CampaignVerification";
 import { verificationGraph } from "./helpers/verificationGraph";
-import { type VerificationCampaign } from "./verificationTypes";
+import type { VerificationCampaign } from "./verificationTypes";
 
 /**
  * Run all the verifiers against a campaign and flatten their results into a single array

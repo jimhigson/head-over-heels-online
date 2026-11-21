@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { baselineFromTop, px } from "./fontUnits";
-import { type VectorContour, type VectorShape } from "./glyphOverrides";
+import type { VectorContour, VectorShape } from "./glyphOverrides";
 import { contourPixelPoints, vectorGlyphContours } from "./vectorGlyphContours";
 
 const square: VectorContour = {

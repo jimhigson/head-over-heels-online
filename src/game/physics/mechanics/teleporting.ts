@@ -1,11 +1,11 @@
-import { type ItemInPlay } from "../../../model/ItemInPlay";
-import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
-import { type CharacterName } from "../../../model/modelTypes";
-import { type RoomState } from "../../../model/RoomState";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
 import { store } from "../../../store/store";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
-import { type PressStatus } from "../../input/InputStateTracker";
+import type { PressStatus } from "../../input/InputStateTracker";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 import {
   type Mechanic,

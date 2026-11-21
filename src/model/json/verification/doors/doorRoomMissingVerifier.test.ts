@@ -4,9 +4,9 @@ import { keys } from "../../../../utils/entries";
 import { roomJsonItemsIterable } from "../../../RoomJsonItemIterators";
 import { nowhereRoomId } from "../../ItemConfigMap";
 import { addDoor, campaignOf, newRoom, runCheck } from "../testUtils";
-import {
-  type VerificationCampaign,
-  type VerificationRoomId,
+import type {
+  VerificationCampaign,
+  VerificationRoomId,
 } from "../verificationTypes";
 import { doorNoReturnVerifier } from "./doorNoReturnVerifier";
 import { doorRoomMissingVerifier } from "./doorRoomMissingVerifier";

@@ -1,7 +1,7 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
 

@@ -1,10 +1,7 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { snappedToGridXy } from "../../snappedToGridXy";
-import {
-  type GridResolution,
-  type LevelEditorState,
-} from "../levelEditorSlice";
+import type { GridResolution, LevelEditorState } from "../levelEditorSlice";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
 
 export const snapToGridReducers = {

@@ -1,5 +1,5 @@
 import { expect, type Page } from "@playwright/test";
-import { type Container, type Texture } from "pixi.js";
+import type { Container, Texture } from "pixi.js";
 
 import { enableUpscaledSprites } from "./testUtils/enableUpscaledSprites";
 import {

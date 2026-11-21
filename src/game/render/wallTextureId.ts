@@ -1,8 +1,8 @@
 import { isTextureId } from "../../sprites/assertIsTextureId";
-import { type SceneryName, type Wall } from "../../sprites/planets";
-import { type AppSpritesheetData } from "../../sprites/spritesheet/AppSpritesheet";
-import { type TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type WallTextureId } from "../../sprites/spritesheet/spritesheetData/scenerySpritesheetData";
+import type { SceneryName, Wall } from "../../sprites/planets";
+import type { AppSpritesheetData } from "../../sprites/spritesheet/AppSpritesheet";
+import type { TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import type { WallTextureId } from "../../sprites/spritesheet/spritesheetData/scenerySpritesheetData";
 
 /**
  * every scenery draws its walls lit, but only some have dark art for them - so

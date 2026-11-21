@@ -1,6 +1,6 @@
 import { store, useEditorAppSelector } from "../../store/store";
 import { PaneDropZones } from "../../ui/PaneDropZones";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import {
   changeToRoom,
   roomTabDropped,

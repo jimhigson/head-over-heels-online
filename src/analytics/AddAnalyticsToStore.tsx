@@ -15,7 +15,7 @@ import {
   roomExplored,
 } from "../store/slices/gameInPlay/gameInPlaySlice";
 import { entries } from "../utils/entries";
-import { type Xyz } from "../utils/vectors/vectors";
+import type { Xyz } from "../utils/vectors/vectors";
 import { isLocalNetwork } from "./isLocalNetwork";
 
 const umamiScriptSrc = "https://cloud.umami.is/script.js";

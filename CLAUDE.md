@@ -60,7 +60,7 @@ My name is Jim Higson and my tag on github is jimhigson
 ## Campaigns:
 * the player can play the original campaign, a sequel, or
 a community-contributed campaign made using the level editor.
-The original campaign "original remastered" is at `src/_generated/originalCampaign/`, it is an exception in that it is distributed with the game. All others, including the sequel, are loaded from the db live on-demand.
+The original campaign "original remastered" is at `src/originalCampaign/`, it is an exception in that it is distributed with the game. All others, including the sequel, are loaded from the db live on-demand.
 
 ### Columnar campaign encoding
 * campaigns are columnar-encoded (`src/columnar/`) before storage: items are grouped by type and each field becomes one array, which compresses far better than row json. `compressCampaignObject`/`decompressCampaignObject` wrap this + gzip+base64 for the db; legacy non-columnar db rows (no `_enc` marker) still load
@@ -203,6 +203,7 @@ and we trust that to pre-load in the service worker for us, so the actual game e
  *	Code avoids legacy constructs and uses satisfies never for exhaustive switches.
  *  when writing a ts source, either as a script or in the game or editor, run it through eslint and prettier to fix linting and formatting issues. Use the --fix or --write options as appropriate so that these tools can fix the source
  * do not use `import *` - instead, import the individual parts of the package that you need.
+ * an import of only types is a top-level `import type { Foo } from "..."`; one that mixes types and values marks the types inline: `import { bar, type Foo } from "..."`. Node's type stripping keeps an `import { type Foo }` as a real import of the module, so the top-level form is what removes it (both enforced by lint)
  * for private methods of classes, use this.#foo, not `private foo` as per modern js. Erasable syntax only.
  * if making a switch/case that is intended to be exaustive, use `default: xxx satisfies never` so that ts confirms this.
  * write jsdoc, but instead of @param, put `/** */` comments before the parameters themselves, like this:
@@ -543,6 +544,8 @@ Before running any commands, ensure you have the correct node version by running
 If `fnm` is not installed (eg the Claude web sandbox, which ships an older node), install the version given in `.node-version` before doing anything else. The SessionStart hook in `.claude/hooks/session-start.sh` does exactly this (resolves the `.node-version` major to its newest release on nodejs.org, installs it, and puts it first on PATH) - run it, or replicate its steps, rather than hardcoding a version.
 
 Maintain familiarity with the scripts in package.json. Call these with `pnpm` where possible, in preference to running scripts directly.
+
+Node scripts (`scripts/`) use native typescript type stripping and have a standard shebang: `#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts` registerNodeImportHooks lets node import the app's code the way vite does (extensionless imports, json, images, macros). Build-time node helpers the vite configs use live in `buildTools/`.
 
 Use `pnpm fix` to auto-fix linting and formatting errors (runs both eslint --fix and prettier --write).
 

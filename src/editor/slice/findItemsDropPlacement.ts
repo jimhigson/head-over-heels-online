@@ -4,17 +4,17 @@ import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
 import { roomWallBounds } from "../../model/roomWallBounds";
 import { keys } from "../../utils/entries";
 import { addXyz, type Xyz } from "../../utils/vectors/vectors";
-import {
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../editorTypes";
 import {
   itemMoveOrResizeWouldCollide,
   sameMoveOrResizeForEach,
 } from "../RoomEditingArea/cursor/editWouldCollide";
 import { isMovableBetweenRooms } from "./isMovableBetweenRooms";
-import { type LevelEditorState } from "./levelEditorSlice";
+import type { LevelEditorState } from "./levelEditorSlice";
 import { loadEditorRoom } from "./loadEditorRoom";
 
 /**

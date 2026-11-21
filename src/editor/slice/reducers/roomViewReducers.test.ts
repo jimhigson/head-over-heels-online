@@ -2,9 +2,9 @@ import { produce } from "immer";
 import { expect, test } from "vitest";
 
 import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";
-import { type Xy } from "../../../utils/vectors/vectors";
-import { type EditorRoomId } from "../../editorTypes";
-import { type EditorRoomView } from "../EditorRoomView";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { EditorRoomId } from "../../editorTypes";
+import type { EditorRoomView } from "../EditorRoomView";
 import {
   changeToRoom,
   openRoomPaneResized,

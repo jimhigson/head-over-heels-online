@@ -13,8 +13,8 @@ import {
   type Xyz,
 } from "../../utils/vectors/vectors";
 import { exitGameRoomId, nowhereRoomId } from "../json/ItemConfigMap";
-import { type JsonItem } from "../json/JsonItem";
-import { type Campaign } from "../modelTypes";
+import type { JsonItem } from "../json/JsonItem";
+import type { Campaign } from "../modelTypes";
 import { isWholeRoomSubRooms, type SubRooms } from "../RoomJson";
 import { iterateRoomJsonItemsWithIds } from "../RoomJsonItemIterators";
 import { findSubRoomForItem } from "./itemIsInSubRoom";

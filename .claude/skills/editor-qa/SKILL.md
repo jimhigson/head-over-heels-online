@@ -58,7 +58,7 @@ the editor base is `/editor/`), then dispatch `levelEditor/loadCampaign`:
 ```js
 await page.evaluate(async () => {
   const mod = await import(
-    "/editor/@fs/" + "<repo abs path>/src/_generated/originalCampaign/campaign.ts"
+    "/editor/@fs/" + "<repo abs path>/src/originalCampaign/campaign.ts"
   );
   window._e2e_store.dispatch({
     type: "levelEditor/loadCampaign",

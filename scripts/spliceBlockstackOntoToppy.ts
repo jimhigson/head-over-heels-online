@@ -1,4 +1,4 @@
-#!/usr/bin/env -S pnpm tsx
+#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
 /**
  * Utility for when sprites have been added to blockstack spritesheet to automatically
  * put them also on Toppy, to serve until he has had time to redraw them
@@ -11,7 +11,7 @@
  * produces, rather than hard-coding coordinates.
  *
  * usage:
- *   pnpm tsx scripts/spliceBlockstackOntoToppy.ts "<frameNameRegex>"
+ *   ./scripts/spliceBlockstackOntoToppy.ts "<frameNameRegex>"
  */
 import { $ } from "execa";
 import { readFileSync } from "node:fs";
@@ -54,7 +54,7 @@ if (process.argv.length < 3) {
       "own versions are drawn.",
       "",
       "usage:",
-      '  pnpm tsx scripts/spliceBlockstackOntoToppy.ts "<frameNameRegex>"',
+      '  ./scripts/spliceBlockstackOntoToppy.ts "<frameNameRegex>"',
       "",
       "<frameNameRegex> is matched (unanchored) against each spritesheet frame",
       'name; every match is spliced. eg: "(mirror|lamp)" or "^lightBeam"',

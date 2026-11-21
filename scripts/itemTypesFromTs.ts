@@ -1,4 +1,4 @@
-#!/usr/bin/env -S pnpm tsx
+#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
 
 import { Project } from "ts-morph";
 
@@ -38,7 +38,7 @@ function extractUnionType(fileName: string, unionName: string) {
 const [file, unionName] = process.argv.slice(2);
 
 if (!file || !unionName) {
-  console.error("Usage: npx ts-node extract-union.ts <file> <unionName>");
+  console.error("Usage: ./scripts/itemTypesFromTs.ts <file> <unionName>");
   process.exit(1);
 }
 

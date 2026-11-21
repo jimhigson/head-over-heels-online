@@ -1,8 +1,8 @@
-import { type RoomNode } from "../../model/map/roomGridPositions";
-import { type SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRoomGridPositions";
+import type { RoomNode } from "../../model/map/roomGridPositions";
+import type { SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRoomGridPositions";
 import { valuesIter } from "../../utils/entries";
-import { type Xy } from "../../utils/vectors/vectors";
-import { type EditorRoomId } from "../editorTypes";
+import type { Xy } from "../../utils/vectors/vectors";
+import type { EditorRoomId } from "../editorTypes";
 
 export const areRoomsCoalesceable = (
   selectedRoomIds: ReadonlyArray<EditorRoomId>,

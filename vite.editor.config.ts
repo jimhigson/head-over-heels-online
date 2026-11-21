@@ -7,8 +7,8 @@ import Macros from "unplugin-macros/vite";
 import { defineConfig, loadEnv, type PluginOption } from "vite";
 import glsl from "vite-plugin-glsl";
 
-import { hmrOnlyPreact } from "./hmrOnlyPreact";
-import { postcssPruneUnused } from "./postcssPruneUnused";
+import { hmrOnlyPreact } from "./buildTools/hmrOnlyPreact";
+import { postcssPruneUnused } from "./buildTools/postcssPruneUnused";
 import { devFakeAuthPlugin } from "./scripts/fakeDb/devFakeAuthPlugin";
 
 /**

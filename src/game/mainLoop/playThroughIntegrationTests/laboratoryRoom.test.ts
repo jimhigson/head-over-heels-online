@@ -6,7 +6,7 @@ import { loadCampaignFromDb } from "../../../db/campaign";
 import { postgrestDbClient } from "../../../db/postgrestDbClient";
 import { jimAtBlockstackingUserId } from "../../../gameInfo";
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { iterateRoomItemEntries } from "../../../model/roomItemsInPlayIterators";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { omit } from "../../../utils/pick";

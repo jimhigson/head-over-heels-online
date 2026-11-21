@@ -1,14 +1,11 @@
-import {
-  type PayloadAction,
-  type SliceCaseReducers,
-  type SliceSelectors,
+import type {
+  PayloadAction,
+  SliceCaseReducers,
+  SliceSelectors,
 } from "@reduxjs/toolkit";
 
 import { doorItemTool } from "../../RoomEditingArea/interactivity/doorItemTool";
-import {
-  type GridResolution,
-  type LevelEditorState,
-} from "../levelEditorSlice";
+import type { GridResolution, LevelEditorState } from "../levelEditorSlice";
 
 export const editorSettingsReducers = {
   changeGridResolution(state, { payload: res }: PayloadAction<GridResolution>) {

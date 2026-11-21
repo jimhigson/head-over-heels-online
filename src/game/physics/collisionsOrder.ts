@@ -1,6 +1,6 @@
-import { type ItemInPlayType } from "../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
 import { dotProductXyz, type Xyz } from "../../utils/vectors/vectors";
-import { type CollideableItem } from "../collision/aabbCollision";
+import type { CollideableItem } from "../collision/aabbCollision";
 
 export type SortableObstacle = CollideableItem & {
   type: ItemInPlayType;

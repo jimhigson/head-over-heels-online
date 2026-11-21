@@ -1,6 +1,6 @@
 import { selectIsUpscaledSprites } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { selectTotalUpscale } from "../../../../store/slices/upscale/upscaleSlice";
-import { type GameRootState } from "../../../../store/store";
+import type { GameRootState } from "../../../../store/store";
 import { maxSpritesheetUpscale } from "./maxSpritesheetUpscale";
 
 /**

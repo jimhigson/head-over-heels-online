@@ -1,9 +1,9 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { type FloorType } from "../../../model/json/ItemConfigMap";
-import { type SceneryName } from "../../../sprites/planets";
+import type { FloorType } from "../../../model/json/ItemConfigMap";
+import type { SceneryName } from "../../../sprites/planets";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
 

@@ -1,5 +1,5 @@
-import { type IndividualCharacterName } from "../../model/modelTypes";
-import { type GameState } from "../gameState/GameState";
+import type { IndividualCharacterName } from "../../model/modelTypes";
+import type { GameState } from "../gameState/GameState";
 import { swopPlayables } from "../gameState/mutators/swopPlayables";
 
 /**

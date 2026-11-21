@@ -1,13 +1,13 @@
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import { entries } from "../../../../utils/entries";
-import {
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
-  type EditorRoomState,
-  type EditorUnionOfAllItemInPlayTypes,
+import type {
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
+  EditorRoomState,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../../../editorTypes";
 import { loadEditorRoom } from "../../../slice/loadEditorRoom";
 

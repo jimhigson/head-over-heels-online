@@ -2,9 +2,9 @@ import { produce } from "immer";
 
 import { rotatingSceneryTiles } from "../../../../model/inPlaceMutators/rotatingSceneryTiles";
 import { nowhereRoomId } from "../../../../model/json/ItemConfigMap";
-import { type EditorThunk } from "../../../../store/store";
-import { type EditorRoomId, type EditorRoomItemId } from "../../../editorTypes";
-import { type Tool } from "../../../RoomEditingArea/interactivity/Tool";
+import type { EditorThunk } from "../../../../store/store";
+import type { EditorRoomId, EditorRoomItemId } from "../../../editorTypes";
+import type { Tool } from "../../../RoomEditingArea/interactivity/Tool";
 import { initialLevelEditorSliceState } from "../../initialLevelEditorSliceState";
 import {
   levelEditorSlice,
@@ -12,7 +12,7 @@ import {
   type LevelEditorState,
 } from "../../levelEditorSlice";
 import { openRoomDefaults, type OpenRoomId } from "../../OpenRoom";
-import { type TabGroupId, type TabId } from "../../PaneLayout";
+import type { TabGroupId, TabId } from "../../PaneLayout";
 
 export const doorItemToolWithAutoAddRooms: Tool = {
   type: "item",

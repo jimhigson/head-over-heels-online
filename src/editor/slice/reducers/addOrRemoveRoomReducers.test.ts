@@ -5,7 +5,7 @@ import {
   roomNonContiguousRelationship,
   roomVerticalLinkHolders,
 } from "../../../model/RoomJson";
-import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
+import type { EditorRoomId, EditorRoomItemId } from "../../editorTypes";
 import { type LevelEditorState, removeRoom } from "../levelEditorSlice";
 import { existingLayoutNode } from "../PaneLayout";
 import {
@@ -14,7 +14,7 @@ import {
   testOpenRoomId,
   testRoomId,
 } from "./__test__/storeStates";
-import { type UndoDescription } from "./undoDescription";
+import type { UndoDescription } from "./undoDescription";
 
 const roomA = "roomA" as EditorRoomId;
 const roomB = "roomB" as EditorRoomId;

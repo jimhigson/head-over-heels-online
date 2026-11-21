@@ -1,4 +1,4 @@
-import { type AppThunk } from "../../store";
+import type { AppThunk } from "../../store";
 import { nextSpritesheetName } from "./userSettingsSlice";
 
 /**

@@ -1,7 +1,7 @@
 import { keys } from "../../utils/entries";
 import { exitGameRoomId } from "../json/ItemConfigMap";
-import { type JsonItem } from "../json/JsonItem";
-import { type Campaign } from "../modelTypes";
+import type { JsonItem } from "../json/JsonItem";
+import type { Campaign } from "../modelTypes";
 import { isWholeRoomSubRooms } from "../RoomJson";
 import { partnerDoorSubRoomId } from "./partnerDoorSubRoomId";
 

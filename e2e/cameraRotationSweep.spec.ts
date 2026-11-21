@@ -4,11 +4,11 @@ import {
   type PageAssertionsToHaveScreenshotOptions,
 } from "@playwright/test";
 
-import { type OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
 import { quarterMaskFaultRoomCampaign } from "../src/game/render/sortZ/__test__/quarterMaskFaultRoom";
 import { wallFloorSeamRoomCampaign } from "../src/game/render/sortZ/__test__/wallFloorSeamRoom";
-import { type ResolutionName } from "../src/originalGame";
-import { type SpritesheetName } from "../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { OriginalCampaignRoomId } from "../src/originalCampaign/OriginalCampaignRoomId";
+import type { ResolutionName } from "../src/originalGame";
+import type { SpritesheetName } from "../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { defaultEmulatedResolution } from "../src/store/slices/userSettings/defaultUserSettings";
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
 import { skiHeadsMeetingRoomCampaign } from "./fixtures/skiHeadsMeetingRoom";

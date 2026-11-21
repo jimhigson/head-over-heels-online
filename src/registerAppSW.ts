@@ -1,5 +1,5 @@
 import { registerSW } from "virtual:pwa-register";
-import { type RegisterSWOptions } from "vite-plugin-pwa/types";
+import type { RegisterSWOptions } from "vite-plugin-pwa/types";
 
 import { importOnNeedRefreshOnce } from "./onNeedRefresh.import";
 

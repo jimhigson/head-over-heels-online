@@ -1,5 +1,5 @@
-import { type EditorRoomId } from "../../editorTypes";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { EditorRoomId } from "../../editorTypes";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { closeRoomsNotInCampaignInPlace } from "../PaneLayout";
 
 /**

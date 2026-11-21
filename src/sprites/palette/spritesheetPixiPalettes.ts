@@ -1,4 +1,4 @@
-import { type NamedPixiColours } from "../../utils/palette/palette";
+import type { NamedPixiColours } from "../../utils/palette/palette";
 import {
   type SpritesheetMetadata,
   type SpritesheetMetas,

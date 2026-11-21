@@ -1,8 +1,8 @@
-import {
-  type JsonItemConfig,
-  type JsonItemType,
+import type {
+  JsonItemConfig,
+  JsonItemType,
 } from "../../../model/json/JsonItem";
-import { type GameApi } from "../../GameApi";
+import type { GameApi } from "../../GameApi";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemFromJsonToRoom";

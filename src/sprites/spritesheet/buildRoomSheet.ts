@@ -19,7 +19,7 @@ import {
   type AppSpritesheetWithVariants,
   withVariantsBaked,
 } from "./AppSpritesheet";
-import { type FrameRect } from "./composeSpritesheetForUpscale";
+import type { FrameRect } from "./composeSpritesheetForUpscale";
 import { reifyTextureIds } from "./reifyTextureIds";
 import { reuseOrCreateSheetTarget } from "./reuseOrCreateSheetTarget";
 import { roomSpritesheetTextureSwops } from "./roomSpritesheetTextureSwops";
@@ -37,7 +37,7 @@ import {
   type VariantSuffix,
   type VariantTextureId,
 } from "./spritesheetData/variantSpritesheetData";
-import { type VariantBuildContext } from "./VariantBuildContext";
+import type { VariantBuildContext } from "./VariantBuildContext";
 import {
   bakeableVariantSuffixes,
   filtersForPasses,

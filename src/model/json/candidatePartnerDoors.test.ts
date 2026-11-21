@@ -5,7 +5,7 @@ import {
   doorLinkNeedsToDoor,
 } from "./candidatePartnerDoors";
 import { addDoor, campaignOf, newRoom } from "./verification/testUtils";
-import { type VerificationRoomId } from "./verification/verificationTypes";
+import type { VerificationRoomId } from "./verification/verificationTypes";
 
 const roomB = "b" as VerificationRoomId;
 const roomA = "a" as VerificationRoomId;

@@ -1,8 +1,8 @@
-import { type BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
+import type { BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
 import { isTextureId } from "../../../sprites/assertIsTextureId";
-import { type SceneryName } from "../../../sprites/planets";
-import { type AppSpritesheetData } from "../../../sprites/spritesheet/AppSpritesheet";
-import { type BaseTextureIdWithPrefix } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import type { SceneryName } from "../../../sprites/planets";
+import type { AppSpritesheetData } from "../../../sprites/spritesheet/AppSpritesheet";
+import type { BaseTextureIdWithPrefix } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import {
   asReuseSprite,
@@ -14,7 +14,7 @@ import {
   type OctantIndexOfDirection,
 } from "../../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
 import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
-import { type Xy } from "../../../utils/vectors/vectors";
+import type { Xy } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import { cameraQuarterAngleEqual, type ItemAppearance } from "./ItemAppearance";
 

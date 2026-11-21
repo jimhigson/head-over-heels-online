@@ -1,15 +1,15 @@
-import { type SharedUnionFields } from "type-fest";
+import type { SharedUnionFields } from "type-fest";
 
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
-import {
-  type HeadOverHeelsState,
-  type HeadState,
-  type HeelsState,
+import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type {
+  HeadOverHeelsState,
+  HeadState,
+  HeelsState,
 } from "../../../model/ItemStateMap";
-import { type JsonItem } from "../../../model/json/JsonItem";
-import { type CharacterName } from "../../../model/modelTypes";
-import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
+import type { JsonItem } from "../../../model/json/JsonItem";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { unitVectors } from "../../../utils/vectors/unitVectors";

@@ -1,11 +1,11 @@
-import { type VNode } from "preact";
-import { type PropsWithChildren } from "preact/compat";
+import type { VNode } from "preact";
+import type { PropsWithChildren } from "preact/compat";
 import {
   type CustomComponentsOption,
   SnarkdownInReact,
 } from "snarkdown-in-react";
 import { twMerge } from "tailwind-merge";
-import { type EmptyObject } from "type-fest";
+import type { EmptyObject } from "type-fest";
 
 import { linkOpenExternalClickHandler } from "../../utils/tauri/openExternalLink";
 

@@ -1,10 +1,10 @@
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomId,
-  type EditorRoomItemId,
+import type {
+  EditorJsonItemUnion,
+  EditorRoomId,
+  EditorRoomItemId,
 } from "../../editorTypes";
 import {
   selectCursorRoomIdFromLevelEditorState,

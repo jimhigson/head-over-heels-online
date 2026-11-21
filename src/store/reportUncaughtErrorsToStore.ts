@@ -1,6 +1,6 @@
 import { createSerialisableErrors } from "../utils/redux/createSerialisableErrors";
 import { errorCaught } from "./slices/errors/errorsSlice";
-import { type AppStore } from "./store";
+import type { AppStore } from "./store";
 
 /**
  * a promise that was cancelled rather than failing - eg monaco cancels its

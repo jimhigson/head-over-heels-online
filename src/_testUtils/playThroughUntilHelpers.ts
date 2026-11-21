@@ -1,7 +1,7 @@
 import { selectCurrentRoomState } from "../game/gameState/gameStateSelectors/selectCurrentRoomState";
 import { isFreeItem } from "../model/ItemInPlayNarrowedUnions";
-import { type CharacterName } from "../model/modelTypes";
-import { type UntilFunction } from "./playGameThrough";
+import type { CharacterName } from "../model/modelTypes";
+import type { UntilFunction } from "./playGameThrough";
 
 /**
  * for playGameThrough's `until`: whether the given free item, in the current

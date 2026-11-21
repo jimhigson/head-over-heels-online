@@ -1,12 +1,12 @@
-import { type SaveResult } from "../../db/campaign";
+import type { SaveResult } from "../../db/campaign";
 import { importSupabaseDb } from "../../db/supabaseDb.import";
-import { type CampaignLocator } from "../../model/modelTypes";
+import type { CampaignLocator } from "../../model/modelTypes";
 import {
   getLatestCampaignVersionViaApi,
   loadCampaignFromApi,
   saveCampaignViaApi,
 } from "../../store/slices/campaigns/campaignApiHelpers";
-import { type EditorThunk } from "../../store/store";
+import type { EditorThunk } from "../../store/store";
 import { campaignIsNamed, type EditorCampaign } from "../editorTypes";
 import {
   overwriteConfirmationShown,

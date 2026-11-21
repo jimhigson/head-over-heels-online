@@ -1,5 +1,5 @@
 import { tabDrag } from "../../ui/tabs/tabDrag";
-import { type DraggedRoomTab } from "../slice/PaneLayout";
+import type { DraggedRoomTab } from "../slice/PaneLayout";
 
 /**
  * a room tab, or a room to open in a tab (eg from the map), dragged (html drag

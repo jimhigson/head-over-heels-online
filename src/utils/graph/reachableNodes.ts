@@ -1,4 +1,4 @@
-import { type Graph } from "./Graph";
+import type { Graph } from "./Graph";
 
 /**
  * every node reachable from `seeds` by following edges in their own direction

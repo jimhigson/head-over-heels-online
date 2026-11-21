@@ -1,7 +1,7 @@
-import { type Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
 
-import { type SpritesheetName } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type setSpritesheetName } from "../../src/store/slices/userSettings/userSettingsSlice";
+import type { SpritesheetName } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { setSpritesheetName } from "../../src/store/slices/userSettings/userSettingsSlice";
 import {
   dispatchToStore,
   snapshotE2eCursor,

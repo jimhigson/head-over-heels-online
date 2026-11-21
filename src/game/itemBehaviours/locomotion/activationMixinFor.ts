@@ -1,18 +1,18 @@
 import { isPlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
-import { type RoomState } from "../../../model/RoomState";
+import type { RoomState } from "../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 import {
   type MechanicResult,
   unitMechanicalResult,
 } from "../../physics/MechanicResult";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { findClosestPlayable } from "./findClosestPlayable";
-import {
-  type LocomotiveBehaviourClass,
-  type LocomotiveItem,
-  type LocomotiveItemType,
-  type LocomotiveMixin,
+import type {
+  LocomotiveBehaviourClass,
+  LocomotiveItem,
+  LocomotiveItemType,
+  LocomotiveMixin,
 } from "./LocomotiveBehaviour";
 
 /**

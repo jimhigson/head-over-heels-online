@@ -1,10 +1,10 @@
-import {
-  type PayloadAction,
-  type SliceCaseReducers,
-  type SliceSelectors,
+import type {
+  PayloadAction,
+  SliceCaseReducers,
+  SliceSelectors,
 } from "@reduxjs/toolkit";
 
-import { type JsonItemType } from "../../../model/json/JsonItem";
+import type { JsonItemType } from "../../../model/json/JsonItem";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJsonItemIterators";
 import {
   itemTypeAndMaybeSubtype,
@@ -18,8 +18,8 @@ import {
   selectCursorRoomSelectionJsonItemIdsIncludingEditorGhostOwnersFromLevelEditorState,
   selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "../levelEditorSelectors";
-import { type HoveredItem, type LevelEditorState } from "../levelEditorSlice";
-import { type OpenRoomId } from "../OpenRoom";
+import type { HoveredItem, LevelEditorState } from "../levelEditorSlice";
+import type { OpenRoomId } from "../OpenRoom";
 import {
   layoutNodesOfType,
   maybeLayoutNode,
@@ -27,7 +27,7 @@ import {
   selectOpenRoomSelectionFromLevelEditorState,
   selectOpenRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "../PaneLayout";
-import { type SelectionEntry } from "../SelectionEntry";
+import type { SelectionEntry } from "../SelectionEntry";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 
 /**

@@ -1,4 +1,4 @@
-import { type JsonItem } from "../../JsonItem";
+import type { JsonItem } from "../../JsonItem";
 
 /**
  * the two "x,y" floor squares on the room side of a door, one per block of its

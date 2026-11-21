@@ -1,8 +1,8 @@
 import { blockSizePx } from "../../model/blockSizePx";
 import { defaultRoomHeightBlocks } from "../../model/defaultRoomHeightBlocks";
-import { type ItemInPlayType } from "../../model/ItemInPlay";
-import { type JsonItemConfig } from "../../model/json/JsonItem";
-import { type CharacterName } from "../../model/modelTypes";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { JsonItemConfig } from "../../model/json/JsonItem";
+import type { CharacterName } from "../../model/modelTypes";
 import { zxSpectrumFrameRate } from "../../originalGame";
 import { wallTileSize } from "../../sprites/spritesheet/spritesheetData/textureSizes";
 import { transformObject } from "../../utils/transformObject";

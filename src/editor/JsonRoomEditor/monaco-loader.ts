@@ -1,6 +1,5 @@
-import type * as Monaco from "monaco-editor";
-
 import { loader } from "@monaco-editor/react";
+import type * as Monaco from "monaco-editor";
 // Import the core editor (edcore.main) instead of the top-level "monaco-editor"
 // entry point. The top-level pulls in all ~80 language grammars, CSS/HTML/TypeScript
 // language services, and the LSP client — we only need JSON. This halves the

@@ -2,8 +2,8 @@ import { expect, test } from "vitest";
 
 import { type FloorType, nowhereRoomId } from "../model/json/ItemConfigMap";
 import { roomGridPositions } from "../model/map/roomGridPositions";
-import { type RoomJson, type SubRooms } from "../model/RoomJson";
-import { type Xy } from "../utils/vectors/vectors";
+import type { RoomJson, SubRooms } from "../model/RoomJson";
+import type { Xy } from "../utils/vectors/vectors";
 import { type MapCellOutline, mapCellOutline } from "./mapCellOutline";
 
 type TestRoomJson = RoomJson<string, string>;

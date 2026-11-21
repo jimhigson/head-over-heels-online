@@ -1,5 +1,4 @@
 import type * as Monaco from "monaco-editor";
-
 import { useEffect, useState } from "preact/hooks";
 
 import { loadMonacoOnce } from "./monaco-loader";

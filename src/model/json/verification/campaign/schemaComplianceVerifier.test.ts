@@ -1,10 +1,10 @@
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 import { expect, test } from "vitest";
 
 import { addItem, campaignOf, newRoom, runCheck } from "../testUtils";
-import {
-  type VerificationJsonItemUnion,
-  type VerificationRoomJson,
+import type {
+  VerificationJsonItemUnion,
+  VerificationRoomJson,
 } from "../verificationTypes";
 import { schemaComplianceVerifier } from "./schemaComplianceVerifier";
 

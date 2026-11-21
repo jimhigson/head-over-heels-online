@@ -1,7 +1,7 @@
 import { originalCampaignLocator } from "../../gameInfo";
 import { selectAssetsLoadingCount } from "../slices/assetsLoading/assetsLoadingSlice";
 import { campaignsApiSlice } from "../slices/campaigns/campaignsApiSlice";
-import { type GameRootState } from "../store";
+import type { GameRootState } from "../store";
 
 /**
  * Check if any RTK Query queries or game assets loading operations are currently in progress

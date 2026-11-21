@@ -1,18 +1,18 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
-import { type EditorRoomItemId, type EditorRoomJson } from "../../editorTypes";
-import { type PointingAtItem } from "../../RoomEditingArea/cursor/PointingAt";
+import type { Xy, Xyz } from "../../../utils/vectors/vectors";
+import type { EditorRoomItemId, EditorRoomJson } from "../../editorTypes";
+import type { PointingAtItem } from "../../RoomEditingArea/cursor/PointingAt";
 import { focusTabInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
 import {
   commitPendingEditsInPlace,
   commitPendingNudgeInPlace,
 } from "../inPlaceMutators/commitPendingNudgeInPlace";
-import { type LevelEditorState, type PendingEdits } from "../levelEditorSlice";
-import { type OpenRoomId } from "../OpenRoom";
+import type { LevelEditorState, PendingEdits } from "../levelEditorSlice";
+import type { OpenRoomId } from "../OpenRoom";
 import { maybeLayoutNode, tabGroupsIter, tabGroupTabs } from "../PaneLayout";
-import { type SelectionEntry } from "../SelectionEntry";
-import { type ItemDragAction } from "./dragToMoveReducers";
+import type { SelectionEntry } from "../SelectionEntry";
+import type { ItemDragAction } from "./dragToMoveReducers";
 
 /**
  * the plane a drag is moving on, from where on it the pointer began that part

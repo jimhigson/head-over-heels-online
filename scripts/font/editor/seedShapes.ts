@@ -1,6 +1,6 @@
 import { baselineFromTop, type Contour, px } from "../geometry/fontUnits";
-import { type GlyphOutline } from "../geometry/glyphOutline";
-import { type VectorPoint, type VectorShape } from "../geometry/glyphOverrides";
+import type { GlyphOutline } from "../geometry/glyphOutline";
+import type { VectorPoint, VectorShape } from "../geometry/glyphOverrides";
 import { linesIntersection } from "../geometry/slopes";
 
 const rounded = (value: number) => Math.round(value * 1e6) / 1e6;

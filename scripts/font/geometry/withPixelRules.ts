@@ -1,7 +1,7 @@
-import {
-  type GlyphOverride,
-  type PixelKey,
-  type PixelRuleSetting,
+import type {
+  GlyphOverride,
+  PixelKey,
+  PixelRuleSetting,
 } from "./glyphOverrides";
 
 /**

@@ -1,7 +1,7 @@
 import { Container } from "pixi.js";
 
-import { type Xy } from "../../../utils/vectors/vectors";
-import { type EditorRoomView } from "../../slice/EditorRoomView";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { EditorRoomView } from "../../slice/EditorRoomView";
 
 /**
  * continuous pan/zoom camera for the room editing area: a container whose

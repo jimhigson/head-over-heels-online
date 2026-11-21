@@ -1,13 +1,13 @@
-import {
-  type PayloadAction,
-  type SliceCaseReducers,
-  type SliceSelectors,
+import type {
+  PayloadAction,
+  SliceCaseReducers,
+  SliceSelectors,
 } from "@reduxjs/toolkit";
 
-import { type EditorRoomId } from "../../editorTypes";
+import type { EditorRoomId } from "../../editorTypes";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 
 export const changeRoomReducers = {
   changeToRoom(

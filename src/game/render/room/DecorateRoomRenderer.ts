@@ -1,6 +1,6 @@
-import { type Container } from "pixi.js";
+import type { Container } from "pixi.js";
 
-import { type RoomRenderContext } from "./RoomRenderContexts";
+import type { RoomRenderContext } from "./RoomRenderContexts";
 
 export type DecorateRoomRenderer = <
   RoomId extends string,

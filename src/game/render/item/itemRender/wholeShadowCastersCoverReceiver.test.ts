@@ -1,10 +1,10 @@
 import { expect, test } from "vitest";
 
 import { itemBehaviourKey } from "../../../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
 import { epsilon } from "../../../../utils/epsilon";
-import { type Xy, type Xyz } from "../../../../utils/vectors/vectors";
-import { type CollideableItem } from "../../../collision/aabbCollision";
+import type { Xy, Xyz } from "../../../../utils/vectors/vectors";
+import type { CollideableItem } from "../../../collision/aabbCollision";
 import { defaultBaseState } from "../../../gameState/loadRoom/itemDefaultStates";
 import { ItemBehaviour } from "../../../itemBehaviours/ItemBehaviour";
 import { wholeShadowCastersCoverReceiver } from "./wholeShadowCastersCoverReceiver";

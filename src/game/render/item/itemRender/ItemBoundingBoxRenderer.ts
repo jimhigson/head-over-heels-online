@@ -1,14 +1,14 @@
 import { Color, type ColorSource, Container, Graphics } from "pixi.js";
 
-import { type ItemInPlayType } from "../../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import { selectShowBoundingBoxTypesSet } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
 import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
-import { type Aabb, type Xy } from "../../../../utils/vectors/vectors";
-import { type ItemRenderContext } from "../../ItemRenderContexts";
+import type { Aabb, Xy } from "../../../../utils/vectors/vectors";
+import type { ItemRenderContext } from "../../ItemRenderContexts";
 import { projectWorldXyzToScreenXy } from "../../projections";
 import { TextContainer } from "../../text/TextContainer";
-import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
+import type { ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 const bbColors: Record<ItemInPlayType, string> = {
   // players

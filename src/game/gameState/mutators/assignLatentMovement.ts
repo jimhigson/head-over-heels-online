@@ -1,11 +1,11 @@
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import {
-  type FreeItem,
-  type UnionOfAllItemInPlayTypes,
+import type {
+  FreeItem,
+  UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
-import { type LatentMovementFrame } from "../../../model/ItemStateMap";
+import type { LatentMovementFrame } from "../../../model/ItemStateMap";
 import { forEachRoomItem } from "../../../model/roomItemsInPlayIterators";
-import { type RoomState } from "../../../model/RoomState";
+import type { RoomState } from "../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import {
   originXy,

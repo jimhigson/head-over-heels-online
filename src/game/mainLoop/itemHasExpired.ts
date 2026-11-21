@@ -1,5 +1,5 @@
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
-import { type RoomState } from "../../model/RoomState";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import type { RoomState } from "../../model/RoomState";
 
 export const itemHasExpired = <
   RoomId extends string,

@@ -1,12 +1,12 @@
-import {
-  type PayloadAction,
-  type SliceCaseReducers,
-  type SliceSelectors,
+import type {
+  PayloadAction,
+  SliceCaseReducers,
+  SliceSelectors,
 } from "@reduxjs/toolkit";
 
-import { type Xy } from "../../../utils/vectors/vectors";
-import { type LevelEditorState } from "../levelEditorSlice";
-import { type OpenRoomId } from "../OpenRoom";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { LevelEditorState } from "../levelEditorSlice";
+import type { OpenRoomId } from "../OpenRoom";
 import {
   layoutNodesOfType,
   maybeLayoutNode,

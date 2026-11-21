@@ -1,11 +1,11 @@
 import { Container, RenderLayer } from "pixi.js";
-import { type SetRequired } from "type-fest";
+import type { SetRequired } from "type-fest";
 
 import {
   itemBehaviourKey,
   type ItemInPlayType,
 } from "../../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { forEachRoomItem } from "../../../model/roomItemsInPlayIterators";
 import { audioCtx } from "../../../sound/audioCtx";
 import { soundsFadeDurationSec } from "../../../sound/soundUtils/stopWithFade";
@@ -13,10 +13,10 @@ import { defaultUserSettings } from "../../../store/slices/userSettings/defaultU
 import { emptyArray } from "../../../utils/empty";
 import { Graph } from "../../../utils/graph/Graph";
 import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
-import { type Xy } from "../../../utils/vectors/vectors";
-import {
-  type SceneGraphPhaseRecorder,
-  type SceneGraphSubPhase,
+import type { Xy } from "../../../utils/vectors/vectors";
+import type {
+  SceneGraphPhaseRecorder,
+  SceneGraphSubPhase,
 } from "../../mainLoop/frameTiming/FrameTimingStats";
 import { destroyFilterCache, type FilterCache } from "../filters/FilterCache";
 import { createItemLeafPixiRenderer } from "../item/itemRender/createItemLeafPixiRenderer";
@@ -24,8 +24,8 @@ import {
   createItemRenderer,
   type ItemRenderPipeline,
 } from "../item/itemRender/createItemRenderer";
-import { type DecorateItemMaybeRenderer } from "../item/itemRender/DecorateItemRenderer";
-import { type ItemTickContext, type ItemZGraph } from "../ItemRenderContexts";
+import type { DecorateItemMaybeRenderer } from "../item/itemRender/DecorateItemRenderer";
+import type { ItemTickContext, ItemZGraph } from "../ItemRenderContexts";
 import { zxSpectrumPixiColor } from "../palette/zxSpectrumPixiColours";
 import {
   makeItemRenderBoxAtCameraAngle,
@@ -35,13 +35,10 @@ import {
 import { DrawOrderBroadPhase } from "../sortZ/DrawOrderBroadPhase";
 import { participatesInDrawOrder } from "../sortZ/fixedZIndexes";
 import { updateZEdges } from "../sortZ/updateZEdges";
-import { type SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
-import { type DecorateRoomRenderer } from "./DecorateRoomRenderer";
-import {
-  type RoomRenderContext,
-  type RoomTickContext,
-} from "./RoomRenderContexts";
-import { type RoomRendererType } from "./RoomRendererType";
+import type { SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
+import type { DecorateRoomRenderer } from "./DecorateRoomRenderer";
+import type { RoomRenderContext, RoomTickContext } from "./RoomRenderContexts";
+import type { RoomRendererType } from "./RoomRendererType";
 
 /**
  * report the time since the previous sub-phase boundary to the timing

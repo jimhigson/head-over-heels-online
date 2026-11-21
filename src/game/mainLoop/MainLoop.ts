@@ -7,12 +7,12 @@ import {
   spritesheetMetas,
   type SpritesheetName,
 } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
+import type { Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import {
   errorCaught,
   selectHasError,
 } from "../../store/slices/errors/errorsSlice";
-import { type PlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
+import type { PlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import {
   selectCurrentCampaign,
   selectInputDirectionMode,
@@ -22,21 +22,21 @@ import {
   selectShowFps,
   selectSpritesheetName,
 } from "../../store/slices/gameMenus/gameMenusSelectors";
-import { type Upscale } from "../../store/slices/upscale/Upscale";
+import type { Upscale } from "../../store/slices/upscale/Upscale";
 import { selectGameEngineUpscale } from "../../store/slices/upscale/upscaleSlice";
-import {
-  type DisplaySettings,
-  type SoundSettings,
+import type {
+  DisplaySettings,
+  SoundSettings,
 } from "../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../store/store";
 import { validateSceneGraph } from "../../utils/pixi/validateSceneGraph";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
-import { type AppTicker } from "../../utils/ticker/AppTicker";
+import type { AppTicker } from "../../utils/ticker/AppTicker";
 import { appTicker } from "../../utils/ticker/appTickerInstance";
-import { type Xy } from "../../utils/vectors/vectors";
-import { type GameState } from "../gameState/GameState";
+import type { Xy } from "../../utils/vectors/vectors";
+import type { GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
-import { type PointerTracker } from "../input/PointerTracker";
+import type { PointerTracker } from "../input/PointerTracker";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
 import { selectSpritesheetUpscale } from "../render/filters/upscale/selectSpritesheetUpscale";
@@ -48,15 +48,15 @@ import {
 } from "../render/hud/onScreenControls/OnScreenControls.import";
 import { SoftwarePointerPixiRenderer } from "../render/pointer/SoftwarePointerPixiRenderer";
 import { needsNewRoomRenderer } from "../render/room/needsNewRoomRenderer";
-import {
-  type InGameGeneralRenderContext,
-  type RoomRenderContextInGame,
+import type {
+  InGameGeneralRenderContext,
+  RoomRenderContextInGame,
 } from "../render/room/RoomRenderContexts";
 import {
   noRoomRendererDecorators,
   RoomRenderer,
 } from "../render/room/RoomRenderer";
-import { type RoomRendererType } from "../render/room/RoomRendererType";
+import type { RoomRendererType } from "../render/room/RoomRendererType";
 import { RoomScrollRenderer } from "../render/room/RoomScrollRenderer";
 import {
   isUiFontLoaded,

@@ -1,8 +1,8 @@
-import { type ExportedSoundId } from "../../_generated/sfxdex/soundIds";
-import { type ItemConfigMap } from "../../model/json/ItemConfigMap";
+import type { ExportedSoundId } from "../../_generated/sfxdex/soundIds";
+import type { ItemConfigMap } from "../../model/json/ItemConfigMap";
 import { audioCtx } from "../audioCtx";
-import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
-import { type ItemSoundRenderer } from "../ItemSoundRenderer";
+import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import { loadSound } from "../soundsLoader";
 import { createAudioNode } from "../soundUtils/createAudioNode";
 

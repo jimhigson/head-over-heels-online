@@ -3,7 +3,7 @@ import { useCallback, useRef } from "preact/hooks";
 import { hudCharTextureSize } from "../../../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { useTotalUpscale } from "../../../../../store/slices/upscale/upscaleSelectors";
 import { unitVectors } from "../../../../../utils/vectors/unitVectors";
-import { type DirectionXy4 } from "../../../../../utils/vectors/vectors";
+import type { DirectionXy4 } from "../../../../../utils/vectors/vectors";
 import { useActionTap } from "../../useActionTap";
 
 const scrollLinesAtOnce = 4;

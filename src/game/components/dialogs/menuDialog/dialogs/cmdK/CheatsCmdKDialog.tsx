@@ -1,14 +1,14 @@
-import { type KeyboardEvent } from "preact/compat";
+import type { KeyboardEvent } from "preact/compat";
 
-import {
-  type EditorCommandDefinition,
-  type ItemToolCommand,
+import type {
+  EditorCommandDefinition,
+  ItemToolCommand,
 } from "../../../../../../editor/commands/EditorCommand";
 import { itemToolCommandDefinitions } from "../../../../../../editor/commands/itemToolCommandDefinitions";
 import { CmdKContents } from "../../../../../../editor/toolbar/CmdKContents";
-import {
-  type JsonItemConfig,
-  type JsonItemType,
+import type {
+  JsonItemConfig,
+  JsonItemType,
 } from "../../../../../../model/json/JsonItem";
 import { useAppDispatch } from "../../../../../../store/hooks";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";

@@ -1,8 +1,8 @@
 import { describe, expect, test } from "vitest";
 
 import { generateHoleInWallsForDoor } from "../../../model/inPlaceMutators/generateHoleInWallsForDoor";
-import { type EditorJsonItem, type EditorRoomItemId } from "../../editorTypes";
-import { type PreviewedRoomItemEdits } from "../levelEditorSlice";
+import type { EditorJsonItem, EditorRoomItemId } from "../../editorTypes";
+import type { PreviewedRoomItemEdits } from "../levelEditorSlice";
 
 describe("generateHoleInWallsForDoor", () => {
   // Helper to create a wall

@@ -1,8 +1,8 @@
-import { type ComponentChildren } from "preact";
+import type { ComponentChildren } from "preact";
 
 import { useEditorAppSelector } from "../../store/store";
 import { ToolbarButton } from "../toolbar/buttons/ToolbarButton";
-import { type EditorCommand } from "./EditorCommand";
+import type { EditorCommand } from "./EditorCommand";
 import { runCommand } from "./runCommand";
 import { selectCommandIsActive } from "./selectCommandIsActive";
 import { selectCommandIsAvailable } from "./selectCommandIsAvailable";

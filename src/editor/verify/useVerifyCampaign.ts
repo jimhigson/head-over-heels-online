@@ -1,12 +1,12 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { type CampaignVerificationIssue } from "../../model/json/verification/CampaignVerification";
-import { type VerificationCampaign } from "../../model/json/verification/verificationTypes";
+import type { CampaignVerificationIssue } from "../../model/json/verification/CampaignVerification";
+import type { VerificationCampaign } from "../../model/json/verification/verificationTypes";
 import { verifyCampaign } from "../../model/json/verification/verifyCampaign";
 import { type EditorRootState, useEditorAppSelector } from "../../store/store";
 import { useDebouncedValue } from "../../utils/preact/useDebouncedValue";
 import { createShallowStableSelector } from "../../utils/redux/createShallowStableSelector";
-import { type EditorCampaign } from "../editorTypes";
+import type { EditorCampaign } from "../editorTypes";
 import { selectCurrentCampaignInProgress } from "../slice/levelEditorSlice";
 
 /**

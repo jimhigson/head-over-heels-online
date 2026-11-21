@@ -1,4 +1,4 @@
-import { type VNode } from "preact";
+import type { VNode } from "preact";
 import { Children } from "preact/compat";
 
 import { MenuItems } from "../../MenuItems";

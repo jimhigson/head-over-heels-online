@@ -9,9 +9,9 @@ import {
 import { nonZero } from "../../../utils/epsilon";
 import { rotateXyzByInverseCameraAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { rotateXyz } from "../../../utils/vectors/rotateXy";
-import { type Plane, type Xy, type Xyz } from "../../../utils/vectors/vectors";
-import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
-import { type Tool } from "../interactivity/Tool";
+import type { Plane, Xy, Xyz } from "../../../utils/vectors/vectors";
+import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
+import type { Tool } from "../interactivity/Tool";
 
 const edgeTolerancePx = 3;
 const edgeToleranceBetweenFacesPx = 1.5;

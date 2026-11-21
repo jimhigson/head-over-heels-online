@@ -9,16 +9,16 @@ import {
 } from "../__test__/storeStates";
 import { nowhereRoomId } from "../../../../model/json/ItemConfigMap";
 import { uncoveredPerimeterEdges } from "../../../../model/json/verification/helpers/roomPerimeter";
-import { type WallJsonConfig } from "../../../../model/json/WallJsonConfig";
+import type { WallJsonConfig } from "../../../../model/json/WallJsonConfig";
 import { wallTimes } from "../../../../model/times";
-import { type SceneryName } from "../../../../sprites/planets";
-import { type EditorRootState } from "../../../../store/store";
-import { type Xyz } from "../../../../utils/vectors/vectors";
-import {
-  type EditorJsonItem,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type { SceneryName } from "../../../../sprites/planets";
+import type { EditorRootState } from "../../../../store/store";
+import type { Xyz } from "../../../../utils/vectors/vectors";
+import type {
+  EditorJsonItem,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../../../editorTypes";
 import {
   type LevelEditorState,

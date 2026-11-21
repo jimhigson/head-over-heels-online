@@ -7,8 +7,8 @@ import {
 } from "pixi.js";
 
 import { objectEntriesIter } from "../../utils/entries";
-import { type Xy } from "../../utils/vectors/vectors";
-import { type AppSpritesheetDataWithVariants } from "./AppSpritesheet";
+import type { Xy } from "../../utils/vectors/vectors";
+import type { AppSpritesheetDataWithVariants } from "./AppSpritesheet";
 import { packAllFrames } from "./spritesheetData/packAllFrames";
 import { apronWidth, tilingOffsets } from "./spritesheetData/tilingOffsets";
 

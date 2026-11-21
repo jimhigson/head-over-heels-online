@@ -1,12 +1,11 @@
-import type * as Monaco from "monaco-editor";
-
 import { findNodeAtLocation, type Node, parseTree } from "jsonc-parser";
-import { type editor } from "monaco-editor";
+import type * as Monaco from "monaco-editor";
+import type { editor } from "monaco-editor";
 import { useEffect, useRef, useState } from "preact/hooks";
 
 import { useEditorAppSelector } from "../../store/store";
 import { twClass } from "../../utils/twClass.tsx" with { type: "macro" };
-import { type EditorRoomItemId } from "../editorTypes";
+import type { EditorRoomItemId } from "../editorTypes";
 import { selectCursorRoomSelectionJsonItemIdsIncludingEditorGhostOwners } from "../slice/levelEditorSlice";
 import { useLoadMonaco } from "./useLoadMonaco";
 

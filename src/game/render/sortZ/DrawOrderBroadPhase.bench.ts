@@ -4,7 +4,7 @@ import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";
 import { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
 import { blockSizePx } from "../../physics/mechanicsConstants";
-import { type RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
+import type { RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { makeLcg } from "./__test__/makeLcg";
 import { populatedBroadPhase } from "./__test__/populatedBroadPhase";
 import { sweptCameraAngleForFrame } from "./stochasticTests/runTest";

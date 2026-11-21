@@ -4,7 +4,7 @@ import { cn } from "../../../ui/cn";
 import { MenuItem } from "../../../ui/menuBar/MenuItem";
 import { camelToSpaced } from "../../../utils/camelToSpaced";
 import { directionXyz8Glyphs } from "../../../utils/vectors/directionGlyphs";
-import { type DirectionXyz8 } from "../../../utils/vectors/vectors";
+import type { DirectionXyz8 } from "../../../utils/vectors/vectors";
 import { directionForItem } from "../../itemDirection";
 import {
   selectCurrentCommittedRoomJson,

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { type Xyz } from "../../../utils/vectors/vectors";
+import type { Xyz } from "../../../utils/vectors/vectors";
 import {
   blockRoom,
   pointerTool,

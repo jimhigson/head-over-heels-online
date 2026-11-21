@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { type VectorContour, type VectorPoint } from "./glyphOverrides";
+import type { VectorContour, VectorPoint } from "./glyphOverrides";
 import { slopeOf } from "./slopes";
 import {
   movePoint,

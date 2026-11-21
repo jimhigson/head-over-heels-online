@@ -1,29 +1,25 @@
-import { type PlanetName } from "../../../sprites/planets";
-import {
-  type DirectionXy4,
-  type Xy,
-  type Xyz,
-} from "../../../utils/vectors/vectors";
+import type { PlanetName } from "../../../sprites/planets";
+import type { DirectionXy4, Xy, Xyz } from "../../../utils/vectors/vectors";
 import { addDoorToRoom } from "../../inPlaceMutators/addDoorToRoom";
 import { createNewRoom } from "../../inPlaceMutators/createNewRoom";
-import { type CharacterName } from "../../modelTypes";
+import type { CharacterName } from "../../modelTypes";
 import {
   type AllRoomSubRoom,
   isWholeRoomSubRooms,
   type SubRoom,
 } from "../../RoomJson";
-import { type ExitGameRoomId } from "../ItemConfigMap";
-import {
-  type CampaignVerificationIssue,
-  type CampaignVerifier,
+import type { ExitGameRoomId } from "../ItemConfigMap";
+import type {
+  CampaignVerificationIssue,
+  CampaignVerifier,
 } from "./CampaignVerification";
 import { verificationGraph } from "./helpers/verificationGraph";
-import {
-  type VerificationCampaign,
-  type VerificationJsonItemUnion,
-  type VerificationRoomId,
-  type VerificationRoomItemId,
-  type VerificationRoomJson,
+import type {
+  VerificationCampaign,
+  VerificationJsonItemUnion,
+  VerificationRoomId,
+  VerificationRoomItemId,
+  VerificationRoomJson,
 } from "./verificationTypes";
 
 /** a fresh single-cell (or, with `gridPositions`, divided) room with full perimeter walls */

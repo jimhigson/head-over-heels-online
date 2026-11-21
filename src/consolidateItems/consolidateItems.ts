@@ -1,11 +1,11 @@
 import { canonicalize } from "json-canonicalize";
-import { type ValueOf } from "type-fest";
+import type { ValueOf } from "type-fest";
 
 import { blockSizePx } from "../game/physics/mechanicsConstants";
-import { type JsonItemUnion } from "../model/json/JsonItem";
+import type { JsonItemUnion } from "../model/json/JsonItem";
 import { getJsonItemTimes, optimiseTimesXyz } from "../model/times";
 import { omit } from "../utils/pick";
-import { type Xyz } from "../utils/vectors/vectors";
+import type { Xyz } from "../utils/vectors/vectors";
 import {
   type ConsolidatableJsonItem,
   getConsolidatableVector,

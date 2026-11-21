@@ -1,4 +1,4 @@
-#!/usr/bin/env -S pnpm tsx
+#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
 
 /**
  * Makes the generated debug spritesheet gfx/spritesDebug.webp from the
@@ -29,7 +29,7 @@ import {
   zxSpectrumHexColoursDimmed,
 } from "../src/originalGame";
 import { makeBaseSpritesheetData } from "../src/sprites/spritesheet/spritesheetData/makeBaseSpritesheetData";
-import { type TextureId } from "../src/sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import type { TextureId } from "../src/sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { parseHex } from "../src/utils/colour/parseHex";
 import { entries } from "../src/utils/entries";
 import {

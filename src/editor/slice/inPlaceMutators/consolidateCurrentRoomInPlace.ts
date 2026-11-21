@@ -1,12 +1,12 @@
 import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
 import { reconsolidateItems } from "../../../consolidateItems/reconsolidateItems";
 import { makeToasterConsolidationPredicate } from "../../../consolidateItems/toasterConsolidationPredicate";
-import { type EditorJsonItemUnion } from "../../editorTypes";
+import type { EditorJsonItemUnion } from "../../editorTypes";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomSelectionFromLevelEditorState,
 } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "../reducers/contextMenuReducers";
 import { setSelectionOnCursorRoomInPlace } from "./setSelectionOnCursorRoomInPlace";
 

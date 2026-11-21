@@ -1,4 +1,4 @@
-import { type Graph } from "../../../../utils/graph/Graph";
+import type { Graph } from "../../../../utils/graph/Graph";
 
 /**
  * a graph's edges as sorted `"backId->frontId"` strings - a canonical,

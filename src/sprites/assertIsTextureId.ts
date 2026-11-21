@@ -1,10 +1,10 @@
-import {
-  type AppSpritesheetData,
-  type AppSpritesheetDataWithVariants,
+import type {
+  AppSpritesheetData,
+  AppSpritesheetDataWithVariants,
 } from "./spritesheet/AppSpritesheet";
-import {
-  type AnimationId,
-  type TextureId,
+import type {
+  AnimationId,
+  TextureId,
 } from "./spritesheet/spritesheetData/makeSpritesheetData";
 
 export function assertIsTextureId(

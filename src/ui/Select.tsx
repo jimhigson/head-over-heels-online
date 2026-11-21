@@ -1,5 +1,5 @@
-import { type ComponentChildren } from "preact";
-import { type CSSProperties, type FC } from "preact/compat";
+import type { ComponentChildren } from "preact";
+import type { CSSProperties, FC } from "preact/compat";
 import { useRef, useState } from "preact/hooks";
 
 import { emptyObject } from "../utils/empty";

@@ -1,7 +1,7 @@
-import { type ItemInPlay } from "../../model/ItemInPlay";
+import type { ItemInPlay } from "../../model/ItemInPlay";
 import { flippedMirrorOrientation } from "../../model/MirrorOrientation";
 import { neverTime } from "../../utils/neverTime";
-import { type ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";
+import type { ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";
 import { switchMinTimeBetweenToggleMs } from "../physics/mechanicsConstants";
 import { shadowFullBlock } from "../render/shadows/shadowCastTextures";
 import { ItemBehaviour } from "./ItemBehaviour";

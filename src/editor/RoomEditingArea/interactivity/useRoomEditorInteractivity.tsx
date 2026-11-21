@@ -1,13 +1,13 @@
 import nanoEqual from "nano-equal";
-import { type RefObject } from "preact";
+import type { RefObject } from "preact";
 import { useCallback, useEffect, useMemo, useRef } from "preact/hooks";
 
 import { useAppDispatch } from "../../../store/hooks";
 import { type EditorRootState, editorStore, store } from "../../../store/store";
 import { usePanZoomWheel } from "../../../ui/usePanZoomWheel";
 import { catchErrors } from "../../../utils/errors/errors";
-import { type Xy } from "../../../utils/vectors/vectors";
-import { type EditorRoomRenderer } from "../../editorTypes";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { EditorRoomRenderer } from "../../editorTypes";
 import { selectPreviewOnlyJsonItemIds } from "../../slice/levelEditorSelectors";
 import {
   changeDragInProgress,
@@ -19,21 +19,21 @@ import {
   selectOpenRoomView,
   selectTool,
 } from "../../slice/levelEditorSlice";
-import { type OpenRoomId } from "../../slice/OpenRoom";
+import type { OpenRoomId } from "../../slice/OpenRoom";
 import { maybeLayoutNode } from "../../slice/PaneLayout";
 import { findPointerPointingAt } from "../cursor/findPointerPointingAt";
-import { type MaybePointingAtSomething } from "../cursor/PointingAt";
+import type { MaybePointingAtSomething } from "../cursor/PointingAt";
 import { viewportMousePosition } from "../cursor/viewportMouse";
 import { useProvidedPixiApplication } from "../PixiApplicationProvider";
 import { useEditorE2eApi } from "../useEditorE2eApi";
 import { useOpenRoomPane } from "../useOpenRoomPane";
 import { useEditorViewport } from "../viewport/EditorViewportProvider";
 import { nearestLadderZoom } from "../viewport/zoomLadder";
-import { type Tool } from "./Tool";
+import type { Tool } from "./Tool";
 import { EyeDropperToolHandler } from "./toolHandlers/EyeDropperToolHandler";
 import { ItemToolHandler } from "./toolHandlers/ItemToolHandler";
 import { PointerToolHandler } from "./toolHandlers/PointerToolHandler";
-import { type ToolHandler } from "./toolHandlers/ToolHandler";
+import type { ToolHandler } from "./toolHandlers/ToolHandler";
 
 const pointerTool: Tool = { type: "pointer" };
 

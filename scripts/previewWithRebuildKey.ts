@@ -1,9 +1,11 @@
+#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
+
 /**
  * Serves one app's production build with vite preview, rebuilding it when `b`
  * is pressed in this terminal. Used by `pnpm dev --built` inside tmux, one per
  * pane.
  *
- *   tsx scripts/previewWithRebuildKey.ts <game|editor> [...vite preview args]
+ *   ./scripts/previewWithRebuildKey.ts <game|editor> [...vite preview args]
  *
  * vite preview serves whatever is on disk, so a reload after the rebuild
  * shows it without restarting the server.

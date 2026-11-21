@@ -1,11 +1,11 @@
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 import { expect, test } from "vitest";
 
 import { isWholeRoomSubRooms } from "../../../model/RoomJson";
-import {
-  type EditorCampaign,
-  type EditorRoomId,
-  type EditorRoomJson,
+import type {
+  EditorCampaign,
+  EditorRoomId,
+  EditorRoomJson,
 } from "../../editorTypes";
 import { migrateRoomVerticalLinks } from "./migrateRoomVerticalLinks";
 

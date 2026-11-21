@@ -1,7 +1,7 @@
 import { isAbsolute } from "node:path";
-import { type Node } from "typescript";
+import type { Node } from "typescript";
 
-import { type TypeScript } from "./loadPrograms.ts";
+import type { TypeScript } from "./loadPrograms.ts";
 
 export type ReplaceTypeOptions = {
   /**

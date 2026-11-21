@@ -1,12 +1,12 @@
-import { type Container } from "pixi.js";
+import type { Container } from "pixi.js";
 
-import { type ItemInPlayType } from "../../../../model/ItemInPlay";
-import {
-  type ItemLeafRenderContext,
-  type ItemLeafTickContext,
-  type ItemTickContext,
+import type { ItemInPlayType } from "../../../../model/ItemInPlay";
+import type {
+  ItemLeafRenderContext,
+  ItemLeafTickContext,
+  ItemTickContext,
 } from "../../ItemRenderContexts";
-import { type Renderer } from "../../Renderer";
+import type { Renderer } from "../../Renderer";
 
 /**
  * an item's own graphics renderer - the leaf. It needs only the leaf-level

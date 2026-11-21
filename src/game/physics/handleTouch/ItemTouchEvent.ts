@@ -3,10 +3,10 @@ import {
   type PlayableItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
-import { type CharacterName } from "../../../model/modelTypes";
-import { type RoomState } from "../../../model/RoomState";
-import { type Xyz } from "../../../utils/vectors/vectors";
-import { type GameState } from "../../gameState/GameState";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import type { GameState } from "../../gameState/GameState";
 
 export type ItemTouchEvent<
   RoomId extends string,

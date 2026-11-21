@@ -1,9 +1,9 @@
-import { type ComponentChildren } from "preact";
+import type { ComponentChildren } from "preact";
 
 import { cssForRoomColour } from "../editor/toolbar/buttons/RoomColourSelect";
 import { CssVariables } from "../game/components/CssVariables";
 import { usePlayableTailwindSpriteClassname } from "../game/components/tailwindSprites/playableTailwindSpriteClassname";
-import { type RoomHues } from "../model/roomHues";
+import type { RoomHues } from "../model/roomHues";
 import { useIsUncolourised } from "../store/slices/gameMenus/gameMenusSelectors";
 import { naturalCompare } from "../utils/naturalCompare";
 import { CommandItem } from "./command/CommandItem";

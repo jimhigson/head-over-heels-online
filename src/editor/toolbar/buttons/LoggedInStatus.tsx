@@ -1,5 +1,5 @@
 import { skipToken } from "@reduxjs/toolkit/query/react";
-import { type Provider } from "@supabase/supabase-js";
+import type { Provider } from "@supabase/supabase-js";
 
 import { BlockyMarkdown } from "../../../game/components/BlockyMarkdown";
 import {

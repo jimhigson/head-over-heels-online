@@ -1,5 +1,5 @@
 import { createSlice, type Dispatch } from "@reduxjs/toolkit";
-import { type Promisable } from "type-fest";
+import type { Promisable } from "type-fest";
 
 import { clearAllData } from "../clearAllData";
 

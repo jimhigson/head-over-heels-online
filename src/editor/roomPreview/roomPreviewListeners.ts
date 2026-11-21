@@ -1,7 +1,7 @@
 import { startAppListening } from "../../store/listenerMiddleware";
-import { type EditorRootState } from "../../store/store";
+import type { EditorRootState } from "../../store/store";
 import { entries } from "../../utils/entries";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import { selectRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 import {
   roomPreviewFailed,

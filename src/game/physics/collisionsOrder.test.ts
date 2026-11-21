@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { type ItemInPlayType } from "../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
   type SortableObstacle,

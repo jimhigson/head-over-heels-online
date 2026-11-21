@@ -1,13 +1,13 @@
-#!/usr/bin/env -S pnpm tsx
+#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
 
-import {
-  type JsonArray,
-  type JsonObject,
-  type JsonValue,
-  type UnknownRecord,
+import type {
+  JsonArray,
+  JsonObject,
+  JsonValue,
+  UnknownRecord,
 } from "type-fest";
 
-import { wallTiles } from "../../src/sprites/planets.js";
+import { wallTiles } from "../../src/sprites/planets";
 
 // Read from stdin
 let input = "";

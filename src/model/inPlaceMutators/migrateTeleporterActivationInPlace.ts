@@ -1,6 +1,6 @@
-import { type PlanetName } from "../../sprites/planets";
+import type { PlanetName } from "../../sprites/planets";
 import { valuesIter } from "../../utils/entries";
-import { type AnyRoomJson } from "../RoomJson";
+import type { AnyRoomJson } from "../RoomJson";
 
 /**
  * a teleporter's config as campaigns and saves made before

@@ -1,11 +1,11 @@
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 import { describe, expect, test } from "vitest";
 
-import { type Xyz } from "../../../utils/vectors/vectors";
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type { Xyz } from "../../../utils/vectors/vectors";
+import type {
+  EditorJsonItemUnion,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../../editorTypes";
 import {
   describeRoomJsonEdit,

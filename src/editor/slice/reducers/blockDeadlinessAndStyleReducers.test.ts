@@ -1,10 +1,7 @@
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomItemId,
-} from "../../editorTypes";
+import type { EditorJsonItemUnion, EditorRoomItemId } from "../../editorTypes";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
   setSelectedBlocksDeadly,

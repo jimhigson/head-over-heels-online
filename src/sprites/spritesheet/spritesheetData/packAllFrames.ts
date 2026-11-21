@@ -1,5 +1,5 @@
 import { objectEntriesIter } from "../../../utils/entries";
-import { type AppSpriteFrame } from "./AppSpriteFrame";
+import type { AppSpriteFrame } from "./AppSpriteFrame";
 
 export type PackRect = { x: number; y: number; w: number; h: number };
 

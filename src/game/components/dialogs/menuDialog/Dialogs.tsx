@@ -1,12 +1,12 @@
 import { useEffect, useState } from "preact/hooks";
-import { type EmptyObject } from "type-fest";
+import type { EmptyObject } from "type-fest";
 
-import { type MarkdownPageName } from "../../../../manual/pages";
+import type { MarkdownPageName } from "../../../../manual/pages";
 import { loadSoundCategory } from "../../../../sound/soundsLoader";
 import { useAppSelector } from "../../../../store/hooks";
 import { AssetLoading } from "../../../../store/slices/assetsLoading/AssetLoading";
 import { Dialog } from "../../../../ui/Dialog";
-import { type DialogId } from "./DialogId";
+import type { DialogId } from "./DialogId";
 import { LazyAboutDialog } from "./dialogs/about/AboutDialog.lazy";
 import { LazyCommunityGamesDialog } from "./dialogs/communityGames/CommunityGamesDialog.lazy";
 import { LazyControlOptionsDialog } from "./dialogs/controlOptions/ControlOptionsDialog.lazy";

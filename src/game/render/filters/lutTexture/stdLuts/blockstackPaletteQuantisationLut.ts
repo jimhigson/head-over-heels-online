@@ -1,6 +1,6 @@
-import { type Color } from "pixi.js";
+import type { Color } from "pixi.js";
 
-import { type BlockstackPaletteColourName } from "../../../../../sprites/palette/spritesheetPalette";
+import type { BlockstackPaletteColourName } from "../../../../../sprites/palette/spritesheetPalette";
 import { blockstackPixiPalettes } from "../../../../../sprites/palette/spritesheetPixiPalettes";
 import { entries } from "../../../../../utils/entries";
 import { voronoiLut } from "../voronoiLut";

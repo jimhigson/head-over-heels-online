@@ -1,9 +1,9 @@
 import { emptyArray } from "../../utils/empty";
-import {
-  type EditorItemInPlayUnion,
-  type EditorJsonItemUnion,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorItemInPlayUnion,
+  EditorJsonItemUnion,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../editorTypes";
 import { editorGhostOfEmittedItem } from "./editorGhostOfEmittedItem";
 import { editorGhostsOfLiftEndsAndConnectors } from "./editorGhostsOfLiftEndsAndConnectors";

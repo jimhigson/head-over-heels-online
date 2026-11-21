@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 
-import { type Database } from "../_generated/db";
+import type { Database } from "../_generated/db";
 import { supabaseAnonKey, supabaseUrl } from "./supabaseEnvironmentVariables";
 
 const supabaseRequestTimeoutMs = 10_000;

@@ -1,12 +1,12 @@
-import { type AnimatedSprite } from "pixi.js";
+import type { AnimatedSprite } from "pixi.js";
 
 import { isStoodOn } from "../../../model/StoodOnBy";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { createSprite } from "../createSprite";
-import { type ItemAppearance } from "./ItemAppearance";
+import type { ItemAppearance } from "./ItemAppearance";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
-import { type ItemShadowAppearanceOutsideView } from "./shadowMaskAppearances/itemShadowMaskAppearanceForItem";
+import type { ItemShadowAppearanceOutsideView } from "./shadowMaskAppearances/itemShadowMaskAppearanceForItem";
 
 type SpringRenderProps = {
   compressed: boolean;

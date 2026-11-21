@@ -2,12 +2,12 @@ import {
   itemBehaviourKey,
   type ItemInPlayType,
 } from "../../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { makeItemFadeOut } from "../../gameState/mutators/makeItemFadeOut";
 import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
 import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { applyMechanicsResults } from "../../mainLoop/applyMechanicsResults";
-import { type MechanicResult } from "../MechanicResult";
+import type { MechanicResult } from "../MechanicResult";
 import { jumping } from "../mechanics/jumping";
 import { walking } from "../mechanics/walking";
 import { type ItemTouchEvent, movingItemIsPlayable } from "./ItemTouchEvent";

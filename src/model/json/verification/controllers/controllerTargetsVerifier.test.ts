@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { addItem, campaignOf, newRoom, runCheck } from "../testUtils";
-import { type VerificationRoomItemId } from "../verificationTypes";
+import type { VerificationRoomItemId } from "../verificationTypes";
 import { controllerTargetsVerifier } from "./controllerTargetsVerifier";
 
 const block = () => ({

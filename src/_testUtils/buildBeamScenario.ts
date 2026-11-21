@@ -6,10 +6,10 @@ import {
   tickLampLightBeams,
 } from "../game/itemBehaviours/LampBehaviour";
 import { jimAtBlockstackingUserId } from "../gameInfo";
-import { type ItemInPlay } from "../model/ItemInPlay";
+import type { ItemInPlay } from "../model/ItemInPlay";
 import { roomItemsIterable } from "../model/roomItemsInPlayIterators";
-import { type RoomJson } from "../model/RoomJson";
-import { type RoomState } from "../model/RoomState";
+import type { RoomJson } from "../model/RoomJson";
+import type { RoomState } from "../model/RoomState";
 import { noPlanetsLiberated } from "../store/slices/gameInPlay/gameInPlaySlice";
 
 /**

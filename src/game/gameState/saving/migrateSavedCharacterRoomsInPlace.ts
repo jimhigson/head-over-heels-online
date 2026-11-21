@@ -1,4 +1,4 @@
-import { type OverrideProperties } from "type-fest";
+import type { OverrideProperties } from "type-fest";
 
 import {
   migrateTeleporterActivationConfigInPlace,
@@ -9,19 +9,16 @@ import {
   migrateWallConfigInPlace,
   migrateWallTilesInPlace,
 } from "../../../model/inPlaceMutators/migrateWallTilesInPlace";
-import {
-  type ItemInPlay,
-  type ItemInPlayConfig,
-} from "../../../model/ItemInPlay";
+import type { ItemInPlay, ItemInPlayConfig } from "../../../model/ItemInPlay";
 import {
   isFreeItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
-import { type ItemState } from "../../../model/ItemState";
-import { type HeelsAbilities } from "../../../model/ItemStateMap";
-import { type CharacterName } from "../../../model/modelTypes";
+import type { ItemState } from "../../../model/ItemState";
+import type { HeelsAbilities } from "../../../model/ItemStateMap";
+import type { CharacterName } from "../../../model/modelTypes";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
-import { type Progression } from "../../../model/RoomState";
+import type { Progression } from "../../../model/RoomState";
 import { valuesIter } from "../../../utils/entries";
 import { neverTime } from "../../../utils/neverTime";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -34,7 +31,7 @@ import {
   type XyzBox,
 } from "../../../utils/vectors/vectors";
 import { fineXyzToBlockXyz } from "../../render/projections";
-import { type SavedCharacterRooms } from "./SavedGameState";
+import type { SavedCharacterRooms } from "./SavedGameState";
 
 /**
  * a direction as an old save could hold it (a friendly name) or as the in-play

@@ -1,10 +1,6 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 
-import {
-  type AppDispatch,
-  type EditorRootState,
-  type GameRootState,
-} from "./store";
+import type { AppDispatch, EditorRootState, GameRootState } from "./store";
 
 export const listenerMiddleware = createListenerMiddleware();
 

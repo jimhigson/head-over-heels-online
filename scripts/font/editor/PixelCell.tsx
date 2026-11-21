@@ -1,7 +1,7 @@
 import { useTip } from "../../../src/ui/tip/useTip";
-import { type PixelKey } from "../geometry/glyphOverrides";
-import { type PixelRules } from "../geometry/pixelRuleIndex";
-import { type RuleSetting } from "../geometry/ruleEnablement";
+import type { PixelKey } from "../geometry/glyphOverrides";
+import type { PixelRules } from "../geometry/pixelRuleIndex";
+import type { RuleSetting } from "../geometry/ruleEnablement";
 import { ruleLabel } from "../geometry/ruleTree";
 
 export type PixelCellProps = {

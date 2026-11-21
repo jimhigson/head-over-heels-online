@@ -1,4 +1,4 @@
-import { type TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import type { TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
 export type SaveIconProps = {
   /** colours the arrow */

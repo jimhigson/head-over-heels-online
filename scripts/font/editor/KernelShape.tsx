@@ -1,4 +1,4 @@
-import { type KernelRule } from "../geometry/kernelRules";
+import type { KernelRule } from "../geometry/kernelRules";
 
 export type KernelShapeProps = {
   rule: KernelRule;

@@ -1,4 +1,4 @@
-import { type CampaignDbClient } from "./CampaignDbClient";
+import type { CampaignDbClient } from "./CampaignDbClient";
 import { importPostgrestDbClient } from "./postgrestDbClient.import";
 import { importSupabaseDb } from "./supabaseDb.import";
 

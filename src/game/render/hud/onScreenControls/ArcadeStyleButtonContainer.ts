@@ -1,7 +1,7 @@
 import { Container, Sprite } from "pixi.js";
 
-import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
-import { type ArcadeButtonAction } from "../../../../sprites/spritesheet/spritesheetData/variantSpritesheetData";
+import type { AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
+import type { ArcadeButtonAction } from "../../../../sprites/spritesheet/spritesheetData/variantSpritesheetData";
 import { buttonVariantTextureId } from "../../../../sprites/spritesheet/variantTextureId";
 import { createSprite } from "../../createSprite";
 

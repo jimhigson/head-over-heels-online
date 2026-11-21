@@ -1,4 +1,4 @@
-import { type ComponentChildren, type VNode } from "preact";
+import type { ComponentChildren, VNode } from "preact";
 
 import { useUniqueId } from "../../utils/preact/useUniqueId";
 import { Tip } from "./Tip";

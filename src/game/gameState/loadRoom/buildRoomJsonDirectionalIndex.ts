@@ -1,8 +1,5 @@
-import {
-  type JsonItem,
-  type JsonItemUnion,
-} from "../../../model/json/JsonItem";
-import { type DirectionXy4 } from "../../../utils/vectors/vectors";
+import type { JsonItem, JsonItemUnion } from "../../../model/json/JsonItem";
+import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 
 type DirectionalLocationMap<
   T extends "door" | "wall",

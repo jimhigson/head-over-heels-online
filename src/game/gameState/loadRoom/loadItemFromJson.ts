@@ -1,17 +1,17 @@
 import { produce } from "immer";
 
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
-import { type JsonItemUnion } from "../../../model/json/JsonItem";
-import { type RoomJson } from "../../../model/RoomJson";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { JsonItemUnion } from "../../../model/json/JsonItem";
+import type { RoomJson } from "../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { getJsonItemTimes } from "../../../model/times";
-import {
-  type PlanetsLiberated,
-  type RoomPickupsCollected,
-  type ScrollsRead,
+import type {
+  PlanetsLiberated,
+  RoomPickupsCollected,
+  ScrollsRead,
 } from "../../../store/slices/gameInPlay/gameInPlaySlice";
-import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
+import type { PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
 import { hashXyzToNumber0to1 } from "../../../utils/maths/hashing";
 import { unitVectors } from "../../../utils/vectors/unitVectors";

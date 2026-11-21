@@ -158,7 +158,6 @@
             "prefer-inline": true
           }
         ],
-        "import/consistent-type-specifier-style": ["error", "prefer-inline"],
         "preact-class/prefer-class-over-classname": "error",
         "no-restricted-imports": [
           "error",
@@ -186,7 +185,15 @@
           {
             "newlinesBetween": 1,
             "order": "asc",
-            "type": "alphabetical"
+            "type": "alphabetical",
+            // a type-only import sorts with the others from where it imports
+            // from, as one with inline type specifiers does
+            "groups": [
+              ["builtin", "external"],
+              "internal",
+              ["parent", "sibling", "index"],
+              "unknown"
+            ]
           }
         ],
         "perfectionist/sort-named-imports": [
@@ -215,7 +222,10 @@
             "prefer": "type-imports",
             "fixStyle": "inline-type-imports"
           }
-        ]
+        ],
+        // an import of only types is removed whole, as node's type stripping
+        // only does with a top-level `import type`
+        "typescript/no-import-type-side-effects": "error"
       },
       "plugins": ["typescript", "unicorn", "react", "import"],
       "jsPlugins": [

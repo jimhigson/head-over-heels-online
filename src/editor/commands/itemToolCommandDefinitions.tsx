@@ -4,11 +4,11 @@ import { capitalize } from "string-transform";
 import { playableTailwindSpriteClassname } from "../../game/components/tailwindSprites/playableTailwindSpriteClassname";
 import { rotatingSceneryTiles } from "../../model/inPlaceMutators/rotatingSceneryTiles";
 import { type PlanetName, planets } from "../../sprites/planets";
-import {
-  type AnimatedTextureTailwindClass,
-  type TextureTailwindClass,
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
 } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import { type EditorRootState } from "../../store/store";
+import type { EditorRootState } from "../../store/store";
 import { emptyArray, emptyObject } from "../../utils/empty";
 import { fromAllEntries } from "../../utils/entries";
 import { twClass } from "../../utils/twClass.tsx" with { type: "macro" };
@@ -20,10 +20,7 @@ import {
   StackedToolbarIcons,
 } from "../toolbar/buttons/ToolbarButtonContentPatterns";
 import { buttonSpriteRevertColourClasses } from "../toolbar/buttonSizeClassNames";
-import {
-  type EditorCommandDefinition,
-  type ItemToolCommand,
-} from "./EditorCommand";
+import type { EditorCommandDefinition, ItemToolCommand } from "./EditorCommand";
 
 const selectCursorRoomScenery = (state: EditorRootState) =>
   selectCurrentCommittedRoomJsonFromLevelEditorState(state.levelEditor).planet;

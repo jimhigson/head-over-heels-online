@@ -1,5 +1,5 @@
 import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
-import { type VerificationRoomItemId } from "../verificationTypes";
+import type { VerificationRoomItemId } from "../verificationTypes";
 
 /**
  * an item's id as it shows in a verification message: strong, and escaped so

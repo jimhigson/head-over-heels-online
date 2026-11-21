@@ -37,14 +37,14 @@ import {
   tangentAxis,
   type Xy,
 } from "../../../utils/vectors/vectors";
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorJsonItemUnion,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../../editorTypes";
 import { selectCursorRoomFromLevelEditorState } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { changeCurrentRoomInPlace } from "./changeCurrentRoomInPlace";
 import { deleteRoomsInPlace } from "./deleteRoomsInPlace";
 

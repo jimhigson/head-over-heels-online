@@ -1,4 +1,4 @@
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 import { expect, test } from "vitest";
 
 import { getAtPath, setAtPath } from "./getAtPath";

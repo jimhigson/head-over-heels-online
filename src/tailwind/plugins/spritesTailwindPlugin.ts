@@ -1,7 +1,7 @@
 import { imageSize } from "image-size";
 import { readFileSync } from "node:fs";
 import plugin from "tailwindcss/plugin";
-import { type CSSRuleObject } from "tailwindcss/types/config";
+import type { CSSRuleObject } from "tailwindcss/types/config";
 
 import { editorUiScale } from "../../editor/editorUiScale";
 import { zxSpectrumHexColours } from "../../originalGame";

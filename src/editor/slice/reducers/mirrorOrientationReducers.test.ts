@@ -1,11 +1,8 @@
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
-import { type MirrorOrientation } from "../../../model/MirrorOrientation";
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomItemId,
-} from "../../editorTypes";
+import type { MirrorOrientation } from "../../../model/MirrorOrientation";
+import type { EditorJsonItemUnion, EditorRoomItemId } from "../../editorTypes";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
   type LevelEditorState,

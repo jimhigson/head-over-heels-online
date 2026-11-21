@@ -1,9 +1,6 @@
-import { type ComponentChildren, type Ref } from "preact";
-import {
-  type ButtonHTMLAttributes,
-  type PropsWithChildren,
-} from "preact/compat";
-import { type Simplify } from "type-fest";
+import type { ComponentChildren, Ref } from "preact";
+import type { ButtonHTMLAttributes, PropsWithChildren } from "preact/compat";
+import type { Simplify } from "type-fest";
 
 import { BlockyMarkdown } from "../game/components/BlockyMarkdown";
 import { cn } from "./cn";
@@ -12,7 +9,7 @@ import {
   formatShortcutKeysAsMarkdown,
 } from "./enhanceTooltipWithHotkeys";
 import { useTip } from "./tip/useTip";
-import { type ShortcutKeys } from "./useKeyboardShortcut";
+import type { ShortcutKeys } from "./useKeyboardShortcut";
 
 export type ButtonProps = Simplify<
   Pick<

@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { type ValueOf } from "type-fest";
+import type { ValueOf } from "type-fest";
 
-import { type SaveFailure } from "../../db/campaign";
+import type { SaveFailure } from "../../db/campaign";
 import { clearAllData } from "../../store/slices/clearAllData";
 
 export const showOkAfterSaveDuration = 2_000;

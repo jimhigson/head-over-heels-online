@@ -1,5 +1,5 @@
-import { type Tool } from "../../RoomEditingArea/interactivity/Tool";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { Tool } from "../../RoomEditingArea/interactivity/Tool";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { layoutNodesOfType } from "../PaneLayout";
 import { clearContextMenuXyInPlace } from "../reducers/contextMenuReducers";
 import { setSelectionOnCursorRoomInPlace } from "./setSelectionOnCursorRoomInPlace";

@@ -1,9 +1,9 @@
-import { type GameState } from "../game/gameState/GameState";
+import type { GameState } from "../game/gameState/GameState";
 import { selectCurrentRoomState } from "../game/gameState/gameStateSelectors/selectCurrentRoomState";
-import { type ItemInPlay, type ItemInPlayType } from "../model/ItemInPlay";
-import { type ItemState } from "../model/ItemState";
+import type { ItemInPlay, ItemInPlayType } from "../model/ItemInPlay";
+import type { ItemState } from "../model/ItemState";
 import { getRoomItem } from "../model/RoomState";
-import { type TestRoomId } from "./basicRoom";
+import type { TestRoomId } from "./basicRoom";
 
 /** head's state, in whichever room head is in */
 export const headState = (gameState: GameState<TestRoomId>) => {

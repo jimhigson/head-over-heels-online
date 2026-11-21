@@ -1,6 +1,6 @@
-import { type ComponentProps } from "preact";
-import { type CSSProperties } from "preact/compat";
-import { type OverrideProperties } from "type-fest";
+import type { ComponentProps } from "preact";
+import type { CSSProperties } from "preact/compat";
+import type { OverrideProperties } from "type-fest";
 
 import { cn } from "../cn";
 import "./commandColours.css";

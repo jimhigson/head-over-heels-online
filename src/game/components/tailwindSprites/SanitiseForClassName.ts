@@ -1,4 +1,4 @@
-import { type Replace } from "type-fest";
+import type { Replace } from "type-fest";
 
 export type SanitisedForClassName<S extends string> = Replace<
   S,

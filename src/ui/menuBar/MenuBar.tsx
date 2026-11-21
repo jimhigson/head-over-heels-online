@@ -1,5 +1,5 @@
 import { isValidElement, toChildArray } from "preact";
-import { type PropsWithChildren } from "preact/compat";
+import type { PropsWithChildren } from "preact/compat";
 import { useRef, useState } from "preact/hooks";
 
 import { cn } from "../cn";

@@ -1,5 +1,5 @@
 import { monsterMovements } from "../../../model/json/MonsterJsonConfig";
-import { type JsonMovement } from "../../../model/json/utilityJsonConfigTypes";
+import type { JsonMovement } from "../../../model/json/utilityJsonConfigTypes";
 import { useEditorAppSelector } from "../../../store/store";
 import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import {

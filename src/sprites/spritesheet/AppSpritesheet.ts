@@ -1,17 +1,17 @@
-import { type Spritesheet } from "pixi.js";
-import { type Tagged } from "type-fest";
+import type { Spritesheet } from "pixi.js";
+import type { Tagged } from "type-fest";
 
-import { type PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
-import { type AppSpriteFrame } from "./spritesheetData/AppSpriteFrame";
-import { type makeBaseSpritesheetData } from "./spritesheetData/makeBaseSpritesheetData";
-import {
-  type BaseTextureId,
-  type makeSpritesheetData,
-  type SpritesheetDataFrames,
+import type { PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
+import type { AppSpriteFrame } from "./spritesheetData/AppSpriteFrame";
+import type { makeBaseSpritesheetData } from "./spritesheetData/makeBaseSpritesheetData";
+import type {
+  BaseTextureId,
+  makeSpritesheetData,
+  SpritesheetDataFrames,
 } from "./spritesheetData/makeSpritesheetData";
-import {
-  type SpritesheetMetadata,
-  type SpritesheetName,
+import type {
+  SpritesheetMetadata,
+  SpritesheetName,
 } from "./spritesheetData/spritesheetMetaData";
 
 /**

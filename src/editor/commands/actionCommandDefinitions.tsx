@@ -1,6 +1,6 @@
-import { type TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import type { TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { editorCampaignsApiSlice } from "../../store/slices/campaigns/editorCampaignsApiSlice";
-import { type EditorRootState } from "../../store/store";
+import type { EditorRootState } from "../../store/store";
 import { MenuItemGlyphIcon } from "../../ui/menuBar/MenuItemGlyphIcon";
 import { copySelectedItemsToClipboard } from "../clipboard/copySelectedItemsToClipboard";
 import { pasteItemsFromClipboard } from "../clipboard/pasteItemsFromClipboard";
@@ -43,7 +43,7 @@ import { copyCampaignShareLink } from "../toolbar/copyCampaignShareLink";
 import { showEditorCmdKThunk } from "../toolbar/showEditorCmdKThunk";
 import { showVerifyIssuesThunk } from "../toolbar/showVerifyIssuesThunk";
 import { selectVerification } from "../verify/useVerifyCampaign";
-import { type EditorCommandDefinition } from "./EditorCommand";
+import type { EditorCommandDefinition } from "./EditorCommand";
 import { SaveIcon } from "./SaveIcon";
 
 const selectSomethingSelected = (state: EditorRootState) =>

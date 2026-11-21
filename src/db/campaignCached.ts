@@ -1,7 +1,7 @@
 import { migrateCampaignInPlace } from "../model/inPlaceMutators/migrateCampaignInPlace";
 import { withLocalStorageCache } from "../utils/io/withLocalStorageCache";
 import { type CampaignGetLocator, loadCampaignFromDb } from "./campaign";
-import { type CampaignDbClient } from "./CampaignDbClient";
+import type { CampaignDbClient } from "./CampaignDbClient";
 import { withLoggingOfTiming } from "./withLoggingOfTiming";
 
 export const loadCampaignFromDbCached = withLocalStorageCache(

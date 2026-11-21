@@ -1,16 +1,16 @@
-import { type Container, type RenderLayer } from "pixi.js";
-import { type SetRequired } from "type-fest";
+import type { Container, RenderLayer } from "pixi.js";
+import type { SetRequired } from "type-fest";
 
-import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import { type ItemInPlayType } from "../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
-import { type RoomState } from "../../model/RoomState";
-import { type Graph } from "../../utils/graph/Graph";
-import { type FilterCache } from "./filters/FilterCache";
-import { type createItemLeafPixiRenderer } from "./item/itemRender/createItemLeafPixiRenderer";
-import { type ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
-import { type RenderBoxes } from "./renderBox/makeItemRenderBoxAtCameraAngle";
-import { type GeneralRenderContext } from "./room/RoomRenderContexts";
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import type { RoomState } from "../../model/RoomState";
+import type { Graph } from "../../utils/graph/Graph";
+import type { FilterCache } from "./filters/FilterCache";
+import type { createItemLeafPixiRenderer } from "./item/itemRender/createItemLeafPixiRenderer";
+import type { ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
+import type { RenderBoxes } from "./renderBox/makeItemRenderBoxAtCameraAngle";
+import type { GeneralRenderContext } from "./room/RoomRenderContexts";
 
 export type ItemZGraph<
   RoomId extends string = string,

@@ -3,12 +3,12 @@ import { expect, test } from "vitest";
 import { addItemToRoom } from "../../game/gameState/mutators/addItemToRoom";
 import { blockSizePx } from "../../game/physics/mechanicsConstants";
 import { cameraAngleBase } from "../../utils/vectors/cameraAngleVectors";
-import { type Xyz } from "../../utils/vectors/vectors";
-import {
-  type EditorJsonItem,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type { Xyz } from "../../utils/vectors/vectors";
+import type {
+  EditorJsonItem,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../editorTypes";
 import { loadEditorRoom } from "../slice/loadEditorRoom";
 import {

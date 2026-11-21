@@ -1,4 +1,4 @@
-import { type RoomState } from "../../../../../model/RoomState";
+import type { RoomState } from "../../../../../model/RoomState";
 import { selectHeelsAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import { getWhite } from "../../../gameColours/gameColours";
 import { TextContainer } from "../../../text/TextContainer";

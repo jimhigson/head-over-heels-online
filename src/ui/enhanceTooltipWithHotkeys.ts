@@ -1,4 +1,4 @@
-import { type ShortcutKeys } from "./useKeyboardShortcut";
+import type { ShortcutKeys } from "./useKeyboardShortcut";
 
 export const formatShortcutKey = (key: string): string =>
   key

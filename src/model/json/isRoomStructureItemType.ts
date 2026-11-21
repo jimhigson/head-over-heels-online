@@ -1,4 +1,4 @@
-import { type JsonItemType } from "./JsonItem";
+import type { JsonItemType } from "./JsonItem";
 
 /**
  * whether items of this type make up the room's structure - its floors, walls

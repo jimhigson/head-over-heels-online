@@ -1,7 +1,7 @@
 import { editorStore, useEditorAppSelector } from "../../store/store";
 import { MenuItem } from "../../ui/menuBar/MenuItem";
 import { SwitchN } from "../../ui/Switch";
-import { type EditorCommand, type SettingCommand } from "./EditorCommand";
+import type { EditorCommand, SettingCommand } from "./EditorCommand";
 import { runCommand } from "./runCommand";
 import { selectCommandIsAvailable } from "./selectCommandIsAvailable";
 

@@ -1,8 +1,8 @@
-import { type RefObject } from "preact";
+import type { RefObject } from "preact";
 
-import { type RoomRendererDecorators } from "../../game/render/room/RoomRenderer";
-import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
-import { type EditorRoomRenderer } from "../editorTypes";
+import type { RoomRendererDecorators } from "../../game/render/room/RoomRenderer";
+import type { Spritesheets } from "../../sprites/spritesheet/Spritesheets";
+import type { EditorRoomRenderer } from "../editorTypes";
 import { useEditorMainLoop } from "./useEditorMainLoop";
 
 export type EditorMainLoopProps = {

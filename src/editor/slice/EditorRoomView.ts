@@ -1,5 +1,5 @@
-import { type Xy } from "../../utils/vectors/vectors";
-import { type RenderedRoomDimensions } from "../RoomEditingArea/editorRoomRenderDimensions";
+import type { Xy } from "../../utils/vectors/vectors";
+import type { RenderedRoomDimensions } from "../RoomEditingArea/editorRoomRenderDimensions";
 
 /**
  * how a room is framed in the editing pane: a zoom and pan mapping engine

@@ -1,6 +1,6 @@
 import { Component, type ErrorInfo } from "preact";
-import { type PropsWithChildren } from "preact/compat";
-import { type EmptyObject } from "type-fest";
+import type { PropsWithChildren } from "preact/compat";
+import type { EmptyObject } from "type-fest";
 
 import { errorCaught } from "../../store/slices/errors/errorsSlice";
 import { store } from "../../store/store";

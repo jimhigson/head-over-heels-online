@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
-import { type Xy } from "../../../utils/vectors/vectors";
+import type { Xy } from "../../../utils/vectors/vectors";
 import { roomZGraphAt } from "./__test__/roomZGraphAt";
 import { wallFloorSeamRoom } from "./__test__/wallFloorSeamRoom";
 

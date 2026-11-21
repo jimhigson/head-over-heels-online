@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 
-import { type designFor } from "../geometry/fontDesign";
+import type { designFor } from "../geometry/fontDesign";
 
 export const outputDir = "src/_generated/font";
 export const manifestPath = `${outputDir}/manifest.json`;

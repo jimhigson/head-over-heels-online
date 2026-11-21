@@ -1,6 +1,6 @@
-import { type Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
 
-import { type ButtonId } from "../../src/game/render/hud/HudButtonRenderer";
+import type { ButtonId } from "../../src/game/render/hud/HudButtonRenderer";
 import { fastForwardGameTime, whilePainting } from "./advanceGameTime";
 import { dispatchToStore } from "./gameStateQueries";
 import { osSlowness } from "./osSlowness";

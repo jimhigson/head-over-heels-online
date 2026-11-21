@@ -1,6 +1,6 @@
-import { type itemBehaviourKey } from "../../../model/ItemInPlay";
-import { type XyzBox } from "../../../utils/vectors/vectors";
-import { type ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
+import type { itemBehaviourKey } from "../../../model/ItemInPlay";
+import type { XyzBox } from "../../../utils/vectors/vectors";
+import type { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
 
 /**
  * the surface the draw-order machinery needs from an item - purely physical,

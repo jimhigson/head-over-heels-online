@@ -1,6 +1,6 @@
 import { Container, type Rectangle, Sprite, type Texture } from "pixi.js";
 
-import { type Xy } from "../vectors/vectors";
+import type { Xy } from "../vectors/vectors";
 
 /**
  * a rectangle covered edge to edge with copies of a texture, laid as a tiling

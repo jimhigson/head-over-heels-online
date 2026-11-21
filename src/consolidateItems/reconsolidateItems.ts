@@ -1,8 +1,8 @@
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 
 import { nextItemIdSet } from "../model/inPlaceMutators/nextItemId";
-import { type JsonItemUnion } from "../model/json/JsonItem";
-import { type RoomJsonItems } from "../model/RoomJson";
+import type { JsonItemUnion } from "../model/json/JsonItem";
+import type { RoomJsonItems } from "../model/RoomJson";
 import { roomJsonItemsEntriesIterable } from "../model/RoomJsonItemIterators";
 import { getJsonItemTimes } from "../model/times";
 import { keys } from "../utils/entries";

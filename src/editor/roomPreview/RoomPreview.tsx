@@ -1,6 +1,6 @@
 import { NonIdealState } from "../../ui/NonIdealState";
 import { SpinnerHead } from "../../ui/Spinner";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import { previewHeightPx, previewWidthPx } from "./renderRoomPreviewImage";
 import { useRoomPreviewSnapshot } from "./useRoomPreviewSnapshot";
 

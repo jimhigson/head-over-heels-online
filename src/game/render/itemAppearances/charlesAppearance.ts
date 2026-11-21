@@ -4,9 +4,9 @@ import {
   resolveSpriteDirectionIndexXy4,
   spriteFlipXAtAngle,
 } from "../../../utils/vectors/resolveCameraRelativeVector";
-import { type DirectionIndexXy4 } from "../../../utils/vectors/vectors";
+import type { DirectionIndexXy4 } from "../../../utils/vectors/vectors";
 import { createStackedSprites } from "./createStackedSprites";
-import { type ItemAppearance } from "./ItemAppearance";
+import type { ItemAppearance } from "./ItemAppearance";
 
 type CharlesRenderProps = {
   /** the directional sprite-variant index drawn */

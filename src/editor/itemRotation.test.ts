@@ -1,10 +1,10 @@
 import { expect, test } from "vitest";
 
-import {
-  type EditorJsonItem,
-  type EditorJsonItemUnion,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorJsonItem,
+  EditorJsonItemUnion,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "./editorTypes";
 import {
   isPlacedItemRotatable,

@@ -1,6 +1,6 @@
-import { type ValueOf } from "type-fest";
+import type { ValueOf } from "type-fest";
 
-import { type DirectionXyz4, type DirectionXyz8 } from "./vectors";
+import type { DirectionXyz4, DirectionXyz8 } from "./vectors";
 
 /**
  * the arrow glyph for each world direction, as it appears at the default

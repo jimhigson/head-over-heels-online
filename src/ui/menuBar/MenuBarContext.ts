@@ -1,5 +1,5 @@
 import { createContext, type RefObject } from "preact";
-import { type Dispatch, type StateUpdater } from "preact/hooks";
+import type { Dispatch, StateUpdater } from "preact/hooks";
 
 /** what a `MenuBar` tells each of its menus */
 export type MenuBarContextValue = {

@@ -1,8 +1,8 @@
 import { entries, keys } from "../../../utils/entries";
-import { type EditorRoomJson } from "../../editorTypes";
+import type { EditorRoomJson } from "../../editorTypes";
 import { applyPreviewedEditsInPlace } from "../applyPreviewedEditsInPlace";
-import { type LevelEditorState, type NudgeKind } from "../levelEditorSlice";
-import { type UndoLink } from "../reducers/undoReducers";
+import type { LevelEditorState, NudgeKind } from "../levelEditorSlice";
+import type { UndoLink } from "../reducers/undoReducers";
 import { consolidateCurrentRoomInPlace } from "./consolidateCurrentRoomInPlace";
 import { pushUndoEntryInPlace } from "./pushUndoEntryInPlace";
 

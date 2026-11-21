@@ -1,7 +1,7 @@
-import { type Color } from "pixi.js";
+import type { Color } from "pixi.js";
 
-import { type PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
-import { type HexColour } from "../colour/HexColour";
+import type { PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
+import type { HexColour } from "../colour/HexColour";
 import { objectEntriesIter } from "../entries";
 
 export type NamedPixiColours<ColourName extends string> = Record<

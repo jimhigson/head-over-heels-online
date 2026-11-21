@@ -1,4 +1,4 @@
-import { type PersistMigrate } from "redux-persist/es/types";
+import type { PersistMigrate } from "redux-persist/es/types";
 
 /**
  * a redux-persist migrate that only imports the migrations when the stored

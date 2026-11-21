@@ -4,7 +4,7 @@ import { useMemo } from "preact/hooks";
 import { originalCampaignLocator } from "../gameInfo";
 import { firstSubRoomId } from "../model/firstSubRoomId";
 import { teleporterLinksFromCell } from "../model/map/teleporterLinksFromCell";
-import { type OptionallyNamedCampaign } from "../model/modelTypes";
+import type { OptionallyNamedCampaign } from "../model/modelTypes";
 import { emptyObject } from "../utils/empty";
 import { campaignMapAreas } from "./campaignMapAreas";
 import { mapAreaIndexOfRoom } from "./mapAreaIndexOfRoom";
@@ -13,10 +13,10 @@ import {
   type MapSettingsHooks,
   noCellPlayables,
 } from "./MapContext";
-import {
-  type PostfixRoomDecoratorComponent,
-  type PrefixRoomDecoratorComponent,
-  type RoomBehaviourComponent,
+import type {
+  PostfixRoomDecoratorComponent,
+  PrefixRoomDecoratorComponent,
+  RoomBehaviourComponent,
 } from "./RoomDecoratorProps";
 import { selectNotableItems } from "./selectNotableItems";
 

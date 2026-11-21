@@ -3,7 +3,7 @@ import {
   planets,
   type SceneryName,
 } from "../../sprites/planets";
-import { type RoomJson } from "../RoomJson";
+import type { RoomJson } from "../RoomJson";
 import { roomJsonItemsIterable } from "../RoomJsonItemIterators";
 import { rotatingSceneryTiles } from "./rotatingSceneryTiles";
 

@@ -1,8 +1,8 @@
-import { type EditorRootState } from "../../store/store";
+import type { EditorRootState } from "../../store/store";
 import { selectPreviewOnlyJsonItemIds } from "./levelEditorSelectors";
-import { type OpenRoomId } from "./OpenRoom";
+import type { OpenRoomId } from "./OpenRoom";
 import { maybeLayoutNode } from "./PaneLayout";
-import { type SelectionEntry } from "./SelectionEntry";
+import type { SelectionEntry } from "./SelectionEntry";
 
 /**
  * the one thing in a list, or undefined if it holds none or several

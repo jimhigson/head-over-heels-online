@@ -1,4 +1,4 @@
-import { type ComponentChildren, type ComponentProps } from "preact";
+import type { ComponentChildren, ComponentProps } from "preact";
 
 import { cn } from "../cn";
 

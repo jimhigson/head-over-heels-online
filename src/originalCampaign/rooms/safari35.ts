@@ -1,0 +1,103 @@
+import { inferRoomJson, type RoomJson } from "../../model/RoomJson.ts";
+import type { OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
+
+export const room = inferRoomJson({
+  color: { hue: "yellow", shade: "dimmed" },
+  items: {
+    b: {
+      config: { style: "organic", times: { y: 4 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "block",
+    },
+    b1: {
+      config: { style: "organic" },
+      position: { x: 7, y: 7, z: 0 },
+      type: "block",
+    },
+    d: {
+      config: { direction: "right", toRoom: "safari36" },
+      position: { x: 0, y: 0, z: 1 },
+      type: "door",
+    },
+    db: {
+      config: { style: "volcano", times: { x: 7 } },
+      position: { x: 1, y: 5, z: 0 },
+      type: "deadlyBlock",
+    },
+    f: {
+      config: { floorType: "none", times: { x: 8, y: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "floor",
+    },
+    mp: {
+      config: {
+        activated: "on-stand",
+        movement: "clockwise",
+        startDirection: "right",
+      },
+      position: { x: 7, y: 5, z: 1 },
+      type: "movingPlatform",
+    },
+    w: {
+      config: {
+        direction: "towards",
+        tiles: [
+          "wall",
+          "shield",
+          "wall",
+          "window",
+          "window",
+          "wall",
+          "shield",
+          "wall",
+        ],
+      },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    w1: {
+      config: {
+        direction: "right",
+        tiles: ["wall", "window", "window", "wall", "shield", "wall"],
+      },
+      position: { x: 0, y: 2, z: 0 },
+      type: "wall",
+    },
+    w2: {
+      config: {
+        direction: "away",
+        tiles: [
+          "wall",
+          "window",
+          "wall",
+          "shield",
+          "shield",
+          "wall",
+          "window",
+          "wall",
+        ],
+      },
+      position: { x: 0, y: 8, z: 0 },
+      type: "wall",
+    },
+    w3: {
+      config: {
+        direction: "left",
+        tiles: [
+          "wall",
+          "window",
+          "wall",
+          "shield",
+          "shield",
+          "wall",
+          "window",
+          "wall",
+        ],
+      },
+      position: { x: 8, y: 0, z: 0 },
+      type: "wall",
+    },
+  },
+  meta: { subRooms: { "*": { below: { room: "safari34" } } } },
+  planet: "safari",
+}) satisfies RoomJson<OriginalCampaignRoomId, string, "safari">;

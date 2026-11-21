@@ -1,11 +1,11 @@
-import { type EditorRootState } from "../../store/store";
+import type { EditorRootState } from "../../store/store";
 import { keys } from "../../utils/entries";
 import { RoomPreviewTipContents } from "../roomPreview/RoomPreviewTipContents";
 import {
   changeToRoom,
   selectCurrentCampaignInProgress,
 } from "../slice/levelEditorSlice";
-import { type ActionCommand } from "./EditorCommand";
+import type { ActionCommand } from "./EditorCommand";
 
 /**
  * a command to go to each of the campaign's rooms, keyed `room.<roomId>`

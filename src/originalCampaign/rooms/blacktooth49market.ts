@@ -1,0 +1,72 @@
+import { inferRoomJson, type RoomJson } from "../../model/RoomJson.ts";
+import type { OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
+
+export const room = inferRoomJson({
+  color: { hue: "white", shade: "basic" },
+  items: {
+    d: {
+      config: { direction: "right", toRoom: "blacktooth48market" },
+      position: { x: 0, y: 0, z: 0 },
+      type: "door",
+    },
+    d1: {
+      config: { direction: "left", toRoom: "blacktooth50market" },
+      position: { x: 8, y: 0, z: 0 },
+      type: "door",
+    },
+    db: {
+      config: { style: "volcano", times: { x: 2, z: 2 } },
+      position: { x: 3, y: 0, z: 0 },
+      type: "deadlyBlock",
+    },
+    db1: {
+      config: { style: "volcano", times: { x: 2 } },
+      position: { x: 3, y: 1, z: 1 },
+      type: "deadlyBlock",
+    },
+    f: {
+      config: {
+        floorType: "standable",
+        scenery: "market",
+        times: { x: 8, y: 2 },
+      },
+      position: { x: 0, y: 0, z: 0 },
+      type: "floor",
+    },
+    w: {
+      config: {
+        direction: "towards",
+        tiles: [
+          "passage",
+          "more-fruits",
+          "fruits",
+          "more-fruits",
+          "fruits",
+          "passage",
+          "more-fruits",
+          "fruits",
+        ],
+      },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    w1: {
+      config: {
+        direction: "away",
+        tiles: [
+          "more-fruits",
+          "fruits",
+          "passage",
+          "more-fruits",
+          "fruits",
+          "passage",
+          "more-fruits",
+          "fruits",
+        ],
+      },
+      position: { x: 0, y: 2, z: 0 },
+      type: "wall",
+    },
+  },
+  planet: "market",
+}) satisfies RoomJson<OriginalCampaignRoomId, string, "market">;

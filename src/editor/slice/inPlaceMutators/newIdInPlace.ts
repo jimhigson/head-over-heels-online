@@ -1,6 +1,6 @@
-import { type Split } from "type-fest";
+import type { Split } from "type-fest";
 
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 
 /**
  * the part of an id before its "-", naming what it identifies

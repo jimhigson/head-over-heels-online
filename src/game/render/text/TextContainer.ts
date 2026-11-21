@@ -8,7 +8,7 @@ import {
   Texture,
 } from "pixi.js";
 
-import { type PokeableNumber } from "../../../model/ItemStateMap";
+import type { PokeableNumber } from "../../../model/ItemStateMap";
 import { blockstackPixiPalettes } from "../../../sprites/palette/spritesheetPixiPalettes";
 import {
   hudCharTextureSize,

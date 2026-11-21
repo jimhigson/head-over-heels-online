@@ -1,4 +1,4 @@
-import { type ItemRenderExtents } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { ItemRenderExtents } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 
 const fullBlockWithSlightOverdraw = { xNeg: 1, xPos: 1, yNeg: 1, yPos: 1 };
 const smallItemWithSlightOverdraw = { xNeg: 1, yNeg: 1, zPos: 1 };

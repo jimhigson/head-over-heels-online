@@ -1,4 +1,4 @@
-import { type Color } from "pixi.js";
+import type { Color } from "pixi.js";
 
 import {
   zxSpectrumHexColours,

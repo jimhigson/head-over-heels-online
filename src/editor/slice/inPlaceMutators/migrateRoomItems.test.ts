@@ -1,10 +1,10 @@
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 import { expect, test } from "vitest";
 
-import {
-  type EditorCampaign,
-  type EditorRoomId,
-  type EditorRoomJson,
+import type {
+  EditorCampaign,
+  EditorRoomId,
+  EditorRoomJson,
 } from "../../editorTypes";
 import { migrateRoomItems } from "./migrateRoomItems";
 

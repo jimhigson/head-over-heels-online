@@ -3,7 +3,7 @@ import nanoEqual from "nano-equal";
 import { worldCornerForCameraCorner } from "../../../game/render/sortZ/projectAabbCorners";
 import { twClass } from "../../../utils/twClass.tsx" with { type: "macro" };
 import { rotateXyz } from "../../../utils/vectors/rotateXy";
-import { type Xy } from "../../../utils/vectors/vectors";
+import type { Xy } from "../../../utils/vectors/vectors";
 import {
   betweenLeftAndTowards,
   betweenRightAndAway,
@@ -15,7 +15,7 @@ import {
   betweenUpAndAway,
   betweenUpAndLeft,
 } from "./pointerIntersectionEdge";
-import { type PointingAtOnItem } from "./PointingAt";
+import type { PointingAtOnItem } from "./PointingAt";
 
 /**
  * the resize cursor to show for the corner/edge being pointed at, or undefined

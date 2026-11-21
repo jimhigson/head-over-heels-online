@@ -1,4 +1,4 @@
-import { type Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
 
 /**
  * driving the world in an e2e build: nothing moves on its own, so anything a

@@ -11,10 +11,10 @@ import {
   animationSpeed,
   framesWithOriginalGameTimings,
 } from "../../game/render/createSprite";
-import { type AppSpritesheetWithVariants } from "../../sprites/spritesheet/AppSpritesheet";
-import { type AnimationId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import type { AppSpritesheetWithVariants } from "../../sprites/spritesheet/AppSpritesheet";
+import type { AnimationId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { range } from "../iterators/range";
-import { type Xy } from "../vectors/vectors";
+import type { Xy } from "../vectors/vectors";
 import { pixiContainerToString } from "./pixiContainerToString";
 import { UniqueTextureAnimatedSprite } from "./UniqueTextureAnimatedSprite";
 import { UniqueTextureSprite } from "./UniqueTextureSprite";

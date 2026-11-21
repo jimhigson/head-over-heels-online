@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 
 import { exitGameRoomId } from "../../ItemConfigMap";
 import { addDoor, campaignOf, newRoom, runCheck } from "../testUtils";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 import { missingExitVerifier } from "./missingExitVerifier";
 
 test("flags a campaign with no door to the end of the game", () => {

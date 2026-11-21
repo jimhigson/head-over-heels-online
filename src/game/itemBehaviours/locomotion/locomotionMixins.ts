@@ -1,5 +1,5 @@
 import { playablesInRoom } from "../../../model/roomItemsInPlayIterators";
-import { type RoomState } from "../../../model/RoomState";
+import type { RoomState } from "../../../model/RoomState";
 import { selectHasAllPlanetCrowns } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
@@ -28,8 +28,8 @@ import {
   xyEqual,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
-import { type GameState } from "../../gameState/GameState";
-import { type ItemTouchEvent } from "../../physics/handleTouch/ItemTouchEvent";
+import type { GameState } from "../../gameState/GameState";
+import type { ItemTouchEvent } from "../../physics/handleTouch/ItemTouchEvent";
 import {
   type MechanicResult,
   unitMechanicalResult,

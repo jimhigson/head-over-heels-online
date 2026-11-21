@@ -1,4 +1,4 @@
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 
 /**
  * Re-key the legacy combined-slice localStorage entry into separate per-slice keys.

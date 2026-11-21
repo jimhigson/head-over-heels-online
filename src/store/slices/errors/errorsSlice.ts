@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import { type SerialisableError } from "../../../utils/redux/createSerialisableErrors";
+import type { SerialisableError } from "../../../utils/redux/createSerialisableErrors";
 import { clearAllData } from "../clearAllData";
 
 export type ErrorsState = {

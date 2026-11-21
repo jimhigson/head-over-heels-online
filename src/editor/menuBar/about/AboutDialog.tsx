@@ -1,4 +1,4 @@
-import { type ComponentChildren } from "preact";
+import type { ComponentChildren } from "preact";
 
 import { Border } from "../../../ui/Border";
 import { Button } from "../../../ui/Button";

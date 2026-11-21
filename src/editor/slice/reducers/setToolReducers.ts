@@ -1,12 +1,12 @@
-import {
-  type PayloadAction,
-  type SliceCaseReducers,
-  type SliceSelectors,
+import type {
+  PayloadAction,
+  SliceCaseReducers,
+  SliceSelectors,
 } from "@reduxjs/toolkit";
 
-import { type Tool } from "../../RoomEditingArea/interactivity/Tool";
+import type { Tool } from "../../RoomEditingArea/interactivity/Tool";
 import { setToolInPlace } from "../inPlaceMutators/setToolInPlace";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 
 const pointerTool: Tool = { type: "pointer" };
 

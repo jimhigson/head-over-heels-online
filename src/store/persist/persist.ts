@@ -1,5 +1,5 @@
 import persistReducer from "redux-persist/es/persistReducer";
-import { type PersistConfig } from "redux-persist/es/types";
+import type { PersistConfig } from "redux-persist/es/types";
 
 import { importSavedGamesMigrations } from "../../persistMigrations/savedGamesMigrations.import";
 import { importUserSettingsMigrations } from "../../persistMigrations/userSettingsMigrations.import";

@@ -1,4 +1,4 @@
-import { type RenderBoxes } from "../../../game/render/renderBox/makeItemRenderBoxAtCameraAngle";
+import type { RenderBoxes } from "../../../game/render/renderBox/makeItemRenderBoxAtCameraAngle";
 import {
   projectApparentBottomCentre,
   projectApparentTopLeft,
@@ -12,8 +12,8 @@ import {
   type Xy,
   type XyzBox,
 } from "../../../utils/vectors/vectors";
-import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
-import { type Tool } from "../interactivity/Tool";
+import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
+import type { Tool } from "../interactivity/Tool";
 
 /**
  * the box an item draws into, or undefined when it draws nothing that can be

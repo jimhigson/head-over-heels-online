@@ -1,12 +1,12 @@
-import { type ItemInPlayType } from "../../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import { isPlayableItem } from "../../../../model/ItemInPlayNarrowedUnions";
 import {
   appearanceForItem,
   type ItemTypeWithAppearance,
 } from "../../itemAppearances/appearanceForItem";
-import { type ItemLeafRenderContext } from "../../ItemRenderContexts";
+import type { ItemLeafRenderContext } from "../../ItemRenderContexts";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
-import { type ItemLeafPixiRenderer } from "./ItemPixiRenderer";
+import type { ItemLeafPixiRenderer } from "./ItemPixiRenderer";
 import {
   PlayableItemPixiRenderer,
   type PlayableRenderedType,

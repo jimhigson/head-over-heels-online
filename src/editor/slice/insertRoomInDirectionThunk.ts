@@ -1,5 +1,5 @@
-import { type EditorThunk } from "../../store/store";
-import { type DirectionXyz4 } from "../../utils/vectors/vectors";
+import type { EditorThunk } from "../../store/store";
+import type { DirectionXyz4 } from "../../utils/vectors/vectors";
 import { insertRoom, setRoomAboveOrBelow } from "./levelEditorSlice";
 
 /** adds a new room next to the current one, as the map's insert buttons do */

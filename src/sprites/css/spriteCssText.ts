@@ -1,6 +1,6 @@
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
 import { entries, objectEntriesIter } from "../../utils/entries";
-import { type AppSpritesheetData } from "../spritesheet/AppSpritesheet";
+import type { AppSpritesheetData } from "../spritesheet/AppSpritesheet";
 import { keyframesToCss } from "./keyframesToCss";
 import {
   animatedSpriteSpecificCssVars,

@@ -1,10 +1,10 @@
 import { createPortal } from "preact/compat";
 import { useEffect, useLayoutEffect, useRef } from "preact/hooks";
-import { type EmptyObject } from "type-fest";
+import type { EmptyObject } from "type-fest";
 
 import { CssVariables } from "../game/components/CssVariables";
 import { usePointerTracker } from "../game/input/InputStateProvider";
-import { type TextureTailwindClass } from "../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import type { TextureTailwindClass } from "../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppSelector } from "../store/hooks";
 import { selectIsPointerOnTube } from "../store/slices/gameMenus/gameMenusSelectors";
 import { useTotalUpscale } from "../store/slices/upscale/upscaleSelectors";

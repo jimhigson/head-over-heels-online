@@ -4,7 +4,7 @@ import {
   type RoomGraph,
   roomGridPositions,
 } from "../../../map/roomGridPositions";
-import { type VerificationCampaign } from "../verificationTypes";
+import type { VerificationCampaign } from "../verificationTypes";
 
 /**
  * the whole-campaign room graph the verifiers run against: positions for every

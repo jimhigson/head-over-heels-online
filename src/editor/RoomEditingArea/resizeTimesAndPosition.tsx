@@ -7,7 +7,7 @@ import {
   subXyz,
   type Xyz,
 } from "../../utils/vectors/vectors";
-import { type EditorJsonItemUnion } from "../editorTypes";
+import type { EditorJsonItemUnion } from "../editorTypes";
 
 /* times has to be a natural number (>=1)
  *  Map:

@@ -1,9 +1,9 @@
-import { type Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
 import chalk from "chalk";
 
-import { type SpritesheetName } from "../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { SpritesheetName } from "../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { needRefreshMenuShown } from "../src/store/slices/gameMenus/gameMenusSlice";
-import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
+import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import { dispatchToStore } from "./testUtils/gameStateQueries";
 import { elapsed, formatProjectName, logUpscale } from "./testUtils/logging";
 import {

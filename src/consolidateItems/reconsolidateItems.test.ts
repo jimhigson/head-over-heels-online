@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { type JsonItemUnion } from "../model/json/JsonItem";
+import type { JsonItemUnion } from "../model/json/JsonItem";
 import { getJsonItemTimes } from "../model/times";
 import { reconsolidateItems } from "./reconsolidateItems";
 import { makeToasterConsolidationPredicate } from "./toasterConsolidationPredicate";

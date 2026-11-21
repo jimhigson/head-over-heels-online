@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, test } from "vitest";
 import { firstRoomId, setUpBasicGame } from "../../../_testUtils/basicRoom";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import { type ItemInPlay } from "../../../model/ItemInPlay";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { store } from "../../../store/store";
 
 beforeEach(() => {

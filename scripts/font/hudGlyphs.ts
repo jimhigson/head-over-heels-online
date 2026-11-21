@@ -10,7 +10,7 @@ import {
   hudCharTextureSize,
   hudLowercaseCharTextureSize,
 } from "../../src/sprites/spritesheet/spritesheetData/textureSizes";
-import { type Xy } from "../../src/utils/vectors/vectors";
+import type { Xy } from "../../src/utils/vectors/vectors";
 import {
   menuLeaderBackChar,
   menuLeaderFocussedChar,

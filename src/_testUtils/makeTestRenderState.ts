@@ -1,5 +1,5 @@
-import { type ItemTickContext } from "../game/render/ItemRenderContexts";
-import { type GameStateWithMockInput } from "./MockInputStateTracker";
+import type { ItemTickContext } from "../game/render/ItemRenderContexts";
+import type { GameStateWithMockInput } from "./MockInputStateTracker";
 import {
   makeFakeRendererToAdvanceAudioContextClock,
   makeTestRoomSoundRenderer,

@@ -1,12 +1,12 @@
-import { type Container } from "pixi.js";
+import type { Container } from "pixi.js";
 
-import { type ItemInPlayType } from "../../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import { AppearanceRenderer } from "../../appearance/AppearanceRenderer";
-import {
-  type ItemLeafRenderContext,
-  type ItemLeafTickContext,
+import type {
+  ItemLeafRenderContext,
+  ItemLeafTickContext,
 } from "../../ItemRenderContexts";
-import { type ItemLeafPixiRenderer } from "./ItemPixiRenderer";
+import type { ItemLeafPixiRenderer } from "./ItemPixiRenderer";
 
 /** specialise appearance renderer (in types only) to handle (specifically) Items more conveniently */
 export class ItemAppearancePixiRenderer<

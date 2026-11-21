@@ -1,5 +1,5 @@
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
-import { type JsonItem } from "../../../model/json/JsonItem";
+import type { JsonItem } from "../../../model/json/JsonItem";
 import { doorTargetSubRoomId } from "../../../model/map/doorTargetSubRoomId";
 import {
   roomGridPositions,
@@ -14,9 +14,9 @@ import {
   type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
-import { type EditorRoomId, type EditorRoomJson } from "../../editorTypes";
+import type { EditorRoomId, EditorRoomJson } from "../../editorTypes";
 import { selectCursorRoomFromLevelEditorState } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { changeCurrentRoomInPlace } from "./changeCurrentRoomInPlace";
 import {
   type CellDoorsAcross,

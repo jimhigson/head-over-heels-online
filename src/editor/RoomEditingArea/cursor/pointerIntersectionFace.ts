@@ -5,8 +5,8 @@ import {
 } from "../../../game/render/sortZ/projectAabbCorners";
 import { rotateXyzByInverseCameraAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { scaleXyz, type Xy, type Xyz } from "../../../utils/vectors/vectors";
-import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
-import { type Tool } from "../interactivity/Tool";
+import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
+import type { Tool } from "../interactivity/Tool";
 
 const up = { z: 1, x: 0, y: 0 };
 /** the apparent (camera-space) face on the screen-lower-left of an item */

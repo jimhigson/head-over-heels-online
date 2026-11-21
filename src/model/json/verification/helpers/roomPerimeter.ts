@@ -4,10 +4,10 @@ import {
   tangentAxis,
   type Xy,
 } from "../../../../utils/vectors/vectors";
-import { type RoomJson } from "../../../RoomJson";
+import type { RoomJson } from "../../../RoomJson";
 import { roomJsonItemsIterable } from "../../../RoomJsonItemIterators";
 import { wallTimes } from "../../../times";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 
 /** the campaign rooms carry plain-`string` item ids, so stay generic over them */
 type RoomWithItems<RoomItemId extends string> = Pick<

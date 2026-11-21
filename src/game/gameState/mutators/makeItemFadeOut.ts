@@ -1,7 +1,7 @@
 import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
-import { type JsonItem } from "../../../model/json/JsonItem";
-import { type RoomState } from "../../../model/RoomState";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { JsonItem } from "../../../model/json/JsonItem";
+import type { RoomState } from "../../../model/RoomState";
 import { getItemInPlayTimes } from "../../../model/times";
 import {
   hashStringToNumber0to1,

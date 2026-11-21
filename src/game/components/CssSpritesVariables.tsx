@@ -1,5 +1,5 @@
-import { type PropsWithChildren } from "preact/compat";
-import { type EmptyObject } from "type-fest";
+import type { PropsWithChildren } from "preact/compat";
+import type { EmptyObject } from "type-fest";
 
 import { useSpriteStylesheet } from "../../sprites/css/useSpriteStylesheet";
 import { useAppSelector } from "../../store/hooks";

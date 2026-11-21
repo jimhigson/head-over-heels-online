@@ -1,17 +1,17 @@
-import { type AllUnionFields } from "type-fest";
+import type { AllUnionFields } from "type-fest";
 
 import { emptyArray } from "../../utils/empty";
 import { exitGameRoomId } from "../json/ItemConfigMap";
-import { type JsonItem } from "../json/JsonItem";
+import type { JsonItem } from "../json/JsonItem";
 import { resolveTeleporterLanding } from "../json/resolveTeleporterLanding";
-import { type Campaign } from "../modelTypes";
-import { type RoomJson } from "../RoomJson";
+import type { Campaign } from "../modelTypes";
+import type { RoomJson } from "../RoomJson";
 import {
   iterateRoomJsonItemIds,
   iterateRoomJsonItemsWithIds,
 } from "../RoomJsonItemIterators";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
-import { type TeleporterLink } from "./teleporterLinks";
+import type { TeleporterLink } from "./teleporterLinks";
 
 /** the teleporter config with all the union branches' fields flattened to optional */
 type FlatTeleporterConfig<RoomId extends string> = AllUnionFields<

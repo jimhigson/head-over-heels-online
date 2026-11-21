@@ -1,12 +1,12 @@
-import { type PropsWithChildren } from "preact/compat";
+import type { PropsWithChildren } from "preact/compat";
 import { useState } from "preact/hooks";
-import { type EmptyObject } from "type-fest";
+import type { EmptyObject } from "type-fest";
 
-import { type ItemInPlay } from "../../../model/ItemInPlay";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { addPokeableNumbers } from "../../../model/ItemStateMap";
-import {
-  type JsonItemConfig,
-  type JsonItemType,
+import type {
+  JsonItemConfig,
+  JsonItemType,
 } from "../../../model/json/JsonItem";
 import {
   type CharacterName,
@@ -14,14 +14,14 @@ import {
   otherIndividualCharacterName,
 } from "../../../model/modelTypes";
 import { getRoomItem, roomSpatialIndexKey } from "../../../model/RoomState";
-import {
-  type AnimatedTextureTailwindClass,
-  type TextureTailwindClass,
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
 } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { useShowShadowMasks } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { cmdKPressed } from "../../../store/slices/gameMenus/gameMenusSlice";
-import { type SelectableGameSpeeds } from "../../../store/slices/userSettings/selectableGameSpeeds";
+import type { SelectableGameSpeeds } from "../../../store/slices/userSettings/selectableGameSpeeds";
 import {
   setGameSpeed,
   setShowShadowMasks,
@@ -31,7 +31,7 @@ import { Button } from "../../../ui/Button";
 import { Switch } from "../../../ui/Switch";
 import { useKeyboardShortcut } from "../../../ui/useKeyboardShortcut";
 import { ShowBoundingBoxSelect } from "../../debug/ShowBoundingBoxSelect";
-import { type GameApi } from "../../GameApi";
+import type { GameApi } from "../../GameApi";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 import {
   selectCurrentPlayableItem,

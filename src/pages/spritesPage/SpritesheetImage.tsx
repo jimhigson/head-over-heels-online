@@ -1,4 +1,4 @@
-import { type MouseEvent } from "preact/compat";
+import type { MouseEvent } from "preact/compat";
 import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
@@ -10,10 +10,10 @@ import {
   keyframesForAnimatedSprite,
   spriteSpecificCssVars,
 } from "../../sprites/css/spriteCss";
-import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
-import {
-  type BaseTextureId,
-  type FramesWithSpeed,
+import type { AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
+import type {
+  BaseTextureId,
+  FramesWithSpeed,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import {
   useCurrentSpritesheetData,
@@ -21,7 +21,7 @@ import {
 } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { useTip } from "../../ui/tip/useTip";
 import { entries } from "../../utils/entries";
-import { type Xy } from "../../utils/vectors/vectors";
+import type { Xy } from "../../utils/vectors/vectors";
 
 const xRelative = (value: number) =>
   `calc(${value} / var(--spritesheetW) * 100%)`;

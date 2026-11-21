@@ -1,10 +1,10 @@
-import { type PartialDeep } from "type-fest";
+import type { PartialDeep } from "type-fest";
 import { expect, test } from "vitest";
 
 import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
-import { type RoomState } from "../../../model/RoomState";
-import { type GameState } from "../../gameState/GameState";
-import { type ItemTouchEvent } from "../../physics/handleTouch/ItemTouchEvent";
+import type { RoomState } from "../../../model/RoomState";
+import type { GameState } from "../../gameState/GameState";
+import type { ItemTouchEvent } from "../../physics/handleTouch/ItemTouchEvent";
 import { attachBehaviourToItem } from "../attachBehaviourToItem";
 
 type TestMonster = ItemInPlay<"monster", string, string>;

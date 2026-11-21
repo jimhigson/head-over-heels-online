@@ -1,15 +1,15 @@
 import { useMemo, useRef, useState } from "preact/hooks";
 
 import { boundingBoxDecorateItemRenderer } from "../../game/render/item/itemRender/boundingBoxDecorateItemRenderer";
-import { type RoomRendererDecorators } from "../../game/render/room/RoomRenderer";
+import type { RoomRendererDecorators } from "../../game/render/room/RoomRenderer";
 import { subRoomBoundariesDecorateRoomRenderer } from "../../game/render/room/subRoomBoundariesDecorateRoomRenderer";
-import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
+import type { Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import { useEditorAppSelector } from "../../store/store";
-import { type EditorRoomId, type EditorRoomRenderer } from "../editorTypes";
+import type { EditorRoomId, EditorRoomRenderer } from "../editorTypes";
 import { useLoadedRoomCache } from "../loadedRoomCache/useLoadedRoomCache";
 import { makeEditorAnnotationsDecorateItemRenderer } from "../rendering/EditorAnnotationsRenderer";
 import { editorGhostDecorateItemRenderer } from "../rendering/editorGhostDecorateItemRenderer";
-import { type OpenRoomId } from "../slice/OpenRoom";
+import type { OpenRoomId } from "../slice/OpenRoom";
 import { maybeLayoutNode, type TabGroupId } from "../slice/PaneLayout";
 import { ItemContextMenu } from "./contextMenu/ItemContextMenu";
 import { EditorMainLoop } from "./EditorMainLoop";

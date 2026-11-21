@@ -1,12 +1,12 @@
-import { type BaseItemState, type ItemState } from "../../../model/ItemState";
-import { type FreeItemState } from "../../../model/ItemStateMap";
-import {
-  type JsonItem,
-  type JsonItemType,
-  type JsonItemUnion,
+import type { BaseItemState, ItemState } from "../../../model/ItemState";
+import type { FreeItemState } from "../../../model/ItemStateMap";
+import type {
+  JsonItem,
+  JsonItemType,
+  JsonItemUnion,
 } from "../../../model/json/JsonItem";
-import { type Progression } from "../../../model/RoomState";
-import { type StoodOnBy } from "../../../model/StoodOnBy";
+import type { Progression } from "../../../model/RoomState";
+import type { StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { omit } from "../../../utils/pick";

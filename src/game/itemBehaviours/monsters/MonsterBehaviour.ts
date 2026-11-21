@@ -1,8 +1,8 @@
-import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { handleFiredDoughnutTouchingMonster } from "../../physics/handleTouch/handleFiredDoughnutTouchingMonster";
-import { type ItemTouchEvent } from "../../physics/handleTouch/ItemTouchEvent";
+import type { ItemTouchEvent } from "../../physics/handleTouch/ItemTouchEvent";
 import { shadowSmallRound } from "../../render/shadows/shadowCastTextures";
-import { type ItemBehaviourConstructorOptions } from "../ItemBehaviour";
+import type { ItemBehaviourConstructorOptions } from "../ItemBehaviour";
 import { LocomotiveBehaviour } from "../locomotion/LocomotiveBehaviour";
 
 /**

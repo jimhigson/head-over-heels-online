@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { campaignOf, newRoom, runCheck, setWholeRoomCell } from "../testUtils";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 import { verticalLinkBadSubRoomVerifier } from "./verticalLinkBadSubRoomVerifier";
 
 test("flags a link naming a sub-room that the target doesn't have", () => {

@@ -1,4 +1,4 @@
-import { type GameState } from "../gameState/GameState";
+import type { GameState } from "../gameState/GameState";
 import { startCameraRotation } from "./tickCameraTransition";
 
 /**

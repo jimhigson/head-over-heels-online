@@ -1,4 +1,4 @@
-import { type SceneryName, type Wall } from "../../../sprites/planets";
+import type { SceneryName, Wall } from "../../../sprites/planets";
 import {
   type DirectionXy4,
   perpendicularAxisXy,
@@ -8,7 +8,7 @@ import {
 import { isWholeRoomSubRooms, type RoomJson } from "../../RoomJson";
 import { roomJsonItemsIterable } from "../../RoomJsonItemIterators";
 import { wallTimes } from "../../times";
-import { type WallJsonConfig } from "../WallJsonConfig";
+import type { WallJsonConfig } from "../WallJsonConfig";
 
 const doorWidth = 2;
 

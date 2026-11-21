@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 
 import { cameraAngleBase } from "./cameraAngleVectors";
 import { rotateXy, rotateXyz } from "./rotateXy";
-import { type Xy, type Xyz } from "./vectors";
+import type { Xy, Xyz } from "./vectors";
 
 const quarterTurnAnticlockwise: Xy = { x: 0, y: 1 };
 const quarterTurnClockwise: Xy = { x: 0, y: -1 };

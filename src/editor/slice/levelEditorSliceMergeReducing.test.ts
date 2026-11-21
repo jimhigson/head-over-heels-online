@@ -2,16 +2,16 @@ import { produce } from "immer";
 import { expect, test } from "vitest";
 
 import { roomJsonMatchers } from "../../model/json/__test__/roomJsonMatchers";
-import { type VerificationCampaign } from "../../model/json/verification/verificationTypes";
+import type { VerificationCampaign } from "../../model/json/verification/verificationTypes";
 import { verifyCampaign } from "../../model/json/verification/verifyCampaign";
 import { roomGridPositions } from "../../model/map/roomGridPositions";
 import { isWholeRoomSubRooms } from "../../model/RoomJson";
 import { iterateRoomJsonItemsWithIds } from "../../model/RoomJsonItemIterators";
 import { keys } from "../../utils/entries";
-import {
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../editorTypes";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {

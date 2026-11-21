@@ -4,17 +4,17 @@ import { useMemo } from "preact/hooks";
 
 import { originalUserId } from "../../gameInfo";
 import { type MapContextValue, noCellPlayables } from "../../map/MapContext";
-import {
-  type PostfixRoomDecoratorComponent,
-  type PrefixRoomDecoratorComponent,
-  type RoomBehaviourComponent,
+import type {
+  PostfixRoomDecoratorComponent,
+  PrefixRoomDecoratorComponent,
+  RoomBehaviourComponent,
 } from "../../map/RoomDecoratorProps";
 import { selectNotableItems } from "../../map/selectNotableItems";
 import { teleporterLinksFromCell } from "../../model/map/teleporterLinksFromCell";
 import { mapSettingsHooks } from "../../store/mapSettingsHooks";
 import { type EditorRootState, useEditorAppSelector } from "../../store/store";
 import { emptyObject } from "../../utils/empty";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomFromLevelEditorState,

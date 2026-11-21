@@ -1,5 +1,5 @@
-import { type PixelPoint } from "./fontUnits";
-import { type KernelMatch } from "./kernelRules";
+import type { PixelPoint } from "./fontUnits";
+import type { KernelMatch } from "./kernelRules";
 
 /** one tread of a staircase, in the frame of the edge it belongs to */
 type Tread = {

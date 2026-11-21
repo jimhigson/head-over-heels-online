@@ -1,10 +1,10 @@
-import { type AllUnionFields, type Merge } from "type-fest";
+import type { AllUnionFields, Merge } from "type-fest";
 
 import { isSoundId } from "../../../_generated/sfxdex/soundIds";
 import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
-import {
-  type PlayableItem,
-  type UnionOfAllItemInPlayTypes,
+import type {
+  PlayableItem,
+  UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
 import {
   resolveTeleporterLanding,
@@ -16,7 +16,7 @@ import {
   otherIndividualCharacterName,
 } from "../../../model/modelTypes";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
-import { type RoomJson } from "../../../model/RoomJson";
+import type { RoomJson } from "../../../model/RoomJson";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import {
   characterRoomChange,
@@ -40,7 +40,7 @@ import { isTeleporter } from "../../physics/mechanics/teleporterIsActive";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { moveItemInSteps } from "../../physics/moveItem/moveItemInSteps";
 import { blockXyzToFineXyz } from "../../render/projections";
-import { type GameState } from "../GameState";
+import type { GameState } from "../GameState";
 import {
   selectCurrentPlayableItem,
   selectHeelsAbilities,

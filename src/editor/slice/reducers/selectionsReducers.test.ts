@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
-import { type EditorRoomItemId } from "../../editorTypes";
+import type { EditorRoomItemId } from "../../editorTypes";
 import {
   selectCursorRoomSelectionFromLevelEditorState,
   selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
@@ -13,8 +13,8 @@ import {
   setSelectedItemsInRoom,
   toggleSelectedItemInRoom,
 } from "../levelEditorSlice";
-import { type OpenRoomId } from "../OpenRoom";
-import { type SelectionEntry } from "../SelectionEntry";
+import type { OpenRoomId } from "../OpenRoom";
+import type { SelectionEntry } from "../SelectionEntry";
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,

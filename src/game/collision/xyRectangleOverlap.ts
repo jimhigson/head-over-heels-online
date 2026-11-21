@@ -1,5 +1,5 @@
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
-import { type XyzBox } from "../../utils/vectors/vectors";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import type { XyzBox } from "../../utils/vectors/vectors";
 
 const xyRectangleOverlapArea = (
   box1: Readonly<XyzBox>,

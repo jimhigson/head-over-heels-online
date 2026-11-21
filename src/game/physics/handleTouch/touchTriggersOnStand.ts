@@ -1,6 +1,6 @@
 import { isFreeItem } from "../../../model/ItemInPlayNarrowedUnions";
 import { spatiallyCheckStandingOn } from "../../collision/checkStandingOn";
-import { type ItemTouchEvent } from "./ItemTouchEvent";
+import type { ItemTouchEvent } from "./ItemTouchEvent";
 
 /**
  * check that we're standing on something - for blocks that disappear on stand,

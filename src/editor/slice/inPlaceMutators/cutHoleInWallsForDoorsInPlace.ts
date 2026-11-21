@@ -1,8 +1,8 @@
 import { generateHoleInWallsForDoor } from "../../../model/inPlaceMutators/generateHoleInWallsForDoor";
-import { type DirectionXy4, type Xyz } from "../../../utils/vectors/vectors";
-import { type EditorRoomId } from "../../editorTypes";
+import type { DirectionXy4, Xyz } from "../../../utils/vectors/vectors";
+import type { EditorRoomId } from "../../editorTypes";
 import { selectRoomFromLevelEditorState } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { roomEditTarget } from "./addItemInPlace";
 
 export const cutHoleInWallsForDoorsInPlace = (

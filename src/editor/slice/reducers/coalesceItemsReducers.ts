@@ -1,16 +1,16 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
 import { keys } from "../../../utils/entries";
-import { type EditorRoomJsonItems } from "../../editorTypes";
+import type { EditorRoomJsonItems } from "../../editorTypes";
 import { setSelectionOnCursorRoomInPlace } from "../inPlaceMutators/setSelectionOnCursorRoomInPlace";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
-import { type UndoItemEntry } from "./undoDescription";
+import type { UndoItemEntry } from "./undoDescription";
 import { pushUndoToCursorRoomInPlace } from "./undoReducers";
 
 export const coalesceItemsReducers = {

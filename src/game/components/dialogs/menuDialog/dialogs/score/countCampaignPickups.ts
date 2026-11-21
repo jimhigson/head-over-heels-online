@@ -1,5 +1,5 @@
-import { type Campaign } from "../../../../../../model/modelTypes";
-import { type RoomJson } from "../../../../../../model/RoomJson";
+import type { Campaign } from "../../../../../../model/modelTypes";
+import type { RoomJson } from "../../../../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../../../../model/RoomJsonItemIterators";
 import { valuesIter } from "../../../../../../utils/entries";
 

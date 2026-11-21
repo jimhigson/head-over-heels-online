@@ -6,9 +6,9 @@ import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
 import { SpatialIndex } from "../../physics/gridSpace/SpatialIndex";
-import { type RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
+import type { RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { populatedBroadPhase } from "./__test__/populatedBroadPhase";
-import { type DrawOrderComparable } from "./DrawOrderComparable";
+import type { DrawOrderComparable } from "./DrawOrderComparable";
 import { updateZEdges } from "./updateZEdges";
 
 const noRenderBoxes = new Map<DrawOrderComparable, RenderBox | undefined>();

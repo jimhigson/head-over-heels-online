@@ -1,5 +1,5 @@
 import { keys } from "../utils/entries";
-import { type Xy } from "../utils/vectors/vectors";
+import type { Xy } from "../utils/vectors/vectors";
 import { isWholeRoomSubRooms, type RoomJson } from "./RoomJson";
 import { roomWallBounds, type WallBounds } from "./roomWallBounds";
 

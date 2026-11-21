@@ -7,9 +7,9 @@ import {
   doorsBackTo,
 } from "../helpers/doorPartner";
 import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
-import {
-  type VerificationRoomId,
-  type VerificationRoomItemId,
+import type {
+  VerificationRoomId,
+  VerificationRoomItemId,
 } from "../verificationTypes";
 
 type DoorDirectionMismatch = {

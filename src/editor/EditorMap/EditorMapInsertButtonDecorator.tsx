@@ -1,18 +1,15 @@
-import { type ComponentChildren } from "preact";
+import type { ComponentChildren } from "preact";
 
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
 import { roomGridSizeXY } from "../../map/mapConstants";
 import { useMapContext } from "../../map/MapContext";
-import { type RoomDecoratorProps } from "../../map/RoomDecoratorProps";
+import type { RoomDecoratorProps } from "../../map/RoomDecoratorProps";
 import { roomWorldPosition } from "../../map/roomWorldPosition";
 import { translateXyz } from "../../map/svgHelpers";
 import { useIsCurrentCell } from "../../map/useIsCurrentCell";
 import { useRoomNode } from "../../map/useRoomNode";
-import {
-  type Boundaries,
-  type RoomNode,
-} from "../../model/map/roomGridPositions";
-import { type SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRoomGridPositions";
+import type { Boundaries, RoomNode } from "../../model/map/roomGridPositions";
+import type { SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRoomGridPositions";
 import { editorStore, useEditorAppSelector } from "../../store/store";
 import { useTip } from "../../ui/tip/useTip";
 import { valuesIter } from "../../utils/entries";
@@ -23,7 +20,7 @@ import {
   type DirectionXyz4,
   xyzEqual,
 } from "../../utils/vectors/vectors";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import { insertRoomInDirectionThunk } from "../slice/insertRoomInDirectionThunk";
 import { selectCursorSubRoomVerticalLink } from "../slice/levelEditorSelectors";
 

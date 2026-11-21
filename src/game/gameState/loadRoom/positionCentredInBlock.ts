@@ -1,4 +1,4 @@
-import { type JsonItemUnion } from "../../../model/json/JsonItem";
+import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { blockSizePx } from "../../physics/mechanicsConstants";

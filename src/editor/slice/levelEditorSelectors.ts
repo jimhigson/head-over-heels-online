@@ -2,25 +2,25 @@ import { createSelector } from "@reduxjs/toolkit";
 import nanoEqual from "nano-equal";
 
 import { roomVerticalLink } from "../../model/RoomJson";
-import { type EditorRootState } from "../../store/store";
+import type { EditorRootState } from "../../store/store";
 import { emptyArray } from "../../utils/empty";
 import { keysIter } from "../../utils/entries";
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorJsonItemUnion,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../editorTypes";
 import { jsonItemsWithEdits } from "./jsonItemsWithEdits";
-import {
-  type LevelEditorState,
-  type PreviewedRoomItemEdits,
+import type {
+  LevelEditorState,
+  PreviewedRoomItemEdits,
 } from "./levelEditorSlice";
 import {
   selectActiveCursorRoomEditingOpenRoomFromLevelEditorState,
   selectFrontOpenRoomFromLevelEditorState,
 } from "./PaneLayout";
-import { type SelectionEntry } from "./SelectionEntry";
+import type { SelectionEntry } from "./SelectionEntry";
 
 /** whether the campaign being edited differs from as last saved (or loaded) */
 export const selectCampaignHasUnsavedChangesFromLevelEditorState = ({

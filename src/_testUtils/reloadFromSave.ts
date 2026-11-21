@@ -1,9 +1,9 @@
 import { loadGameState } from "../game/gameState/loadGameState";
 import { createSavedGame } from "../game/gameState/saving/createSavedGame";
-import { type Campaign } from "../model/modelTypes";
+import type { Campaign } from "../model/modelTypes";
 import { gameRestoreFromSave } from "../store/slices/gameInPlay/gameInPlaySlice";
 import { store } from "../store/store";
-import { type TestRoomId } from "./basicRoom";
+import type { TestRoomId } from "./basicRoom";
 import { gameStartedWithCampaign, resetStore } from "./initStoreForTests";
 import {
   type GameStateWithMockInput,

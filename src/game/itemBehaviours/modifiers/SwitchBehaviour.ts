@@ -1,11 +1,11 @@
-import { type ItemInPlay } from "../../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
-import { type SwitchItemModificationUnion } from "../../../model/json/SwitchConfig";
-import { type RoomState } from "../../../model/RoomState";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { SwitchItemModificationUnion } from "../../../model/json/SwitchConfig";
+import type { RoomState } from "../../../model/RoomState";
 import { toggleUserSetting } from "../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../store/store";
 import { neverTime } from "../../../utils/neverTime";
-import { type ItemTouchEvent } from "../../physics/handleTouch/ItemTouchEvent";
+import type { ItemTouchEvent } from "../../physics/handleTouch/ItemTouchEvent";
 import { switchMinTimeBetweenToggleMs } from "../../physics/mechanicsConstants";
 import { shadowSmallBlock } from "../../render/shadows/shadowCastTextures";
 import { ItemBehaviour } from "../ItemBehaviour";

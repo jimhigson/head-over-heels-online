@@ -4,7 +4,7 @@ import {
   chooseTeleporterDestination,
   type TeleporterDestination,
 } from "../../editorDialogs/chooseTeleporterDestination";
-import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
+import type { EditorRoomId, EditorRoomItemId } from "../../editorTypes";
 import {
   closeItemContextMenu,
   selectCurrentCampaignInProgress,

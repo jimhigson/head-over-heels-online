@@ -3,7 +3,7 @@ import { missingExitVerifier } from "./campaign/missingExitVerifier";
 import { missingPlayerStartVerifier } from "./campaign/missingPlayerStartVerifier";
 import { schemaComplianceVerifier } from "./campaign/schemaComplianceVerifier";
 import { unreachableRoomVerifier } from "./campaign/unreachableRoomVerifier";
-import { type CampaignVerifier } from "./CampaignVerification";
+import type { CampaignVerifier } from "./CampaignVerification";
 import { controllerTargetsVerifier } from "./controllers/controllerTargetsVerifier";
 import { danglingDoorTargetVerifier } from "./doors/danglingDoorTargetVerifier";
 import { doorAboveRoomHeightVerifier } from "./doors/doorAboveRoomHeightVerifier";

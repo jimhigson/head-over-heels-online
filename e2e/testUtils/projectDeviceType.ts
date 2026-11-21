@@ -1,4 +1,4 @@
-import { type DeviceType } from "../../src/utils/detectEnv/detectDeviceType";
+import type { DeviceType } from "../../src/utils/detectEnv/detectDeviceType";
 
 /**
  * the device type a playwright project emulates - the test-side half of what

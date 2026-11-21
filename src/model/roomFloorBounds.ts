@@ -1,4 +1,4 @@
-import { type RoomJson } from "./RoomJson";
+import type { RoomJson } from "./RoomJson";
 import {
   nullRoomJsonFloorsExtent,
   roomJsonFloorsExtent,

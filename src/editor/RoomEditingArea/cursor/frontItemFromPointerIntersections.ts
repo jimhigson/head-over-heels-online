@@ -1,11 +1,11 @@
-import { type RenderBoxes } from "../../../game/render/renderBox/makeItemRenderBoxAtCameraAngle";
+import type { RenderBoxes } from "../../../game/render/renderBox/makeItemRenderBoxAtCameraAngle";
 import { DrawOrderBroadPhase } from "../../../game/render/sortZ/DrawOrderBroadPhase";
 import { updateZEdges } from "../../../game/render/sortZ/updateZEdges";
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { Graph } from "../../../utils/graph/Graph";
-import { type Xy } from "../../../utils/vectors/vectors";
-import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
-import { type PointerItemIntersection } from "./pointIntersectsItemAABB";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
+import type { PointerItemIntersection } from "./pointIntersectsItemAABB";
 
 type FixedZIndexItem = EditorUnionOfAllItemInPlayTypes & {
   readonly [itemBehaviourKey]: { readonly fixedZIndex: number };

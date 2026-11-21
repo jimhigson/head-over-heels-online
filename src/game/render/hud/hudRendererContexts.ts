@@ -1,10 +1,10 @@
-import { type SetRequired } from "type-fest";
+import type { SetRequired } from "type-fest";
 
-import { type RoomState } from "../../../model/RoomState";
-import { type FreeCharacters } from "../../../store/slices/gameInPlay/gameInPlaySlice";
-import { type InputDirectionMode } from "../../../store/slices/userSettings/userSettingsSlice";
-import { type Xy } from "../../../utils/vectors/vectors";
-import { type InGameGeneralRenderContext } from "../room/RoomRenderContexts";
+import type { RoomState } from "../../../model/RoomState";
+import type { FreeCharacters } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import type { InputDirectionMode } from "../../../store/slices/userSettings/userSettingsSlice";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { InGameGeneralRenderContext } from "../room/RoomRenderContexts";
 
 export type HudRenderContext<RoomId extends string> = {
   inputDirectionMode: InputDirectionMode;

@@ -1,14 +1,14 @@
 import { Color } from "pixi.js";
 
-import { type PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
+import type { PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
 import { colorScheme } from "../../game/render/gameColours/colourScheme";
 import {
   blockstackGameColour,
   blockstackReplacementColours,
 } from "../../game/render/gameColours/gameColours";
-import {
-  type ZxSpectrumRoomColour,
-  type ZxSpectrumRoomHue,
+import type {
+  ZxSpectrumRoomColour,
+  ZxSpectrumRoomHue,
 } from "../../originalGame";
 import { halfbrite } from "../../utils/colour/halfbrite";
 import { emptyArray, emptyObject } from "../../utils/empty";
@@ -17,20 +17,20 @@ import {
   resolveSwops,
 } from "../../utils/palette/palette";
 import { octantIndexOfDirection } from "../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
-import { type AxisXy } from "../../utils/vectors/vectors";
+import type { AxisXy } from "../../utils/vectors/vectors";
 import { maybeDimPixiPalette } from "../palette/pixiPalette";
-import { type BlockstackPaletteColourName } from "../palette/spritesheetPalette";
+import type { BlockstackPaletteColourName } from "../palette/spritesheetPalette";
 import {
   blockstackPixiPalettes,
   toppyPixiPalettes,
 } from "../palette/spritesheetPixiPalettes";
-import { type SceneryName } from "../planets";
-import { type TexturesSpecifier } from "./reifyTextureIds";
-import {
-  type BaseTextureId,
-  type TextureId,
+import type { SceneryName } from "../planets";
+import type { TexturesSpecifier } from "./reifyTextureIds";
+import type {
+  BaseTextureId,
+  TextureId,
 } from "./spritesheetData/makeSpritesheetData";
-import { type SpritesheetName } from "./spritesheetData/spritesheetMetaData";
+import type { SpritesheetName } from "./spritesheetData/spritesheetMetaData";
 
 export type TextureSpecificPaletteSwops = {
   textureIds: TexturesSpecifier;

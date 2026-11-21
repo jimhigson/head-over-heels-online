@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { format } from "prettier";
 
-import { type GlyphOverrides } from "../geometry/glyphOverrides";
+import type { GlyphOverrides } from "../geometry/glyphOverrides";
 
 export const glyphOverridesPath = "scripts/font/glyphOverrides.json";
 

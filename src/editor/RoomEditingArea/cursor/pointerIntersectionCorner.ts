@@ -9,8 +9,8 @@ import {
   type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
-import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
-import { type Tool } from "../interactivity/Tool";
+import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
+import type { Tool } from "../interactivity/Tool";
 
 const cornerTolerancePx = 3;
 

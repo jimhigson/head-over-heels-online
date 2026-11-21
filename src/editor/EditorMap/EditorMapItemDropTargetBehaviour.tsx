@@ -1,10 +1,10 @@
 import { useEffect } from "preact/hooks";
 
-import { type RoomBehaviourProps } from "../../map/RoomDecoratorProps";
+import type { RoomBehaviourProps } from "../../map/RoomDecoratorProps";
 import { editorStore } from "../../store/store";
 import { HookComponent } from "../../utils/preact/HookComponent";
 import { twClass } from "../../utils/twClass.tsx" with { type: "macro" };
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import { dropItemsOnRoomThunk } from "../slice/dropItemsOnRoomThunk";
 import { findItemsDropPlacement } from "../slice/findItemsDropPlacement";
 import {

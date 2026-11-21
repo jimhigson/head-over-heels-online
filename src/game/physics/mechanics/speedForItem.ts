@@ -1,6 +1,6 @@
-import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import { type ItemInPlayType } from "../../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { ItemInPlayType } from "../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 
 /**

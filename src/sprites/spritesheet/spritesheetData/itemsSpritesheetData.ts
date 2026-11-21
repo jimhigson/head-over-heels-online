@@ -1,4 +1,4 @@
-import { type SpritesheetData } from "pixi.js";
+import type { SpritesheetData } from "pixi.js";
 
 import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
 import {

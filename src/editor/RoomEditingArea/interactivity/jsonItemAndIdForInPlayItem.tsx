@@ -1,8 +1,8 @@
-import { type EditorRootState } from "../../../store/store";
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomItemId,
-  type EditorUnionOfAllItemInPlayTypes,
+import type { EditorRootState } from "../../../store/store";
+import type {
+  EditorJsonItemUnion,
+  EditorRoomItemId,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
 import { selectItemInLevelEditorState } from "../../slice/levelEditorSelectors";
 

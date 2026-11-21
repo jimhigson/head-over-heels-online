@@ -1,6 +1,6 @@
 import { devices, type Page } from "@playwright/test";
 
-import { type toggleUserSetting } from "../src/store/slices/userSettings/userSettingsSlice";
+import type { toggleUserSetting } from "../src/store/slices/userSettings/userSettingsSlice";
 import { dispatchToStore } from "./testUtils/gameStateQueries";
 import { elapsed, formatProjectName, logUpscale } from "./testUtils/logging";
 import { waitForDialog } from "./testUtils/menuNavigation";

@@ -1,11 +1,7 @@
 import { describe, expect, test } from "vitest";
 
 import { roomJsonItemsIterable } from "../../../../model/RoomJsonItemIterators";
-import {
-  type DirectionXy4,
-  type Xy,
-  type Xyz,
-} from "../../../../utils/vectors/vectors";
+import type { DirectionXy4, Xy, Xyz } from "../../../../utils/vectors/vectors";
 import { makeRoomJsonWithDoors } from "./makeRoomJsonWithDoors";
 
 const origin: Xyz = { x: 0, y: 0, z: 0 };

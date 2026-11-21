@@ -1,6 +1,6 @@
-import { type ZxSpectrumRoomHue } from "../originalGame";
+import type { ZxSpectrumRoomHue } from "../originalGame";
 import { entries, fromAllEntries } from "../utils/entries";
-import { type Campaign } from "./modelTypes";
+import type { Campaign } from "./modelTypes";
 
 /**
  * each room's colour hue, by room id

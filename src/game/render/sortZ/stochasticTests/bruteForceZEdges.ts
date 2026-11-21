@@ -1,13 +1,13 @@
 import { populatedBroadPhase } from "../__test__/populatedBroadPhase";
 import { Graph } from "../../../../utils/graph/Graph";
 import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
-import { type Xy } from "../../../../utils/vectors/vectors";
-import { type Indexable } from "../../../physics/gridSpace/SpatialIndex";
-import {
-  type RenderBoxableItem,
-  type RenderBoxes,
+import type { Xy } from "../../../../utils/vectors/vectors";
+import type { Indexable } from "../../../physics/gridSpace/SpatialIndex";
+import type {
+  RenderBoxableItem,
+  RenderBoxes,
 } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
-import { type DrawOrderComparable } from "../DrawOrderComparable";
+import type { DrawOrderComparable } from "../DrawOrderComparable";
 import { zComparator } from "../zComparator";
 
 /**

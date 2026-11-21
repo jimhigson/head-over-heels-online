@@ -1,12 +1,12 @@
 import { defaultBaseState } from "../../game/gameState/loadRoom/itemDefaultStates";
 import { getBehaviourForItemTypeAndConfig } from "../../game/itemBehaviours/attachBehaviourToItem";
 import { itemBehaviourKey } from "../../model/ItemInPlay";
-import {
-  type EditorItemInPlayUnion,
-  type EditorRoomItemId,
-  type EditorUnionOfAllItemInPlayTypes,
+import type {
+  EditorItemInPlayUnion,
+  EditorRoomItemId,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
-import { type WhichEditorGhostOfAnyItemType } from "../WhichEditorGhostOf";
+import type { WhichEditorGhostOfAnyItemType } from "../WhichEditorGhostOf";
 
 /**
  * an editor ghost drawing `brushItem` where it is

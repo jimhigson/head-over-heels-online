@@ -1,10 +1,10 @@
-import { type Container } from "pixi.js";
+import type { Container } from "pixi.js";
 
 import {
   createSprite,
   type SpecifiedTextureCreateSpriteOptions,
 } from "../../game/render/createSprite";
-import { type Xy, type Xyz } from "../vectors/vectors";
+import type { Xy, Xyz } from "../vectors/vectors";
 
 /**
  * render to a sprite, using a base sprite to be repeated in x and y.

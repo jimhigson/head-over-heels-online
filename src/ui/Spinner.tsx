@@ -1,8 +1,8 @@
 import { useRef } from "preact/hooks";
 
 import { usePlayableTailwindSpriteClassname } from "../game/components/tailwindSprites/playableTailwindSpriteClassname";
-import { type IndividualCharacterName } from "../model/modelTypes";
-import { type DirectionXy8 } from "../utils/vectors/vectors";
+import type { IndividualCharacterName } from "../model/modelTypes";
+import type { DirectionXy8 } from "../utils/vectors/vectors";
 import { useFacingTowardsPointer } from "./useFacingTowardsPointer";
 
 type LoaderProps = {

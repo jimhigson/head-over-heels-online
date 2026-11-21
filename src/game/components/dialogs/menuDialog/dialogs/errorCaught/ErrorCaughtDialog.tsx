@@ -1,5 +1,5 @@
 import { useState } from "preact/hooks";
-import { type EmptyObject } from "type-fest";
+import type { EmptyObject } from "type-fest";
 
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import { clearAllData } from "../../../../../../store/slices/clearAllData";

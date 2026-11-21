@@ -1,15 +1,15 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { type WritableDraft } from "immer";
+import type { WritableDraft } from "immer";
 import nanoEqual from "nano-equal";
-import { type Get, type Paths } from "type-fest";
+import type { Get, Paths } from "type-fest";
 
 import {
   type KeyAssignmentPresetName,
   keyAssignmentPresets,
 } from "../../../game/input/keyAssignmentPresets";
-import { type ItemInPlayType } from "../../../model/ItemInPlay";
-import { type Campaign } from "../../../model/modelTypes";
-import { type AppSpritesheetData } from "../../../sprites/spritesheet/AppSpritesheet";
+import type { ItemInPlayType } from "../../../model/ItemInPlay";
+import type { Campaign } from "../../../model/modelTypes";
+import type { AppSpritesheetData } from "../../../sprites/spritesheet/AppSpritesheet";
 import { makeBaseSpritesheetData } from "../../../sprites/spritesheet/spritesheetData/makeBaseSpritesheetData";
 import {
   spritesheetArtName,
@@ -21,18 +21,18 @@ import { getAtPath } from "../../../utils/getAtPath";
 import { size } from "../../../utils/iterators/size";
 import { selectorHook } from "../../../utils/preact/selectorHook";
 import { useAppSelector } from "../../hooks";
-import { type GameRootState } from "../../store";
+import type { GameRootState } from "../../store";
 import { selectMaybeLoadedCampaignData } from "../campaigns/gameCampaignsApiSlice";
-import {
-  type PickupsCollected,
-  type RoomPickupsCollected,
+import type {
+  PickupsCollected,
+  RoomPickupsCollected,
 } from "../gameInPlay/gameInPlaySlice";
 import { defaultUserSettings } from "../userSettings/defaultUserSettings";
-import {
-  type InputDirectionMode,
-  type UserSettings,
-  type UserSettingsBooleanPaths,
-  type UserSettingsState,
+import type {
+  InputDirectionMode,
+  UserSettings,
+  UserSettingsBooleanPaths,
+  UserSettingsState,
 } from "../userSettings/userSettingsSlice";
 
 const selectUserSetting =

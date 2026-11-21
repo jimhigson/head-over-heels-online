@@ -1,11 +1,11 @@
-import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import { type ItemInPlayType } from "../../../model/ItemInPlay";
-import { type RoomState } from "../../../model/RoomState";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { ItemInPlayType } from "../../../model/ItemInPlay";
+import type { RoomState } from "../../../model/RoomState";
 import { nextSpritesheetName } from "../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../store/store";
 import { objectEmpty } from "../../../utils/objectEmpty";
-import { type GameState } from "../../gameState/GameState";
-import { type MechanicResult } from "../../physics/MechanicResult";
+import type { GameState } from "../../gameState/GameState";
+import type { MechanicResult } from "../../physics/MechanicResult";
 import { buttonStayPressedAfterReleasePeriod } from "../../physics/mechanicsConstants";
 import { ItemBehaviour } from "../ItemBehaviour";
 import { applyModifiesList } from "./applyModifiesList";

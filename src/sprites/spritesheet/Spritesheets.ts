@@ -14,16 +14,16 @@ import blockstackSpritesheetArtUrl from "../../../gfx/spritesBlockstack.webp";
 import debugSpritesheetArtUrl from "../../../gfx/spritesDebug.webp";
 import toppySpritesheetArtUrl from "../../../gfx/spritesToppy.webp";
 import { invertRedToAlphaFilter } from "../../game/render/filters/shadows/invertRedToAlphaFilter";
-import { type bakeUpscaledSpritesheetTexture } from "../../game/render/filters/upscale/bakeUpscaledSpritesheetTexture";
+import type { bakeUpscaledSpritesheetTexture } from "../../game/render/filters/upscale/bakeUpscaledSpritesheetTexture";
 import { importBakeUpscaledSpritesheetTextureOnce } from "../../game/render/filters/upscale/bakeUpscaledSpritesheetTexture.import";
-import { type ZxSpectrumRoomColour } from "../../originalGame";
+import type { ZxSpectrumRoomColour } from "../../originalGame";
 import { selectSpritesheetOverrideBlobUrl } from "../../store/slices/spritesheetOverrideSlice";
 import { store } from "../../store/store";
 import { detectDeviceType } from "../../utils/detectEnv/detectDeviceType";
 import { objectEntriesIter } from "../../utils/entries";
 import { stripIccProfilePng } from "../../utils/image/stripIccProfilePng";
 import { stripIccProfileWebp } from "../../utils/image/stripIccProfileWebp";
-import { type SceneryName } from "../planets";
+import type { SceneryName } from "../planets";
 import { applySpritesheetFlips } from "./applySpritesheetFlips";
 import {
   type AppSpritesheet,

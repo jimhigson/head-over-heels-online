@@ -1,4 +1,4 @@
-import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { quarterCameraAngles } from "../../../utils/vectors/cameraAngleVectors";
 import { originXyz, type Xy } from "../../../utils/vectors/vectors";
 import { boxProjectedExtent } from "../item/itemRender/cuboidTransitionMesh";

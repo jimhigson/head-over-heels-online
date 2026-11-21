@@ -1,8 +1,8 @@
-import { type ItemInPlay } from "../../model/ItemInPlay";
+import type { ItemInPlay } from "../../model/ItemInPlay";
 import { isPlayableItem } from "../../model/ItemInPlayNarrowedUnions";
 import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
 import { playableResetAfterOutOfBounds } from "../gameState/mutators/playableLosesLife";
-import { type ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";
+import type { ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";
 import { nonRenderingItemFixedZIndex } from "../render/sortZ/fixedZIndexes";
 import { ItemBehaviour } from "./ItemBehaviour";
 

@@ -4,24 +4,21 @@ import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { emptyArray } from "../../../utils/empty";
 import { orthoPlaneForNormal } from "../../../utils/vectors/orthoPlane";
-import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
-import {
-  type EditorRoomItemId,
-  type EditorRoomRenderer,
-  type EditorRoomState,
-  type EditorUnionOfAllItemInPlayTypes,
+import type { Xy, Xyz } from "../../../utils/vectors/vectors";
+import type {
+  EditorRoomItemId,
+  EditorRoomRenderer,
+  EditorRoomState,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
-import { type GridResolution } from "../../slice/levelEditorSlice";
+import type { GridResolution } from "../../slice/levelEditorSlice";
 import { snapGridResolution } from "../../snapGridResolution";
-import { type Tool } from "../interactivity/Tool";
+import type { Tool } from "../interactivity/Tool";
 import { frontItemFromPointerIntersections } from "./frontItemFromPointerIntersections";
 import { pointerIntersectionCorner } from "./pointerIntersectionCorner";
 import { pointerIntersectionEdge } from "./pointerIntersectionEdge";
 import { pointerIntersectionFace } from "./pointerIntersectionFace";
-import {
-  type MaybePointingAtSomething,
-  type PointingAtNothing,
-} from "./PointingAt";
+import type { MaybePointingAtSomething, PointingAtNothing } from "./PointingAt";
 import {
   type PointerItemIntersection,
   type PointerItemMaybeIntersection,

@@ -1,8 +1,8 @@
 import { keys } from "../../utils/entries";
-import { type Xyz } from "../../utils/vectors/vectors";
-import { type JsonItemUnion } from "../json/JsonItem";
+import type { Xyz } from "../../utils/vectors/vectors";
+import type { JsonItemUnion } from "../json/JsonItem";
 import { typePrefix } from "../json/typePrefix";
-import { type AnyRoomJson } from "../RoomJson";
+import type { AnyRoomJson } from "../RoomJson";
 import { nextItemIdInItems } from "./nextItemId";
 
 type BlockConfig = Extract<JsonItemUnion, { type: "block" }>["config"];

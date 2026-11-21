@@ -1,4 +1,4 @@
-import { type JsonItemType } from "../../../model/json/JsonItem";
+import type { JsonItemType } from "../../../model/json/JsonItem";
 import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import {
   type ItemSubtype,

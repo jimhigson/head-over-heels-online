@@ -1,8 +1,8 @@
-import { type ComponentChildren, type Ref } from "preact";
-import { type PropsWithChildren } from "preact/compat";
+import type { ComponentChildren, Ref } from "preact";
+import type { PropsWithChildren } from "preact/compat";
 
 import { Button } from "../../../ui/Button";
-import { type ShortcutKeys } from "../../../ui/useKeyboardShortcut";
+import type { ShortcutKeys } from "../../../ui/useKeyboardShortcut";
 import {
   buttonSizeClassNames,
   buttonSmallSizeClassNames,

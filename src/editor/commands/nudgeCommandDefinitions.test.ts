@@ -1,8 +1,8 @@
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
-import { type EditorRootState } from "../../store/store";
-import { type EditorRoomItemId } from "../editorTypes";
+import type { EditorRootState } from "../../store/store";
+import type { EditorRoomItemId } from "../editorTypes";
 import { existingLayoutNode } from "../slice/PaneLayout";
 import {
   editorStateWithOneRoomWithNoItems,

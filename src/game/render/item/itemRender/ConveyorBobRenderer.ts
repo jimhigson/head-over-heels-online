@@ -1,15 +1,15 @@
 import { Container } from "pixi.js";
 
-import { type ItemInPlayType } from "../../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import { isFreeItem } from "../../../../model/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import { renderBobBounce } from "../../../../utils/maths/renderBob";
-import {
-  type ItemRenderContext,
-  type ItemTickContext,
+import type {
+  ItemRenderContext,
+  ItemTickContext,
 } from "../../ItemRenderContexts";
-import { type DecorateItemRenderer } from "./DecorateItemRenderer";
-import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
+import type { DecorateItemRenderer } from "./DecorateItemRenderer";
+import type { ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 const baseBobPeriod = 50;
 const bobAmplitude = 0.66;

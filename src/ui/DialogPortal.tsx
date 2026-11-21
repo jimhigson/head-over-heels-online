@@ -1,6 +1,6 @@
 "use client";
 
-import { type ComponentChildren } from "preact";
+import type { ComponentChildren } from "preact";
 import { createPortal } from "preact/compat";
 
 import { CssVariables } from "../game/components/CssVariables";

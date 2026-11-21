@@ -25,13 +25,13 @@ import {
   type EditorSaveSliceAction,
   type EditorSaveState,
 } from "../editor/slice/editorSaveSlice";
-import {
-  type LevelEditorSliceAction,
-  type LevelEditorState,
+import type {
+  LevelEditorSliceAction,
+  LevelEditorState,
 } from "../editor/slice/levelEditorSlice";
-import {
-  type StoreActionOf,
-  type StoreEnhancersOf,
+import type {
+  StoreActionOf,
+  StoreEnhancersOf,
 } from "../utils/redux/EnhancedStoreTypeHelpers";
 import { listenerMiddleware } from "./listenerMiddleware";
 /**

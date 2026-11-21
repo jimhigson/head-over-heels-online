@@ -1,14 +1,14 @@
 import nanoEqual from "nano-equal";
 
-import { type EditorThunk } from "../../../store/store";
-import { type EditorRoomState } from "../../editorTypes";
+import type { EditorThunk } from "../../../store/store";
+import type { EditorRoomState } from "../../editorTypes";
 import {
   type HoveredItem,
   selectOpenRoomHoveredItem,
   setHoveredItemInRoom,
 } from "../../slice/levelEditorSlice";
-import { type OpenRoomId } from "../../slice/OpenRoom";
-import { type MaybePointingAtSomething } from "../cursor/PointingAt";
+import type { OpenRoomId } from "../../slice/OpenRoom";
+import type { MaybePointingAtSomething } from "../cursor/PointingAt";
 import { itemsAreLocked } from "./itemsAreLocked";
 
 /**

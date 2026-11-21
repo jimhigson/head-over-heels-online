@@ -7,7 +7,7 @@
  *
  * node tryHits.ts --root <dir> --match "Record<string, unknown>" \
  *   --with UnknownRecord --import-from type-fest \
- *   --typecheck "pnpm exec tsc --noEmit -p tsconfig.json" src/a.ts src/b.ts
+ *   --typecheck "tsc --noEmit -p tsconfig.json" src/a.ts src/b.ts
  *
  * options: those of replaceType.ts (except --only), plus
  *   --typecheck <cmd>    shell command run in --root, must exit 0; repeat to

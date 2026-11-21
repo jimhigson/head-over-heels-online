@@ -1,5 +1,5 @@
 import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
-import { type JsonItem } from "../../../model/json/JsonItem";
+import type { JsonItem } from "../../../model/json/JsonItem";
 import { keys, valuesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
@@ -11,7 +11,7 @@ import { fullBlockAabb } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
 import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
 import { blockXyzToFineXyz } from "../../render/projections";
-import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
+import type { RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { defaultBaseState } from "./itemDefaultStates";
 
 // a value of 3 makes items less likely to get pushed through the floor if

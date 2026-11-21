@@ -1,19 +1,19 @@
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
-import {
-  type EditorJsonItem,
-  type EditorJsonItemUnion,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorJsonItem,
+  EditorJsonItemUnion,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../../editorTypes";
 import { dropItemsOnRoomThunk } from "../dropItemsOnRoomThunk";
 import {
   selectCursorRoomIdFromLevelEditorState,
   selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState,
 } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,

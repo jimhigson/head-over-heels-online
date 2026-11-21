@@ -5,11 +5,11 @@ import {
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { emptyUserSettings } from "../../store/slices/userSettings/emptyUserSettings";
 import { emptyObject } from "../../utils/empty";
-import {
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
-  type EditorRoomState,
+import type {
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
+  EditorRoomState,
 } from "../editorTypes";
 
 const loadRoomDefaultOptions = {

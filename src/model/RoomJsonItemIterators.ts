@@ -1,7 +1,7 @@
-import { type SceneryName } from "../sprites/planets";
+import type { SceneryName } from "../sprites/planets";
 import { objectEntriesIter, valuesIter } from "../utils/entries";
-import { type JsonItemType, type JsonItemUnion } from "./json/JsonItem";
-import { type RoomJson, type RoomJsonItems } from "./RoomJson";
+import type { JsonItemType, JsonItemUnion } from "./json/JsonItem";
+import type { RoomJson, RoomJsonItems } from "./RoomJson";
 
 /** Iterate over items in a room, optionally filtering to specific item types */
 export const roomJsonItemsIterable = <

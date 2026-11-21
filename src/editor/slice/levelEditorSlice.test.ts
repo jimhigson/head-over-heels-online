@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 
 import { iterateRoomJsonItemsWithIds } from "../../model/RoomJsonItemIterators";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
   selectCursorRoomIdFromLevelEditorState,

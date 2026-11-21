@@ -1,5 +1,5 @@
-import { type RoomNode } from "../model/map/roomGridPositions";
-import { type SortedObjectOfRoomGridPositionSpecs } from "../model/map/sortRoomGridPositions";
+import type { RoomNode } from "../model/map/roomGridPositions";
+import type { SortedObjectOfRoomGridPositionSpecs } from "../model/map/sortRoomGridPositions";
 import { valuesIter } from "../utils/entries";
 import { naturalCompare } from "../utils/naturalCompare";
 

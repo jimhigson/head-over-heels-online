@@ -1,8 +1,8 @@
-import { type Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
 
 import { campaignToDataParam } from "../../src/db/campaignToDataParam";
-import { type Campaign } from "../../src/model/modelTypes";
-import { type ResolutionName } from "../../src/originalGame";
+import type { Campaign } from "../../src/model/modelTypes";
+import type { ResolutionName } from "../../src/originalGame";
 import {
   dispatchToStore,
   paintRenderedFrame,

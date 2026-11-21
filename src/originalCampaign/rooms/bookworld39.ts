@@ -1,0 +1,111 @@
+import { inferRoomJson, type RoomJson } from "../../model/RoomJson.ts";
+import type { OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
+
+export const room = inferRoomJson({
+  color: { hue: "yellow", shade: "basic" },
+  items: {
+    co: {
+      config: { direction: "left", times: { x: 7 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "conveyor",
+    },
+    co1: {
+      config: { direction: "away", times: { y: 2 } },
+      position: { x: 7, y: 0, z: 0 },
+      type: "conveyor",
+    },
+    f: {
+      config: { floorType: "none", times: { x: 8, y: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "floor",
+    },
+    pi: {
+      config: { gives: "scroll", page: "teleportBack", source: "manual" },
+      position: { x: 0, y: 0, z: 10 },
+      type: "pickup",
+    },
+    t: {
+      config: {
+        activatedIfPlanetLiberated: "bookworld",
+        times: { y: 2 },
+        toRoom: "bookworld1",
+      },
+      position: { x: 7, y: 3, z: 0 },
+      type: "teleporter",
+    },
+    w: {
+      config: {
+        direction: "right",
+        tiles: [
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+        ],
+      },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    w1: {
+      config: {
+        direction: "towards",
+        tiles: [
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+        ],
+      },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    w2: {
+      config: {
+        direction: "away",
+        tiles: [
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+        ],
+      },
+      position: { x: 0, y: 8, z: 0 },
+      type: "wall",
+    },
+    w3: {
+      config: {
+        direction: "left",
+        tiles: [
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+        ],
+      },
+      position: { x: 8, y: 0, z: 0 },
+      type: "wall",
+    },
+  },
+  meta: {
+    subRooms: {
+      "*": { above: { room: "bookworld38" }, below: { room: "bookworld40" } },
+    },
+  },
+  planet: "bookworld",
+}) satisfies RoomJson<OriginalCampaignRoomId, string, "bookworld">;

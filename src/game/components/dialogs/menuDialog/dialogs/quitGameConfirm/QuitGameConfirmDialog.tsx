@@ -1,6 +1,6 @@
-import {
-  type AnimatedTextureTailwindClass,
-  type TextureTailwindClass,
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
 } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { gameOver } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";

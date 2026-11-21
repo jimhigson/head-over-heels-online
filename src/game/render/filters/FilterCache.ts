@@ -1,4 +1,4 @@
-import { type Filter } from "pixi.js";
+import type { Filter } from "pixi.js";
 
 import { PaletteSwapFilter } from "./PaletteSwapFilter";
 

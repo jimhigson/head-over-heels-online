@@ -1,11 +1,11 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { type Writable } from "type-fest";
+import type { Writable } from "type-fest";
 
-import { type BooleanAction } from "../../../game/input/actions";
-import {
-  type ActionInputAssignment,
-  type InputAssignment,
-  type InputPress,
+import type { BooleanAction } from "../../../game/input/actions";
+import type {
+  ActionInputAssignment,
+  InputAssignment,
+  InputPress,
 } from "../../../game/input/InputAssignment";
 import {
   type KeyAssignmentPresetName,
@@ -23,7 +23,7 @@ import {
 } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { getAtPath, setAtPath } from "../../../utils/getAtPath";
 import { nextInCycle } from "../../../utils/nextInCycle";
-import { type ToggleablePaths } from "../../../utils/Toggleable";
+import type { ToggleablePaths } from "../../../utils/Toggleable";
 import { directionsXy4 } from "../../../utils/vectors/vectors";
 import { clearAllData } from "../clearAllData";
 import { defaultUserSettings } from "./defaultUserSettings";

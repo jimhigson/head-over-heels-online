@@ -1,4 +1,4 @@
-import { type FunctionComponent, type RefObject } from "preact";
+import type { FunctionComponent, RefObject } from "preact";
 
 export type RoomDecoratorProps<RoomId extends string> = {
   roomId: RoomId;

@@ -1,6 +1,6 @@
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
 import { useMapContext } from "../../map/MapContext";
-import { type RoomDecoratorProps } from "../../map/RoomDecoratorProps";
+import type { RoomDecoratorProps } from "../../map/RoomDecoratorProps";
 import { roomWorldPosition } from "../../map/roomWorldPosition";
 import { translateXyz } from "../../map/svgHelpers";
 import { useRoomNode } from "../../map/useRoomNode";
@@ -13,7 +13,7 @@ import {
   subXy,
   xyzEqual,
 } from "../../utils/vectors/vectors";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import {
   arrowShaftWidth,
   linePath,

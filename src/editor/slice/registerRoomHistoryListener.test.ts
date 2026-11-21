@@ -3,7 +3,7 @@ import { produce } from "immer";
 import { afterEach, beforeEach, expect, test } from "vitest";
 
 import { listenerMiddleware } from "../../store/listenerMiddleware";
-import { type EditorRoomId } from "../editorTypes";
+import type { EditorRoomId } from "../editorTypes";
 import {
   changeToRoom,
   levelEditorSlice,

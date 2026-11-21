@@ -2,11 +2,11 @@ import {
   itemMovedSinceRendered,
   type ItemTickContext,
 } from "../../../game/render/ItemRenderContexts";
-import { type FreeItemTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { FreeItemTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { isEmptyObject } from "../../../utils/empty";
 import { audioCtx } from "../../audioCtx";
-import { type ItemSoundRenderContext } from "../../ItemSoundRenderContext";
-import { type ItemSoundRenderer } from "../../ItemSoundRenderer";
+import type { ItemSoundRenderContext } from "../../ItemSoundRenderContext";
+import type { ItemSoundRenderer } from "../../ItemSoundRenderer";
 import {
   type BracketedSegmentOptions,
   BracketedSound,

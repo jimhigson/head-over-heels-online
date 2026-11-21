@@ -1,4 +1,4 @@
-import { type RoomDecoration as RoomDecorationName } from "../model/RoomJson";
+import type { RoomDecoration as RoomDecorationName } from "../model/RoomJson";
 import {
   roomBack,
   roomFront,

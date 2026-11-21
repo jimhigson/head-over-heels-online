@@ -1,5 +1,5 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
-import { type OverridePropertiesDeep } from "type-fest";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
+import type { OverridePropertiesDeep } from "type-fest";
 
 import { addReturnDoorInPlace } from "../../../model/inPlaceMutators/addReturnDoorInPlace";
 import { changeRoomSceneryInPlace } from "../../../model/inPlaceMutators/changeRoomSceneryInPlace";
@@ -9,7 +9,7 @@ import {
   exitGameRoomId,
   type FloorType,
 } from "../../../model/json/ItemConfigMap";
-import { type JsonItemConfig } from "../../../model/json/JsonItem";
+import type { JsonItemConfig } from "../../../model/json/JsonItem";
 import { subRoomsIntersectingJsonItem } from "../../../model/map/itemIsInSubRoom";
 import { roomGridPositions } from "../../../model/map/roomGridPositions";
 import {
@@ -23,8 +23,8 @@ import {
   iterateRoomJsonItemsWithIds,
   roomJsonItemsIterable,
 } from "../../../model/RoomJsonItemIterators";
-import { type ZxSpectrumRoomColour } from "../../../originalGame";
-import { type SceneryName } from "../../../sprites/planets";
+import type { ZxSpectrumRoomColour } from "../../../originalGame";
+import type { SceneryName } from "../../../sprites/planets";
 import { keysIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
@@ -37,11 +37,11 @@ import {
   xyEqual,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
-import {
-  type EditorJsonItem,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
+import type {
+  EditorJsonItem,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
 } from "../../editorTypes";
 import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
@@ -57,7 +57,7 @@ import {
   selectCursorSubRoomIdFromLevelEditorState,
   selectRoomFromLevelEditorState,
 } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import {
   describeRoomJsonEdit,

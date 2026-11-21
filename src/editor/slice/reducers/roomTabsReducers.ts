@@ -1,14 +1,14 @@
-import {
-  type PayloadAction,
-  type SliceCaseReducers,
-  type SliceSelectors,
+import type {
+  PayloadAction,
+  SliceCaseReducers,
+  SliceSelectors,
 } from "@reduxjs/toolkit";
 
 import { emptyArray } from "../../../utils/empty";
-import { type EditorRoomId } from "../../editorTypes";
+import type { EditorRoomId } from "../../editorTypes";
 import { focusTabInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
 import { commitPendingNudgeInPlace } from "../inPlaceMutators/commitPendingNudgeInPlace";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import {
   closeTabInPlace,
   deleteLayoutNodesInPlace,

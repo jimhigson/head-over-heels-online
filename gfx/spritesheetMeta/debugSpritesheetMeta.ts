@@ -1,4 +1,4 @@
-import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { blockStackSpritesheetMeta } from "./blockStackSpritesheetMeta";
 
 export type DebugPaletteColourName = "cyan" | "red";

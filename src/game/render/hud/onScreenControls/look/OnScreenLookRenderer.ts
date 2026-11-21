@@ -3,11 +3,11 @@ import { type Container, type FederatedPointerEvent, Graphics } from "pixi.js";
 import { selectTotalUpscale } from "../../../../../store/slices/upscale/upscaleSlice";
 import { store } from "../../../../../store/store";
 import { originXyz, type Xy } from "../../../../../utils/vectors/vectors";
-import { type InputStateTrackerInterface } from "../../../../input/InputStateTracker";
-import { type Renderer } from "../../../Renderer";
-import { type GeneralRenderContext } from "../../../room/RoomRenderContexts";
-import { type HudRendererTickContext } from "../../hudRendererContexts";
-import { type OnScreenJoystickRenderer } from "../OnScreenJoystickRenderer";
+import type { InputStateTrackerInterface } from "../../../../input/InputStateTracker";
+import type { Renderer } from "../../../Renderer";
+import type { GeneralRenderContext } from "../../../room/RoomRenderContexts";
+import type { HudRendererTickContext } from "../../hudRendererContexts";
+import type { OnScreenJoystickRenderer } from "../OnScreenJoystickRenderer";
 import { DragInertia } from "./DragInertia";
 import { setPointerXyMaybeRotated } from "./setPointerXyMaybeRotated";
 

@@ -1,3 +1,5 @@
+#!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
+
 /**
  * Starts the game and editor vite dev servers together, each knowing the
  * other's url.
@@ -44,8 +46,7 @@ const previewWithRebuildKey = servingBuilt && process.env.TMUX !== undefined;
 
 /** the pnpm args that start one app's server, before the port args */
 const serverPnpmArgs = (app: "editor" | "game") =>
-  previewWithRebuildKey ?
-    ["exec", "tsx", "scripts/previewWithRebuildKey.ts", app]
+  previewWithRebuildKey ? ["exec", "./scripts/previewWithRebuildKey.ts", app]
   : servingBuilt ? [`preview:${app}`]
   : [`dev:${app}`];
 

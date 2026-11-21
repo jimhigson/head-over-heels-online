@@ -1,13 +1,13 @@
-import { type Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
 import chalk from "chalk";
 
-import {
-  type E2EEventBusEventName,
-  type E2EEventBusPayloadMap,
+import type {
+  E2EEventBusEventName,
+  E2EEventBusPayloadMap,
 } from "../../src/game/mainLoop/E2EEventBus";
-import { type CharacterName } from "../../src/model/modelTypes";
-import { type SpritesheetName } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type AppDispatch } from "../../src/store/store";
+import type { CharacterName } from "../../src/model/modelTypes";
+import type { SpritesheetName } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { AppDispatch } from "../../src/store/store";
 import {
   advanceUntil,
   advanceUntilConditionMetInsidePage,

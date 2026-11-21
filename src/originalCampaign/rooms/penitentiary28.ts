@@ -1,0 +1,93 @@
+import { inferRoomJson, type RoomJson } from "../../model/RoomJson.ts";
+import type { OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
+
+export const room = inferRoomJson({
+  color: { hue: "yellow", shade: "dimmed" },
+  items: {
+    b: {
+      config: { style: "organic", times: { z: 2 } },
+      position: { x: 0, y: 3, z: 0 },
+      type: "block",
+    },
+    b1: {
+      config: { style: "organic" },
+      position: { x: 0, y: 3, z: 3 },
+      type: "block",
+    },
+    d: {
+      config: { direction: "right", toRoom: "penitentiary29" },
+      position: { x: 0, y: 3, z: 4 },
+      type: "door",
+    },
+    d1: {
+      config: { direction: "towards", toRoom: "penitentiary30" },
+      position: { x: 3, y: 0, z: 4 },
+      type: "door",
+    },
+    d2: {
+      config: { direction: "left", toRoom: "penitentiary27" },
+      position: { x: 8, y: 3, z: 0 },
+      type: "door",
+    },
+    f: {
+      config: {
+        floorType: "standable",
+        scenery: "penitentiary",
+        times: { x: 8, y: 8 },
+      },
+      position: { x: 0, y: 0, z: 0 },
+      type: "floor",
+    },
+    h: { config: {}, position: { x: 2, y: 0, z: 0 }, type: "hushPuppy" },
+    h1: { config: {}, position: { x: 3, y: 0, z: 1 }, type: "hushPuppy" },
+    h2: { config: {}, position: { x: 4, y: 0, z: 2 }, type: "hushPuppy" },
+    w: {
+      config: { direction: "right", tiles: ["loop", "loop", "skeleton"] },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    w1: {
+      config: { direction: "towards", tiles: ["loop", "loop", "skeleton"] },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    w2: {
+      config: { direction: "right", tiles: ["skeleton", "loop", "loop"] },
+      position: { x: 0, y: 5, z: 0 },
+      type: "wall",
+    },
+    w3: {
+      config: {
+        direction: "away",
+        tiles: [
+          "loop",
+          "loop",
+          "skeleton",
+          "loop",
+          "loop",
+          "skeleton",
+          "loop",
+          "loop",
+        ],
+      },
+      position: { x: 0, y: 8, z: 0 },
+      type: "wall",
+    },
+    w4: {
+      config: { direction: "towards", tiles: ["skeleton", "loop", "loop"] },
+      position: { x: 5, y: 0, z: 0 },
+      type: "wall",
+    },
+    w5: {
+      config: { direction: "left", tiles: ["loop", "skeleton", "loop"] },
+      position: { x: 8, y: 0, z: 0 },
+      type: "wall",
+    },
+    w6: {
+      config: { direction: "left", tiles: ["loop", "skeleton", "loop"] },
+      position: { x: 8, y: 5, z: 0 },
+      type: "wall",
+    },
+  },
+  planet: "penitentiary",
+}) satisfies RoomJson<OriginalCampaignRoomId, string, "penitentiary">;

@@ -1,15 +1,15 @@
 import { expect, type Page } from "@playwright/test";
 
-import { type ButtonMode } from "../../src/editor/EditorMap/EditorMapInsertButtonDecorator";
-import { type EditorRoomJson } from "../../src/editor/editorTypes";
-import { type EditorE2eItem } from "../../src/editor/RoomEditingArea/useEditorE2eApi";
-import { type OpenRoomId } from "../../src/editor/slice/OpenRoom";
-import { type EditorRootState } from "../../src/store/store";
-import {
-  type DirectionXy4,
-  type DirectionXyz4,
-  type Xy,
-  type Xyz,
+import type { ButtonMode } from "../../src/editor/EditorMap/EditorMapInsertButtonDecorator";
+import type { EditorRoomJson } from "../../src/editor/editorTypes";
+import type { EditorE2eItem } from "../../src/editor/RoomEditingArea/useEditorE2eApi";
+import type { OpenRoomId } from "../../src/editor/slice/OpenRoom";
+import type { EditorRootState } from "../../src/store/store";
+import type {
+  DirectionXy4,
+  DirectionXyz4,
+  Xy,
+  Xyz,
 } from "../../src/utils/vectors/vectors";
 
 /**

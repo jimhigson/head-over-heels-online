@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { addItem, campaignOf, newRoom, runCheck } from "../testUtils";
-import { type VerificationJsonItemUnion } from "../verificationTypes";
+import type { VerificationJsonItemUnion } from "../verificationTypes";
 import { redundantTimesVerifier } from "./redundantTimesVerifier";
 
 const blockWithTimes = (times?: {

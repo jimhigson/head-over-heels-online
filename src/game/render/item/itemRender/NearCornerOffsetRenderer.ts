@@ -4,7 +4,7 @@ import {
   itemBehaviourKey,
   type ItemInPlayType,
 } from "../../../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
 import {
   isAtQuarterAngle,
   nearestQuarterAngle,
@@ -24,7 +24,7 @@ import {
   projectWorldXyzToScreenX,
   projectWorldXyzToScreenY,
 } from "../../projections";
-import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
+import type { ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 /**
  * the projected (screen px) near-corner offset at a point part-way through a

@@ -1,7 +1,7 @@
 import { groupD8, Texture } from "pixi.js";
 
 import { objectEntriesIter, valuesIter } from "../../utils/entries";
-import { type AppSpritesheet } from "./AppSpritesheet";
+import type { AppSpritesheet } from "./AppSpritesheet";
 
 /**
  * Replaces every texture whose frame data is flagged `flipX` (declared as a

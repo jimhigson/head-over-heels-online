@@ -11,13 +11,13 @@ import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlayS
 import { emptyUserSettings } from "../../../store/slices/userSettings/emptyUserSettings";
 import { originXyz } from "../../../utils/vectors/vectors";
 import { rotateSelectionOrToolItemThunk } from "../../commands/rotateSelectionOrToolItemThunk";
-import {
-  type EditorJsonItemUnion,
-  type EditorRoomItemId,
-  type EditorRoomState,
+import type {
+  EditorJsonItemUnion,
+  EditorRoomItemId,
+  EditorRoomState,
 } from "../../editorTypes";
-import { type RotationSense } from "../../itemRotation";
-import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
+import type { RotationSense } from "../../itemRotation";
+import type { ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectItemInLevelEditorState,

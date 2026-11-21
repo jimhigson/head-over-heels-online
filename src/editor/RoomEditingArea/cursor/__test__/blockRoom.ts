@@ -7,15 +7,15 @@ import {
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import { spritesheetMetas } from "../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { addXyz, type Xy, type Xyz } from "../../../../utils/vectors/vectors";
-import {
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
-  type EditorRoomState,
-  type EditorUnionOfAllItemInPlayTypes,
+import type {
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
+  EditorRoomState,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../../../editorTypes";
 import { loadEditorRoom } from "../../../slice/loadEditorRoom";
-import { type Tool } from "../../interactivity/Tool";
+import type { Tool } from "../../interactivity/Tool";
 
 export const pointerTool: Tool = { type: "pointer" };
 

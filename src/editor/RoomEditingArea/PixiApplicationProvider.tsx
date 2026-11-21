@@ -1,8 +1,8 @@
 import { Application } from "pixi.js";
 import { createContext } from "preact";
-import { type PropsWithChildren } from "preact/compat";
+import type { PropsWithChildren } from "preact/compat";
 import { useContext, useEffect, useState } from "preact/hooks";
-import { type EmptyObject } from "type-fest";
+import type { EmptyObject } from "type-fest";
 
 import { installAppTickerAsPixiShared } from "../../game/mainLoop/installAppTickerAsPixiShared";
 import { stopAppAutoRendering } from "../../utils/pixi/stopAppAutoRendering";

@@ -1,6 +1,6 @@
 import { editorStore } from "../../store/store";
 import { commandAction } from "./commandAction";
-import { type EditorCommand } from "./EditorCommand";
+import type { EditorCommand } from "./EditorCommand";
 
 /**
  * resolves once the command has finished, most dispatches are synchronous, but

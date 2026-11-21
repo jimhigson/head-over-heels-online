@@ -4,7 +4,7 @@ import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems"
 import { useEditorAppSelector } from "../../../store/store";
 import { keys } from "../../../utils/entries";
 import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
-import { type EditorRoomJsonItems } from "../../editorTypes";
+import type { EditorRoomJsonItems } from "../../editorTypes";
 import {
   coalesceSelectedItems,
   selectCurrentCommittedRoomJson,

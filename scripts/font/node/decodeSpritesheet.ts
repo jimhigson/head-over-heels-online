@@ -1,6 +1,6 @@
 import sharp from "sharp";
 
-import { type DecodedImage } from "../geometry/glyphBitmap";
+import type { DecodedImage } from "../geometry/glyphBitmap";
 
 export const decodeSpritesheet = async (
   path: string,

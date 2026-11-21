@@ -1,4 +1,4 @@
-import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
 import { itemInPlayCentre } from "../../../model/itemInPlayCentre";
 import {
@@ -6,17 +6,17 @@ import {
   type PlayableItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
-import { type CharacterName } from "../../../model/modelTypes";
-import { type RoomState } from "../../../model/RoomState";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
 import { pickupCollected } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { selectRoomPickupsCollected } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { addXyz, boxWithSize, originXyz } from "../../../utils/vectors/vectors";
-import { type GameState } from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
 import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { saveGameThunk } from "../../gameState/saving/saveGameThunk";
-import { type ItemTouchEvent } from "../../physics/handleTouch/ItemTouchEvent";
+import type { ItemTouchEvent } from "../../physics/handleTouch/ItemTouchEvent";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { shadowSmallRound } from "../../render/shadows/shadowCastTextures";
 import { getBehaviourForItemTypeAndConfig } from "../attachBehaviourToItem";

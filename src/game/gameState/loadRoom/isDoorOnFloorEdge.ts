@@ -1,5 +1,5 @@
-import { type JsonItem } from "../../../model/json/JsonItem";
-import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
+import type { JsonItem } from "../../../model/json/JsonItem";
+import type { RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 
 /**
  * whether the door sits on a floor edge - a world-space fact, baked into the

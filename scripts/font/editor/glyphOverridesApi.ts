@@ -1,8 +1,8 @@
 import { execFile } from "node:child_process";
 import { readFileSync } from "node:fs";
-import { type IncomingMessage, type ServerResponse } from "node:http";
+import type { IncomingMessage, ServerResponse } from "node:http";
 import { promisify } from "node:util";
-import { type Plugin } from "vite";
+import type { Plugin } from "vite";
 
 import { smoothOutputPath } from "../node/buildFont";
 import {

@@ -1,10 +1,10 @@
-import { type ZxSpectrumRoomHue } from "../../../originalGame";
+import type { ZxSpectrumRoomHue } from "../../../originalGame";
 import { objectEntriesIter } from "../../../utils/entries";
-import { type AppSpriteFrame } from "./AppSpriteFrame";
-import {
-  type BaseAnimationId,
-  type BaseTextureId,
-  type FramesWithSpeed,
+import type { AppSpriteFrame } from "./AppSpriteFrame";
+import type {
+  BaseAnimationId,
+  BaseTextureId,
+  FramesWithSpeed,
 } from "./makeSpritesheetData";
 
 /**

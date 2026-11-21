@@ -1,6 +1,6 @@
 import Ajv, { type ErrorObject } from "ajv";
 import { produce } from "immer";
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 
 import roomSchema from "../../../../_generated/room.schema.json";
 import { entries } from "../../../../utils/entries";
@@ -8,9 +8,9 @@ import { getAtPath, setAtPath } from "../../../../utils/getAtPath";
 import { escapeMarkdown } from "../../../../utils/markdown/escapeMarkdown";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { valueMd } from "../helpers/messageMarkdown";
-import {
-  type VerificationRoomId,
-  type VerificationRoomJson,
+import type {
+  VerificationRoomId,
+  VerificationRoomJson,
 } from "../verificationTypes";
 
 type SchemaNonCompliant = {

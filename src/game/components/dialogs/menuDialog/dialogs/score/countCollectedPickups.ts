@@ -1,6 +1,6 @@
-import { type Campaign } from "../../../../../../model/modelTypes";
+import type { Campaign } from "../../../../../../model/modelTypes";
 import { iterateRoomJsonItemsWithIds } from "../../../../../../model/RoomJsonItemIterators";
-import { type PickupsCollected } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
+import type { PickupsCollected } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
 import { objectEntriesIter } from "../../../../../../utils/entries";
 
 /**

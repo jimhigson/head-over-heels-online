@@ -1,6 +1,6 @@
 import { Color } from "pixi.js";
 
-import { type HexColour } from "./HexColour";
+import type { HexColour } from "./HexColour";
 import { parseHex } from "./parseHex";
 
 /**

@@ -1,10 +1,10 @@
-import { type ExportedSoundId } from "../../_generated/sfxdex/soundIds";
+import type { ExportedSoundId } from "../../_generated/sfxdex/soundIds";
 import {
   type ExitGameRoomId,
   exitGameRoomId,
 } from "../../model/json/ItemConfigMap";
-import { type Campaign } from "../../model/modelTypes";
-import { type RoomJson } from "../../model/RoomJson";
+import type { Campaign } from "../../model/modelTypes";
+import type { RoomJson } from "../../model/RoomJson";
 import { emptyArray } from "../../utils/empty";
 import { entryTuneForPlanet } from "../gameState/loadRoom/entryTuneForPlanet";
 

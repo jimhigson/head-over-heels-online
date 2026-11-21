@@ -2,9 +2,9 @@ import {
   type SpritesheetName,
   spritesheetNameValues,
 } from "../../../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import {
-  type AnimatedTextureTailwindClass,
-  type TextureTailwindClass,
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
 } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { selectSpritesheetName } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";

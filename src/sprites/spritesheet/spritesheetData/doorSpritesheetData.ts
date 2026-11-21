@@ -1,4 +1,4 @@
-import { type SpritesheetData, type SpritesheetFrameData } from "pixi.js";
+import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 
 import { fromAllEntries } from "../../../utils/entries";
 import { concat } from "../../../utils/iterators/concat";

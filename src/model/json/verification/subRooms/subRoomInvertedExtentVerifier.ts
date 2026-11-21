@@ -5,7 +5,7 @@ import {
   cellHasInvertedExtent,
   dividedCells,
 } from "../helpers/subRoomGeometry";
-import { type VerificationRoomId } from "../verificationTypes";
+import type { VerificationRoomId } from "../verificationTypes";
 
 type SubRoomInvertedExtent = {
   roomId: VerificationRoomId;

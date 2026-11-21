@@ -1,6 +1,6 @@
 import { firstSubRoomId } from "../../../model/firstSubRoomId";
-import { type EditorRoomId } from "../../editorTypes";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { EditorRoomId } from "../../editorTypes";
+import type { LevelEditorState } from "../levelEditorSlice";
 import {
   existingLayoutNode,
   findRoomTab,

@@ -1,7 +1,7 @@
-import { type ZxSpectrumRoomColour } from "../originalGame";
-import { type SceneryName } from "../sprites/planets";
-import { type DirectionXy4, type Xy, type Xyz } from "../utils/vectors/vectors";
-import { type JsonItemUnion } from "./json/JsonItem";
+import type { ZxSpectrumRoomColour } from "../originalGame";
+import type { SceneryName } from "../sprites/planets";
+import type { DirectionXy4, Xy, Xyz } from "../utils/vectors/vectors";
+import type { JsonItemUnion } from "./json/JsonItem";
 
 /**
  * when a sub-room is key'd by '*' it actually represents

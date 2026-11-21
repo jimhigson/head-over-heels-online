@@ -1,4 +1,4 @@
-import { type EmptyObject } from "type-fest";
+import type { EmptyObject } from "type-fest";
 
 import { exitGameRoomId } from "../../ItemConfigMap";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";

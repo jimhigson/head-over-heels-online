@@ -1,6 +1,6 @@
-import {
-  type EditorJsonItemUnion,
-  type EditorUnionOfAllItemInPlayTypes,
+import type {
+  EditorJsonItemUnion,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
 
 /** walls and floors - the items the walls/floors lock protects */

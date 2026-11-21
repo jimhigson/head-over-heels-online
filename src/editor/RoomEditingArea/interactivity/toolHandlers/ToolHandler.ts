@@ -1,11 +1,8 @@
-import {
-  type EditorRootState,
-  type EditorThunk,
-} from "../../../../store/store";
-import { type EditorRoomState } from "../../../editorTypes";
-import { type OpenRoomId } from "../../../slice/OpenRoom";
-import { type MaybePointingAtSomething } from "../../cursor/PointingAt";
-import { type EditorViewport } from "../../viewport/EditorViewport";
+import type { EditorRootState, EditorThunk } from "../../../../store/store";
+import type { EditorRoomState } from "../../../editorTypes";
+import type { OpenRoomId } from "../../../slice/OpenRoom";
+import type { MaybePointingAtSomething } from "../../cursor/PointingAt";
+import type { EditorViewport } from "../../viewport/EditorViewport";
 
 /**
  * what a tool does with the pointer in an open room - each handler can return a

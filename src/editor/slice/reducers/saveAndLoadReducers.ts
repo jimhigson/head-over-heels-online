@@ -6,12 +6,12 @@ import {
 
 import { firstSubRoomId } from "../../../model/firstSubRoomId";
 import { pick } from "../../../utils/pick";
-import { type EditorCampaign } from "../../editorTypes";
+import type { EditorCampaign } from "../../editorTypes";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
 import { migrateRoomItems } from "../inPlaceMutators/migrateRoomItems";
 import { migrateRoomNonContiguousRelationships } from "../inPlaceMutators/migrateRoomNonContiguousRelationships";
 import { migrateRoomVerticalLinks } from "../inPlaceMutators/migrateRoomVerticalLinks";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { levelEditorSliceCampaignTransientFields } from "../levelEditorSliceTransientFields";
 import { openOnlyRoomInPlace } from "../PaneLayout";
 import { startingRoomId } from "../startingRoomId";

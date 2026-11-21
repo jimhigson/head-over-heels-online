@@ -1,10 +1,10 @@
 import { Container } from "pixi.js";
 
-import { type ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
+import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
-import { type RoomState } from "../../../../model/RoomState";
+import type { RoomState } from "../../../../model/RoomState";
 import { wallInPlayTimes } from "../../../../model/times";
-import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
+import type { AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
 import { axisProjectsReversed } from "../../../../utils/vectors/resolveCameraRelativeVector";
 import { rotateXy } from "../../../../utils/vectors/rotateXy";

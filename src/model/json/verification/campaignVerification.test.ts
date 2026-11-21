@@ -1,12 +1,12 @@
 import { describe, expect, test } from "vitest";
 
-import { campaign as originalCampaign } from "../../../_generated/originalCampaign/campaign";
 import { loadCampaignFromDb } from "../../../db/campaign";
 import { postgrestDbClient } from "../../../db/postgrestDbClient";
 import { sequelCampaignLocator } from "../../../gameInfo";
+import { campaign as originalCampaign } from "../../../originalCampaign/campaign";
 import { allVerifiers } from "./allVerifiers";
 import { verificationGraph } from "./helpers/verificationGraph";
-import { type VerificationCampaign } from "./verificationTypes";
+import type { VerificationCampaign } from "./verificationTypes";
 
 // the latest version in the db, so the sequel is checked as it is now - a pass
 // only holds for the version there when this ran:

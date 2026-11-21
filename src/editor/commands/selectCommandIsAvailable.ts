@@ -1,5 +1,5 @@
-import { type EditorRootState } from "../../store/store";
-import { type EditorCommand } from "./EditorCommand";
+import type { EditorRootState } from "../../store/store";
+import type { EditorCommand } from "./EditorCommand";
 
 export const selectCommandIsAvailable = (
   command: EditorCommand,

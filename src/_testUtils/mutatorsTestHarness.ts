@@ -22,15 +22,15 @@ import {
   updateItemPosition,
 } from "../game/gameState/mutators/updateItemBox";
 import { blockSizePx } from "../game/physics/mechanicsConstants";
-import { type ItemInPlay } from "../model/ItemInPlay";
-import { type PlayableActionState } from "../model/ItemStateMap";
+import type { ItemInPlay } from "../model/ItemInPlay";
+import type { PlayableActionState } from "../model/ItemStateMap";
 import {
   type Campaign,
   type CharacterName,
   type IndividualCharacterName,
   otherIndividualCharacterName,
 } from "../model/modelTypes";
-import { type RoomState } from "../model/RoomState";
+import type { RoomState } from "../model/RoomState";
 import { startAppListening } from "../store/listenerMiddleware";
 import {
   gameOver,

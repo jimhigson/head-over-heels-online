@@ -4,9 +4,9 @@ import {
   isWholeRoomSubRooms,
   type SubRoom,
 } from "../../../RoomJson";
-import {
-  type VerificationCampaign,
-  type VerificationRoomId,
+import type {
+  VerificationCampaign,
+  VerificationRoomId,
 } from "../verificationTypes";
 
 export type VerticalDirection = "above" | "below";

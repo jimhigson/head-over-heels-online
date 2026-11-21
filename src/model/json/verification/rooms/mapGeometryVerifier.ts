@@ -1,10 +1,10 @@
 import { addXyz, type Xyz } from "../../../../utils/vectors/vectors";
-import { type RoomNode } from "../../../map/roomGridPositions";
+import type { RoomNode } from "../../../map/roomGridPositions";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { valueMd } from "../helpers/messageMarkdown";
-import {
-  type VerificationRoomId,
-  type VerificationRoomItemId,
+import type {
+  VerificationRoomId,
+  VerificationRoomItemId,
 } from "../verificationTypes";
 
 type MapGeometryIssue = {

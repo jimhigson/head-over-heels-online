@@ -1,5 +1,5 @@
 import { completeTimesXyz } from "../../model/times";
-import { type Aabb, type Xyz } from "../../utils/vectors/vectors";
+import type { Aabb, Xyz } from "../../utils/vectors/vectors";
 import { blockSizePx } from "../physics/mechanicsConstants";
 
 /**

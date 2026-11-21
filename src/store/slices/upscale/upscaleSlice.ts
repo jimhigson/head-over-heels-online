@@ -6,7 +6,7 @@ import {
   calculateUpscale,
   type CalculateUpscaleOptions,
 } from "./calculateUpscale";
-import { type Upscale } from "./Upscale";
+import type { Upscale } from "./Upscale";
 import { upscaleOptionsForCurrentDevice } from "./upscaleOptionsForCurrentDevice";
 
 export type UpscaleState = {

@@ -1,6 +1,6 @@
-import { type FreeItem } from "../../../../model/ItemInPlayNarrowedUnions";
+import type { FreeItem } from "../../../../model/ItemInPlayNarrowedUnions";
 import { stoodOnItem } from "../../../../model/stoodOnItemsLookup";
-import { type UnindexedRoomState } from "../../saving/SavedGameState";
+import type { UnindexedRoomState } from "../../saving/SavedGameState";
 
 export const removeStandingOn = <
   RoomId extends string,

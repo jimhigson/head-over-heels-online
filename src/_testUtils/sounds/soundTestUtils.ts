@@ -1,29 +1,29 @@
 import { vi } from "vitest";
 // type-only, so importing does not install the test api as a side effect:
-import {
-  type TestApiAudioBufferSourceNode,
-  type TestApiAudioContext,
-  type TestApiAudioNode,
+import type {
+  TestApiAudioBufferSourceNode,
+  TestApiAudioContext,
+  TestApiAudioNode,
 } from "web-audio-test-api";
 
 import { exportedSfxUrls } from "../../_generated/sfxdex/sfx";
-import { type ExportedSoundId } from "../../_generated/sfxdex/soundIds";
-import { type GameState } from "../../game/gameState/GameState";
+import type { ExportedSoundId } from "../../_generated/sfxdex/soundIds";
+import type { GameState } from "../../game/gameState/GameState";
 import { selectCurrentRoomState } from "../../game/gameState/gameStateSelectors/selectCurrentRoomState";
-import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
-import { type ItemInPlayType } from "../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
-import { type RoomState } from "../../model/RoomState";
+import type { RoomState } from "../../model/RoomState";
 import { audioCtx } from "../../sound/audioCtx";
 import { createSoundRenderer } from "../../sound/createSoundRenderer";
-import { type ItemSoundRenderer } from "../../sound/ItemSoundRenderer";
+import type { ItemSoundRenderer } from "../../sound/ItemSoundRenderer";
 import { loadedSound, loadSound } from "../../sound/soundsLoader";
 import { soundsFadeDurationSec } from "../../sound/soundUtils/stopWithFade";
 import { store } from "../../store/store";
 import { keys } from "../../utils/entries";
 import { cameraAngleBase } from "../../utils/vectors/cameraAngleVectors";
-import { type TestRenderState } from "../makeTestRenderState";
+import type { TestRenderState } from "../makeTestRenderState";
 
 /**
  * how long (in ms) to play on for any sounds that have been stopped to finish

@@ -1,26 +1,23 @@
 import { produce } from "immer";
 
-import { type DoorConfig } from "../../../../model/json/ItemConfigMap";
+import type { DoorConfig } from "../../../../model/json/ItemConfigMap";
 import {
   isXyRectInFootprints,
   roomFootprints,
 } from "../../../../model/roomFootprints";
 import { completeTimesXy } from "../../../../model/times";
-import {
-  type EditorRootState,
-  type EditorThunk,
-} from "../../../../store/store";
+import type { EditorRootState, EditorThunk } from "../../../../store/store";
 import { noopFunction } from "../../../../utils/empty";
 import {
   nonZeroVectorClosestDirectionXy4,
   type Xyz,
 } from "../../../../utils/vectors/vectors";
-import {
-  type EditorItemInPlayUnion,
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomState,
-  type EditorUnionOfAllItemInPlayTypes,
+import type {
+  EditorItemInPlayUnion,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomState,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../../../editorTypes";
 import { selectPreviewOnlyJsonItemIds } from "../../../slice/levelEditorSelectors";
 import {
@@ -29,26 +26,26 @@ import {
   resetTool,
   selectTool,
 } from "../../../slice/levelEditorSlice";
-import { type OpenRoom } from "../../../slice/OpenRoom";
+import type { OpenRoom } from "../../../slice/OpenRoom";
 import { maybeLayoutNode } from "../../../slice/PaneLayout";
-import { type ApplyToolToRoomJsonPayload } from "../../../slice/reducers/applyItemToolReducers";
+import type { ApplyToolToRoomJsonPayload } from "../../../slice/reducers/applyItemToolReducers";
 import { snapGridResolution } from "../../../snapGridResolution";
 import { addingItemCollisionCheck } from "../../cursor/editWouldCollide";
 import { itemToolPutDownLocation } from "../../cursor/itemToolPutDownLocation";
-import { type MaybePointingAtSomething } from "../../cursor/PointingAt";
+import type { MaybePointingAtSomething } from "../../cursor/PointingAt";
 import { jsonItemAndIdForInPlayItem } from "../jsonItemAndIdForInPlayItem";
 import {
   candidatesAround,
   nearestCandidatesFirst,
   placementReachBlocks,
 } from "../nearestCandidatesFirst";
-import { type Tool } from "../Tool";
-import {
-  type MouseDownParams,
-  type MouseLeaveParams,
-  type MouseMoveParams,
-  type MouseUpParams,
-  type ToolHandler,
+import type { Tool } from "../Tool";
+import type {
+  MouseDownParams,
+  MouseLeaveParams,
+  MouseMoveParams,
+  MouseUpParams,
+  ToolHandler,
 } from "./ToolHandler";
 
 /**

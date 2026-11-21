@@ -1,7 +1,7 @@
-import { type ComponentChildren } from "preact";
+import type { ComponentChildren } from "preact";
 import { useCallback, useContext, useRef } from "preact/hooks";
 
-import { type Xy } from "../../utils/vectors/vectors";
+import type { Xy } from "../../utils/vectors/vectors";
 import { cn } from "../cn";
 import { ContextMenu } from "../command/ContextMenu";
 import { MenuBarContext } from "./MenuBarContext";

@@ -1,4 +1,4 @@
-import { type Campaign } from "../../../../model/modelTypes";
+import type { Campaign } from "../../../../model/modelTypes";
 import { inferRoomJson, type RoomJson } from "../../../../model/RoomJson";
 
 /**

@@ -1,6 +1,6 @@
 import { Ticker } from "pixi.js";
 
-import { type AppTicker } from "../../utils/ticker/AppTicker";
+import type { AppTicker } from "../../utils/ticker/AppTicker";
 import { appTicker } from "../../utils/ticker/appTickerInstance";
 
 /** pixi's two ticker singletons, which it fills in on first access */

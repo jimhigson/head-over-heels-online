@@ -8,7 +8,7 @@ import {
   type DirectionXy8,
   type DirectionXyz8,
 } from "../utils/vectors/vectors";
-import { type EditorJsonItemUnion } from "./editorTypes";
+import type { EditorJsonItemUnion } from "./editorTypes";
 
 export type ItemDirection =
   | {

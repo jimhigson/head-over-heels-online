@@ -1,9 +1,9 @@
-import { type NowhereRoomId } from "../../../model/json/ItemConfigMap";
-import {
-  type JsonItemConfig,
-  type JsonItemType,
+import type { NowhereRoomId } from "../../../model/json/ItemConfigMap";
+import type {
+  JsonItemConfig,
+  JsonItemType,
 } from "../../../model/json/JsonItem";
-import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
+import type { EditorRoomId, EditorRoomItemId } from "../../editorTypes";
 
 export type EditorToolRoomId = "+" | EditorRoomId | NowhereRoomId;
 

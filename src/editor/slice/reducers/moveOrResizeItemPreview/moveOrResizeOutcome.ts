@@ -29,25 +29,25 @@ import {
   type Xyz,
 } from "../../../../utils/vectors/vectors";
 import { jsonItemWithEditorGhostMoved } from "../../../editorGhostEditorBehaviours";
-import {
-  type EditorJsonItem,
-  type EditorJsonItemUnion,
-  type EditorJsonItemWithTimes,
-  type EditorRoomItemId,
-  type EditorRoomJson,
-  type EditorRoomJsonItems,
+import type {
+  EditorJsonItem,
+  EditorJsonItemUnion,
+  EditorJsonItemWithTimes,
+  EditorRoomItemId,
+  EditorRoomJson,
+  EditorRoomJsonItems,
 } from "../../../editorTypes";
 import { movesOnlyInWholeBlocks } from "../../../snapGridResolution";
 import { generateWallHealingInPlaceOfDoor } from "../../inPlaceMutators/generateWallHealingInPlaceOfDoor";
 import { jsonItemsWithEdits } from "../../jsonItemsWithEdits";
-import {
-  type PendingEdits,
-  type PreviewedRoomItemEdits,
+import type {
+  PendingEdits,
+  PreviewedRoomItemEdits,
 } from "../../levelEditorSlice";
 import { perimeterGapFillingEdits } from "../../perimeterGapFillingEdits";
-import {
-  type EditorGhostSelectionEntry,
-  type SelectionEntry,
+import type {
+  EditorGhostSelectionEntry,
+  SelectionEntry,
 } from "../../SelectionEntry";
 import { moveVerb, type UndoItemEntry } from "../undoDescription";
 import { wallAndDoorEditsForFloorChange } from "./wallAndDoorEditsForFloorChange";

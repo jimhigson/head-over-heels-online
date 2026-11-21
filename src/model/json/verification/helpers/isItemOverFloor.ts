@@ -1,7 +1,7 @@
 import { defaultRoomHeightBlocks } from "../../../defaultRoomHeightBlocks";
 import { getJsonItemTimes } from "../../../times";
 import { isRoomStructureItemType } from "../../isRoomStructureItemType";
-import { type JsonItemUnion } from "../../JsonItem";
+import type { JsonItemUnion } from "../../JsonItem";
 
 /**
  * whether an item must have floor under it: anything in the room, but not the

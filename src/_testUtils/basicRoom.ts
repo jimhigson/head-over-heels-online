@@ -1,7 +1,7 @@
 import { loadGameState } from "../game/gameState/loadGameState";
-import { type JsonItem } from "../model/json/JsonItem";
-import { type Campaign } from "../model/modelTypes";
-import { type RoomJson } from "../model/RoomJson";
+import type { JsonItem } from "../model/json/JsonItem";
+import type { Campaign } from "../model/modelTypes";
+import type { RoomJson } from "../model/RoomJson";
 import { addPerimeterWallsToRoom } from "./addPerimeterWallsToRoom";
 import { gameStartedWithCampaign } from "./initStoreForTests";
 import {

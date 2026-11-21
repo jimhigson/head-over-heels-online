@@ -1,10 +1,10 @@
-import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import {
   itemBehaviourKey,
   type ItemInPlayConfig,
 } from "../../../model/ItemInPlay";
-import { type JsonItem } from "../../../model/json/JsonItem";
-import { type StoodOnBy } from "../../../model/StoodOnBy";
+import type { JsonItem } from "../../../model/json/JsonItem";
+import type { StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { pick } from "../../../utils/pick";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -21,7 +21,7 @@ import {
 import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
 import { blockSizePx, veryHighZ } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projections";
-import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
+import type { RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { floorZAtPosition } from "./floorZAtPosition";
 import { isDoorOnFloorEdge } from "./isDoorOnFloorEdge";
 import { defaultBaseState } from "./itemDefaultStates";

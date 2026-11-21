@@ -1,10 +1,10 @@
-import { type Container } from "pixi.js";
+import type { Container } from "pixi.js";
 
-import { type ItemInPlay } from "../../../../model/ItemInPlay";
-import { type Campaign } from "../../../../model/modelTypes";
-import { type SceneryName } from "../../../../sprites/planets";
+import type { ItemInPlay } from "../../../../model/ItemInPlay";
+import type { Campaign } from "../../../../model/modelTypes";
+import type { SceneryName } from "../../../../sprites/planets";
 import { planetSpecificIfExists } from "../../../../sprites/planetSpecificIfExists";
-import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
+import type { AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
 import { selectMaybeCurrentCampaign } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
 import { renderContainerToSprite } from "../../../../utils/pixi/bakeContainerToSprite";

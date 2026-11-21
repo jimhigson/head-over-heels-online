@@ -16,7 +16,7 @@ import {
   xyzEqual,
 } from "../../utils/vectors/vectors";
 import { visualiseVectorForLogs } from "../../utils/vectors/visualiseVectorForLogs";
-import { type ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";
+import type { ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";
 import { moveSpeedPixPerMs } from "../physics/mechanicsConstants";
 import { mtv, mtvAlongVector, mtvXy } from "../physics/mtv";
 import { FreeItemBehaviour } from "./freeItem/FreeItemBehaviour";

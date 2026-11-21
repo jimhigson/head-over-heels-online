@@ -1,10 +1,10 @@
-import { type Contour } from "./fontUnits";
+import type { Contour } from "./fontUnits";
 import {
   artHashOf,
   type GlyphOverride,
   type GlyphOverrides,
 } from "./glyphOverrides";
-import { type KernelMatch } from "./kernelRules";
+import type { KernelMatch } from "./kernelRules";
 import { ruleSettingsFor } from "./ruleEnablement";
 import { smoothGlyphContours } from "./smoothGlyphContours";
 import { vectorGlyphContours } from "./vectorGlyphContours";

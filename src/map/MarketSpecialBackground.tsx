@@ -1,8 +1,8 @@
-import { type OriginalCampaignRoomId } from "../_generated/originalCampaign/OriginalCampaignRoomId";
 import { projectWorldXyzToScreenXy } from "../game/render/projections";
-import { type SortedObjectOfRoomGridPositionSpecs } from "../model/map/sortRoomGridPositions";
+import type { SortedObjectOfRoomGridPositionSpecs } from "../model/map/sortRoomGridPositions";
+import type { OriginalCampaignRoomId } from "../originalCampaign/OriginalCampaignRoomId";
 import { addXy, addXyz, originXyz, type Xyz } from "../utils/vectors/vectors";
-import { type Bounds } from "./Map.svg";
+import type { Bounds } from "./Map.svg";
 import { MapBackgroundSection } from "./MapBackgroundSection";
 import { mapClasses } from "./mapColours";
 import { mapSvgMarginX, mapSvgMarginY } from "./mapConstants";

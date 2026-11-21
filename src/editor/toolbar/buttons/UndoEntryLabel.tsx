@@ -1,12 +1,12 @@
 import { memo } from "preact/compat";
 
-import { type SceneryName } from "../../../sprites/planets";
+import type { SceneryName } from "../../../sprites/planets";
 import { itemGlyph, textureForItem } from "../../../sprites/textureForItem";
 import { useEditorAppSelector } from "../../../store/store";
 import { Timeago } from "../../../ui/Timeago";
 import { camelToSpaced } from "../../../utils/camelToSpaced";
 import { twClass } from "../../../utils/twClass.tsx";
-import { type EditorJsonItemUnion, type EditorRoomId } from "../../editorTypes";
+import type { EditorJsonItemUnion, EditorRoomId } from "../../editorTypes";
 import { selectCursorRoomId } from "../../slice/levelEditorSlice";
 import {
   describeItem,
@@ -18,7 +18,7 @@ import {
   type UndoHistoryItem,
   type UndoLink,
 } from "../../slice/reducers/undoReducers";
-import { type WhichEditorGhostOfAnyItemType } from "../../WhichEditorGhostOf";
+import type { WhichEditorGhostOfAnyItemType } from "../../WhichEditorGhostOf";
 
 const maxIcons = 3;
 

@@ -1,6 +1,6 @@
-import { type UnknownRecord } from "type-fest";
+import type { UnknownRecord } from "type-fest";
 
-import { type Campaign } from "../model/modelTypes";
+import type { Campaign } from "../model/modelTypes";
 import { naturalCompare } from "../utils/naturalCompare";
 
 /**

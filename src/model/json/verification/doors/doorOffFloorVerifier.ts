@@ -3,9 +3,9 @@ import { allDoors } from "../helpers/doorPartner";
 import { isDoorBesideFloor } from "../helpers/isDoorBesideFloor";
 import { itemIdMd, valueMd } from "../helpers/messageMarkdown";
 import { floorSquares } from "../helpers/roomPerimeter";
-import {
-  type VerificationRoomId,
-  type VerificationRoomItemId,
+import type {
+  VerificationRoomId,
+  VerificationRoomItemId,
 } from "../verificationTypes";
 
 type DoorOffFloor = {

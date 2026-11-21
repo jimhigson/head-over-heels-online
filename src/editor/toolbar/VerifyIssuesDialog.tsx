@@ -3,14 +3,14 @@ import { useCallback, useState } from "preact/hooks";
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { CssVariables } from "../../game/components/CssVariables";
 import { isRoomStructureItemType } from "../../model/json/isRoomStructureItemType";
-import { type CampaignVerificationIssue } from "../../model/json/verification/CampaignVerification";
+import type { CampaignVerificationIssue } from "../../model/json/verification/CampaignVerification";
 import { fixAllVerificationIssues } from "../../model/json/verification/fixAllVerificationIssues";
-import {
-  type VerificationCampaign,
-  type VerificationRoomJson,
+import type {
+  VerificationCampaign,
+  VerificationRoomJson,
 } from "../../model/json/verification/verificationTypes";
 import { roomJsonItemsIterable } from "../../model/RoomJsonItemIterators";
-import { type TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import type { TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { editorStore, store, useEditorAppSelector } from "../../store/store";
 import { Border } from "../../ui/Border";
 import { Button } from "../../ui/Button";
@@ -20,10 +20,10 @@ import { DialogPortal } from "../../ui/DialogPortal";
 import { useKeyboardShortcut } from "../../ui/useKeyboardShortcut";
 import { entries } from "../../utils/entries";
 import { twClass } from "../../utils/twClass.tsx" with { type: "macro" };
-import {
-  type EditorCampaign,
-  type EditorRoomId,
-  type EditorRoomItemId,
+import type {
+  EditorCampaign,
+  EditorRoomId,
+  EditorRoomItemId,
 } from "../editorTypes";
 import { RoomPreview } from "../roomPreview/RoomPreview";
 import {

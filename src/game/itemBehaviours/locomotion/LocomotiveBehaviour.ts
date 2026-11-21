@@ -1,4 +1,4 @@
-import { type Constructor } from "type-fest";
+import type { Constructor } from "type-fest";
 
 import {
   itemBehaviourKey,
@@ -9,10 +9,10 @@ import {
   isPlayableItem,
   isSlidingItem,
 } from "../../../model/ItemInPlayNarrowedUnions";
-import { type RoomState } from "../../../model/RoomState";
+import type { RoomState } from "../../../model/RoomState";
 import { originXyz } from "../../../utils/vectors/vectors";
-import { type GameState } from "../../gameState/GameState";
-import { type ItemTouchEvent } from "../../physics/handleTouch/ItemTouchEvent";
+import type { GameState } from "../../gameState/GameState";
+import type { ItemTouchEvent } from "../../physics/handleTouch/ItemTouchEvent";
 import {
   type MechanicResult,
   unitMechanicalResult,

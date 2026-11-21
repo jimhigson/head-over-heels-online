@@ -1,4 +1,4 @@
-import { type JsonItemUnion } from "../model/json/JsonItem";
+import type { JsonItemUnion } from "../model/json/JsonItem";
 import { typePrefix } from "../model/json/typePrefix";
 
 /**

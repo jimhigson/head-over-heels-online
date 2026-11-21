@@ -9,12 +9,12 @@ import {
   type XyzBox,
 } from "../../../utils/vectors/vectors";
 import { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
-import { type RenderBoxes } from "../renderBox/makeItemRenderBoxAtCameraAngle";
+import type { RenderBoxes } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { geometryAngleAtQuarterOffset } from "./__test__/geometryAngleAtQuarterOffset";
 import { makeLcg } from "./__test__/makeLcg";
 import { populatedBroadPhase } from "./__test__/populatedBroadPhase";
 import { shapes } from "./__test__/shapes";
-import { type DrawOrderComparable } from "./DrawOrderComparable";
+import type { DrawOrderComparable } from "./DrawOrderComparable";
 import { projectAabbAxes } from "./projectAabbCorners";
 import {
   NO_OVERLAP,

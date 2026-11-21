@@ -1,11 +1,11 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
 
 import {
   activationLabel,
   type ActivationState,
   setItemActivationInPlace,
 } from "../../itemActivation";
-import { type LevelEditorState } from "../levelEditorSlice";
+import type { LevelEditorState } from "../levelEditorSlice";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
 
 export const itemActivationReducers = {
