@@ -23,11 +23,12 @@ test("Toggleable", () => {
   };
   type Result = ToggleablePaths<Test>;
 
-  expectTypeOf<Result>().toMatchTypeOf<
+  expectTypeOf<Result>().toEqualTypeOf<
     | "boolean"
     | "maybeBoolean"
+    | "maybeObject.boolean"
+    | "maybeObject.maybeBoolean"
     | "requiredObject.boolean"
     | "requiredObject.maybeBoolean"
-    | "requiredObject" // < - this is wrong!
   >();
 });

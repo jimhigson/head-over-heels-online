@@ -1,4 +1,5 @@
 import { createMigrate } from "redux-persist";
+import { type UnknownRecord } from "type-fest";
 
 import { migrateSavedCharacterRoomsInPlace } from "../game/gameState/saving/migrateSavedCharacterRoomsInPlace";
 import { type SavedCharacterRooms } from "../game/gameState/saving/SavedGameState";
@@ -28,15 +29,13 @@ export const savedGamesMigrations = createMigrate({
     if (!state) {
       return state;
     }
-    const s = state as Record<string, unknown>;
-    const saves = s.saves as
-      Record<string, Record<string, unknown>> | undefined;
+    const s = state as UnknownRecord;
+    const saves = s.saves as Record<string, UnknownRecord> | undefined;
     if (!saves) {
       return state;
     }
     for (const save of Object.values(saves)) {
-      const store = save.store as
-        Record<string, Record<string, unknown>> | undefined;
+      const store = save.store as Record<string, UnknownRecord> | undefined;
       if (!store) {
         continue;
       }

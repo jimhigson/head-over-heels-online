@@ -1,5 +1,6 @@
 import Ajv, { type ErrorObject } from "ajv";
 import { produce } from "immer";
+import { type UnknownRecord } from "type-fest";
 
 import roomSchema from "../../../../_generated/room.schema.json";
 import { entries } from "../../../../utils/entries";
@@ -165,7 +166,7 @@ const enumAt = (
  * property name, so eg a monster's `startDirection` faces the player rather than
  * landing on whichever direction the enum happens to list first
  */
-const preferredEnumDefaults: Record<string, unknown> = {
+const preferredEnumDefaults: UnknownRecord = {
   startDirection: "towards",
   activated: "on",
 };
@@ -293,7 +294,7 @@ export const schemaComplianceVerifier: CampaignVerifier<SchemaNonCompliant> = {
 
         const where = displayPath(path);
         const currentValue = getAtPath(
-          room as Record<string, unknown>,
+          room as UnknownRecord,
           path,
           pathSegments,
         );
@@ -328,7 +329,7 @@ export const schemaComplianceVerifier: CampaignVerifier<SchemaNonCompliant> = {
       // inference off the giant RoomJson type - the schema is what actually
       // constrains the value being written
       setAtPath(
-        draft.rooms[roomId] as Record<string, unknown>,
+        draft.rooms[roomId] as UnknownRecord,
         instancePath,
         enumValue,
         pathSegments,

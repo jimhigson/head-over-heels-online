@@ -1,3 +1,5 @@
+import { type DistributedPick } from "type-fest";
+
 import { type PlayableItem } from "../../model/ItemInPlayNarrowedUnions";
 import { type ItemState } from "../../model/ItemState";
 import { type CharacterName } from "../../model/modelTypes";
@@ -6,7 +8,7 @@ import { type CharacterName } from "../../model/modelTypes";
  * if a player loses a life and comes into a room again, the part of their state that
  * is restored
  */
-export type PlayableEntryState = Pick<
+export type PlayableEntryState = DistributedPick<
   ItemState<CharacterName, string, string>,
   | "action"
   | "autoWalk"

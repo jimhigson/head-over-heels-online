@@ -1,3 +1,5 @@
+import { type Constructor } from "type-fest";
+
 import {
   itemBehaviourKey,
   type ItemInPlay,
@@ -39,10 +41,7 @@ export const notWalking = Object.freeze({
  * a locomotive behaviour class that a mixin can extend. TypeScript requires a
  * mixin's base constructor to take only `...any[]`
  */
-export type LocomotiveBehaviourClass = new (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ...args: any[]
-) => LocomotiveBehaviour;
+export type LocomotiveBehaviourClass = Constructor<LocomotiveBehaviour>;
 
 /**
  * a mixin giving a locomotive behaviour one part of what it does

@@ -1,4 +1,5 @@
 import { produce } from "immer";
+import { type UnknownRecord } from "type-fest";
 
 import { entries, keys } from "../entries";
 import { setAtPath } from "../getAtPath";
@@ -14,7 +15,7 @@ export type SetJsonPatternResult<T> = {
 type Target = { parentPath: string; key: string };
 
 /** objects and arrays, both indexed by their keys */
-const isObjectOrArray = (value: unknown): value is Record<string, unknown> =>
+const isObjectOrArray = (value: unknown): value is UnknownRecord =>
   typeof value === "object" && value !== null;
 
 /** a part naming one key exactly, which can be inserted if absent */
@@ -56,7 +57,7 @@ export const setJsonPattern = <T>(
   const paths = targets.map(pathOf);
   const newRoot = produce(root, (draft) => {
     for (const path of paths) {
-      setAtPath(draft as Record<string, unknown>, path, value);
+      setAtPath(draft as UnknownRecord, path, value);
     }
   });
   return { root: newRoot, paths };

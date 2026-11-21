@@ -1,3 +1,5 @@
+import { type Merge } from "type-fest";
+
 import { type ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import { type SceneryName } from "../sprites/planets";
 import { type ItemInPlay, type ItemInPlayType } from "./ItemInPlay";
@@ -17,7 +19,7 @@ type ByConfig<Item extends { config: unknown }> =
   Item extends unknown ?
     Item["config"] extends infer Config ?
       Config extends unknown ?
-        Omit<Item, "config"> & { config: Config }
+        Merge<Item, { config: Config }>
       : never
     : never
   : never;

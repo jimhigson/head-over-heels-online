@@ -1,4 +1,5 @@
 import { type SpritesheetData, type SpritesheetFrameData } from "pixi.js";
+import { type MergeDeep } from "type-fest";
 
 import { fromAllEntries } from "../../../utils/entries";
 import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
@@ -130,9 +131,10 @@ type DoorLegTextureId<
   S extends "generic" | SceneryName,
   Dark extends boolean,
 > = `${DoorLegPrefix<S, Dark>}.door.legs.${"base" | "pillar" | "threshold"}.${"d0" | "d2"}`;
-type SpritesheetFrameDataMaybeWithPivot = SpritesheetFrameData & {
-  frame: { pivot?: Xy };
-};
+type SpritesheetFrameDataMaybeWithPivot = MergeDeep<
+  SpritesheetFrameData,
+  { frame: { pivot?: Xy } }
+>;
 
 const doorLegsFrames = <
   S extends "generic" | SceneryName,

@@ -1,4 +1,5 @@
 import { createSlice, type Dispatch } from "@reduxjs/toolkit";
+import { type Promisable } from "type-fest";
 
 import { clearAllData } from "../clearAllData";
 
@@ -46,7 +47,7 @@ export const { selectAssetsLoadingCount } = assetsLoadingSlice.selectors;
  * swallowed, so the caller can still handle it.
  */
 export const withLoadingCaptured =
-  <T>(work: () => Promise<T> | T) =>
+  <T>(work: () => Promisable<T>) =>
   async (dispatch: Dispatch): Promise<Awaited<T>> => {
     dispatch(assetsLoadingStarted());
     try {

@@ -1,3 +1,5 @@
+import { type UnknownRecord } from "type-fest";
+
 /**
  * the value found by following a dotted path (eg `gameMenus.openMenus.0`)
  * from the root, or undefined if the path leads nowhere
@@ -12,7 +14,7 @@ export const valueAtPath = (
     if (typeof value !== "object" || value === null) {
       return undefined;
     }
-    value = (value as Record<string, unknown>)[segment];
+    value = (value as UnknownRecord)[segment];
   }
   return value;
 };

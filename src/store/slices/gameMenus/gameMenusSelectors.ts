@@ -41,7 +41,10 @@ const selectUserSetting =
     try {
       return (
         getAtPath(state.userSettings.userSettings, path) ??
-        getAtPath(defaultUserSettings, path)
+        // assumes every path read here is set in the defaults; tsc can't check that through a generic Get
+        (getAtPath(defaultUserSettings, path) as NonNullable<
+          Get<UserSettings, Path>
+        >)
       );
     } catch (e) {
       throw new Error(

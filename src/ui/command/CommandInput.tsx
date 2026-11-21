@@ -1,19 +1,21 @@
 import { type ComponentProps } from "preact";
+import { type Merge } from "type-fest";
 
 import { cn } from "../cn";
 import { useAutoFocus } from "../useAutoFocus";
 import { useCommandContext } from "./useCommandContext";
 
-export type CommandInputProps = Omit<
-  ComponentProps<"input">,
-  // type/role/list are discriminants of preact's input attribute union; omitting
-  // them lets the explicit type="text" below select the textbox variant cleanly.
-  // className is omitted so callers must use `class` — a spread className would
-  // silently clobber the merged class attribute
-  "className" | "list" | "onChange" | "onInput" | "role" | "type" | "value"
-> & {
-  autoFocus?: boolean;
-};
+export type CommandInputProps = Merge<
+  Omit<
+    ComponentProps<"input">,
+    // type/role/list are discriminants of preact's input attribute union; omitting
+    // them lets the explicit type="text" below select the textbox variant cleanly.
+    // className is omitted so callers must use `class` — a spread className would
+    // silently clobber the merged class attribute
+    "className" | "list" | "onChange" | "onInput" | "role" | "type" | "value"
+  >,
+  { autoFocus?: boolean }
+>;
 
 export const CommandInput = ({
   class: className,

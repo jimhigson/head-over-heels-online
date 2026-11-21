@@ -1,4 +1,5 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import { type OverridePropertiesDeep } from "type-fest";
 
 import { addReturnDoorInPlace } from "../../../model/inPlaceMutators/addReturnDoorInPlace";
 import { changeRoomSceneryInPlace } from "../../../model/inPlaceMutators/changeRoomSceneryInPlace";
@@ -487,7 +488,10 @@ export const editRoomReducers = {
         ): entry is [
           EditorRoomItemId,
           // predicate discriminates to door not being to out of the game (not "$$final")
-          EditorJsonItem<"door"> & { config: { toRoom: EditorRoomId } },
+          OverridePropertiesDeep<
+            EditorJsonItem<"door">,
+            { config: { toRoom: EditorRoomId } }
+          >,
         ] => {
           const [, doorItem] = entry;
           return (

@@ -1,6 +1,11 @@
 #!/usr/bin/env -S pnpm tsx
 
-import { type JsonArray, type JsonObject, type JsonValue } from "type-fest";
+import {
+  type JsonArray,
+  type JsonObject,
+  type JsonValue,
+  type UnknownRecord,
+} from "type-fest";
 
 import { wallTiles } from "../../src/sprites/planets.js";
 
@@ -119,9 +124,7 @@ process.stdin.on("end", () => {
       const planets = Object.keys(wallTiles);
 
       // Build nested if/then/else structure
-      const buildConditions = (
-        planetIndex: number,
-      ): Record<string, unknown> => {
+      const buildConditions = (planetIndex: number): UnknownRecord => {
         if (planetIndex >= planets.length) {
           return {}; // No more conditions
         }
@@ -129,7 +132,7 @@ process.stdin.on("end", () => {
         const planet = planets[planetIndex];
         const tiles = wallTiles[planet as keyof typeof wallTiles];
 
-        const condition: Record<string, unknown> = {
+        const condition: UnknownRecord = {
           if: {
             properties: {
               planet: { const: planet },
@@ -182,9 +185,9 @@ process.stdin.on("end", () => {
     };
 
     // Add conditional rules to RoomJsonSchema
-    const definitions = schema.definitions as Record<string, unknown>;
+    const definitions = schema.definitions as UnknownRecord;
     if (definitions && definitions.RoomJsonSchema) {
-      const roomSchema = definitions.RoomJsonSchema as Record<string, unknown>;
+      const roomSchema = definitions.RoomJsonSchema as UnknownRecord;
       const conditions = generateWallTileConditions();
 
       // Merge the conditions into the schema

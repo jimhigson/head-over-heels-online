@@ -1,3 +1,5 @@
+import { type UnknownRecord } from "type-fest";
+
 /**
  * Re-key the legacy combined-slice localStorage entry into separate per-slice keys.
  *
@@ -23,7 +25,7 @@ const NEW_SAVED_GAMES_KEY = "persist:hohol/savedGames";
 const NEW_USER_SETTINGS_KEY = "persist:hohol/userSettings";
 
 type LegacySavedGamesBlob = {
-  saves?: Record<string, unknown>;
+  saves?: UnknownRecord;
   lastSavedCampaignLocator?: unknown;
 };
 

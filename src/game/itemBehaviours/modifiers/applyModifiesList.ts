@@ -1,3 +1,5 @@
+import { type OverrideProperties, type UnknownRecord } from "type-fest";
+
 import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import {
   itemBehaviourKey,
@@ -52,9 +54,10 @@ export const applyModifiesList = <
         continue;
       }
 
-      const targetItemCast = roomItem as Omit<typeof roomItem, "state"> & {
-        state: Record<string, unknown>;
-      };
+      const targetItemCast = roomItem as OverrideProperties<
+        typeof roomItem,
+        { state: UnknownRecord }
+      >;
 
       const newState = getNewStateForControlledItem(
         modifiesItem,

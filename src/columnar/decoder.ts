@@ -1,3 +1,5 @@
+import { type UnknownRecord } from "type-fest";
+
 import { type Campaign } from "../model/modelTypes";
 import { naturalCompare } from "../utils/naturalCompare";
 
@@ -35,7 +37,7 @@ export type ColumnarEncoded = {
   /** the value a column uses to mean "this optional field is absent on this item" */
   _absent: string;
   rooms: ColumnarRooms;
-} & Record<string, unknown>;
+} & UnknownRecord;
 
 export const columnarVersion = "col1";
 
@@ -48,7 +50,7 @@ const sortKeysDeep = (value: unknown): unknown =>
     Object.fromEntries(
       Object.keys(value)
         .sort()
-        .map((k) => [k, sortKeysDeep((value as Record<string, unknown>)[k])]),
+        .map((k) => [k, sortKeysDeep((value as UnknownRecord)[k])]),
     )
   : value;
 
@@ -92,7 +94,7 @@ const synthesiseId = (
   x: number,
   y: number,
   z: number,
-  existing: Record<string, unknown>,
+  existing: UnknownRecord,
 ): string => {
   const base = `${type}@${positionToken(x, y, z)}`;
   if (!(base in existing)) {
@@ -114,9 +116,9 @@ export const columnarDecode = <RoomId extends string>(
   }
   const { roomIndex, metaCols, columns } = columnar;
 
-  const builtRooms: Record<string, Record<string, unknown>> = {};
+  const builtRooms: Record<string, UnknownRecord> = {};
   roomIndex.forEach((roomId, i) => {
-    const room: Record<string, unknown> = {};
+    const room: UnknownRecord = {};
     for (const k of Object.keys(metaCols)) {
       const v = metaCols[k][i];
       if (v !== _absent) {
@@ -133,17 +135,14 @@ export const columnarDecode = <RoomId extends string>(
     const { x: xCol, y: yCol, z: zCol } = cols;
     const fieldKeys = Object.keys(cols).filter((k) => !itemColumnKeys.has(k));
     for (let i = 0; i < idCol.length; i++) {
-      const config: Record<string, unknown> = {};
+      const config: UnknownRecord = {};
       for (const k of fieldKeys) {
         const v = cols[k][i];
         if (v !== _absent) {
           config[k] = v;
         }
       }
-      const items = builtRooms[roomIndex[roomCol[i]]].items as Record<
-        string,
-        unknown
-      >;
+      const items = builtRooms[roomIndex[roomCol[i]]].items as UnknownRecord;
       const x = Number(xCol[i]);
       const y = Number(yCol[i]);
       const z = Number(zCol[i]);
@@ -163,15 +162,15 @@ export const columnarDecode = <RoomId extends string>(
   // rooms come out in natural-sorted order (matching the generated `campaign.ts`,
   // since iteration order is observable); everything inside each room is
   // key-sorted so the decoded form matches the canonical (alphabetical) json
-  const rooms: Record<string, unknown> = {};
+  const rooms: UnknownRecord = {};
   for (const roomId of [...roomIndex].sort(naturalCompare)) {
     rooms[roomId] = sortKeysDeep(builtRooms[roomId]);
   }
 
   // campaign-level fields (locator, meta, …) are key-sorted too; `rooms` is
   // slotted in alphabetically but keeps its own internal order
-  const sortedRest = sortKeysDeep(rest) as Record<string, unknown>;
-  const campaign: Record<string, unknown> = {};
+  const sortedRest = sortKeysDeep(rest) as UnknownRecord;
+  const campaign: UnknownRecord = {};
   for (const k of [...Object.keys(sortedRest), "rooms"].sort()) {
     campaign[k] = k === "rooms" ? rooms : sortedRest[k];
   }

@@ -1,3 +1,5 @@
+import { type OverrideProperties } from "type-fest";
+
 import {
   migrateTeleporterActivationConfigInPlace,
   migrateTeleporterActivationInPlace,
@@ -54,16 +56,16 @@ const vectoriseInPlace = <F extends string>(
   }
 };
 
-type LegacyFloorConfig = Omit<
+type LegacyFloorConfig = OverrideProperties<
   ItemInPlayConfig<"floor", string, string>,
-  "doorExpandedSides"
-> & {
-  /**
-   * saves from before floors carried this field omit it (derived on load);
-   * saves from before directions were vectorised carry side names
-   */
-  doorExpandedSides?: Array<MaybeNamedDirection>;
-};
+  {
+    /**
+     * saves from before floors carried this field omit it (derived on load);
+     * saves from before directions were vectorised carry side names
+     */
+    doorExpandedSides?: Array<MaybeNamedDirection>;
+  }
+>;
 
 /**
  * saves from before floors carried `doorExpandedSides` omit it, but the

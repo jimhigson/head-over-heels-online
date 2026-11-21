@@ -1,3 +1,4 @@
+import { type OverrideProperties } from "type-fest";
 import { vi } from "vitest";
 
 import { type GameState } from "../game/gameState/GameState";
@@ -95,12 +96,10 @@ export class MockInputStateTracker implements InputStateTrackerInterface {
     return {} as HudInputState;
   }
 }
-export type GameStateWithMockInput = Omit<
+export type GameStateWithMockInput = OverrideProperties<
   GameState<TestRoomId>,
-  "inputStateTracker"
-> & {
-  inputStateTracker: MockInputStateTracker;
-};
+  { inputStateTracker: MockInputStateTracker }
+>;
 
 /*
 export const setInputDirection = (

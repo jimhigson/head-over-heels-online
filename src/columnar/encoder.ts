@@ -1,3 +1,5 @@
+import { type UnknownRecord } from "type-fest";
+
 import { entries, keys } from "../utils/entries";
 import { type ColumnarEncoded, columnarVersion } from "./decoder";
 
@@ -27,7 +29,7 @@ const chooseAbsentMarker = (rooms: object): string => {
 type AnyItem = {
   type: string;
   position: { x: number; y: number; z: number };
-  config: Record<string, unknown>;
+  config: UnknownRecord;
 };
 type AnyRoom = { items: Record<string, AnyItem> } & Record<string, unknown>;
 
@@ -136,7 +138,7 @@ export const columnarEncode = (
 ): ColumnarEncoded => {
   const { rooms, ...rest } = campaign as {
     rooms: Record<string, AnyRoom>;
-  } & Record<string, unknown>;
+  } & UnknownRecord;
   const absent = chooseAbsentMarker(rooms);
 
   const roomEntries = entries(rooms);

@@ -1,3 +1,5 @@
+import { type Arrayable } from "type-fest";
+
 import { type ExportedSoundId } from "../../_generated/sfxdex/soundIds";
 import { type MarkdownPageName } from "../../manual/pages";
 import { type PlanetName, type SceneryName } from "../../sprites/planets";
@@ -33,7 +35,7 @@ export type ScrollConfig =
   | {
       gives: "scroll";
       source: "inline";
-      markdown: string | string[];
+      markdown: Arrayable<string>;
     }
   | {
       gives: "scroll";

@@ -1,3 +1,5 @@
+import { type DistributedPick } from "type-fest";
+
 import { type UserSettingsBooleanPaths } from "../../store/slices/userSettings/userSettingsSlice";
 import { type Subset } from "../../utils/Subset";
 import { type DirectionXy4 } from "../../utils/vectors/vectors";
@@ -31,13 +33,13 @@ export type SwitchItemModificationUnion<
       switchedDirection?: DirectionXy4;
 
       leftState?: Partial<
-        Pick<
+        DistributedPick<
           ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>,
           "activated" | "disappearing" | "everActivated" | "expires"
         >
       >;
       rightState?: Partial<
-        Pick<
+        DistributedPick<
           ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>,
           "activated" | "disappearing" | "everActivated" | "expires"
         >

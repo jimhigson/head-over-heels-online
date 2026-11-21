@@ -1,19 +1,21 @@
 import { type ComponentProps } from "preact";
 import { type CSSProperties } from "preact/compat";
+import { type OverrideProperties } from "type-fest";
 
 import { cn } from "../cn";
 import "./commandColours.css";
 import { fuzzyMatchRank } from "./fuzzyMatch";
 import { useCommandContext } from "./useCommandContext";
 
-export type CommandItemProps = Omit<
-  ComponentProps<"div">,
-  "className" | "onSelect" | "style"
+export type CommandItemProps = OverrideProperties<
+  Omit<ComponentProps<"div">, "className">,
+  {
+    style?: CSSProperties;
+    onSelect?: (value: string) => void;
+  }
 > & {
-  style?: CSSProperties;
   /** the value used for filtering, keyboard nav and selection */
   value: string;
-  onSelect?: (value: string) => void;
 };
 
 export const CommandItem = ({

@@ -1,4 +1,4 @@
-import { type AllUnionFields } from "type-fest";
+import { type AllUnionFields, type Merge } from "type-fest";
 
 import { isSoundId } from "../../../_generated/sfxdex/soundIds";
 import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
@@ -356,9 +356,10 @@ export function changeCharacterRoom<
   RoomId extends string,
   RoomItemId extends string,
 >(
-  changeCharacterRoomOptions: ChangeCharacterRoomOptions<RoomId, RoomItemId> & {
-    playableItem: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId>;
-  },
+  changeCharacterRoomOptions: Merge<
+    ChangeCharacterRoomOptions<RoomId, RoomItemId>,
+    { playableItem: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId> }
+  >,
 ): RoomState<RoomId, RoomItemId>;
 export function changeCharacterRoom<
   RoomId extends string,

@@ -7,6 +7,7 @@ import {
   type SpritesheetFrameData,
   Texture,
 } from "pixi.js";
+import { type Arrayable } from "type-fest";
 
 import { completeTimesXyz } from "../../model/times";
 import { originalGameFrameDuration } from "../../originalGame";
@@ -73,7 +74,7 @@ type BaseCreateSpriteOptions = CreateSpriteSpritesheetSpecifier & {
   flipX?: boolean;
   x?: number;
   y?: number;
-  filter?: Filter | Filter[];
+  filter?: Arrayable<Filter>;
   /** the camera rotation, so a tiled (times) sprite tiles in the rotated direction */
   cameraQuarterAngle?: Xy;
   label?: string;

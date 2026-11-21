@@ -1,3 +1,4 @@
+import { type Writable } from "type-fest";
 import { expect, test } from "vitest";
 
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
@@ -61,7 +62,7 @@ test("a quarter-turn anticlockwise moves that +x point to the screen right", () 
 // threaded consistently through both the DrawOrderBroadPhase (broad phase) and zComparator
 // (fine phase); base sorting is already covered by updateZEdgesStochastic.
 
-type TestItem = DrawOrderComparable & { id: string };
+type TestItem = Writable<DrawOrderComparable, "id">;
 
 const makeScene = (): Set<TestItem> => {
   const items = new Set<TestItem>();

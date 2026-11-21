@@ -1,3 +1,4 @@
+import { type UnknownRecord } from "type-fest";
 import { expect, test } from "vitest";
 
 import { getAtPath, setAtPath } from "./getAtPath";
@@ -37,7 +38,7 @@ test("getAtPath reads through an injected JSON Pointer splitter, decoding a slas
   const room = { items: { "w2/afterDoor": { direction: "left" } } };
   expect(
     getAtPath(
-      room as Record<string, unknown>,
+      room as UnknownRecord,
       "/items/w2~1afterDoor/direction",
       jsonPointer,
     ),
@@ -46,9 +47,7 @@ test("getAtPath reads through an injected JSON Pointer splitter, decoding a slas
 
 test("getAtPath reads an array index via the injected splitter", () => {
   const room = { tiles: ["a", "b", "c"] };
-  expect(
-    getAtPath(room as Record<string, unknown>, "/tiles/1", jsonPointer),
-  ).toBe("b");
+  expect(getAtPath(room as UnknownRecord, "/tiles/1", jsonPointer)).toBe("b");
 });
 
 test("setAtPath writes a nested value with the default dot splitter", () => {
@@ -66,7 +65,7 @@ test("setAtPath writes a top-level value", () => {
 test("setAtPath writes through an injected JSON Pointer splitter, decoding a slash key", () => {
   const room = { items: { "w2/afterDoor": { direction: "left" } } };
   setAtPath(
-    room as Record<string, unknown>,
+    room as UnknownRecord,
     "/items/w2~1afterDoor/direction",
     "right",
     jsonPointer,
@@ -76,6 +75,6 @@ test("setAtPath writes through an injected JSON Pointer splitter, decoding a sla
 
 test("setAtPath writes an array index via the injected splitter", () => {
   const room = { tiles: ["a", "b", "c"] };
-  setAtPath(room as Record<string, unknown>, "/tiles/1", "B", jsonPointer);
+  setAtPath(room as UnknownRecord, "/tiles/1", "B", jsonPointer);
   expect<string>(room.tiles[1]).toBe("B");
 });

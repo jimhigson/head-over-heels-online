@@ -1,4 +1,5 @@
 import { type Container, type RenderLayer } from "pixi.js";
+import { type SetRequired } from "type-fest";
 
 import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import { type ItemInPlayType } from "../../model/ItemInPlay";
@@ -53,35 +54,35 @@ export type ItemLeafRenderContext<T extends ItemInPlayType> = {
  * (which no appearance reads), with the room-renderer-provided fields (which are
  * optional on the leaf context) guaranteed present
  */
-export type ItemRenderContext<T extends ItemInPlayType> =
-  ItemLeafRenderContext<T> & {
-    frontLayer: RenderLayer;
-    renderBoxes: RenderBoxes<UnionOfAllItemInPlayTypes>;
-    /**
-     * the container positioned at this item's projected origin - the
-     * ItemPositionRenderer's output, set once that renderer is constructed. Debug
-     * overlays that draw at the item's true projected positions (eg the bounding box)
-     * parent to this, so they are not shifted by the near-corner offset applied to the
-     * item's sprites.
-     */
-    itemPositionContainer?: Container;
-    /**
-     * Item graph of the parent room renderer
-     */
-    zEdges: ItemZGraph;
-    /**
-     * allows any item's renderers to get access to another item's current
-     * render pipeline (ie, for masking against other items's renderings)
-     */
-    getItemRenderPipeline: (
-      item: UnionOfAllItemInPlayTypes,
-    ) => ItemRenderPipeline<ItemInPlayType> | undefined;
-    /**
-     * to create a renderer for another item - lets a room item (eg
-     * a mirror rendering reflections) render other items
-     */
-    createItemLeafPixiRenderer: typeof createItemLeafPixiRenderer;
-  };
+export type ItemRenderContext<T extends ItemInPlayType> = SetRequired<
+  ItemLeafRenderContext<T>,
+  "frontLayer" | "renderBoxes"
+> & {
+  /**
+   * the container positioned at this item's projected origin - the
+   * ItemPositionRenderer's output, set once that renderer is constructed. Debug
+   * overlays that draw at the item's true projected positions (eg the bounding box)
+   * parent to this, so they are not shifted by the near-corner offset applied to the
+   * item's sprites.
+   */
+  itemPositionContainer?: Container;
+  /**
+   * Item graph of the parent room renderer
+   */
+  zEdges: ItemZGraph;
+  /**
+   * allows any item's renderers to get access to another item's current
+   * render pipeline (ie, for masking against other items's renderings)
+   */
+  getItemRenderPipeline: (
+    item: UnionOfAllItemInPlayTypes,
+  ) => ItemRenderPipeline<ItemInPlayType> | undefined;
+  /**
+   * to create a renderer for another item - lets a room item (eg
+   * a mirror rendering reflections) render other items
+   */
+  createItemLeafPixiRenderer: typeof createItemLeafPixiRenderer;
+};
 
 /**
  * narrow an appearance context back to the full pipeline context, for the few

@@ -1,3 +1,5 @@
+import { type MergeDeep } from "type-fest";
+
 import {
   isWholeRoomSubRooms,
   type NonContiguousRelationship,
@@ -14,11 +16,14 @@ import {
  * a room as it used to be stored: the non-contiguous relationship lived on the
  * room's `meta`. It now lives per sub-room inside `meta.subRooms`.
  */
-type LegacyRoom = EditorRoomJson & {
-  meta?: {
-    nonContiguousRelationship?: NonContiguousRelationship<EditorRoomId>;
-  };
-};
+type LegacyRoom = MergeDeep<
+  EditorRoomJson,
+  {
+    meta?: {
+      nonContiguousRelationship?: NonContiguousRelationship<EditorRoomId>;
+    };
+  }
+>;
 
 const findOriginCell = (
   subRooms: Record<string, SubRoom<EditorRoomId>>,
