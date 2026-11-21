@@ -1,4 +1,5 @@
 import { type Spritesheet } from "pixi.js";
+import { type Tagged } from "type-fest";
 
 import { type PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
 import { type AppSpriteFrame } from "./spritesheetData/AppSpriteFrame";
@@ -43,8 +44,6 @@ export type AppSpritesheetDataWithVariants = {
   meta: { scale: 1 };
 };
 
-declare const variantsBaked: unique symbol;
-
 /**
  * a game spritesheet. Every sheet's data structurally lists all texture ids
  * (variant-suffixed ids alias their base rects where not baked), so this is
@@ -67,9 +66,10 @@ export type AppSpritesheet = Spritesheet<AppSpritesheetDataWithVariants> & {
  * produce it, so a base-only sheet cannot be passed where variant ids will
  * be sampled
  */
-export type AppSpritesheetWithVariants = AppSpritesheet & {
-  [variantsBaked]: true;
-};
+export type AppSpritesheetWithVariants = Tagged<
+  AppSpritesheet,
+  "variantsBaked"
+>;
 
 /**
  * brand a sheet whose build has just resolved every variant id (by baking or

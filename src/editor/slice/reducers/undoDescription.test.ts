@@ -1,3 +1,4 @@
+import { type UnknownRecord } from "type-fest";
 import { describe, expect, test } from "vitest";
 
 import { type Xyz } from "../../../utils/vectors/vectors";
@@ -12,10 +13,7 @@ import {
   type UndoDescription,
 } from "./undoDescription";
 
-const item = (
-  type: string,
-  config: Record<string, unknown> = {},
-): EditorJsonItemUnion =>
+const item = (type: string, config: UnknownRecord = {}): EditorJsonItemUnion =>
   ({
     type,
     config,

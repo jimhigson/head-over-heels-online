@@ -1,4 +1,4 @@
-import { type Simplify, type Tagged } from "type-fest";
+import { type Except, type Merge, type Tagged } from "type-fest";
 
 import { type SpatialIndex } from "../game/physics/gridSpace/SpatialIndex";
 import { type SceneryName } from "../sprites/planets";
@@ -78,8 +78,9 @@ export type RoomState<
   RoomId extends string,
   RoomItemId extends string,
   ScN extends SceneryName = SceneryName,
-> = Simplify<
-  Omit<RoomJson<RoomId, RoomItemId, ScN>, "items" | "meta"> & {
+> = Merge<
+  Except<RoomJson<RoomId, RoomItemId, ScN>, "meta">,
+  {
     /**
      * the room's id - its key in the campaign
      */

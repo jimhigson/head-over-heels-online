@@ -1,4 +1,9 @@
-import { type EmptyObject, type Simplify } from "type-fest";
+import {
+  type EmptyObject,
+  type Merge,
+  type SetProperty,
+  type Simplify,
+} from "type-fest";
 
 import { type SceneryName } from "../sprites/planets";
 import { type Xy, type Xyz } from "../utils/vectors/vectors";
@@ -91,86 +96,83 @@ export type FreeItemState<RoomItemId extends string> = {
   controlledWithJoystickAtRoomTime: number;
 };
 
-type SlidingItemState<RoomItemId extends string> = FreeItemState<RoomItemId> & {
-  vels: {
-    sliding: Xyz;
-  };
+type SlidingItemState<RoomItemId extends string> = SetProperty<
+  FreeItemState<RoomItemId>,
+  "vels.sliding",
+  Xyz
+>;
+
+export type PlayableState<RoomItemId extends string> = SetProperty<
+  FreeItemState<RoomItemId>,
+  // allows the walking mechanic to keep track of its own velocities
+  "vels.walking",
+  Xyz
+> & {
+  /**
+   * z will always be zero, but is included to make easier to translate into 3-space velocities later
+   */
+  facing: Xyz;
+  action: PlayableActionState;
+
+  // Number of pixels the player will walk forward regardless of input. This
+  // puts players properly inside a room when they enter via a door
+  autoWalk: boolean;
+
+  /**
+   * The direction visually facing - used for turning around animation
+   */
+  visualFacingVector: Xyz;
+
+  /**
+   * how many pixels have we walked since we were last not walking? Ie, in this run of
+   * walking?
+   *
+   * Used to impose a minimum walk distance of a pixel
+   */
+  walkDistance: number;
+
+  /**
+   * what direction were we facing just before we started walking?
+   * Used to decide if a small walk was in the direction already facing, in which case the min
+   * of 1px movement is applied.
+   *
+   * TODO: check this is so, with integration test - seems Head at least can walk 0px
+   */
+  walkStartFacing: Xyz;
+
+  /**
+   * The time we last stopped walking. Used to keep momentum after very short periods of not walking
+   * between inputs
+   *
+   * Added Dec '25; optional so as to not break saves from previous versions that don't have it
+   */
+  stoppedWalkingAtGameTime?: number;
+  /**
+   * The time we last stopped walking. Used to keep momentum after very short periods of not walking
+   * between inputs
+   *
+   * Added Dec '25; optional so as to not break saves from previous versions that don't have it
+   */
+  stoppedWalkingSpeed?: number;
+
+  /**
+   * used to distinguish (for heels) when in the air: did we jump (mandatory forward motion) or did
+   * we fall (vertical falling, no forward motion)
+   */
+  jumped: boolean;
+
+  /** used for the jump grace period */
+  jumpStartZ: number;
+
+  teleporting: null | PlayableTeleportingState;
+
+  /**
+   * firing/picking up was last tried to be used at this time (and failed)
+   * set to the leading edge of when the input was made (not continually
+   * re-written during holding of an action button/key)
+   */
+  abilityFailedToUseAtGameTime?: number;
 };
-
-export type PlayableState<RoomItemId extends string> =
-  FreeItemState<RoomItemId> & {
-    /**
-     * z will always be zero, but is included to make easier to translate into 3-space velocities later
-     */
-    facing: Xyz;
-    action: PlayableActionState;
-
-    // Number of pixels the player will walk forward regardless of input. This
-    // puts players properly inside a room when they enter via a door
-    autoWalk: boolean;
-
-    vels: {
-      gravity: Xyz;
-      /** allows the walking mechanic to keep track of its own velocities */
-      walking: Xyz;
-      movingFloor: Xyz;
-    };
-
-    /**
-     * The direction visually facing - used for turning around animation
-     */
-    visualFacingVector: Xyz;
-
-    /**
-     * how many pixels have we walked since we were last not walking? Ie, in this run of
-     * walking?
-     *
-     * Used to impose a minimum walk distance of a pixel
-     */
-    walkDistance: number;
-
-    /**
-     * what direction were we facing just before we started walking?
-     * Used to decide if a small walk was in the direction already facing, in which case the min
-     * of 1px movement is applied.
-     *
-     * TODO: check this is so, with integration test - seems Head at least can walk 0px
-     */
-    walkStartFacing: Xyz;
-
-    /**
-     * The time we last stopped walking. Used to keep momentum after very short periods of not walking
-     * between inputs
-     *
-     * Added Dec '25; optional so as to not break saves from previous versions that don't have it
-     */
-    stoppedWalkingAtGameTime?: number;
-    /**
-     * The time we last stopped walking. Used to keep momentum after very short periods of not walking
-     * between inputs
-     *
-     * Added Dec '25; optional so as to not break saves from previous versions that don't have it
-     */
-    stoppedWalkingSpeed?: number;
-
-    /**
-     * used to distinguish (for heels) when in the air: did we jump (mandatory forward motion) or did
-     * we fall (vertical falling, no forward motion)
-     */
-    jumped: boolean;
-
-    /** used for the jump grace period */
-    jumpStartZ: number;
-
-    teleporting: null | PlayableTeleportingState;
-
-    /**
-     * firing/picking up was last tried to be used at this time (and failed)
-     * set to the leading edge of when the input was made (not continually
-     * re-written during holding of an action button/key)
-     */
-    abilityFailedToUseAtGameTime?: number;
-  };
 
 // we can't rely on Number.POSITIVE_INFINITY in the state because it's not JSON serializable
 export type PokeableNumber = "infinite" | number;
@@ -428,13 +430,14 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
     /** disabled buttons can't be pressed */
     disabled: boolean;
   };
-  timer: Simplify<
+  timer: Merge<
+    ItemConfigMap<RoomId, RoomItemId, SceneryName>["timer"],
     {
       lastFiredAtRoomTime: number;
       setting: SwitchSetting;
       /** disabled timers don't fire */
       disabled: boolean;
-    } & ItemConfigMap<RoomId, RoomItemId, SceneryName>["timer"]
+    }
   >;
   charles: FreeItemState<RoomItemId> & {
     facing: Xy;

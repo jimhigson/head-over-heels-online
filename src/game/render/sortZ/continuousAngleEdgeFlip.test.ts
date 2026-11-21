@@ -1,3 +1,4 @@
+import { type Writable } from "type-fest";
 import { expect, test } from "vitest";
 
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
@@ -28,7 +29,7 @@ import { updateZEdges } from "./updateZEdges";
  * ≈ 101.31°, which is where the flip must land.
  */
 
-type FlipItem = DrawOrderComparable & { id: string };
+type FlipItem = Writable<DrawOrderComparable, "id">;
 
 const a: FlipItem = {
   id: "a",

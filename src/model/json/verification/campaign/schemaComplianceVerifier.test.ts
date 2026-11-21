@@ -1,3 +1,4 @@
+import { type UnknownRecord } from "type-fest";
 import { expect, test } from "vitest";
 
 import { addItem, campaignOf, newRoom, runCheck } from "../testUtils";
@@ -14,10 +15,7 @@ const campaignWithItem = (item: VerificationJsonItemUnion) => {
 };
 
 /** a config object with one key removed, for building one-property-missing items */
-const without = (
-  config: Record<string, unknown>,
-  key: string,
-): Record<string, unknown> => {
+const without = (config: UnknownRecord, key: string): UnknownRecord => {
   const copy = { ...config };
   delete copy[key];
   return copy;

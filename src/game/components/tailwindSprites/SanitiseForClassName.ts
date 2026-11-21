@@ -1,7 +1,11 @@
-export type SanitisedForClassName<S extends string> =
-  S extends `${infer Start}.${infer Rest}` ?
-    `${Start}_${SanitisedForClassName<Rest>}`
-  : S;
+import { type Replace } from "type-fest";
+
+export type SanitisedForClassName<S extends string> = Replace<
+  S,
+  ".",
+  "_",
+  { all: true }
+>;
 
 export const sanitiseForClassName = <S extends string>(s: S) =>
   // spritesheet texture/anim ids contain dots. This is fine in tailwind, but monaco editor strips

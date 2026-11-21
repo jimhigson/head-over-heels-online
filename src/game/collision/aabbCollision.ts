@@ -1,8 +1,13 @@
+import { type DistributedPick } from "type-fest";
+
 import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
 import { type XyzBox } from "../../utils/vectors/vectors";
 import { type SpatialIndex } from "../physics/gridSpace/SpatialIndex";
 
-export type CollideableItem = Pick<UnionOfAllItemInPlayTypes, "id"> & {
+export type CollideableItem = DistributedPick<
+  UnionOfAllItemInPlayTypes,
+  "id"
+> & {
   state: { box: Readonly<XyzBox> };
 };
 

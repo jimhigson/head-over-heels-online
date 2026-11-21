@@ -1,4 +1,4 @@
-import { type Get, type Paths } from "type-fest";
+import { type Get, type Paths, type UnknownRecord } from "type-fest";
 
 /** the default split strategy: a dot-delimited path, eg `a.b.c` */
 const splitDotPath = (path: string): string[] => path.split(".");
@@ -14,8 +14,7 @@ export const getAtPath = <O extends object, P extends Paths<O> & string>(
   split: (path: string) => string[] = splitDotPath,
 ): Get<O, P> =>
   split(path).reduce<unknown>(
-    (node, key) =>
-      node == null ? undefined : (node as Record<string, unknown>)[key],
+    (node, key) => (node == null ? undefined : (node as UnknownRecord)[key]),
     obj,
   ) as Get<O, P>;
 
@@ -28,9 +27,9 @@ export const setAtPath = <O extends object, P extends Paths<O> & string>(
 ): void => {
   const segments = split(path);
 
-  let current = obj as Record<string, unknown>;
+  let current = obj as UnknownRecord;
   for (let i = 0; i < segments.length - 1; i++) {
-    current = current[segments[i]] as Record<string, unknown>;
+    current = current[segments[i]] as UnknownRecord;
   }
   current[segments[segments.length - 1]] = value;
 };

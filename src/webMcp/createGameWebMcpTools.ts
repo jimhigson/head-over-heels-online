@@ -1,3 +1,5 @@
+import { type UnknownRecord } from "type-fest";
+
 import { type GameApi } from "../game/GameApi";
 import { selectCurrentRoomState } from "../game/gameState/gameStateSelectors/selectCurrentRoomState";
 import { type BooleanAction, booleanActions } from "../game/input/actions";
@@ -67,10 +69,10 @@ const summaryChanges = (
 
 /** the summarised state fields this item has */
 const itemStateSummary = (item: UnionOfAllItemInPlayTypes<string, string>) => {
-  const summary: Record<string, unknown> = {};
+  const summary: UnknownRecord = {};
   for (const field of summarisedStateFields) {
     if (field in item.state) {
-      summary[field] = (item.state as Record<string, unknown>)[field];
+      summary[field] = (item.state as UnknownRecord)[field];
     }
   }
   return summary;

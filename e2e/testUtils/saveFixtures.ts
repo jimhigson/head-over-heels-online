@@ -1,6 +1,7 @@
 import { type Page } from "@playwright/test";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
+import { type UnknownRecord } from "type-fest";
 
 /**
  * a captured save-game fixture: the complete `persist:`-prefixed localStorage
@@ -20,7 +21,7 @@ export type SaveFixture = {
    * double-stringified fields parsed to plain objects for readable diffs.
    * Re-encoded by {@link seedCapturedLocalStorage} when loading.
    */
-  localStorage: Record<string, Record<string, unknown>>;
+  localStorage: Record<string, UnknownRecord>;
 };
 
 /**
@@ -35,7 +36,7 @@ export const saveFixturesDir = path.resolve("e2e/fixtures/saves");
  * redux-persist re-stringifies each top-level value when writing to
  * localStorage, so seeding needs to match that format
  */
-export const toPersistedValue = (obj: Record<string, unknown>): string =>
+export const toPersistedValue = (obj: UnknownRecord): string =>
   JSON.stringify(
     Object.fromEntries(
       Object.entries(obj).map(([k, v]) => [k, JSON.stringify(v)]),
@@ -47,7 +48,7 @@ export const toPersistedValue = (obj: Record<string, unknown>): string =>
  */
 export const seedCapturedLocalStorage = async (
   page: Page,
-  captured: Record<string, Record<string, unknown>>,
+  captured: Record<string, UnknownRecord>,
 ): Promise<void> => {
   const entries = Object.entries(captured).map(
     ([key, value]) =>
@@ -72,18 +73,15 @@ export const seedCapturedLocalStorage = async (
  */
 export const harvestPersistedLocalStorage = (
   page: Page,
-): Promise<Record<string, Record<string, unknown>>> =>
+): Promise<Record<string, UnknownRecord>> =>
   page.evaluate(() => {
-    const harvested: Record<string, Record<string, unknown>> = {};
+    const harvested: Record<string, UnknownRecord> = {};
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i)!;
       if (!key.startsWith("persist:")) {
         continue;
       }
-      const envelope = JSON.parse(localStorage.getItem(key)!) as Record<
-        string,
-        unknown
-      >;
+      const envelope = JSON.parse(localStorage.getItem(key)!) as UnknownRecord;
       harvested[key] = Object.fromEntries(
         Object.entries(envelope).map(([field, value]) => [
           field,

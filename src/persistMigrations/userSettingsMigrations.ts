@@ -1,4 +1,5 @@
 import { createMigrate } from "redux-persist";
+import { type UnknownRecord } from "type-fest";
 
 import { type PokesEnabled } from "../store/slices/userSettings/userSettingsSlice";
 
@@ -12,11 +13,8 @@ export const userSettingsMigrations = createMigrate({
     if (!state) {
       return state;
     }
-    const { userSettings, ...otherSliceState } = state as Record<
-      string,
-      unknown
-    >;
-    const us = userSettings as Record<string, unknown> | undefined;
+    const { userSettings, ...otherSliceState } = state as UnknownRecord;
+    const us = userSettings as undefined | UnknownRecord;
     if (!us) {
       return state;
     }

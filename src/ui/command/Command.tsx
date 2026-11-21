@@ -1,22 +1,23 @@
 import { type ComponentProps } from "preact";
 import { type KeyboardEvent } from "preact/compat";
 import { useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
+import { type Merge } from "type-fest";
 
 import { cn } from "../cn";
 import { CommandContext } from "./commandContext";
 
-export type CommandProps = Omit<
-  ComponentProps<"div">,
-  "className" | "onSelect"
-> & {
-  /** called when Escape is pressed */
-  onClose?: () => void;
-  /** the item value to highlight when first opened */
-  defaultValue?: string;
-  /** controlled filter text (omit to let the Command manage its own) */
-  search?: string;
-  onSearchChange?: (search: string) => void;
-};
+export type CommandProps = Merge<
+  Omit<ComponentProps<"div">, "className" | "onSelect">,
+  {
+    /** called when Escape is pressed */
+    onClose?: () => void;
+    /** the item value to highlight when first opened */
+    defaultValue?: string;
+    /** controlled filter text (omit to let the Command manage its own) */
+    search?: string;
+    onSearchChange?: (search: string) => void;
+  }
+>;
 
 /**
  * the items shown in a list, in visual positions (top to bottom as laid out) - which can differ

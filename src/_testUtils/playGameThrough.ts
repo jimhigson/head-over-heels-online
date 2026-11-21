@@ -1,3 +1,5 @@
+import { type Arrayable } from "type-fest";
+
 import { selectCurrentRoomState } from "../game/gameState/gameStateSelectors/selectCurrentRoomState";
 import { progressGameState } from "../game/mainLoop/progressGameState";
 import { progressWithSubTicks } from "../game/mainLoop/progressWithSubTicks";
@@ -24,7 +26,7 @@ type PlayGameThroughBaseOptions = {
    * allows us to change the gamestate after certain frames, for example to change the
    * joystick input while the simulation is running
    */
-  frameCallbacks?: Array<FrameCallback> | FrameCallback;
+  frameCallbacks?: Arrayable<FrameCallback>;
 
   setupInitialInput?: (mockInputStateTracker: MockInputStateTracker) => void;
 };

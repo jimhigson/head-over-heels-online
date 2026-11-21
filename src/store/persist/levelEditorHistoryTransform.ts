@@ -1,5 +1,11 @@
 import { applyPatch, compare, type Operation } from "fast-json-patch";
 import createTransform from "redux-persist/es/createTransform";
+import {
+  type Except,
+  type Merge,
+  type OverrideProperties,
+  type SetOptional,
+} from "type-fest";
 
 import {
   type EditorJsonItemUnion,
@@ -25,8 +31,7 @@ type History = LevelEditorState["history"];
 /**
  * a selection entry as stored - json leaves out an undefined editor ghost
  */
-type StoredSelectionEntry = Omit<SelectionEntry, "whichEditorGhost"> &
-  Partial<Pick<SelectionEntry, "whichEditorGhost">>;
+type StoredSelectionEntry = SetOptional<SelectionEntry, "whichEditorGhost">;
 
 /**
  * an undo item as stored: by selection entry, or in the older stored form,
@@ -38,7 +43,7 @@ type StoredUndoItemEntry =
 
 type WithStoredUndoItems<D> =
   D extends { items: UndoItemEntry[] } ?
-    Omit<D, "items"> & { items: StoredUndoItemEntry[] }
+    Merge<D, { items: StoredUndoItemEntry[] }>
   : D;
 
 type StoredUndoDescription = WithStoredUndoItems<UndoDescription>;
@@ -78,12 +83,19 @@ const undoDescriptionFromStored = (
 type StoredUndoStack = {
   newestRoom: EditorRoomJson | undefined;
   entries: Array<
-    Omit<UndoEntry, "description" | "link" | "room"> & {
-      description: StoredUndoDescription;
-      /**
-       * absent where the entry has none, as json leaves out undefined
-       */
-      link?: UndoLink;
+    Except<
+      OverrideProperties<
+        UndoEntry,
+        {
+          description: StoredUndoDescription;
+          /**
+           * absent where the entry has none, as json leaves out undefined
+           */
+          link?: UndoLink;
+        }
+      >,
+      "room"
+    > & {
       /**
        * empty for the newest entry, whose room is stored in full
        */
@@ -97,9 +109,10 @@ type StoredRoomUndoHistory = {
   redo: StoredUndoStack;
 };
 
-type LegacyStoredUndoEntry = Omit<UndoEntry, "description"> & {
-  description: StoredUndoDescription;
-};
+type LegacyStoredUndoEntry = OverrideProperties<
+  UndoEntry,
+  { description: StoredUndoDescription }
+>;
 
 /**
  * the older stored form of a room's history: every entry with its room in

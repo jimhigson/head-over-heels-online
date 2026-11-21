@@ -1,5 +1,9 @@
 import { type Container } from "pixi.js";
-import { type EmptyObject } from "type-fest";
+import {
+  type DistributedOmit,
+  type EmptyObject,
+  type OverrideProperties,
+} from "type-fest";
 
 import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
@@ -109,10 +113,10 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
   );
 
 export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
-  createSpriteOptions: Omit<
-    AnimatedCreateSpriteOptions,
-    "animationId" | "gameSpeed" | "paused" | "spritesheet"
-  > & { animationId: BaseAnimationId & ReflectableId },
+  createSpriteOptions: OverrideProperties<
+    DistributedOmit<AnimatedCreateSpriteOptions, "paused" | "spritesheet">,
+    { animationId: BaseAnimationId & ReflectableId }
+  >,
 ): ItemAppearance<T, RenderOnceProps> =>
   itemAppearanceRenderMemoised(
     ({

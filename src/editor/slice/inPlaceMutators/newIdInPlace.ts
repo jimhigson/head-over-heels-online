@@ -1,10 +1,11 @@
+import { type Split } from "type-fest";
+
 import { type LevelEditorState } from "../levelEditorSlice";
 
 /**
  * the part of an id before its "-", naming what it identifies
  */
-type IdPrefix<Id extends string> =
-  Id extends `${infer Prefix}-${string}` ? Prefix : never;
+type IdPrefix<Id extends string> = Split<Id, "-">[0];
 
 /**
  * a new id for something in the editor's state (a tab, a pane, an open

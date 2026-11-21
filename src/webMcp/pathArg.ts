@@ -1,3 +1,5 @@
+import { type UnknownRecord } from "type-fest";
+
 export const pathArgSchema = {
   type: "object",
   properties: {
@@ -9,5 +11,5 @@ export const pathArgSchema = {
 };
 
 /** the `path` argument of a tool taking `pathArgSchema`; empty for the root */
-export const pathArg = (args: Record<string, unknown>) =>
+export const pathArg = (args: UnknownRecord) =>
   typeof args.path === "string" ? args.path : "";

@@ -1,4 +1,9 @@
-import { type EmptyObject } from "type-fest";
+import {
+  type DistributedOmit,
+  type EmptyObject,
+  type Merge,
+  type OverrideProperties,
+} from "type-fest";
 
 import { type WhichEditorGhostOfAnyItemType } from "../editor/WhichEditorGhostOf";
 import { type ItemBehaviour } from "../game/itemBehaviours/ItemBehaviour";
@@ -95,10 +100,13 @@ type DoorLegsConfig = {
  */
 type VectorisedStartDirection<C> =
   C extends { startDirection: string } ?
-    Omit<C, "startDirection"> & {
-      /** the starting facing as a unit vector */
-      startDirection: Xyz;
-    }
+    Merge<
+      C,
+      {
+        /** the starting facing as a unit vector */
+        startDirection: Xyz;
+      }
+    >
   : C;
 
 type ItemInPlayConfigMap<
@@ -164,27 +172,31 @@ type ItemInPlayConfigMap<
   };
   stopAutowalk: EmptyObject;
   // change lamp config's direction from a string to a vector while in-play
-  lamp: Omit<JsonItemConfig<"lamp", RoomId, RoomItemId>, "direction"> & {
-    direction: Xyz;
-  };
-  wall: Omit<JsonItemConfig<"wall", RoomId, RoomItemId, ScN>, "direction"> & {
-    /** the wall's outward-facing world direction as a cardinal unit vector */
-    direction: Xyz;
-  };
+  lamp: OverrideProperties<
+    JsonItemConfig<"lamp", RoomId, RoomItemId>,
+    { direction: Xyz }
+  >;
+  wall: OverrideProperties<
+    JsonItemConfig<"wall", RoomId, RoomItemId, ScN>,
+    {
+      /** the wall's outward-facing world direction as a cardinal unit vector */
+      direction: Xyz;
+    }
+  >;
   /**
    * the json conveyor config is a union discriminated on the direction name
    * (constraining `times` to the belt's axis); in-play it flattens to a
    * direction vector, with the times constraint already enforced at the json
    * boundary
    */
-  conveyor: Omit<
+  conveyor: OverrideProperties<
     JsonItemConfig<"conveyor", RoomId, RoomItemId>,
-    "direction" | "times"
-  > & {
-    /** the direction the belt carries items, as a cardinal unit vector */
-    direction: Xyz;
-    times?: Partial<Xy>;
-  };
+    {
+      /** the direction the belt carries items, as a cardinal unit vector */
+      direction: Xyz;
+      times?: Partial<Xy>;
+    }
+  >;
   sceneryPlayer: VectorisedStartDirection<
     JsonItemConfig<"sceneryPlayer", RoomId, RoomItemId>
   >;
@@ -199,7 +211,10 @@ type ItemInPlayConfigMap<
     direction?: Xyz;
   };
   // disappearing can be turned off (#blacktooth6 aka room with first doughnuts) so it is state, not config
-  block: Omit<JsonItemConfig<"block", RoomId, RoomItemId>, "disappearing">;
+  block: DistributedOmit<
+    JsonItemConfig<"block", RoomId, RoomItemId>,
+    "disappearing"
+  >;
   floor: JsonItemConfig<"floor", RoomId, RoomItemId> & {
     /** the floor's footprint (in world coords), before it was extended for the doors */
     naturalFootprint: {

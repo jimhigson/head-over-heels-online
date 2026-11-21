@@ -1,3 +1,5 @@
+import { type Constructor } from "type-fest";
+
 import { type ExportedSoundId } from "../../_generated/sfxdex/soundIds";
 import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import { type Campaign } from "../../model/modelTypes";
@@ -12,10 +14,7 @@ type TeleporterItem<
   RoomItemId extends string,
 > = ItemTypeUnion<"portableTeleporter" | "teleporter", RoomId, RoomItemId>;
 
-type ItemBehaviourClass = new (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ...args: any[]
-) => ItemBehaviour;
+type ItemBehaviourClass = Constructor<ItemBehaviour>;
 
 /**
  * what all teleporters do, whether fixed in place or portable

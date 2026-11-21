@@ -1,3 +1,5 @@
+import { type UnknownRecord } from "type-fest";
+
 import { nextItemIdSet } from "../model/inPlaceMutators/nextItemId";
 import { type JsonItemUnion } from "../model/json/JsonItem";
 import { type RoomJsonItems } from "../model/RoomJson";
@@ -44,7 +46,7 @@ export const explodeItem = <RoomItemId extends string, RoomId extends string>(
         reserved.add(fragmentId);
         const config =
           wallTiles === undefined ?
-            omit(item.config as Record<string, unknown>, "times")
+            omit(item.config as UnknownRecord, "times")
             // away runs along x and left along y, so only one of dx/dy is ever
             // non-zero - their sum is the tile index along the wall:
           : { ...item.config, tiles: [wallTiles[dx + dy]] };

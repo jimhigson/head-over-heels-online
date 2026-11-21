@@ -1,3 +1,4 @@
+import { type UnknownRecord } from "type-fest";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
 import { migrateLegacySavedGames } from "./migrateLegacySavedGames";
@@ -30,7 +31,7 @@ const legacyOuterBlob = (savedGames: object, userSettings: object = {}) =>
  */
 const parseNewBlob = (raw: string) => {
   const outer = JSON.parse(raw) as Record<string, string>;
-  const result: Record<string, unknown> = {
+  const result: UnknownRecord = {
     _persist: JSON.parse(outer._persist),
   };
   for (const [k, v] of Object.entries(outer)) {
@@ -89,9 +90,7 @@ test("savedGames blob is re-keyed without shape transformation", () => {
   const parsed = parseNewBlob(
     window.localStorage.getItem(NEW_SAVED_GAMES_KEY)!,
   );
-  const save = (parsed.saves as Record<string, Record<string, unknown>>)[
-    exampleSaveKey
-  ];
+  const save = (parsed.saves as Record<string, UnknownRecord>)[exampleSaveKey];
   // shape rewriting is now done by createMigrate, not by re-keying
   expect(save.store).toEqual({ gameMenus: { gameInPlay: exampleGameInPlay } });
   expect(parsed.lastSavedCampaignLocator).toEqual(

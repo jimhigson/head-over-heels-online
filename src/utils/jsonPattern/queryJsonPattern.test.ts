@@ -1,3 +1,4 @@
+import { type UnknownRecord } from "type-fest";
 import { expect, test } from "vitest";
 
 import { queryJsonPattern } from "./queryJsonPattern";
@@ -25,7 +26,7 @@ const items = {
   },
 };
 
-test.for<[string, Record<string, unknown>]>([
+test.for<[string, UnknownRecord]>([
   ["door1", { door1: items.door1 }],
   ["door*", { door1: items.door1, door2: items.door2 }],
   ["[type=monster]", { skiHead1: items.skiHead1 }],

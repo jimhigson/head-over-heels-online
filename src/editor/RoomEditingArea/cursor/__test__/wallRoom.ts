@@ -1,3 +1,5 @@
+import { type UnknownRecord } from "type-fest";
+
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import { entries } from "../../../../utils/entries";
 import {
@@ -62,7 +64,7 @@ export const rightWallsRoom = (
   /** how many tiles long each wall is, by its json id */
   tileCounts: Record<string, number>,
 ): EditorRoomState => {
-  const items: Record<string, unknown> = {};
+  const items: UnknownRecord = {};
   for (const [jsonItemId, tileCount] of entries(tileCounts)) {
     items[jsonItemId] = {
       type: "wall",

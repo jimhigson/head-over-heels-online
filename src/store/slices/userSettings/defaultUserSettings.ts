@@ -1,4 +1,4 @@
-import { type RequiredDeep, type SimplifyDeep } from "type-fest";
+import { type Merge, type RequiredDeep, type SimplifyDeep } from "type-fest";
 
 import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
 import {
@@ -9,8 +9,10 @@ import { type UserSettings } from "./userSettingsSlice";
 
 // like UserSettings but with less optionality:
 type DefaultUserSettings = SimplifyDeep<
-  Required<UserSettings> &
+  Merge<
+    Required<UserSettings>,
     RequiredDeep<Pick<UserSettings, "displaySettings" | "soundSettings">>
+  >
 >;
 
 export const defaultEmulatedResolution = (deviceType: DeviceType) => {

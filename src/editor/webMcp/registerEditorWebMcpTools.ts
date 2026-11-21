@@ -1,4 +1,5 @@
 import nanoEqual from "nano-equal";
+import { type UnknownRecord } from "type-fest";
 
 import { type SaveResult } from "../../db/campaign";
 import { sequelCampaignLocator } from "../../gameInfo";
@@ -143,7 +144,7 @@ const playtestInputSchema = {
 const playtestUrlForInput = async ({
   fromStart,
   playAsHeels,
-}: Record<string, unknown>): Promise<string> => {
+}: UnknownRecord): Promise<string> => {
   const state = editorStore.getState();
   const playtestOptions = selectPlaytestOptions(state);
   return playtestUrl(state, {
@@ -622,7 +623,7 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
         return jsonResult("items must be an object of id -> item or null");
       }
       const roomJson = selectCurrentCommittedRoomJson(editorStore.getState());
-      const newItems: Record<string, unknown> = { ...roomJson.items };
+      const newItems: UnknownRecord = { ...roomJson.items };
       for (const [id, item] of Object.entries(items)) {
         if (item === null) {
           delete newItems[id];

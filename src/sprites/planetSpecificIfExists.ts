@@ -1,3 +1,5 @@
+import { type RemovePrefix } from "type-fest";
+
 import { isTextureId } from "./assertIsTextureId";
 import { type SceneryName } from "./planets";
 import { type AppSpritesheetData } from "./spritesheet/AppSpritesheet";
@@ -6,8 +8,10 @@ import {
   type TextureId,
 } from "./spritesheet/spritesheetData/makeSpritesheetData";
 
-type ExtractGenericSuffix<T> = T extends `generic.${infer Rest}` ? Rest : never;
-type GenericTextureSuffix = ExtractGenericSuffix<TextureId>;
+type GenericTextureSuffix = RemovePrefix<
+  Extract<TextureId, `generic.${string}`>,
+  "generic."
+>;
 
 /**
  * the ids a suffix can resolve to: the scenery's own art (lit or dark) where

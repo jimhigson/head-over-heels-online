@@ -1,4 +1,5 @@
 import { produce } from "immer";
+import { type AsyncReturnType } from "type-fest";
 import { expect, test, vi } from "vitest";
 
 import {
@@ -69,12 +70,12 @@ const state0AtVersion7 = produce(editorStateWithOneRoomWithNoItems, (draft) => {
 });
 
 test("save-as a never-saved name saves without a lease (the original false-conflict bug)", async () => {
-  mockGetLatestVersion.mockResolvedValue({ data: 0 } as Awaited<
-    ReturnType<typeof getLatestCampaignVersionViaApi>
+  mockGetLatestVersion.mockResolvedValue({ data: 0 } as AsyncReturnType<
+    typeof getLatestCampaignVersionViaApi
   >);
-  mockSave.mockResolvedValue({ data: { ok: true, version: 1 } } as Awaited<
-    ReturnType<typeof saveCampaignViaApi>
-  >);
+  mockSave.mockResolvedValue({
+    data: { ok: true, version: 1 },
+  } as AsyncReturnType<typeof saveCampaignViaApi>);
 
   const { result } = await runThunk(state0AtVersion7, (dispatch, getState) =>
     saveCampaignAs({ campaignName: "aFreshName", publish: false })(
@@ -100,8 +101,8 @@ test("save-as a never-saved name saves without a lease (the original false-confl
 });
 
 test("save-as onto an existing name asks for confirmation without mutating state", async () => {
-  mockGetLatestVersion.mockResolvedValue({ data: 18 } as Awaited<
-    ReturnType<typeof getLatestCampaignVersionViaApi>
+  mockGetLatestVersion.mockResolvedValue({ data: 18 } as AsyncReturnType<
+    typeof getLatestCampaignVersionViaApi
   >);
   mockSave.mockClear();
 
@@ -121,12 +122,12 @@ test("save-as onto an existing name asks for confirmation without mutating state
 });
 
 test("confirmed save-as onto an existing name leases against the fetched latest", async () => {
-  mockGetLatestVersion.mockResolvedValue({ data: 18 } as Awaited<
-    ReturnType<typeof getLatestCampaignVersionViaApi>
+  mockGetLatestVersion.mockResolvedValue({ data: 18 } as AsyncReturnType<
+    typeof getLatestCampaignVersionViaApi
   >);
-  mockSave.mockResolvedValue({ data: { ok: true, version: 19 } } as Awaited<
-    ReturnType<typeof saveCampaignViaApi>
-  >);
+  mockSave.mockResolvedValue({
+    data: { ok: true, version: 19 },
+  } as AsyncReturnType<typeof saveCampaignViaApi>);
 
   const { result } = await runThunk(state0AtVersion7, (dispatch, getState) =>
     saveCampaignAs({
@@ -152,9 +153,9 @@ test("confirmed save-as onto an existing name leases against the fetched latest"
 
 test("save-as with the name unchanged is a plain save keeping the existing lease", async () => {
   mockGetLatestVersion.mockClear();
-  mockSave.mockResolvedValue({ data: { ok: true, version: 8 } } as Awaited<
-    ReturnType<typeof saveCampaignViaApi>
-  >);
+  mockSave.mockResolvedValue({
+    data: { ok: true, version: 8 },
+  } as AsyncReturnType<typeof saveCampaignViaApi>);
 
   const { result } = await runThunk(state0AtVersion7, (dispatch, getState) =>
     saveCampaignAs({ campaignName: "testCampaign", publish: true })(

@@ -1,3 +1,5 @@
+import { type Writable } from "type-fest";
+
 import { populatedBroadPhase } from "../__test__/populatedBroadPhase";
 import { itemBehaviourKey } from "../../../../model/ItemInPlay";
 import { Graph } from "../../../../utils/graph/Graph";
@@ -12,7 +14,7 @@ export const itemCount = 100;
 export const movePercentage = 0.2;
 export const frameCount = 100; // round number means divide answer by 100 to get time per frame
 
-export type TestItem = DrawOrderComparable & { id: string };
+export type TestItem = Writable<DrawOrderComparable, "id">;
 
 /**
  * a continuous camera sweep of ~1.5°/frame, as a (cos,sin) unit vector - the
