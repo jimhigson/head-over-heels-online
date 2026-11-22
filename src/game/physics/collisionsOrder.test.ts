@@ -7,6 +7,18 @@ import {
   sortObstaclesAboutPriorityAndVectorInPlace,
 } from "./collisionsOrder";
 
+/**
+ * overlaps none of the obstacles, so only their contact order decides
+ */
+const subjectBoxOverlappingNothing = {
+  x: 100,
+  y: 100,
+  z: 100,
+  xd: 1,
+  yd: 1,
+  zd: 1,
+};
+
 const lowBlock = {
   type: "block" as ItemInPlayType,
   id: "lowBlock",
@@ -31,6 +43,7 @@ describe("sort order of items with same type", () => {
     const result = blockTower.slice();
     sortObstaclesAboutPriorityAndVectorInPlace(
       unitVectors.down,
+      subjectBoxOverlappingNothing,
       result,
       0,
       result.length,
@@ -48,6 +61,7 @@ describe("sort order of items with same type", () => {
     const result = blockTower.toReversed();
     sortObstaclesAboutPriorityAndVectorInPlace(
       unitVectors.down,
+      subjectBoxOverlappingNothing,
       result,
       0,
       result.length,
@@ -64,6 +78,7 @@ describe("sort order of items with same type", () => {
     const result = blockTower.slice();
     sortObstaclesAboutPriorityAndVectorInPlace(
       unitVectors.up,
+      subjectBoxOverlappingNothing,
       result,
       0,
       result.length,
@@ -81,6 +96,7 @@ describe("sort order of items with same type", () => {
     const result = blockTower.toReversed();
     sortObstaclesAboutPriorityAndVectorInPlace(
       unitVectors.up,
+      subjectBoxOverlappingNothing,
       result,
       0,
       result.length,
@@ -108,6 +124,7 @@ describe("blocks protext from monsters by colliding first", () => {
     const result = monsterAndBlock.slice();
     sortObstaclesAboutPriorityAndVectorInPlace(
       unitVectors.down,
+      subjectBoxOverlappingNothing,
       result,
       0,
       result.length,
@@ -119,6 +136,7 @@ describe("blocks protext from monsters by colliding first", () => {
     const result = monsterAndBlock.toReversed();
     sortObstaclesAboutPriorityAndVectorInPlace(
       unitVectors.down,
+      subjectBoxOverlappingNothing,
       result,
       0,
       result.length,
@@ -129,7 +147,13 @@ describe("blocks protext from monsters by colliding first", () => {
 
 test("sorts only the obstacles in the range", () => {
   const result = [...blockTower, ...blockTower];
-  sortObstaclesAboutPriorityAndVectorInPlace(unitVectors.up, result, 3, 6);
+  sortObstaclesAboutPriorityAndVectorInPlace(
+    unitVectors.up,
+    subjectBoxOverlappingNothing,
+    result,
+    3,
+    6,
+  );
 
   expect(result.map((r) => r.id)).toEqual([
     "topBlock",
@@ -139,4 +163,29 @@ test("sorts only the obstacles in the range", () => {
     "midBlock",
     "topBlock",
   ]);
+});
+
+test("the most-overlapped obstacle comes first, even if met later along the vector", () => {
+  // a seam between two blocks in a row, walked along diagonally:
+  const trailingBlock: SortableObstacle = {
+    type: "pushableBlock",
+    id: "trailingBlock",
+    state: { box: { x: 48, y: 112, z: 0, xd: 16, yd: 16, zd: 12 } },
+  };
+  const alongsideBlock: SortableObstacle = {
+    type: "pushableBlock",
+    id: "alongsideBlock",
+    state: { box: { x: 64, y: 112, z: 0, xd: 16, yd: 16, zd: 12 } },
+  };
+  const result = [trailingBlock, alongsideBlock];
+  sortObstaclesAboutPriorityAndVectorInPlace(
+    { x: 1, y: 1, z: 0 },
+    // straddling the seam, mostly beside the alongside block:
+    { x: 63.75, y: 100.32, z: 0, xd: 12, yd: 12, zd: 12 },
+    result,
+    0,
+    result.length,
+  );
+
+  expect(result.map((r) => r.id)).toEqual(["alongsideBlock", "trailingBlock"]);
 });
