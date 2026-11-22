@@ -381,7 +381,9 @@ export class SpatialIndex<
    * Appends the accepted items to `appendTo`, rather than returning a new array
    */
   appendInBoxApproximatelyTowards<Context>(
-    /** The cuboid region (position + dimensions) to check */
+    /**
+     * The cuboid region (position + dimensions) to check
+     */
     box: Readonly<XyzBox>,
     /**
      * the direction the box is travelling in - only its x and y signs are used
@@ -389,7 +391,9 @@ export class SpatialIndex<
     travel: Readonly<Xyz>,
     predicate: (item: Item, box: Readonly<XyzBox>, context: Context) => boolean,
     context: Context,
-    /** item to never offer (usually the querying item) */
+    /**
+     * item to never offer (usually the querying item)
+     */
     excludeItem: Indexable,
     /**
      * the array to append to - only the items this call appends are

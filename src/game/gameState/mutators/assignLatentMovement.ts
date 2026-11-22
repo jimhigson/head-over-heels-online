@@ -89,9 +89,13 @@ const movementBeyond = (
 const carriedMovement = <RoomId extends string, RoomItemId extends string>(
   moverItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   standerItem: FreeItem<RoomId, RoomItemId>,
-  /** how far the mover moved this tick */
+  /**
+   * how far the mover moved this tick
+   */
   moverMovement: Xyz,
-  /** item id -> box when this tick started */
+  /**
+   * item id -> box when this tick started
+   */
   startingPositions: ReadonlyMap<string, Xyz>,
   room: RoomState<RoomId, RoomItemId>,
 ): Xyz => {

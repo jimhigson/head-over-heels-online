@@ -81,3 +81,52 @@ test("walking to exactly against an item collides with it, without standing on i
     collidedWithBlock: collidedWith.by.block,
   }).toEqual({ standingOnItemId: "floor", collidedWithBlock: true });
 });
+
+test("walking into a cube stuck against a block doesn't bump a cube just beyond the stuck cube's face, which heels never reaches", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        // across both cubes ahead:
+        position: { x: 2.625, y: 4.875, z: 0 },
+        config: { which: "heels" },
+      },
+      stuckCube: {
+        type: "portableBlock",
+        position: { x: 3.125, y: 6.125, z: 0 },
+        config: { style: "cube" },
+      },
+      // behind the stuck cube, so it can't be pushed:
+      block: {
+        type: "block",
+        position: { x: 3, y: 7, z: 0 },
+        config: { style: "organic" },
+      },
+      // its face a little further away than the stuck cube's - less than
+      // heels overlaps each cube across, so she is backed off along her travel:
+      beyondCube: {
+        type: "portableBlock",
+        position: { x: 2.125, y: 6.25, z: 0 },
+        config: { style: "cube" },
+      },
+    },
+  });
+  const heelsBox = itemState<"heels">(gameState, "heels").box;
+  const beyondCubeBox = itemState<"portableBlock">(gameState, "beyondCube").box;
+
+  moveItem({
+    subjectItem: item<"heels">(gameState, "heels")!,
+    // into the stuck cube, to exactly against the cube beyond it:
+    posDelta: { x: 0, y: beyondCubeBox.y - (heelsBox.y + heelsBox.yd), z: 0 },
+    gameState,
+    room: selectCurrentRoomState(gameState)!,
+    deltaMS: 10,
+    handleTouches: true,
+  });
+
+  const { collidedWith } = itemState<"heels">(gameState, "heels");
+  expect({
+    bumpedStuckCube: collidedWith.by.stuckCube === true,
+    bumpedBeyondCube: collidedWith.by.beyondCube === true,
+  }).toEqual({ bumpedStuckCube: true, bumpedBeyondCube: false });
+});

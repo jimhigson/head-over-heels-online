@@ -178,10 +178,13 @@ const recordArrivingJustTouching = <
  */
 const pushedItemsStack: Array<UnionOfAllItemInPlayTypes<string, string>> = [];
 
+const travelSoFarBuffer: Xyz = { x: 0, y: 0, z: 0 };
+
 /**
- * the items collided with by every moveItem call in progress, shared to save
- * allocating per call. Each call's are the top of the stack while it runs:
- * recursive calls add theirs above, and truncate back before returning
+ * the items collided with, or only touched, by every moveItem call in progress,
+ * shared to save allocating per call. Each call's - its collisions, then the
+ * items it only touches - are the top of the stack while it runs: recursive
+ * calls add theirs above, and truncate back before returning
  */
 const collisionsStack: Array<UnionOfAllItemInPlayTypes<string, string>> = [];
 
@@ -191,6 +194,23 @@ const collisionsStack: Array<UnionOfAllItemInPlayTypes<string, string>> = [];
  * Calls add the subject before recursing and remove it after, so paths nest
  */
 const pushPathStack: Array<string> = [];
+
+/**
+ * whether an item is among a call's collisions - `[start, end)` on the
+ * collisions stack
+ */
+const collisionsInclude = (
+  item: UnionOfAllItemInPlayTypes<string, string>,
+  start: number,
+  end: number,
+): boolean => {
+  for (let i = start; i < end; i++) {
+    if (collisionsStack[i] === item) {
+      return true;
+    }
+  }
+  return false;
+};
 
 /**
  * back the subject off from everything it has pushed since its last back-off,
@@ -447,29 +467,18 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     subjectItem,
     collisionsStack,
   );
-  // keep only the items collided with, recording arrivals against the others:
+  // the items collided with first, then the ones only touched or almost
+  // touched - checked for arriving against once the collisions are handled:
   let collisionsEnd = collisionsStart;
   for (let i = collisionsStart; i < collisionsStack.length; i++) {
-    // only this call's items are read, so they are of its room's types:
-    const nearbyItem = collisionsStack[i] as UnionOfAllItemInPlayTypes<
-      RoomId,
-      RoomItemId
-    >;
+    const nearbyItem = collisionsStack[i];
     if (collision2Items(subjectItem, nearbyItem)) {
+      collisionsStack[i] = collisionsStack[collisionsEnd];
       collisionsStack[collisionsEnd] = nearbyItem;
       collisionsEnd++;
-    } else {
-      recordArrivingJustTouching(
-        subjectItem,
-        nearbyItem,
-        originalBox,
-        posDelta,
-        room,
-        pathStart,
-      );
     }
   }
-  collisionsStack.length = collisionsEnd;
+  const touchedEnd = collisionsStack.length;
   sortObstaclesAboutPriorityAndVectorInPlace(
     posDelta,
     collisionsStack,
@@ -513,6 +522,9 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     const collidedWithItem = collisionsStack[
       collisionIndex
     ] as UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
+    // read once, before the touch handling below, and not again after it. An
+    // item can become pushable or not in play (eg, a cyberman waking), but a
+    // change made by this touch only goes unseen for the rest of this move
     const collidedWithIsPushable = collidedWithItem[
       itemBehaviourKey
     ].isPushableBy(collidedWithItem, subjectItem, forceful);
@@ -654,11 +666,16 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     }
 
     const backingOffMtv: Xyz = { x: 0, y: 0, z: 0 };
+    // how far the subject has travelled so far, after any backing off already
+    // done - eg, none across a wall it is sliding along:
+    travelSoFarBuffer.x = subjectItem.state.box.x - originalBox.x;
+    travelSoFarBuffer.y = subjectItem.state.box.y - originalBox.y;
+    travelSoFarBuffer.z = subjectItem.state.box.z - originalBox.z;
     const backingOffType = backingOffTranslationAfterCollision(
       subjectItem,
       collidedWithItem,
       forceful,
-      posDelta,
+      travelSoFarBuffer,
       originalBox,
       backingOffMtv,
     );
@@ -772,7 +789,8 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       if (pushedItemStuck) {
         // a pushable item that can't move stops the subject as an immovable one
         // would: back off from it now, so it protects the subject from whatever
-        // is handled after it
+        // is handled after it, and straight out of it from wherever that leaves
+        // the subject, to slide along it
         backOffFromPushedItems(
           room,
           subjectItem,
@@ -780,15 +798,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
           pushedItemsStart,
         );
         alongTravelPushBackOff = undefined;
-        if (backingOffType === "alongTravel") {
-          // backs off part way along the travel, then the rest straight out of
-          // the item, to slide along it:
-          updateItemPosition(
-            room,
-            subjectItem,
-            addXyz(subjectItem.state.box, backingOffMtv, forwardPushVector),
-          );
-        }
         updateItemPosition(
           room,
           subjectItem,
@@ -865,10 +874,10 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         subjectItem.state.standingOnItemId === null ||
         // huh? - not colliding with the item we were previously standing on
         // - guess this means it is ok to take over its slot (?)
-        // (this call's collisions are the top of the stack while it runs)
-        !collisionsStack.includes(
+        !collisionsInclude(
           stoodOnItem(subjectItem.state.standingOnItemId, room),
           collisionsStart,
+          collisionsEnd,
         )
       ) {
         if (log) {
@@ -923,6 +932,27 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     alongTravelPushBackOff,
     pushedItemsStart,
   );
+
+  // arriving against an item is judged from where the subject ended up, after
+  // backing off from what it collided with:
+  for (let i = collisionsEnd; i < touchedEnd; i++) {
+    // only this call's items are read, so they are of its room's types:
+    const touchedItem = collisionsStack[i] as UnionOfAllItemInPlayTypes<
+      RoomId,
+      RoomItemId
+    >;
+    // touch handling might have removed it:
+    if (room.items[touchedItem.id] !== undefined) {
+      recordArrivingJustTouching(
+        subjectItem,
+        touchedItem,
+        originalBox,
+        posDelta,
+        room,
+        pathStart,
+      );
+    }
+  }
 
   if (
     // usually only free items move, but lifts are an exception
@@ -1023,7 +1053,9 @@ const moveRidersDown = <RoomId extends string, RoomItemId extends string>(
   room: RoomState<RoomId, RoomItemId>,
   deltaMS: number,
   handleTouches: MoveItemOptions<RoomId, RoomItemId>["handleTouches"],
-  /** where the push path starts on the path stack, as in {@link MoveItemOptions} */
+  /**
+   * where the push path starts on the path stack, as in {@link MoveItemOptions}
+   */
   pathStart: number,
 ) => {
   for (const rider of iterateStoodOnByItems(movedItem.state.stoodOnBy, room)) {

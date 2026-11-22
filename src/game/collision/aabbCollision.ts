@@ -158,7 +158,9 @@ export const appendApproximateCollisionsTowardsWithIndex = <
    */
   travel: Readonly<Xyz>,
   index: SpatialIndex<string, string, C>,
-  /** an item to leave out of the results, usually the one querying */
+  /**
+   * an item to leave out of the results, usually the one querying
+   */
   excludeItem: CollideableItem,
   /**
    * only the items this call appends are deduplicated, not any already in it
