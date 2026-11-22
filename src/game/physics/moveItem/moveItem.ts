@@ -481,6 +481,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   const touchedEnd = collisionsStack.length;
   sortObstaclesAboutPriorityAndVectorInPlace(
     posDelta,
+    subjectItem.state.box,
     collisionsStack,
     collisionsStart,
     collisionsEnd,

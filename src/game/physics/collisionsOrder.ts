@@ -1,5 +1,10 @@
 import type { ItemInPlayType } from "../../model/ItemInPlay";
-import { dotProductXyz, type Xyz } from "../../utils/vectors/vectors";
+import {
+  boxIntersection,
+  dotProductXyz,
+  type Xyz,
+  type XyzBox,
+} from "../../utils/vectors/vectors";
 import type { CollideableItem } from "../collision/aabbCollision";
 
 export type SortableObstacle = CollideableItem & {
@@ -168,11 +173,24 @@ export const collisionsPriorityComparator = <I extends SortableObstacle>(
 };
 
 /**
- * the order to handle the obstacles in: by type priority, then by how soon the
- * subject meets them travelling along the vector
+ * the volume of the subject's box inside the obstacle's
+ */
+const overlapVolume = (
+  subjectBox: Readonly<XyzBox>,
+  obstacle: SortableObstacle,
+): number => {
+  const { xd, yd, zd } = boxIntersection(subjectBox, obstacle.state.box);
+  return Math.max(0, xd) * Math.max(0, yd) * Math.max(0, zd);
+};
+
+/**
+ * the order to handle the obstacles in: by type priority, then by how much the
+ * subject overlaps them, then by how soon the subject meets them travelling
+ * along the vector
  */
 const compareObstaclesAboutPriorityAndVector = <I extends SortableObstacle>(
   vector: Xyz,
+  subjectBox: Readonly<XyzBox>,
   obsA: I,
   obsB: I,
 ): number => {
@@ -185,6 +203,16 @@ const compareObstaclesAboutPriorityAndVector = <I extends SortableObstacle>(
   const priorityOrder = collisionsPriorityComparator(obsA, obsB);
   if (priorityOrder !== 0) {
     return priorityOrder;
+  }
+
+  /*
+   * the most-overlapped obstacle first: backing off from it can leave the subject
+   * clear of shallower ones beside it, eg the next block along at a seam
+   */
+  const overlapOrder =
+    overlapVolume(subjectBox, obsB) - overlapVolume(subjectBox, obsA);
+  if (Math.abs(overlapOrder) >= 0.000_1) {
+    return overlapOrder;
   }
 
   /*
@@ -227,6 +255,10 @@ export const sortObstaclesAboutPriorityAndVectorInPlace = <
   I extends SortableObstacle,
 >(
   vector: Xyz,
+  /**
+   * the subject's box, after its travel
+   */
+  subjectBox: Readonly<XyzBox>,
   obstacles: I[],
   start: number,
   end: number,
@@ -236,7 +268,12 @@ export const sortObstaclesAboutPriorityAndVectorInPlace = <
     let j = i - 1;
     while (
       j >= start &&
-      compareObstaclesAboutPriorityAndVector(vector, obstacles[j], obstacle) > 0
+      compareObstaclesAboutPriorityAndVector(
+        vector,
+        subjectBox,
+        obstacles[j],
+        obstacle,
+      ) > 0
     ) {
       obstacles[j + 1] = obstacles[j];
       j--;

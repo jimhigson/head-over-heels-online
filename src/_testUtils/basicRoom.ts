@@ -21,7 +21,7 @@ export type TestRoomId = typeof firstRoomId | typeof secondRoomId;
 export type TestRoomJson = RoomJson<TestRoomId, string, "blacktooth">;
 export type ItemsInTestRoomJson = TestRoomJson["items"];
 
-const basicRoomSize = { x: 8, y: 8 };
+export const basicRoomSize = { x: 8, y: 8 };
 export const basicEmptyRoom = <RoomId extends string = string>(): RoomJson<
   RoomId,
   string,
