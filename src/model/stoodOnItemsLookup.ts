@@ -1,3 +1,5 @@
+import type { SetNonNullableDeep } from "type-fest";
+
 import type { UnindexedRoomState } from "../game/gameState/saving/SavedGameState";
 import { coyoteTime } from "../game/physics/mechanicsConstants";
 import { emptyIterator, isEmptyObject } from "../utils/empty";
@@ -15,9 +17,10 @@ export const itemIsStandingOnSomething = <
   RoomItemId extends string,
 >(
   item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-): item is FreeItem<RoomId, RoomItemId> & {
-  state: { standingOnItemId: string };
-} => {
+): item is SetNonNullableDeep<
+  FreeItem<RoomId, RoomItemId>,
+  "state.standingOnItemId"
+> => {
   return !!(item.state as { standingOnItemId?: null | string })
     .standingOnItemId;
 };

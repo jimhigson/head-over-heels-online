@@ -1,4 +1,5 @@
 import type { Page } from "@playwright/test";
+import type { Promisable } from "type-fest";
 
 /**
  * driving the world in an e2e build: nothing moves on its own, so anything a
@@ -140,7 +141,7 @@ export const advanceUntil = async (
  */
 export const advanceUntilConditionMetInsidePage = <Arg = undefined>(
   page: Page,
-  conditionMet: (arg: Arg) => boolean | Promise<boolean>,
+  conditionMet: (arg: Arg) => Promisable<boolean>,
   {
     arg,
     stepMs = 250,
@@ -151,7 +152,7 @@ export const advanceUntilConditionMetInsidePage = <Arg = undefined>(
     async ({ conditionMetText, arg, stepMs, polls }) => {
       const ready = new Function(`return (${conditionMetText})`)() as (
         arg: unknown,
-      ) => boolean | Promise<boolean>;
+      ) => Promisable<boolean>;
 
       const advanceTime = window.__e2e_advanceTime;
       if (advanceTime === undefined) {

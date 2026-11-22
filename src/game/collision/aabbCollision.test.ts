@@ -1,8 +1,10 @@
 import { describe, expect, test } from "vitest";
 
 import { emptyArray } from "../../utils/empty";
+import type { Xyz, XyzBox } from "../../utils/vectors/vectors";
 import { SpatialIndex } from "../physics/gridSpace/SpatialIndex";
 import {
+  appendApproximateCollisionsTowardsWithIndex,
   type CollideableItem,
   collision2Items,
   collisionBoxWithIndex,
@@ -209,6 +211,262 @@ describe("collisionBoxWithIndex", () => {
     expect(
       collisionBoxWithIndex({ x: 0, y: 0, z: 0, xd: 1, yd: 1, zd: 1 }, index),
     ).toBe(emptyArray);
+  });
+});
+
+describe("appendApproximateCollisionsTowardsWithIndex", () => {
+  const querying: CollideableItem = {
+    id: "querying",
+    state: { box: { x: 20, y: 20, z: 20, xd: 12, yd: 12, zd: 12 } },
+  };
+  const touchingEachFace: Array<{ face: string; towards: Xyz; box: XyzBox }> = [
+    {
+      face: "-x",
+      towards: { x: -1, y: 0, z: 0 },
+      box: { x: 8, y: 20, z: 20, xd: 12, yd: 12, zd: 12 },
+    },
+    {
+      // across the index's cell boundary at 32:
+      face: "+x",
+      towards: { x: 1, y: 0, z: 0 },
+      box: { x: 32, y: 20, z: 20, xd: 12, yd: 12, zd: 12 },
+    },
+    {
+      face: "-y",
+      towards: { x: 0, y: -1, z: 0 },
+      box: { x: 20, y: 8, z: 20, xd: 12, yd: 12, zd: 12 },
+    },
+    {
+      // across the index's cell boundary at 32:
+      face: "+y",
+      towards: { x: 0, y: 1, z: 0 },
+      box: { x: 20, y: 32, z: 20, xd: 12, yd: 12, zd: 12 },
+    },
+    {
+      face: "-z",
+      towards: { x: 0, y: 0, z: -1 },
+      box: { x: 20, y: 20, z: 8, xd: 12, yd: 12, zd: 12 },
+    },
+    {
+      face: "+z",
+      towards: { x: 0, y: 0, z: 1 },
+      box: { x: 20, y: 20, z: 32, xd: 12, yd: 12, zd: 12 },
+    },
+  ];
+
+  test.for(touchingEachFace)(
+    "finds an item exactly touching the $face face, travelling towards it",
+    ({ towards, box }) => {
+      const touching: CollideableItem = { id: "touching", state: { box } };
+      const index = new SpatialIndex<string, string, CollideableItem>([
+        querying,
+        touching,
+      ]);
+      const appended: CollideableItem[] = [];
+      appendApproximateCollisionsTowardsWithIndex(
+        querying.state.box,
+        towards,
+        index,
+        querying,
+        appended,
+      );
+
+      expect(appended.map((i) => i.id)).toEqual<string[]>(["touching"]);
+    },
+  );
+
+  test.for(touchingEachFace)(
+    "doesn't find an item exactly touching the $face face, travelling away from it",
+    ({ towards, box }) => {
+      const touching: CollideableItem = { id: "touching", state: { box } };
+      const index = new SpatialIndex<string, string, CollideableItem>([
+        querying,
+        touching,
+      ]);
+      const appended: CollideableItem[] = [];
+      appendApproximateCollisionsTowardsWithIndex(
+        querying.state.box,
+        { x: -towards.x, y: -towards.y, z: -towards.z },
+        index,
+        querying,
+        appended,
+      );
+
+      expect(appended).toEqual<CollideableItem[]>([]);
+    },
+  );
+
+  test("doesn't find an item touching a face it is travelling alongside", () => {
+    const alongside: CollideableItem = {
+      id: "alongside",
+      state: { box: { x: 20, y: 32, z: 20, xd: 12, yd: 12, zd: 12 } },
+    };
+    const index = new SpatialIndex<string, string, CollideableItem>([
+      querying,
+      alongside,
+    ]);
+    const appended: CollideableItem[] = [];
+    appendApproximateCollisionsTowardsWithIndex(
+      querying.state.box,
+      { x: 1, y: 0, z: 0 },
+      index,
+      querying,
+      appended,
+    );
+
+    expect(appended).toEqual<CollideableItem[]>([]);
+  });
+
+  test("finds items touching both faces travelled towards, travelling diagonally", () => {
+    const onX: CollideableItem = {
+      id: "onX",
+      state: { box: { x: 32, y: 20, z: 20, xd: 12, yd: 12, zd: 12 } },
+    };
+    const onY: CollideableItem = {
+      id: "onY",
+      state: { box: { x: 20, y: 32, z: 20, xd: 12, yd: 12, zd: 12 } },
+    };
+    const index = new SpatialIndex<string, string, CollideableItem>([
+      querying,
+      onX,
+      onY,
+    ]);
+    const appended: CollideableItem[] = [];
+    appendApproximateCollisionsTowardsWithIndex(
+      querying.state.box,
+      { x: 1, y: 1, z: 0 },
+      index,
+      querying,
+      appended,
+    );
+
+    expect(appended.map((i) => i.id).toSorted()).toEqual<string[]>([
+      "onX",
+      "onY",
+    ]);
+  });
+
+  test("finds an item exactly touching across a cell boundary on the min side", () => {
+    const querying: CollideableItem = {
+      id: "querying",
+      state: { box: { x: 32, y: 32, z: 0, xd: 12, yd: 12, zd: 12 } },
+    };
+    const touching: CollideableItem = {
+      id: "touching",
+      state: { box: { x: 20, y: 32, z: 0, xd: 12, yd: 12, zd: 12 } },
+    };
+    const index = new SpatialIndex<string, string, CollideableItem>([
+      querying,
+      touching,
+    ]);
+    const appended: CollideableItem[] = [];
+    appendApproximateCollisionsTowardsWithIndex(
+      querying.state.box,
+      { x: -1, y: 0, z: 0 },
+      index,
+      querying,
+      appended,
+    );
+
+    expect(appended.map((i) => i.id)).toEqual<string[]>(["touching"]);
+  });
+
+  test("finds an item almost touching, across a cell boundary", () => {
+    // ends less than epsilon short of the index's cell boundary at 32:
+    const querying: CollideableItem = {
+      id: "querying",
+      state: {
+        box: { x: 20, y: 20, z: 20, xd: 11.999_95, yd: 12, zd: 12 },
+      },
+    };
+    const nearlyTouching: CollideableItem = {
+      id: "nearlyTouching",
+      state: { box: { x: 32, y: 20, z: 20, xd: 12, yd: 12, zd: 12 } },
+    };
+    const index = new SpatialIndex<string, string, CollideableItem>([
+      querying,
+      nearlyTouching,
+    ]);
+    const appended: CollideableItem[] = [];
+    appendApproximateCollisionsTowardsWithIndex(
+      querying.state.box,
+      { x: 1, y: 0, z: 0 },
+      index,
+      querying,
+      appended,
+    );
+
+    expect(appended.map((i) => i.id)).toEqual<string[]>(["nearlyTouching"]);
+  });
+
+  test("doesn't find an item epsilon or more apart", () => {
+    const apart: CollideableItem = {
+      id: "apart",
+      state: { box: { x: 32.001, y: 20, z: 20, xd: 12, yd: 12, zd: 12 } },
+    };
+    const index = new SpatialIndex<string, string, CollideableItem>([
+      querying,
+      apart,
+    ]);
+    const appended: CollideableItem[] = [];
+    appendApproximateCollisionsTowardsWithIndex(
+      querying.state.box,
+      { x: 1, y: 0, z: 0 },
+      index,
+      querying,
+      appended,
+    );
+
+    expect(appended).toEqual<CollideableItem[]>([]);
+  });
+
+  test("finds overlapping items without travelling, and leaves out excludeItem", () => {
+    const overlapping: CollideableItem = {
+      id: "overlapping",
+      state: { box: { x: 26, y: 26, z: 26, xd: 12, yd: 12, zd: 12 } },
+    };
+    const index = new SpatialIndex<string, string, CollideableItem>([
+      querying,
+      overlapping,
+    ]);
+    const appended: CollideableItem[] = [];
+    appendApproximateCollisionsTowardsWithIndex(
+      querying.state.box,
+      { x: 0, y: 0, z: 0 },
+      index,
+      querying,
+      appended,
+    );
+
+    expect(appended.map((i) => i.id)).toEqual<string[]>(["overlapping"]);
+  });
+
+  test("appends after the items already there, and each item it finds once", () => {
+    // spans several of the index's 32px cells, as does the box:
+    const wide: CollideableItem = {
+      id: "wide",
+      state: { box: { x: 0, y: 0, z: 0, xd: 100, yd: 100, zd: 12 } },
+    };
+    const alreadyThere: CollideableItem = {
+      id: "alreadyThere",
+      state: { box: { x: 200, y: 200, z: 0, xd: 1, yd: 1, zd: 1 } },
+    };
+    const index = new SpatialIndex<string, string, CollideableItem>([wide]);
+    // an item already in the array is appended again if found:
+    const appended: CollideableItem[] = [alreadyThere, wide];
+    appendApproximateCollisionsTowardsWithIndex(
+      { x: 0, y: 0, z: 0, xd: 100, yd: 100, zd: 12 },
+      { x: 0, y: 0, z: 0 },
+      index,
+      alreadyThere,
+      appended,
+    );
+
+    expect(appended.map((i) => i.id)).toEqual<string[]>([
+      "alreadyThere",
+      "wide",
+      "wide",
+    ]);
   });
 });
 

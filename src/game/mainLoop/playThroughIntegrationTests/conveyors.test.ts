@@ -2,8 +2,10 @@ import { beforeEach, describe, expect, test } from "vitest";
 
 import { setUpBasicGame } from "../../../_testUtils/basicRoom";
 import { heelsState, itemState } from "../../../_testUtils/characterState";
+import { describedForAllFrameRates } from "../../../_testUtils/describedForAllFrameRates";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
+import { hasCollided } from "../../../_testUtils/playThroughUntilHelpers";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 import { blockSizePx } from "../../physics/mechanicsConstants";
@@ -160,5 +162,68 @@ describe("conveyors", () => {
         "zd": 12,
       }
     `);
+  });
+});
+
+describedForAllFrameRates((frameRate) => {
+  test("a conveyor carries two cubes into a wall, where both stop, the second against the first, without jittering", () => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          // well out of the conveyor's way:
+          position: { x: 0, y: 7, z: 0 },
+          config: { which: "heels" },
+        },
+        conveyor: {
+          type: "conveyor",
+          position: { x: 1, y: 3, z: 0 },
+          config: { direction: "left", times: { x: 7 } },
+        },
+        ahead: {
+          type: "portableBlock",
+          position: { x: 6, y: 3, z: 1 },
+          config: { style: "cube" },
+        },
+        behind: {
+          type: "portableBlock",
+          position: { x: 3, y: 3, z: 1 },
+          config: { style: "cube" },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      frameRate,
+      until: hasCollided("behind", "ahead"),
+      failAfter: 10_000,
+    });
+    // let them settle against the wall and each other:
+    playGameThrough(gameState, { frameRate, forTime: 200 });
+
+    const aheadBox = { ...itemState<"portableBlock">(gameState, "ahead").box };
+    const behindBox = {
+      ...itemState<"portableBlock">(gameState, "behind").box,
+    };
+
+    expect(
+      Math.round((aheadBox.x - (behindBox.x + behindBox.xd)) * 100) / 100,
+      "gap between the cube behind and the one ahead, once settled",
+    ).toBe(0);
+
+    playGameThrough(gameState, {
+      frameRate,
+      forTime: 1_000,
+      frameCallbacks(gameState) {
+        // checked every frame, so a failure reports when either moved:
+        expect(
+          {
+            ahead: itemState<"portableBlock">(gameState, "ahead").box,
+            behind: itemState<"portableBlock">(gameState, "behind").box,
+          },
+          "both cubes, settled against the wall and each other, should stay still",
+        ).toEqual({ ahead: aheadBox, behind: behindBox });
+      },
+    });
   });
 });

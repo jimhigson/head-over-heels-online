@@ -1,4 +1,4 @@
-import type { Arrayable } from "type-fest";
+import type { Arrayable, DistributedOmit } from "type-fest";
 
 import type { ExportedSoundId } from "../../_generated/sfxdex/soundIds";
 import type { MarkdownPageName } from "../../manual/pages";
@@ -90,7 +90,10 @@ export type EmittableItemJson = Extract<
   }
 >;
 
-export type EmittableItemRecipe = Omit<EmittableItemJson, "position">;
+export type EmittableItemRecipe = DistributedOmit<
+  EmittableItemJson,
+  "position"
+>;
 
 export const portableBlockStyles = ["cube", "drum", "sticks"] as const;
 export type PortableBlockStyle = (typeof portableBlockStyles)[number];

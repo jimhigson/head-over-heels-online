@@ -82,13 +82,22 @@ export type FreeItemState<RoomItemId extends string> = {
   standingOnUntilRoomTime: number;
 
   /**
-   * really for charles bots in the original game, but technically any free item can
-   * be controlled.
-   *
-   * Used to dedupe so that each item can only be controlled by one joystick per-frame -
-   * first one to the processed wins
+   * the joysticks pushed this tick that control this item - really for charles
+   * bots in the original game, but technically any free item can be controlled.
+   * The first joystick pushed in a tick decides the axis the item moves along, at
+   * its own speed. Later pushes along that axis add up, so an opposite one cancels
+   * it out, and pushes across it are ignored
    */
-  controlledWithJoystickAtRoomTime: number;
+  joystickVotes: {
+    /**
+     * the tick these votes were cast in - votes from an earlier tick no longer count
+     */
+    atRoomTime: number;
+    /**
+     * the sum of the unit directions voted for, along the first one's axis
+     */
+    total: Xy;
+  };
 };
 
 type SlidingItemState<RoomItemId extends string> = SetProperty<

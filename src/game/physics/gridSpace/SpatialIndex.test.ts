@@ -299,3 +299,67 @@ test("filterInBox returns the shared empty array when nothing is accepted", () =
     ),
   ).toBe(emptyArray);
 });
+
+test.for<{ travelling: string; travel: Xyz; expected: string[] }>([
+  {
+    travelling: "towards it",
+    travel: { x: 1, y: 0, z: 0 } as Xyz,
+    expected: ["beyondBoundary"],
+  },
+  {
+    travelling: "away from it",
+    travel: { x: -1, y: 0, z: 0 } as Xyz,
+    expected: [],
+  },
+])(
+  "appendInBoxApproximatelyTowards offers an item less than epsilon beyond a cell boundary only travelling $travelling",
+  ({ travel, expected }) => {
+    // the box ends just short of the cell boundary at 32, the item starts on it:
+    const querying = makeItem(
+      "querying",
+      { x: 20, y: 0, z: 0 } as Xyz,
+      { x: 11.999_95, y: 8, z: 8 } as Xyz,
+    );
+    const beyondBoundary = makeItem(
+      "beyondBoundary",
+      { x: 32, y: 0, z: 0 } as Xyz,
+      { x: 8, y: 8, z: 8 } as Xyz,
+    );
+    const idx = new SpatialIndex<string, string, Indexable>([
+      querying,
+      beyondBoundary,
+    ]);
+    const appended: Indexable[] = [];
+    idx.appendInBoxApproximatelyTowards(
+      querying.state.box,
+      travel,
+      () => true,
+      undefined,
+      querying,
+      appended,
+    );
+
+    expect(appended.map((i) => i.id)).toEqual<string[]>(expected);
+  },
+);
+
+test("filterInBox doesn't offer an item beyond the cell boundary the box ends just short of", () => {
+  const querying = makeItem(
+    "querying",
+    { x: 20, y: 0, z: 0 } as Xyz,
+    { x: 11.999_95, y: 8, z: 8 } as Xyz,
+  );
+  const beyondBoundary = makeItem(
+    "beyondBoundary",
+    { x: 32, y: 0, z: 0 } as Xyz,
+    { x: 8, y: 8, z: 8 } as Xyz,
+  );
+  const idx = new SpatialIndex<string, string, Indexable>([
+    querying,
+    beyondBoundary,
+  ]);
+
+  expect(
+    idx.filterInBox(querying.state.box, () => true, undefined, querying),
+  ).toBe(emptyArray);
+});

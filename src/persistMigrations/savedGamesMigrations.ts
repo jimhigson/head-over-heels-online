@@ -24,7 +24,9 @@ type V27SavedGame = LegacyPickupsSavedGame & {
  */
 export const savedGamesMigrations = createMigrate({
   // v23: lift gameInPlay snapshot to root of each save, migrating the legacy
-  // store.gameMenus.gameInPlay / store.gameInPlay.gameInPlay nesting
+  // store.gameMenus.gameInPlay / store.gameInPlay.gameInPlay nesting.
+  //
+  // Needed for saves from v22 (released April 2026) and earlier.
   23(state) {
     if (!state) {
       return state;
@@ -50,7 +52,9 @@ export const savedGamesMigrations = createMigrate({
   },
   // v28: pickupsCollected moved from each save's gameState to its gameInPlay.
   // Saved rooms are also brought up to the current item formats here, so a
-  // save never needs migrating as it loads
+  // save never needs migrating as it loads.
+  //
+  // Needed for saves from v27 (released August 2026) and earlier.
   28(state) {
     if (!state) {
       return state;

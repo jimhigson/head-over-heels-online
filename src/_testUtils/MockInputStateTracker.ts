@@ -10,8 +10,26 @@ import type {
   PressStatus,
 } from "../game/input/InputStateTracker";
 import { unitVectors } from "../utils/vectors/unitVectors";
-import { type DirectionXy4, originXyz } from "../utils/vectors/vectors";
+import {
+  type DirectionXy4,
+  type DirectionXy8,
+  originXyz,
+} from "../utils/vectors/vectors";
 import type { TestRoomId } from "./basicRoom";
+
+/**
+ * the direction actions pressed together to input each direction
+ */
+const directionActions = {
+  away: ["away"],
+  towards: ["towards"],
+  left: ["left"],
+  right: ["right"],
+  awayRight: ["away", "right"],
+  towardsRight: ["towards", "right"],
+  towardsLeft: ["towards", "left"],
+  awayLeft: ["away", "left"],
+} as const satisfies Record<DirectionXy8, ReadonlyArray<DirectionXy4>>;
 
 export class MockInputStateTracker implements InputStateTrackerInterface {
   /** returns any new taps since the last frame */
@@ -40,7 +58,7 @@ export class MockInputStateTracker implements InputStateTrackerInterface {
     }
   };
 
-  set mockDirectionPressed(direction: DirectionXy4 | undefined) {
+  set mockDirectionPressed(direction: DirectionXy8 | undefined) {
     if (direction === undefined) {
       this.directionVector = originXyz;
       delete this.mockActionsPressed.left;
@@ -48,7 +66,9 @@ export class MockInputStateTracker implements InputStateTrackerInterface {
       delete this.mockActionsPressed.away;
       delete this.mockActionsPressed.towards;
     } else {
-      this.mockActionsPressed[direction] = true;
+      for (const directionAction of directionActions[direction]) {
+        this.mockActionsPressed[directionAction] = true;
+      }
       this.directionVector = unitVectors[direction];
     }
   }

@@ -127,7 +127,6 @@ export const puttingDown = <RoomId extends string, RoomItemId extends string>(
       forceful: true,
       deltaMS,
       handleTouches: true,
-      visited: new Set<RoomItemId>().add(carrier.id),
     });
 
     if (room.items[carrier.id] === undefined) {

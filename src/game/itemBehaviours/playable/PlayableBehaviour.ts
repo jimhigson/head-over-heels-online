@@ -83,22 +83,6 @@ export class PlayableBehaviour extends FreeItemBehaviour {
     });
   }
 
-  override isPushableBy<RoomId extends string, RoomItemId extends string>(
-    playable: PlayableItem<CharacterName, RoomId, RoomItemId>,
-    pusher: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-    forceful: boolean,
-  ): playable is PlayableItem<CharacterName, RoomId, RoomItemId> {
-    return (
-      super.isPushableBy(playable, pusher, forceful) &&
-      // can't push a player while they're autowalking - lets players walk into a room while invincible if
-      // an enemy is near the door.
-      (forceful ||
-        !playable.state.autoWalk ||
-        // lifts still carry autowalking players:
-        pusher.type === "lift")
-    );
-  }
-
   override isJumpOffable<RoomId extends string, RoomItemId extends string>(
     playable: PlayableItem<CharacterName, RoomId, RoomItemId>,
   ): boolean {

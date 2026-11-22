@@ -85,9 +85,16 @@ export const helpfulMovementVector = <
   originalPosDelta: Xyz,
   deltaMs: number,
   room: RoomState<RoomId, RoomItemId>,
-  collisions: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>[],
+  /**
+   * the items the subject collided with are the ones from `collisionsStart`,
+   * up to (not including) `collisionsEnd`
+   */
+  collisions: ReadonlyArray<UnionOfAllItemInPlayTypes<string, string>>,
+  collisionsStart: number,
+  collisionsEnd: number,
 ): undefined | Xyz => {
-  if (collisions.length === 0) {
+  if (collisionsEnd === collisionsStart) {
+    // only gets hmv if any collisions:
     return;
   }
 
@@ -132,7 +139,13 @@ export const helpfulMovementVector = <
 
   const movementAxis = unmovingInX ? "y" : "x";
 
-  const collidesWithDoorFrame = collisions.some((i) => i.type === "doorFrame");
+  let collidesWithDoorFrame = false;
+  for (let i = collisionsStart; i < collisionsEnd; i++) {
+    if (collisions[i].type === "doorFrame") {
+      collidesWithDoorFrame = true;
+      break;
+    }
+  }
 
   const sensorWidth =
     collidesWithDoorFrame ? sensorWidthWhenCollidingWithDoorFrame

@@ -1,7 +1,8 @@
 import type { DistributedPick } from "type-fest";
 
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
-import type { XyzBox } from "../../utils/vectors/vectors";
+import { epsilon } from "../../utils/epsilon";
+import type { Xyz, XyzBox } from "../../utils/vectors/vectors";
 import type { SpatialIndex } from "../physics/gridSpace/SpatialIndex";
 
 export type CollideableItem = DistributedPick<
@@ -117,6 +118,61 @@ export function collisionBoxWithIndex<C extends CollideableItem>(
     excludeItem,
   );
 }
+
+/**
+ * whether the candidate is colliding with the box, or touching or almost
+ * touching a side of it that the box is travelling towards - less than epsilon
+ * apart on those sides, while overlapping on every other axis
+ */
+const isApproximatelyCollidingTowards = (
+  { state: { box: b } }: CollideableItem,
+  a: Readonly<XyzBox>,
+  travel: Readonly<Xyz>,
+): boolean =>
+  !(
+    a.x + a.xd + (travel.x > 0 ? epsilon : 0) <= b.x ||
+    a.x >= b.x + b.xd + (travel.x < 0 ? epsilon : 0)
+  ) &&
+  !(
+    a.y + a.yd + (travel.y > 0 ? epsilon : 0) <= b.y ||
+    a.y >= b.y + b.yd + (travel.y < 0 ? epsilon : 0)
+  ) &&
+  !(
+    a.z + a.zd + (travel.z > 0 ? epsilon : 0) <= b.z ||
+    a.z >= b.z + b.zd + (travel.z < 0 ? epsilon : 0)
+  );
+
+/**
+ * Append to `appendTo` the items colliding with the box, or touching or almost
+ * touching the sides of it that it is travelling towards. Each is appended
+ * once, even if it occupies several of the cells searched.
+ *
+ * By appending, we allow moveItem to use a @see collisionsStack
+ */
+export const appendApproximateCollisionsTowardsWithIndex = <
+  C extends CollideableItem,
+>(
+  box: Readonly<XyzBox>,
+  /**
+   * the direction the box is travelling in
+   */
+  travel: Readonly<Xyz>,
+  index: SpatialIndex<string, string, C>,
+  /** an item to leave out of the results, usually the one querying */
+  excludeItem: CollideableItem,
+  /**
+   * only the items this call appends are deduplicated, not any already in it
+   */
+  appendTo: C[],
+): void =>
+  index.appendInBoxApproximatelyTowards(
+    box,
+    travel,
+    isApproximatelyCollidingTowards,
+    travel,
+    excludeItem,
+    appendTo,
+  );
 
 /**
  * Check for collisions between a single item and multiple others, using the spatial index
