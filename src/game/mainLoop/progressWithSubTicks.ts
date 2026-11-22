@@ -1,4 +1,5 @@
 import type { GameState } from "../gameState/GameState";
+import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import type { ProgressGameState } from "./progressGameState";
 import { swopPlayablesIfInput } from "./swopPlayablesIfInput";
 
@@ -15,6 +16,12 @@ export const progressWithSubTicks =
       by addItemToRoom like any other spawn.
     */
     swopPlayablesIfInput(gameState);
+
+    const room = selectCurrentRoomState(gameState);
+    if (room !== undefined) {
+      // a new frame is starting in the current room:
+      room.roomFrameStartTime = room.roomTime;
+    }
 
     const numberOfSubTicks = Math.max(1, Math.ceil(deltaMS / maxStepDeltaMs));
 

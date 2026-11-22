@@ -18,7 +18,7 @@ export const firstRoomId = "firstRoom" as const;
 export const secondRoomId = "secondRoom" as const;
 export type TestRoomId = typeof firstRoomId | typeof secondRoomId;
 
-export type TestRoomJson = RoomJson<TestRoomId, string, "blacktooth">;
+type TestRoomJson = RoomJson<TestRoomId, string, "blacktooth">;
 export type ItemsInTestRoomJson = TestRoomJson["items"];
 
 export const basicRoomSize = { x: 8, y: 8 };
@@ -40,7 +40,6 @@ export const basicEmptyRoom = <RoomId extends string = string>(): RoomJson<
       position: { x: 0, y: 0, z: 0 },
     },
   },
-  //size: basicRoomSize,
 });
 const basicEmptyRoomWithItems = (items: ItemsInTestRoomJson): TestRoomJson => {
   const emptyRoom = basicEmptyRoom<TestRoomId>();

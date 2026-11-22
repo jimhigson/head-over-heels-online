@@ -1753,8 +1753,8 @@ test("heels can't put a wider-than-heels item down in a gap only heels' width", 
     firstRoomItems: {
       heels: {
         type: "player",
-        // 1px further away than the items below, to line up with the gap:
-        position: { x: 5, y: 2 + 1 / blockSizePx.y, z: 3 },
+        // centred over the items below, so lined up with the gap:
+        position: { x: 5, y: 2, z: 3 },
         config: {
           which: "heels",
         },
@@ -1793,6 +1793,7 @@ test("heels can't put a wider-than-heels item down in a gap only heels' width", 
       }
     },
     until: (gameState) => heelsState(gameState).carrying !== null,
+    failAfter: 5_000,
   });
 
   // fall into the gap, onto the floor:
@@ -1801,6 +1802,7 @@ test("heels can't put a wider-than-heels item down in a gap only heels' width", 
       mockInputStateTracker.mockNotPressing("carry");
     },
     until: (gameState) => heelsState(gameState).standingOnItemId === "floor",
+    failAfter: 5_000,
   });
 
   playGameThrough(gameState, {

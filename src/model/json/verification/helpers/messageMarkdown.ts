@@ -14,3 +14,10 @@ export const itemIdMd = (itemId: VerificationRoomItemId): string =>
  * as written
  */
 export const valueMd = (value: string): string => `*${escapeMarkdown(value)}*`;
+
+/**
+ * a type name with its indefinite article, in markdown - eg "a *block*",
+ * "an *emitter*"
+ */
+export const withArticle = (itemType: string): string =>
+  `${/^[aeiou]/.test(itemType) ? "an" : "a"} ${valueMd(itemType)}`;

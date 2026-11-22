@@ -42,7 +42,10 @@ export type GameState<RoomId extends string = string> = {
 
   /**
    * How many ms has this game been played for? For most purposes the room time
-   * or player time is more useful
+   * or player time is more useful.
+   *
+   * Advanced before mechanics run, once per tick, to the time at the
+   * end of the tick.
    */
   gameTime: number;
 

@@ -37,7 +37,7 @@ import {
   stampWithMovedProgression,
   updateItemPosition,
 } from "../../gameState/mutators/updateItemBox";
-import { sortObstaclesAboutPriorityAndVectorInPlace } from "../collisionsOrder";
+import { sortObstaclesAboutPriorityAndOverlapInPlace } from "../collisionsOrder";
 import { handleDisappearingOnTouch } from "../handleTouch/handleDisappearingOnTouch";
 import { maxPushRecursionDepth } from "../mechanicsConstants";
 import { mtv } from "../mtv";
@@ -479,8 +479,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     }
   }
   const touchedEnd = collisionsStack.length;
-  sortObstaclesAboutPriorityAndVectorInPlace(
-    posDelta,
+  sortObstaclesAboutPriorityAndOverlapInPlace(
     subjectItem.state.box,
     collisionsStack,
     collisionsStart,

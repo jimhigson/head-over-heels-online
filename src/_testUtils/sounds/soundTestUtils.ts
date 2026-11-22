@@ -144,6 +144,28 @@ export const soundPlayback = (
   )?.playback ?? "notPlaying";
 
 /**
+ * how many sources of the given sound are playing at once - eg, a loop restarted
+ * while the last one is still fading out plays twice
+ */
+export const playingSourcesOf = (
+  renderState: TestRenderState,
+  soundId: ExportedSoundId,
+): number => {
+  const soundBuffer = loadedSound(soundId);
+  let playingSources = 0;
+  for (const audioNode of nodesUpstreamOf(renderState.soundOutput)) {
+    if (
+      isBufferSourceNode(audioNode) &&
+      audioNode.$state === "PLAYING" &&
+      audioNode.buffer === soundBuffer
+    ) {
+      playingSources++;
+    }
+  }
+  return playingSources;
+};
+
+/**
  * counts the times a sound starts, for checking how many times it was heard.
  * Pass `frameCallback` as a play-through's frame callback (in every
  * play-through to be counted), then read `count`. A sound restarting while

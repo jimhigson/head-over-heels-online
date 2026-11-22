@@ -139,6 +139,7 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
     roomJson,
     items,
     roomTime: 0,
+    roomFrameStartTime: 0,
     progression: 0 as Progression,
     [roomSpatialIndexKey]: spatialIndex,
   };

@@ -433,11 +433,22 @@ export const boxIntersection = (
     x,
     y,
     z,
-    xd: Math.min(boxMaxOnAxis(a, "x"), boxMaxOnAxis(b, "x")) - x,
-    yd: Math.min(boxMaxOnAxis(a, "y"), boxMaxOnAxis(b, "y")) - y,
-    zd: Math.min(boxMaxOnAxis(a, "z"), boxMaxOnAxis(b, "z")) - z,
+    xd: Math.min(a.x + a.xd, b.x + b.xd) - x,
+    yd: Math.min(a.y + a.yd, b.y + b.yd) - y,
+    zd: Math.min(a.z + a.zd, b.z + b.zd) - z,
   };
 };
+
+/**
+ * the volume where two boxes overlap - zero if they don't
+ */
+export const boxOverlapVolume = (
+  a: Readonly<XyzBox>,
+  b: Readonly<XyzBox>,
+): number =>
+  Math.max(0, Math.min(a.x + a.xd, b.x + b.xd) - Math.max(a.x, b.x)) *
+  Math.max(0, Math.min(a.y + a.yd, b.y + b.yd) - Math.max(a.y, b.y)) *
+  Math.max(0, Math.min(a.z + a.zd, b.z + b.zd) - Math.max(a.z, b.z));
 
 /**
  * dot product - the component of one vector in the direction of another
@@ -485,10 +496,7 @@ export const vectorClosestDirectionXy4 = ({
  * throws in dev/vr builds; production trusts the caller (a pathological zero
  * resolves to an arbitrary direction rather than crashing)
  */
-export const nonZeroClosestDirectionXy4 = (
-  x: number,
-  y: number,
-): DirectionXy4 => {
+const nonZeroClosestDirectionXy4 = (x: number, y: number): DirectionXy4 => {
   if (
     (import.meta.env.DEV || import.meta.env.MODE === "visual-regression") &&
     veryClose(x, 0) &&
@@ -636,10 +644,7 @@ export const vectorClosestDirectionXy8 = ({
  * trusts the caller (a pathological zero resolves to an arbitrary direction
  * rather than crashing)
  */
-export const nonZeroClosestDirectionXy8 = (
-  x: number,
-  y: number,
-): DirectionXy8 => {
+const nonZeroClosestDirectionXy8 = (x: number, y: number): DirectionXy8 => {
   return directionsXy8Octants[nonZeroClosestDirectionIndexXy8(x, y)];
 };
 

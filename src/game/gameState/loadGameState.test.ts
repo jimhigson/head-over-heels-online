@@ -26,6 +26,7 @@ test("if there is a saved game with both characters in the same room, only load 
   const savedRoom: UnindexedRoomState<OriginalCampaignRoomId, string> = {
     id: "blacktooth1head",
     roomTime: 0,
+    roomFrameStartTime: 0,
     progression: 0 as Progression,
     items: {
       head: loadPlayer(
@@ -172,6 +173,30 @@ test("old saves of monsters load with their touch timing initialised", async () 
 
   // the save has a cyberman and a dalek:
   expect(monsterDurationsOfTouch).toEqual([0, 0]);
+});
+
+test("old saves load rooms with their frame starting at their room time", async () => {
+  const migratedSavedGames = (await savedGamesMigrations(
+    badJsonClone(
+      (blacktooth33v25 as unknown as SaveFixture).localStorage[
+        "persist:hohol/savedGames"
+      ],
+    ),
+    persistVersion,
+  )) as unknown as SavedGamesSliceState;
+  const [savedGame] = Object.values(migratedSavedGames.saves) as Array<
+    SavedGame<OriginalCampaignRoomId>
+  >;
+  const loadedGameState = loadGameState({
+    campaign,
+    inputStateTracker: new InputStateTracker(new Map(), {} as HudInputState),
+    savedGame,
+  });
+  const rooms = valuesIter(loadedGameState.characterRooms).toArray();
+
+  expect(rooms.map(({ roomFrameStartTime }) => roomFrameStartTime)).toEqual(
+    rooms.map(({ roomTime }) => roomTime),
+  );
 });
 
 test("old saves load free items with no carried speed", async () => {

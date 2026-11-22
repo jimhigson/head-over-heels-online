@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { addItem, campaignOf, newRoom, runCheck } from "../testUtils";
+import { addItem, campaignOf, newRoom, runCheck } from "../../testUtils";
 import { solidItemsOverlapVerifier } from "./solidItemsOverlapVerifier";
 
 test("flags two blocks in the same place, naming both", () => {

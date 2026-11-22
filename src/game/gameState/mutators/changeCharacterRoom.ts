@@ -308,6 +308,11 @@ const changeRoom = <RoomId extends string, RoomItemId extends string>(
   deleteItemFromRoom({ room: leavingRoom, item: playableItem });
   addItemToRoom({ room: toRoom, item: playableItem, atPosition });
   gameState.characterRooms[playableItem.id as CharacterName] = toRoom;
+  if (toRoom !== leavingRoom) {
+    // entered part way through a frame, so the room we are going to
+    // now has a frame start at this time
+    toRoom.roomFrameStartTime = toRoom.roomTime;
+  }
 };
 
 // back off one square, and push iteratively/ progressively into the room

@@ -52,7 +52,8 @@ describe("conveyors", () => {
     // heels should have moved on the conveyor, fallen off, and now be on the floor next to it:
     expect(heelsState(gameState).standingOnItemId).toEqual("floor");
     expect(heelsState(gameState).box).toMatchObject({
-      x: 1,
+      // still centred in her starting column - the conveyor only moves her in y:
+      x: 2,
       y: blockSizePx.y,
       z: 0,
     });

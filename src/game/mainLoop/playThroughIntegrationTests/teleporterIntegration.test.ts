@@ -54,9 +54,9 @@ test("can teleport to the same room (with empty config`)", () => {
 
   expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
-      "x": 65,
+      "x": 66,
       "xd": 12,
-      "y": 65,
+      "y": 66,
       "yd": 12,
       "z": 36,
       "zd": 12,
@@ -105,9 +105,9 @@ test("can teleport to the next room (with `config.toItemId`)", () => {
 
   expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
-      "x": 65,
+      "x": 66,
       "xd": 12,
-      "y": 65,
+      "y": 66,
       "yd": 12,
       "z": 36,
       "zd": 12,
@@ -156,9 +156,9 @@ test("can teleport to the next room (with `config.toItemId`) to a taller item th
 
   expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
-      "x": 65,
+      "x": 66,
       "xd": 12,
-      "y": 65,
+      "y": 66,
       "yd": 12,
       "z": 144,
       "zd": 12,
@@ -210,9 +210,9 @@ test("can teleport to the next room (with room specified only)", () => {
 
   expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
-      "x": 65,
+      "x": 66,
       "xd": 12,
-      "y": 65,
+      "y": 66,
       "yd": 12,
       "z": 36,
       "zd": 12,
@@ -266,7 +266,7 @@ test("teleporter can be inactive based on a store value", () => {
   expect(gameState.characterRooms.heels?.id).toEqual("firstRoom");
   expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
-      "x": 1,
+      "x": 2,
       "xd": 12,
       "y": 0,
       "yd": 12,
@@ -328,7 +328,7 @@ test("teleporter can be activated based on a store value", () => {
   expect(gameState.characterRooms.heels?.id).toEqual("secondRoom");
   expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
-      "x": 65,
+      "x": 66,
       "xd": 12,
       "y": 0,
       "yd": 12,
@@ -463,9 +463,9 @@ test("teleporting to a portable teleporter while Heels is holding it brings Head
 
   expect(headState(gameState).box).toMatchInlineSnapshot(`
     {
-      "x": 1,
+      "x": 2,
       "xd": 12,
-      "y": 33,
+      "y": 34,
       "yd": 12,
       "z": 12,
       "zd": 12,
@@ -473,9 +473,9 @@ test("teleporting to a portable teleporter while Heels is holding it brings Head
   `);
   expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
-      "x": 1,
+      "x": 2,
       "xd": 12,
-      "y": 33,
+      "y": 34,
       "yd": 12,
       "z": 0,
       "zd": 12,
@@ -560,9 +560,9 @@ test("Heels can carry a teleporter through a same-room teleporter", () => {
 
   expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
-      "x": 65,
+      "x": 66,
       "xd": 12,
-      "y": 65,
+      "y": 66,
       "yd": 12,
       "z": 12,
       "zd": 12,

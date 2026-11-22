@@ -263,6 +263,11 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
     //
     // Needed for saves from v26 (released July 2026) and earlier.
     room.progression ??= 0 as Progression;
+    // saves from before rooms recorded when their frame started omit it - the
+    // first frame after loading sets it anyway:
+    //
+    // Needed for saves from v27 (released August 2026) and earlier.
+    room.roomFrameStartTime ??= room.roomTime;
 
     for (const item of roomItemsIterable(room.items)) {
       migrateItemBoxInPlace(item as LegacyBoxCarrier);

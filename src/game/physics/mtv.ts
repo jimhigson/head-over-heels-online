@@ -212,7 +212,7 @@ export const mtvAgainstTravelWriteInto = (
  * Calculate the standard axis-aligned Minimum Translation Vector (MTV) to separate two rectangular objects.
  * Returns the shortest axis-aligned vector to push the mover out of the obstacle.
  */
-export const mtvWriteInto = (
+const mtvWriteInto = (
   moverBox: Readonly<XyzBox>,
   obstacleBox: Readonly<XyzBox>,
   writeInto: Partial<Xyz>,

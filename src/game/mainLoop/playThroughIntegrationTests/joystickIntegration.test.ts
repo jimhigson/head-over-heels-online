@@ -10,7 +10,12 @@ import {
   allHaveHeld,
   hasCollided,
 } from "../../../_testUtils/playThroughUntilHelpers";
-import { unitVector, type Xyz } from "../../../utils/vectors/vectors";
+import {
+  type DirectionXy8,
+  unitVector,
+  type Xy,
+  type Xyz,
+} from "../../../utils/vectors/vectors";
 import { moveSpeedPixPerMs } from "../../physics/mechanicsConstants";
 
 beforeEach(() => {
@@ -205,7 +210,7 @@ describedForAllFrameRates((frameRate) => {
         heels: {
           type: "player",
           // as far from each joystick, so walking diagonally hits both at once:
-          position: { x: 3, y: 2.125, z: 0 },
+          position: { x: 3, y: 2, z: 0 },
           config: { which: "heels" },
         },
         joystick1: {
@@ -270,6 +275,139 @@ describedForAllFrameRates((frameRate) => {
       "charles's direction, with both joysticks pushed at once (-x and +y): straight, the way of one of them, not diagonally",
     ).toContainEqual(directionOf(x - measuringStart.x, y - measuringStart.y));
   });
+
+  test.for<{
+    direction: DirectionXy8;
+    /**
+     * the two joysticks heels walks into at once, in the corner between them
+     */
+    joystickIds: [string, string];
+    /**
+     * the way heels pushes each of those joysticks
+     */
+    pushDirections: [Xy, Xy];
+  }>([
+    {
+      direction: "awayRight",
+      joystickIds: ["awayJoystick", "rightJoystick"],
+      pushDirections: [
+        { x: 0, y: 1 },
+        { x: -1, y: 0 },
+      ],
+    },
+    {
+      direction: "awayLeft",
+      joystickIds: ["awayJoystick", "leftJoystick"],
+      pushDirections: [
+        { x: 0, y: 1 },
+        { x: 1, y: 0 },
+      ],
+    },
+    {
+      direction: "towardsRight",
+      joystickIds: ["towardsJoystick", "rightJoystick"],
+      pushDirections: [
+        { x: 0, y: -1 },
+        { x: -1, y: 0 },
+      ],
+    },
+    {
+      direction: "towardsLeft",
+      joystickIds: ["towardsJoystick", "leftJoystick"],
+      pushDirections: [
+        { x: 0, y: -1 },
+        { x: 1, y: 0 },
+      ],
+    },
+  ])(
+    "heels walking $direction into two joysticks at once drives charles the same way every frame, whichever joystick wins",
+    ({
+      direction,
+      joystickIds: [firstJoystickId, secondJoystickId],
+      pushDirections,
+    }) => {
+      const gameState = setUpBasicGame({
+        firstRoomItems: {
+          heels: {
+            type: "player",
+            position: { x: 4, y: 4, z: 0 },
+            config: { which: "heels" },
+          },
+          // a joystick on each side of heels, all as far from her, so walking
+          // diagonally pushes two at once:
+          awayJoystick: {
+            type: "joystick",
+            config: {},
+            position: { x: 4, y: 5, z: 0 },
+          },
+          rightJoystick: {
+            type: "joystick",
+            config: {},
+            position: { x: 3, y: 4, z: 0 },
+          },
+          towardsJoystick: {
+            type: "joystick",
+            config: {},
+            position: { x: 4, y: 3, z: 0 },
+          },
+          leftJoystick: {
+            type: "joystick",
+            config: {},
+            position: { x: 5, y: 4, z: 0 },
+          },
+          // controlled by every joystick, and out of the way of them all:
+          charles: {
+            type: "charles",
+            config: {},
+            position: { x: 0, y: 0, z: 0 },
+          },
+        },
+      });
+
+      playGameThrough(gameState, {
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockDirectionPressed = direction;
+        },
+        frameRate,
+        until: allHaveHeld(
+          hasCollided("heels", firstJoystickId),
+          hasCollided("heels", secondJoystickId),
+        ),
+        failAfter: 1_000,
+      });
+
+      const firstFacing = {
+        ...itemState<"charles">(gameState, "charles").facing,
+      };
+      const charlesFacings: Array<Xy> = [firstFacing];
+      playGameThrough(gameState, {
+        frameRate,
+        forTime: 1_000,
+        frameCallbacks(gameState) {
+          charlesFacings.push({
+            ...itemState<"charles">(gameState, "charles").facing,
+          });
+        },
+      });
+
+      expect(
+        pushDirections.map(({ x, y }) => ({
+          x: expect.closeTo(x),
+          y: expect.closeTo(y),
+        })),
+        "charles's facing when first driven: the way either joystick is pushed",
+      ).toContainEqual(firstFacing);
+      expect(
+        charlesFacings,
+        "charles's facing every frame: the same joystick wins throughout",
+      ).toEqual(
+        charlesFacings.map(() => ({
+          x: expect.closeTo(firstFacing.x),
+          y: expect.closeTo(firstFacing.y),
+        })),
+      );
+    },
+  );
 
   test("two monsters pushing two joysticks at once in same direction move charles at his normal speed (no faster)", () => {
     const gameState = setUpBasicGame({

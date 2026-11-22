@@ -36,9 +36,9 @@ test("snaps to pixel grid after moving and stopping", () => {
   // this should always be an integer position since head has been stopped for more than a frame
   expect(headState(gameState).box).toMatchInlineSnapshot(`
     {
-      "x": 51,
+      "x": 52,
       "xd": 12,
-      "y": 61,
+      "y": 62,
       "yd": 12,
       "z": 0,
       "zd": 12,
@@ -66,8 +66,8 @@ test("snaps to xy only when falling", () => {
   const headPosition = headState(gameState).box;
 
   // rounded in x and y:
-  expect(headPosition.x).toBe(51);
-  expect(headPosition.y).toBe(51);
+  expect(headPosition.x).toBe(52);
+  expect(headPosition.y).toBe(52);
 
   // didn't have enough time to fall to the ground:
   expect(headPosition.z).toBeGreaterThan(0);
