@@ -35,9 +35,13 @@ export const hasCollided =
  */
 export const hasCollidedWithItemOfType =
   (
-    /** the free item that collides */
+    /**
+     * the free item that collides
+     */
     colliderId: string,
-    /** the type of item collided with */
+    /**
+     * the type of item collided with
+     */
     collidedWithType: ItemInPlayType,
   ): UntilFunction =>
   (gameState) => {

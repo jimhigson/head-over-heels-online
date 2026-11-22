@@ -59,12 +59,13 @@ export class MockInputStateTracker implements InputStateTrackerInterface {
   };
 
   set mockDirectionPressed(direction: DirectionXy8 | undefined) {
+    // releases the previous direction, so only the new one is pressed:
+    delete this.mockActionsPressed.left;
+    delete this.mockActionsPressed.right;
+    delete this.mockActionsPressed.away;
+    delete this.mockActionsPressed.towards;
     if (direction === undefined) {
       this.directionVector = originXyz;
-      delete this.mockActionsPressed.left;
-      delete this.mockActionsPressed.right;
-      delete this.mockActionsPressed.away;
-      delete this.mockActionsPressed.towards;
     } else {
       for (const directionAction of directionActions[direction]) {
         this.mockActionsPressed[directionAction] = true;

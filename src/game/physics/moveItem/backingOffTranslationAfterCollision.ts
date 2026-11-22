@@ -5,6 +5,7 @@ import {
   lengthXySquared,
   lengthXyzSquared,
   originXyz,
+  scaleXyzInPlace,
   type Xyz,
   type XyzBox,
 } from "../../../utils/vectors/vectors";
@@ -25,12 +26,9 @@ export type BackingOffType = "alongTravel" | "axisAligned";
  * collision's contact normal that still backs off (and so pushes) along the
  * travel. A little wider than 45°, so diagonal travel into a face qualifies.
  *
- * The value keeps pushing as it was when this was decided by projection rather
- * than angle: the mtv projected onto the reverse travel, as a fraction of the
- * travel's length, had to exceed 0.44 (0.5 being exactly 45°). For an overlap
- * of one whole step that fraction is cos²θ, so the angle where pushing changes
- * is acos(√0.44) ≈ 48.45°. Measuring by angle means a shallower overlap no
- * longer reads as a more glancing contact
+ * It is acos(√0.44) ≈ 48.45°: the angle at which a one-step overlap, projected
+ * onto the reverse travel, is 0.44 of the travel's length (0.5 being exactly
+ * 45°)
  */
 const maxAlongTravelAngleDegrees = 48.45;
 const maxAlongTravelAngleRadians = (maxAlongTravelAngleDegrees * Math.PI) / 180;
@@ -56,8 +54,8 @@ export const backingOffTranslationAfterCollision = <
   collidedWithItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   forceful: boolean,
   /**
-   * the subject's whole intended movement - its direction is the direction of
-   * travel, unaffected by how the subject has already been backed off
+   * how far the subject has travelled from `originalBox`, after any backing off
+   * already done - its direction is the direction of travel
    */
   travel: Xyz,
   /**
@@ -136,5 +134,14 @@ export const backingOffTranslationAfterCollision = <
     reverseTravelXyBuffer,
     writeInto,
   );
+  const backingOffLengthXySquared = lengthXySquared(writeInto);
+  if (backingOffLengthXySquared > travelLengthXySquared) {
+    // never back past where the subject started - an overlap it started with
+    // isn't from the travel:
+    scaleXyzInPlace(
+      writeInto,
+      Math.sqrt(travelLengthXySquared / backingOffLengthXySquared),
+    );
+  }
   return "alongTravel";
 };

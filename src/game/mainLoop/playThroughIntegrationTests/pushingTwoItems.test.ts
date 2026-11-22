@@ -1120,4 +1120,344 @@ describedForAllFrameRates((frameRate) => {
       }).toEqual({ shieldInRoom: false, cubePushed: true, cubeBumps: 1 });
     });
   });
+
+  describe("pushing into a cube stuck in a corner", () => {
+    test.for([
+      { heelsAt: { x: 5.25, y: 5.25 }, freeCubeAt: { x: 6.25, y: 6.25 } },
+      { heelsAt: { x: 5, y: 6 }, freeCubeAt: { x: 6.25, y: 6.25 } },
+      { heelsAt: { x: 6, y: 5 }, freeCubeAt: { x: 6.25, y: 6.25 } },
+      { heelsAt: { x: 5.25, y: 5.25 }, freeCubeAt: { x: 5.875, y: 7.125 } },
+      { heelsAt: { x: 4.5, y: 6 }, freeCubeAt: { x: 5.875, y: 7.125 } },
+      { heelsAt: { x: 5.25, y: 5.25 }, freeCubeAt: { x: 7.125, y: 5.875 } },
+      { heelsAt: { x: 6, y: 4.5 }, freeCubeAt: { x: 7.125, y: 5.875 } },
+      { heelsAt: { x: 5.5, y: 5.5 }, freeCubeAt: { x: 6.375, y: 7.125 } },
+      { heelsAt: { x: 5.5, y: 5.5 }, freeCubeAt: { x: 7.125, y: 6.375 } },
+    ])(
+      "heels walking diagonally into a cube stuck in a corner and a cube beside it is never pushed backwards, heels at $heelsAt.x,$heelsAt.y, cube at $freeCubeAt.x,$freeCubeAt.y",
+      ({ heelsAt, freeCubeAt }) => {
+        const gameState = setUpBasicGame({
+          firstRoomItems: {
+            heels: {
+              type: "player",
+              position: { ...heelsAt, z: 0 },
+              config: { which: "heels" },
+            },
+            // 12px, so placed to sit flush in the far corner:
+            stuckCube: {
+              type: "portableBlock",
+              position: { x: 7.125, y: 7.125, z: 0 },
+              config: { style: "cube" },
+            },
+            freeCube: {
+              type: "portableBlock",
+              position: { ...freeCubeAt, z: 0 },
+              config: { style: "cube" },
+            },
+          },
+        });
+        let previousBox = heelsState(gameState).box;
+
+        playGameThrough(gameState, {
+          setupInitialInput(mockInputStateTracker) {
+            mockInputStateTracker.mockDirectionPressed = "awayLeft";
+          },
+          frameRate,
+          forTime: 3_000,
+          frameCallbacks(gameState) {
+            const { box } = heelsState(gameState);
+            // along the diagonal heels is walking:
+            const movedAlongTravel =
+              box.x - previousBox.x + (box.y - previousBox.y);
+            // checked every frame, so a failure reports when it went wrong:
+            expect(
+              movedAlongTravel,
+              `heels pushed backwards at game time ${gameState.gameTime}`,
+            ).toBeGreaterThanOrEqual(-0.000_1);
+            previousBox = box;
+          },
+        });
+      },
+    );
+  });
+
+  describe("pushing along a row of pushable blocks", () => {
+    test("heels pushes a cube along a row of pushable blocks as fast as along the floor", () => {
+      const floorGameState = setUpBasicGame({
+        firstRoomItems: {
+          heels: {
+            type: "player",
+            position: { x: 1.5, y: 3, z: 0 },
+            config: { which: "heels" },
+          },
+          cube: {
+            type: "portableBlock",
+            position: { x: 3.125, y: 3.125, z: 0 },
+            config: { style: "cube" },
+          },
+        },
+      });
+      playGameThrough(floorGameState, {
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockDirectionPressed = "left";
+        },
+        frameRate,
+        until: hasCollided("heels", "cube"),
+        failAfter: 2_000,
+      });
+      const floorStartX = itemState<"portableBlock">(floorGameState, "cube").box
+        .x;
+      const floorStartTime = floorGameState.gameTime;
+      playGameThrough(floorGameState, { frameRate, forTime: 500 });
+      const floorSpeed =
+        (itemState<"portableBlock">(floorGameState, "cube").box.x -
+          floorStartX) /
+        (floorGameState.gameTime - floorStartTime);
+
+      resetStore();
+      const blocksGameState = setUpBasicGame({
+        firstRoomItems: {
+          heels: {
+            type: "player",
+            position: { x: 1.5, y: 3, z: 1 },
+            config: { which: "heels" },
+          },
+          cube: {
+            type: "portableBlock",
+            position: { x: 3.125, y: 3.125, z: 1 },
+            config: { style: "cube" },
+          },
+          // heavy blocks in a row, standing in for the floor:
+          pb1: {
+            type: "pushableBlock",
+            position: { x: 1, y: 3, z: 0 },
+            config: {},
+          },
+          pb2: {
+            type: "pushableBlock",
+            position: { x: 2, y: 3, z: 0 },
+            config: {},
+          },
+          pb3: {
+            type: "pushableBlock",
+            position: { x: 3, y: 3, z: 0 },
+            config: {},
+          },
+          pb4: {
+            type: "pushableBlock",
+            position: { x: 4, y: 3, z: 0 },
+            config: {},
+          },
+          pb5: {
+            type: "pushableBlock",
+            position: { x: 5, y: 3, z: 0 },
+            config: {},
+          },
+          pb6: {
+            type: "pushableBlock",
+            position: { x: 6, y: 3, z: 0 },
+            config: {},
+          },
+        },
+      });
+      playGameThrough(blocksGameState, {
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockDirectionPressed = "left";
+        },
+        frameRate,
+        until: hasCollided("heels", "cube"),
+        failAfter: 2_000,
+      });
+      const blocksStartX = itemState<"portableBlock">(blocksGameState, "cube")
+        .box.x;
+      const blocksStartTime = blocksGameState.gameTime;
+      playGameThrough(blocksGameState, { frameRate, forTime: 500 });
+      const blocksSpeed =
+        (itemState<"portableBlock">(blocksGameState, "cube").box.x -
+          blocksStartX) /
+        (blocksGameState.gameTime - blocksStartTime);
+
+      expect(blocksSpeed).toBeCloseTo(floorSpeed, 3);
+    });
+
+    test("heels walking diagonally along a row of heavy blocks stuck between walls slides along them as fast as along fixed blocks", () => {
+      const fixedRowGameState = setUpBasicGame({
+        firstRoomItems: {
+          heels: {
+            type: "player",
+            // flush against the row:
+            position: { x: 1.5, y: 6.125, z: 0 },
+            config: { which: "heels" },
+          },
+          // a row from wall to wall, against the far wall, which heels slides along:
+          b0: {
+            type: "block",
+            position: { x: 0, y: 7, z: 0 },
+            config: { style: "organic" },
+          },
+          b1: {
+            type: "block",
+            position: { x: 1, y: 7, z: 0 },
+            config: { style: "organic" },
+          },
+          b2: {
+            type: "block",
+            position: { x: 2, y: 7, z: 0 },
+            config: { style: "organic" },
+          },
+          b3: {
+            type: "block",
+            position: { x: 3, y: 7, z: 0 },
+            config: { style: "organic" },
+          },
+          b4: {
+            type: "block",
+            position: { x: 4, y: 7, z: 0 },
+            config: { style: "organic" },
+          },
+          b5: {
+            type: "block",
+            position: { x: 5, y: 7, z: 0 },
+            config: { style: "organic" },
+          },
+          b6: {
+            type: "block",
+            position: { x: 6, y: 7, z: 0 },
+            config: { style: "organic" },
+          },
+          b7: {
+            type: "block",
+            position: { x: 7, y: 7, z: 0 },
+            config: { style: "organic" },
+          },
+        },
+      });
+      const fixedRowStartX = heelsState(fixedRowGameState).box.x;
+      playGameThrough(fixedRowGameState, {
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockDirectionPressed = "awayLeft";
+        },
+        frameRate,
+        forTime: 1_000,
+      });
+      const fixedRowDistance =
+        heelsState(fixedRowGameState).box.x - fixedRowStartX;
+
+      resetStore();
+      const heavyRowGameState = setUpBasicGame({
+        firstRoomItems: {
+          heels: {
+            type: "player",
+            // flush against the row:
+            position: { x: 1.5, y: 6.125, z: 0 },
+            config: { which: "heels" },
+          },
+          // heavy blocks in a row from wall to wall, against the far wall, which
+          // heels slides along:
+          pb0: {
+            type: "pushableBlock",
+            position: { x: 0, y: 7, z: 0 },
+            config: {},
+          },
+          pb1: {
+            type: "pushableBlock",
+            position: { x: 1, y: 7, z: 0 },
+            config: {},
+          },
+          pb2: {
+            type: "pushableBlock",
+            position: { x: 2, y: 7, z: 0 },
+            config: {},
+          },
+          pb3: {
+            type: "pushableBlock",
+            position: { x: 3, y: 7, z: 0 },
+            config: {},
+          },
+          pb4: {
+            type: "pushableBlock",
+            position: { x: 4, y: 7, z: 0 },
+            config: {},
+          },
+          pb5: {
+            type: "pushableBlock",
+            position: { x: 5, y: 7, z: 0 },
+            config: {},
+          },
+          pb6: {
+            type: "pushableBlock",
+            position: { x: 6, y: 7, z: 0 },
+            config: {},
+          },
+          pb7: {
+            type: "pushableBlock",
+            position: { x: 7, y: 7, z: 0 },
+            config: {},
+          },
+        },
+      });
+      const heavyRowStartX = heelsState(heavyRowGameState).box.x;
+      playGameThrough(heavyRowGameState, {
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockDirectionPressed = "awayLeft";
+        },
+        frameRate,
+        forTime: 1_000,
+      });
+
+      expect(heelsState(heavyRowGameState).box.x - heavyRowStartX).toBeCloseTo(
+        fixedRowDistance,
+        1,
+      );
+    });
+
+    test("heels walking diagonally along a row of heavy blocks against a wall leaves them against the wall", () => {
+      const gameState = setUpBasicGame({
+        firstRoomItems: {
+          heels: {
+            type: "player",
+            // flush against the row:
+            position: { x: 1.5, y: 6.125, z: 0 },
+            config: { which: "heels" },
+          },
+          // heavy blocks in a row against the far wall, which heels slides along:
+          pb1: {
+            type: "pushableBlock",
+            position: { x: 1, y: 7, z: 0 },
+            config: {},
+          },
+          pb2: {
+            type: "pushableBlock",
+            position: { x: 2, y: 7, z: 0 },
+            config: {},
+          },
+          pb3: {
+            type: "pushableBlock",
+            position: { x: 3, y: 7, z: 0 },
+            config: {},
+          },
+        },
+      });
+      const againstWallY = itemState<"pushableBlock">(gameState, "pb1").box.y;
+
+      playGameThrough(gameState, {
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockDirectionPressed = "awayLeft";
+        },
+        frameRate,
+        forTime: 1_000,
+        frameCallbacks(gameState) {
+          // checked every frame, so a failure reports when they were moved:
+          expect({
+            pb1: itemState<"pushableBlock">(gameState, "pb1").box.y,
+            pb2: itemState<"pushableBlock">(gameState, "pb2").box.y,
+            pb3: itemState<"pushableBlock">(gameState, "pb3").box.y,
+          }).toEqual({
+            pb1: againstWallY,
+            pb2: againstWallY,
+            pb3: againstWallY,
+          });
+        },
+      });
+    });
+  });
 });
