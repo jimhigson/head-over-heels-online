@@ -1,19 +1,52 @@
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import {
-  dotProductXyz,
+  dotProductXy,
+  lengthXySquared,
   lengthXyzSquared,
-  subXyz,
+  originXyz,
   type Xyz,
+  type XyzBox,
 } from "../../../utils/vectors/vectors";
-import { mtv, mtvAlongVector } from "../mtv";
+import { collisionBoxes } from "../../collision/aabbCollision";
+import { mtvAgainstTravelWriteInto, mtvAlongVectorWriteInto } from "../mtv";
 
 /**
- * An mtv  in a specific direction - either:
+ * which kind of translation {@link backingOffTranslationAfterCollision} wrote:
  *
- *  - `mtvAlongVector`   : colliding with a pushable thing and pushing in xy only (no z)
+ *  - `alongTravel` : backwards along the subject's travel in xy - every one
+ *                    for the same travel points the same way
+ *  - `axisAligned` : a normal, axis-aligned mtv
+ */
+export type BackingOffType = "alongTravel" | "axisAligned";
+
+/**
+ * the widest angle between the reverse of the subject's travel and the
+ * collision's contact normal that still backs off (and so pushes) along the
+ * travel. A little wider than 45°, so diagonal travel into a face qualifies.
+ *
+ * The value keeps pushing as it was when this was decided by projection rather
+ * than angle: the mtv projected onto the reverse travel, as a fraction of the
+ * travel's length, had to exceed 0.44 (0.5 being exactly 45°). For an overlap
+ * of one whole step that fraction is cos²θ, so the angle where pushing changes
+ * is acos(√0.44) ≈ 48.45°. Measuring by angle means a shallower overlap no
+ * longer reads as a more glancing contact
+ */
+const maxAlongTravelAngleDegrees = 48.45;
+const maxAlongTravelAngleRadians = (maxAlongTravelAngleDegrees * Math.PI) / 180;
+// squared, so the test needs no square roots:
+const minAlongTravelCosSquared = Math.cos(maxAlongTravelAngleRadians) ** 2;
+
+const reverseTravelXyBuffer: Xyz = { x: 0, y: 0, z: 0 };
+
+/**
+ * An mtv in a specific direction - either:
+ *
+ *  - along the reverse of the travel: colliding with a pushable thing and
+ *    pushing in xy only (no z)
  *  - or, a normal `mtv` : if colliding up/down, or colliding with a non-pushable
  *
+ * @returns which of these was written
  */
 export const backingOffTranslationAfterCollision = <
   RoomId extends string,
@@ -22,18 +55,37 @@ export const backingOffTranslationAfterCollision = <
   subjectItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   collidedWithItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   forceful: boolean,
-  // the starting position of the subject, before collisions - can be used to get the
-  // direction they're heading in by the time they get to this collision. If a single collision (or the first of
-  // multiple) this will be equal to the initial position
-  originalPosition: Xyz,
-): Xyz => {
+  /**
+   * the subject's whole intended movement - its direction is the direction of
+   * travel, unaffected by how the subject has already been backed off
+   */
+  travel: Xyz,
+  /**
+   * where the subject was before the travel
+   */
+  originalBox: Readonly<XyzBox>,
+  /**
+   * receives the translation
+   */
+  writeInto: Xyz,
+): BackingOffType => {
   const collidedWithIsPushable = collidedWithItem[
     itemBehaviourKey
   ].isPushableBy(collidedWithItem, subjectItem, forceful);
 
-  const backingOffSimpleMtv = mtv(
+  // a push can't pull - so a pushable item is never pushed by an mtv pointing
+  // along the travel. Unless the subject was overlapping it before travelling,
+  // since then it didn't move in through any face:
+  mtvAgainstTravelWriteInto(
     subjectItem.state.box,
     collidedWithItem.state.box,
+    (
+      collidedWithIsPushable &&
+        !collisionBoxes(originalBox, collidedWithItem.state.box)
+    ) ?
+      travel
+    : originXyz,
+    writeInto,
   );
 
   // disable this branch to make pushing much more like the original game (only in four directions
@@ -42,49 +94,47 @@ export const backingOffTranslationAfterCollision = <
   // does make positioning blocks by pushing them easier (and less annoying) and also removes a mechanic
   // where a block can be stuck in a corner, not able to be pushed out
   if (
-    collidedWithIsPushable &&
+    !collidedWithIsPushable ||
     // vertical pushing (ie, from lifts) doesn't get the special treatment - this is always
     // using the normal backing off mtv
-    backingOffSimpleMtv.z === 0
+    writeInto.z !== 0
   ) {
-    // vector that would put the subject back where they started - this is easier than
-    // their forward travel since it keeps the projection with their mtv positive
-    const subjectTravelReverseVector = subXyz(
-      originalPosition,
-      subjectItem.state.box,
-    );
-
-    const travelRevDistSquared = lengthXyzSquared(subjectTravelReverseVector);
-    // find the projection along the distance we've moved so far of the backing off mtv.
-    // basically, this tells us if the backing off is in a similar enough direction to the opposite
-    // of our direction of travel that we can modify it only back off in the direction we are travelling.
-    // modifying the mtv to be in the direction of travel allows items to be pushed diagonally for
-    // example, even though for aabbs, the mtv is always axis aligned. Dividing by the distance would give
-    // the projection -
-    //
-    //  x/dist²
-    //  is (x➗dist)➗dist,
-    //  is projection➗dist,
-    //  ie the projection as fraction of the travel distance
-    const backingOffProjectedOnMovementVectorMagnitude: number =
-      dotProductXyz(backingOffSimpleMtv, subjectTravelReverseVector) /
-      travelRevDistSquared;
-
-    // this doesn't apply along z - you can't 'push' upwards. Well, you can, but that's the
-    // normal aabb mtvs
-    subjectTravelReverseVector.z = 0;
-
-    // a little bit wider than 45° (which would be 0.5 here)
-    if (backingOffProjectedOnMovementVectorMagnitude > 0.44) {
-      return mtvAlongVector(
-        subjectItem.state.box,
-        collidedWithItem.state.box,
-        // this doesn't apply along z - you can't 'push' upwards. Well, you can, but that's the
-        // normal aabb mtvs
-        subjectTravelReverseVector,
-      );
-    }
+    return "axisAligned";
   }
 
-  return backingOffSimpleMtv;
+  const mtvLengthSquared = lengthXyzSquared(writeInto);
+  const travelLengthXySquared = lengthXySquared(travel);
+  if (mtvLengthSquared === 0 || travelLengthXySquared === 0) {
+    // touching without overlap, or no travel in xy to back off along
+    return "axisAligned";
+  }
+
+  // backing off along the reverse of the travel - this doesn't apply along z, you
+  // can't 'push' upwards. Well, you can, but that's the normal aabb mtvs
+  reverseTravelXyBuffer.x = -travel.x;
+  reverseTravelXyBuffer.y = -travel.y;
+
+  // the angle between the contact normal and the reverse travel - a property of
+  // direction only, so the depth of the overlap doesn't affect it. Modifying the
+  // mtv to be in the direction of travel allows items to be pushed diagonally
+  // for example, even though for aabbs, the mtv is always axis aligned
+  const contactDot = dotProductXy(writeInto, reverseTravelXyBuffer);
+
+  if (
+    // squaring loses the sign - a contact normal against the reverse travel is never along it:
+    contactDot <= 0 ||
+    // cos² of the angle, compared without the square roots of the lengths:
+    contactDot ** 2 <=
+      minAlongTravelCosSquared * mtvLengthSquared * travelLengthXySquared
+  ) {
+    return "axisAligned";
+  }
+
+  mtvAlongVectorWriteInto(
+    subjectItem.state.box,
+    collidedWithItem.state.box,
+    reverseTravelXyBuffer,
+    writeInto,
+  );
+  return "alongTravel";
 };

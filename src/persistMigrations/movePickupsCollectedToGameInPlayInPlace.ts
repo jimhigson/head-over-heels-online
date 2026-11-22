@@ -13,7 +13,9 @@ export type LegacyPickupsSavedGame = {
 
 /**
  * move one save's pickupsCollected from its gameState to its gameInPlay - not
- * the reincarnation points it carries, which are saves of their own
+ * the reincarnation points it carries, which are saves of their own.
+ *
+ * Needed for saves from v27 (released August 2026) and earlier.
  */
 export const movePickupsCollectedToGameInPlayInPlace = (
   save: LegacyPickupsSavedGame,

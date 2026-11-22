@@ -33,5 +33,10 @@ export default defineConfig({
       "src/_testUtils/installAppTickerForTests.ts",
       "src/game/itemBehaviours/itemBehaviourCache.ts",
     ],
+    benchmark: {
+      // tracking export getter use, for its warning, wraps every import in a
+      // counter - doubling the time of benches that call across modules a lot:
+      suppressExportGetterWarnings: true,
+    },
   },
 });

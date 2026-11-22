@@ -1,9 +1,7 @@
 import {
-  axesXyz,
   lengthXyz,
   originXyz,
   scaleXyzWriteInto,
-  sizeAxes,
   unitVector,
   type Xy,
   type Xyz,
@@ -27,6 +25,25 @@ import { collisionBoxes } from "../collision/aabbCollision";
 const zWeight = 0.5;
 
 /**
+ * how far along the direction overlapping boxes travel before they no longer
+ * overlap on one axis - infinitely far if not moving along that axis
+ */
+const exitAlongAxis = (
+  /**
+   * the direction's component on this axis
+   */
+  directionComponent: number,
+  moverMin: number,
+  moverSize: number,
+  obstacleMin: number,
+  obstacleSize: number,
+): number =>
+  Math.abs(directionComponent) < 0.000_1 ? Number.POSITIVE_INFINITY
+  : directionComponent > 0 ?
+    (obstacleMin + obstacleSize - moverMin) / directionComponent
+  : (obstacleMin - (moverMin + moverSize)) / directionComponent;
+
+/**
  * Calculate the translation forwards along a direction vector that separates two rectangular objects.
  * Uses arithmetic ray-AABB intersection to find the exact distance along the vector for separation.
  *
@@ -34,7 +51,7 @@ const zWeight = 0.5;
  *                 Can be any direction, not limited to axis-aligned.
  * @returns The translation along the vector (never against it) to separate the objects.
  */
-const mtvAlongVectorWriteInto = (
+export const mtvAlongVectorWriteInto = (
   moverBox: Readonly<XyzBox>,
   obstacleBox: Readonly<XyzBox>,
   vector: Xyz,
@@ -56,69 +73,34 @@ const mtvAlongVectorWriteInto = (
     return writeInto as Xyz;
   }
 
-  // Ray-AABB intersection approach
-  // We need to find the minimum t where the boxes no longer overlap
+  // Ray-AABB intersection approach: the boxes overlap at t=0, so they come
+  // apart the soonest of when they separate on each axis moved along
+  const tExit = Math.min(
+    exitAlongAxis(
+      direction.x,
+      moverBox.x,
+      moverBox.xd,
+      obstacleBox.x,
+      obstacleBox.xd,
+    ),
+    exitAlongAxis(
+      direction.y,
+      moverBox.y,
+      moverBox.yd,
+      obstacleBox.y,
+      obstacleBox.yd,
+    ),
+    exitAlongAxis(
+      direction.z,
+      moverBox.z,
+      moverBox.zd,
+      obstacleBox.z,
+      obstacleBox.zd,
+    ),
+  );
 
-  let tMin = -Infinity;
-  let tMax = Infinity;
-
-  // For each axis, calculate the range of t where boxes overlap
-  for (const axis of axesXyz) {
-    // this is a hot path: the size key is resolved once per axis and the
-    // boxes read directly, rather than through boxMaxOnAxis
-    const sizeAxis = sizeAxes[axis];
-    const dirComponent = direction[axis];
-
-    if (Math.abs(dirComponent) < 0.000_1) {
-      // No movement along this axis - check if already overlapping
-      const moverMin = moverBox[axis];
-      const moverMax = moverBox[axis] + moverBox[sizeAxis];
-      const obstacleMin = obstacleBox[axis];
-      const obstacleMax = obstacleBox[axis] + obstacleBox[sizeAxis];
-
-      if (moverMax <= obstacleMin || moverMin >= obstacleMax) {
-        // No overlap on this axis means no collision at all
-        Object.assign(writeInto, originXyz);
-        return writeInto as Xyz;
-      }
-      // Otherwise, this axis doesn't constrain t
-      continue;
-    }
-
-    // Calculate t values where the boxes align on this axis
-    // We want the range where they overlap
-    const obstacleMin = obstacleBox[axis];
-    const obstacleMax = obstacleBox[axis] + obstacleBox[sizeAxis];
-    const moverMin = moverBox[axis];
-    const moverMax = moverBox[axis] + moverBox[sizeAxis];
-
-    // t values where edges align
-    const t1 = (obstacleMin - moverMax) / dirComponent;
-    const t2 = (obstacleMax - moverMin) / dirComponent;
-
-    // The overlap range depends on direction
-    const tEnter = Math.min(t1, t2);
-    const tExit = Math.max(t1, t2);
-
-    // Update the overall overlap range
-    tMin = Math.max(tMin, tEnter);
-    tMax = Math.min(tMax, tExit);
-  }
-
-  // If tMin > tMax, boxes don't overlap at any point along the ray
-  if (tMin > tMax) {
-    // write origin and return
-    Object.assign(writeInto, originXyz);
-    return writeInto as Xyz;
-  }
-
-  // overlapping (t=0 is in [tMin, tMax]) - only ever exit forwards, at tMax:
-  if (tMax > 0) {
-    return scaleXyzWriteInto(writeInto, direction, tMax);
-  }
-  // Already separated or touching
-  Object.assign(writeInto, originXyz);
-  return writeInto as Xyz;
+  // only ever exit forwards:
+  return scaleXyzWriteInto(writeInto, direction, tExit);
 };
 
 /**
@@ -133,12 +115,45 @@ export const mtvAlongVector = (
 };
 
 /**
- * Calculate the standard axis-aligned Minimum Translation Vector (MTV) to separate two rectangular objects.
- * Returns the shortest axis-aligned vector to push the mover out of the obstacle.
+ * the mtv on one axis - out of the obstacle's max face (positive) or min face
+ * (negative), whichever is shallower of those the mover could have entered through
  */
-const mtvWriteInto = (
+const mtvOnAxisAgainstTravel = (
+  /**
+   * overlap out of the obstacle's max face, moving the mover positive
+   */
+  overlapOutOfMax: number,
+  /**
+   * overlap out of the obstacle's min face, moving the mover negative
+   */
+  overlapOutOfMin: number,
+  /**
+   * the mover's travel on this axis
+   */
+  travel: number,
+): number =>
+  // travelling negative, so can only have come in through the max face:
+  travel < 0 ? overlapOutOfMax
+    // travelling positive, so can only have come in through the min face:
+  : travel > 0 ? -overlapOutOfMin
+  : Math.abs(overlapOutOfMax) < Math.abs(overlapOutOfMin) ? overlapOutOfMax
+  : -overlapOutOfMin;
+
+/**
+ * The axis-aligned Minimum Translation Vector (MTV) to separate a moving object
+ * from an obstacle it moved into: the shortest axis-aligned vector out of the
+ * obstacle, through a face the mover could have moved in through. On an axis the
+ * mover travels along, that is only the face it was travelling towards - out of
+ * the other face would move the mover forwards, and so push the obstacle
+ * backwards (eg the far side of a corner it is sliding past)
+ */
+export const mtvAgainstTravelWriteInto = (
   moverBox: Readonly<XyzBox>,
   obstacleBox: Readonly<XyzBox>,
+  /**
+   * the mover's movement - zero to consider every face
+   */
+  travel: Xyz,
   writeInto: Partial<Xyz>,
 ): Xyz => {
   const oXMin = obstacleBox.x;
@@ -163,10 +178,10 @@ const mtvWriteInto = (
   const dy2 = mYMax - oYMin; // overlap Away of mover with Towards of solid
   const dz2 = mZMax - oZMin; // overlap Top of mover with Bottom of solid
 
-  // Find minimum x overlap in x,y,z
-  const mtvX = Math.abs(dx1) < Math.abs(dx2) ? dx1 : -dx2;
-  const mtvY = Math.abs(dy1) < Math.abs(dy2) ? dy1 : -dy2;
-  const mtvZ = Math.abs(dz1) < Math.abs(dz2) ? dz1 : -dz2;
+  // Find minimum overlap in x,y,z, out of only the faces opposing the travel:
+  const mtvX = mtvOnAxisAgainstTravel(dx1, dx2, travel.x);
+  const mtvY = mtvOnAxisAgainstTravel(dy1, dy2, travel.y);
+  const mtvZ = mtvOnAxisAgainstTravel(dz1, dz2, travel.z);
 
   const absMtvX = Math.abs(mtvX);
   const absMtvY = Math.abs(mtvY);
@@ -192,6 +207,17 @@ const mtvWriteInto = (
   writeInto.z = mtvZ;
   return writeInto as Xyz; // Slide along z-axis
 };
+
+/**
+ * Calculate the standard axis-aligned Minimum Translation Vector (MTV) to separate two rectangular objects.
+ * Returns the shortest axis-aligned vector to push the mover out of the obstacle.
+ */
+export const mtvWriteInto = (
+  moverBox: Readonly<XyzBox>,
+  obstacleBox: Readonly<XyzBox>,
+  writeInto: Partial<Xyz>,
+): Xyz =>
+  mtvAgainstTravelWriteInto(moverBox, obstacleBox, originXyz, writeInto);
 
 /**
  * Calculate the standard axis-aligned Minimum Translation Vector (MTV) to separate two rectangular objects.

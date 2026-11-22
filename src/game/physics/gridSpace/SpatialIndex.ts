@@ -1,6 +1,7 @@
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { emptyArray } from "../../../utils/empty";
-import type { XyzBox } from "../../../utils/vectors/vectors";
+import { epsilon } from "../../../utils/epsilon";
+import type { Xyz, XyzBox } from "../../../utils/vectors/vectors";
 import { blockSizePx } from "../mechanicsConstants";
 
 /** two cell coords packed into one 32-bit int (16 bits each) - see {@link makeCellKey} */
@@ -360,11 +361,81 @@ export class SpatialIndex<
     /** Optional item to never offer (usually the querying item) */
     excludeItem?: Indexable,
   ): ReadonlyArray<Item> {
-    let accepted: Item[] | undefined = undefined;
-    const minCellX = this.worldXToCellX(box.x);
-    const minCellY = this.worldYToCellY(box.y);
-    const maxCellX = this.worldXToCellX(box.x + box.xd);
-    const maxCellY = this.worldYToCellY(box.y + box.yd);
+    return this.#appendInBoxWithMargins(
+      box,
+      0,
+      0,
+      0,
+      0,
+      predicate,
+      context,
+      excludeItem,
+      undefined,
+    );
+  }
+
+  /**
+   * as {@link filterInBox}, but also offering items in cells less than epsilon
+   * beyond the sides of the box that it is travelling towards - for a
+   * `predicate` accepting items touching or almost touching those sides.
+   * Appends the accepted items to `appendTo`, rather than returning a new array
+   */
+  appendInBoxApproximatelyTowards<Context>(
+    /** The cuboid region (position + dimensions) to check */
+    box: Readonly<XyzBox>,
+    /**
+     * the direction the box is travelling in - only its x and y signs are used
+     */
+    travel: Readonly<Xyz>,
+    predicate: (item: Item, box: Readonly<XyzBox>, context: Context) => boolean,
+    context: Context,
+    /** item to never offer (usually the querying item) */
+    excludeItem: Indexable,
+    /**
+     * the array to append to - only the items this call appends are
+     * deduplicated, not any already in it
+     */
+    appendTo: Item[],
+  ): void {
+    this.#appendInBoxWithMargins(
+      box,
+      // allow a small margin, on the sides travelled towards:
+      travel.x < 0 ? epsilon : 0,
+      travel.x > 0 ? epsilon : 0,
+      travel.y < 0 ? epsilon : 0,
+      travel.y > 0 ? epsilon : 0,
+      predicate,
+      context,
+      excludeItem,
+      appendTo,
+    );
+  }
+
+  /**
+   * collects every item the predicate accepts in the cells under the box,
+   * widened by the margins on each side, each item once. They're appended to
+   * `appendTo`, or without one, to a new array made only once something is
+   * accepted - so finding nothing returns the shared empty array and allocates
+   * nothing
+   */
+  #appendInBoxWithMargins<Context>(
+    box: Readonly<XyzBox>,
+    minXMargin: number,
+    maxXMargin: number,
+    minYMargin: number,
+    maxYMargin: number,
+    predicate: (item: Item, box: Readonly<XyzBox>, context: Context) => boolean,
+    context: Context,
+    excludeItem: Indexable | undefined,
+    appendTo: Item[] | undefined,
+  ): ReadonlyArray<Item> {
+    let accepted = appendTo;
+    // where this call's items start, to deduplicate against only them:
+    const appendedFrom = appendTo === undefined ? 0 : appendTo.length;
+    const minCellX = this.worldXToCellX(box.x - minXMargin);
+    const minCellY = this.worldYToCellY(box.y - minYMargin);
+    const maxCellX = this.worldXToCellX(box.x + box.xd + maxXMargin);
+    const maxCellY = this.worldYToCellY(box.y + box.yd + maxYMargin);
 
     for (let x = minCellX; x <= maxCellX; x++) {
       for (let y = minCellY; y <= maxCellY; y++) {
@@ -380,7 +451,7 @@ export class SpatialIndex<
           // spanning several of the box's cells are met twice:
           if (accepted === undefined) {
             accepted = [item];
-          } else if (!accepted.includes(item)) {
+          } else if (!accepted.includes(item, appendedFrom)) {
             accepted.push(item);
           }
         }

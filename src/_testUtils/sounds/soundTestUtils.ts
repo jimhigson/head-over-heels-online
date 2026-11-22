@@ -144,6 +144,43 @@ export const soundPlayback = (
   )?.playback ?? "notPlaying";
 
 /**
+ * counts the times a sound starts, for checking how many times it was heard.
+ * Pass `frameCallback` as a play-through's frame callback (in every
+ * play-through to be counted), then read `count`. A sound restarting while
+ * still playing counts again, but starts in the same frame count as one
+ */
+export const makeSoundStartCounter = (
+  renderState: TestRenderState,
+  soundId: ExportedSoundId,
+) => {
+  const countedSources = new Set<TestApiAudioBufferSourceNode>();
+  let count = 0;
+  return {
+    frameCallback() {
+      const soundBuffer = loadedSound(soundId);
+      let startedThisFrame = false;
+      for (const audioNode of nodesUpstreamOf(renderState.soundOutput)) {
+        if (
+          isBufferSourceNode(audioNode) &&
+          audioNode.$state === "PLAYING" &&
+          audioNode.buffer === soundBuffer &&
+          !countedSources.has(audioNode)
+        ) {
+          countedSources.add(audioNode);
+          startedThisFrame = true;
+        }
+      }
+      if (startedThisFrame) {
+        count++;
+      }
+    },
+    get count() {
+      return count;
+    },
+  };
+};
+
+/**
  * a renderer that advances the audio context's time along with the game's, so
  * scheduled starts and stops take effect
  */

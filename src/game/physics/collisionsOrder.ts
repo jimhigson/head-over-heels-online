@@ -167,50 +167,80 @@ export const collisionsPriorityComparator = <I extends SortableObstacle>(
   return typeOrderPreference[a.type] - typeOrderPreference[b.type];
 };
 
-export const sortObstaclesAboutPriorityAndVector = <I extends SortableObstacle>(
+/**
+ * the order to handle the obstacles in: by type priority, then by how soon the
+ * subject meets them travelling along the vector
+ */
+const compareObstaclesAboutPriorityAndVector = <I extends SortableObstacle>(
   vector: Xyz,
-  obstacles: ReadonlyArray<I>,
-): Array<I> => {
-  return obstacles.toSorted((obsA, obsB) => {
-    /*
-     * the most important factor in this sort is the type of the items collided with. Less impactful items are moved
-     * to the start of the ordering so that they 'protect' against more impactful ones. Eg, if landing simultaneously
-     * on a block and a monster, the block should be processed first so that the monster is not touched (and the block
-     * becomes the `.standingOn` property of the player)
-     */
-    const priorityOrder = collisionsPriorityComparator(obsA, obsB);
-    if (priorityOrder !== 0) {
-      return priorityOrder;
+  obsA: I,
+  obsB: I,
+): number => {
+  /*
+   * the most important factor in this sort is the type of the items collided with. Less impactful items are moved
+   * to the start of the ordering so that they 'protect' against more impactful ones. Eg, if landing simultaneously
+   * on a block and a monster, the block should be processed first so that the monster is not touched (and the block
+   * becomes the `.standingOn` property of the player)
+   */
+  const priorityOrder = collisionsPriorityComparator(obsA, obsB);
+  if (priorityOrder !== 0) {
+    return priorityOrder;
+  }
+
+  /*
+   * If of the same type, sort obstacles so that the ones the subject will see first (travelling along the
+   * @param vector) are first in the list. This gives the natural order of collision
+   * to process the mtvs in.
+   *
+   * Without this, the order of the obstacles can be arbitrary and snagging is possible
+   * on the boundary of two adjacent obstacles, for example if falling while holding
+   * the direction towards a tower of blocks
+   */
+  const aDistance = dotProductXyz(
+    vector,
+    obstaclePointEarliestPointInVector(vector, obsA),
+  );
+  const bDistance = dotProductXyz(
+    vector,
+    obstaclePointEarliestPointInVector(vector, obsB),
+  );
+
+  if (Math.abs(aDistance - bDistance) < 0.000_1) {
+    // these are effectively being touched at the same time. Arbitrarily
+    // choose based on the alphabetical order of the ids. This means that
+    // the order is stable between frames. Otherwise, it would flicker back
+    // and forth due to floating point errors, for example if in a nest of
+    // joysticks like on#blacktooth47market an moving at exactly 45 degrees,
+    // so both joysticks touched have equal claim at being touched first
+    return obsA.id < obsB.id ? -1 : 1;
+  }
+
+  return aDistance - bDistance;
+};
+
+/**
+ * sorts the obstacles in `[start, end)` in place, ordered as
+ * {@link compareObstaclesAboutPriorityAndVector}. An insertion sort, since a
+ * move rarely collides with more than a few items
+ */
+export const sortObstaclesAboutPriorityAndVectorInPlace = <
+  I extends SortableObstacle,
+>(
+  vector: Xyz,
+  obstacles: I[],
+  start: number,
+  end: number,
+): void => {
+  for (let i = start + 1; i < end; i++) {
+    const obstacle = obstacles[i];
+    let j = i - 1;
+    while (
+      j >= start &&
+      compareObstaclesAboutPriorityAndVector(vector, obstacles[j], obstacle) > 0
+    ) {
+      obstacles[j + 1] = obstacles[j];
+      j--;
     }
-
-    /*
-     * If of the same type, sort obstacles so that the ones the subject will see first (travelling along the
-     * @param vector) are first in the list. This gives the natural order of collision
-     * to process the mtvs in.
-     *
-     * Without this, the order of the obstacles can be arbitrary and snagging is possible
-     * on the boundary of two adjacent obstacles, for example if falling while holding
-     * the direction towards a tower of blocks
-     */
-    const aDistance = dotProductXyz(
-      vector,
-      obstaclePointEarliestPointInVector(vector, obsA),
-    );
-    const bDistance = dotProductXyz(
-      vector,
-      obstaclePointEarliestPointInVector(vector, obsB),
-    );
-
-    if (Math.abs(aDistance - bDistance) < 0.000_1) {
-      // these are effectively being touched at the same time. Arbitrarily
-      // choose based on the alphabetical order of the ids. This means that
-      // the order is stable between frames. Otherwise, it would flicker back
-      // and forth due to floating point errors, for example if in a nest of
-      // joysticks like on#blacktooth47market an moving at exactly 45 degrees,
-      // so both joysticks touched have equal claim at being touched first
-      return obsA.id < obsB.id ? -1 : 1;
-    }
-
-    return aDistance - bDistance;
-  });
+    obstacles[j + 1] = obstacle;
+  }
 };

@@ -27,6 +27,7 @@ import {
   boxWithSize,
   type Direction8Xyz,
   doorAlongAxis,
+  originXy,
   type Xyz,
   type XyzBox,
 } from "../../../utils/vectors/vectors";
@@ -42,7 +43,11 @@ type MaybeNamedDirection = Direction8Xyz | Xyz;
 const asDirectionVector = (direction: MaybeNamedDirection): Xyz =>
   typeof direction === "string" ? unitVectors[direction] : direction;
 
-/** in-place: convert a config/state's direction-ish field from name to vector */
+/**
+ * in-place: convert a config/state's direction-ish field from name to vector.
+ *
+ * Needed for saves from v26 (released July 2026) and earlier.
+ */
 const vectoriseInPlace = <F extends string>(
   holder: Partial<Record<F, MaybeNamedDirection>>,
   field: F,
@@ -69,7 +74,9 @@ type LegacyFloorConfig = OverrideProperties<
  * physical door expansion is already baked into the saved floor's box, so the
  * expanded sides are recovered by comparing against the natural footprint:
  * expanding towards/right shifts the position while away/left only grows the
- * dimensions (mirroring how loadFloor expands)
+ * dimensions (mirroring how loadFloor expands).
+ *
+ * Needed for saves from v26 (released July 2026) and earlier.
  */
 const migrateFloorConfigInPlace = (
   config: LegacyFloorConfig,
@@ -78,6 +85,8 @@ const migrateFloorConfigInPlace = (
 ): void => {
   if (config.doorExpandedSides !== undefined) {
     // saves written when the sides were names normalise to vectors:
+    //
+    // no released save needs this - only dev builds before v27 wrote names
     config.doorExpandedSides = config.doorExpandedSides.map(asDirectionVector);
     return;
   }
@@ -115,15 +124,21 @@ type LegacyBoxCarrier = {
 };
 
 /**
- * saves from before Heels held what to pick up next marked it on the item
+ * saves from before Heels held what to pick up next marked it on the item.
+ *
+ * Needed for saves from v27 (released August 2026) and earlier.
  */
 const deleteWouldPickUpNextInPlace = (item: { state: object }): void => {
   delete (item.state as { wouldPickUpNext?: boolean }).wouldPickUpNext;
 };
 
+/**
+ * Needed for saves from v27 (released August 2026) and earlier.
+ */
 const migrateSceneryPlayerInPlace = (
   sceneryPlayer: ItemInPlay<"sceneryPlayer", string, string>,
 ): void => {
+  // Needed for saves from v26 (released July 2026) and earlier.
   vectoriseInPlace(
     sceneryPlayer.config as { startDirection?: MaybeNamedDirection },
     "startDirection",
@@ -134,7 +149,11 @@ const migrateSceneryPlayerInPlace = (
     sceneryPlayer.config.startDirection;
 };
 
-/** saves from before Dec '25 omit the visual facing; it starts at the facing */
+/**
+ * saves from before Dec '25 omit the visual facing; it starts at the facing.
+ *
+ * Needed for saves from v1.13.0 (released December 2025) and earlier.
+ */
 const migratePlayableStateInPlace = (
   playableState: ItemState<CharacterName, string, string>,
 ): void => {
@@ -142,7 +161,9 @@ const migratePlayableStateInPlace = (
 };
 
 /**
- * saves from before free items recorded the speed they were carried at omit it
+ * saves from before free items recorded the speed they were carried at omit it.
+ *
+ * Needed for saves from v27 (released August 2026) and earlier.
  */
 const migrateLiftVelInPlace = (
   item: UnionOfAllItemInPlayTypes<string, string>,
@@ -153,8 +174,26 @@ const migrateLiftVelInPlace = (
 };
 
 /**
+ * saves from before joysticks voted on the direction of what they control hold
+ * only the time it was last controlled; any votes from then have long expired.
+ *
+ * Needed for saves from v27 (released August 2026) and earlier.
+ */
+const migrateJoystickVotesInPlace = (
+  item: UnionOfAllItemInPlayTypes<string, string>,
+): void => {
+  if (isFreeItem(item)) {
+    item.state.joystickVotes ??= { atRoomTime: neverTime, total: originXy };
+    delete (item.state as { controlledWithJoystickAtRoomTime?: number })
+      .controlledWithJoystickAtRoomTime;
+  }
+};
+
+/**
  * saves from before Heels held what to pick up next omit it, and their
- * carried item still marks it
+ * carried item still marks it.
+ *
+ * Needed for saves from v27 (released August 2026) and earlier.
  */
 const migrateHeelsAbilitiesInPlace = (
   heelsAbilities: HeelsAbilities<string, string>,
@@ -163,6 +202,7 @@ const migrateHeelsAbilitiesInPlace = (
   if (heelsAbilities.carrying !== null) {
     deleteWouldPickUpNextInPlace(heelsAbilities.carrying);
     migrateLiftVelInPlace(heelsAbilities.carrying);
+    migrateJoystickVotesInPlace(heelsAbilities.carrying);
     // heels can carry a scenery player:
     if (heelsAbilities.carrying.type === "sceneryPlayer") {
       migrateSceneryPlayerInPlace(heelsAbilities.carrying);
@@ -175,7 +215,9 @@ const migrateHeelsAbilitiesInPlace = (
 
 /**
  * saves from before `state.box` carried `state.position` + a root `aabb`;
- * merge them into the box and drop the legacy fields
+ * merge them into the box and drop the legacy fields.
+ *
+ * Needed for saves from v26 (released July 2026) and earlier.
  */
 const migrateItemBoxInPlace = (item: LegacyBoxCarrier): void => {
   if (item.state.box === undefined) {
@@ -202,25 +244,34 @@ const migrateItemBoxInPlace = (item: LegacyBoxCarrier): void => {
  * embed both the room json and the loaded (in-play) items exactly as the
  * version that wrote them loaded them, so a save from an old version can
  * carry formats the current code no longer loads - eg walls without tiles
- * (pre-v25), or direction names where the in-play model now holds unit
+ * (v25 and earlier), or direction names where the in-play model now holds unit
  * vectors; this normalises them, once, as stored saves are migrated.
+ *
+ * Needed for saves from v27 (released August 2026) and earlier.
  */
 export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
   savedCharacterRooms: SavedCharacterRooms<RoomId>,
 ): void => {
   // head and heels can be in the same room (the same object twice):
   for (const room of new Set(valuesIter(savedCharacterRooms))) {
+    // Needed for saves from v25 (released June 2026) and earlier.
     migrateWallTilesInPlace(room.roomJson);
+    // Needed for saves from v27 (released August 2026) and earlier.
     migrateTeleporterActivationInPlace(room.roomJson);
 
     // saves from before change-tracking was a progression count omit these:
+    //
+    // Needed for saves from v26 (released July 2026) and earlier.
     room.progression ??= 0 as Progression;
 
     for (const item of roomItemsIterable(room.items)) {
       migrateItemBoxInPlace(item as LegacyBoxCarrier);
+      // Needed for saves from v26 (released July 2026) and earlier.
       item.state.movedOrResizedOnProgression ??= 0 as Progression;
       deleteWouldPickUpNextInPlace(item);
       migrateLiftVelInPlace(item);
+      migrateJoystickVotesInPlace(item);
+      // no released save needs this - only dev builds before v27 wrote names
       if (item.hintShadowDirections !== undefined) {
         item.hintShadowDirections =
           item.hintShadowDirections.map(asDirectionVector);
@@ -233,11 +284,13 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
             typeof config.direction === "string" ?
               doorAlongAxis(config.direction)
             : alongAxisOfDirectionXy(config.direction);
+          // Needed for saves from v25 (released June 2026) and earlier.
           migrateWallConfigInPlace(
             config,
             room.planet,
             fineXyzToBlockXyz(item.state.box)[alongAxis],
           );
+          // Needed for saves from v26 (released July 2026) and earlier.
           vectoriseInPlace(config, "direction");
           break;
         }
@@ -251,12 +304,14 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
         case "doorLegs":
         case "lamp":
         case "firedDoughnut":
+          // Needed for saves from v26 (released July 2026) and earlier.
           vectoriseInPlace(
             item.config as { direction?: MaybeNamedDirection },
             "direction",
           );
           break;
         case "conveyor":
+          // Needed for saves from v26 (released July 2026) and earlier.
           vectoriseInPlace(
             item.config as { direction: MaybeNamedDirection },
             "direction",
@@ -266,23 +321,31 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
             "direction",
           );
           // conveyors no longer keep this in state:
+          //
+          // Needed for saves from v27 (released August 2026) and earlier.
           delete (item.state as { moving?: boolean }).moving;
           break;
         case "monster":
+          // Needed for saves from v26 (released July 2026) and earlier.
           vectoriseInPlace(
             item.config as { startDirection?: MaybeNamedDirection },
             "startDirection",
           );
           // saves from before these were initialised omit them:
+          //
+          // Needed for saves from v27 (released August 2026) and earlier.
           item.state.durationOfTouch ??= 0;
           item.state.busyLickingDoughnutsOffFace ??= false;
           break;
         case "movingPlatform":
+          // Needed for saves from v26 (released July 2026) and earlier.
           vectoriseInPlace(
             item.config as { startDirection?: MaybeNamedDirection },
             "startDirection",
           );
           // saves from before these were initialised omit them:
+          //
+          // Needed for saves from v27 (released August 2026) and earlier.
           item.state.durationOfTouch ??= 0;
           item.state.timeOfLastDirectionChange ??= Number.NEGATIVE_INFINITY;
           break;
@@ -291,6 +354,7 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
           break;
         case "teleporter":
         case "portableTeleporter":
+          // Needed for saves from v27 (released August 2026) and earlier.
           migrateTeleporterActivationConfigInPlace(item.config);
           break;
         case "head":
@@ -299,6 +363,8 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
         case "switch":
         case "button":
           // used to be optional, now required
+          //
+          // Needed for saves from v27 (released August 2026) and earlier.
           item.state.disabled ??= false;
           break;
         case "heels":

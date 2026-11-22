@@ -194,6 +194,8 @@ const _loadGameState = <RoomId extends string>({
 
     // saves made before the camera could rotate have no target angle -
     // resume such games at the base view:
+    //
+    // Needed for saves from v26 (released July 2026) and earlier.
     writeInto.targetCameraAngle ??= cameraAngleBase;
 
     // before indexing, since attaching replaces each item with a copy:

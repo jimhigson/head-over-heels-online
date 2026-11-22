@@ -33,6 +33,8 @@ const legacyWallAlongAxis = (direction: LegacyWallConfig["direction"]) =>
  * from the scenery, sized to the config's times (length) or one tile if no
  * length was given, and any times property is removed. No-op for walls that
  * already carry tiles.
+ *
+ * Needed for saves from v25 (released June 2026) and earlier.
  */
 export const migrateWallConfigInPlace = (
   config: LegacyWallConfig,
@@ -58,6 +60,8 @@ export const migrateWallConfigInPlace = (
  * needed for json authored before tiles were universal (old saved community
  * rooms) and for the original-campaign patches, which resize a near wall by
  * adding a times property.
+ *
+ * Needed for saves from v25 (released June 2026) and earlier.
  */
 export const migrateWallTilesInPlace = (room: AnyRoomJson): void => {
   for (const item of valuesIter(room.items)) {

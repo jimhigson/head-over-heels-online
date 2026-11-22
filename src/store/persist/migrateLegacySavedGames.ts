@@ -19,6 +19,8 @@ import type { UnknownRecord } from "type-fest";
  * The legacy entry is removed after splitting.
  *
  * If the legacy key is absent or unparseable the function is a no-op.
+ *
+ * Needed for saves from v22 (released April 2026) and earlier.
  */
 const LEGACY_KEY = "persist:hohol/gameMenus/userSettings";
 const NEW_SAVED_GAMES_KEY = "persist:hohol/savedGames";

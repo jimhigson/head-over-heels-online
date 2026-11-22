@@ -15,7 +15,9 @@ export type LegacyTeleporterActivationConfig = {
 const legacyActivationPrefix = "planetsLiberated.";
 
 /**
- * rename a teleporter's legacy store-path condition to the planet it names
+ * rename a teleporter's legacy store-path condition to the planet it names.
+ *
+ * Needed for saves from v27 (released August 2026) and earlier.
  */
 export const migrateTeleporterActivationConfigInPlace = (
   config: LegacyTeleporterActivationConfig,
@@ -34,7 +36,9 @@ export const migrateTeleporterActivationConfigInPlace = (
  * migrate every teleporter (fixed or portable) of a room json
  *
  * Needed for campaigns authored before `activatedIfPlanetLiberated`, loaded
- * from the db or kept in the editor
+ * from the db or kept in the editor.
+ *
+ * Needed for saves from v27 (released August 2026) and earlier.
  */
 export const migrateTeleporterActivationInPlace = (room: AnyRoomJson): void => {
   for (const item of valuesIter(room.items)) {
