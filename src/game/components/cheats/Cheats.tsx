@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from "preact/compat";
-import { useState } from "preact/hooks";
+import { useCallback, useState } from "preact/hooks";
 import type { EmptyObject } from "type-fest";
 
 import type { ItemInPlay } from "../../../model/ItemInPlay";
@@ -26,10 +26,10 @@ import {
   setGameSpeed,
   setShowShadowMasks,
 } from "../../../store/slices/userSettings/userSettingsSlice";
-import { useDispatchActionCallback } from "../../../store/useDispatchActionCallback";
 import { Button } from "../../../ui/Button";
 import { Switch } from "../../../ui/Switch";
 import { useKeyboardShortcut } from "../../../ui/useKeyboardShortcut";
+import { appTicker } from "../../../utils/ticker/appTickerInstance";
 import { ShowBoundingBoxSelect } from "../../debug/ShowBoundingBoxSelect";
 import type { GameApi } from "../../GameApi";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
@@ -44,7 +44,7 @@ import { debugPointerDecorateItemRenderer } from "../../render/item/itemRender/d
 import { subRoomBoundariesDecorateRoomRenderer } from "../../render/room/subRoomBoundariesDecorateRoomRenderer";
 import { useRegisterDecorateItemRenderers } from "../../render/useRegisterDecorateItemRenderers";
 import { useRegisterDecorateRoomRenderers } from "../../render/useRegisterDecorateRoomRenderers";
-import { CssVariables } from "../CssVariables";
+import { CssUpscaleVariables } from "../CssUpscaleVariables";
 import { CheatsCmdKDialog } from "../dialogs/menuDialog/dialogs/cmdK/CheatsCmdKDialog";
 import { useGameApi } from "../GameApiContext";
 import { usePlayableTailwindSpriteClassname } from "../tailwindSprites/playableTailwindSpriteClassname";
@@ -266,7 +266,9 @@ const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
   useKeyboardShortcut(
     ["^K", "⌘K"],
     false,
-    useDispatchActionCallback(cmdKPressed),
+    useCallback(() => {
+      dispatch(cmdKPressed({ openedAt: appTicker.time }));
+    }, [dispatch]),
   );
 
   const [open, setOpen] = useState(false);
@@ -298,7 +300,7 @@ const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
           data-test-id="cheats-menu"
           class="absolute bottom-3 max-h-[calc(100vh-var(--block)*3)] right-0 flex flex-col w-[500px] zx:[&_.sprite]:sprite-revert-to-white overflow-y-scroll z-cheats text-white"
         >
-          <CssVariables scaleFactor={2}>
+          <CssUpscaleVariables scaleFactor={2}>
             <Heading>room select:</Heading>
             <GameApiConnectedRoomSelect />
             <div class="flex flex-row items-center">
@@ -371,7 +373,7 @@ const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 data-test-id="cheats-summon-cmdk"
                 class={cheatsButtonClasses}
                 onClick={(e) => {
-                  dispatch(cmdKPressed());
+                  dispatch(cmdKPressed({ openedAt: appTicker.time }));
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
@@ -879,7 +881,7 @@ const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 />
               </ConsoleDumpButton>
             </div>
-          </CssVariables>
+          </CssUpscaleVariables>
         </div>
       )}
     </>

@@ -1,7 +1,7 @@
 import type { ComponentChildren } from "preact";
 import { useLayoutEffect, useRef } from "preact/hooks";
 
-import { CssVariables } from "../../game/components/CssVariables";
+import { CssUpscaleVariables } from "../../game/components/CssUpscaleVariables";
 import type { Xy } from "../../utils/vectors/vectors";
 import { Command, type CommandProps } from "./Command";
 import { CommandList } from "./CommandList";
@@ -62,10 +62,10 @@ export const ContextMenu = ({
   }
 
   return (
-    // CssVariables wraps the popover from outside: custom properties inherit
+    // CssUpscaleVariables wraps the popover from outside: custom properties inherit
     // through the DOM tree (top layer included), so --block/--scale resolve
     // for the popover's own drop shadow
-    <CssVariables scaleFactor={2}>
+    <CssUpscaleVariables scaleFactor={2}>
       <div
         ref={ref}
         popover="auto"
@@ -91,6 +91,6 @@ export const ContextMenu = ({
           <CommandList>{children}</CommandList>
         </Command>
       </div>
-    </CssVariables>
+    </CssUpscaleVariables>
   );
 };

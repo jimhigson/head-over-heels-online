@@ -357,6 +357,13 @@ const someFunc = (obj: Pick<ComplexObject, 'properties' | 'we' | 'use') => {}
 
 * Do NOT make run-time code edits merely to keep typescript from erroring, in ways that do not actually enhance the type safety of the program. The type system forcing us to write less efficient code is an issue, it is a very clear sign that we got the typings wrong; discuss with the user in this case.
 
+* Maps or WeakMaps at module level to associate data with other data are considered generally an anti-pattern. Usually this means that something 'extra' is being added onto a data model, and it makes the overall model very
+hard to reason about because it ends up being spread over very many modules each holding a Map with a small
+part of the model. If making these, warn the user and discuss other alternatives. It is sometimes necessary
+to keep non-serialisable data in a store key'd by something in the store, but this is to be used only where
+necessary, not to avoid updating our data model elsewhere or to avoid code churn that would put us at the
+better model.
+
 ### Comments 
  * no single-line tsdoc comments - always put the text on its own line(s):
  ```ts
@@ -478,6 +485,7 @@ Never padd off a test as 'flaky' as an excuse - a 'flaky' test is a broken test.
 
 * we are using reselect 5, which includes weak map caching internally, use this instead of implementing our own weak map based cache when accessing the store
 * in fact, don't reimplement anything reselect or rtk already gives us if we can use the libraries we already have
+* every thunk is typed with the store's thunk types (`AppThunk` / `EditorThunk` from `src/store/store.ts`), never a hand-written `(dispatch: Dispatch) => …`, and has `Thunk` in its name (eg `updateUpscaleThunk`)
 
  ### Testing store reducers and state transitions
 

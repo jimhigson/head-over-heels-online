@@ -128,6 +128,10 @@ export type SpritesheetMetadata<
    */
   isUncolourisedOf?: SpritesheetName;
   /**
+   * the url of the image this spritesheet draws
+   */
+  artUrl: string;
+  /**
    * the spritesheet the game is drawn with while paused - itself, or eg an
    * uncolourised version
    */

@@ -3,7 +3,7 @@ import type {
   BaseTextureId,
   FramesWithSpeed,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { useCurrentSpritesheetData } from "../../store/slices/gameMenus/gameMenusSelectors";
+import { useDrawnSpritesheetData } from "../../sprites/spritesheet/useDrawnSpritesheetData";
 import { entries, keys } from "../../utils/entries";
 import { AnimationTile } from "./AnimationTile";
 import { FontSpecimen } from "./FontSpecimen";
@@ -17,7 +17,7 @@ export const SpritesPageContent = ({
   scale,
   spriteFilter,
 }: SpritesPageContentProps) => {
-  const currentSpritesheetData = useCurrentSpritesheetData();
+  const currentSpritesheetData = useDrawnSpritesheetData();
 
   const animationEntries = entries(
     currentSpritesheetData.animations as Record<

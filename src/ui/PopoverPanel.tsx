@@ -1,7 +1,7 @@
 import type { ComponentChildren } from "preact";
 import { useEffect, useRef } from "preact/hooks";
 
-import { CssVariables } from "../game/components/CssVariables";
+import { CssUpscaleVariables } from "../game/components/CssUpscaleVariables";
 import { cn } from "./cn";
 
 export type PopoverPanelProps = {
@@ -47,10 +47,10 @@ export const PopoverPanel = ({
   }, [open]);
 
   return (
-    // CssVariables wraps the popover from outside: custom properties inherit
+    // CssUpscaleVariables wraps the popover from outside: custom properties inherit
     // through the DOM tree (top layer included), so --block/--scale resolve
     // for the popover's own drop shadow
-    <CssVariables scaleFactor={contentsScaleFactor}>
+    <CssUpscaleVariables scaleFactor={contentsScaleFactor}>
       <div
         id={id}
         popover="auto"
@@ -70,6 +70,6 @@ export const PopoverPanel = ({
       >
         {children}
       </div>
-    </CssVariables>
+    </CssUpscaleVariables>
   );
 };

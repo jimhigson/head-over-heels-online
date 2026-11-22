@@ -2,7 +2,7 @@ import { createPortal } from "preact/compat";
 import { useEffect, useLayoutEffect, useRef } from "preact/hooks";
 import type { EmptyObject } from "type-fest";
 
-import { CssVariables } from "../game/components/CssVariables";
+import { CssUpscaleVariables } from "../game/components/CssUpscaleVariables";
 import { usePointerTracker } from "../game/input/InputStateProvider";
 import type { TextureTailwindClass } from "../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppSelector } from "../store/hooks";
@@ -89,12 +89,12 @@ export const SoftwarePointerDomRenderer = (_emptyProps: EmptyObject) => {
   }, [pointerTracker, pointerOnTube, upscale]);
 
   return createPortal(
-    <CssVariables>
+    <CssUpscaleVariables>
       <span
         ref={spriteRef}
         class={`sprite zx:sprite-revert-to-two-tone-dim ${"texture-pointer" satisfies TextureTailwindClass} fixed top-0 left-0 pointer-events-none z-softwarePointer`}
       />
-    </CssVariables>,
+    </CssUpscaleVariables>,
     document.body,
   );
 };

@@ -26,7 +26,11 @@ const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
         class={`${mainMenuDialogColourClasses} text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 gap-y-2 resHandheld:gap-y-1`}
         dialogId="communityGames"
       >
-        <DialogTitleBar path={["Play", "Community"]} class="mobile:px-4" />
+        <DialogTitleBar
+          dialogId="communityGames"
+          path={["Play", "Community"]}
+          class="mobile:px-4"
+        />
         <div
           class={
             "flex flex-col gap-1 p-1 " +

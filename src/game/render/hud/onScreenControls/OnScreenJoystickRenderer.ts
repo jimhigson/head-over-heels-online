@@ -98,7 +98,7 @@ export class OnScreenJoystickRenderer implements Renderer<
     this.#arrowSprites = {
       away: new TextContainer({
         pixiRenderer,
-        resolution: spritesheets.spritesheetUpscale,
+        resolution: spritesheets.spritesheetSmoothUpscale,
         outline: true,
         x: joystickArrowOffset,
         y: -joystickArrowOffset,
@@ -107,7 +107,7 @@ export class OnScreenJoystickRenderer implements Renderer<
       }),
       right: new TextContainer({
         pixiRenderer,
-        resolution: spritesheets.spritesheetUpscale,
+        resolution: spritesheets.spritesheetSmoothUpscale,
         outline: true,
         x: joystickArrowOffset,
         y: joystickArrowOffset,
@@ -116,7 +116,7 @@ export class OnScreenJoystickRenderer implements Renderer<
       }),
       towards: new TextContainer({
         pixiRenderer,
-        resolution: spritesheets.spritesheetUpscale,
+        resolution: spritesheets.spritesheetSmoothUpscale,
         outline: true,
         x: -joystickArrowOffset,
         y: joystickArrowOffset,
@@ -125,7 +125,7 @@ export class OnScreenJoystickRenderer implements Renderer<
       }),
       left: new TextContainer({
         pixiRenderer,
-        resolution: spritesheets.spritesheetUpscale,
+        resolution: spritesheets.spritesheetSmoothUpscale,
         outline: true,
         x: -joystickArrowOffset,
         y: -joystickArrowOffset,
@@ -136,7 +136,7 @@ export class OnScreenJoystickRenderer implements Renderer<
         {
           awayRight: new TextContainer({
             pixiRenderer,
-            resolution: spritesheets.spritesheetUpscale,
+            resolution: spritesheets.spritesheetSmoothUpscale,
             outline: true,
             x: joystickArrowOffset * Math.SQRT2,
             text: "➡",
@@ -144,7 +144,7 @@ export class OnScreenJoystickRenderer implements Renderer<
           }),
           towardsRight: new TextContainer({
             pixiRenderer,
-            resolution: spritesheets.spritesheetUpscale,
+            resolution: spritesheets.spritesheetSmoothUpscale,
             outline: true,
             y: joystickArrowOffset * Math.SQRT2,
             text: "⬇",
@@ -152,7 +152,7 @@ export class OnScreenJoystickRenderer implements Renderer<
           }),
           towardsLeft: new TextContainer({
             pixiRenderer,
-            resolution: spritesheets.spritesheetUpscale,
+            resolution: spritesheets.spritesheetSmoothUpscale,
             outline: true,
             x: -joystickArrowOffset * Math.SQRT2,
             text: "⬅",
@@ -160,7 +160,7 @@ export class OnScreenJoystickRenderer implements Renderer<
           }),
           awayLeft: new TextContainer({
             pixiRenderer,
-            resolution: spritesheets.spritesheetUpscale,
+            resolution: spritesheets.spritesheetSmoothUpscale,
             outline: true,
             y: -joystickArrowOffset * Math.SQRT2,
             text: "⬆",

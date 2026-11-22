@@ -2,12 +2,13 @@ import preact from "@preact/preset-vite";
 import path from "node:path";
 import { visualizer } from "rollup-plugin-visualizer";
 import tailwindcss from "tailwindcss";
-import { unrunRunner } from "unplugin-macros";
 import Macros from "unplugin-macros/vite";
 import { defineConfig, loadEnv, type PluginOption } from "vite";
 import glsl from "vite-plugin-glsl";
 
+import { glslShortenIdentifiers } from "./buildTools/glslShortenIdentifiers";
 import { hmrOnlyPreact } from "./buildTools/hmrOnlyPreact";
+import { macroRunner } from "./buildTools/macroRunner";
 import { postcssPruneUnused } from "./buildTools/postcssPruneUnused";
 import { devFakeAuthPlugin } from "./scripts/fakeDb/devFakeAuthPlugin";
 
@@ -92,7 +93,7 @@ export default defineConfig(({ mode: _mode }) => {
     },
 
     plugins: [
-      Macros({ runner: unrunRunner() }),
+      Macros({ runner: macroRunner() }),
       hmrOnlyPreact(),
       preact({
         devtoolsInProd: false,
@@ -106,6 +107,7 @@ export default defineConfig(({ mode: _mode }) => {
       }) as PluginOption,
       glsl({
         minify: true,
+        onComplete: glslShortenIdentifiers(path.resolve(__dirname, "src")),
       }),
       ...(mode === "local-db" ?
         [

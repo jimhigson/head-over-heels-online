@@ -23,7 +23,11 @@ const InstallDialog = (_emptyProps: EmptyObject) => {
         class={`${mainMenuDialogColourClasses} text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 justify-center`}
         dialogId="installGuide"
       >
-        <DialogTitleBar class="pl-1" path={["Install instructions"]} />
+        <DialogTitleBar
+          dialogId="installGuide"
+          class="pl-1"
+          path={["Install instructions"]}
+        />
         <div class={mainMenuScrollClasses}>
           <BlockyMarkdown
             class={"text-midGrey toppy:text-toppyGrey1 zx:text-zxWhite"}

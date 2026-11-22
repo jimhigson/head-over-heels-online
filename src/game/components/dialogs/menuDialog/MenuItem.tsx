@@ -3,7 +3,7 @@ import { useCallback } from "preact/hooks";
 import { twMerge } from "tailwind-merge";
 
 import { useAppDispatch } from "../../../../store/hooks";
-import { goToSubmenu } from "../../../../store/slices/gameMenus/gameMenusSlice";
+import { openMenuThunk } from "../../../../store/slices/gameMenus/openMenuThunk";
 import { detectDeviceType } from "../../../../utils/detectEnv/detectDeviceType";
 import { openExternal } from "../../../../utils/tauri/openExternalLink";
 import type { DialogId } from "./DialogId";
@@ -81,7 +81,7 @@ export const MenuItem = ({
     if (href) {
       openExternal(href);
     } else if (subMenuId) {
-      dispatch(goToSubmenu(subMenuId));
+      dispatch(openMenuThunk({ dialogId: subMenuId }));
     } else {
       onSelect();
     }

@@ -1,10 +1,12 @@
 import { expect, type Page } from "@playwright/test";
 import type { Container, Texture } from "pixi.js";
 
-import { enableUpscaledSprites } from "./testUtils/enableUpscaledSprites";
+import { enableSmoothUpscaledSprites } from "./testUtils/enableSmoothUpscaledSprites";
 import {
   paintRenderedFrame,
   setZeroGameSpeed,
+  snapshotE2eCursor,
+  waitForEventOnBus,
   waitForGameReady,
 } from "./testUtils/gameStateQueries";
 import { formatProjectName } from "./testUtils/logging";
@@ -14,10 +16,10 @@ import {
   startCampaignViaMenu,
 } from "./testUtils/menuNavigation";
 import { enableOnScreenControls } from "./testUtils/onScreenControls";
-import { osSlowness } from "./testUtils/osSlowness";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import {
   roomScreenshotOptions,
+  testTimeout,
   upscaledSpritesHudTextMaxDiffPixelRatio,
 } from "./testUtils/screenshots";
 import { test } from "./testUtils/test";
@@ -87,8 +89,9 @@ const hudRendererState = (page: Page) =>
 const framesToProveTheHudSurvives = 30;
 
 test.describe("upscaled sprites", () => {
-  // the upscale shader is slow to compile where rendering is in software
-  test.setTimeout(120_000 * osSlowness);
+  // the smoothing bake takes minutes where rendering is in software (eg CI's
+  // SwiftShader)
+  test.setTimeout(testTimeout);
 
   test.beforeEach(async ({ page }) => {
     await setupE2ePage(page);
@@ -102,7 +105,7 @@ test.describe("upscaled sprites", () => {
     // labels on top of the icons the pointer hud also shows
     await enableOnScreenControls(page);
 
-    await enableUpscaledSprites(page);
+    await enableSmoothUpscaledSprites(page);
 
     // ground truth first: every hud texture must report the upscaled bake,
     // not just the ones a screenshot's tolerance happens to catch:
@@ -130,7 +133,7 @@ test.describe("upscaled sprites", () => {
   }, testInfo) => {
     await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
     await enableOnScreenControls(page);
-    await enableUpscaledSprites(page);
+    await enableSmoothUpscaledSprites(page);
 
     // the option a paused tick renders under is derived per tick, so a menu
     // being open is exactly the state that can rebuild the hud endlessly -
@@ -157,21 +160,31 @@ test.describe("upscaled sprites", () => {
     expect((await hudRendererState(page)).uid).toBe(uidWhileOpen);
   });
 
-  test("the game starts when it is already on at boot", async ({
+  test("the game starts when smooth upscaling is already on at boot", async ({
     page,
   }, testInfo) => {
     await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
-    await enableUpscaledSprites(page);
+    await enableSmoothUpscaledSprites(page);
 
     // reloading resumes the game with the setting persisted on, so the very
     // first frame is rendered upscaled rather than transitioning into it:
+    const reloadedAt = performance.now();
     await page.reload();
     await waitForGameReady(page);
+    const afterReload = await snapshotE2eCursor(page);
 
-    // asking for a frame that draws waits out the boot-time bake behind it, so
-    // the mark it leaves is ground truth - a black canvas (the reported bug)
-    // would never reach it:
-    await paintRenderedFrame(page);
+    // frames are drawn until one comes from the smoothed sheet, so the mark it
+    // leaves is ground truth - a black canvas (the reported bug) would never
+    // reach it:
+    await waitForEventOnBus(page, {
+      name: "frameRendered",
+      afterId: afterReload,
+      arg: undefined,
+      match: (payload) => payload.spritesheetSmoothUpscale > 1,
+    });
+    console.log(
+      `[smoothing-bake] first smoothed frame ${Math.round(performance.now() - reloadedAt)}ms after reload`,
+    );
     expect(
       await page.evaluate(
         () => performance.getEntriesByName("first-gameplay").length,

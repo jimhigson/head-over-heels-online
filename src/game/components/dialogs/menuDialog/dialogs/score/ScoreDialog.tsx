@@ -2,12 +2,12 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
 import { useAppSelector } from "../../../../../../store/hooks";
+import { closeMenuThunk } from "../../../../../../store/slices/gameMenus/closeMenuThunk";
 import {
   selectPlanetsLiberatedCount,
   useCurrentCampaign,
   usePickupsCollected,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import type { GameRootState } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
@@ -123,7 +123,7 @@ const ScoreDialog = () => {
       <Border class="bg-metallicBlue zx:bg-zxCyan toppy:bg-toppyCool3" />
       <Dialog
         class={`${mainMenuDialogColourClasses} w-zx h-full flex flex-col`}
-        onClick={useDispatchActionCallback(backToParentMenu)}
+        onClick={useDispatchActionCallback(closeMenuThunk, "score")}
         dialogId="score"
       >
         <MainMenuHeading noSubtitle class="resHandheld:hidden" />
@@ -169,7 +169,7 @@ const ScoreDialog = () => {
             Liberated {planetsLiberatedCount} planets
           </span>
           <MenuItems class="hidden">
-            <BackMenuItem />
+            <BackMenuItem dialogId="score" />
           </MenuItems>
         </div>
       </Dialog>

@@ -188,7 +188,9 @@ for (const spritesheetName of enabledSpritesheets) {
       // the "update required" dialog is shown reactively when the service
       // worker finds a new build, so it can't be reached by menu navigation —
       // dispatch the same action the update flow dispatches
-      await dispatchToStore(page, needRefreshMenuShown());
+      // the page's own clock is not this process's - 0 is the page's start, so
+      // the dialog is drawn as soon as it opens
+      await dispatchToStore(page, needRefreshMenuShown({ openedAt: 0 }));
 
       // the striped LoadingBorder backdrop is shown while the lazy dialog chunk
       // and the selected sprite option's spritesheet load; wait for it to leave

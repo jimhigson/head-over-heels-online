@@ -9,13 +9,49 @@ import { emptyObject } from "../../../utils/empty";
 import { clearAllData } from "../clearAllData";
 import { errorCaught, errorDismissed } from "../errors/errorsSlice";
 import { savedGameLoadedOnAppLoad } from "../savedGames/savedGamesSlice";
+import { findDrawnMenu } from "./selectDrawnMenu";
 
-type BaseOpenMenu = {
+/**
+ * options that can be given when opening a menu
+ */
+export type MenuOptions = {
+  /**
+   * stays above every menu opened after it, and is left in place when the
+   * stack beneath it is replaced
+   */
+  alwaysOnTop: boolean;
+  /**
+   * if a menu is marked as not dismissable,
+   * the player's back and exit cannot close it, so only an explicit request
+   * to close that names it will remove it from the store's menu stack
+   */
+  notDismissable: boolean;
+  /**
+   * how long after opening it is drawn - until then the menu beneath it is
+   * drawn in its place
+   */
+  showAfterDelayMs: number;
+  /**
+   * how long it stays drawn after being closed
+   */
+  lingerMs: number;
+};
+
+type BaseOpenMenu = MenuOptions & {
   // will be undefined if the menu items have not been rendered yet, since relies
   // on rendering to discover the ids
   focussedItemId?: string;
   // maintain because selecting by mouse doesn't trigger scrolling in the renderer
   scrollableSelection: boolean;
+  /**
+   * the app ticker's `time` when it was opened
+   */
+  openedAt: number;
+  /**
+   * the app ticker's `time` when it was closed, while it lingers before
+   * being removed - undefined while it is open
+   */
+  closingAt: number | undefined;
 };
 
 export type OpenMenu =
@@ -60,6 +96,8 @@ export type OpenMenu =
       menuParam: EmptyObject;
     });
 
+export type HoldPress = "hold" | "toggle" | "unhold";
+
 export type DeathMenuParam = {
   dyingCharacterName: CharacterName;
   // 0 if out of the game
@@ -80,6 +118,12 @@ const initialGameMenuSliceState: GameMenusState = {
     {
       menuId: "mainMenu",
       scrollableSelection: false,
+      alwaysOnTop: false,
+      notDismissable: false,
+      showAfterDelayMs: 0,
+      lingerMs: 0,
+      closingAt: undefined,
+      openedAt: 0,
       // boot main menu: no game in play, so the user mustn't be able to pop
       // it (would leave the screen blank)
       menuParam: { isClosable: false },
@@ -93,6 +137,23 @@ const initialGameMenuSliceState: GameMenusState = {
  * dialog when reading a scroll, etc.) live in `gameMenusListeners.ts` rather
  * than as inline reducer writes here.
  */
+/**
+ * replace the stack with these menus - any always-on-top menu already open
+ * is left in place above them
+ */
+const replaceMenuStack = (
+  state: GameMenusState,
+  /**
+   * the new stack, top first
+   */
+  menus: OpenMenu[],
+) => {
+  state.openMenus = [
+    ...state.openMenus.filter(({ alwaysOnTop }) => alwaysOnTop),
+    ...menus,
+  ];
+};
+
 export const gameMenusSlice = createSlice({
   name: "gameMenus",
   initialState: initialGameMenuSliceState,
@@ -114,52 +175,122 @@ export const gameMenusSlice = createSlice({
     menuOpenOrExitPressed(
       state,
       {
-        payload: { openMainIfEmpty },
-      }: PayloadAction<{ openMainIfEmpty: boolean }>,
+        payload: { openMainIfEmpty, openedAt },
+      }: PayloadAction<{ openMainIfEmpty: boolean; openedAt: number }>,
     ) {
-      if (state.openMenus.length > 0) {
-        // a menu is open, pop it off if it is closable:
+      // back and exit act on the menu drawn, or failing that the top of the stack
+      const menuToClose =
+        findDrawnMenu(state.openMenus, openedAt) ?? state.openMenus.at(0);
+      if (menuToClose !== undefined) {
+        // a menu is open, close it if it is closable:
 
-        const [top] = state.openMenus;
-
-        const topIsUnclosable =
+        const isUnclosable =
+          menuToClose.notDismissable ||
           // closes only by choosing one of its options, which dismiss the error:
-          top.menuId === "errorCaught" ||
+          menuToClose.menuId === "errorCaught" ||
           (state.openMenus.length === 1 &&
-            top.menuId === "mainMenu" &&
-            !top.menuParam.isClosable);
+            menuToClose.menuId === "mainMenu" &&
+            !menuToClose.menuParam.isClosable);
 
-        if (!topIsUnclosable) {
-          const [, ...tail] = state.openMenus;
-          state.openMenus = tail;
+        if (!isUnclosable) {
+          state.openMenus = state.openMenus.filter(
+            (openMenu) => openMenu !== menuToClose,
+          );
         }
       } else if (openMainIfEmpty) {
         // no menus open, open one:
-        state.openMenus = [
+        replaceMenuStack(state, [
           {
             menuId: "mainMenu",
             scrollableSelection: false,
+            alwaysOnTop: false,
+            notDismissable: false,
+            showAfterDelayMs: 0,
+            lingerMs: 0,
+            closingAt: undefined,
+            openedAt,
             menuParam: { isClosable: true },
           },
-        ];
+        ]);
       }
     },
-    goToSubmenu(state, { payload: dialogId }: PayloadAction<DialogId>) {
+    /**
+     * open a menu above the others - unless it is already open. Opened again
+     * while it lingers, it stays, open once more
+     */
+    goToSubmenu(
+      state,
+      {
+        payload: { dialogId, openedAt, ...options },
+      }: PayloadAction<{ dialogId: DialogId; openedAt: number } & MenuOptions>,
+    ) {
+      const existing = state.openMenus.find(
+        ({ menuId }) => menuId === dialogId,
+      );
+      if (existing !== undefined) {
+        existing.closingAt = undefined;
+        return;
+      }
       state.openMenus = [
         {
           menuId: dialogId,
           scrollableSelection: false,
+          ...options,
+          openedAt,
+          closingAt: undefined,
           menuParam: {},
         } as OpenMenu,
         ...state.openMenus,
       ];
     },
-    closeAllMenus(state) {
-      state.openMenus = [];
+    /**
+     * remove a menu from wherever it is in the stack - the top one with that
+     * id, since two can be queued, eg two deaths close together
+     */
+    menuClosed(
+      state,
+      {
+        payload: { menuId: closingMenuId },
+      }: PayloadAction<{ menuId: DialogId }>,
+    ) {
+      const closingIndex = state.openMenus.findIndex(
+        ({ menuId }) => menuId === closingMenuId,
+      );
+      if (closingIndex !== -1) {
+        state.openMenus.splice(closingIndex, 1);
+      }
     },
-    backToParentMenu(state) {
-      const [, ...tail] = state.openMenus;
-      state.openMenus = tail;
+    /**
+     * a menu is closed but stays drawn for its `lingerMs`
+     */
+    menuLingerStarted(
+      state,
+      {
+        payload: { menuId: closingMenuId, closingAt },
+      }: PayloadAction<{ menuId: DialogId; closingAt: number }>,
+    ) {
+      const closingMenu = state.openMenus.find(
+        ({ menuId }) => menuId === closingMenuId,
+      );
+      if (closingMenu !== undefined) {
+        closingMenu.closingAt = closingAt;
+      }
+    },
+    /**
+     * a lingering menu's time is up: it is removed, unless opened again since
+     */
+    menuLingerEnded(
+      state,
+      {
+        payload: { menuId: closingMenuId, closingAt },
+      }: PayloadAction<{ menuId: DialogId; closingAt: number }>,
+    ) {
+      state.openMenus = state.openMenus.filter(
+        (menu) => menu.menuId !== closingMenuId || menu.closingAt !== closingAt,
+      );
+    },
+    closeAllMenus(state) {
+      replaceMenuStack(state, []);
     },
     setFocussedMenuItemId(
       state,
@@ -176,35 +307,52 @@ export const gameMenusSlice = createSlice({
     },
     holdPressed(
       state,
-      { payload }: PayloadAction<"hold" | "toggle" | "unhold">,
+      {
+        payload: { press, openedAt },
+      }: PayloadAction<{ press: HoldPress; openedAt: number }>,
     ) {
       const showingAMenu = state.openMenus.length > 0;
 
       if (showingAMenu) {
         const onHoldAlready = state.openMenus[0]?.menuId === "hold";
-        if (onHoldAlready && payload !== "hold") {
+        if (onHoldAlready && press !== "hold") {
           // go off hold:
-          state.openMenus = [];
+          replaceMenuStack(state, []);
         }
         // else do nothing if hold pressed while in menus
       } else {
         // no menus shown
-        if (payload !== "unhold") {
+        if (press !== "unhold") {
           // go on hold:
-          state.openMenus = [
+          replaceMenuStack(state, [
             {
               menuId: "hold",
               scrollableSelection: false,
+              alwaysOnTop: false,
+              notDismissable: false,
+              showAfterDelayMs: 0,
+              lingerMs: 0,
+              closingAt: undefined,
+              openedAt,
               menuParam: emptyObject,
             },
-          ];
+          ]);
         }
       }
     },
-    mapPressed(state) {
+    mapPressed(
+      state,
+      { payload: { openedAt } }: PayloadAction<{ openedAt: number }>,
+    ) {
       const mapMenu: OpenMenu = {
         menuId: "map",
         scrollableSelection: false,
+        alwaysOnTop: false,
+        notDismissable: false,
+        showAfterDelayMs: 0,
+        lingerMs: 0,
+        closingAt: undefined,
+        openedAt,
         menuParam: emptyObject,
       };
 
@@ -225,10 +373,13 @@ export const gameMenusSlice = createSlice({
         // else do nothing if map pressed while in menus
       } else {
         // show the map:
-        state.openMenus = [mapMenu];
+        replaceMenuStack(state, [mapMenu]);
       }
     },
-    cmdKPressed(state) {
+    cmdKPressed(
+      state,
+      { payload: { openedAt } }: PayloadAction<{ openedAt: number }>,
+    ) {
       if (state.openMenus.at(0)?.menuId === "cmdk") {
         const [, ...tail] = state.openMenus;
         state.openMenus = tail;
@@ -237,6 +388,12 @@ export const gameMenusSlice = createSlice({
           {
             menuId: "cmdk",
             scrollableSelection: false,
+            alwaysOnTop: false,
+            notDismissable: false,
+            showAfterDelayMs: 0,
+            lingerMs: 0,
+            closingAt: undefined,
+            openedAt,
             menuParam: emptyObject,
           },
           ...state.openMenus,
@@ -250,23 +407,37 @@ export const gameMenusSlice = createSlice({
     // gameInPlaySlice. Each names the menu transition it produces; the
     // listener supplies the payload context.
 
-    deathDialogShown(state, { payload }: PayloadAction<DeathMenuParam>) {
+    deathDialogShown(
+      state,
+      {
+        payload: { deathMenuParam, openedAt },
+      }: PayloadAction<{ deathMenuParam: DeathMenuParam; openedAt: number }>,
+    ) {
       const newMenu: OpenMenu = {
         menuId: "death",
         scrollableSelection: false,
-        menuParam: payload,
+        alwaysOnTop: false,
+        notDismissable: false,
+        showAfterDelayMs: 0,
+        lingerMs: 0,
+        closingAt: undefined,
+        openedAt,
+        menuParam: deathMenuParam,
       };
 
+      const beneathAlwaysOnTop = state.openMenus.filter(
+        ({ alwaysOnTop }) => !alwaysOnTop,
+      );
       if (
-        state.openMenus.length === 1 &&
-        state.openMenus[0].menuId === "death"
+        beneathAlwaysOnTop.length === 1 &&
+        beneathAlwaysOnTop[0].menuId === "death"
       ) {
         // already one game dialog - slip the new one in below it
         // to show after that one is dismissed. Ie, if two playable
         // characters die very close to each other in time.
-        state.openMenus = [state.openMenus[0], newMenu];
+        replaceMenuStack(state, [beneathAlwaysOnTop[0], newMenu]);
       } else {
-        state.openMenus = [newMenu];
+        replaceMenuStack(state, [newMenu]);
       }
     },
 
@@ -277,25 +448,43 @@ export const gameMenusSlice = createSlice({
     crownsMenuShown(
       state,
       {
-        payload: { playMusic, allCrowns },
-      }: PayloadAction<{ playMusic: boolean; allCrowns: boolean }>,
+        payload: { playMusic, allCrowns, openedAt },
+      }: PayloadAction<{
+        playMusic: boolean;
+        allCrowns: boolean;
+        openedAt: number;
+      }>,
     ) {
       const crownsMenu: OpenMenu = {
         menuId: "crowns",
         scrollableSelection: false,
+        alwaysOnTop: false,
+        notDismissable: false,
+        showAfterDelayMs: 0,
+        lingerMs: 0,
+        closingAt: undefined,
+        openedAt,
         menuParam: { playMusic },
       };
-      state.openMenus =
+      replaceMenuStack(
+        state,
         allCrowns ?
           [
             {
               menuId: "proclaimEmperor",
               scrollableSelection: false,
+              alwaysOnTop: false,
+              notDismissable: false,
+              showAfterDelayMs: 0,
+              lingerMs: 0,
+              closingAt: undefined,
+              openedAt,
               menuParam: emptyObject,
             },
             crownsMenu,
           ]
-        : [crownsMenu];
+        : [crownsMenu],
+      );
     },
 
     /**
@@ -304,18 +493,28 @@ export const gameMenusSlice = createSlice({
      */
     gameStartedMenusOpened(
       state,
-      { payload: { showCrowns } }: PayloadAction<{ showCrowns: boolean }>,
+      {
+        payload: { showCrowns, openedAt },
+      }: PayloadAction<{ showCrowns: boolean; openedAt: number }>,
     ) {
-      state.openMenus =
+      replaceMenuStack(
+        state,
         showCrowns ?
           [
             {
               menuId: "crowns",
               scrollableSelection: false,
+              alwaysOnTop: false,
+              notDismissable: false,
+              showAfterDelayMs: 0,
+              lingerMs: 0,
+              closingAt: undefined,
+              openedAt,
               menuParam: { playMusic: true },
             },
           ]
-        : [];
+        : [],
+      );
     },
 
     /**
@@ -336,32 +535,53 @@ export const gameMenusSlice = createSlice({
       {
         payload,
       }: PayloadAction<
-        | { offerReincarnation: false; scoreAlreadyShown: boolean }
-        | { offerReincarnation: true }
+        (
+          | { offerReincarnation: false; scoreAlreadyShown: boolean }
+          | { offerReincarnation: true }
+        ) & { openedAt: number }
       >,
     ) {
+      const { openedAt } = payload;
       const score = {
         menuId: "score",
         scrollableSelection: false,
+        alwaysOnTop: false,
+        notDismissable: false,
+        showAfterDelayMs: 0,
+        lingerMs: 0,
+        closingAt: undefined,
+        openedAt,
         menuParam: emptyObject,
       } as const;
       const offerReincarnation = {
         menuId: "offerReincarnation",
         scrollableSelection: false,
+        alwaysOnTop: false,
+        notDismissable: false,
+        showAfterDelayMs: 0,
+        lingerMs: 0,
+        closingAt: undefined,
+        openedAt,
         menuParam: emptyObject,
       } as const;
       const mainMenu = {
         menuId: "mainMenu",
         scrollableSelection: true,
+        alwaysOnTop: false,
+        notDismissable: false,
+        showAfterDelayMs: 0,
+        lingerMs: 0,
+        closingAt: undefined,
+        openedAt,
         menuParam: { isClosable: false },
       } as const;
 
       if (payload.offerReincarnation) {
-        state.openMenus = [score, offerReincarnation];
+        replaceMenuStack(state, [score, offerReincarnation]);
       } else if (payload.scoreAlreadyShown) {
-        state.openMenus = [mainMenu];
+        replaceMenuStack(state, [mainMenu]);
       } else {
-        state.openMenus = [score, mainMenu];
+        replaceMenuStack(state, [score, mainMenu]);
       }
     },
 
@@ -371,14 +591,23 @@ export const gameMenusSlice = createSlice({
      */
     scrollContentMenuShown(
       state,
-      { payload: scrollConfig }: PayloadAction<ScrollConfig>,
+      {
+        payload: { scrollConfig, openedAt },
+      }: PayloadAction<{ scrollConfig: ScrollConfig; openedAt: number }>,
     ) {
-      state.openMenus =
+      replaceMenuStack(
+        state,
         scrollConfig.source === "manual" ?
           [
             {
               menuId: `markdown/${scrollConfig.page}`,
               scrollableSelection: false,
+              alwaysOnTop: false,
+              notDismissable: false,
+              showAfterDelayMs: 0,
+              lingerMs: 0,
+              closingAt: undefined,
+              openedAt,
               menuParam: emptyObject,
             },
           ]
@@ -386,6 +615,12 @@ export const gameMenusSlice = createSlice({
             {
               menuId: "markdown/inline",
               scrollableSelection: false,
+              alwaysOnTop: false,
+              notDismissable: false,
+              showAfterDelayMs: 0,
+              lingerMs: 0,
+              closingAt: undefined,
+              openedAt,
               menuParam: {
                 markdown:
                   Array.isArray(scrollConfig.markdown) ?
@@ -393,28 +628,47 @@ export const gameMenusSlice = createSlice({
                   : scrollConfig.markdown,
               },
             },
-          ];
+          ],
+      );
     },
 
     /**
      * Show the "you've been reincarnated, restart from save" prompt after
      * the user accepts a reincarnation offer.
      */
-    reincarnationRestartMenuShown(state) {
-      state.openMenus = [
+    reincarnationRestartMenuShown(
+      state,
+      { payload: { openedAt } }: PayloadAction<{ openedAt: number }>,
+    ) {
+      replaceMenuStack(state, [
         {
           menuId: "reincarnatedRestart",
           scrollableSelection: false,
+          alwaysOnTop: false,
+          notDismissable: false,
+          showAfterDelayMs: 0,
+          lingerMs: 0,
+          closingAt: undefined,
+          openedAt,
           menuParam: emptyObject,
         },
-      ];
+      ]);
     },
 
-    needRefreshMenuShown(state) {
+    needRefreshMenuShown(
+      state,
+      { payload: { openedAt } }: PayloadAction<{ openedAt: number }>,
+    ) {
       state.openMenus = [
         {
           menuId: "needRefresh",
           scrollableSelection: false,
+          alwaysOnTop: false,
+          notDismissable: false,
+          showAfterDelayMs: 0,
+          lingerMs: 0,
+          closingAt: undefined,
+          openedAt,
           menuParam: emptyObject,
         },
         ...state.openMenus,
@@ -423,38 +677,52 @@ export const gameMenusSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(clearAllData, () => initialGameMenuSliceState);
-    builder.addCase(errorCaught, (state) => {
+    builder.addCase(errorCaught, (state, { payload: { openedAt } }) => {
       // when the error slice receives an error, react by showing our error dialog
       // overwrite to blat out all open menus - the menu may have caused the error!
-      state.openMenus = [
+      replaceMenuStack(state, [
         {
           menuId: "errorCaught",
           scrollableSelection: false,
+          alwaysOnTop: false,
+          notDismissable: false,
+          showAfterDelayMs: 0,
+          lingerMs: 0,
+          closingAt: undefined,
+          openedAt,
           menuParam: emptyObject,
         },
-      ];
+      ]);
     });
     builder.addCase(errorDismissed, (state) => {
-      state.openMenus = [];
+      replaceMenuStack(state, []);
     });
     // After loading a save on app start, show the hold (paused) menu so the
     // player resumes on their own time rather than dropping straight into
     // gameplay — they may have just opened the tab, may need to re-orient,
     // or may have intended to navigate via URL without auto-playing.
-    builder.addCase(savedGameLoadedOnAppLoad, (state) => {
-      state.openMenus = [
-        {
-          menuId: "hold",
-          scrollableSelection: false,
-          menuParam: emptyObject,
-        },
-      ];
-    });
+    builder.addCase(
+      savedGameLoadedOnAppLoad,
+      (state, { payload: { openedAt } }) => {
+        replaceMenuStack(state, [
+          {
+            menuId: "hold",
+            scrollableSelection: false,
+            alwaysOnTop: false,
+            notDismissable: false,
+            showAfterDelayMs: 0,
+            lingerMs: 0,
+            closingAt: undefined,
+            openedAt,
+            menuParam: emptyObject,
+          },
+        ]);
+      },
+    );
   },
 });
 
 export const {
-  backToParentMenu,
   closeAllMenus,
   cmdKPressed,
   crownsMenuShown,
@@ -464,6 +732,9 @@ export const {
   goToSubmenu,
   holdPressed,
   mapPressed,
+  menuClosed,
+  menuLingerEnded,
+  menuLingerStarted,
   menuOpenOrExitPressed,
   needRefreshMenuShown,
   reincarnationRestartMenuShown,

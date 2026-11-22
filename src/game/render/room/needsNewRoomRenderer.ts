@@ -25,10 +25,16 @@ export const needsNewRoomRenderer = <
    * be rebuilt to pick up the re-baked ones
    */
   webGlContextRestored: boolean,
+  /**
+   * the room's spritesheet was rebuilt - its old textures are destroyed, and
+   * the renderer's sprites still reference them
+   */
+  spritesheetRebuilt: boolean,
 ): boolean =>
   renderer === undefined ||
   roomChanged ||
   webGlContextRestored ||
+  spritesheetRebuilt ||
   renderer.renderContext.general.upscale !== upscale ||
   renderer.renderContext.general.displaySettings !== displaySettings ||
   renderer.renderContext.general.soundSettings !== soundSettings ||

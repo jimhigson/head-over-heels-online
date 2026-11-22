@@ -1,6 +1,6 @@
 import { useState } from "preact/hooks";
 
-import { CssVariables } from "../../game/components/CssVariables";
+import { CssUpscaleVariables } from "../../game/components/CssUpscaleVariables";
 import { typedURLSearchParams } from "../../options/queryParams";
 import { useUniversalKeys } from "../../store/storeFlow/useUniversalKeys";
 import { SpritesPageContent } from "./SpritesPageContent";
@@ -27,7 +27,7 @@ const SpritesPage = () => {
   };
 
   return (
-    <CssVariables scaleFactor={scale}>
+    <CssUpscaleVariables scaleFactor={scale}>
       <title>Sprites</title>
       <SpritesPageToolbar
         scale={scale}
@@ -36,7 +36,7 @@ const SpritesPage = () => {
         onSpriteFilterChange={setSpriteFilter}
       />
       <SpritesPageContent scale={scale} spriteFilter={spriteFilter} />
-    </CssVariables>
+    </CssUpscaleVariables>
   );
 };
 

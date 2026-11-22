@@ -1,7 +1,7 @@
 import { useCallback, useState } from "preact/hooks";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
-import { CssVariables } from "../../game/components/CssVariables";
+import { CssUpscaleVariables } from "../../game/components/CssUpscaleVariables";
 import { isRoomStructureItemType } from "../../model/json/isRoomStructureItemType";
 import type { CampaignVerificationIssue } from "../../model/json/verification/CampaignVerification";
 import { fixAllVerificationIssues } from "../../model/json/verification/fixAllVerificationIssues";
@@ -52,7 +52,7 @@ const isEmptyLeftoverRoom = (room: VerificationRoomJson): boolean =>
  */
 const AllIssuesFixed = () => (
   <div class="flex flex-col flex-grow items-center justify-center gap-2">
-    <CssVariables scaleFactor={2}>
+    <CssUpscaleVariables scaleFactor={2}>
       <div class="flex gap-1">
         <span
           class={`sprite ${twClass<TextureTailwindClass>("texture-head_falling_d6")}`}
@@ -61,7 +61,7 @@ const AllIssuesFixed = () => (
           class={`sprite ${twClass<TextureTailwindClass>("texture-heels_falling_d6")}`}
         />
       </div>
-    </CssVariables>
+    </CssUpscaleVariables>
     <span class="text-double-height text-shadow">All issues fixed!</span>
   </div>
 );

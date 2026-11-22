@@ -13,6 +13,7 @@ import {
   roomExplored,
 } from "../store/slices/gameInPlay/gameInPlaySlice";
 import { selectSaveForCampaign } from "../store/slices/savedGames/savedGamesSlice";
+import { selectSpritesheetSmoothUpscale } from "../store/slices/smoothing/selectSpritesheetSmoothUpscale";
 import { store } from "../store/store";
 import { trackTextures } from "../textureInspector/trackTextures";
 import { stopAppAutoRendering } from "../utils/pixi/stopAppAutoRendering";
@@ -30,7 +31,6 @@ import { installAppTickerAsPixiShared } from "./mainLoop/installAppTickerAsPixiS
 import { installE2eCurrentPlayableHandle } from "./mainLoop/installE2eCurrentPlayableHandle";
 import { installE2eSwopCharacterHandle } from "./mainLoop/installE2eSwopCharacterHandle";
 import { MainLoop } from "./mainLoop/MainLoop";
-import { selectSpritesheetUpscale } from "./render/filters/upscale/selectSpritesheetUpscale";
 import { loadHudFont, uiFontVariantAtResolution } from "./render/text/uiFont";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
@@ -60,7 +60,9 @@ export const gameMain = async <RoomId extends string>(
     // make sure the game waits on the fonts being loaded so it doesn't fall back
     // to a default browser font
     loadHudFont(
-      uiFontVariantAtResolution(selectSpritesheetUpscale(store.getState())),
+      uiFontVariantAtResolution(
+        selectSpritesheetSmoothUpscale(store.getState()),
+      ),
     ),
     app.init({
       background: "#000000",

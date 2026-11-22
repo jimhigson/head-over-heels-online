@@ -6,8 +6,8 @@ import { getMapColoursClass } from "../../../../../../map/mapColours";
 import { MapContextProvider } from "../../../../../../map/MapContext";
 import { mapDialogColourClasses } from "../../../../../../map/mapDialogColourClasses";
 import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
+import { closeMenuThunk } from "../../../../../../store/slices/gameMenus/closeMenuThunk";
 import { useCheatsOn } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
@@ -73,7 +73,7 @@ const MapDialog = <RoomId extends string>() => {
         ref={mapContainerRef}
         fullScreen
         class={`${mapDialogColourClasses} pr-0 p-0 mobile:pl-0 justify-center ${mapColourClasses.containerClassName}`}
-        onClick={useDispatchActionCallback(backToParentMenu)}
+        onClick={useDispatchActionCallback(closeMenuThunk, "map")}
         dialogId="map"
       >
         <div

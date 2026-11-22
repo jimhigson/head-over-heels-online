@@ -26,7 +26,11 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": false,
     "types": ["umami"],
-    "erasableSyntaxOnly": true
+    "erasableSyntaxOnly": true,
+    // written by `tsc -b`, which builds the macros project first
+    "tsBuildInfoFile": "node_modules/.cache/tsApp/tsconfig.app.tsbuildinfo"
   },
-  "include": ["src", "e2eAugmentations.d.ts"]
+  "include": ["src", "e2eAugmentations.d.ts"],
+  "exclude": ["src/**/*.macro.ts"],
+  "references": [{ "path": "./tsconfig.macros.json" }]
 }

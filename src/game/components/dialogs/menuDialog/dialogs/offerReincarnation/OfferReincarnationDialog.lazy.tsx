@@ -7,4 +7,5 @@ import { offerReincarnationDialogColourClasses } from "./offerReincarnationDialo
 export const LazyOfferReincarnationDialog = LazyDialogHoc(
   lazy(importOnce(() => import("./OfferReincarnationDialog"))),
   offerReincarnationDialogColourClasses,
+  "offerReincarnation",
 );

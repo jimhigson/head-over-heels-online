@@ -118,7 +118,11 @@ export const fireButtonAppearance: ButtonAppearance<
     new ArcadeStyleButtonContainer<Container<Sprite | TextContainer>>(
       button.which,
       spritesheets.originalSpritesheet,
-      createSurface(pixiRenderer, spritesheet, spritesheets.spritesheetUpscale),
+      createSurface(
+        pixiRenderer,
+        spritesheet,
+        spritesheets.spritesheetSmoothUpscale,
+      ),
     );
 
   if (roomChanged) {

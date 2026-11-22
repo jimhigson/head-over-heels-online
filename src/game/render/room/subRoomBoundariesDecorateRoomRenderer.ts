@@ -61,7 +61,7 @@ export const subRoomBoundariesDecorateRoomRenderer: DecorateRoomRenderer = (
 
     const label = new TextContainer({
       pixiRenderer,
-      resolution: spritesheets.spritesheetUpscale,
+      resolution: spritesheets.spritesheetSmoothUpscale,
       text: `${name} (${subRoom.gridPosition.x},${subRoom.gridPosition.y})`,
       colour: color,
       outline: true,

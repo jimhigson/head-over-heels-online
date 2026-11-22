@@ -27,6 +27,7 @@ import type {
   PickupsCollected,
   RoomPickupsCollected,
 } from "../gameInPlay/gameInPlaySlice";
+import { selectIsSmoothingFailedMoreThanAllowed } from "../smoothing/smoothingSlice";
 import { defaultUserSettings } from "../userSettings/defaultUserSettings";
 import type {
   InputDirectionMode,
@@ -34,6 +35,7 @@ import type {
   UserSettingsBooleanPaths,
   UserSettingsState,
 } from "../userSettings/userSettingsSlice";
+import { selectMenuToDraw } from "./selectDrawnMenu";
 
 const selectUserSetting =
   <Path extends Paths<UserSettings>>(path: Path) =>
@@ -64,6 +66,22 @@ export const selectIsPaused = (state: GameRootState) => {
   // the death dialog showing is a special case, it isn't considered paused since the game runs very slowly still
   // while this dialog is showing
   return topMenu.menuId !== "death";
+};
+
+/**
+ * whether the game is drawn as paused: a menu other than death is drawn over
+ * it. A menu still waiting out its delay leaves the game looking as it was,
+ * even though {@link selectIsPaused} already has it frozen
+ */
+export const selectLooksPaused = (
+  state: GameRootState,
+  /**
+   * the time now, by the app ticker's `time`
+   */
+  now: number,
+): boolean => {
+  const drawnMenu = selectMenuToDraw(state, now);
+  return drawnMenu !== undefined && drawnMenu.menuId !== "death";
 };
 
 export const useCheatsOn = (): boolean =>
@@ -134,15 +152,25 @@ export const selectIsCrtFilter = selectUserSetting("displaySettings.crtFilter");
 /**
  * whether the mouse pointer is drawn on the television, inside the CRT effect,
  * rather than over the page - only while playing with the CRT filter on, and
- * with nothing to click over the top (the pause dialog has nothing to click)
+ * with nothing to click over the top (the pause and smoothing dialogs have
+ * nothing to click)
  */
 export const selectIsPointerOnTube = (state: GameRootState): boolean =>
   state.gameInPlay.gameRunning &&
   selectIsCrtFilter(state) &&
-  state.gameMenus.openMenus.every(({ menuId }) => menuId === "hold");
-export const selectIsUpscaledSprites = selectUserSetting(
+  state.gameMenus.openMenus.every(
+    ({ menuId }) => menuId === "hold" || menuId === "smoothing",
+  );
+const selectUpscaledSpritesSetting = selectUserSetting(
   "displaySettings.upscaledSprites",
 );
+
+/**
+ * whether the sprites are smoothed - asked for, and possible on this device
+ */
+export const selectIsUpscaledSprites = (state: GameRootState): boolean =>
+  !selectIsSmoothingFailedMoreThanAllowed(state) &&
+  selectUpscaledSpritesSetting(state);
 export const selectIsInfiniteLivesPoke = selectUserSetting(
   "pokesEnabled.infiniteLives",
 );
@@ -296,7 +324,7 @@ export const selectMaybeCurrentCampaign = <RoomId extends string = string>(
  * caching selector to get the spritesheet data for the currently
  * selected spritesheetName. Base texture ids only, not variants
  */
-const selectCurrentSpritesheetData = createSelector(
+export const selectCurrentSpritesheetData = createSelector(
   [selectSpritesheetArtName],
   (selectedSpritesheetArtName): AppSpritesheetData =>
     makeBaseSpritesheetData(spritesheetMetas[selectedSpritesheetArtName]),

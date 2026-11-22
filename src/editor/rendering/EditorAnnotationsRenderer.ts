@@ -461,7 +461,7 @@ class EditorAnnotationsRenderer<
 
     const annotationContainer = new TextContainer({
       pixiRenderer,
-      resolution: spritesheets.spritesheetUpscale,
+      resolution: spritesheets.spritesheetSmoothUpscale,
       label: "EditorAnnotationTextContainer",
       outline: true,
       colour: tint,

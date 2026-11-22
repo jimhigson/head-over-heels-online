@@ -1,8 +1,9 @@
 import { Suspense } from "preact/compat";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
-import { CssVariables } from "../game/components/CssVariables";
+import { CssUpscaleVariables } from "../game/components/CssUpscaleVariables";
 import { usePageAsAnApp } from "../pages/gamePage/usePageAsAnApp";
+import { useAddCssToDomForCurrentSpritesheet } from "../sprites/css/useAddCssToDomForCurrentSpritesheet";
 import { useAppDispatch } from "../store/hooks";
 import {
   errorDismissed,
@@ -66,12 +67,13 @@ const LevelEditorPanels = () => {
 
 const LevelEditor = () => {
   usePageAsAnApp();
+  useAddCssToDomForCurrentSpritesheet();
   const caughtErrors = useEditorAppSelector(selectCaughtErrors);
   const dispatch = useAppDispatch();
 
   return (
     <EditorErrorBoundary asDialog>
-      <CssVariables>
+      <CssUpscaleVariables>
         {caughtErrors.length > 0 ?
           // the editor may not be usable (eg its room failed to load), so
           // shows only the errors:
@@ -82,7 +84,7 @@ const LevelEditor = () => {
             asDialog
           />
         : <LevelEditorPanels />}
-      </CssVariables>
+      </CssUpscaleVariables>
     </EditorErrorBoundary>
   );
 };
