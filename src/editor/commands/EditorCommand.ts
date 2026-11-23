@@ -12,7 +12,7 @@ export type EditorCommandDispatchable =
   EditorSaveSliceAction | EditorThunk<unknown> | LevelEditorSliceAction;
 
 /** how a command shows in the toolbar and menus, and when it can run */
-type EditorCommandPresentation = {
+export type EditorCommandPresentation = {
   /** names the command in menus, and its toolbar button for assistive tech */
   label: string;
   /** other words cmd-k finds the command by, beyond its label */
@@ -70,7 +70,7 @@ export type EditorCommand = ActionCommand | ItemToolCommand;
 
 /** a command, or one that depends on the editor's state */
 export type EditorCommandDefinition<
-  TCommand extends EditorCommand = EditorCommand,
+  TCommand extends EditorCommandPresentation = EditorCommand,
 > = ((state: EditorRootState) => TCommand) | TCommand;
 
 export const resolveCommandDefinition = <TCommand extends EditorCommand>(

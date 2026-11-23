@@ -1,4 +1,5 @@
 import type { KeyboardEvent } from "preact/compat";
+import { useMemo } from "preact/hooks";
 
 import type {
   EditorCommandDefinition,
@@ -12,12 +13,20 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import { keys } from "../../../../../../utils/entries";
 import { summonItemsAbovePlayable } from "../../../../cheats/summonItemsAbovePlayable";
 import { useGameApi } from "../../../../GameApiContext";
+import {
+  type GoToRoomCommand,
+  goToRoomCommandDefinitions,
+} from "./goToRoomCommandDefinitions";
 
-// state-dependent entries need the editor, so can't be summoned
-const resolveEntryForSummoning = (
-  commandDefinition: EditorCommandDefinition<ItemToolCommand>,
+type CheatsCmdKCommand<RoomId extends string> =
+  GoToRoomCommand<RoomId> | ItemToolCommand;
+
+// state-dependent entries need the editor, so can't be listed
+const resolveEntryForCheats = <RoomId extends string>(
+  commandDefinition: EditorCommandDefinition<CheatsCmdKCommand<RoomId>>,
 ) => (typeof commandDefinition === "function" ? undefined : commandDefinition);
 
 /** keep typing out of the game's input; escape goes through to close the dialog */
@@ -27,10 +36,21 @@ const stopKeydownReachingGame = (e: KeyboardEvent<HTMLDivElement>) => {
   }
 };
 
-/** the cmd-k menu, in-game: summons the chosen items above the playable */
+/**
+ * the cmd-k menu, in-game: summons the chosen items above the playable, or goes
+ * to the chosen room
+ */
 export const CheatsCmdKDialog = <RoomId extends string>() => {
   const gameApi = useGameApi<RoomId>();
   const dispatch = useAppDispatch();
+
+  const commandDefinitions = useMemo(
+    () => ({
+      ...itemToolCommandDefinitions,
+      ...goToRoomCommandDefinitions(keys(gameApi.campaign.rooms)),
+    }),
+    [gameApi],
+  );
 
   return (
     <DialogPortal>
@@ -38,14 +58,23 @@ export const CheatsCmdKDialog = <RoomId extends string>() => {
       <Dialog
         class="p-1 bg-metallicBlueHalfbrite"
         dialogId="cmdk"
-        ariaLabel="search for an item to summon above the player"
+        ariaLabel="search for an item to summon above the player, or a room to go to"
       >
-        <CmdKContents
-          commandDefinitions={itemToolCommandDefinitions}
-          resolveEntry={resolveEntryForSummoning}
-          placeholder="Search items..."
-          onSelect={({ items }) => {
-            summonItemsAbovePlayable(gameApi, items);
+        <CmdKContents<CheatsCmdKCommand<RoomId>>
+          commandDefinitions={commandDefinitions}
+          resolveEntry={resolveEntryForCheats}
+          placeholder="Search items and rooms..."
+          onSelect={(command) => {
+            switch (command.type) {
+              case "itemTool":
+                summonItemsAbovePlayable(gameApi, command.items);
+                break;
+              case "goToRoom":
+                gameApi.changeRoom(command.roomId);
+                break;
+              default:
+                command satisfies never;
+            }
             dispatch(closeMenuThunk("cmdk"));
           }}
           onKeyDown={stopKeydownReachingGame}
