@@ -178,6 +178,13 @@ const recordArrivingJustTouching = <
  */
 const pushedItemsStack: Array<UnionOfAllItemInPlayTypes<string, string>> = [];
 
+/**
+ * how far the subject has travelled from its original box during the current
+ * moveItem call, as of the collisions handled so far
+ *
+ * never keep a reference to this, or read it again, across a recursive moveItem
+ * call, it will be overwritten
+ */
 const travelSoFarBuffer: Xyz = { x: 0, y: 0, z: 0 };
 
 /**
@@ -199,9 +206,19 @@ const pushPathStack: Array<string> = [];
  * whether an item is among a call's collisions - `[start, end)` on the
  * collisions stack
  */
-const collisionsInclude = (
+const collisionsStackIncludesItemInRange = (
+  /**
+   * the item to look for
+   */
   item: UnionOfAllItemInPlayTypes<string, string>,
+  /**
+   * where the call's collisions start on the collisions stack
+   */
   start: number,
+  /**
+   * where the call's collisions end on the collisions stack - the items it
+   * only touches come after, and aren't searched
+   */
   end: number,
 ): boolean => {
   for (let i = start; i < end; i++) {
@@ -667,10 +684,12 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
     const backingOffMtv: Xyz = { x: 0, y: 0, z: 0 };
     // how far the subject has travelled so far, after any backing off already
-    // done - eg, none across a wall it is sliding along:
-    travelSoFarBuffer.x = subjectItem.state.box.x - originalBox.x;
-    travelSoFarBuffer.y = subjectItem.state.box.y - originalBox.y;
-    travelSoFarBuffer.z = subjectItem.state.box.z - originalBox.z;
+    // done - eg, none across a wall it is sliding along. Filled just before its
+    // one read below, since recursive moveItem calls overwrite it:
+    const subjectBox = subjectItem.state.box;
+    travelSoFarBuffer.x = subjectBox.x - originalBox.x;
+    travelSoFarBuffer.y = subjectBox.y - originalBox.y;
+    travelSoFarBuffer.z = subjectBox.z - originalBox.z;
     const backingOffType = backingOffTranslationAfterCollision(
       subjectItem,
       collidedWithItem,
@@ -872,9 +891,9 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       if (
         // subject not already standing on something
         subjectItem.state.standingOnItemId === null ||
-        // huh? - not colliding with the item we were previously standing on
-        // - guess this means it is ok to take over its slot (?)
-        !collisionsInclude(
+        // check if we are not colliding with the item we were previously standing on
+        // - in this case is ok to clear out item's standingOn slot
+        !collisionsStackIncludesItemInRange(
           stoodOnItem(subjectItem.state.standingOnItemId, room),
           collisionsStart,
           collisionsEnd,
