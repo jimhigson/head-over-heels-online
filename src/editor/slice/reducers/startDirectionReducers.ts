@@ -8,7 +8,8 @@ import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
 export const startDirectionReducers = {
   /**
    * set the facing direction of every selected item that has one - writing the
-   * monster's `startDirection` or the lamp's beam `direction` as appropriate
+   * monster's `startDirection`, or the `direction` of a lamp's beam or a
+   * conveyor, as appropriate
    */
   setSelectedItemsStartDirection(
     state,

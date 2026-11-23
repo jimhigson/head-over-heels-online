@@ -1,7 +1,7 @@
 import { getConsolidatableVector } from "../consolidateItems/ConsolidatableJsonItem";
 import { floorSquares } from "../model/json/verification/helpers/roomPerimeter";
 import { flippedMirrorOrientation } from "../model/MirrorOrientation";
-import { getJsonItemTimes, optimiseTimesXyz } from "../model/times";
+import { getJsonItemTimes } from "../model/times";
 import { unitVectors } from "../utils/vectors/unitVectors";
 import {
   addXyz,
@@ -17,11 +17,11 @@ import {
 import type {
   EditorJsonItem,
   EditorJsonItemUnion,
-  EditorJsonItemWithTimes,
   EditorRoomJson,
 } from "./editorTypes";
 import { directionForItem, setItemDirectionInPlace } from "./itemDirection";
 import type { ItemToolItems } from "./RoomEditingArea/interactivity/Tool";
+import { swapItemTimesXyInPlace } from "./swapItemTimesXyInPlace";
 
 export type RotationSense = "anticlockwise" | "clockwise";
 
@@ -61,9 +61,6 @@ const rotateFacingInPlace = (
     rotateDirectionXy8(itemDirection.current, sense, octants),
   );
 };
-
-const hasTimes = (item: EditorJsonItemUnion): item is EditorJsonItemWithTimes =>
-  "times" in item.config;
 
 const hasFacing = (item: EditorJsonItemUnion): boolean =>
   item.type === "mirror" ||
@@ -145,15 +142,7 @@ export const rotateItemInPlace = (
     return;
   }
   rotateFacingInPlace(item, sense);
-  if (hasTimes(item) && item.config.times !== undefined) {
-    const { x, y, z } = getJsonItemTimes(item);
-    const swappedTimes = optimiseTimesXyz({ x: y, y: x, z });
-    if (swappedTimes === undefined) {
-      delete item.config.times;
-    } else {
-      item.config.times = swappedTimes;
-    }
-  }
+  swapItemTimesXyInPlace(item);
 };
 
 /**
