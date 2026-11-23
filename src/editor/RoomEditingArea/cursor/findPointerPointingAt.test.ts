@@ -151,7 +151,12 @@ describe("at every camera angle", () => {
 describe("with a preview overriding a committed wall", () => {
   const doorTool: Tool = {
     type: "item",
-    item: { type: "door", config: { direction: "away", toRoom: "+" } },
+    items: [
+      {
+        type: "door",
+        config: { direction: "away", toRoom: "+" },
+      },
+    ],
   };
 
   /** high above a wall, halfway along it - in its physical box, beyond its art */

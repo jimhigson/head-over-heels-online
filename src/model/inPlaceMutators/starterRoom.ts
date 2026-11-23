@@ -1,7 +1,7 @@
 import { originXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import type { JsonItem } from "../json/JsonItem";
 import type { RoomJson, RoomJsonItems } from "../RoomJson";
-import { rotatingSceneryTiles } from "./rotatingSceneryTiles";
+import { rotatingSceneryWallTiles } from "./rotatingSceneryWallTiles";
 
 const starterRoomWallItems = <RoomId extends string, RoomItemId extends string>(
   size: Xy,
@@ -12,7 +12,7 @@ const starterRoomWallItems = <RoomId extends string, RoomItemId extends string>(
       type: "wall",
       config: {
         direction: "away",
-        tiles: Array.from(rotatingSceneryTiles("blacktooth", size.x)),
+        tiles: rotatingSceneryWallTiles("blacktooth", size.x),
       },
       position: { x: roomOrigin.x, y: roomOrigin.y + size.y, z: roomOrigin.z },
     } satisfies JsonItem<"wall", RoomId, RoomItemId, "blacktooth">,
@@ -20,7 +20,7 @@ const starterRoomWallItems = <RoomId extends string, RoomItemId extends string>(
       type: "wall",
       config: {
         direction: "left",
-        tiles: Array.from(rotatingSceneryTiles("blacktooth", size.y)),
+        tiles: rotatingSceneryWallTiles("blacktooth", size.y),
       },
       position: { x: roomOrigin.x + size.x, y: roomOrigin.y, z: roomOrigin.z },
     } satisfies JsonItem<"wall", RoomId, RoomItemId, "blacktooth">,
@@ -28,7 +28,7 @@ const starterRoomWallItems = <RoomId extends string, RoomItemId extends string>(
       type: "wall",
       config: {
         direction: "towards",
-        tiles: Array.from(rotatingSceneryTiles("blacktooth", size.x)),
+        tiles: rotatingSceneryWallTiles("blacktooth", size.x),
       },
       position: { ...roomOrigin },
     } satisfies JsonItem<"wall", RoomId, RoomItemId, "blacktooth">,
@@ -36,7 +36,7 @@ const starterRoomWallItems = <RoomId extends string, RoomItemId extends string>(
       type: "wall",
       config: {
         direction: "right",
-        tiles: Array.from(rotatingSceneryTiles("blacktooth", size.y)),
+        tiles: rotatingSceneryWallTiles("blacktooth", size.y),
       },
       position: { ...roomOrigin },
     } satisfies JsonItem<"wall", RoomId, RoomItemId, "blacktooth">,

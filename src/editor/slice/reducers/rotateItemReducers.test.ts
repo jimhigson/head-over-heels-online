@@ -17,7 +17,8 @@ import type {
   EditorRoomState,
 } from "../../editorTypes";
 import type { RotationSense } from "../../itemRotation";
-import type { ItemTool } from "../../RoomEditingArea/interactivity/Tool";
+import { toolItemMatchers } from "../../RoomEditingArea/interactivity/__test__/toolItemMatchers";
+import type { ItemToolItems } from "../../RoomEditingArea/interactivity/Tool";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectItemInLevelEditorState,
@@ -36,6 +37,8 @@ import {
   reduceLevelEditorActions,
   testRoomId,
 } from "./__test__/storeStates";
+
+expect.extend(toolItemMatchers);
 
 const stateWithItem = (item: EditorJsonItemUnion): LevelEditorState =>
   produce(editorStateWithOneRoomWithNoItems, (draft) => {
@@ -187,29 +190,111 @@ test("leaves a non-rotatable selected item untouched", () => {
   });
 });
 
-const rotateTool = (item: ItemTool, sense: RotationSense) =>
+const rotateTool = (items: ItemToolItems, sense: RotationSense) =>
   reduceLevelEditorActions(
     editorStateWithOneRoomWithNoItems,
-    setTool({ type: "item", item }),
+    setTool({ type: "item", items }),
     rotateCurrentToolItem({ sense }),
   ).tool;
 
 test("rotates the lamp held by the current item tool", () => {
   expect(
-    rotateTool({ type: "lamp", config: { direction: "towards" } }, "clockwise"),
-  ).toEqual({
-    type: "item",
-    item: { type: "lamp", config: { direction: "left" } },
-  });
+    rotateTool(
+      [{ type: "lamp", config: { direction: "towards" } }],
+      "clockwise",
+    ),
+  ).toEqualToolItems([
+    { type: "lamp", config: { direction: "left" }, position: originXyz },
+  ]);
 });
 
 test("flips the mirror held by the current item tool", () => {
   expect(
     rotateTool(
-      { type: "mirror", config: { orientation: "awayLeft" } },
+      [
+        {
+          type: "mirror",
+          config: { orientation: "awayLeft" },
+        },
+      ],
       "anticlockwise",
     ),
-  ).toMatchObject({ item: { config: { orientation: "awayRight" } } });
+  ).toMatchObject({ items: [{ config: { orientation: "awayRight" } }] });
+});
+
+test("a single multi-block item stays put down at the same corner when its tool is rotated", () => {
+  expect(
+    rotateTool(
+      [
+        {
+          type: "block",
+          config: { style: "organic", times: { x: 3 } },
+        },
+      ],
+      "clockwise",
+    ),
+  ).toEqualToolItems([
+    {
+      type: "block",
+      config: { style: "organic", times: { y: 3 } },
+      position: originXyz,
+    },
+  ]);
+});
+
+test("rotating a tool of several items swings them round the first as a whole", () => {
+  // two blocks side by side along x, the second a block along from the first:
+  expect(
+    rotateTool(
+      [
+        {
+          type: "block",
+          config: { style: "organic" },
+        },
+        {
+          type: "block",
+          config: { style: "artificial" },
+          position: { x: 1, y: 0, z: 0 },
+        },
+      ],
+      "clockwise",
+    ),
+  ).toEqualToolItems([
+    {
+      type: "block",
+      config: { style: "organic" },
+      position: { x: 0, y: 0, z: 0 },
+    },
+    {
+      type: "block",
+      config: { style: "artificial" },
+      position: { x: 0, y: 1, z: 0 },
+    },
+  ]);
+});
+
+test("rotating a tool of several items four times puts them back", () => {
+  const items: ItemToolItems = [
+    {
+      type: "conveyor",
+      config: { direction: "left", times: { x: 2 } },
+    },
+    {
+      type: "block",
+      config: { style: "organic" },
+      position: { x: 3, y: 1, z: 2 },
+    },
+  ];
+  expect(
+    reduceLevelEditorActions(
+      editorStateWithOneRoomWithNoItems,
+      setTool({ type: "item", items }),
+      rotateCurrentToolItem({ sense: "clockwise" }),
+      rotateCurrentToolItem({ sense: "clockwise" }),
+      rotateCurrentToolItem({ sense: "clockwise" }),
+      rotateCurrentToolItem({ sense: "clockwise" }),
+    ).tool,
+  ).toEqualToolItems(items);
 });
 
 test("rotateCurrentToolItem is a no-op when no item tool is active", () => {
@@ -222,30 +307,35 @@ test("rotateCurrentToolItem is a no-op when no item tool is active", () => {
   expect(state1.tool).toEqual({ type: "pointer" });
 });
 
+const floorForToolToHover: EditorJsonItemUnion = {
+  type: "floor",
+  config: {
+    floorType: "standable",
+    scenery: "blacktooth",
+    times: { x: 8, y: 8 },
+  },
+  position: originXyz,
+};
+
 // a lamp tool actively hovering the room, so there is a preview item in
 // pendingEdits built from the tool:
-const state0LampToolHovering = produce(
-  editorStateWithOneRoomWithNoItems,
-  (draft) => {
-    draft.tool = {
-      type: "item",
-      item: { type: "lamp", config: { direction: "towards" } },
-    };
-    draft.pendingEdits = {
-      edits: {
-        [testRoomId]: {
-          ["preview" as EditorRoomItemId]: {
-            type: "lamp",
-            config: { direction: "towards" },
-            position: { x: 0, y: 0, z: 0 },
-          },
-        },
-      },
-      description: { kind: "editRoomJson" },
-      timestamp: 0,
-      madeBy: { type: "itemTool" },
-    };
-  },
+const state0LampToolHovering = reduceLevelEditorActions(
+  produce(editorStateWithOneRoomWithNoItems, (draft) => {
+    draft.campaignInProgress.rooms[testRoomId].items[
+      "floor" as EditorRoomItemId
+    ] = floorForToolToHover;
+  }),
+  setTool({
+    type: "item",
+    items: [{ type: "lamp", config: { direction: "towards" } }],
+  }),
+  applyItemTool({
+    roomId: testRoomId,
+    blockPosition: { x: 2, y: 2, z: 0 },
+    pointedAtItemJson: floorForToolToHover,
+    preview: true,
+    timestamp: 0,
+  }),
 );
 
 const state1ToolAndPreviewRotated = reduceLevelEditorActions(
@@ -255,16 +345,62 @@ const state1ToolAndPreviewRotated = reduceLevelEditorActions(
 
 test("rotates the tool item when a hover preview is present", () => {
   expect(state1ToolAndPreviewRotated.tool).toMatchObject({
-    item: { config: { direction: "left" } },
+    items: [{ config: { direction: "left" } }],
   });
 });
 
 test("also rotates the hover preview to match the rotated tool", () => {
   expect(
-    state1ToolAndPreviewRotated.pendingEdits?.edits[testRoomId]?.[
-      "preview" as EditorRoomItemId
-    ],
-  ).toMatchObject({ config: { direction: "left" } });
+    Object.values(
+      state1ToolAndPreviewRotated.pendingEdits?.edits[testRoomId] ?? {},
+    ),
+  ).toEqual([
+    {
+      type: "lamp",
+      config: { direction: "left" },
+      position: { x: 2, y: 2, z: 0 },
+    },
+  ]);
+});
+
+test("the hover preview of several items swings round with the rotated tool", () => {
+  const state0TwoBlocksToolHovering = reduceLevelEditorActions(
+    produce(editorStateWithOneRoomWithNoItems, (draft) => {
+      draft.campaignInProgress.rooms[testRoomId].items[
+        "floor" as EditorRoomItemId
+      ] = floorForToolToHover;
+    }),
+    setTool({
+      type: "item",
+      items: [
+        {
+          type: "block",
+          config: { style: "organic" },
+        },
+        {
+          type: "block",
+          config: { style: "artificial" },
+          position: { x: 1, y: 0, z: 0 },
+        },
+      ],
+    }),
+    applyItemTool({
+      roomId: testRoomId,
+      blockPosition: { x: 2, y: 2, z: 0 },
+      pointedAtItemJson: floorForToolToHover,
+      preview: true,
+      timestamp: 0,
+    }),
+    rotateCurrentToolItem({ sense: "clockwise" }),
+  );
+  expect(
+    Object.values(
+      state0TwoBlocksToolHovering.pendingEdits?.edits[testRoomId] ?? {},
+    ).map((previewedItem) => previewedItem?.position),
+  ).toEqual([
+    { x: 2, y: 2, z: 0 },
+    { x: 2, y: 3, z: 0 },
+  ]);
 });
 
 test("a multi-block conveyor turns about its middle and back, but not into an item in the way", () => {
@@ -292,7 +428,12 @@ test("a multi-block conveyor turns about its middle and back, but not into an it
     state0EmptyRoom,
     setTool({
       type: "item",
-      item: { type: "conveyor", config: { direction: "left" } },
+      items: [
+        {
+          type: "conveyor",
+          config: { direction: "left" },
+        },
+      ],
     }),
     applyItemTool({
       roomId: testRoomId,
@@ -355,7 +496,7 @@ test("a multi-block conveyor turns about its middle and back, but not into an it
     state4RotatedBack,
     setTool({
       type: "item",
-      item: { type: "block", config: { style: "organic" } },
+      items: [{ type: "block", config: { style: "organic" } }],
     }),
     applyItemTool({
       roomId: testRoomId,

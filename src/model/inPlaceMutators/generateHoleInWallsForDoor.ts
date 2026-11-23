@@ -1,6 +1,7 @@
 import { produce } from "immer";
 
 import { entries } from "../../utils/entries";
+import { isWritableNonEmptyTuple } from "../../utils/isWritableNonEmptyTuple";
 import {
   addXyz,
   type DirectionXy4,
@@ -71,14 +72,18 @@ export function* generateHoleInWallsForDoor<
     const cutWallAtStart = cutWallAtStartNbr === 1 || cutWallAtStartNbr === 2;
 
     if (cutWallAtStart) {
+      // remove the first 1 or 2 tiles:
+      const tilesAfterCut = wallConfig.tiles.slice(cutWallAtStartNbr);
+      if (!isWritableNonEmptyTuple(tilesAfterCut)) {
+        // the cut takes the whole wall:
+        yield [id, null];
+        continue;
+      }
       const modifiedWall = produce(item, (itemDraft) => {
         itemDraft.position = addXyz(wallPosition, {
           [alongWallAxis]: cutWallAtStartNbr,
         });
-        const draftConfig = itemDraft.config;
-
-        // remove the first 1 or 2 tiles:
-        draftConfig.tiles = draftConfig.tiles.slice(cutWallAtStartNbr);
+        itemDraft.config.tiles = tilesAfterCut;
       });
       yield [id, modifiedWall];
       continue;
@@ -93,21 +98,25 @@ export function* generateHoleInWallsForDoor<
       const modifiedWall = produce(item, (itemDraft) => {
         const draftConfig = itemDraft.config;
 
-        // remove the last 1 or 2 tiles:
-        draftConfig.tiles = draftConfig.tiles.slice(0, -cutWallAtEndNbr);
+        // remove the last 1 or 2 tiles - the door is not at the wall's start,
+        // so some tiles remain:
+        draftConfig.tiles = draftConfig.tiles.slice(
+          0,
+          -cutWallAtEndNbr,
+        ) as typeof draftConfig.tiles;
       });
       yield [id, modifiedWall];
       continue;
     }
 
-    // if not cutting the door at either end, cut into two parts:
+    // if not cutting the door at either end, cut into two parts, each with tiles:
     const modifiedWallBefore = produce(item, (itemDraft) => {
       const draftConfig = itemDraft.config;
       // keep the tiles before the door:
       draftConfig.tiles = draftConfig.tiles.slice(
         0,
         relativePosition[alongWallAxis],
-      );
+      ) as typeof draftConfig.tiles;
     });
     yield [`${id}/beforeDoor` as RoomItemId, modifiedWallBefore];
     const modifiedWallAfter = produce(item, (itemDraft) => {
@@ -120,7 +129,7 @@ export function* generateHoleInWallsForDoor<
       // keep the tiles after the door:
       draftConfig.tiles = draftConfig.tiles.slice(
         relativePosition[alongWallAxis] + 2,
-      );
+      ) as typeof draftConfig.tiles;
     });
     yield [`${id}/afterDoor` as RoomItemId, modifiedWallAfter];
 

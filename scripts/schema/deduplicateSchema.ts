@@ -1,6 +1,7 @@
 #!/usr/bin/env -S node --import ./buildTools/registerNodeImportHooks.ts
 
 import { readFileSync, writeFileSync } from "fs";
+import { createHash } from "node:crypto";
 import type { JsonArray, JsonObject, JsonValue } from "type-fest";
 
 const [, , inputFile, outputFile] = process.argv;
@@ -42,12 +43,62 @@ const propertyMapKeys = new Set(["properties", "patternProperties"]);
 // Only count nodes that are in schema positions — the values of
 // `properties`/`patternProperties` are maps, not schemas, and must not be
 // replaced with $ref.
-const counts = new Map<string, { count: number; node: JsonObject }>();
+/**
+ * where in the schema a node was found, used to give an extracted definition a
+ * descriptive name
+ */
+type OccurrenceContext = {
+  /**
+   * the property names from the root down to the node
+   */
+  propertyNames: string[];
+  /**
+   * the `type` const of the nearest enclosing schema that has one, eg an item's type
+   */
+  enclosingType: string | undefined;
+};
 
-function countNodes(node: JsonValue, isSchemaPos = true): void {
+type NodePosition = "patternProperties" | "properties" | "schema";
+
+const counts = new Map<
+  string,
+  { count: number; node: JsonObject; contexts: OccurrenceContext[] }
+>();
+
+const constOfProperty = (
+  node: JsonObject,
+  propertyName: string,
+): string | undefined => {
+  const { properties } = node;
+  if (!isJsonObject(properties)) {
+    return undefined;
+  }
+  const propertySchema = properties[propertyName];
+  return (
+      isJsonObject(propertySchema) && typeof propertySchema.const === "string"
+    ) ?
+      propertySchema.const
+    : undefined;
+};
+
+const enclosingTypeOf = (node: JsonObject): string | undefined =>
+  constOfProperty(node, "type");
+
+/**
+ * what a node is a variant of, if it is one - eg the item type of an item's
+ * schema, or the item type a switch modification is for
+ */
+const ownVariantOf = (node: JsonObject): string | undefined =>
+  constOfProperty(node, "type") ?? constOfProperty(node, "expectType");
+
+function countNodes(
+  node: JsonValue,
+  position: NodePosition,
+  context: OccurrenceContext,
+): void {
   if (Array.isArray(node)) {
     for (const child of node as JsonArray) {
-      countNodes(child, true);
+      countNodes(child, "schema", context);
     }
     return;
   }
@@ -59,36 +110,128 @@ function countNodes(node: JsonValue, isSchemaPos = true): void {
   }
 
   const canonical = canonicalize(node);
-  if (isSchemaPos && canonical.length >= minSerializedLength) {
+  if (position === "schema" && canonical.length >= minSerializedLength) {
     const existing = counts.get(canonical);
     if (existing) {
       existing.count++;
+      existing.contexts.push(context);
     } else {
-      counts.set(canonical, { count: 1, node });
+      counts.set(canonical, { count: 1, node, contexts: [context] });
     }
   }
+
+  const contextInsideNode =
+    position === "schema" ?
+      {
+        ...context,
+        enclosingType: enclosingTypeOf(node) ?? context.enclosingType,
+      }
+    : context;
   for (const [key, value] of Object.entries(node)) {
-    countNodes(value, !propertyMapKeys.has(key));
+    countNodes(
+      value,
+      key === "properties" || key === "patternProperties" ? key : "schema",
+      position === "properties" ?
+        {
+          ...contextInsideNode,
+          propertyNames: [...contextInsideNode.propertyNames, key],
+        }
+      : contextInsideNode,
+    );
   }
 }
 
-countNodes(schema);
+countNodes(schema, "schema", { propertyNames: [], enclosingType: undefined });
 
 // A node with only flat primitive properties and no nested objects is barely
 // smaller than its $ref replacement — not worth extracting.
 const hasMeaningfulDepth = (node: JsonObject): boolean =>
   Object.values(node).some((v) => isJsonObject(v) || Array.isArray(v));
 
-// Build extraction map: canonical → def name, largest subtrees first.
+const mostFrequent = (values: string[]): string | undefined => {
+  const tally = new Map<string, number>();
+  for (const value of values) {
+    tally.set(value, tally.getOrInsert(value, 0) + 1);
+  }
+  let maybeMostFrequent: string | undefined;
+  let highestCount = 0;
+  for (const [value, valueCount] of tally) {
+    if (valueCount > highestCount) {
+      maybeMostFrequent = value;
+      highestCount = valueCount;
+    }
+  }
+  return maybeMostFrequent;
+};
+
+const nameFromContexts = (
+  contexts: OccurrenceContext[],
+  node: JsonObject,
+): string => {
+  const maybeLeadName = mostFrequent(
+    contexts.flatMap(({ propertyNames }) => propertyNames.slice(-1)),
+  );
+  if (maybeLeadName === undefined) {
+    return "shared";
+  }
+  const [firstLeadContext, ...otherLeadContexts] = contexts.filter(
+    ({ propertyNames }) => propertyNames.at(-1) === maybeLeadName,
+  );
+  // only name the enclosing type if every use is inside the same one:
+  const enclosingType =
+    (
+      otherLeadContexts.every(
+        (leadContext) =>
+          leadContext.enclosingType === firstLeadContext.enclosingType,
+      )
+    ) ?
+      firstLeadContext.enclosingType
+    : undefined;
+  return [enclosingType, maybeLeadName, ownVariantOf(node)]
+    .filter((namePart) => namePart !== undefined)
+    .map((namePart) => namePart.replace(/[^A-Za-z0-9]/g, ""))
+    .join("_");
+};
+
+const takenDefinitionNames = new Set<string>();
+
+const definitionHashLength = 6;
+
+// the hash of the subtree's content keeps a name the same while other
+// definitions come and go
+const uniqueDefinitionName = (
+  contexts: OccurrenceContext[],
+  node: JsonObject,
+  canonical: string,
+): string => {
+  const prefix = nameFromContexts(contexts, node);
+  const hash = createHash("sha256")
+    .update(canonical)
+    .digest("hex")
+    .slice(0, definitionHashLength);
+  const name = `${prefix}_${hash}`;
+  if (takenDefinitionNames.has(name)) {
+    throw new Error(
+      `two different shared subtrees would both be named ${name} - lengthen definitionHashLength`,
+    );
+  }
+  takenDefinitionNames.add(name);
+  return name;
+};
+
+// Build extraction map: canonical → def name
 const extractionMap = new Map<string, string>();
 
-[...counts.entries()]
+counts
+  .entries()
   .filter(
     ([, { count, node }]) => count >= minCount && hasMeaningfulDepth(node),
   )
-  .sort(([a], [b]) => b.length - a.length)
-  .forEach(([canonical], i) => {
-    extractionMap.set(canonical, `r${i + 1}`);
+  .forEach(([canonical, { contexts, node }]) => {
+    extractionMap.set(
+      canonical,
+      uniqueDefinitionName(contexts, node, canonical),
+    );
   });
 
 if (extractionMap.size === 0) {
@@ -146,7 +289,11 @@ const newSchema = replaceNodes(schema) as JsonObject;
 // that nested shared subtrees (e.g. a position node inside an emitter def)
 // are also compacted rather than stored inline.
 const definitions = (newSchema.definitions ?? {}) as JsonObject;
-for (const [defName, node] of defNodes) {
+// in name order, so that adding a definition adds one entry rather than moving others
+for (const [defName, node] of defNodes
+  .entries()
+  .toArray()
+  .toSorted(([nameA], [nameB]) => (nameA < nameB ? -1 : 1))) {
   definitions[defName] = replaceNodeChildren(node);
 }
 newSchema.definitions = definitions;

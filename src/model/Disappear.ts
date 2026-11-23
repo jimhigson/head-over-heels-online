@@ -1,3 +1,4 @@
+import type { WritableNonEmptyTuple } from "../utils/types/WritableNonEmptyTuple";
 import type { ItemInPlayType } from "./ItemInPlay";
 
 export type Disappear = {
@@ -7,5 +8,5 @@ export type Disappear = {
    * Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player
    * or ['head'] eg for doughnuts that only head can collect
    */
-  byType?: ItemInPlayType[];
+  byType?: WritableNonEmptyTuple<ItemInPlayType>;
 };

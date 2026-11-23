@@ -163,7 +163,8 @@ const selectSelectionIsMultipliable = (
 
 /**
  * whether the current item tool's item can grow (or shrink) along the
- * direction's axis - it takes times along it, and shrinking leaves at least one
+ * direction's axis - it takes times along it, and shrinking leaves at least
+ * one. A tool with several items can't
  */
 const selectToolItemIsMultipliable = (
   state: EditorRootState,
@@ -171,12 +172,12 @@ const selectToolItemIsMultipliable = (
   direction: Xyz,
 ) => {
   const tool = selectTool(state);
-  if (tool.type !== "item") {
+  if (tool.type !== "item" || tool.items.length !== 1) {
     return false;
   }
-  // ItemTool is {type, config}; EditorJsonItemUnion is assignable to it, so the
-  // cast just gives the discriminated view these expect:
-  const toolItem = tool.item as EditorJsonItemUnion;
+  const [firstItem] = tool.items;
+  // the cast just gives the discriminated view these expect:
+  const toolItem = firstItem as EditorJsonItemUnion;
   const axis = directionAxis(direction);
   return (
     getConsolidatableVector(toolItem)[axis] !== 0 &&

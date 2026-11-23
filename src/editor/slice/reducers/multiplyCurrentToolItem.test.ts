@@ -13,7 +13,12 @@ test("multiplying grows the item tool's item along the direction's axis", () => 
       editorStateWithOneRoomWithNoItems,
       setTool({
         type: "item",
-        item: { type: "block", config: { style: "artificial" } },
+        items: [
+          {
+            type: "block",
+            config: { style: "artificial" },
+          },
+        ],
       }),
       multiplyCurrentToolItem({
         direction: { x: -1, y: 0, z: 0 },
@@ -22,7 +27,12 @@ test("multiplying grows the item tool's item along the direction's axis", () => 
     ).tool,
   ).toEqual<Tool>({
     type: "item",
-    item: { type: "block", config: { style: "artificial", times: { x: 2 } } },
+    items: [
+      {
+        type: "block",
+        config: { style: "artificial", times: { x: 2 } },
+      },
+    ],
   });
 });
 
@@ -32,10 +42,12 @@ test("shrinking takes a block off the item tool's item along the direction's axi
       editorStateWithOneRoomWithNoItems,
       setTool({
         type: "item",
-        item: {
-          type: "block",
-          config: { style: "artificial", times: { y: 2, z: 3 } },
-        },
+        items: [
+          {
+            type: "block",
+            config: { style: "artificial", times: { y: 2, z: 3 } },
+          },
+        ],
       }),
       multiplyCurrentToolItem({
         direction: { x: 0, y: 1, z: 0 },
@@ -44,7 +56,12 @@ test("shrinking takes a block off the item tool's item along the direction's axi
     ).tool,
   ).toEqual<Tool>({
     type: "item",
-    item: { type: "block", config: { style: "artificial", times: { z: 3 } } },
+    items: [
+      {
+        type: "block",
+        config: { style: "artificial", times: { z: 3 } },
+      },
+    ],
   });
 });
 
@@ -54,7 +71,12 @@ test("an item tool's item can't grow along an axis it takes no times on", () => 
       editorStateWithOneRoomWithNoItems,
       setTool({
         type: "item",
-        item: { type: "lamp", config: { direction: "towards" } },
+        items: [
+          {
+            type: "lamp",
+            config: { direction: "towards" },
+          },
+        ],
       }),
       multiplyCurrentToolItem({
         direction: { x: 1, y: 0, z: 0 },
@@ -63,6 +85,11 @@ test("an item tool's item can't grow along an axis it takes no times on", () => 
     ).tool,
   ).toEqual<Tool>({
     type: "item",
-    item: { type: "lamp", config: { direction: "towards" } },
+    items: [
+      {
+        type: "lamp",
+        config: { direction: "towards" },
+      },
+    ],
   });
 });

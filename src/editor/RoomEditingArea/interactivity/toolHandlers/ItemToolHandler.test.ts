@@ -20,7 +20,12 @@ test("hovering the item tool where its item would collide previews it at the nea
   const floorId = "floor" as EditorRoomItemId;
   const blockTool: Extract<Tool, { type: "item" }> = {
     type: "item",
-    item: { type: "block", config: { style: "organic", times: { x: 2 } } },
+    items: [
+      {
+        type: "block",
+        config: { style: "organic", times: { x: 2 } },
+      },
+    ],
   };
   // a floor with a block on it at (2, 0, 0), and a tool for a block two long
   // in x:
@@ -83,11 +88,93 @@ test("hovering the item tool where its item would collide previews it at the nea
   ).toEqual([{ x: 2.5, y: 1.5, z: 0 }]);
 });
 
+test("hovering a tool of two items previews both at the nearest spot where both fit", () => {
+  const floorId = "floor" as EditorRoomItemId;
+  const twoBlocksTool: Extract<Tool, { type: "item" }> = {
+    type: "item",
+    items: [
+      {
+        type: "block",
+        config: { style: "organic" },
+      },
+      {
+        type: "block",
+        config: { style: "artificial" },
+        position: { x: 1, y: 0, z: 0 },
+      },
+    ],
+  };
+  // a floor with a block on it at (2, 0, 0), where the second of the tool's
+  // blocks would go if the first was put down in block (1, 0):
+  const state0: LevelEditorState = produce(
+    editorStateWithOneRoomWithNoItems,
+    (draft) => {
+      const { items } = draft.campaignInProgress.rooms[testRoomId];
+      items[floorId] = {
+        type: "floor",
+        config: {
+          floorType: "standable",
+          scenery: "blacktooth",
+          times: { x: 8, y: 8 },
+        },
+        position: { x: 0, y: 0, z: 0 },
+      };
+      items["block" as EditorRoomItemId] = {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 2, y: 0, z: 0 },
+      };
+      draft.tool = twoBlocksTool;
+    },
+  );
+  const roomState = loadEditorRoom(
+    testRoomId,
+    state0.campaignInProgress.rooms[testRoomId] as EditorRoomJson,
+  );
+  const pointingAtFloorBesideBlock: PointingAtItem = {
+    roomId: testRoomId,
+    scrXy: { x: 0, y: 0 },
+    world: {
+      itemId: floorId,
+      position: { x: 1.5 * blockSizePx.x, y: 0.5 * blockSizePx.y, z: 0 },
+      onItem: { face: { x: 0, y: 0, z: 1 } },
+    },
+  };
+
+  const state1Hovered = reduceLevelEditorActions(
+    state0,
+    new ItemToolHandler().handleMouseMove({
+      openRoomId: testOpenRoomId,
+      roomState,
+      // neither is read by the item tool:
+      mouseEvent: {} as MouseEvent,
+      viewport: {} as EditorViewport,
+      pointingAt: pointingAtFloorBesideBlock,
+      pointingAtChanged: true,
+    }),
+  );
+
+  // the second is a block along from the first, and neither is in the block:
+  expect(
+    Object.values(state1Hovered.pendingEdits?.edits[testRoomId] ?? {}).map(
+      (item) => item?.position,
+    ),
+  ).toEqual([
+    { x: 2.5, y: 1.5, z: 0 },
+    { x: 3.5, y: 1.5, z: 0 },
+  ]);
+});
+
 test("clicking the item tool where its item would collide adds it at the nearest spot that fits instead", () => {
   const floorId = "floor" as EditorRoomItemId;
   const blockTool: Extract<Tool, { type: "item" }> = {
     type: "item",
-    item: { type: "block", config: { style: "organic", times: { x: 2 } } },
+    items: [
+      {
+        type: "block",
+        config: { style: "organic", times: { x: 2 } },
+      },
+    ],
   };
   // a floor with a block on it at (2, 0, 0), and a tool for a block two long
   // in x:

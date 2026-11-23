@@ -6,6 +6,7 @@ import {
 import { rotateXyzByInverseCameraAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { scaleXyz, type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
+import { isDoorToolItems } from "../interactivity/isDoorToolItems";
 import type { Tool } from "../interactivity/Tool";
 
 const up = { z: 1, x: 0, y: 0 };
@@ -28,7 +29,7 @@ export const pointerIntersectionFace = (
 ): Xyz => {
   if (
     tool.type === "item" &&
-    tool.item.type === "door" &&
+    isDoorToolItems(tool.items) &&
     item.type === "wall"
   ) {
     const wallDirection = item.config.direction;

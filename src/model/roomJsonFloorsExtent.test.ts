@@ -1,5 +1,6 @@
 import { expect, test } from "vitest";
 
+import { repeatedNonEmptyTuple } from "../utils/repeatedNonEmptyTuple";
 import type { AnyRoomJson } from "./RoomJson";
 import {
   type RoomJsonFloorsExtent,
@@ -16,7 +17,7 @@ test("returns undefined for room with no floors", () => {
         position: { x: 0, y: 0, z: 0 },
         config: {
           direction: "towards",
-          tiles: Array(5).fill("plain"),
+          tiles: repeatedNonEmptyTuple("plain", 5),
         },
       },
       monster1: {
@@ -316,7 +317,7 @@ test("ignores non-floor items when calculating extent", () => {
         position: { x: 0, y: 0, z: 0 },
         config: {
           direction: "towards",
-          tiles: Array(20).fill("plain"),
+          tiles: repeatedNonEmptyTuple("plain", 20),
         },
       },
       block1: {

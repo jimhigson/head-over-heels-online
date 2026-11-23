@@ -41,6 +41,19 @@ process.stdin.on("end", () => {
       if (isJsonObject(node)) {
         const currentPath = path.join(".");
 
+        // a non-empty array arrives as a tuple of one schema plus an identical
+        // rest schema (`minItems: 1` is already there) - collapse it to a plain
+        // array of that schema so it is not written twice
+        if (
+          Array.isArray(node.items) &&
+          node.items.length === 1 &&
+          JSON.stringify(node.items[0]) === JSON.stringify(node.additionalItems)
+        ) {
+          const [repeatedItemSchema] = node.items;
+          node.items = repeatedItemSchema;
+          delete node.additionalItems;
+        }
+
         // an item schema: its `properties` carries both a `type` discriminator and
         // a `position`. We constrain the position to the grid here, where the item
         // type is visible, so emitters can be allowed a finer z than everything else.
@@ -98,6 +111,11 @@ process.stdin.on("end", () => {
             node.properties.z.minimum = 1;
             node.properties.z.maximum = 99;
           }
+        }
+
+        // probability weights are relative chances, which cannot be negative
+        if (currentPath.endsWith("properties.probabilityWeight")) {
+          node.minimum = 0;
         }
 
         // Check if we're at a subRooms object - enforce at least one property

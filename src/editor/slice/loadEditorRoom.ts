@@ -29,9 +29,8 @@ const loadRoomDefaultOptions = {
 export const loadEditorRoom = (
   roomId: EditorRoomId,
   roomJson: EditorRoomJson,
-): EditorRoomState =>
-  // Object.assign keeps typechecking working since no casts needed:
-  Object.assign(loadRoom({ roomId, roomJson, ...loadRoomDefaultOptions }), {
-    // freshly loaded, so there is no preview yet:
-    itemsOverriddenByPreview: {},
-  });
+): EditorRoomState => ({
+  ...loadRoom({ roomId, roomJson, ...loadRoomDefaultOptions }),
+  // freshly loaded, so there is no preview yet:
+  itemsOverriddenByPreview: {},
+});

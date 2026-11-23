@@ -33,7 +33,7 @@ export const DuplicateMenuItem = () => {
         type: "itemTool",
         label: "Duplicate",
         menuIcon: <MenuItemGlyphIcon glyph="*2" />,
-        itemTool: { type: jsonItem.type, config: jsonItem.config },
+        items: [{ type: jsonItem.type, config: jsonItem.config }],
       }}
     />
   );

@@ -620,8 +620,22 @@ class EditorAnnotationsRenderer<
       monsterWakes: monsterWakesFilter,
     } = this.#outlineFilters;
 
+    // clicking part of the selection with the eye dropper takes all of it
+    // (but doors, which it leaves out), so all of it is outlined as the hovered item is:
+    const isSampledWithHoveredItem =
+      toolType === "eyeDropper" &&
+      isSelected &&
+      hoveredJsonItem !== undefined &&
+      !clickableAnnotationHovered &&
+      selection.some(
+        (selectionEntry) =>
+          selectionEntry.jsonItemId === hoveredJsonItem.jsonItemId &&
+          selectionEntry.whichEditorGhost === hoveredJsonItem.whichEditorGhost,
+      ) &&
+      room.roomJson.items[jsonItemId]?.type !== "door";
+
     this.output.filters =
-      isHovered && isSelected ?
+      (isHovered || isSampledWithHoveredItem) && isSelected ?
         [
           selectedFilter,
           toolType === "eyeDropper" ?

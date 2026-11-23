@@ -114,10 +114,11 @@ export const wallAndDoorEditsForFloorChange = (
             },
             config: {
               ...wall.config,
+              // overlap checked above, so not empty:
               tiles: tiles.slice(
                 clippedStart - wallStart,
                 clippedEnd - wallStart,
-              ),
+              ) as typeof tiles,
             },
           }
         );

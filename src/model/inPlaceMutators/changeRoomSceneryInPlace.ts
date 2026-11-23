@@ -5,7 +5,7 @@ import {
 } from "../../sprites/planets";
 import type { RoomJson } from "../RoomJson";
 import { roomJsonItemsIterable } from "../RoomJsonItemIterators";
-import { rotatingSceneryTiles } from "./rotatingSceneryTiles";
+import { rotatingSceneryWallTiles } from "./rotatingSceneryWallTiles";
 
 export const changeRoomSceneryInPlace = <
   RoomId extends string,
@@ -22,8 +22,9 @@ export const changeRoomSceneryInPlace = <
     }
 
     if (i.type === "wall") {
-      i.config.tiles = Array.from(
-        rotatingSceneryTiles(sceneryName, i.config.tiles.length),
+      i.config.tiles = rotatingSceneryWallTiles(
+        sceneryName,
+        i.config.tiles.length,
       );
     }
 

@@ -35,10 +35,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r108"
+                    "$ref": "#/definitions/config_3bb06e"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "ball",
@@ -70,14 +70,14 @@
                         "type": "object"
                       },
                       "times": {
-                        "$ref": "#/definitions/r58"
+                        "$ref": "#/definitions/times_84b25d"
                       }
                     },
                     "required": ["axis"],
                     "type": "object"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "barrier",
@@ -96,7 +96,7 @@
                         "additionalProperties": false,
                         "properties": {
                           "disappearing": {
-                            "$ref": "#/definitions/r83"
+                            "$ref": "#/definitions/disappearing_5e0571"
                           },
                           "style": {
                             "const": "tower",
@@ -122,14 +122,14 @@
                         "additionalProperties": false,
                         "properties": {
                           "disappearing": {
-                            "$ref": "#/definitions/r83"
+                            "$ref": "#/definitions/disappearing_5e0571"
                           },
                           "style": {
                             "enum": ["artificial", "book", "organic"],
                             "type": "string"
                           },
                           "times": {
-                            "$ref": "#/definitions/r58"
+                            "$ref": "#/definitions/times_84b25d"
                           }
                         },
                         "required": ["style"],
@@ -138,7 +138,7 @@
                     ]
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "block",
@@ -227,7 +227,7 @@
                     "type": "object"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "bubbles",
@@ -251,7 +251,7 @@
                             "type": "boolean"
                           },
                           "modifies": {
-                            "$ref": "#/definitions/r1"
+                            "$ref": "#/definitions/modifies_6448ca"
                           },
                           "type": {
                             "const": "in-room",
@@ -285,7 +285,7 @@
                     ]
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "button",
@@ -299,10 +299,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r84"
+                    "$ref": "#/definitions/charles_config_0580b2"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "charles",
@@ -329,7 +329,7 @@
                             "type": "boolean"
                           },
                           "disappearing": {
-                            "$ref": "#/definitions/r83"
+                            "$ref": "#/definitions/disappearing_5e0571"
                           },
                           "speed": {
                             "description": "speed multiplier — undefined is treated as 1 (original game speed)",
@@ -363,7 +363,7 @@
                             "type": "boolean"
                           },
                           "disappearing": {
-                            "$ref": "#/definitions/r83"
+                            "$ref": "#/definitions/disappearing_5e0571"
                           },
                           "speed": {
                             "description": "speed multiplier — undefined is treated as 1 (original game speed)",
@@ -388,7 +388,7 @@
                     ]
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "conveyor",
@@ -413,14 +413,14 @@
                         "type": "string"
                       },
                       "times": {
-                        "$ref": "#/definitions/r58"
+                        "$ref": "#/definitions/times_84b25d"
                       }
                     },
                     "required": ["style"],
                     "type": "object"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "deadlyBlock",
@@ -437,7 +437,7 @@
                     "additionalProperties": false,
                     "properties": {
                       "direction": {
-                        "$ref": "#/definitions/r102"
+                        "$ref": "#/definitions/startDirection_3baae4"
                       },
                       "meta": {
                         "additionalProperties": false,
@@ -460,7 +460,7 @@
                     "type": "object"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "door",
@@ -483,315 +483,213 @@
                       "emits": {
                         "anyOf": [
                           {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "$ref": "#/definitions/r108"
-                              },
-                              "type": {
-                                "const": "ball",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
+                            "$ref": "#/definitions/emits_ball_f7f95f"
+                          },
+                          {
+                            "$ref": "#/definitions/emits_charles_571a54"
+                          },
+                          {
+                            "$ref": "#/definitions/emits_cyclic_142e0a"
+                          },
+                          {
+                            "$ref": "#/definitions/emits_firedDoughnut_baf194"
+                          },
+                          {
+                            "$ref": "#/definitions/emits_floatingText_68f7f3"
+                          },
+                          {
+                            "$ref": "#/definitions/emits_monster_207758"
+                          },
+                          {
+                            "$ref": "#/definitions/emits_moveableDeadly_9dccde"
+                          },
+                          {
+                            "$ref": "#/definitions/emits_movingPlatform_8442f1"
+                          },
+                          {
+                            "$ref": "#/definitions/emits_pickup_14c56f"
+                          },
+                          {
+                            "$ref": "#/definitions/emits_portableBlock_67d198"
+                          },
+                          {
+                            "$ref": "#/definitions/emits_portableTeleporter_ad5672"
                           },
                           {
                             "additionalProperties": false,
                             "properties": {
-                              "config": {
-                                "$ref": "#/definitions/r84"
-                              },
-                              "type": {
-                                "const": "charles",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
-                          },
-                          {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "$ref": "#/definitions/r69"
-                              },
-                              "type": {
-                                "const": "firedDoughnut",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
-                          },
-                          {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "$ref": "#/definitions/r108"
-                              },
-                              "type": {
-                                "const": "head",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
-                          },
-                          {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "$ref": "#/definitions/r108"
-                              },
-                              "type": {
-                                "const": "headOverHeels",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
-                          },
-                          {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "$ref": "#/definitions/r108"
-                              },
-                              "type": {
-                                "const": "heels",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
-                          },
-                          {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "anyOf": [
-                                  {
-                                    "$ref": "#/definitions/r52"
+                              "choices": {
+                                "description": "one of these is chosen at random for each emission, pseudo-randomly from the emitter's hash and the room time, so the same emission at the same time in the same room always chooses the same recipe",
+                                "items": {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "emits": {
+                                      "anyOf": [
+                                        {
+                                          "additionalProperties": false,
+                                          "properties": {
+                                            "config": {
+                                              "$ref": "#/definitions/config_3bb06e"
+                                            },
+                                            "type": {
+                                              "const": "ball",
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": ["type", "config"],
+                                          "type": "object"
+                                        },
+                                        {
+                                          "$ref": "#/definitions/emits_charles_571a54"
+                                        },
+                                        {
+                                          "$ref": "#/definitions/emits_firedDoughnut_baf194"
+                                        },
+                                        {
+                                          "additionalProperties": false,
+                                          "properties": {
+                                            "config": {
+                                              "$ref": "#/definitions/config_3bb06e"
+                                            },
+                                            "type": {
+                                              "const": "head",
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": ["type", "config"],
+                                          "type": "object"
+                                        },
+                                        {
+                                          "additionalProperties": false,
+                                          "properties": {
+                                            "config": {
+                                              "$ref": "#/definitions/config_3bb06e"
+                                            },
+                                            "type": {
+                                              "const": "headOverHeels",
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": ["type", "config"],
+                                          "type": "object"
+                                        },
+                                        {
+                                          "additionalProperties": false,
+                                          "properties": {
+                                            "config": {
+                                              "$ref": "#/definitions/config_3bb06e"
+                                            },
+                                            "type": {
+                                              "const": "heels",
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": ["type", "config"],
+                                          "type": "object"
+                                        },
+                                        {
+                                          "$ref": "#/definitions/emits_monster_207758"
+                                        },
+                                        {
+                                          "$ref": "#/definitions/emits_moveableDeadly_9dccde"
+                                        },
+                                        {
+                                          "$ref": "#/definitions/emits_movingPlatform_8442f1"
+                                        },
+                                        {
+                                          "$ref": "#/definitions/emits_pickup_14c56f"
+                                        },
+                                        {
+                                          "$ref": "#/definitions/emits_portableBlock_67d198"
+                                        },
+                                        {
+                                          "$ref": "#/definitions/emits_portableTeleporter_ad5672"
+                                        },
+                                        {
+                                          "additionalProperties": false,
+                                          "properties": {
+                                            "config": {
+                                              "$ref": "#/definitions/config_3bb06e"
+                                            },
+                                            "type": {
+                                              "const": "pushableBlock",
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": ["type", "config"],
+                                          "type": "object"
+                                        },
+                                        {
+                                          "$ref": "#/definitions/emits_sceneryCrown_9b848f"
+                                        },
+                                        {
+                                          "$ref": "#/definitions/emits_sceneryPlayer_ad8c39"
+                                        },
+                                        {
+                                          "$ref": "#/definitions/emits_slidingBlock_c95ef7"
+                                        },
+                                        {
+                                          "$ref": "#/definitions/emits_slidingDeadly_727d74"
+                                        },
+                                        {
+                                          "additionalProperties": false,
+                                          "properties": {
+                                            "config": {
+                                              "$ref": "#/definitions/config_3bb06e"
+                                            },
+                                            "type": {
+                                              "const": "spring",
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": ["type", "config"],
+                                          "type": "object"
+                                        }
+                                      ]
+                                    },
+                                    "probabilityWeight": {
+                                      "description": "relative chance of this recipe being chosen. Weights are relative to each other, so they need not add up to anything. 0 is allowed, but if every weight is 0 the recipes are chosen with equal probability. undefined is treated as 1",
+                                      "type": "number",
+                                      "minimum": 0
+                                    }
                                   },
-                                  {
-                                    "$ref": "#/definitions/r28"
-                                  },
-                                  {
-                                    "$ref": "#/definitions/r31"
-                                  },
-                                  {
-                                    "$ref": "#/definitions/r53"
-                                  },
-                                  {
-                                    "$ref": "#/definitions/r54"
-                                  },
-                                  {
-                                    "$ref": "#/definitions/r36"
-                                  },
-                                  {
-                                    "$ref": "#/definitions/r56"
-                                  },
-                                  {
-                                    "$ref": "#/definitions/r48"
-                                  },
-                                  {
-                                    "$ref": "#/definitions/r49"
-                                  },
-                                  {
-                                    "$ref": "#/definitions/r51"
-                                  },
-                                  {
-                                    "$ref": "#/definitions/r30"
-                                  },
-                                  {
-                                    "$ref": "#/definitions/r25"
-                                  },
-                                  {
-                                    "$ref": "#/definitions/r32"
-                                  }
-                                ]
+                                  "required": ["emits"],
+                                  "type": "object"
+                                },
+                                "minItems": 1,
+                                "type": "array"
                               },
                               "type": {
-                                "const": "monster",
+                                "const": "probabilistic",
                                 "type": "string"
                               }
                             },
-                            "required": ["type", "config"],
+                            "required": ["type", "choices"],
                             "type": "object"
                           },
                           {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "$ref": "#/definitions/r81"
-                              },
-                              "type": {
-                                "const": "moveableDeadly",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
+                            "$ref": "#/definitions/emits_pushableBlock_b4196a"
                           },
                           {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "$ref": "#/definitions/r38"
-                              },
-                              "type": {
-                                "const": "movingPlatform",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
+                            "$ref": "#/definitions/emits_sceneryCrown_9b848f"
                           },
                           {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "anyOf": [
-                                  {
-                                    "$ref": "#/definitions/r61"
-                                  },
-                                  {
-                                    "$ref": "#/definitions/r50"
-                                  },
-                                  {
-                                    "$ref": "#/definitions/r20"
-                                  },
-                                  {
-                                    "$ref": "#/definitions/r65"
-                                  }
-                                ]
-                              },
-                              "type": {
-                                "const": "pickup",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
+                            "$ref": "#/definitions/emits_sceneryPlayer_ad8c39"
                           },
                           {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "$ref": "#/definitions/r78"
-                              },
-                              "type": {
-                                "const": "portableBlock",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
+                            "$ref": "#/definitions/emits_slidingBlock_c95ef7"
                           },
                           {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "$ref": "#/definitions/r12"
-                              },
-                              "type": {
-                                "const": "portableTeleporter",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
+                            "$ref": "#/definitions/emits_slidingDeadly_727d74"
                           },
                           {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "$ref": "#/definitions/r108"
-                              },
-                              "type": {
-                                "const": "pushableBlock",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
-                          },
-                          {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "$ref": "#/definitions/r71"
-                              },
-                              "type": {
-                                "const": "sceneryCrown",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
-                          },
-                          {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "$ref": "#/definitions/r46"
-                              },
-                              "type": {
-                                "const": "sceneryPlayer",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
-                          },
-                          {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "$ref": "#/definitions/r80"
-                              },
-                              "type": {
-                                "const": "slidingBlock",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
-                          },
-                          {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "$ref": "#/definitions/r68"
-                              },
-                              "type": {
-                                "const": "slidingDeadly",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
-                          },
-                          {
-                            "additionalProperties": false,
-                            "properties": {
-                              "config": {
-                                "$ref": "#/definitions/r108"
-                              },
-                              "type": {
-                                "const": "spring",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type", "config"],
-                            "type": "object"
+                            "$ref": "#/definitions/emits_spring_6b26f3"
                           }
                         ],
-                        "description": "what does this emitter emit? Could be (potentially) any free item"
+                        "description": "what does this emitter emit? Could be (potentially) any free item. Can also cycle through several recipes in order, or choose between them pseudo-randomly"
                       },
                       "maximum": {
-                        "$ref": "#/definitions/r90"
+                        "$ref": "#/definitions/maximum_b7473b"
                       },
                       "maximumAtOnce": {
                         "description": "How many items emitted from this emitter can be in the room at once? If undefined, no limit. If already this many items in the room, the items will have to be removed from the room before more can be emitted (for example, collecting an emitted pickup)",
@@ -974,10 +872,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r69"
+                    "$ref": "#/definitions/firedDoughnut_config_2670fc"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "firedDoughnut",
@@ -991,10 +889,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r22"
+                    "$ref": "#/definitions/floatingText_config_8f7c04"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "floatingText",
@@ -1018,7 +916,7 @@
                             "type": "string"
                           },
                           "times": {
-                            "$ref": "#/definitions/r64"
+                            "$ref": "#/definitions/floor_times_9592f7"
                           }
                         },
                         "required": ["floorType", "times"],
@@ -1032,7 +930,7 @@
                             "type": "string"
                           },
                           "times": {
-                            "$ref": "#/definitions/r64"
+                            "$ref": "#/definitions/floor_times_9592f7"
                           }
                         },
                         "required": ["floorType", "times"],
@@ -1059,7 +957,7 @@
                             "type": "string"
                           },
                           "times": {
-                            "$ref": "#/definitions/r64"
+                            "$ref": "#/definitions/floor_times_9592f7"
                           }
                         },
                         "required": ["floorType", "scenery", "times"],
@@ -1068,7 +966,7 @@
                     ]
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "floor",
@@ -1085,13 +983,13 @@
                     "additionalProperties": false,
                     "properties": {
                       "times": {
-                        "$ref": "#/definitions/r58"
+                        "$ref": "#/definitions/times_84b25d"
                       }
                     },
                     "type": "object"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "hushPuppy",
@@ -1105,10 +1003,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r40"
+                    "$ref": "#/definitions/leftState_934b86"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "joystick",
@@ -1153,7 +1051,7 @@
                     "type": "object"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "lamp",
@@ -1185,7 +1083,7 @@
                     "type": "object"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "lift",
@@ -1225,7 +1123,7 @@
                     "type": "object"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "mirror",
@@ -1239,50 +1137,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "anyOf": [
-                      {
-                        "$ref": "#/definitions/r52"
-                      },
-                      {
-                        "$ref": "#/definitions/r28"
-                      },
-                      {
-                        "$ref": "#/definitions/r31"
-                      },
-                      {
-                        "$ref": "#/definitions/r53"
-                      },
-                      {
-                        "$ref": "#/definitions/r54"
-                      },
-                      {
-                        "$ref": "#/definitions/r36"
-                      },
-                      {
-                        "$ref": "#/definitions/r56"
-                      },
-                      {
-                        "$ref": "#/definitions/r48"
-                      },
-                      {
-                        "$ref": "#/definitions/r49"
-                      },
-                      {
-                        "$ref": "#/definitions/r51"
-                      },
-                      {
-                        "$ref": "#/definitions/r30"
-                      },
-                      {
-                        "$ref": "#/definitions/r25"
-                      },
-                      {
-                        "$ref": "#/definitions/r32"
-                      }
-                    ]
+                    "$ref": "#/definitions/monster_config_537d14"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "monster",
@@ -1296,10 +1154,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r81"
+                    "$ref": "#/definitions/moveableDeadly_config_e4f473"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "moveableDeadly",
@@ -1313,10 +1171,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r38"
+                    "$ref": "#/definitions/movingPlatform_config_266f68"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "movingPlatform",
@@ -1330,23 +1188,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "anyOf": [
-                      {
-                        "$ref": "#/definitions/r61"
-                      },
-                      {
-                        "$ref": "#/definitions/r50"
-                      },
-                      {
-                        "$ref": "#/definitions/r20"
-                      },
-                      {
-                        "$ref": "#/definitions/r65"
-                      }
-                    ]
+                    "$ref": "#/definitions/pickup_config_dc02ee"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "pickup",
@@ -1363,14 +1208,14 @@
                     "additionalProperties": false,
                     "properties": {
                       "which": {
-                        "$ref": "#/definitions/r104"
+                        "$ref": "#/definitions/which_302bf0"
                       }
                     },
                     "required": ["which"],
                     "type": "object"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "player",
@@ -1384,10 +1229,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r78"
+                    "$ref": "#/definitions/portableBlock_config_b0c0fa"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "portableBlock",
@@ -1401,10 +1246,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r12"
+                    "$ref": "#/definitions/config_d5e5de"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "portableTeleporter",
@@ -1418,10 +1263,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r108"
+                    "$ref": "#/definitions/config_3bb06e"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "pushableBlock",
@@ -1435,10 +1280,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r71"
+                    "$ref": "#/definitions/sceneryCrown_config_25c8d8"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "sceneryCrown",
@@ -1452,10 +1297,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r46"
+                    "$ref": "#/definitions/sceneryPlayer_config_12e5b9"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "sceneryPlayer",
@@ -1469,10 +1314,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r80"
+                    "$ref": "#/definitions/slidingBlock_config_563743"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "slidingBlock",
@@ -1486,10 +1331,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r68"
+                    "$ref": "#/definitions/slidingDeadly_config_b4e055"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "slidingDeadly",
@@ -1506,13 +1351,13 @@
                     "additionalProperties": false,
                     "properties": {
                       "times": {
-                        "$ref": "#/definitions/r58"
+                        "$ref": "#/definitions/times_84b25d"
                       }
                     },
                     "type": "object"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "spikes",
@@ -1526,10 +1371,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r108"
+                    "$ref": "#/definitions/config_3bb06e"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "spring",
@@ -1557,7 +1402,7 @@
                             "type": "string"
                           },
                           "modifies": {
-                            "$ref": "#/definitions/r1"
+                            "$ref": "#/definitions/modifies_6448ca"
                           },
                           "type": {
                             "const": "in-room",
@@ -1596,7 +1441,7 @@
                     ]
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "switch",
@@ -1610,10 +1455,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r12"
+                    "$ref": "#/definitions/config_d5e5de"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "teleporter",
@@ -1642,7 +1487,7 @@
                         "type": "string"
                       },
                       "modifies": {
-                        "$ref": "#/definitions/r1"
+                        "$ref": "#/definitions/modifies_6448ca"
                       },
                       "period": {
                         "type": "number"
@@ -1652,7 +1497,7 @@
                     "type": "object"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "timer",
@@ -1669,11 +1514,12 @@
                     "additionalProperties": false,
                     "properties": {
                       "direction": {
-                        "$ref": "#/definitions/r102"
+                        "$ref": "#/definitions/startDirection_3baae4"
                       },
                       "tiles": {
                         "description": "the tiles to show - the length of this array also determines the size of the wall",
                         "items": {},
+                        "minItems": 1,
                         "type": "array"
                       }
                     },
@@ -1681,7 +1527,7 @@
                     "type": "object"
                   },
                   "position": {
-                    "$ref": "#/definitions/r47"
+                    "$ref": "#/definitions/position_89ff45"
                   },
                   "type": {
                     "const": "wall",
@@ -1703,7 +1549,7 @@
               "additionalProperties": false,
               "properties": {
                 "direction": {
-                  "$ref": "#/definitions/r102"
+                  "$ref": "#/definitions/startDirection_3baae4"
                 },
                 "text": {
                   "type": "string"
@@ -1726,19 +1572,19 @@
                       "additionalProperties": false,
                       "properties": {
                         "above": {
-                          "$ref": "#/definitions/r79"
+                          "$ref": "#/definitions/above_0981f7"
                         },
                         "below": {
-                          "$ref": "#/definitions/r79"
+                          "$ref": "#/definitions/above_0981f7"
                         },
                         "nonContiguousRelationship": {
                           "additionalProperties": false,
                           "properties": {
                             "gridOffset": {
-                              "$ref": "#/definitions/r75"
+                              "$ref": "#/definitions/lift_70ec1b"
                             },
                             "with": {
-                              "$ref": "#/definitions/r79"
+                              "$ref": "#/definitions/above_0981f7"
                             }
                           },
                           "required": ["with", "gridOffset"],
@@ -1756,10 +1602,10 @@
                     "additionalProperties": false,
                     "properties": {
                       "above": {
-                        "$ref": "#/definitions/r79"
+                        "$ref": "#/definitions/above_0981f7"
                       },
                       "below": {
-                        "$ref": "#/definitions/r79"
+                        "$ref": "#/definitions/above_0981f7"
                       },
                       "gridPosition": {
                         "additionalProperties": false,
@@ -1779,10 +1625,10 @@
                         "additionalProperties": false,
                         "properties": {
                           "gridOffset": {
-                            "$ref": "#/definitions/r75"
+                            "$ref": "#/definitions/lift_70ec1b"
                           },
                           "with": {
-                            "$ref": "#/definitions/r79"
+                            "$ref": "#/definitions/above_0981f7"
                           }
                         },
                         "required": ["with", "gridOffset"],
@@ -1866,7 +1712,7 @@
             "type": "object",
             "additionalProperties": {
               "if": {
-                "$ref": "#/definitions/r105"
+                "$ref": "#/definitions/items_wall_c35ad8"
               },
               "then": {
                 "type": "object",
@@ -1903,7 +1749,7 @@
               "type": "object",
               "additionalProperties": {
                 "if": {
-                  "$ref": "#/definitions/r105"
+                  "$ref": "#/definitions/items_wall_c35ad8"
                 },
                 "then": {
                   "type": "object",
@@ -1940,7 +1786,7 @@
                 "type": "object",
                 "additionalProperties": {
                   "if": {
-                    "$ref": "#/definitions/r105"
+                    "$ref": "#/definitions/items_wall_c35ad8"
                   },
                   "then": {
                     "type": "object",
@@ -1977,7 +1823,7 @@
                   "type": "object",
                   "additionalProperties": {
                     "if": {
-                      "$ref": "#/definitions/r105"
+                      "$ref": "#/definitions/items_wall_c35ad8"
                     },
                     "then": {
                       "type": "object",
@@ -2014,7 +1860,7 @@
                     "type": "object",
                     "additionalProperties": {
                       "if": {
-                        "$ref": "#/definitions/r105"
+                        "$ref": "#/definitions/items_wall_c35ad8"
                       },
                       "then": {
                         "type": "object",
@@ -2051,7 +1897,7 @@
                       "type": "object",
                       "additionalProperties": {
                         "if": {
-                          "$ref": "#/definitions/r105"
+                          "$ref": "#/definitions/items_wall_c35ad8"
                         },
                         "then": {
                           "type": "object",
@@ -2094,7 +1940,7 @@
                         "type": "object",
                         "additionalProperties": {
                           "if": {
-                            "$ref": "#/definitions/r105"
+                            "$ref": "#/definitions/items_wall_c35ad8"
                           },
                           "then": {
                             "type": "object",
@@ -2131,7 +1977,7 @@
                           "type": "object",
                           "additionalProperties": {
                             "if": {
-                              "$ref": "#/definitions/r105"
+                              "$ref": "#/definitions/items_wall_c35ad8"
                             },
                             "then": {
                               "type": "object",
@@ -2161,514 +2007,55 @@
         }
       }
     },
-    "r1": {
-      "items": {
-        "$ref": "#/definitions/r2"
-      },
-      "type": "array"
-    },
-    "r2": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/r26"
-        },
-        {
-          "$ref": "#/definitions/r24"
-        },
-        {
-          "$ref": "#/definitions/r16"
-        },
-        {
-          "$ref": "#/definitions/r18"
-        },
-        {
-          "$ref": "#/definitions/r9"
-        },
-        {
-          "$ref": "#/definitions/r19"
-        },
-        {
-          "$ref": "#/definitions/r3"
-        },
-        {
-          "$ref": "#/definitions/r15"
-        },
-        {
-          "$ref": "#/definitions/r14"
-        },
-        {
-          "$ref": "#/definitions/r11"
-        },
-        {
-          "$ref": "#/definitions/r33"
-        },
-        {
-          "$ref": "#/definitions/r7"
-        },
-        {
-          "$ref": "#/definitions/r41"
-        },
-        {
-          "$ref": "#/definitions/r23"
-        }
-      ]
-    },
-    "r3": {
+    "above_0981f7": {
       "additionalProperties": false,
       "properties": {
-        "expectType": {
-          "const": "emitter",
+        "room": {
           "type": "string"
         },
-        "leftState": {
-          "$ref": "#/definitions/r4"
-        },
-        "rightState": {
-          "$ref": "#/definitions/r4"
-        },
-        "targets": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        }
-      },
-      "required": ["expectType", "leftState", "rightState"],
-      "type": "object"
-    },
-    "r4": {
-      "additionalProperties": false,
-      "properties": {
-        "delay": {
-          "description": "how long to delay until the first emitting? after this time the first emit will happen, then all others will continue at the period interval. undefined is treated the same as 0",
-          "type": "number"
-        },
-        "emits": {
-          "$ref": "#/definitions/r5"
-        },
-        "lastEmittedAtRoomTime": {
-          "type": "number"
-        },
-        "maximum": {
-          "$ref": "#/definitions/r90"
-        },
-        "maximumAtOnce": {
-          "description": "How many items emitted from this emitter can be in the room at once? If undefined, no limit. If already this many items in the room, the items will have to be removed from the room before more can be emitted (for example, collecting an emitted pickup)",
-          "type": "number"
-        },
-        "period": {
-          "description": "how long between emissions?",
-          "type": "number"
-        },
-        "playerInsideAtRoomTime": {
-          "type": "number"
-        },
-        "quantityEmitted": {
-          "type": "number"
-        }
-      },
-      "type": "object"
-    },
-    "r5": {
-      "additionalProperties": false,
-      "description": "what does this emitter emit? Could be (potentially) any free item",
-      "properties": {
-        "config": {
-          "$ref": "#/definitions/r6"
-        },
-        "type": {
-          "$ref": "#/definitions/r57"
-        }
-      },
-      "required": ["type", "config"],
-      "type": "object"
-    },
-    "r6": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/r22"
-        },
-        {
-          "$ref": "#/definitions/r84"
-        },
-        {
-          "$ref": "#/definitions/r69"
-        },
-        {
-          "$ref": "#/definitions/r61"
-        },
-        {
-          "$ref": "#/definitions/r50"
-        },
-        {
-          "$ref": "#/definitions/r20"
-        },
-        {
-          "$ref": "#/definitions/r65"
-        },
-        {
-          "$ref": "#/definitions/r38"
-        },
-        {
-          "$ref": "#/definitions/r71"
-        },
-        {
-          "$ref": "#/definitions/r80"
-        },
-        {
-          "$ref": "#/definitions/r78"
-        },
-        {
-          "$ref": "#/definitions/r81"
-        },
-        {
-          "$ref": "#/definitions/r68"
-        },
-        {
-          "$ref": "#/definitions/r12"
-        },
-        {
-          "$ref": "#/definitions/r52"
-        },
-        {
-          "$ref": "#/definitions/r28"
-        },
-        {
-          "$ref": "#/definitions/r31"
-        },
-        {
-          "$ref": "#/definitions/r53"
-        },
-        {
-          "$ref": "#/definitions/r54"
-        },
-        {
-          "$ref": "#/definitions/r36"
-        },
-        {
-          "$ref": "#/definitions/r56"
-        },
-        {
-          "$ref": "#/definitions/r48"
-        },
-        {
-          "$ref": "#/definitions/r46"
-        },
-        {
-          "$ref": "#/definitions/r49"
-        },
-        {
-          "$ref": "#/definitions/r51"
-        },
-        {
-          "$ref": "#/definitions/r30"
-        },
-        {
-          "$ref": "#/definitions/r25"
-        },
-        {
-          "$ref": "#/definitions/r32"
-        },
-        {
-          "type": "object"
-        }
-      ]
-    },
-    "r7": {
-      "additionalProperties": false,
-      "properties": {
-        "activates": {
-          "$ref": "#/definitions/r34"
-        },
-        "expectType": {
-          "$ref": "#/definitions/r106"
-        },
-        "leftState": {
-          "$ref": "#/definitions/r8"
-        },
-        "rightState": {
-          "$ref": "#/definitions/r8"
-        },
-        "switchedDirection": {
-          "$ref": "#/definitions/r74"
-        },
-        "targets": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        }
-      },
-      "required": ["expectType"],
-      "type": "object"
-    },
-    "r8": {
-      "additionalProperties": false,
-      "properties": {
-        "activated": {
-          "$ref": "#/definitions/r62"
-        },
-        "disappearing": {
-          "$ref": "#/definitions/r10"
-        },
-        "everActivated": {
-          "$ref": "#/definitions/r66"
-        },
-        "expires": {
-          "$ref": "#/definitions/r35"
-        }
-      },
-      "type": "object"
-    },
-    "r9": {
-      "additionalProperties": false,
-      "properties": {
-        "activates": {
-          "$ref": "#/definitions/r43"
-        },
-        "expectType": {
-          "const": "conveyor",
-          "type": "string"
-        },
-        "leftState": {
-          "$ref": "#/definitions/r37"
-        },
-        "reverses": {
-          "$ref": "#/definitions/r55"
-        },
-        "rightState": {
-          "$ref": "#/definitions/r37"
-        },
-        "targets": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        }
-      },
-      "required": ["expectType"],
-      "type": "object"
-    },
-    "r10": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/r13"
-        },
-        {
-          "type": "null"
-        }
-      ],
-      "description": "if given, the item disappears after the specified interaction. This must be null (not undefined) so switches can tell the difference between having no setting, and having a setting to change to null when they make something not disappearing"
-    },
-    "r11": {
-      "additionalProperties": false,
-      "properties": {
-        "expectType": {
-          "const": "lift",
-          "type": "string"
-        },
-        "leftState": {
-          "$ref": "#/definitions/r27"
-        },
-        "rightState": {
-          "$ref": "#/definitions/r27"
-        },
-        "targets": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        }
-      },
-      "required": ["expectType", "leftState", "rightState"],
-      "type": "object"
-    },
-    "r12": {
-      "additionalProperties": false,
-      "properties": {
-        "activatedIfPlanetLiberated": {
-          "$ref": "#/definitions/r63"
-        },
-        "times": {
-          "$ref": "#/definitions/r58"
-        },
-        "toItemId": {
-          "description": "an item in the destination room this teleporter should go to - the player will be moved to atop this item\n\nIf not given, will find the (only teleporter) in the destination room\n\nnote: not RoomItemId because that is the ids of items in *this* room, but this is pointing to another room",
-          "type": "string"
-        },
-        "toRoom": {
-          "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item.",
+        "subRoom": {
           "type": "string"
         }
       },
+      "required": ["room"],
       "type": "object"
     },
-    "r13": {
-      "additionalProperties": false,
-      "properties": {
-        "byType": {
-          "$ref": "#/definitions/r17"
-        },
-        "on": {
-          "enum": ["stand", "touch"],
-          "type": "string"
-        }
-      },
-      "required": ["on"],
-      "type": "object"
+    "activatedIfPlanetLiberated_c7334d": {
+      "description": "the teleporter only works once this planet has been liberated (its crown collected); always works when not given",
+      "enum": ["blacktooth", "bookworld", "egyptus", "penitentiary", "safari"],
+      "type": "string"
     },
-    "r14": {
-      "additionalProperties": false,
-      "properties": {
-        "activates": {
-          "$ref": "#/definitions/r42"
-        },
-        "expectType": {
-          "const": "lamp",
-          "type": "string"
-        },
-        "leftState": {
-          "$ref": "#/definitions/r70"
-        },
-        "rightState": {
-          "$ref": "#/definitions/r70"
-        },
-        "targets": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        }
-      },
-      "required": ["expectType"],
-      "type": "object"
+    "activated_9d3983": {
+      "description": "activated for us is a boolean, not the many-states from the json config, ie it is stateful on if the item is currently activated (so they can render differently)",
+      "enum": [false, true],
+      "type": "boolean"
     },
-    "r15": {
-      "additionalProperties": false,
-      "properties": {
-        "expectType": {
-          "const": "joystick",
-          "type": "string"
-        },
-        "leftState": {
-          "$ref": "#/definitions/r40"
-        },
-        "rightState": {
-          "$ref": "#/definitions/r40"
-        },
-        "targets": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        }
-      },
-      "required": ["expectType", "leftState", "rightState"],
-      "type": "object"
+    "activated_dae397": {
+      "description": "if true, the lamp is shining (emitting its light beam)",
+      "enum": [false, true],
+      "type": "boolean"
     },
-    "r16": {
-      "additionalProperties": false,
-      "properties": {
-        "disables": {
-          "$ref": "#/definitions/r45"
-        },
-        "expectType": {
-          "$ref": "#/definitions/r107"
-        },
-        "leftState": {
-          "$ref": "#/definitions/r73"
-        },
-        "rightState": {
-          "$ref": "#/definitions/r73"
-        },
-        "targets": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        }
-      },
-      "required": ["expectType"],
-      "type": "object"
+    "activates_2a9c92": {
+      "description": "true is a shorthand for monsters/platforms that are activated by default:   {leftState: {activated: true, everActivated:true}, rightState: {activated:false}}, false is shorthand for monsters/platforms that are deactivated by default:   {leftState: {activated: false}, rightState: {activated: true, everActivated:true}},",
+      "enum": [false, true],
+      "type": "boolean"
     },
-    "r17": {
-      "description": "if given, the item will disappear only if stood/touched by items of this type. Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player or ['head'] eg for doughnuts that only head can collect",
-      "items": {
-        "$ref": "#/definitions/r21"
-      },
-      "type": "array"
+    "activates_c6e247": {
+      "description": "true is a shorthand for lamps that start activated (shining):   {leftState: {activated: true}, rightState: {activated: false}}, false is shorthand for lamps that start deactivated:   {leftState: {activated: false}, rightState: {activated: true}},",
+      "enum": [false, true],
+      "type": "boolean"
     },
-    "r18": {
-      "additionalProperties": false,
-      "properties": {
-        "activates": {
-          "$ref": "#/definitions/r39"
-        },
-        "expectType": {
-          "const": "charles",
-          "type": "string"
-        },
-        "leftState": {
-          "$ref": "#/definitions/r84"
-        },
-        "rightState": {
-          "$ref": "#/definitions/r84"
-        },
-        "targets": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        }
-      },
-      "required": ["expectType"],
-      "type": "object"
+    "activates_d39923": {
+      "description": "true is a shorthand for conveyors that the switch enables   {leftState: {disabled: false}, rightState: {disabled: true}}, false is a shorthand for conveyors that the switch disables   {leftState: {disabled: true}, rightState: {disabled: false}},",
+      "enum": [false, true],
+      "type": "boolean"
     },
-    "r19": {
-      "additionalProperties": false,
-      "properties": {
-        "disables": {
-          "$ref": "#/definitions/r44"
-        },
-        "expectType": {
-          "const": "deadlyBlock",
-          "type": "string"
-        },
-        "leftState": {
-          "$ref": "#/definitions/r85"
-        },
-        "rightState": {
-          "$ref": "#/definitions/r85"
-        },
-        "targets": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        }
-      },
-      "required": ["expectType"],
-      "type": "object"
+    "activates_e92c9f": {
+      "description": "true is a shorthand for charles bots that are activated by default:   {leftState: {activated: true}, rightState: {activated: false}}, false is shorthand for charles bots that are deactivated by default:   {leftState: {activated: false}, rightState: {activated: true}},",
+      "enum": [false, true],
+      "type": "boolean"
     },
-    "r20": {
-      "additionalProperties": false,
-      "properties": {
-        "gives": {
-          "const": "scroll",
-          "type": "string"
-        },
-        "page": {
-          "$ref": "#/definitions/r29"
-        },
-        "source": {
-          "const": "manual",
-          "type": "string"
-        }
-      },
-      "required": ["gives", "source", "page"],
-      "type": "object"
-    },
-    "r21": {
+    "byType_547f3c": {
       "enum": [
         "ball",
         "barrier",
@@ -2720,7 +2107,529 @@
       ],
       "type": "string"
     },
-    "r22": {
+    "byType_616d6a": {
+      "description": "if given, the item will disappear only if stood/touched by items of this type. Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player or ['head'] eg for doughnuts that only head can collect",
+      "items": {
+        "$ref": "#/definitions/byType_547f3c"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "charles_config_0580b2": {
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "enum": [false, true],
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "config_3bb06e": {
+      "additionalProperties": {
+        "not": {}
+      },
+      "type": "object"
+    },
+    "config_d5e5de": {
+      "additionalProperties": false,
+      "properties": {
+        "activatedIfPlanetLiberated": {
+          "$ref": "#/definitions/activatedIfPlanetLiberated_c7334d"
+        },
+        "times": {
+          "$ref": "#/definitions/times_84b25d"
+        },
+        "toItemId": {
+          "description": "an item in the destination room this teleporter should go to - the player will be moved to atop this item\n\nIf not given, will find the (only teleporter) in the destination room\n\nnote: not RoomItemId because that is the ids of items in *this* room, but this is pointing to another room",
+          "type": "string"
+        },
+        "toRoom": {
+          "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "controls_fba182": {
+      "description": "item ids of all the items (probably Charles) that this joystick controls. if omitted, the joystick controls every charles in its room — which is how the original game always behaved.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "cyclic_cycle_2775dc": {
+      "description": "recipes emitted in order, starting again from the first after the last",
+      "items": {
+        "$ref": "#/definitions/cyclic_cycle_be5acf"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "cyclic_cycle_be5acf": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/emits_ball_f7f95f"
+        },
+        {
+          "$ref": "#/definitions/emits_charles_571a54"
+        },
+        {
+          "$ref": "#/definitions/emits_firedDoughnut_baf194"
+        },
+        {
+          "$ref": "#/definitions/emits_floatingText_68f7f3"
+        },
+        {
+          "$ref": "#/definitions/emits_monster_207758"
+        },
+        {
+          "$ref": "#/definitions/emits_moveableDeadly_9dccde"
+        },
+        {
+          "$ref": "#/definitions/emits_movingPlatform_8442f1"
+        },
+        {
+          "$ref": "#/definitions/emits_pickup_14c56f"
+        },
+        {
+          "$ref": "#/definitions/emits_portableBlock_67d198"
+        },
+        {
+          "$ref": "#/definitions/emits_portableTeleporter_ad5672"
+        },
+        {
+          "$ref": "#/definitions/emits_pushableBlock_b4196a"
+        },
+        {
+          "$ref": "#/definitions/emits_sceneryCrown_9b848f"
+        },
+        {
+          "$ref": "#/definitions/emits_sceneryPlayer_ad8c39"
+        },
+        {
+          "$ref": "#/definitions/emits_slidingBlock_c95ef7"
+        },
+        {
+          "$ref": "#/definitions/emits_slidingDeadly_727d74"
+        },
+        {
+          "$ref": "#/definitions/emits_spring_6b26f3"
+        }
+      ]
+    },
+    "disabled_91fa25": {
+      "description": "disabled switches can't be toggled",
+      "enum": [false, true],
+      "type": "boolean"
+    },
+    "disables_2260ba": {
+      "description": "true is a shorthand for deadly blocks that start disabled:   {leftState: {disabled: true}, rightState: {disabled: false}}, false is a shorthand for deadly blocks that start enabled:   {leftState: {disabled: false}, rightState: {disabled: true}},",
+      "enum": [false, true],
+      "type": "boolean"
+    },
+    "disables_5b1e65": {
+      "description": "true is a shorthand for disabling in the left setting:   {leftState: {disabled: true}, rightState: {disabled: false}}, false is a shorthand for disabling in the right setting:   {leftState: {disabled: false}, rightState: {disabled: true}},",
+      "enum": [false, true],
+      "type": "boolean"
+    },
+    "disappearing_298fa6": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/disappearing_eb2120"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "if given, the item disappears after the specified interaction. This must be null (not undefined) so switches can tell the difference between having no setting, and having a setting to change to null when they make something not disappearing"
+    },
+    "disappearing_5e0571": {
+      "additionalProperties": false,
+      "properties": {
+        "on": {
+          "const": "stand",
+          "type": "string"
+        }
+      },
+      "required": ["on"],
+      "type": "object"
+    },
+    "disappearing_eb2120": {
+      "additionalProperties": false,
+      "properties": {
+        "byType": {
+          "$ref": "#/definitions/byType_616d6a"
+        },
+        "on": {
+          "enum": ["stand", "touch"],
+          "type": "string"
+        }
+      },
+      "required": ["on"],
+      "type": "object"
+    },
+    "disappearing_eee660": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/disappearing_5e0571"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "emits_5c5933": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/emits_ball_f7f95f"
+        },
+        {
+          "$ref": "#/definitions/emits_charles_571a54"
+        },
+        {
+          "$ref": "#/definitions/emits_cyclic_142e0a"
+        },
+        {
+          "$ref": "#/definitions/emits_firedDoughnut_baf194"
+        },
+        {
+          "$ref": "#/definitions/emits_floatingText_68f7f3"
+        },
+        {
+          "$ref": "#/definitions/emits_monster_207758"
+        },
+        {
+          "$ref": "#/definitions/emits_moveableDeadly_9dccde"
+        },
+        {
+          "$ref": "#/definitions/emits_movingPlatform_8442f1"
+        },
+        {
+          "$ref": "#/definitions/emits_pickup_14c56f"
+        },
+        {
+          "$ref": "#/definitions/emits_portableBlock_67d198"
+        },
+        {
+          "$ref": "#/definitions/emits_portableTeleporter_ad5672"
+        },
+        {
+          "$ref": "#/definitions/emits_probabilistic_d76e38"
+        },
+        {
+          "$ref": "#/definitions/emits_pushableBlock_b4196a"
+        },
+        {
+          "$ref": "#/definitions/emits_sceneryCrown_9b848f"
+        },
+        {
+          "$ref": "#/definitions/emits_sceneryPlayer_ad8c39"
+        },
+        {
+          "$ref": "#/definitions/emits_slidingBlock_c95ef7"
+        },
+        {
+          "$ref": "#/definitions/emits_slidingDeadly_727d74"
+        },
+        {
+          "$ref": "#/definitions/emits_spring_6b26f3"
+        }
+      ],
+      "description": "what does this emitter emit? Could be (potentially) any free item. Can also cycle through several recipes in order, or choose between them pseudo-randomly"
+    },
+    "emits_ball_f7f95f": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "type": "object"
+        },
+        "type": {
+          "const": "ball",
+          "type": "string"
+        }
+      },
+      "required": ["type", "config"],
+      "type": "object"
+    },
+    "emits_charles_571a54": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/charles_config_0580b2"
+        },
+        "type": {
+          "const": "charles",
+          "type": "string"
+        }
+      },
+      "required": ["type", "config"],
+      "type": "object"
+    },
+    "emits_cyclic_142e0a": {
+      "additionalProperties": false,
+      "properties": {
+        "cycle": {
+          "$ref": "#/definitions/cyclic_cycle_2775dc"
+        },
+        "type": {
+          "const": "cyclic",
+          "type": "string"
+        }
+      },
+      "required": ["type", "cycle"],
+      "type": "object"
+    },
+    "emits_firedDoughnut_baf194": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/firedDoughnut_config_2670fc"
+        },
+        "type": {
+          "const": "firedDoughnut",
+          "type": "string"
+        }
+      },
+      "required": ["type", "config"],
+      "type": "object"
+    },
+    "emits_floatingText_68f7f3": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/floatingText_config_8f7c04"
+        },
+        "type": {
+          "const": "floatingText",
+          "type": "string"
+        }
+      },
+      "required": ["type", "config"],
+      "type": "object"
+    },
+    "emits_monster_207758": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/monster_config_537d14"
+        },
+        "type": {
+          "const": "monster",
+          "type": "string"
+        }
+      },
+      "required": ["type", "config"],
+      "type": "object"
+    },
+    "emits_moveableDeadly_9dccde": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/moveableDeadly_config_e4f473"
+        },
+        "type": {
+          "const": "moveableDeadly",
+          "type": "string"
+        }
+      },
+      "required": ["type", "config"],
+      "type": "object"
+    },
+    "emits_movingPlatform_8442f1": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/movingPlatform_config_266f68"
+        },
+        "type": {
+          "const": "movingPlatform",
+          "type": "string"
+        }
+      },
+      "required": ["type", "config"],
+      "type": "object"
+    },
+    "emits_pickup_14c56f": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/pickup_config_dc02ee"
+        },
+        "type": {
+          "const": "pickup",
+          "type": "string"
+        }
+      },
+      "required": ["type", "config"],
+      "type": "object"
+    },
+    "emits_portableBlock_67d198": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/portableBlock_config_b0c0fa"
+        },
+        "type": {
+          "const": "portableBlock",
+          "type": "string"
+        }
+      },
+      "required": ["type", "config"],
+      "type": "object"
+    },
+    "emits_portableTeleporter_ad5672": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/config_d5e5de"
+        },
+        "type": {
+          "const": "portableTeleporter",
+          "type": "string"
+        }
+      },
+      "required": ["type", "config"],
+      "type": "object"
+    },
+    "emits_probabilistic_d76e38": {
+      "additionalProperties": false,
+      "properties": {
+        "choices": {
+          "$ref": "#/definitions/probabilistic_choices_8b0e9a"
+        },
+        "type": {
+          "const": "probabilistic",
+          "type": "string"
+        }
+      },
+      "required": ["type", "choices"],
+      "type": "object"
+    },
+    "emits_pushableBlock_b4196a": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "type": "object"
+        },
+        "type": {
+          "const": "pushableBlock",
+          "type": "string"
+        }
+      },
+      "required": ["type", "config"],
+      "type": "object"
+    },
+    "emits_sceneryCrown_9b848f": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/sceneryCrown_config_25c8d8"
+        },
+        "type": {
+          "const": "sceneryCrown",
+          "type": "string"
+        }
+      },
+      "required": ["type", "config"],
+      "type": "object"
+    },
+    "emits_sceneryPlayer_ad8c39": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/sceneryPlayer_config_12e5b9"
+        },
+        "type": {
+          "const": "sceneryPlayer",
+          "type": "string"
+        }
+      },
+      "required": ["type", "config"],
+      "type": "object"
+    },
+    "emits_slidingBlock_c95ef7": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/slidingBlock_config_563743"
+        },
+        "type": {
+          "const": "slidingBlock",
+          "type": "string"
+        }
+      },
+      "required": ["type", "config"],
+      "type": "object"
+    },
+    "emits_slidingDeadly_727d74": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/slidingDeadly_config_b4e055"
+        },
+        "type": {
+          "const": "slidingDeadly",
+          "type": "string"
+        }
+      },
+      "required": ["type", "config"],
+      "type": "object"
+    },
+    "emits_spring_6b26f3": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "type": "object"
+        },
+        "type": {
+          "const": "spring",
+          "type": "string"
+        }
+      },
+      "required": ["type", "config"],
+      "type": "object"
+    },
+    "everActivated_a06ce0": {
+      "description": "if this item has ever been activated, in the lifetime of the room. Charging cybermen will have this flag as false so long as they are charging",
+      "enum": [false, true],
+      "type": "boolean"
+    },
+    "expectType_860230": {
+      "enum": ["button", "switch", "timer"],
+      "type": "string"
+    },
+    "expectType_b858ac": {
+      "enum": ["monster", "movingPlatform"],
+      "type": "string"
+    },
+    "expires_0ab20d": {
+      "description": "The item will be removed from the room after the room it is in has more than this roomTime. To guarantee removal on the next frame (effectively immediately) set to -1. Otherwise, can set to the current roomTime + duration of an animation that needs to play\n\nIf null, the item is not scheduled for removal (the normal case)",
+      "type": ["null", "number"]
+    },
+    "firedDoughnut_config_2670fc": {
+      "additionalProperties": false,
+      "properties": {
+        "direction": {
+          "$ref": "#/definitions/firedDoughnut_direction_18ba2f"
+        }
+      },
+      "type": "object"
+    },
+    "firedDoughnut_direction_18ba2f": {
+      "enum": [
+        "away",
+        "awayLeft",
+        "awayRight",
+        "left",
+        "right",
+        "towards",
+        "towardsLeft",
+        "towardsRight"
+      ],
+      "type": "string"
+    },
+    "floatingText_config_8f7c04": {
       "additionalProperties": false,
       "properties": {
         "appearanceRoomTime": {
@@ -2728,27 +2637,237 @@
           "type": "number"
         },
         "sway": {
-          "$ref": "#/definitions/r89"
+          "$ref": "#/definitions/floatingText_sway_a697c0"
         },
         "textLines": {
-          "$ref": "#/definitions/r82"
+          "$ref": "#/definitions/floatingText_textLines_b66936"
         }
       },
       "required": ["textLines"],
       "type": "object"
     },
-    "r23": {
+    "floatingText_sway_a697c0": {
+      "description": "if true, lines oscillate horizontally as they rise",
+      "enum": [false, true],
+      "type": "boolean"
+    },
+    "floatingText_textLines_b66936": {
+      "description": "the lines of text to display, each rendered as a separate row",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "floor_times_9592f7": {
       "additionalProperties": false,
       "properties": {
-        "expectType": {
-          "const": "teleporter",
+        "x": {
+          "type": "number",
+          "multipleOf": 1,
+          "minimum": 1,
+          "maximum": 99
+        },
+        "y": {
+          "type": "number",
+          "multipleOf": 1,
+          "minimum": 1,
+          "maximum": 99
+        }
+      },
+      "required": ["x", "y"],
+      "type": "object"
+    },
+    "items_wall_c35ad8": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "wall"
+        }
+      }
+    },
+    "leftState_1b41f8": {
+      "additionalProperties": false,
+      "properties": {
+        "bottom": {
+          "type": "number"
+        },
+        "direction": {
+          "enum": ["down", "up"],
           "type": "string"
         },
+        "top": {
+          "type": "number"
+        },
+        "vels": {
+          "$ref": "#/definitions/vels_d07af5"
+        }
+      },
+      "type": "object"
+    },
+    "leftState_1c4a37": {
+      "additionalProperties": false,
+      "properties": {
+        "disabled": {
+          "enum": [false, true],
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "leftState_315e58": {
+      "additionalProperties": false,
+      "properties": {
+        "disappearing": {
+          "$ref": "#/definitions/disappearing_5e0571"
+        }
+      },
+      "type": "object"
+    },
+    "leftState_3e7d23": {
+      "additionalProperties": false,
+      "properties": {
+        "toItem": {
+          "type": "string"
+        },
+        "toRoom": {
+          "type": "string"
+        }
+      },
+      "required": ["toRoom", "toItem"],
+      "type": "object"
+    },
+    "leftState_62b2ac": {
+      "additionalProperties": false,
+      "properties": {
+        "delay": {
+          "description": "how long to delay until the first emitting? after this time the first emit will happen, then all others will continue at the period interval. undefined is treated the same as 0",
+          "type": "number"
+        },
+        "emits": {
+          "$ref": "#/definitions/emits_5c5933"
+        },
+        "lastEmittedAtRoomTime": {
+          "type": "number"
+        },
+        "maximum": {
+          "$ref": "#/definitions/maximum_b7473b"
+        },
+        "maximumAtOnce": {
+          "description": "How many items emitted from this emitter can be in the room at once? If undefined, no limit. If already this many items in the room, the items will have to be removed from the room before more can be emitted (for example, collecting an emitted pickup)",
+          "type": "number"
+        },
+        "period": {
+          "description": "how long between emissions?",
+          "type": "number"
+        },
+        "playerInsideAtRoomTime": {
+          "type": "number"
+        },
+        "quantityEmitted": {
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "leftState_6946ed": {
+      "additionalProperties": false,
+      "properties": {
+        "direction": {
+          "$ref": "#/definitions/startDirection_3baae4"
+        },
+        "disabled": {
+          "enum": [false, true],
+          "type": "boolean"
+        },
+        "disappearing": {
+          "$ref": "#/definitions/disappearing_eee660"
+        }
+      },
+      "type": "object"
+    },
+    "leftState_77eb53": {
+      "additionalProperties": false,
+      "properties": {
+        "disabled": {
+          "$ref": "#/definitions/disabled_91fa25"
+        }
+      },
+      "type": "object"
+    },
+    "leftState_934b86": {
+      "additionalProperties": false,
+      "properties": {
+        "controls": {
+          "$ref": "#/definitions/controls_fba182"
+        }
+      },
+      "type": "object"
+    },
+    "leftState_a0ee15": {
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "$ref": "#/definitions/activated_9d3983"
+        },
+        "disappearing": {
+          "$ref": "#/definitions/disappearing_298fa6"
+        },
+        "everActivated": {
+          "$ref": "#/definitions/everActivated_a06ce0"
+        },
+        "expires": {
+          "$ref": "#/definitions/expires_0ab20d"
+        }
+      },
+      "type": "object"
+    },
+    "leftState_ee25b2": {
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "$ref": "#/definitions/activated_dae397"
+        }
+      },
+      "type": "object"
+    },
+    "lift_70ec1b": {
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "z": {
+          "type": "number"
+        }
+      },
+      "required": ["x", "y", "z"],
+      "type": "object"
+    },
+    "maximum_b7473b": {
+      "description": "how many total should this emitter emit? Null for no limit",
+      "type": ["null", "number"]
+    },
+    "modifies_07a995": {
+      "additionalProperties": false,
+      "properties": {
+        "activates": {
+          "$ref": "#/definitions/activates_2a9c92"
+        },
+        "expectType": {
+          "$ref": "#/definitions/expectType_b858ac"
+        },
         "leftState": {
-          "$ref": "#/definitions/r77"
+          "$ref": "#/definitions/leftState_a0ee15"
         },
         "rightState": {
-          "$ref": "#/definitions/r77"
+          "$ref": "#/definitions/leftState_a0ee15"
+        },
+        "switchedDirection": {
+          "$ref": "#/definitions/switchedDirection_bc479f"
         },
         "targets": {
           "items": {
@@ -2757,10 +2876,16 @@
           "type": "array"
         }
       },
-      "required": ["expectType", "leftState", "rightState"],
+      "required": ["expectType"],
       "type": "object"
     },
-    "r24": {
+    "modifies_6448ca": {
+      "items": {
+        "$ref": "#/definitions/modifies_c34602"
+      },
+      "type": "array"
+    },
+    "modifies_block_00b8e2": {
       "additionalProperties": false,
       "properties": {
         "expectType": {
@@ -2768,10 +2893,10 @@
           "type": "string"
         },
         "leftState": {
-          "$ref": "#/definitions/r67"
+          "$ref": "#/definitions/leftState_315e58"
         },
         "rightState": {
-          "$ref": "#/definitions/r91"
+          "$ref": "#/definitions/rightState_48a29c"
         },
         "targets": {
           "items": {
@@ -2783,31 +2908,7 @@
       "required": ["expectType", "leftState", "rightState"],
       "type": "object"
     },
-    "r25": {
-      "additionalProperties": false,
-      "properties": {
-        "activated": {
-          "enum": ["off", "on"],
-          "type": "string"
-        },
-        "movement": {
-          "$ref": "#/definitions/r100"
-        },
-        "startDirection": {
-          "$ref": "#/definitions/r102"
-        },
-        "style": {
-          "$ref": "#/definitions/r101"
-        },
-        "which": {
-          "const": "skiHead",
-          "type": "string"
-        }
-      },
-      "required": ["which", "activated", "movement", "startDirection", "style"],
-      "type": "object"
-    },
-    "r26": {
+    "modifies_block_c09893": {
       "additionalProperties": false,
       "properties": {
         "expectType": {
@@ -2828,26 +2929,323 @@
       "required": ["expectType", "makesStable"],
       "type": "object"
     },
-    "r27": {
+    "modifies_c34602": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/modifies_block_c09893"
+        },
+        {
+          "$ref": "#/definitions/modifies_block_00b8e2"
+        },
+        {
+          "$ref": "#/definitions/modifies_f17d8a"
+        },
+        {
+          "$ref": "#/definitions/modifies_charles_a1834c"
+        },
+        {
+          "$ref": "#/definitions/modifies_conveyor_8e59aa"
+        },
+        {
+          "$ref": "#/definitions/modifies_deadlyBlock_8397f4"
+        },
+        {
+          "$ref": "#/definitions/modifies_emitter_2251c4"
+        },
+        {
+          "$ref": "#/definitions/modifies_joystick_76d28d"
+        },
+        {
+          "$ref": "#/definitions/modifies_lamp_003f22"
+        },
+        {
+          "$ref": "#/definitions/modifies_lift_9bff97"
+        },
+        {
+          "$ref": "#/definitions/modifies_mirror_0f31b3"
+        },
+        {
+          "$ref": "#/definitions/modifies_07a995"
+        },
+        {
+          "$ref": "#/definitions/modifies_switch_51e1a5"
+        },
+        {
+          "$ref": "#/definitions/modifies_teleporter_a99998"
+        }
+      ]
+    },
+    "modifies_charles_a1834c": {
       "additionalProperties": false,
       "properties": {
-        "bottom": {
-          "type": "number"
+        "activates": {
+          "$ref": "#/definitions/activates_e92c9f"
         },
-        "direction": {
-          "enum": ["down", "up"],
+        "expectType": {
+          "const": "charles",
           "type": "string"
         },
-        "top": {
-          "type": "number"
+        "leftState": {
+          "$ref": "#/definitions/charles_config_0580b2"
         },
-        "vels": {
-          "$ref": "#/definitions/r60"
+        "rightState": {
+          "$ref": "#/definitions/charles_config_0580b2"
+        },
+        "targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
         }
       },
+      "required": ["expectType"],
       "type": "object"
     },
-    "r28": {
+    "modifies_conveyor_8e59aa": {
+      "additionalProperties": false,
+      "properties": {
+        "activates": {
+          "$ref": "#/definitions/activates_d39923"
+        },
+        "expectType": {
+          "const": "conveyor",
+          "type": "string"
+        },
+        "leftState": {
+          "$ref": "#/definitions/leftState_6946ed"
+        },
+        "reverses": {
+          "$ref": "#/definitions/reverses_206b07"
+        },
+        "rightState": {
+          "$ref": "#/definitions/leftState_6946ed"
+        },
+        "targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["expectType"],
+      "type": "object"
+    },
+    "modifies_deadlyBlock_8397f4": {
+      "additionalProperties": false,
+      "properties": {
+        "disables": {
+          "$ref": "#/definitions/disables_2260ba"
+        },
+        "expectType": {
+          "const": "deadlyBlock",
+          "type": "string"
+        },
+        "leftState": {
+          "$ref": "#/definitions/leftState_1c4a37"
+        },
+        "rightState": {
+          "$ref": "#/definitions/leftState_1c4a37"
+        },
+        "targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["expectType"],
+      "type": "object"
+    },
+    "modifies_emitter_2251c4": {
+      "additionalProperties": false,
+      "properties": {
+        "expectType": {
+          "const": "emitter",
+          "type": "string"
+        },
+        "leftState": {
+          "$ref": "#/definitions/leftState_62b2ac"
+        },
+        "rightState": {
+          "$ref": "#/definitions/leftState_62b2ac"
+        },
+        "targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["expectType", "leftState", "rightState"],
+      "type": "object"
+    },
+    "modifies_f17d8a": {
+      "additionalProperties": false,
+      "properties": {
+        "disables": {
+          "$ref": "#/definitions/disables_5b1e65"
+        },
+        "expectType": {
+          "$ref": "#/definitions/expectType_860230"
+        },
+        "leftState": {
+          "$ref": "#/definitions/leftState_77eb53"
+        },
+        "rightState": {
+          "$ref": "#/definitions/leftState_77eb53"
+        },
+        "targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["expectType"],
+      "type": "object"
+    },
+    "modifies_joystick_76d28d": {
+      "additionalProperties": false,
+      "properties": {
+        "expectType": {
+          "const": "joystick",
+          "type": "string"
+        },
+        "leftState": {
+          "$ref": "#/definitions/leftState_934b86"
+        },
+        "rightState": {
+          "$ref": "#/definitions/leftState_934b86"
+        },
+        "targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["expectType", "leftState", "rightState"],
+      "type": "object"
+    },
+    "modifies_lamp_003f22": {
+      "additionalProperties": false,
+      "properties": {
+        "activates": {
+          "$ref": "#/definitions/activates_c6e247"
+        },
+        "expectType": {
+          "const": "lamp",
+          "type": "string"
+        },
+        "leftState": {
+          "$ref": "#/definitions/leftState_ee25b2"
+        },
+        "rightState": {
+          "$ref": "#/definitions/leftState_ee25b2"
+        },
+        "targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["expectType"],
+      "type": "object"
+    },
+    "modifies_lift_9bff97": {
+      "additionalProperties": false,
+      "properties": {
+        "expectType": {
+          "const": "lift",
+          "type": "string"
+        },
+        "leftState": {
+          "$ref": "#/definitions/leftState_1b41f8"
+        },
+        "rightState": {
+          "$ref": "#/definitions/leftState_1b41f8"
+        },
+        "targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["expectType", "leftState", "rightState"],
+      "type": "object"
+    },
+    "modifies_mirror_0f31b3": {
+      "additionalProperties": false,
+      "properties": {
+        "expectType": {
+          "const": "mirror",
+          "type": "string"
+        },
+        "rotates": {
+          "$ref": "#/definitions/rotates_743480"
+        },
+        "targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["expectType", "rotates"],
+      "type": "object"
+    },
+    "modifies_switch_51e1a5": {
+      "additionalProperties": false,
+      "properties": {
+        "expectType": {
+          "const": "switch",
+          "type": "string"
+        },
+        "flip": {
+          "const": true,
+          "description": "this switch will flip the other switch when it is flipped",
+          "type": "boolean"
+        },
+        "targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["expectType", "flip"],
+      "type": "object"
+    },
+    "modifies_teleporter_a99998": {
+      "additionalProperties": false,
+      "properties": {
+        "expectType": {
+          "const": "teleporter",
+          "type": "string"
+        },
+        "leftState": {
+          "$ref": "#/definitions/leftState_3e7d23"
+        },
+        "rightState": {
+          "$ref": "#/definitions/leftState_3e7d23"
+        },
+        "targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["expectType", "leftState", "rightState"],
+      "type": "object"
+    },
+    "monster_activated_e96ea5": {
+      "enum": ["after-player-near", "off", "on"],
+      "type": "string"
+    },
+    "monster_config_1f0970": {
       "additionalProperties": false,
       "properties": {
         "activated": {
@@ -2855,10 +3253,48 @@
           "type": "string"
         },
         "movement": {
-          "$ref": "#/definitions/r92"
+          "const": "patrol-randomly-xy4",
+          "type": "string"
+        },
+        "which": {
+          "const": "elephant",
+          "type": "string"
+        }
+      },
+      "required": ["which", "movement", "activated"],
+      "type": "object"
+    },
+    "monster_config_2354d5": {
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "enum": ["off", "on"],
+          "type": "string"
+        },
+        "movement": {
+          "const": "towards-tripped-on-axis-xy4",
+          "type": "string"
+        },
+        "which": {
+          "const": "homingBot",
+          "type": "string"
+        }
+      },
+      "required": ["which", "movement", "activated"],
+      "type": "object"
+    },
+    "monster_config_3c3485": {
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "enum": ["off", "on"],
+          "type": "string"
+        },
+        "movement": {
+          "$ref": "#/definitions/monster_movement_6fd430"
         },
         "startDirection": {
-          "$ref": "#/definitions/r102"
+          "$ref": "#/definitions/startDirection_3baae4"
         },
         "which": {
           "const": "computerBot",
@@ -2868,7 +3304,418 @@
       "required": ["which", "movement", "startDirection", "activated"],
       "type": "object"
     },
-    "r29": {
+    "monster_config_537d14": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/monster_config_6879dd"
+        },
+        {
+          "$ref": "#/definitions/monster_config_3c3485"
+        },
+        {
+          "$ref": "#/definitions/monster_config_b85199"
+        },
+        {
+          "$ref": "#/definitions/monster_config_a58c54"
+        },
+        {
+          "$ref": "#/definitions/monster_config_1f0970"
+        },
+        {
+          "$ref": "#/definitions/monster_config_baf730"
+        },
+        {
+          "$ref": "#/definitions/monster_config_586eed"
+        },
+        {
+          "$ref": "#/definitions/monster_config_f96fe3"
+        },
+        {
+          "$ref": "#/definitions/monster_config_df3a3e"
+        },
+        {
+          "$ref": "#/definitions/monster_config_2354d5"
+        },
+        {
+          "$ref": "#/definitions/monster_config_66e20b"
+        },
+        {
+          "$ref": "#/definitions/monster_config_bd9634"
+        },
+        {
+          "$ref": "#/definitions/monster_config_f3fb16"
+        }
+      ]
+    },
+    "monster_config_586eed": {
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "enum": ["off", "on"],
+          "type": "string"
+        },
+        "movement": {
+          "const": "towards-analogue",
+          "type": "string"
+        },
+        "which": {
+          "const": "emperor",
+          "type": "string"
+        }
+      },
+      "required": ["which", "movement", "activated"],
+      "type": "object"
+    },
+    "monster_config_66e20b": {
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "enum": ["off", "on"],
+          "type": "string"
+        },
+        "movement": {
+          "$ref": "#/definitions/monster_movement_a5c9cf"
+        },
+        "startDirection": {
+          "$ref": "#/definitions/startDirection_3baae4"
+        },
+        "which": {
+          "const": "monkey",
+          "type": "string"
+        }
+      },
+      "required": ["which", "movement", "startDirection", "activated"],
+      "type": "object"
+    },
+    "monster_config_6879dd": {
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "enum": ["off", "on"],
+          "type": "string"
+        },
+        "movement": {
+          "const": "patrol-randomly-xy8",
+          "type": "string"
+        },
+        "which": {
+          "const": "bubbleRobot",
+          "type": "string"
+        }
+      },
+      "required": ["which", "movement", "activated"],
+      "type": "object"
+    },
+    "monster_config_a58c54": {
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "enum": ["off", "on"],
+          "type": "string"
+        },
+        "movement": {
+          "const": "patrol-randomly-diagonal",
+          "type": "string"
+        },
+        "which": {
+          "const": "dalek",
+          "type": "string"
+        }
+      },
+      "required": ["which", "movement", "activated"],
+      "type": "object"
+    },
+    "monster_config_b85199": {
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "$ref": "#/definitions/monster_activated_e96ea5"
+        },
+        "movement": {
+          "const": "towards-on-shortest-axis-xy4",
+          "type": "string"
+        },
+        "startDirection": {
+          "$ref": "#/definitions/startDirection_3baae4"
+        },
+        "which": {
+          "const": "cyberman",
+          "type": "string"
+        }
+      },
+      "required": ["which", "activated", "movement", "startDirection"],
+      "type": "object"
+    },
+    "monster_config_baf730": {
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "enum": ["off", "on"],
+          "type": "string"
+        },
+        "movement": {
+          "const": "turn-to-player",
+          "type": "string"
+        },
+        "startDirection": {
+          "$ref": "#/definitions/startDirection_3baae4"
+        },
+        "which": {
+          "const": "elephantHead",
+          "type": "string"
+        }
+      },
+      "required": ["which", "movement", "startDirection", "activated"],
+      "type": "object"
+    },
+    "monster_config_bd9634": {
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "enum": ["off", "on"],
+          "type": "string"
+        },
+        "movement": {
+          "$ref": "#/definitions/monster_movement_c9bb77"
+        },
+        "startDirection": {
+          "$ref": "#/definitions/startDirection_3baae4"
+        },
+        "style": {
+          "$ref": "#/definitions/monster_style_47a6c5"
+        },
+        "which": {
+          "const": "skiHead",
+          "type": "string"
+        }
+      },
+      "required": ["which", "activated", "movement", "startDirection", "style"],
+      "type": "object"
+    },
+    "monster_config_df3a3e": {
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "enum": ["off", "on"],
+          "type": "string"
+        },
+        "movement": {
+          "$ref": "#/definitions/monster_movement_3dc08d"
+        },
+        "which": {
+          "const": "helicopterBug",
+          "type": "string"
+        }
+      },
+      "required": ["which", "movement", "activated"],
+      "type": "object"
+    },
+    "monster_config_f3fb16": {
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "enum": ["off", "on"],
+          "type": "string"
+        },
+        "movement": {
+          "$ref": "#/definitions/monster_movement_91609f"
+        },
+        "startDirection": {
+          "$ref": "#/definitions/startDirection_3baae4"
+        },
+        "which": {
+          "const": "turtle",
+          "type": "string"
+        }
+      },
+      "required": ["which", "movement", "startDirection", "activated"],
+      "type": "object"
+    },
+    "monster_config_f96fe3": {
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "enum": ["off", "on"],
+          "type": "string"
+        },
+        "movement": {
+          "const": "towards-analogue-unless-planet-crowns",
+          "type": "string"
+        },
+        "which": {
+          "const": "emperorsGuardian",
+          "type": "string"
+        }
+      },
+      "required": ["which", "movement", "activated"],
+      "type": "object"
+    },
+    "monster_movement_3dc08d": {
+      "enum": ["patrol-randomly-xy8", "towards-analogue"],
+      "type": "string"
+    },
+    "monster_movement_6fd430": {
+      "enum": [
+        "patrol-randomly-xy4-and-reverse",
+        "towards-on-shortest-axis-xy4"
+      ],
+      "type": "string"
+    },
+    "monster_movement_91609f": {
+      "enum": ["anticlockwise", "back-forth", "clockwise", "forwards"],
+      "type": "string"
+    },
+    "monster_movement_a5c9cf": {
+      "enum": ["patrol-randomly-xy4", "towards-on-shortest-axis-xy4"],
+      "type": "string"
+    },
+    "monster_movement_c9bb77": {
+      "enum": ["back-forth", "clockwise", "forwards"],
+      "type": "string"
+    },
+    "monster_style_47a6c5": {
+      "enum": ["greenAndPink", "starsAndStripes"],
+      "type": "string"
+    },
+    "moveableDeadly_config_e4f473": {
+      "additionalProperties": false,
+      "properties": {
+        "style": {
+          "const": "deadFish",
+          "type": "string"
+        }
+      },
+      "required": ["style"],
+      "type": "object"
+    },
+    "movingPlatform_config_266f68": {
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "enum": ["off", "on-stand", "on"],
+          "type": "string"
+        },
+        "movement": {
+          "$ref": "#/definitions/movingPlatform_movement_87a15d"
+        },
+        "startDirection": {
+          "$ref": "#/definitions/startDirection_3baae4"
+        }
+      },
+      "required": ["movement", "activated", "startDirection"],
+      "type": "object"
+    },
+    "movingPlatform_movement_87a15d": {
+      "enum": ["back-forth", "clockwise", "towards-analogue"],
+      "type": "string"
+    },
+    "pickup_config_111c56": {
+      "additionalProperties": false,
+      "properties": {
+        "gives": {
+          "$ref": "#/definitions/pickup_gives_7fdd20"
+        }
+      },
+      "required": ["gives"],
+      "type": "object"
+    },
+    "pickup_config_32188a": {
+      "additionalProperties": false,
+      "properties": {
+        "gives": {
+          "const": "crown",
+          "type": "string"
+        },
+        "planet": {
+          "$ref": "#/definitions/planet_4d7942"
+        }
+      },
+      "required": ["gives", "planet"],
+      "type": "object"
+    },
+    "pickup_config_c929fe": {
+      "additionalProperties": false,
+      "properties": {
+        "gives": {
+          "const": "scroll",
+          "type": "string"
+        },
+        "page": {
+          "$ref": "#/definitions/pickup_page_aa9e0b"
+        },
+        "source": {
+          "const": "manual",
+          "type": "string"
+        }
+      },
+      "required": ["gives", "source", "page"],
+      "type": "object"
+    },
+    "pickup_config_d6103c": {
+      "additionalProperties": false,
+      "properties": {
+        "gives": {
+          "const": "scroll",
+          "type": "string"
+        },
+        "markdown": {
+          "$ref": "#/definitions/pickup_markdown_33c0f7"
+        },
+        "source": {
+          "const": "inline",
+          "type": "string"
+        }
+      },
+      "required": ["gives", "source", "markdown"],
+      "type": "object"
+    },
+    "pickup_config_dc02ee": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/pickup_config_32188a"
+        },
+        {
+          "$ref": "#/definitions/pickup_config_d6103c"
+        },
+        {
+          "$ref": "#/definitions/pickup_config_c929fe"
+        },
+        {
+          "$ref": "#/definitions/pickup_config_111c56"
+        }
+      ]
+    },
+    "pickup_gives_7fdd20": {
+      "enum": [
+        "bag",
+        "doughnuts",
+        "extra-life",
+        "fast",
+        "hooter",
+        "jumps",
+        "reincarnation",
+        "shield"
+      ],
+      "type": "string"
+    },
+    "pickup_markdown_33c0f7": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/pickup_markdown_a51f75"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "pickup_markdown_a51f75": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "pickup_page_aa9e0b": {
       "enum": [
         "bag",
         "blacktooth",
@@ -2900,223 +3747,22 @@
       ],
       "type": "string"
     },
-    "r30": {
+    "planet_4d7942": {
+      "enum": ["blacktooth", "bookworld", "egyptus", "penitentiary", "safari"],
+      "type": "string"
+    },
+    "portableBlock_config_b0c0fa": {
       "additionalProperties": false,
       "properties": {
-        "activated": {
-          "enum": ["off", "on"],
-          "type": "string"
-        },
-        "movement": {
-          "$ref": "#/definitions/r95"
-        },
-        "startDirection": {
-          "$ref": "#/definitions/r102"
-        },
-        "which": {
-          "const": "monkey",
+        "style": {
+          "enum": ["cube", "drum", "sticks"],
           "type": "string"
         }
       },
-      "required": ["which", "movement", "startDirection", "activated"],
+      "required": ["style"],
       "type": "object"
     },
-    "r31": {
-      "additionalProperties": false,
-      "properties": {
-        "activated": {
-          "$ref": "#/definitions/r103"
-        },
-        "movement": {
-          "const": "towards-on-shortest-axis-xy4",
-          "type": "string"
-        },
-        "startDirection": {
-          "$ref": "#/definitions/r102"
-        },
-        "which": {
-          "const": "cyberman",
-          "type": "string"
-        }
-      },
-      "required": ["which", "activated", "movement", "startDirection"],
-      "type": "object"
-    },
-    "r32": {
-      "additionalProperties": false,
-      "properties": {
-        "activated": {
-          "enum": ["off", "on"],
-          "type": "string"
-        },
-        "movement": {
-          "$ref": "#/definitions/r96"
-        },
-        "startDirection": {
-          "$ref": "#/definitions/r102"
-        },
-        "which": {
-          "const": "turtle",
-          "type": "string"
-        }
-      },
-      "required": ["which", "movement", "startDirection", "activated"],
-      "type": "object"
-    },
-    "r33": {
-      "additionalProperties": false,
-      "properties": {
-        "expectType": {
-          "const": "mirror",
-          "type": "string"
-        },
-        "rotates": {
-          "$ref": "#/definitions/r72"
-        },
-        "targets": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        }
-      },
-      "required": ["expectType", "rotates"],
-      "type": "object"
-    },
-    "r34": {
-      "description": "true is a shorthand for monsters/platforms that are activated by default:   {leftState: {activated: true, everActivated:true}, rightState: {activated:false}}, false is shorthand for monsters/platforms that are deactivated by default:   {leftState: {activated: false}, rightState: {activated: true, everActivated:true}},",
-      "enum": [false, true],
-      "type": "boolean"
-    },
-    "r35": {
-      "description": "The item will be removed from the room after the room it is in has more than this roomTime. To guarantee removal on the next frame (effectively immediately) set to -1. Otherwise, can set to the current roomTime + duration of an animation that needs to play\n\nIf null, the item is not scheduled for removal (the normal case)",
-      "type": ["null", "number"]
-    },
-    "r36": {
-      "additionalProperties": false,
-      "properties": {
-        "activated": {
-          "enum": ["off", "on"],
-          "type": "string"
-        },
-        "movement": {
-          "const": "turn-to-player",
-          "type": "string"
-        },
-        "startDirection": {
-          "$ref": "#/definitions/r102"
-        },
-        "which": {
-          "const": "elephantHead",
-          "type": "string"
-        }
-      },
-      "required": ["which", "movement", "startDirection", "activated"],
-      "type": "object"
-    },
-    "r37": {
-      "additionalProperties": false,
-      "properties": {
-        "direction": {
-          "$ref": "#/definitions/r102"
-        },
-        "disabled": {
-          "enum": [false, true],
-          "type": "boolean"
-        },
-        "disappearing": {
-          "$ref": "#/definitions/r76"
-        }
-      },
-      "type": "object"
-    },
-    "r38": {
-      "additionalProperties": false,
-      "properties": {
-        "activated": {
-          "enum": ["off", "on-stand", "on"],
-          "type": "string"
-        },
-        "movement": {
-          "$ref": "#/definitions/r98"
-        },
-        "startDirection": {
-          "$ref": "#/definitions/r102"
-        }
-      },
-      "required": ["movement", "activated", "startDirection"],
-      "type": "object"
-    },
-    "r39": {
-      "description": "true is a shorthand for charles bots that are activated by default:   {leftState: {activated: true}, rightState: {activated: false}}, false is shorthand for charles bots that are deactivated by default:   {leftState: {activated: false}, rightState: {activated: true}},",
-      "enum": [false, true],
-      "type": "boolean"
-    },
-    "r40": {
-      "additionalProperties": false,
-      "properties": {
-        "controls": {
-          "$ref": "#/definitions/r59"
-        }
-      },
-      "type": "object"
-    },
-    "r41": {
-      "additionalProperties": false,
-      "properties": {
-        "expectType": {
-          "const": "switch",
-          "type": "string"
-        },
-        "flip": {
-          "const": true,
-          "description": "this switch will flip the other switch when it is flipped",
-          "type": "boolean"
-        },
-        "targets": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        }
-      },
-      "required": ["expectType", "flip"],
-      "type": "object"
-    },
-    "r42": {
-      "description": "true is a shorthand for lamps that start activated (shining):   {leftState: {activated: true}, rightState: {activated: false}}, false is shorthand for lamps that start deactivated:   {leftState: {activated: false}, rightState: {activated: true}},",
-      "enum": [false, true],
-      "type": "boolean"
-    },
-    "r43": {
-      "description": "true is a shorthand for conveyors that the switch enables   {leftState: {disabled: false}, rightState: {disabled: true}}, false is a shorthand for conveyors that the switch disables   {leftState: {disabled: true}, rightState: {disabled: false}},",
-      "enum": [false, true],
-      "type": "boolean"
-    },
-    "r44": {
-      "description": "true is a shorthand for deadly blocks that start disabled:   {leftState: {disabled: true}, rightState: {disabled: false}}, false is a shorthand for deadly blocks that start enabled:   {leftState: {disabled: false}, rightState: {disabled: true}},",
-      "enum": [false, true],
-      "type": "boolean"
-    },
-    "r45": {
-      "description": "true is a shorthand for disabling in the left setting:   {leftState: {disabled: true}, rightState: {disabled: false}}, false is a shorthand for disabling in the right setting:   {leftState: {disabled: false}, rightState: {disabled: true}},",
-      "enum": [false, true],
-      "type": "boolean"
-    },
-    "r46": {
-      "additionalProperties": false,
-      "properties": {
-        "startDirection": {
-          "$ref": "#/definitions/r86"
-        },
-        "which": {
-          "$ref": "#/definitions/r104"
-        }
-      },
-      "required": ["which", "startDirection"],
-      "type": "object"
-    },
-    "r47": {
+    "position_89ff45": {
       "additionalProperties": false,
       "properties": {
         "x": {
@@ -3141,291 +3787,83 @@
       "required": ["x", "y", "z"],
       "type": "object"
     },
-    "r48": {
+    "probabilistic_choices_39aeeb": {
       "additionalProperties": false,
       "properties": {
-        "activated": {
-          "enum": ["off", "on"],
-          "type": "string"
+        "emits": {
+          "$ref": "#/definitions/cyclic_cycle_be5acf"
         },
-        "movement": {
-          "const": "towards-analogue-unless-planet-crowns",
-          "type": "string"
-        },
-        "which": {
-          "const": "emperorsGuardian",
-          "type": "string"
+        "probabilityWeight": {
+          "description": "relative chance of this recipe being chosen. Weights are relative to each other, so they need not add up to anything. 0 is allowed, but if every weight is 0 the recipes are chosen with equal probability. undefined is treated as 1",
+          "type": "number",
+          "minimum": 0
         }
       },
-      "required": ["which", "movement", "activated"],
+      "required": ["emits"],
       "type": "object"
     },
-    "r49": {
-      "additionalProperties": false,
-      "properties": {
-        "activated": {
-          "enum": ["off", "on"],
-          "type": "string"
-        },
-        "movement": {
-          "$ref": "#/definitions/r99"
-        },
-        "which": {
-          "const": "helicopterBug",
-          "type": "string"
-        }
+    "probabilistic_choices_8b0e9a": {
+      "description": "one of these is chosen at random for each emission, pseudo-randomly from the emitter's hash and the room time, so the same emission at the same time in the same room always chooses the same recipe",
+      "items": {
+        "$ref": "#/definitions/probabilistic_choices_39aeeb"
       },
-      "required": ["which", "movement", "activated"],
-      "type": "object"
+      "minItems": 1,
+      "type": "array"
     },
-    "r50": {
-      "additionalProperties": false,
-      "properties": {
-        "gives": {
-          "const": "scroll",
-          "type": "string"
-        },
-        "markdown": {
-          "$ref": "#/definitions/r97"
-        },
-        "source": {
-          "const": "inline",
-          "type": "string"
-        }
-      },
-      "required": ["gives", "source", "markdown"],
-      "type": "object"
-    },
-    "r51": {
-      "additionalProperties": false,
-      "properties": {
-        "activated": {
-          "enum": ["off", "on"],
-          "type": "string"
-        },
-        "movement": {
-          "const": "towards-tripped-on-axis-xy4",
-          "type": "string"
-        },
-        "which": {
-          "const": "homingBot",
-          "type": "string"
-        }
-      },
-      "required": ["which", "movement", "activated"],
-      "type": "object"
-    },
-    "r52": {
-      "additionalProperties": false,
-      "properties": {
-        "activated": {
-          "enum": ["off", "on"],
-          "type": "string"
-        },
-        "movement": {
-          "const": "patrol-randomly-xy8",
-          "type": "string"
-        },
-        "which": {
-          "const": "bubbleRobot",
-          "type": "string"
-        }
-      },
-      "required": ["which", "movement", "activated"],
-      "type": "object"
-    },
-    "r53": {
-      "additionalProperties": false,
-      "properties": {
-        "activated": {
-          "enum": ["off", "on"],
-          "type": "string"
-        },
-        "movement": {
-          "const": "patrol-randomly-diagonal",
-          "type": "string"
-        },
-        "which": {
-          "const": "dalek",
-          "type": "string"
-        }
-      },
-      "required": ["which", "movement", "activated"],
-      "type": "object"
-    },
-    "r54": {
-      "additionalProperties": false,
-      "properties": {
-        "activated": {
-          "enum": ["off", "on"],
-          "type": "string"
-        },
-        "movement": {
-          "const": "patrol-randomly-xy4",
-          "type": "string"
-        },
-        "which": {
-          "const": "elephant",
-          "type": "string"
-        }
-      },
-      "required": ["which", "movement", "activated"],
-      "type": "object"
-    },
-    "r55": {
+    "reverses_206b07": {
       "description": "true means the left setting reverses the conveyor (opposite of config direction), false means the right setting reverses it. \"reverse\" = set direction to the opposite of the item's config.direction.",
       "enum": [false, true],
       "type": "boolean"
     },
-    "r56": {
-      "additionalProperties": false,
-      "properties": {
-        "activated": {
-          "enum": ["off", "on"],
-          "type": "string"
-        },
-        "movement": {
-          "const": "towards-analogue",
-          "type": "string"
-        },
-        "which": {
-          "const": "emperor",
-          "type": "string"
-        }
-      },
-      "required": ["which", "movement", "activated"],
-      "type": "object"
-    },
-    "r57": {
-      "enum": [
-        "ball",
-        "charles",
-        "firedDoughnut",
-        "floatingText",
-        "monster",
-        "moveableDeadly",
-        "movingPlatform",
-        "pickup",
-        "portableBlock",
-        "portableTeleporter",
-        "pushableBlock",
-        "sceneryCrown",
-        "sceneryPlayer",
-        "slidingBlock",
-        "slidingDeadly",
-        "spring"
-      ],
-      "type": "string"
-    },
-    "r58": {
-      "additionalProperties": false,
-      "properties": {
-        "x": {
-          "type": "number",
-          "multipleOf": 1,
-          "minimum": 1,
-          "maximum": 99
-        },
-        "y": {
-          "type": "number",
-          "multipleOf": 1,
-          "minimum": 1,
-          "maximum": 99
-        },
-        "z": {
-          "type": "number",
-          "multipleOf": 1,
-          "minimum": 1,
-          "maximum": 99
-        }
-      },
-      "type": "object"
-    },
-    "r59": {
-      "description": "item ids of all the items (probably Charles) that this joystick controls. if omitted, the joystick controls every charles in its room — which is how the original game always behaved.",
-      "items": {
-        "type": "string"
-      },
-      "type": "array"
-    },
-    "r60": {
-      "additionalProperties": false,
-      "properties": {
-        "lift": {
-          "$ref": "#/definitions/r75"
-        }
-      },
-      "required": ["lift"],
-      "type": "object"
-    },
-    "r61": {
-      "additionalProperties": false,
-      "properties": {
-        "gives": {
-          "const": "crown",
-          "type": "string"
-        },
-        "planet": {
-          "$ref": "#/definitions/r94"
-        }
-      },
-      "required": ["gives", "planet"],
-      "type": "object"
-    },
-    "r62": {
-      "description": "activated for us is a boolean, not the many-states from the json config, ie it is stateful on if the item is currently activated (so they can render differently)",
-      "enum": [false, true],
-      "type": "boolean"
-    },
-    "r63": {
-      "description": "the teleporter only works once this planet has been liberated (its crown collected); always works when not given",
-      "enum": ["blacktooth", "bookworld", "egyptus", "penitentiary", "safari"],
-      "type": "string"
-    },
-    "r64": {
-      "additionalProperties": false,
-      "properties": {
-        "x": {
-          "type": "number",
-          "multipleOf": 1,
-          "minimum": 1,
-          "maximum": 99
-        },
-        "y": {
-          "type": "number",
-          "multipleOf": 1,
-          "minimum": 1,
-          "maximum": 99
-        }
-      },
-      "required": ["x", "y"],
-      "type": "object"
-    },
-    "r65": {
-      "additionalProperties": false,
-      "properties": {
-        "gives": {
-          "$ref": "#/definitions/r88"
-        }
-      },
-      "required": ["gives"],
-      "type": "object"
-    },
-    "r66": {
-      "description": "if this item has ever been activated, in the lifetime of the room. Charging cybermen will have this flag as false so long as they are charging",
-      "enum": [false, true],
-      "type": "boolean"
-    },
-    "r67": {
+    "rightState_48a29c": {
       "additionalProperties": false,
       "properties": {
         "disappearing": {
-          "$ref": "#/definitions/r83"
+          "type": "null"
         }
       },
       "type": "object"
     },
-    "r68": {
+    "rotates_743480": {
+      "description": "the way the mirror turns (90°, to its other orientation) every time its controller changes setting",
+      "enum": ["anticlockwise", "clockwise"],
+      "type": "string"
+    },
+    "sceneryCrown_config_25c8d8": {
+      "additionalProperties": false,
+      "properties": {
+        "planet": {
+          "$ref": "#/definitions/planet_4d7942"
+        }
+      },
+      "required": ["planet"],
+      "type": "object"
+    },
+    "sceneryPlayer_config_12e5b9": {
+      "additionalProperties": false,
+      "properties": {
+        "startDirection": {
+          "$ref": "#/definitions/firedDoughnut_direction_18ba2f"
+        },
+        "which": {
+          "$ref": "#/definitions/which_302bf0"
+        }
+      },
+      "required": ["which", "startDirection"],
+      "type": "object"
+    },
+    "slidingBlock_config_563743": {
+      "additionalProperties": false,
+      "properties": {
+        "style": {
+          "enum": ["book", "puck"],
+          "type": "string"
+        }
+      },
+      "required": ["style"],
+      "type": "object"
+    },
+    "slidingDeadly_config_b4e055": {
       "additionalProperties": false,
       "properties": {
         "startingPhase": {
@@ -3440,311 +3878,52 @@
       "required": ["style", "startingPhase"],
       "type": "object"
     },
-    "r69": {
-      "additionalProperties": false,
-      "properties": {
-        "direction": {
-          "$ref": "#/definitions/r86"
-        }
-      },
-      "type": "object"
-    },
-    "r70": {
-      "additionalProperties": false,
-      "properties": {
-        "activated": {
-          "$ref": "#/definitions/r87"
-        }
-      },
-      "type": "object"
-    },
-    "r71": {
-      "additionalProperties": false,
-      "properties": {
-        "planet": {
-          "$ref": "#/definitions/r94"
-        }
-      },
-      "required": ["planet"],
-      "type": "object"
-    },
-    "r72": {
-      "description": "the way the mirror turns (90°, to its other orientation) every time its controller changes setting",
-      "enum": ["anticlockwise", "clockwise"],
+    "startDirection_3baae4": {
+      "enum": ["away", "left", "right", "towards"],
       "type": "string"
     },
-    "r73": {
-      "additionalProperties": false,
-      "properties": {
-        "disabled": {
-          "$ref": "#/definitions/r93"
-        }
-      },
-      "type": "object"
-    },
-    "r74": {
+    "switchedDirection_bc479f": {
       "description": "shortcut - gives this direction for left state and opposite direction for right state",
       "enum": ["away", "left", "right", "towards"],
       "type": "string"
     },
-    "r75": {
+    "times_84b25d": {
       "additionalProperties": false,
       "properties": {
         "x": {
-          "type": "number"
+          "type": "number",
+          "multipleOf": 1,
+          "minimum": 1,
+          "maximum": 99
         },
         "y": {
-          "type": "number"
+          "type": "number",
+          "multipleOf": 1,
+          "minimum": 1,
+          "maximum": 99
         },
         "z": {
-          "type": "number"
+          "type": "number",
+          "multipleOf": 1,
+          "minimum": 1,
+          "maximum": 99
         }
       },
-      "required": ["x", "y", "z"],
       "type": "object"
     },
-    "r76": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/r83"
-        },
-        {
-          "type": "null"
-        }
-      ]
-    },
-    "r77": {
+    "vels_d07af5": {
       "additionalProperties": false,
       "properties": {
-        "toItem": {
-          "type": "string"
-        },
-        "toRoom": {
-          "type": "string"
+        "lift": {
+          "$ref": "#/definitions/lift_70ec1b"
         }
       },
-      "required": ["toRoom", "toItem"],
+      "required": ["lift"],
       "type": "object"
     },
-    "r78": {
-      "additionalProperties": false,
-      "properties": {
-        "style": {
-          "enum": ["cube", "drum", "sticks"],
-          "type": "string"
-        }
-      },
-      "required": ["style"],
-      "type": "object"
-    },
-    "r79": {
-      "additionalProperties": false,
-      "properties": {
-        "room": {
-          "type": "string"
-        },
-        "subRoom": {
-          "type": "string"
-        }
-      },
-      "required": ["room"],
-      "type": "object"
-    },
-    "r80": {
-      "additionalProperties": false,
-      "properties": {
-        "style": {
-          "enum": ["book", "puck"],
-          "type": "string"
-        }
-      },
-      "required": ["style"],
-      "type": "object"
-    },
-    "r81": {
-      "additionalProperties": false,
-      "properties": {
-        "style": {
-          "const": "deadFish",
-          "type": "string"
-        }
-      },
-      "required": ["style"],
-      "type": "object"
-    },
-    "r82": {
-      "description": "the lines of text to display, each rendered as a separate row",
-      "items": {
-        "type": "string"
-      },
-      "type": "array"
-    },
-    "r83": {
-      "additionalProperties": false,
-      "properties": {
-        "on": {
-          "const": "stand",
-          "type": "string"
-        }
-      },
-      "required": ["on"],
-      "type": "object"
-    },
-    "r84": {
-      "additionalProperties": false,
-      "properties": {
-        "activated": {
-          "enum": [false, true],
-          "type": "boolean"
-        }
-      },
-      "type": "object"
-    },
-    "r85": {
-      "additionalProperties": false,
-      "properties": {
-        "disabled": {
-          "enum": [false, true],
-          "type": "boolean"
-        }
-      },
-      "type": "object"
-    },
-    "r86": {
-      "enum": [
-        "away",
-        "awayLeft",
-        "awayRight",
-        "left",
-        "right",
-        "towards",
-        "towardsLeft",
-        "towardsRight"
-      ],
-      "type": "string"
-    },
-    "r87": {
-      "description": "if true, the lamp is shining (emitting its light beam)",
-      "enum": [false, true],
-      "type": "boolean"
-    },
-    "r88": {
-      "enum": [
-        "bag",
-        "doughnuts",
-        "extra-life",
-        "fast",
-        "hooter",
-        "jumps",
-        "reincarnation",
-        "shield"
-      ],
-      "type": "string"
-    },
-    "r89": {
-      "description": "if true, lines oscillate horizontally as they rise",
-      "enum": [false, true],
-      "type": "boolean"
-    },
-    "r90": {
-      "description": "how many total should this emitter emit? Null for no limit",
-      "type": ["null", "number"]
-    },
-    "r91": {
-      "additionalProperties": false,
-      "properties": {
-        "disappearing": {
-          "type": "null"
-        }
-      },
-      "type": "object"
-    },
-    "r92": {
-      "enum": [
-        "patrol-randomly-xy4-and-reverse",
-        "towards-on-shortest-axis-xy4"
-      ],
-      "type": "string"
-    },
-    "r93": {
-      "description": "disabled switches can't be toggled",
-      "enum": [false, true],
-      "type": "boolean"
-    },
-    "r94": {
-      "enum": ["blacktooth", "bookworld", "egyptus", "penitentiary", "safari"],
-      "type": "string"
-    },
-    "r95": {
-      "enum": ["patrol-randomly-xy4", "towards-on-shortest-axis-xy4"],
-      "type": "string"
-    },
-    "r96": {
-      "enum": ["anticlockwise", "back-forth", "clockwise", "forwards"],
-      "type": "string"
-    },
-    "r97": {
-      "anyOf": [
-        {
-          "type": "string"
-        },
-        {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        }
-      ]
-    },
-    "r98": {
-      "enum": ["back-forth", "clockwise", "towards-analogue"],
-      "type": "string"
-    },
-    "r99": {
-      "enum": ["patrol-randomly-xy8", "towards-analogue"],
-      "type": "string"
-    },
-    "r100": {
-      "enum": ["back-forth", "clockwise", "forwards"],
-      "type": "string"
-    },
-    "r101": {
-      "enum": ["greenAndPink", "starsAndStripes"],
-      "type": "string"
-    },
-    "r102": {
-      "enum": ["away", "left", "right", "towards"],
-      "type": "string"
-    },
-    "r103": {
-      "enum": ["after-player-near", "off", "on"],
-      "type": "string"
-    },
-    "r104": {
+    "which_302bf0": {
       "enum": ["head", "headOverHeels", "heels"],
       "type": "string"
-    },
-    "r105": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "wall"
-        }
-      }
-    },
-    "r106": {
-      "enum": ["monster", "movingPlatform"],
-      "type": "string"
-    },
-    "r107": {
-      "enum": ["button", "switch", "timer"],
-      "type": "string"
-    },
-    "r108": {
-      "additionalProperties": {
-        "not": {}
-      },
-      "type": "object"
     }
   }
 }

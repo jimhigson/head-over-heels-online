@@ -1,4 +1,5 @@
 import { rotatingSceneryTiles } from "../../model/inPlaceMutators/rotatingSceneryTiles";
+import { rotatingSceneryWallTiles } from "../../model/inPlaceMutators/rotatingSceneryWallTiles";
 import {
   type PerimeterEdge,
   uncoveredPerimeterEdges,
@@ -232,7 +233,7 @@ export const perimeterGapFillingEdits = (
         config: {
           ...wall.config,
           tiles: [
-            ...rotatingSceneryTiles(roomBefore.planet, length, along),
+            ...rotatingSceneryWallTiles(roomBefore.planet, length, along),
             ...wall.config.tiles,
           ],
         },
@@ -246,7 +247,7 @@ export const perimeterGapFillingEdits = (
           : { x: along, y: through, z: floorZ },
         config: {
           direction,
-          tiles: [...rotatingSceneryTiles(roomBefore.planet, length, along)],
+          tiles: rotatingSceneryWallTiles(roomBefore.planet, length, along),
         },
       };
       const newWallId = nextItemIdForItemTool(usedIds, newWall, false);

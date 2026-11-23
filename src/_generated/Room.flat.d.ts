@@ -273,32 +273,706 @@ export type RoomJsonSchema = {
                       quantityEmitted?: number;
                       playerInsideAtRoomTime?: number;
                       /**
-                       * what does this emitter emit? Could be (potentially) any free item
+                       * what does this emitter emit? Could be (potentially) any free item. Can
+                       * also cycle through several recipes in order, or choose between them
+                       * pseudo-randomly
                        */
-                      emits?: {
-                        type:
-                          | "ball"
-                          | "charles"
-                          | "firedDoughnut"
-                          | "floatingText"
-                          | "monster"
-                          | "moveableDeadly"
-                          | "movingPlatform"
-                          | "pickup"
-                          | "portableBlock"
-                          | "portableTeleporter"
-                          | "pushableBlock"
-                          | "sceneryCrown"
-                          | "sceneryPlayer"
-                          | "slidingBlock"
-                          | "slidingDeadly"
-                          | "spring";
-                        config:
-                          | {
+                      emits?:
+                        | {
+                            type: "ball";
+                            config: Record<string, any>;
+                          }
+                        | {
+                            type: "charles";
+                            config: {
+                              activated?: false | true;
+                            };
+                          }
+                        | {
+                            type: "cyclic";
+                            /**
+                             * recipes emitted in order, starting again from the first after the last
+                             */
+                            cycle: [
+                              (
+                                | {
+                                    type: "ball";
+                                    config: Record<string, any>;
+                                  }
+                                | {
+                                    type: "charles";
+                                    config: {
+                                      activated?: false | true;
+                                    };
+                                  }
+                                | {
+                                    type: "firedDoughnut";
+                                    config: {
+                                      direction?:
+                                        | "away"
+                                        | "awayLeft"
+                                        | "awayRight"
+                                        | "left"
+                                        | "right"
+                                        | "towards"
+                                        | "towardsLeft"
+                                        | "towardsRight";
+                                    };
+                                  }
+                                | {
+                                    type: "floatingText";
+                                    config: {
+                                      /**
+                                       * the lines of text to display, each rendered as a separate row
+                                       */
+                                      textLines: [string, ...string[]];
+                                      /**
+                                       * the room time when this floating text starts; used to calculate the rise animation age.
+                                       * if not given, will start right away at time zero.
+                                       * if given, will delay starting until this time
+                                       */
+                                      appearanceRoomTime?: number;
+                                      /**
+                                       * if true, lines oscillate horizontally as they rise
+                                       */
+                                      sway?: false | true;
+                                    };
+                                  }
+                                | {
+                                    type: "monster";
+                                    config:
+                                      | {
+                                          which: "bubbleRobot";
+                                          movement: "patrol-randomly-xy8";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "computerBot";
+                                          movement:
+                                            | "patrol-randomly-xy4-and-reverse"
+                                            | "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "cyberman";
+                                          activated:
+                                            "after-player-near" | "off" | "on";
+                                          movement: "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                        }
+                                      | {
+                                          which: "dalek";
+                                          movement: "patrol-randomly-diagonal";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "elephant";
+                                          movement: "patrol-randomly-xy4";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "elephantHead";
+                                          movement: "turn-to-player";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "emperor";
+                                          movement: "towards-analogue";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "emperorsGuardian";
+                                          movement: "towards-analogue-unless-planet-crowns";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "helicopterBug";
+                                          movement:
+                                            | "patrol-randomly-xy8"
+                                            | "towards-analogue";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "homingBot";
+                                          movement: "towards-tripped-on-axis-xy4";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "monkey";
+                                          movement:
+                                            | "patrol-randomly-xy4"
+                                            | "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "skiHead";
+                                          activated: "off" | "on";
+                                          movement:
+                                            | "back-forth"
+                                            | "clockwise"
+                                            | "forwards";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          style:
+                                            "greenAndPink" | "starsAndStripes";
+                                        }
+                                      | {
+                                          which: "turtle";
+                                          movement:
+                                            | "anticlockwise"
+                                            | "back-forth"
+                                            | "clockwise"
+                                            | "forwards";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        };
+                                  }
+                                | {
+                                    type: "moveableDeadly";
+                                    config: {
+                                      style: "deadFish";
+                                    };
+                                  }
+                                | {
+                                    type: "movingPlatform";
+                                    config: {
+                                      movement:
+                                        | "back-forth"
+                                        | "clockwise"
+                                        | "towards-analogue";
+                                      activated: "off" | "on-stand" | "on";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                    };
+                                  }
+                                | {
+                                    type: "pickup";
+                                    config:
+                                      | {
+                                          gives: "crown";
+                                          planet:
+                                            | "blacktooth"
+                                            | "bookworld"
+                                            | "egyptus"
+                                            | "penitentiary"
+                                            | "safari";
+                                        }
+                                      | {
+                                          gives: "scroll";
+                                          source: "inline";
+                                          markdown:
+                                            [string, ...string[]] | string;
+                                        }
+                                      | {
+                                          gives: "scroll";
+                                          source: "manual";
+                                          page:
+                                            | "bag"
+                                            | "blacktooth"
+                                            | "bookWorld"
+                                            | "conveyorBelts"
+                                            | "credits"
+                                            | "crowns"
+                                            | "cuddlyStuffedWhiteRabbits"
+                                            | "doughnuts"
+                                            | "egyptus"
+                                            | "head"
+                                            | "heels"
+                                            | "hintsAndTips"
+                                            | "historyOfTheBlacktoothEmpire"
+                                            | "hooter"
+                                            | "hushPuppies"
+                                            | "installNative"
+                                            | "installPwa"
+                                            | "penitentiary"
+                                            | "reincarnationFish"
+                                            | "safari"
+                                            | "springs"
+                                            | "switches"
+                                            | "swopKey"
+                                            | "teleportBack"
+                                            | "teleports"
+                                            | "theEmperorsGuardian"
+                                            | "theGame";
+                                        }
+                                      | {
+                                          gives:
+                                            | "bag"
+                                            | "doughnuts"
+                                            | "extra-life"
+                                            | "fast"
+                                            | "hooter"
+                                            | "jumps"
+                                            | "reincarnation"
+                                            | "shield";
+                                        };
+                                  }
+                                | {
+                                    type: "portableBlock";
+                                    config: {
+                                      style: "cube" | "drum" | "sticks";
+                                    };
+                                  }
+                                | {
+                                    type: "portableTeleporter";
+                                    config: {
+                                      times?: {
+                                        x?: number;
+                                        y?: number;
+                                        z?: number;
+                                      };
+                                      /**
+                                       * the teleporter only works once this planet has been liberated (its crown
+                                       * collected); always works when not given
+                                       */
+                                      activatedIfPlanetLiberated?:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                      /**
+                                       * an item in the destination room this teleporter should go to - the
+                                       * player will be moved to atop this item
+                                       *
+                                       * If not given, will find the (only teleporter) in the destination room
+                                       *
+                                       * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                       * is pointing to another room
+                                       */
+                                      toItemId?: string;
+                                      /**
+                                       * note that if the other room contains exactly one teleporter, we need not
+                                       * give the position or the item.
+                                       */
+                                      toRoom?: string;
+                                    };
+                                  }
+                                | {
+                                    type: "pushableBlock";
+                                    config: Record<string, any>;
+                                  }
+                                | {
+                                    type: "sceneryCrown";
+                                    config: {
+                                      planet:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                    };
+                                  }
+                                | {
+                                    type: "sceneryPlayer";
+                                    config: {
+                                      which: "head" | "headOverHeels" | "heels";
+                                      startDirection:
+                                        | "away"
+                                        | "awayLeft"
+                                        | "awayRight"
+                                        | "left"
+                                        | "right"
+                                        | "towards"
+                                        | "towardsLeft"
+                                        | "towardsRight";
+                                    };
+                                  }
+                                | {
+                                    type: "slidingBlock";
+                                    config: {
+                                      style: "book" | "puck";
+                                    };
+                                  }
+                                | {
+                                    type: "slidingDeadly";
+                                    config: {
+                                      style: "spikyBall";
+                                      startingPhase: 1 | 2;
+                                    };
+                                  }
+                                | {
+                                    type: "spring";
+                                    config: Record<string, any>;
+                                  }
+                              ),
+                              ...(
+                                | {
+                                    type: "ball";
+                                    config: Record<string, any>;
+                                  }
+                                | {
+                                    type: "charles";
+                                    config: {
+                                      activated?: false | true;
+                                    };
+                                  }
+                                | {
+                                    type: "firedDoughnut";
+                                    config: {
+                                      direction?:
+                                        | "away"
+                                        | "awayLeft"
+                                        | "awayRight"
+                                        | "left"
+                                        | "right"
+                                        | "towards"
+                                        | "towardsLeft"
+                                        | "towardsRight";
+                                    };
+                                  }
+                                | {
+                                    type: "floatingText";
+                                    config: {
+                                      /**
+                                       * the lines of text to display, each rendered as a separate row
+                                       */
+                                      textLines: [string, ...string[]];
+                                      /**
+                                       * the room time when this floating text starts; used to calculate the rise animation age.
+                                       * if not given, will start right away at time zero.
+                                       * if given, will delay starting until this time
+                                       */
+                                      appearanceRoomTime?: number;
+                                      /**
+                                       * if true, lines oscillate horizontally as they rise
+                                       */
+                                      sway?: false | true;
+                                    };
+                                  }
+                                | {
+                                    type: "monster";
+                                    config:
+                                      | {
+                                          which: "bubbleRobot";
+                                          movement: "patrol-randomly-xy8";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "computerBot";
+                                          movement:
+                                            | "patrol-randomly-xy4-and-reverse"
+                                            | "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "cyberman";
+                                          activated:
+                                            "after-player-near" | "off" | "on";
+                                          movement: "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                        }
+                                      | {
+                                          which: "dalek";
+                                          movement: "patrol-randomly-diagonal";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "elephant";
+                                          movement: "patrol-randomly-xy4";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "elephantHead";
+                                          movement: "turn-to-player";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "emperor";
+                                          movement: "towards-analogue";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "emperorsGuardian";
+                                          movement: "towards-analogue-unless-planet-crowns";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "helicopterBug";
+                                          movement:
+                                            | "patrol-randomly-xy8"
+                                            | "towards-analogue";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "homingBot";
+                                          movement: "towards-tripped-on-axis-xy4";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "monkey";
+                                          movement:
+                                            | "patrol-randomly-xy4"
+                                            | "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "skiHead";
+                                          activated: "off" | "on";
+                                          movement:
+                                            | "back-forth"
+                                            | "clockwise"
+                                            | "forwards";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          style:
+                                            "greenAndPink" | "starsAndStripes";
+                                        }
+                                      | {
+                                          which: "turtle";
+                                          movement:
+                                            | "anticlockwise"
+                                            | "back-forth"
+                                            | "clockwise"
+                                            | "forwards";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        };
+                                  }
+                                | {
+                                    type: "moveableDeadly";
+                                    config: {
+                                      style: "deadFish";
+                                    };
+                                  }
+                                | {
+                                    type: "movingPlatform";
+                                    config: {
+                                      movement:
+                                        | "back-forth"
+                                        | "clockwise"
+                                        | "towards-analogue";
+                                      activated: "off" | "on-stand" | "on";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                    };
+                                  }
+                                | {
+                                    type: "pickup";
+                                    config:
+                                      | {
+                                          gives: "crown";
+                                          planet:
+                                            | "blacktooth"
+                                            | "bookworld"
+                                            | "egyptus"
+                                            | "penitentiary"
+                                            | "safari";
+                                        }
+                                      | {
+                                          gives: "scroll";
+                                          source: "inline";
+                                          markdown:
+                                            [string, ...string[]] | string;
+                                        }
+                                      | {
+                                          gives: "scroll";
+                                          source: "manual";
+                                          page:
+                                            | "bag"
+                                            | "blacktooth"
+                                            | "bookWorld"
+                                            | "conveyorBelts"
+                                            | "credits"
+                                            | "crowns"
+                                            | "cuddlyStuffedWhiteRabbits"
+                                            | "doughnuts"
+                                            | "egyptus"
+                                            | "head"
+                                            | "heels"
+                                            | "hintsAndTips"
+                                            | "historyOfTheBlacktoothEmpire"
+                                            | "hooter"
+                                            | "hushPuppies"
+                                            | "installNative"
+                                            | "installPwa"
+                                            | "penitentiary"
+                                            | "reincarnationFish"
+                                            | "safari"
+                                            | "springs"
+                                            | "switches"
+                                            | "swopKey"
+                                            | "teleportBack"
+                                            | "teleports"
+                                            | "theEmperorsGuardian"
+                                            | "theGame";
+                                        }
+                                      | {
+                                          gives:
+                                            | "bag"
+                                            | "doughnuts"
+                                            | "extra-life"
+                                            | "fast"
+                                            | "hooter"
+                                            | "jumps"
+                                            | "reincarnation"
+                                            | "shield";
+                                        };
+                                  }
+                                | {
+                                    type: "portableBlock";
+                                    config: {
+                                      style: "cube" | "drum" | "sticks";
+                                    };
+                                  }
+                                | {
+                                    type: "portableTeleporter";
+                                    config: {
+                                      times?: {
+                                        x?: number;
+                                        y?: number;
+                                        z?: number;
+                                      };
+                                      /**
+                                       * the teleporter only works once this planet has been liberated (its crown
+                                       * collected); always works when not given
+                                       */
+                                      activatedIfPlanetLiberated?:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                      /**
+                                       * an item in the destination room this teleporter should go to - the
+                                       * player will be moved to atop this item
+                                       *
+                                       * If not given, will find the (only teleporter) in the destination room
+                                       *
+                                       * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                       * is pointing to another room
+                                       */
+                                      toItemId?: string;
+                                      /**
+                                       * note that if the other room contains exactly one teleporter, we need not
+                                       * give the position or the item.
+                                       */
+                                      toRoom?: string;
+                                    };
+                                  }
+                                | {
+                                    type: "pushableBlock";
+                                    config: Record<string, any>;
+                                  }
+                                | {
+                                    type: "sceneryCrown";
+                                    config: {
+                                      planet:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                    };
+                                  }
+                                | {
+                                    type: "sceneryPlayer";
+                                    config: {
+                                      which: "head" | "headOverHeels" | "heels";
+                                      startDirection:
+                                        | "away"
+                                        | "awayLeft"
+                                        | "awayRight"
+                                        | "left"
+                                        | "right"
+                                        | "towards"
+                                        | "towardsLeft"
+                                        | "towardsRight";
+                                    };
+                                  }
+                                | {
+                                    type: "slidingBlock";
+                                    config: {
+                                      style: "book" | "puck";
+                                    };
+                                  }
+                                | {
+                                    type: "slidingDeadly";
+                                    config: {
+                                      style: "spikyBall";
+                                      startingPhase: 1 | 2;
+                                    };
+                                  }
+                                | {
+                                    type: "spring";
+                                    config: Record<string, any>;
+                                  }
+                              )[],
+                            ];
+                          }
+                        | {
+                            type: "firedDoughnut";
+                            config: {
+                              direction?:
+                                | "away"
+                                | "awayLeft"
+                                | "awayRight"
+                                | "left"
+                                | "right"
+                                | "towards"
+                                | "towardsLeft"
+                                | "towardsRight";
+                            };
+                          }
+                        | {
+                            type: "floatingText";
+                            config: {
                               /**
                                * the lines of text to display, each rendered as a separate row
                                */
-                              textLines: string[];
+                              textLines: [string, ...string[]];
                               /**
                                * the room time when this floating text starts; used to calculate the rise animation age.
                                * if not given, will start right away at time zero.
@@ -309,107 +983,186 @@ export type RoomJsonSchema = {
                                * if true, lines oscillate horizontally as they rise
                                */
                               sway?: false | true;
-                            }
-                          | {
-                              activated?: false | true;
-                            }
-                          | {
-                              direction?:
-                                | "away"
-                                | "awayLeft"
-                                | "awayRight"
-                                | "left"
-                                | "right"
-                                | "towards"
-                                | "towardsLeft"
-                                | "towardsRight";
-                            }
-                          | {
-                              gives: "crown";
-                              planet:
-                                | "blacktooth"
-                                | "bookworld"
-                                | "egyptus"
-                                | "penitentiary"
-                                | "safari";
-                            }
-                          | {
-                              gives: "scroll";
-                              source: "inline";
-                              markdown: string | string[];
-                            }
-                          | {
-                              gives: "scroll";
-                              source: "manual";
-                              page:
-                                | "bag"
-                                | "blacktooth"
-                                | "bookWorld"
-                                | "conveyorBelts"
-                                | "credits"
-                                | "crowns"
-                                | "cuddlyStuffedWhiteRabbits"
-                                | "doughnuts"
-                                | "egyptus"
-                                | "head"
-                                | "heels"
-                                | "hintsAndTips"
-                                | "historyOfTheBlacktoothEmpire"
-                                | "hooter"
-                                | "hushPuppies"
-                                | "installNative"
-                                | "installPwa"
-                                | "penitentiary"
-                                | "reincarnationFish"
-                                | "safari"
-                                | "springs"
-                                | "switches"
-                                | "swopKey"
-                                | "teleportBack"
-                                | "teleports"
-                                | "theEmperorsGuardian"
-                                | "theGame";
-                            }
-                          | {
-                              gives:
-                                | "bag"
-                                | "doughnuts"
-                                | "extra-life"
-                                | "fast"
-                                | "hooter"
-                                | "jumps"
-                                | "reincarnation"
-                                | "shield";
-                            }
-                          | {
+                            };
+                          }
+                        | {
+                            type: "monster";
+                            config:
+                              | {
+                                  which: "bubbleRobot";
+                                  movement: "patrol-randomly-xy8";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "computerBot";
+                                  movement:
+                                    | "patrol-randomly-xy4-and-reverse"
+                                    | "towards-on-shortest-axis-xy4";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "cyberman";
+                                  activated: "after-player-near" | "off" | "on";
+                                  movement: "towards-on-shortest-axis-xy4";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                }
+                              | {
+                                  which: "dalek";
+                                  movement: "patrol-randomly-diagonal";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "elephant";
+                                  movement: "patrol-randomly-xy4";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "elephantHead";
+                                  movement: "turn-to-player";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "emperor";
+                                  movement: "towards-analogue";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "emperorsGuardian";
+                                  movement: "towards-analogue-unless-planet-crowns";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "helicopterBug";
+                                  movement:
+                                    "patrol-randomly-xy8" | "towards-analogue";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "homingBot";
+                                  movement: "towards-tripped-on-axis-xy4";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "monkey";
+                                  movement:
+                                    | "patrol-randomly-xy4"
+                                    | "towards-on-shortest-axis-xy4";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "skiHead";
+                                  activated: "off" | "on";
+                                  movement:
+                                    "back-forth" | "clockwise" | "forwards";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  style: "greenAndPink" | "starsAndStripes";
+                                }
+                              | {
+                                  which: "turtle";
+                                  movement:
+                                    | "anticlockwise"
+                                    | "back-forth"
+                                    | "clockwise"
+                                    | "forwards";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  activated: "off" | "on";
+                                };
+                          }
+                        | {
+                            type: "moveableDeadly";
+                            config: {
+                              style: "deadFish";
+                            };
+                          }
+                        | {
+                            type: "movingPlatform";
+                            config: {
                               movement:
                                 "back-forth" | "clockwise" | "towards-analogue";
                               activated: "off" | "on-stand" | "on";
                               startDirection:
                                 "away" | "left" | "right" | "towards";
-                            }
-                          | {
-                              planet:
-                                | "blacktooth"
-                                | "bookworld"
-                                | "egyptus"
-                                | "penitentiary"
-                                | "safari";
-                            }
-                          | {
-                              style: "book" | "puck";
-                            }
-                          | {
+                            };
+                          }
+                        | {
+                            type: "pickup";
+                            config:
+                              | {
+                                  gives: "crown";
+                                  planet:
+                                    | "blacktooth"
+                                    | "bookworld"
+                                    | "egyptus"
+                                    | "penitentiary"
+                                    | "safari";
+                                }
+                              | {
+                                  gives: "scroll";
+                                  source: "inline";
+                                  markdown: [string, ...string[]] | string;
+                                }
+                              | {
+                                  gives: "scroll";
+                                  source: "manual";
+                                  page:
+                                    | "bag"
+                                    | "blacktooth"
+                                    | "bookWorld"
+                                    | "conveyorBelts"
+                                    | "credits"
+                                    | "crowns"
+                                    | "cuddlyStuffedWhiteRabbits"
+                                    | "doughnuts"
+                                    | "egyptus"
+                                    | "head"
+                                    | "heels"
+                                    | "hintsAndTips"
+                                    | "historyOfTheBlacktoothEmpire"
+                                    | "hooter"
+                                    | "hushPuppies"
+                                    | "installNative"
+                                    | "installPwa"
+                                    | "penitentiary"
+                                    | "reincarnationFish"
+                                    | "safari"
+                                    | "springs"
+                                    | "switches"
+                                    | "swopKey"
+                                    | "teleportBack"
+                                    | "teleports"
+                                    | "theEmperorsGuardian"
+                                    | "theGame";
+                                }
+                              | {
+                                  gives:
+                                    | "bag"
+                                    | "doughnuts"
+                                    | "extra-life"
+                                    | "fast"
+                                    | "hooter"
+                                    | "jumps"
+                                    | "reincarnation"
+                                    | "shield";
+                                };
+                          }
+                        | {
+                            type: "portableBlock";
+                            config: {
                               style: "cube" | "drum" | "sticks";
-                            }
-                          | {
-                              style: "deadFish";
-                            }
-                          | {
-                              style: "spikyBall";
-                              startingPhase: 1 | 2;
-                            }
-                          | {
+                            };
+                          }
+                        | {
+                            type: "portableTeleporter";
+                            config: {
                               times?: {
                                 x?: number;
                                 y?: number;
@@ -440,56 +1193,716 @@ export type RoomJsonSchema = {
                                * give the position or the item.
                                */
                               toRoom?: string;
-                            }
-                          | {
-                              which: "bubbleRobot";
-                              movement: "patrol-randomly-xy8";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "computerBot";
-                              movement:
-                                | "patrol-randomly-xy4-and-reverse"
-                                | "towards-on-shortest-axis-xy4";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "cyberman";
-                              activated: "after-player-near" | "off" | "on";
-                              movement: "towards-on-shortest-axis-xy4";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                            }
-                          | {
-                              which: "dalek";
-                              movement: "patrol-randomly-diagonal";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "elephant";
-                              movement: "patrol-randomly-xy4";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "elephantHead";
-                              movement: "turn-to-player";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "emperor";
-                              movement: "towards-analogue";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "emperorsGuardian";
-                              movement: "towards-analogue-unless-planet-crowns";
-                              activated: "off" | "on";
-                            }
-                          | {
+                            };
+                          }
+                        | {
+                            type: "probabilistic";
+                            /**
+                             * one of these is chosen at random for each emission, pseudo-randomly from
+                             * the emitter's hash and the room time, so the same emission at the same
+                             * time in the same room always chooses the same recipe
+                             */
+                            choices: [
+                              {
+                                emits:
+                                  | {
+                                      type: "ball";
+                                      config: Record<string, any>;
+                                    }
+                                  | {
+                                      type: "charles";
+                                      config: {
+                                        activated?: false | true;
+                                      };
+                                    }
+                                  | {
+                                      type: "firedDoughnut";
+                                      config: {
+                                        direction?:
+                                          | "away"
+                                          | "awayLeft"
+                                          | "awayRight"
+                                          | "left"
+                                          | "right"
+                                          | "towards"
+                                          | "towardsLeft"
+                                          | "towardsRight";
+                                      };
+                                    }
+                                  | {
+                                      type: "floatingText";
+                                      config: {
+                                        /**
+                                         * the lines of text to display, each rendered as a separate row
+                                         */
+                                        textLines: [string, ...string[]];
+                                        /**
+                                         * the room time when this floating text starts; used to calculate the rise animation age.
+                                         * if not given, will start right away at time zero.
+                                         * if given, will delay starting until this time
+                                         */
+                                        appearanceRoomTime?: number;
+                                        /**
+                                         * if true, lines oscillate horizontally as they rise
+                                         */
+                                        sway?: false | true;
+                                      };
+                                    }
+                                  | {
+                                      type: "monster";
+                                      config:
+                                        | {
+                                            which: "bubbleRobot";
+                                            movement: "patrol-randomly-xy8";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "computerBot";
+                                            movement:
+                                              | "patrol-randomly-xy4-and-reverse"
+                                              | "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "cyberman";
+                                            activated:
+                                              | "after-player-near"
+                                              | "off"
+                                              | "on";
+                                            movement: "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                          }
+                                        | {
+                                            which: "dalek";
+                                            movement: "patrol-randomly-diagonal";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "elephant";
+                                            movement: "patrol-randomly-xy4";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "elephantHead";
+                                            movement: "turn-to-player";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "emperor";
+                                            movement: "towards-analogue";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "emperorsGuardian";
+                                            movement: "towards-analogue-unless-planet-crowns";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "helicopterBug";
+                                            movement:
+                                              | "patrol-randomly-xy8"
+                                              | "towards-analogue";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "homingBot";
+                                            movement: "towards-tripped-on-axis-xy4";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "monkey";
+                                            movement:
+                                              | "patrol-randomly-xy4"
+                                              | "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "skiHead";
+                                            activated: "off" | "on";
+                                            movement:
+                                              | "back-forth"
+                                              | "clockwise"
+                                              | "forwards";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            style:
+                                              | "greenAndPink"
+                                              | "starsAndStripes";
+                                          }
+                                        | {
+                                            which: "turtle";
+                                            movement:
+                                              | "anticlockwise"
+                                              | "back-forth"
+                                              | "clockwise"
+                                              | "forwards";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          };
+                                    }
+                                  | {
+                                      type: "moveableDeadly";
+                                      config: {
+                                        style: "deadFish";
+                                      };
+                                    }
+                                  | {
+                                      type: "movingPlatform";
+                                      config: {
+                                        movement:
+                                          | "back-forth"
+                                          | "clockwise"
+                                          | "towards-analogue";
+                                        activated: "off" | "on-stand" | "on";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                      };
+                                    }
+                                  | {
+                                      type: "pickup";
+                                      config:
+                                        | {
+                                            gives: "crown";
+                                            planet:
+                                              | "blacktooth"
+                                              | "bookworld"
+                                              | "egyptus"
+                                              | "penitentiary"
+                                              | "safari";
+                                          }
+                                        | {
+                                            gives: "scroll";
+                                            source: "inline";
+                                            markdown:
+                                              [string, ...string[]] | string;
+                                          }
+                                        | {
+                                            gives: "scroll";
+                                            source: "manual";
+                                            page:
+                                              | "bag"
+                                              | "blacktooth"
+                                              | "bookWorld"
+                                              | "conveyorBelts"
+                                              | "credits"
+                                              | "crowns"
+                                              | "cuddlyStuffedWhiteRabbits"
+                                              | "doughnuts"
+                                              | "egyptus"
+                                              | "head"
+                                              | "heels"
+                                              | "hintsAndTips"
+                                              | "historyOfTheBlacktoothEmpire"
+                                              | "hooter"
+                                              | "hushPuppies"
+                                              | "installNative"
+                                              | "installPwa"
+                                              | "penitentiary"
+                                              | "reincarnationFish"
+                                              | "safari"
+                                              | "springs"
+                                              | "switches"
+                                              | "swopKey"
+                                              | "teleportBack"
+                                              | "teleports"
+                                              | "theEmperorsGuardian"
+                                              | "theGame";
+                                          }
+                                        | {
+                                            gives:
+                                              | "bag"
+                                              | "doughnuts"
+                                              | "extra-life"
+                                              | "fast"
+                                              | "hooter"
+                                              | "jumps"
+                                              | "reincarnation"
+                                              | "shield";
+                                          };
+                                    }
+                                  | {
+                                      type: "portableBlock";
+                                      config: {
+                                        style: "cube" | "drum" | "sticks";
+                                      };
+                                    }
+                                  | {
+                                      type: "portableTeleporter";
+                                      config: {
+                                        times?: {
+                                          x?: number;
+                                          y?: number;
+                                          z?: number;
+                                        };
+                                        /**
+                                         * the teleporter only works once this planet has been liberated (its crown
+                                         * collected); always works when not given
+                                         */
+                                        activatedIfPlanetLiberated?:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                        /**
+                                         * an item in the destination room this teleporter should go to - the
+                                         * player will be moved to atop this item
+                                         *
+                                         * If not given, will find the (only teleporter) in the destination room
+                                         *
+                                         * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                         * is pointing to another room
+                                         */
+                                        toItemId?: string;
+                                        /**
+                                         * note that if the other room contains exactly one teleporter, we need not
+                                         * give the position or the item.
+                                         */
+                                        toRoom?: string;
+                                      };
+                                    }
+                                  | {
+                                      type: "pushableBlock";
+                                      config: Record<string, any>;
+                                    }
+                                  | {
+                                      type: "sceneryCrown";
+                                      config: {
+                                        planet:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                      };
+                                    }
+                                  | {
+                                      type: "sceneryPlayer";
+                                      config: {
+                                        which:
+                                          "head" | "headOverHeels" | "heels";
+                                        startDirection:
+                                          | "away"
+                                          | "awayLeft"
+                                          | "awayRight"
+                                          | "left"
+                                          | "right"
+                                          | "towards"
+                                          | "towardsLeft"
+                                          | "towardsRight";
+                                      };
+                                    }
+                                  | {
+                                      type: "slidingBlock";
+                                      config: {
+                                        style: "book" | "puck";
+                                      };
+                                    }
+                                  | {
+                                      type: "slidingDeadly";
+                                      config: {
+                                        style: "spikyBall";
+                                        startingPhase: 1 | 2;
+                                      };
+                                    }
+                                  | {
+                                      type: "spring";
+                                      config: Record<string, any>;
+                                    };
+                                /**
+                                 * relative chance of this recipe being chosen. Weights are relative to each
+                                 * other, so they need not add up to anything. 0 is allowed, but if every
+                                 * weight is 0 the recipes are chosen with equal probability.
+                                 * undefined is treated as 1
+                                 */
+                                probabilityWeight?: number;
+                              },
+                              ...{
+                                emits:
+                                  | {
+                                      type: "ball";
+                                      config: Record<string, any>;
+                                    }
+                                  | {
+                                      type: "charles";
+                                      config: {
+                                        activated?: false | true;
+                                      };
+                                    }
+                                  | {
+                                      type: "firedDoughnut";
+                                      config: {
+                                        direction?:
+                                          | "away"
+                                          | "awayLeft"
+                                          | "awayRight"
+                                          | "left"
+                                          | "right"
+                                          | "towards"
+                                          | "towardsLeft"
+                                          | "towardsRight";
+                                      };
+                                    }
+                                  | {
+                                      type: "floatingText";
+                                      config: {
+                                        /**
+                                         * the lines of text to display, each rendered as a separate row
+                                         */
+                                        textLines: [string, ...string[]];
+                                        /**
+                                         * the room time when this floating text starts; used to calculate the rise animation age.
+                                         * if not given, will start right away at time zero.
+                                         * if given, will delay starting until this time
+                                         */
+                                        appearanceRoomTime?: number;
+                                        /**
+                                         * if true, lines oscillate horizontally as they rise
+                                         */
+                                        sway?: false | true;
+                                      };
+                                    }
+                                  | {
+                                      type: "monster";
+                                      config:
+                                        | {
+                                            which: "bubbleRobot";
+                                            movement: "patrol-randomly-xy8";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "computerBot";
+                                            movement:
+                                              | "patrol-randomly-xy4-and-reverse"
+                                              | "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "cyberman";
+                                            activated:
+                                              | "after-player-near"
+                                              | "off"
+                                              | "on";
+                                            movement: "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                          }
+                                        | {
+                                            which: "dalek";
+                                            movement: "patrol-randomly-diagonal";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "elephant";
+                                            movement: "patrol-randomly-xy4";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "elephantHead";
+                                            movement: "turn-to-player";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "emperor";
+                                            movement: "towards-analogue";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "emperorsGuardian";
+                                            movement: "towards-analogue-unless-planet-crowns";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "helicopterBug";
+                                            movement:
+                                              | "patrol-randomly-xy8"
+                                              | "towards-analogue";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "homingBot";
+                                            movement: "towards-tripped-on-axis-xy4";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "monkey";
+                                            movement:
+                                              | "patrol-randomly-xy4"
+                                              | "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "skiHead";
+                                            activated: "off" | "on";
+                                            movement:
+                                              | "back-forth"
+                                              | "clockwise"
+                                              | "forwards";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            style:
+                                              | "greenAndPink"
+                                              | "starsAndStripes";
+                                          }
+                                        | {
+                                            which: "turtle";
+                                            movement:
+                                              | "anticlockwise"
+                                              | "back-forth"
+                                              | "clockwise"
+                                              | "forwards";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          };
+                                    }
+                                  | {
+                                      type: "moveableDeadly";
+                                      config: {
+                                        style: "deadFish";
+                                      };
+                                    }
+                                  | {
+                                      type: "movingPlatform";
+                                      config: {
+                                        movement:
+                                          | "back-forth"
+                                          | "clockwise"
+                                          | "towards-analogue";
+                                        activated: "off" | "on-stand" | "on";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                      };
+                                    }
+                                  | {
+                                      type: "pickup";
+                                      config:
+                                        | {
+                                            gives: "crown";
+                                            planet:
+                                              | "blacktooth"
+                                              | "bookworld"
+                                              | "egyptus"
+                                              | "penitentiary"
+                                              | "safari";
+                                          }
+                                        | {
+                                            gives: "scroll";
+                                            source: "inline";
+                                            markdown:
+                                              [string, ...string[]] | string;
+                                          }
+                                        | {
+                                            gives: "scroll";
+                                            source: "manual";
+                                            page:
+                                              | "bag"
+                                              | "blacktooth"
+                                              | "bookWorld"
+                                              | "conveyorBelts"
+                                              | "credits"
+                                              | "crowns"
+                                              | "cuddlyStuffedWhiteRabbits"
+                                              | "doughnuts"
+                                              | "egyptus"
+                                              | "head"
+                                              | "heels"
+                                              | "hintsAndTips"
+                                              | "historyOfTheBlacktoothEmpire"
+                                              | "hooter"
+                                              | "hushPuppies"
+                                              | "installNative"
+                                              | "installPwa"
+                                              | "penitentiary"
+                                              | "reincarnationFish"
+                                              | "safari"
+                                              | "springs"
+                                              | "switches"
+                                              | "swopKey"
+                                              | "teleportBack"
+                                              | "teleports"
+                                              | "theEmperorsGuardian"
+                                              | "theGame";
+                                          }
+                                        | {
+                                            gives:
+                                              | "bag"
+                                              | "doughnuts"
+                                              | "extra-life"
+                                              | "fast"
+                                              | "hooter"
+                                              | "jumps"
+                                              | "reincarnation"
+                                              | "shield";
+                                          };
+                                    }
+                                  | {
+                                      type: "portableBlock";
+                                      config: {
+                                        style: "cube" | "drum" | "sticks";
+                                      };
+                                    }
+                                  | {
+                                      type: "portableTeleporter";
+                                      config: {
+                                        times?: {
+                                          x?: number;
+                                          y?: number;
+                                          z?: number;
+                                        };
+                                        /**
+                                         * the teleporter only works once this planet has been liberated (its crown
+                                         * collected); always works when not given
+                                         */
+                                        activatedIfPlanetLiberated?:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                        /**
+                                         * an item in the destination room this teleporter should go to - the
+                                         * player will be moved to atop this item
+                                         *
+                                         * If not given, will find the (only teleporter) in the destination room
+                                         *
+                                         * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                         * is pointing to another room
+                                         */
+                                        toItemId?: string;
+                                        /**
+                                         * note that if the other room contains exactly one teleporter, we need not
+                                         * give the position or the item.
+                                         */
+                                        toRoom?: string;
+                                      };
+                                    }
+                                  | {
+                                      type: "pushableBlock";
+                                      config: Record<string, any>;
+                                    }
+                                  | {
+                                      type: "sceneryCrown";
+                                      config: {
+                                        planet:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                      };
+                                    }
+                                  | {
+                                      type: "sceneryPlayer";
+                                      config: {
+                                        which:
+                                          "head" | "headOverHeels" | "heels";
+                                        startDirection:
+                                          | "away"
+                                          | "awayLeft"
+                                          | "awayRight"
+                                          | "left"
+                                          | "right"
+                                          | "towards"
+                                          | "towardsLeft"
+                                          | "towardsRight";
+                                      };
+                                    }
+                                  | {
+                                      type: "slidingBlock";
+                                      config: {
+                                        style: "book" | "puck";
+                                      };
+                                    }
+                                  | {
+                                      type: "slidingDeadly";
+                                      config: {
+                                        style: "spikyBall";
+                                        startingPhase: 1 | 2;
+                                      };
+                                    }
+                                  | {
+                                      type: "spring";
+                                      config: Record<string, any>;
+                                    };
+                                /**
+                                 * relative chance of this recipe being chosen. Weights are relative to each
+                                 * other, so they need not add up to anything. 0 is allowed, but if every
+                                 * weight is 0 the recipes are chosen with equal probability.
+                                 * undefined is treated as 1
+                                 */
+                                probabilityWeight?: number;
+                              }[],
+                            ];
+                          }
+                        | {
+                            type: "pushableBlock";
+                            config: Record<string, any>;
+                          }
+                        | {
+                            type: "sceneryCrown";
+                            config: {
+                              planet:
+                                | "blacktooth"
+                                | "bookworld"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari";
+                            };
+                          }
+                        | {
+                            type: "sceneryPlayer";
+                            config: {
                               which: "head" | "headOverHeels" | "heels";
                               startDirection:
                                 | "away"
@@ -500,48 +1913,25 @@ export type RoomJsonSchema = {
                                 | "towards"
                                 | "towardsLeft"
                                 | "towardsRight";
-                            }
-                          | {
-                              which: "helicopterBug";
-                              movement:
-                                "patrol-randomly-xy8" | "towards-analogue";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "homingBot";
-                              movement: "towards-tripped-on-axis-xy4";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "monkey";
-                              movement:
-                                | "patrol-randomly-xy4"
-                                | "towards-on-shortest-axis-xy4";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "skiHead";
-                              activated: "off" | "on";
-                              movement: "back-forth" | "clockwise" | "forwards";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              style: "greenAndPink" | "starsAndStripes";
-                            }
-                          | {
-                              which: "turtle";
-                              movement:
-                                | "anticlockwise"
-                                | "back-forth"
-                                | "clockwise"
-                                | "forwards";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              activated: "off" | "on";
-                            }
-                          | Record<string, any>;
-                      };
+                            };
+                          }
+                        | {
+                            type: "slidingBlock";
+                            config: {
+                              style: "book" | "puck";
+                            };
+                          }
+                        | {
+                            type: "slidingDeadly";
+                            config: {
+                              style: "spikyBall";
+                              startingPhase: 1 | 2;
+                            };
+                          }
+                        | {
+                            type: "spring";
+                            config: Record<string, any>;
+                          };
                       /**
                        * how long between emissions?
                        */
@@ -570,32 +1960,706 @@ export type RoomJsonSchema = {
                       quantityEmitted?: number;
                       playerInsideAtRoomTime?: number;
                       /**
-                       * what does this emitter emit? Could be (potentially) any free item
+                       * what does this emitter emit? Could be (potentially) any free item. Can
+                       * also cycle through several recipes in order, or choose between them
+                       * pseudo-randomly
                        */
-                      emits?: {
-                        type:
-                          | "ball"
-                          | "charles"
-                          | "firedDoughnut"
-                          | "floatingText"
-                          | "monster"
-                          | "moveableDeadly"
-                          | "movingPlatform"
-                          | "pickup"
-                          | "portableBlock"
-                          | "portableTeleporter"
-                          | "pushableBlock"
-                          | "sceneryCrown"
-                          | "sceneryPlayer"
-                          | "slidingBlock"
-                          | "slidingDeadly"
-                          | "spring";
-                        config:
-                          | {
+                      emits?:
+                        | {
+                            type: "ball";
+                            config: Record<string, any>;
+                          }
+                        | {
+                            type: "charles";
+                            config: {
+                              activated?: false | true;
+                            };
+                          }
+                        | {
+                            type: "cyclic";
+                            /**
+                             * recipes emitted in order, starting again from the first after the last
+                             */
+                            cycle: [
+                              (
+                                | {
+                                    type: "ball";
+                                    config: Record<string, any>;
+                                  }
+                                | {
+                                    type: "charles";
+                                    config: {
+                                      activated?: false | true;
+                                    };
+                                  }
+                                | {
+                                    type: "firedDoughnut";
+                                    config: {
+                                      direction?:
+                                        | "away"
+                                        | "awayLeft"
+                                        | "awayRight"
+                                        | "left"
+                                        | "right"
+                                        | "towards"
+                                        | "towardsLeft"
+                                        | "towardsRight";
+                                    };
+                                  }
+                                | {
+                                    type: "floatingText";
+                                    config: {
+                                      /**
+                                       * the lines of text to display, each rendered as a separate row
+                                       */
+                                      textLines: [string, ...string[]];
+                                      /**
+                                       * the room time when this floating text starts; used to calculate the rise animation age.
+                                       * if not given, will start right away at time zero.
+                                       * if given, will delay starting until this time
+                                       */
+                                      appearanceRoomTime?: number;
+                                      /**
+                                       * if true, lines oscillate horizontally as they rise
+                                       */
+                                      sway?: false | true;
+                                    };
+                                  }
+                                | {
+                                    type: "monster";
+                                    config:
+                                      | {
+                                          which: "bubbleRobot";
+                                          movement: "patrol-randomly-xy8";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "computerBot";
+                                          movement:
+                                            | "patrol-randomly-xy4-and-reverse"
+                                            | "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "cyberman";
+                                          activated:
+                                            "after-player-near" | "off" | "on";
+                                          movement: "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                        }
+                                      | {
+                                          which: "dalek";
+                                          movement: "patrol-randomly-diagonal";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "elephant";
+                                          movement: "patrol-randomly-xy4";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "elephantHead";
+                                          movement: "turn-to-player";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "emperor";
+                                          movement: "towards-analogue";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "emperorsGuardian";
+                                          movement: "towards-analogue-unless-planet-crowns";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "helicopterBug";
+                                          movement:
+                                            | "patrol-randomly-xy8"
+                                            | "towards-analogue";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "homingBot";
+                                          movement: "towards-tripped-on-axis-xy4";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "monkey";
+                                          movement:
+                                            | "patrol-randomly-xy4"
+                                            | "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "skiHead";
+                                          activated: "off" | "on";
+                                          movement:
+                                            | "back-forth"
+                                            | "clockwise"
+                                            | "forwards";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          style:
+                                            "greenAndPink" | "starsAndStripes";
+                                        }
+                                      | {
+                                          which: "turtle";
+                                          movement:
+                                            | "anticlockwise"
+                                            | "back-forth"
+                                            | "clockwise"
+                                            | "forwards";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        };
+                                  }
+                                | {
+                                    type: "moveableDeadly";
+                                    config: {
+                                      style: "deadFish";
+                                    };
+                                  }
+                                | {
+                                    type: "movingPlatform";
+                                    config: {
+                                      movement:
+                                        | "back-forth"
+                                        | "clockwise"
+                                        | "towards-analogue";
+                                      activated: "off" | "on-stand" | "on";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                    };
+                                  }
+                                | {
+                                    type: "pickup";
+                                    config:
+                                      | {
+                                          gives: "crown";
+                                          planet:
+                                            | "blacktooth"
+                                            | "bookworld"
+                                            | "egyptus"
+                                            | "penitentiary"
+                                            | "safari";
+                                        }
+                                      | {
+                                          gives: "scroll";
+                                          source: "inline";
+                                          markdown:
+                                            [string, ...string[]] | string;
+                                        }
+                                      | {
+                                          gives: "scroll";
+                                          source: "manual";
+                                          page:
+                                            | "bag"
+                                            | "blacktooth"
+                                            | "bookWorld"
+                                            | "conveyorBelts"
+                                            | "credits"
+                                            | "crowns"
+                                            | "cuddlyStuffedWhiteRabbits"
+                                            | "doughnuts"
+                                            | "egyptus"
+                                            | "head"
+                                            | "heels"
+                                            | "hintsAndTips"
+                                            | "historyOfTheBlacktoothEmpire"
+                                            | "hooter"
+                                            | "hushPuppies"
+                                            | "installNative"
+                                            | "installPwa"
+                                            | "penitentiary"
+                                            | "reincarnationFish"
+                                            | "safari"
+                                            | "springs"
+                                            | "switches"
+                                            | "swopKey"
+                                            | "teleportBack"
+                                            | "teleports"
+                                            | "theEmperorsGuardian"
+                                            | "theGame";
+                                        }
+                                      | {
+                                          gives:
+                                            | "bag"
+                                            | "doughnuts"
+                                            | "extra-life"
+                                            | "fast"
+                                            | "hooter"
+                                            | "jumps"
+                                            | "reincarnation"
+                                            | "shield";
+                                        };
+                                  }
+                                | {
+                                    type: "portableBlock";
+                                    config: {
+                                      style: "cube" | "drum" | "sticks";
+                                    };
+                                  }
+                                | {
+                                    type: "portableTeleporter";
+                                    config: {
+                                      times?: {
+                                        x?: number;
+                                        y?: number;
+                                        z?: number;
+                                      };
+                                      /**
+                                       * the teleporter only works once this planet has been liberated (its crown
+                                       * collected); always works when not given
+                                       */
+                                      activatedIfPlanetLiberated?:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                      /**
+                                       * an item in the destination room this teleporter should go to - the
+                                       * player will be moved to atop this item
+                                       *
+                                       * If not given, will find the (only teleporter) in the destination room
+                                       *
+                                       * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                       * is pointing to another room
+                                       */
+                                      toItemId?: string;
+                                      /**
+                                       * note that if the other room contains exactly one teleporter, we need not
+                                       * give the position or the item.
+                                       */
+                                      toRoom?: string;
+                                    };
+                                  }
+                                | {
+                                    type: "pushableBlock";
+                                    config: Record<string, any>;
+                                  }
+                                | {
+                                    type: "sceneryCrown";
+                                    config: {
+                                      planet:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                    };
+                                  }
+                                | {
+                                    type: "sceneryPlayer";
+                                    config: {
+                                      which: "head" | "headOverHeels" | "heels";
+                                      startDirection:
+                                        | "away"
+                                        | "awayLeft"
+                                        | "awayRight"
+                                        | "left"
+                                        | "right"
+                                        | "towards"
+                                        | "towardsLeft"
+                                        | "towardsRight";
+                                    };
+                                  }
+                                | {
+                                    type: "slidingBlock";
+                                    config: {
+                                      style: "book" | "puck";
+                                    };
+                                  }
+                                | {
+                                    type: "slidingDeadly";
+                                    config: {
+                                      style: "spikyBall";
+                                      startingPhase: 1 | 2;
+                                    };
+                                  }
+                                | {
+                                    type: "spring";
+                                    config: Record<string, any>;
+                                  }
+                              ),
+                              ...(
+                                | {
+                                    type: "ball";
+                                    config: Record<string, any>;
+                                  }
+                                | {
+                                    type: "charles";
+                                    config: {
+                                      activated?: false | true;
+                                    };
+                                  }
+                                | {
+                                    type: "firedDoughnut";
+                                    config: {
+                                      direction?:
+                                        | "away"
+                                        | "awayLeft"
+                                        | "awayRight"
+                                        | "left"
+                                        | "right"
+                                        | "towards"
+                                        | "towardsLeft"
+                                        | "towardsRight";
+                                    };
+                                  }
+                                | {
+                                    type: "floatingText";
+                                    config: {
+                                      /**
+                                       * the lines of text to display, each rendered as a separate row
+                                       */
+                                      textLines: [string, ...string[]];
+                                      /**
+                                       * the room time when this floating text starts; used to calculate the rise animation age.
+                                       * if not given, will start right away at time zero.
+                                       * if given, will delay starting until this time
+                                       */
+                                      appearanceRoomTime?: number;
+                                      /**
+                                       * if true, lines oscillate horizontally as they rise
+                                       */
+                                      sway?: false | true;
+                                    };
+                                  }
+                                | {
+                                    type: "monster";
+                                    config:
+                                      | {
+                                          which: "bubbleRobot";
+                                          movement: "patrol-randomly-xy8";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "computerBot";
+                                          movement:
+                                            | "patrol-randomly-xy4-and-reverse"
+                                            | "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "cyberman";
+                                          activated:
+                                            "after-player-near" | "off" | "on";
+                                          movement: "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                        }
+                                      | {
+                                          which: "dalek";
+                                          movement: "patrol-randomly-diagonal";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "elephant";
+                                          movement: "patrol-randomly-xy4";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "elephantHead";
+                                          movement: "turn-to-player";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "emperor";
+                                          movement: "towards-analogue";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "emperorsGuardian";
+                                          movement: "towards-analogue-unless-planet-crowns";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "helicopterBug";
+                                          movement:
+                                            | "patrol-randomly-xy8"
+                                            | "towards-analogue";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "homingBot";
+                                          movement: "towards-tripped-on-axis-xy4";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "monkey";
+                                          movement:
+                                            | "patrol-randomly-xy4"
+                                            | "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "skiHead";
+                                          activated: "off" | "on";
+                                          movement:
+                                            | "back-forth"
+                                            | "clockwise"
+                                            | "forwards";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          style:
+                                            "greenAndPink" | "starsAndStripes";
+                                        }
+                                      | {
+                                          which: "turtle";
+                                          movement:
+                                            | "anticlockwise"
+                                            | "back-forth"
+                                            | "clockwise"
+                                            | "forwards";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        };
+                                  }
+                                | {
+                                    type: "moveableDeadly";
+                                    config: {
+                                      style: "deadFish";
+                                    };
+                                  }
+                                | {
+                                    type: "movingPlatform";
+                                    config: {
+                                      movement:
+                                        | "back-forth"
+                                        | "clockwise"
+                                        | "towards-analogue";
+                                      activated: "off" | "on-stand" | "on";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                    };
+                                  }
+                                | {
+                                    type: "pickup";
+                                    config:
+                                      | {
+                                          gives: "crown";
+                                          planet:
+                                            | "blacktooth"
+                                            | "bookworld"
+                                            | "egyptus"
+                                            | "penitentiary"
+                                            | "safari";
+                                        }
+                                      | {
+                                          gives: "scroll";
+                                          source: "inline";
+                                          markdown:
+                                            [string, ...string[]] | string;
+                                        }
+                                      | {
+                                          gives: "scroll";
+                                          source: "manual";
+                                          page:
+                                            | "bag"
+                                            | "blacktooth"
+                                            | "bookWorld"
+                                            | "conveyorBelts"
+                                            | "credits"
+                                            | "crowns"
+                                            | "cuddlyStuffedWhiteRabbits"
+                                            | "doughnuts"
+                                            | "egyptus"
+                                            | "head"
+                                            | "heels"
+                                            | "hintsAndTips"
+                                            | "historyOfTheBlacktoothEmpire"
+                                            | "hooter"
+                                            | "hushPuppies"
+                                            | "installNative"
+                                            | "installPwa"
+                                            | "penitentiary"
+                                            | "reincarnationFish"
+                                            | "safari"
+                                            | "springs"
+                                            | "switches"
+                                            | "swopKey"
+                                            | "teleportBack"
+                                            | "teleports"
+                                            | "theEmperorsGuardian"
+                                            | "theGame";
+                                        }
+                                      | {
+                                          gives:
+                                            | "bag"
+                                            | "doughnuts"
+                                            | "extra-life"
+                                            | "fast"
+                                            | "hooter"
+                                            | "jumps"
+                                            | "reincarnation"
+                                            | "shield";
+                                        };
+                                  }
+                                | {
+                                    type: "portableBlock";
+                                    config: {
+                                      style: "cube" | "drum" | "sticks";
+                                    };
+                                  }
+                                | {
+                                    type: "portableTeleporter";
+                                    config: {
+                                      times?: {
+                                        x?: number;
+                                        y?: number;
+                                        z?: number;
+                                      };
+                                      /**
+                                       * the teleporter only works once this planet has been liberated (its crown
+                                       * collected); always works when not given
+                                       */
+                                      activatedIfPlanetLiberated?:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                      /**
+                                       * an item in the destination room this teleporter should go to - the
+                                       * player will be moved to atop this item
+                                       *
+                                       * If not given, will find the (only teleporter) in the destination room
+                                       *
+                                       * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                       * is pointing to another room
+                                       */
+                                      toItemId?: string;
+                                      /**
+                                       * note that if the other room contains exactly one teleporter, we need not
+                                       * give the position or the item.
+                                       */
+                                      toRoom?: string;
+                                    };
+                                  }
+                                | {
+                                    type: "pushableBlock";
+                                    config: Record<string, any>;
+                                  }
+                                | {
+                                    type: "sceneryCrown";
+                                    config: {
+                                      planet:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                    };
+                                  }
+                                | {
+                                    type: "sceneryPlayer";
+                                    config: {
+                                      which: "head" | "headOverHeels" | "heels";
+                                      startDirection:
+                                        | "away"
+                                        | "awayLeft"
+                                        | "awayRight"
+                                        | "left"
+                                        | "right"
+                                        | "towards"
+                                        | "towardsLeft"
+                                        | "towardsRight";
+                                    };
+                                  }
+                                | {
+                                    type: "slidingBlock";
+                                    config: {
+                                      style: "book" | "puck";
+                                    };
+                                  }
+                                | {
+                                    type: "slidingDeadly";
+                                    config: {
+                                      style: "spikyBall";
+                                      startingPhase: 1 | 2;
+                                    };
+                                  }
+                                | {
+                                    type: "spring";
+                                    config: Record<string, any>;
+                                  }
+                              )[],
+                            ];
+                          }
+                        | {
+                            type: "firedDoughnut";
+                            config: {
+                              direction?:
+                                | "away"
+                                | "awayLeft"
+                                | "awayRight"
+                                | "left"
+                                | "right"
+                                | "towards"
+                                | "towardsLeft"
+                                | "towardsRight";
+                            };
+                          }
+                        | {
+                            type: "floatingText";
+                            config: {
                               /**
                                * the lines of text to display, each rendered as a separate row
                                */
-                              textLines: string[];
+                              textLines: [string, ...string[]];
                               /**
                                * the room time when this floating text starts; used to calculate the rise animation age.
                                * if not given, will start right away at time zero.
@@ -606,107 +2670,186 @@ export type RoomJsonSchema = {
                                * if true, lines oscillate horizontally as they rise
                                */
                               sway?: false | true;
-                            }
-                          | {
-                              activated?: false | true;
-                            }
-                          | {
-                              direction?:
-                                | "away"
-                                | "awayLeft"
-                                | "awayRight"
-                                | "left"
-                                | "right"
-                                | "towards"
-                                | "towardsLeft"
-                                | "towardsRight";
-                            }
-                          | {
-                              gives: "crown";
-                              planet:
-                                | "blacktooth"
-                                | "bookworld"
-                                | "egyptus"
-                                | "penitentiary"
-                                | "safari";
-                            }
-                          | {
-                              gives: "scroll";
-                              source: "inline";
-                              markdown: string | string[];
-                            }
-                          | {
-                              gives: "scroll";
-                              source: "manual";
-                              page:
-                                | "bag"
-                                | "blacktooth"
-                                | "bookWorld"
-                                | "conveyorBelts"
-                                | "credits"
-                                | "crowns"
-                                | "cuddlyStuffedWhiteRabbits"
-                                | "doughnuts"
-                                | "egyptus"
-                                | "head"
-                                | "heels"
-                                | "hintsAndTips"
-                                | "historyOfTheBlacktoothEmpire"
-                                | "hooter"
-                                | "hushPuppies"
-                                | "installNative"
-                                | "installPwa"
-                                | "penitentiary"
-                                | "reincarnationFish"
-                                | "safari"
-                                | "springs"
-                                | "switches"
-                                | "swopKey"
-                                | "teleportBack"
-                                | "teleports"
-                                | "theEmperorsGuardian"
-                                | "theGame";
-                            }
-                          | {
-                              gives:
-                                | "bag"
-                                | "doughnuts"
-                                | "extra-life"
-                                | "fast"
-                                | "hooter"
-                                | "jumps"
-                                | "reincarnation"
-                                | "shield";
-                            }
-                          | {
+                            };
+                          }
+                        | {
+                            type: "monster";
+                            config:
+                              | {
+                                  which: "bubbleRobot";
+                                  movement: "patrol-randomly-xy8";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "computerBot";
+                                  movement:
+                                    | "patrol-randomly-xy4-and-reverse"
+                                    | "towards-on-shortest-axis-xy4";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "cyberman";
+                                  activated: "after-player-near" | "off" | "on";
+                                  movement: "towards-on-shortest-axis-xy4";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                }
+                              | {
+                                  which: "dalek";
+                                  movement: "patrol-randomly-diagonal";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "elephant";
+                                  movement: "patrol-randomly-xy4";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "elephantHead";
+                                  movement: "turn-to-player";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "emperor";
+                                  movement: "towards-analogue";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "emperorsGuardian";
+                                  movement: "towards-analogue-unless-planet-crowns";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "helicopterBug";
+                                  movement:
+                                    "patrol-randomly-xy8" | "towards-analogue";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "homingBot";
+                                  movement: "towards-tripped-on-axis-xy4";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "monkey";
+                                  movement:
+                                    | "patrol-randomly-xy4"
+                                    | "towards-on-shortest-axis-xy4";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "skiHead";
+                                  activated: "off" | "on";
+                                  movement:
+                                    "back-forth" | "clockwise" | "forwards";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  style: "greenAndPink" | "starsAndStripes";
+                                }
+                              | {
+                                  which: "turtle";
+                                  movement:
+                                    | "anticlockwise"
+                                    | "back-forth"
+                                    | "clockwise"
+                                    | "forwards";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  activated: "off" | "on";
+                                };
+                          }
+                        | {
+                            type: "moveableDeadly";
+                            config: {
+                              style: "deadFish";
+                            };
+                          }
+                        | {
+                            type: "movingPlatform";
+                            config: {
                               movement:
                                 "back-forth" | "clockwise" | "towards-analogue";
                               activated: "off" | "on-stand" | "on";
                               startDirection:
                                 "away" | "left" | "right" | "towards";
-                            }
-                          | {
-                              planet:
-                                | "blacktooth"
-                                | "bookworld"
-                                | "egyptus"
-                                | "penitentiary"
-                                | "safari";
-                            }
-                          | {
-                              style: "book" | "puck";
-                            }
-                          | {
+                            };
+                          }
+                        | {
+                            type: "pickup";
+                            config:
+                              | {
+                                  gives: "crown";
+                                  planet:
+                                    | "blacktooth"
+                                    | "bookworld"
+                                    | "egyptus"
+                                    | "penitentiary"
+                                    | "safari";
+                                }
+                              | {
+                                  gives: "scroll";
+                                  source: "inline";
+                                  markdown: [string, ...string[]] | string;
+                                }
+                              | {
+                                  gives: "scroll";
+                                  source: "manual";
+                                  page:
+                                    | "bag"
+                                    | "blacktooth"
+                                    | "bookWorld"
+                                    | "conveyorBelts"
+                                    | "credits"
+                                    | "crowns"
+                                    | "cuddlyStuffedWhiteRabbits"
+                                    | "doughnuts"
+                                    | "egyptus"
+                                    | "head"
+                                    | "heels"
+                                    | "hintsAndTips"
+                                    | "historyOfTheBlacktoothEmpire"
+                                    | "hooter"
+                                    | "hushPuppies"
+                                    | "installNative"
+                                    | "installPwa"
+                                    | "penitentiary"
+                                    | "reincarnationFish"
+                                    | "safari"
+                                    | "springs"
+                                    | "switches"
+                                    | "swopKey"
+                                    | "teleportBack"
+                                    | "teleports"
+                                    | "theEmperorsGuardian"
+                                    | "theGame";
+                                }
+                              | {
+                                  gives:
+                                    | "bag"
+                                    | "doughnuts"
+                                    | "extra-life"
+                                    | "fast"
+                                    | "hooter"
+                                    | "jumps"
+                                    | "reincarnation"
+                                    | "shield";
+                                };
+                          }
+                        | {
+                            type: "portableBlock";
+                            config: {
                               style: "cube" | "drum" | "sticks";
-                            }
-                          | {
-                              style: "deadFish";
-                            }
-                          | {
-                              style: "spikyBall";
-                              startingPhase: 1 | 2;
-                            }
-                          | {
+                            };
+                          }
+                        | {
+                            type: "portableTeleporter";
+                            config: {
                               times?: {
                                 x?: number;
                                 y?: number;
@@ -737,56 +2880,716 @@ export type RoomJsonSchema = {
                                * give the position or the item.
                                */
                               toRoom?: string;
-                            }
-                          | {
-                              which: "bubbleRobot";
-                              movement: "patrol-randomly-xy8";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "computerBot";
-                              movement:
-                                | "patrol-randomly-xy4-and-reverse"
-                                | "towards-on-shortest-axis-xy4";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "cyberman";
-                              activated: "after-player-near" | "off" | "on";
-                              movement: "towards-on-shortest-axis-xy4";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                            }
-                          | {
-                              which: "dalek";
-                              movement: "patrol-randomly-diagonal";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "elephant";
-                              movement: "patrol-randomly-xy4";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "elephantHead";
-                              movement: "turn-to-player";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "emperor";
-                              movement: "towards-analogue";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "emperorsGuardian";
-                              movement: "towards-analogue-unless-planet-crowns";
-                              activated: "off" | "on";
-                            }
-                          | {
+                            };
+                          }
+                        | {
+                            type: "probabilistic";
+                            /**
+                             * one of these is chosen at random for each emission, pseudo-randomly from
+                             * the emitter's hash and the room time, so the same emission at the same
+                             * time in the same room always chooses the same recipe
+                             */
+                            choices: [
+                              {
+                                emits:
+                                  | {
+                                      type: "ball";
+                                      config: Record<string, any>;
+                                    }
+                                  | {
+                                      type: "charles";
+                                      config: {
+                                        activated?: false | true;
+                                      };
+                                    }
+                                  | {
+                                      type: "firedDoughnut";
+                                      config: {
+                                        direction?:
+                                          | "away"
+                                          | "awayLeft"
+                                          | "awayRight"
+                                          | "left"
+                                          | "right"
+                                          | "towards"
+                                          | "towardsLeft"
+                                          | "towardsRight";
+                                      };
+                                    }
+                                  | {
+                                      type: "floatingText";
+                                      config: {
+                                        /**
+                                         * the lines of text to display, each rendered as a separate row
+                                         */
+                                        textLines: [string, ...string[]];
+                                        /**
+                                         * the room time when this floating text starts; used to calculate the rise animation age.
+                                         * if not given, will start right away at time zero.
+                                         * if given, will delay starting until this time
+                                         */
+                                        appearanceRoomTime?: number;
+                                        /**
+                                         * if true, lines oscillate horizontally as they rise
+                                         */
+                                        sway?: false | true;
+                                      };
+                                    }
+                                  | {
+                                      type: "monster";
+                                      config:
+                                        | {
+                                            which: "bubbleRobot";
+                                            movement: "patrol-randomly-xy8";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "computerBot";
+                                            movement:
+                                              | "patrol-randomly-xy4-and-reverse"
+                                              | "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "cyberman";
+                                            activated:
+                                              | "after-player-near"
+                                              | "off"
+                                              | "on";
+                                            movement: "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                          }
+                                        | {
+                                            which: "dalek";
+                                            movement: "patrol-randomly-diagonal";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "elephant";
+                                            movement: "patrol-randomly-xy4";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "elephantHead";
+                                            movement: "turn-to-player";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "emperor";
+                                            movement: "towards-analogue";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "emperorsGuardian";
+                                            movement: "towards-analogue-unless-planet-crowns";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "helicopterBug";
+                                            movement:
+                                              | "patrol-randomly-xy8"
+                                              | "towards-analogue";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "homingBot";
+                                            movement: "towards-tripped-on-axis-xy4";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "monkey";
+                                            movement:
+                                              | "patrol-randomly-xy4"
+                                              | "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "skiHead";
+                                            activated: "off" | "on";
+                                            movement:
+                                              | "back-forth"
+                                              | "clockwise"
+                                              | "forwards";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            style:
+                                              | "greenAndPink"
+                                              | "starsAndStripes";
+                                          }
+                                        | {
+                                            which: "turtle";
+                                            movement:
+                                              | "anticlockwise"
+                                              | "back-forth"
+                                              | "clockwise"
+                                              | "forwards";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          };
+                                    }
+                                  | {
+                                      type: "moveableDeadly";
+                                      config: {
+                                        style: "deadFish";
+                                      };
+                                    }
+                                  | {
+                                      type: "movingPlatform";
+                                      config: {
+                                        movement:
+                                          | "back-forth"
+                                          | "clockwise"
+                                          | "towards-analogue";
+                                        activated: "off" | "on-stand" | "on";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                      };
+                                    }
+                                  | {
+                                      type: "pickup";
+                                      config:
+                                        | {
+                                            gives: "crown";
+                                            planet:
+                                              | "blacktooth"
+                                              | "bookworld"
+                                              | "egyptus"
+                                              | "penitentiary"
+                                              | "safari";
+                                          }
+                                        | {
+                                            gives: "scroll";
+                                            source: "inline";
+                                            markdown:
+                                              [string, ...string[]] | string;
+                                          }
+                                        | {
+                                            gives: "scroll";
+                                            source: "manual";
+                                            page:
+                                              | "bag"
+                                              | "blacktooth"
+                                              | "bookWorld"
+                                              | "conveyorBelts"
+                                              | "credits"
+                                              | "crowns"
+                                              | "cuddlyStuffedWhiteRabbits"
+                                              | "doughnuts"
+                                              | "egyptus"
+                                              | "head"
+                                              | "heels"
+                                              | "hintsAndTips"
+                                              | "historyOfTheBlacktoothEmpire"
+                                              | "hooter"
+                                              | "hushPuppies"
+                                              | "installNative"
+                                              | "installPwa"
+                                              | "penitentiary"
+                                              | "reincarnationFish"
+                                              | "safari"
+                                              | "springs"
+                                              | "switches"
+                                              | "swopKey"
+                                              | "teleportBack"
+                                              | "teleports"
+                                              | "theEmperorsGuardian"
+                                              | "theGame";
+                                          }
+                                        | {
+                                            gives:
+                                              | "bag"
+                                              | "doughnuts"
+                                              | "extra-life"
+                                              | "fast"
+                                              | "hooter"
+                                              | "jumps"
+                                              | "reincarnation"
+                                              | "shield";
+                                          };
+                                    }
+                                  | {
+                                      type: "portableBlock";
+                                      config: {
+                                        style: "cube" | "drum" | "sticks";
+                                      };
+                                    }
+                                  | {
+                                      type: "portableTeleporter";
+                                      config: {
+                                        times?: {
+                                          x?: number;
+                                          y?: number;
+                                          z?: number;
+                                        };
+                                        /**
+                                         * the teleporter only works once this planet has been liberated (its crown
+                                         * collected); always works when not given
+                                         */
+                                        activatedIfPlanetLiberated?:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                        /**
+                                         * an item in the destination room this teleporter should go to - the
+                                         * player will be moved to atop this item
+                                         *
+                                         * If not given, will find the (only teleporter) in the destination room
+                                         *
+                                         * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                         * is pointing to another room
+                                         */
+                                        toItemId?: string;
+                                        /**
+                                         * note that if the other room contains exactly one teleporter, we need not
+                                         * give the position or the item.
+                                         */
+                                        toRoom?: string;
+                                      };
+                                    }
+                                  | {
+                                      type: "pushableBlock";
+                                      config: Record<string, any>;
+                                    }
+                                  | {
+                                      type: "sceneryCrown";
+                                      config: {
+                                        planet:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                      };
+                                    }
+                                  | {
+                                      type: "sceneryPlayer";
+                                      config: {
+                                        which:
+                                          "head" | "headOverHeels" | "heels";
+                                        startDirection:
+                                          | "away"
+                                          | "awayLeft"
+                                          | "awayRight"
+                                          | "left"
+                                          | "right"
+                                          | "towards"
+                                          | "towardsLeft"
+                                          | "towardsRight";
+                                      };
+                                    }
+                                  | {
+                                      type: "slidingBlock";
+                                      config: {
+                                        style: "book" | "puck";
+                                      };
+                                    }
+                                  | {
+                                      type: "slidingDeadly";
+                                      config: {
+                                        style: "spikyBall";
+                                        startingPhase: 1 | 2;
+                                      };
+                                    }
+                                  | {
+                                      type: "spring";
+                                      config: Record<string, any>;
+                                    };
+                                /**
+                                 * relative chance of this recipe being chosen. Weights are relative to each
+                                 * other, so they need not add up to anything. 0 is allowed, but if every
+                                 * weight is 0 the recipes are chosen with equal probability.
+                                 * undefined is treated as 1
+                                 */
+                                probabilityWeight?: number;
+                              },
+                              ...{
+                                emits:
+                                  | {
+                                      type: "ball";
+                                      config: Record<string, any>;
+                                    }
+                                  | {
+                                      type: "charles";
+                                      config: {
+                                        activated?: false | true;
+                                      };
+                                    }
+                                  | {
+                                      type: "firedDoughnut";
+                                      config: {
+                                        direction?:
+                                          | "away"
+                                          | "awayLeft"
+                                          | "awayRight"
+                                          | "left"
+                                          | "right"
+                                          | "towards"
+                                          | "towardsLeft"
+                                          | "towardsRight";
+                                      };
+                                    }
+                                  | {
+                                      type: "floatingText";
+                                      config: {
+                                        /**
+                                         * the lines of text to display, each rendered as a separate row
+                                         */
+                                        textLines: [string, ...string[]];
+                                        /**
+                                         * the room time when this floating text starts; used to calculate the rise animation age.
+                                         * if not given, will start right away at time zero.
+                                         * if given, will delay starting until this time
+                                         */
+                                        appearanceRoomTime?: number;
+                                        /**
+                                         * if true, lines oscillate horizontally as they rise
+                                         */
+                                        sway?: false | true;
+                                      };
+                                    }
+                                  | {
+                                      type: "monster";
+                                      config:
+                                        | {
+                                            which: "bubbleRobot";
+                                            movement: "patrol-randomly-xy8";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "computerBot";
+                                            movement:
+                                              | "patrol-randomly-xy4-and-reverse"
+                                              | "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "cyberman";
+                                            activated:
+                                              | "after-player-near"
+                                              | "off"
+                                              | "on";
+                                            movement: "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                          }
+                                        | {
+                                            which: "dalek";
+                                            movement: "patrol-randomly-diagonal";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "elephant";
+                                            movement: "patrol-randomly-xy4";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "elephantHead";
+                                            movement: "turn-to-player";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "emperor";
+                                            movement: "towards-analogue";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "emperorsGuardian";
+                                            movement: "towards-analogue-unless-planet-crowns";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "helicopterBug";
+                                            movement:
+                                              | "patrol-randomly-xy8"
+                                              | "towards-analogue";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "homingBot";
+                                            movement: "towards-tripped-on-axis-xy4";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "monkey";
+                                            movement:
+                                              | "patrol-randomly-xy4"
+                                              | "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "skiHead";
+                                            activated: "off" | "on";
+                                            movement:
+                                              | "back-forth"
+                                              | "clockwise"
+                                              | "forwards";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            style:
+                                              | "greenAndPink"
+                                              | "starsAndStripes";
+                                          }
+                                        | {
+                                            which: "turtle";
+                                            movement:
+                                              | "anticlockwise"
+                                              | "back-forth"
+                                              | "clockwise"
+                                              | "forwards";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          };
+                                    }
+                                  | {
+                                      type: "moveableDeadly";
+                                      config: {
+                                        style: "deadFish";
+                                      };
+                                    }
+                                  | {
+                                      type: "movingPlatform";
+                                      config: {
+                                        movement:
+                                          | "back-forth"
+                                          | "clockwise"
+                                          | "towards-analogue";
+                                        activated: "off" | "on-stand" | "on";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                      };
+                                    }
+                                  | {
+                                      type: "pickup";
+                                      config:
+                                        | {
+                                            gives: "crown";
+                                            planet:
+                                              | "blacktooth"
+                                              | "bookworld"
+                                              | "egyptus"
+                                              | "penitentiary"
+                                              | "safari";
+                                          }
+                                        | {
+                                            gives: "scroll";
+                                            source: "inline";
+                                            markdown:
+                                              [string, ...string[]] | string;
+                                          }
+                                        | {
+                                            gives: "scroll";
+                                            source: "manual";
+                                            page:
+                                              | "bag"
+                                              | "blacktooth"
+                                              | "bookWorld"
+                                              | "conveyorBelts"
+                                              | "credits"
+                                              | "crowns"
+                                              | "cuddlyStuffedWhiteRabbits"
+                                              | "doughnuts"
+                                              | "egyptus"
+                                              | "head"
+                                              | "heels"
+                                              | "hintsAndTips"
+                                              | "historyOfTheBlacktoothEmpire"
+                                              | "hooter"
+                                              | "hushPuppies"
+                                              | "installNative"
+                                              | "installPwa"
+                                              | "penitentiary"
+                                              | "reincarnationFish"
+                                              | "safari"
+                                              | "springs"
+                                              | "switches"
+                                              | "swopKey"
+                                              | "teleportBack"
+                                              | "teleports"
+                                              | "theEmperorsGuardian"
+                                              | "theGame";
+                                          }
+                                        | {
+                                            gives:
+                                              | "bag"
+                                              | "doughnuts"
+                                              | "extra-life"
+                                              | "fast"
+                                              | "hooter"
+                                              | "jumps"
+                                              | "reincarnation"
+                                              | "shield";
+                                          };
+                                    }
+                                  | {
+                                      type: "portableBlock";
+                                      config: {
+                                        style: "cube" | "drum" | "sticks";
+                                      };
+                                    }
+                                  | {
+                                      type: "portableTeleporter";
+                                      config: {
+                                        times?: {
+                                          x?: number;
+                                          y?: number;
+                                          z?: number;
+                                        };
+                                        /**
+                                         * the teleporter only works once this planet has been liberated (its crown
+                                         * collected); always works when not given
+                                         */
+                                        activatedIfPlanetLiberated?:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                        /**
+                                         * an item in the destination room this teleporter should go to - the
+                                         * player will be moved to atop this item
+                                         *
+                                         * If not given, will find the (only teleporter) in the destination room
+                                         *
+                                         * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                         * is pointing to another room
+                                         */
+                                        toItemId?: string;
+                                        /**
+                                         * note that if the other room contains exactly one teleporter, we need not
+                                         * give the position or the item.
+                                         */
+                                        toRoom?: string;
+                                      };
+                                    }
+                                  | {
+                                      type: "pushableBlock";
+                                      config: Record<string, any>;
+                                    }
+                                  | {
+                                      type: "sceneryCrown";
+                                      config: {
+                                        planet:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                      };
+                                    }
+                                  | {
+                                      type: "sceneryPlayer";
+                                      config: {
+                                        which:
+                                          "head" | "headOverHeels" | "heels";
+                                        startDirection:
+                                          | "away"
+                                          | "awayLeft"
+                                          | "awayRight"
+                                          | "left"
+                                          | "right"
+                                          | "towards"
+                                          | "towardsLeft"
+                                          | "towardsRight";
+                                      };
+                                    }
+                                  | {
+                                      type: "slidingBlock";
+                                      config: {
+                                        style: "book" | "puck";
+                                      };
+                                    }
+                                  | {
+                                      type: "slidingDeadly";
+                                      config: {
+                                        style: "spikyBall";
+                                        startingPhase: 1 | 2;
+                                      };
+                                    }
+                                  | {
+                                      type: "spring";
+                                      config: Record<string, any>;
+                                    };
+                                /**
+                                 * relative chance of this recipe being chosen. Weights are relative to each
+                                 * other, so they need not add up to anything. 0 is allowed, but if every
+                                 * weight is 0 the recipes are chosen with equal probability.
+                                 * undefined is treated as 1
+                                 */
+                                probabilityWeight?: number;
+                              }[],
+                            ];
+                          }
+                        | {
+                            type: "pushableBlock";
+                            config: Record<string, any>;
+                          }
+                        | {
+                            type: "sceneryCrown";
+                            config: {
+                              planet:
+                                | "blacktooth"
+                                | "bookworld"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari";
+                            };
+                          }
+                        | {
+                            type: "sceneryPlayer";
+                            config: {
                               which: "head" | "headOverHeels" | "heels";
                               startDirection:
                                 | "away"
@@ -797,48 +3600,25 @@ export type RoomJsonSchema = {
                                 | "towards"
                                 | "towardsLeft"
                                 | "towardsRight";
-                            }
-                          | {
-                              which: "helicopterBug";
-                              movement:
-                                "patrol-randomly-xy8" | "towards-analogue";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "homingBot";
-                              movement: "towards-tripped-on-axis-xy4";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "monkey";
-                              movement:
-                                | "patrol-randomly-xy4"
-                                | "towards-on-shortest-axis-xy4";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "skiHead";
-                              activated: "off" | "on";
-                              movement: "back-forth" | "clockwise" | "forwards";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              style: "greenAndPink" | "starsAndStripes";
-                            }
-                          | {
-                              which: "turtle";
-                              movement:
-                                | "anticlockwise"
-                                | "back-forth"
-                                | "clockwise"
-                                | "forwards";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              activated: "off" | "on";
-                            }
-                          | Record<string, any>;
-                      };
+                            };
+                          }
+                        | {
+                            type: "slidingBlock";
+                            config: {
+                              style: "book" | "puck";
+                            };
+                          }
+                        | {
+                            type: "slidingDeadly";
+                            config: {
+                              style: "spikyBall";
+                              startingPhase: 1 | 2;
+                            };
+                          }
+                        | {
+                            type: "spring";
+                            config: Record<string, any>;
+                          };
                       /**
                        * how long between emissions?
                        */
@@ -971,55 +3751,106 @@ export type RoomJsonSchema = {
                          * Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player
                          * or ['head'] eg for doughnuts that only head can collect
                          */
-                        byType?: (
-                          | "ball"
-                          | "barrier"
-                          | "block"
-                          | "blocker"
-                          | "bubbles"
-                          | "button"
-                          | "charles"
-                          | "conveyor"
-                          | "deadlyBlock"
-                          | "doorFrame"
-                          | "doorLegs"
-                          | "editorGhost"
-                          | "emitter"
-                          | "firedDoughnut"
-                          | "floatingText"
-                          | "floor"
-                          | "head"
-                          | "headOverHeels"
-                          | "heels"
-                          | "hushPuppy"
-                          | "joystick"
-                          | "lamp"
-                          | "lift"
-                          | "lightBeam"
-                          | "mirror"
-                          | "monster"
-                          | "moveableDeadly"
-                          | "movingPlatform"
-                          | "outOfBounds"
-                          | "particle"
-                          | "pickup"
-                          | "portableBlock"
-                          | "portableTeleporter"
-                          | "portal"
-                          | "pushableBlock"
-                          | "sceneryCrown"
-                          | "sceneryPlayer"
-                          | "slidingBlock"
-                          | "slidingDeadly"
-                          | "soundEffect"
-                          | "spikes"
-                          | "spring"
-                          | "stopAutowalk"
-                          | "switch"
-                          | "teleporter"
-                          | "timer"
-                          | "wall"
-                        )[];
+                        byType?: [
+                          (
+                            | "ball"
+                            | "barrier"
+                            | "block"
+                            | "blocker"
+                            | "bubbles"
+                            | "button"
+                            | "charles"
+                            | "conveyor"
+                            | "deadlyBlock"
+                            | "doorFrame"
+                            | "doorLegs"
+                            | "editorGhost"
+                            | "emitter"
+                            | "firedDoughnut"
+                            | "floatingText"
+                            | "floor"
+                            | "head"
+                            | "headOverHeels"
+                            | "heels"
+                            | "hushPuppy"
+                            | "joystick"
+                            | "lamp"
+                            | "lift"
+                            | "lightBeam"
+                            | "mirror"
+                            | "monster"
+                            | "moveableDeadly"
+                            | "movingPlatform"
+                            | "outOfBounds"
+                            | "particle"
+                            | "pickup"
+                            | "portableBlock"
+                            | "portableTeleporter"
+                            | "portal"
+                            | "pushableBlock"
+                            | "sceneryCrown"
+                            | "sceneryPlayer"
+                            | "slidingBlock"
+                            | "slidingDeadly"
+                            | "soundEffect"
+                            | "spikes"
+                            | "spring"
+                            | "stopAutowalk"
+                            | "switch"
+                            | "teleporter"
+                            | "timer"
+                            | "wall"
+                          ),
+                          ...(
+                            | "ball"
+                            | "barrier"
+                            | "block"
+                            | "blocker"
+                            | "bubbles"
+                            | "button"
+                            | "charles"
+                            | "conveyor"
+                            | "deadlyBlock"
+                            | "doorFrame"
+                            | "doorLegs"
+                            | "editorGhost"
+                            | "emitter"
+                            | "firedDoughnut"
+                            | "floatingText"
+                            | "floor"
+                            | "head"
+                            | "headOverHeels"
+                            | "heels"
+                            | "hushPuppy"
+                            | "joystick"
+                            | "lamp"
+                            | "lift"
+                            | "lightBeam"
+                            | "mirror"
+                            | "monster"
+                            | "moveableDeadly"
+                            | "movingPlatform"
+                            | "outOfBounds"
+                            | "particle"
+                            | "pickup"
+                            | "portableBlock"
+                            | "portableTeleporter"
+                            | "portal"
+                            | "pushableBlock"
+                            | "sceneryCrown"
+                            | "sceneryPlayer"
+                            | "slidingBlock"
+                            | "slidingDeadly"
+                            | "soundEffect"
+                            | "spikes"
+                            | "spring"
+                            | "stopAutowalk"
+                            | "switch"
+                            | "teleporter"
+                            | "timer"
+                            | "wall"
+                          )[],
+                        ];
                       } | null;
                       /**
                        * activated for us is a boolean, not the many-states from the json config, ie it is stateful
@@ -1055,55 +3886,106 @@ export type RoomJsonSchema = {
                          * Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player
                          * or ['head'] eg for doughnuts that only head can collect
                          */
-                        byType?: (
-                          | "ball"
-                          | "barrier"
-                          | "block"
-                          | "blocker"
-                          | "bubbles"
-                          | "button"
-                          | "charles"
-                          | "conveyor"
-                          | "deadlyBlock"
-                          | "doorFrame"
-                          | "doorLegs"
-                          | "editorGhost"
-                          | "emitter"
-                          | "firedDoughnut"
-                          | "floatingText"
-                          | "floor"
-                          | "head"
-                          | "headOverHeels"
-                          | "heels"
-                          | "hushPuppy"
-                          | "joystick"
-                          | "lamp"
-                          | "lift"
-                          | "lightBeam"
-                          | "mirror"
-                          | "monster"
-                          | "moveableDeadly"
-                          | "movingPlatform"
-                          | "outOfBounds"
-                          | "particle"
-                          | "pickup"
-                          | "portableBlock"
-                          | "portableTeleporter"
-                          | "portal"
-                          | "pushableBlock"
-                          | "sceneryCrown"
-                          | "sceneryPlayer"
-                          | "slidingBlock"
-                          | "slidingDeadly"
-                          | "soundEffect"
-                          | "spikes"
-                          | "spring"
-                          | "stopAutowalk"
-                          | "switch"
-                          | "teleporter"
-                          | "timer"
-                          | "wall"
-                        )[];
+                        byType?: [
+                          (
+                            | "ball"
+                            | "barrier"
+                            | "block"
+                            | "blocker"
+                            | "bubbles"
+                            | "button"
+                            | "charles"
+                            | "conveyor"
+                            | "deadlyBlock"
+                            | "doorFrame"
+                            | "doorLegs"
+                            | "editorGhost"
+                            | "emitter"
+                            | "firedDoughnut"
+                            | "floatingText"
+                            | "floor"
+                            | "head"
+                            | "headOverHeels"
+                            | "heels"
+                            | "hushPuppy"
+                            | "joystick"
+                            | "lamp"
+                            | "lift"
+                            | "lightBeam"
+                            | "mirror"
+                            | "monster"
+                            | "moveableDeadly"
+                            | "movingPlatform"
+                            | "outOfBounds"
+                            | "particle"
+                            | "pickup"
+                            | "portableBlock"
+                            | "portableTeleporter"
+                            | "portal"
+                            | "pushableBlock"
+                            | "sceneryCrown"
+                            | "sceneryPlayer"
+                            | "slidingBlock"
+                            | "slidingDeadly"
+                            | "soundEffect"
+                            | "spikes"
+                            | "spring"
+                            | "stopAutowalk"
+                            | "switch"
+                            | "teleporter"
+                            | "timer"
+                            | "wall"
+                          ),
+                          ...(
+                            | "ball"
+                            | "barrier"
+                            | "block"
+                            | "blocker"
+                            | "bubbles"
+                            | "button"
+                            | "charles"
+                            | "conveyor"
+                            | "deadlyBlock"
+                            | "doorFrame"
+                            | "doorLegs"
+                            | "editorGhost"
+                            | "emitter"
+                            | "firedDoughnut"
+                            | "floatingText"
+                            | "floor"
+                            | "head"
+                            | "headOverHeels"
+                            | "heels"
+                            | "hushPuppy"
+                            | "joystick"
+                            | "lamp"
+                            | "lift"
+                            | "lightBeam"
+                            | "mirror"
+                            | "monster"
+                            | "moveableDeadly"
+                            | "movingPlatform"
+                            | "outOfBounds"
+                            | "particle"
+                            | "pickup"
+                            | "portableBlock"
+                            | "portableTeleporter"
+                            | "portal"
+                            | "pushableBlock"
+                            | "sceneryCrown"
+                            | "sceneryPlayer"
+                            | "slidingBlock"
+                            | "slidingDeadly"
+                            | "soundEffect"
+                            | "spikes"
+                            | "spring"
+                            | "stopAutowalk"
+                            | "switch"
+                            | "teleporter"
+                            | "timer"
+                            | "wall"
+                          )[],
+                        ];
                       } | null;
                       /**
                        * activated for us is a boolean, not the many-states from the json config, ie it is stateful
@@ -1253,18 +4135,628 @@ export type RoomJsonSchema = {
         };
         config: {
           /**
-           * what does this emitter emit? Could be (potentially) any free item
+           * what does this emitter emit? Could be (potentially) any free item. Can
+           * also cycle through several recipes in order, or choose between them
+           * pseudo-randomly
            */
           emits:
             | {
                 type: "ball";
-                config: Record<string, never>;
+                config: Record<string, any>;
               }
             | {
                 type: "charles";
                 config: {
                   activated?: false | true;
                 };
+              }
+            | {
+                type: "cyclic";
+                /**
+                 * recipes emitted in order, starting again from the first after the last
+                 */
+                cycle: [
+                  (
+                    | {
+                        type: "ball";
+                        config: Record<string, any>;
+                      }
+                    | {
+                        type: "charles";
+                        config: {
+                          activated?: false | true;
+                        };
+                      }
+                    | {
+                        type: "firedDoughnut";
+                        config: {
+                          direction?:
+                            | "away"
+                            | "awayLeft"
+                            | "awayRight"
+                            | "left"
+                            | "right"
+                            | "towards"
+                            | "towardsLeft"
+                            | "towardsRight";
+                        };
+                      }
+                    | {
+                        type: "floatingText";
+                        config: {
+                          /**
+                           * the lines of text to display, each rendered as a separate row
+                           */
+                          textLines: [string, ...string[]];
+                          /**
+                           * the room time when this floating text starts; used to calculate the rise animation age.
+                           * if not given, will start right away at time zero.
+                           * if given, will delay starting until this time
+                           */
+                          appearanceRoomTime?: number;
+                          /**
+                           * if true, lines oscillate horizontally as they rise
+                           */
+                          sway?: false | true;
+                        };
+                      }
+                    | {
+                        type: "monster";
+                        config:
+                          | {
+                              which: "bubbleRobot";
+                              movement: "patrol-randomly-xy8";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "computerBot";
+                              movement:
+                                | "patrol-randomly-xy4-and-reverse"
+                                | "towards-on-shortest-axis-xy4";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "cyberman";
+                              activated: "after-player-near" | "off" | "on";
+                              movement: "towards-on-shortest-axis-xy4";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                            }
+                          | {
+                              which: "dalek";
+                              movement: "patrol-randomly-diagonal";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "elephant";
+                              movement: "patrol-randomly-xy4";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "elephantHead";
+                              movement: "turn-to-player";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "emperor";
+                              movement: "towards-analogue";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "emperorsGuardian";
+                              movement: "towards-analogue-unless-planet-crowns";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "helicopterBug";
+                              movement:
+                                "patrol-randomly-xy8" | "towards-analogue";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "homingBot";
+                              movement: "towards-tripped-on-axis-xy4";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "monkey";
+                              movement:
+                                | "patrol-randomly-xy4"
+                                | "towards-on-shortest-axis-xy4";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "skiHead";
+                              activated: "off" | "on";
+                              movement: "back-forth" | "clockwise" | "forwards";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              style: "greenAndPink" | "starsAndStripes";
+                            }
+                          | {
+                              which: "turtle";
+                              movement:
+                                | "anticlockwise"
+                                | "back-forth"
+                                | "clockwise"
+                                | "forwards";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              activated: "off" | "on";
+                            };
+                      }
+                    | {
+                        type: "moveableDeadly";
+                        config: {
+                          style: "deadFish";
+                        };
+                      }
+                    | {
+                        type: "movingPlatform";
+                        config: {
+                          movement:
+                            "back-forth" | "clockwise" | "towards-analogue";
+                          activated: "off" | "on-stand" | "on";
+                          startDirection: "away" | "left" | "right" | "towards";
+                        };
+                      }
+                    | {
+                        type: "pickup";
+                        config:
+                          | {
+                              gives: "crown";
+                              planet:
+                                | "blacktooth"
+                                | "bookworld"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari";
+                            }
+                          | {
+                              gives: "scroll";
+                              source: "inline";
+                              markdown: [string, ...string[]] | string;
+                            }
+                          | {
+                              gives: "scroll";
+                              source: "manual";
+                              page:
+                                | "bag"
+                                | "blacktooth"
+                                | "bookWorld"
+                                | "conveyorBelts"
+                                | "credits"
+                                | "crowns"
+                                | "cuddlyStuffedWhiteRabbits"
+                                | "doughnuts"
+                                | "egyptus"
+                                | "head"
+                                | "heels"
+                                | "hintsAndTips"
+                                | "historyOfTheBlacktoothEmpire"
+                                | "hooter"
+                                | "hushPuppies"
+                                | "installNative"
+                                | "installPwa"
+                                | "penitentiary"
+                                | "reincarnationFish"
+                                | "safari"
+                                | "springs"
+                                | "switches"
+                                | "swopKey"
+                                | "teleportBack"
+                                | "teleports"
+                                | "theEmperorsGuardian"
+                                | "theGame";
+                            }
+                          | {
+                              gives:
+                                | "bag"
+                                | "doughnuts"
+                                | "extra-life"
+                                | "fast"
+                                | "hooter"
+                                | "jumps"
+                                | "reincarnation"
+                                | "shield";
+                            };
+                      }
+                    | {
+                        type: "portableBlock";
+                        config: {
+                          style: "cube" | "drum" | "sticks";
+                        };
+                      }
+                    | {
+                        type: "portableTeleporter";
+                        config: {
+                          times?: {
+                            x?: number;
+                            y?: number;
+                            z?: number;
+                          };
+                          /**
+                           * the teleporter only works once this planet has been liberated (its crown
+                           * collected); always works when not given
+                           */
+                          activatedIfPlanetLiberated?:
+                            | "blacktooth"
+                            | "bookworld"
+                            | "egyptus"
+                            | "penitentiary"
+                            | "safari";
+                          /**
+                           * an item in the destination room this teleporter should go to - the
+                           * player will be moved to atop this item
+                           *
+                           * If not given, will find the (only teleporter) in the destination room
+                           *
+                           * note: not RoomItemId because that is the ids of items in *this* room, but this
+                           * is pointing to another room
+                           */
+                          toItemId?: string;
+                          /**
+                           * note that if the other room contains exactly one teleporter, we need not
+                           * give the position or the item.
+                           */
+                          toRoom?: string;
+                        };
+                      }
+                    | {
+                        type: "pushableBlock";
+                        config: Record<string, any>;
+                      }
+                    | {
+                        type: "sceneryCrown";
+                        config: {
+                          planet:
+                            | "blacktooth"
+                            | "bookworld"
+                            | "egyptus"
+                            | "penitentiary"
+                            | "safari";
+                        };
+                      }
+                    | {
+                        type: "sceneryPlayer";
+                        config: {
+                          which: "head" | "headOverHeels" | "heels";
+                          startDirection:
+                            | "away"
+                            | "awayLeft"
+                            | "awayRight"
+                            | "left"
+                            | "right"
+                            | "towards"
+                            | "towardsLeft"
+                            | "towardsRight";
+                        };
+                      }
+                    | {
+                        type: "slidingBlock";
+                        config: {
+                          style: "book" | "puck";
+                        };
+                      }
+                    | {
+                        type: "slidingDeadly";
+                        config: {
+                          style: "spikyBall";
+                          startingPhase: 1 | 2;
+                        };
+                      }
+                    | {
+                        type: "spring";
+                        config: Record<string, any>;
+                      }
+                  ),
+                  ...(
+                    | {
+                        type: "ball";
+                        config: Record<string, any>;
+                      }
+                    | {
+                        type: "charles";
+                        config: {
+                          activated?: false | true;
+                        };
+                      }
+                    | {
+                        type: "firedDoughnut";
+                        config: {
+                          direction?:
+                            | "away"
+                            | "awayLeft"
+                            | "awayRight"
+                            | "left"
+                            | "right"
+                            | "towards"
+                            | "towardsLeft"
+                            | "towardsRight";
+                        };
+                      }
+                    | {
+                        type: "floatingText";
+                        config: {
+                          /**
+                           * the lines of text to display, each rendered as a separate row
+                           */
+                          textLines: [string, ...string[]];
+                          /**
+                           * the room time when this floating text starts; used to calculate the rise animation age.
+                           * if not given, will start right away at time zero.
+                           * if given, will delay starting until this time
+                           */
+                          appearanceRoomTime?: number;
+                          /**
+                           * if true, lines oscillate horizontally as they rise
+                           */
+                          sway?: false | true;
+                        };
+                      }
+                    | {
+                        type: "monster";
+                        config:
+                          | {
+                              which: "bubbleRobot";
+                              movement: "patrol-randomly-xy8";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "computerBot";
+                              movement:
+                                | "patrol-randomly-xy4-and-reverse"
+                                | "towards-on-shortest-axis-xy4";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "cyberman";
+                              activated: "after-player-near" | "off" | "on";
+                              movement: "towards-on-shortest-axis-xy4";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                            }
+                          | {
+                              which: "dalek";
+                              movement: "patrol-randomly-diagonal";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "elephant";
+                              movement: "patrol-randomly-xy4";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "elephantHead";
+                              movement: "turn-to-player";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "emperor";
+                              movement: "towards-analogue";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "emperorsGuardian";
+                              movement: "towards-analogue-unless-planet-crowns";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "helicopterBug";
+                              movement:
+                                "patrol-randomly-xy8" | "towards-analogue";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "homingBot";
+                              movement: "towards-tripped-on-axis-xy4";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "monkey";
+                              movement:
+                                | "patrol-randomly-xy4"
+                                | "towards-on-shortest-axis-xy4";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "skiHead";
+                              activated: "off" | "on";
+                              movement: "back-forth" | "clockwise" | "forwards";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              style: "greenAndPink" | "starsAndStripes";
+                            }
+                          | {
+                              which: "turtle";
+                              movement:
+                                | "anticlockwise"
+                                | "back-forth"
+                                | "clockwise"
+                                | "forwards";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              activated: "off" | "on";
+                            };
+                      }
+                    | {
+                        type: "moveableDeadly";
+                        config: {
+                          style: "deadFish";
+                        };
+                      }
+                    | {
+                        type: "movingPlatform";
+                        config: {
+                          movement:
+                            "back-forth" | "clockwise" | "towards-analogue";
+                          activated: "off" | "on-stand" | "on";
+                          startDirection: "away" | "left" | "right" | "towards";
+                        };
+                      }
+                    | {
+                        type: "pickup";
+                        config:
+                          | {
+                              gives: "crown";
+                              planet:
+                                | "blacktooth"
+                                | "bookworld"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari";
+                            }
+                          | {
+                              gives: "scroll";
+                              source: "inline";
+                              markdown: [string, ...string[]] | string;
+                            }
+                          | {
+                              gives: "scroll";
+                              source: "manual";
+                              page:
+                                | "bag"
+                                | "blacktooth"
+                                | "bookWorld"
+                                | "conveyorBelts"
+                                | "credits"
+                                | "crowns"
+                                | "cuddlyStuffedWhiteRabbits"
+                                | "doughnuts"
+                                | "egyptus"
+                                | "head"
+                                | "heels"
+                                | "hintsAndTips"
+                                | "historyOfTheBlacktoothEmpire"
+                                | "hooter"
+                                | "hushPuppies"
+                                | "installNative"
+                                | "installPwa"
+                                | "penitentiary"
+                                | "reincarnationFish"
+                                | "safari"
+                                | "springs"
+                                | "switches"
+                                | "swopKey"
+                                | "teleportBack"
+                                | "teleports"
+                                | "theEmperorsGuardian"
+                                | "theGame";
+                            }
+                          | {
+                              gives:
+                                | "bag"
+                                | "doughnuts"
+                                | "extra-life"
+                                | "fast"
+                                | "hooter"
+                                | "jumps"
+                                | "reincarnation"
+                                | "shield";
+                            };
+                      }
+                    | {
+                        type: "portableBlock";
+                        config: {
+                          style: "cube" | "drum" | "sticks";
+                        };
+                      }
+                    | {
+                        type: "portableTeleporter";
+                        config: {
+                          times?: {
+                            x?: number;
+                            y?: number;
+                            z?: number;
+                          };
+                          /**
+                           * the teleporter only works once this planet has been liberated (its crown
+                           * collected); always works when not given
+                           */
+                          activatedIfPlanetLiberated?:
+                            | "blacktooth"
+                            | "bookworld"
+                            | "egyptus"
+                            | "penitentiary"
+                            | "safari";
+                          /**
+                           * an item in the destination room this teleporter should go to - the
+                           * player will be moved to atop this item
+                           *
+                           * If not given, will find the (only teleporter) in the destination room
+                           *
+                           * note: not RoomItemId because that is the ids of items in *this* room, but this
+                           * is pointing to another room
+                           */
+                          toItemId?: string;
+                          /**
+                           * note that if the other room contains exactly one teleporter, we need not
+                           * give the position or the item.
+                           */
+                          toRoom?: string;
+                        };
+                      }
+                    | {
+                        type: "pushableBlock";
+                        config: Record<string, any>;
+                      }
+                    | {
+                        type: "sceneryCrown";
+                        config: {
+                          planet:
+                            | "blacktooth"
+                            | "bookworld"
+                            | "egyptus"
+                            | "penitentiary"
+                            | "safari";
+                        };
+                      }
+                    | {
+                        type: "sceneryPlayer";
+                        config: {
+                          which: "head" | "headOverHeels" | "heels";
+                          startDirection:
+                            | "away"
+                            | "awayLeft"
+                            | "awayRight"
+                            | "left"
+                            | "right"
+                            | "towards"
+                            | "towardsLeft"
+                            | "towardsRight";
+                        };
+                      }
+                    | {
+                        type: "slidingBlock";
+                        config: {
+                          style: "book" | "puck";
+                        };
+                      }
+                    | {
+                        type: "slidingDeadly";
+                        config: {
+                          style: "spikyBall";
+                          startingPhase: 1 | 2;
+                        };
+                      }
+                    | {
+                        type: "spring";
+                        config: Record<string, any>;
+                      }
+                  )[],
+                ];
               }
             | {
                 type: "firedDoughnut";
@@ -1281,16 +4773,23 @@ export type RoomJsonSchema = {
                 };
               }
             | {
-                type: "head";
-                config: Record<string, never>;
-              }
-            | {
-                type: "headOverHeels";
-                config: Record<string, never>;
-              }
-            | {
-                type: "heels";
-                config: Record<string, never>;
+                type: "floatingText";
+                config: {
+                  /**
+                   * the lines of text to display, each rendered as a separate row
+                   */
+                  textLines: [string, ...string[]];
+                  /**
+                   * the room time when this floating text starts; used to calculate the rise animation age.
+                   * if not given, will start right away at time zero.
+                   * if given, will delay starting until this time
+                   */
+                  appearanceRoomTime?: number;
+                  /**
+                   * if true, lines oscillate horizontally as they rise
+                   */
+                  sway?: false | true;
+                };
               }
             | {
                 type: "monster";
@@ -1404,7 +4903,7 @@ export type RoomJsonSchema = {
                   | {
                       gives: "scroll";
                       source: "inline";
-                      markdown: string | string[];
+                      markdown: [string, ...string[]] | string;
                     }
                   | {
                       gives: "scroll";
@@ -1488,12 +4987,628 @@ export type RoomJsonSchema = {
                    * note that if the other room contains exactly one teleporter, we need not
                    * give the position or the item.
                    */
-                  toRoom?: "$$final" | string;
+                  toRoom?: string;
                 };
               }
             | {
+                type: "probabilistic";
+                /**
+                 * one of these is chosen at random for each emission, pseudo-randomly from
+                 * the emitter's hash and the room time, so the same emission at the same
+                 * time in the same room always chooses the same recipe
+                 */
+                choices: [
+                  {
+                    emits:
+                      | {
+                          type: "ball";
+                          config: Record<string, never>;
+                        }
+                      | {
+                          type: "charles";
+                          config: {
+                            activated?: false | true;
+                          };
+                        }
+                      | {
+                          type: "firedDoughnut";
+                          config: {
+                            direction?:
+                              | "away"
+                              | "awayLeft"
+                              | "awayRight"
+                              | "left"
+                              | "right"
+                              | "towards"
+                              | "towardsLeft"
+                              | "towardsRight";
+                          };
+                        }
+                      | {
+                          type: "head";
+                          config: Record<string, never>;
+                        }
+                      | {
+                          type: "headOverHeels";
+                          config: Record<string, never>;
+                        }
+                      | {
+                          type: "heels";
+                          config: Record<string, never>;
+                        }
+                      | {
+                          type: "monster";
+                          config:
+                            | {
+                                which: "bubbleRobot";
+                                movement: "patrol-randomly-xy8";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "computerBot";
+                                movement:
+                                  | "patrol-randomly-xy4-and-reverse"
+                                  | "towards-on-shortest-axis-xy4";
+                                startDirection:
+                                  "away" | "left" | "right" | "towards";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "cyberman";
+                                activated: "after-player-near" | "off" | "on";
+                                movement: "towards-on-shortest-axis-xy4";
+                                startDirection:
+                                  "away" | "left" | "right" | "towards";
+                              }
+                            | {
+                                which: "dalek";
+                                movement: "patrol-randomly-diagonal";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "elephant";
+                                movement: "patrol-randomly-xy4";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "elephantHead";
+                                movement: "turn-to-player";
+                                startDirection:
+                                  "away" | "left" | "right" | "towards";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "emperor";
+                                movement: "towards-analogue";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "emperorsGuardian";
+                                movement: "towards-analogue-unless-planet-crowns";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "helicopterBug";
+                                movement:
+                                  "patrol-randomly-xy8" | "towards-analogue";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "homingBot";
+                                movement: "towards-tripped-on-axis-xy4";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "monkey";
+                                movement:
+                                  | "patrol-randomly-xy4"
+                                  | "towards-on-shortest-axis-xy4";
+                                startDirection:
+                                  "away" | "left" | "right" | "towards";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "skiHead";
+                                activated: "off" | "on";
+                                movement:
+                                  "back-forth" | "clockwise" | "forwards";
+                                startDirection:
+                                  "away" | "left" | "right" | "towards";
+                                style: "greenAndPink" | "starsAndStripes";
+                              }
+                            | {
+                                which: "turtle";
+                                movement:
+                                  | "anticlockwise"
+                                  | "back-forth"
+                                  | "clockwise"
+                                  | "forwards";
+                                startDirection:
+                                  "away" | "left" | "right" | "towards";
+                                activated: "off" | "on";
+                              };
+                        }
+                      | {
+                          type: "moveableDeadly";
+                          config: {
+                            style: "deadFish";
+                          };
+                        }
+                      | {
+                          type: "movingPlatform";
+                          config: {
+                            movement:
+                              "back-forth" | "clockwise" | "towards-analogue";
+                            activated: "off" | "on-stand" | "on";
+                            startDirection:
+                              "away" | "left" | "right" | "towards";
+                          };
+                        }
+                      | {
+                          type: "pickup";
+                          config:
+                            | {
+                                gives: "crown";
+                                planet:
+                                  | "blacktooth"
+                                  | "bookworld"
+                                  | "egyptus"
+                                  | "penitentiary"
+                                  | "safari";
+                              }
+                            | {
+                                gives: "scroll";
+                                source: "inline";
+                                markdown: [string, ...string[]] | string;
+                              }
+                            | {
+                                gives: "scroll";
+                                source: "manual";
+                                page:
+                                  | "bag"
+                                  | "blacktooth"
+                                  | "bookWorld"
+                                  | "conveyorBelts"
+                                  | "credits"
+                                  | "crowns"
+                                  | "cuddlyStuffedWhiteRabbits"
+                                  | "doughnuts"
+                                  | "egyptus"
+                                  | "head"
+                                  | "heels"
+                                  | "hintsAndTips"
+                                  | "historyOfTheBlacktoothEmpire"
+                                  | "hooter"
+                                  | "hushPuppies"
+                                  | "installNative"
+                                  | "installPwa"
+                                  | "penitentiary"
+                                  | "reincarnationFish"
+                                  | "safari"
+                                  | "springs"
+                                  | "switches"
+                                  | "swopKey"
+                                  | "teleportBack"
+                                  | "teleports"
+                                  | "theEmperorsGuardian"
+                                  | "theGame";
+                              }
+                            | {
+                                gives:
+                                  | "bag"
+                                  | "doughnuts"
+                                  | "extra-life"
+                                  | "fast"
+                                  | "hooter"
+                                  | "jumps"
+                                  | "reincarnation"
+                                  | "shield";
+                              };
+                        }
+                      | {
+                          type: "portableBlock";
+                          config: {
+                            style: "cube" | "drum" | "sticks";
+                          };
+                        }
+                      | {
+                          type: "portableTeleporter";
+                          config: {
+                            times?: {
+                              x?: number;
+                              y?: number;
+                              z?: number;
+                            };
+                            /**
+                             * the teleporter only works once this planet has been liberated (its crown
+                             * collected); always works when not given
+                             */
+                            activatedIfPlanetLiberated?:
+                              | "blacktooth"
+                              | "bookworld"
+                              | "egyptus"
+                              | "penitentiary"
+                              | "safari";
+                            /**
+                             * an item in the destination room this teleporter should go to - the
+                             * player will be moved to atop this item
+                             *
+                             * If not given, will find the (only teleporter) in the destination room
+                             *
+                             * note: not RoomItemId because that is the ids of items in *this* room, but this
+                             * is pointing to another room
+                             */
+                            toItemId?: string;
+                            /**
+                             * note that if the other room contains exactly one teleporter, we need not
+                             * give the position or the item.
+                             */
+                            toRoom?: "$$final" | string;
+                          };
+                        }
+                      | {
+                          type: "pushableBlock";
+                          config: Record<string, never>;
+                        }
+                      | {
+                          type: "sceneryCrown";
+                          config: {
+                            planet:
+                              | "blacktooth"
+                              | "bookworld"
+                              | "egyptus"
+                              | "penitentiary"
+                              | "safari";
+                          };
+                        }
+                      | {
+                          type: "sceneryPlayer";
+                          config: {
+                            which: "head" | "headOverHeels" | "heels";
+                            startDirection:
+                              | "away"
+                              | "awayLeft"
+                              | "awayRight"
+                              | "left"
+                              | "right"
+                              | "towards"
+                              | "towardsLeft"
+                              | "towardsRight";
+                          };
+                        }
+                      | {
+                          type: "slidingBlock";
+                          config: {
+                            style: "book" | "puck";
+                          };
+                        }
+                      | {
+                          type: "slidingDeadly";
+                          config: {
+                            style: "spikyBall";
+                            startingPhase: 1 | 2;
+                          };
+                        }
+                      | {
+                          type: "spring";
+                          config: Record<string, never>;
+                        };
+                    /**
+                     * relative chance of this recipe being chosen. Weights are relative to each
+                     * other, so they need not add up to anything. 0 is allowed, but if every
+                     * weight is 0 the recipes are chosen with equal probability.
+                     * undefined is treated as 1
+                     */
+                    probabilityWeight?: number;
+                  },
+                  ...{
+                    emits:
+                      | {
+                          type: "ball";
+                          config: Record<string, never>;
+                        }
+                      | {
+                          type: "charles";
+                          config: {
+                            activated?: false | true;
+                          };
+                        }
+                      | {
+                          type: "firedDoughnut";
+                          config: {
+                            direction?:
+                              | "away"
+                              | "awayLeft"
+                              | "awayRight"
+                              | "left"
+                              | "right"
+                              | "towards"
+                              | "towardsLeft"
+                              | "towardsRight";
+                          };
+                        }
+                      | {
+                          type: "head";
+                          config: Record<string, never>;
+                        }
+                      | {
+                          type: "headOverHeels";
+                          config: Record<string, never>;
+                        }
+                      | {
+                          type: "heels";
+                          config: Record<string, never>;
+                        }
+                      | {
+                          type: "monster";
+                          config:
+                            | {
+                                which: "bubbleRobot";
+                                movement: "patrol-randomly-xy8";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "computerBot";
+                                movement:
+                                  | "patrol-randomly-xy4-and-reverse"
+                                  | "towards-on-shortest-axis-xy4";
+                                startDirection:
+                                  "away" | "left" | "right" | "towards";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "cyberman";
+                                activated: "after-player-near" | "off" | "on";
+                                movement: "towards-on-shortest-axis-xy4";
+                                startDirection:
+                                  "away" | "left" | "right" | "towards";
+                              }
+                            | {
+                                which: "dalek";
+                                movement: "patrol-randomly-diagonal";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "elephant";
+                                movement: "patrol-randomly-xy4";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "elephantHead";
+                                movement: "turn-to-player";
+                                startDirection:
+                                  "away" | "left" | "right" | "towards";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "emperor";
+                                movement: "towards-analogue";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "emperorsGuardian";
+                                movement: "towards-analogue-unless-planet-crowns";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "helicopterBug";
+                                movement:
+                                  "patrol-randomly-xy8" | "towards-analogue";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "homingBot";
+                                movement: "towards-tripped-on-axis-xy4";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "monkey";
+                                movement:
+                                  | "patrol-randomly-xy4"
+                                  | "towards-on-shortest-axis-xy4";
+                                startDirection:
+                                  "away" | "left" | "right" | "towards";
+                                activated: "off" | "on";
+                              }
+                            | {
+                                which: "skiHead";
+                                activated: "off" | "on";
+                                movement:
+                                  "back-forth" | "clockwise" | "forwards";
+                                startDirection:
+                                  "away" | "left" | "right" | "towards";
+                                style: "greenAndPink" | "starsAndStripes";
+                              }
+                            | {
+                                which: "turtle";
+                                movement:
+                                  | "anticlockwise"
+                                  | "back-forth"
+                                  | "clockwise"
+                                  | "forwards";
+                                startDirection:
+                                  "away" | "left" | "right" | "towards";
+                                activated: "off" | "on";
+                              };
+                        }
+                      | {
+                          type: "moveableDeadly";
+                          config: {
+                            style: "deadFish";
+                          };
+                        }
+                      | {
+                          type: "movingPlatform";
+                          config: {
+                            movement:
+                              "back-forth" | "clockwise" | "towards-analogue";
+                            activated: "off" | "on-stand" | "on";
+                            startDirection:
+                              "away" | "left" | "right" | "towards";
+                          };
+                        }
+                      | {
+                          type: "pickup";
+                          config:
+                            | {
+                                gives: "crown";
+                                planet:
+                                  | "blacktooth"
+                                  | "bookworld"
+                                  | "egyptus"
+                                  | "penitentiary"
+                                  | "safari";
+                              }
+                            | {
+                                gives: "scroll";
+                                source: "inline";
+                                markdown: [string, ...string[]] | string;
+                              }
+                            | {
+                                gives: "scroll";
+                                source: "manual";
+                                page:
+                                  | "bag"
+                                  | "blacktooth"
+                                  | "bookWorld"
+                                  | "conveyorBelts"
+                                  | "credits"
+                                  | "crowns"
+                                  | "cuddlyStuffedWhiteRabbits"
+                                  | "doughnuts"
+                                  | "egyptus"
+                                  | "head"
+                                  | "heels"
+                                  | "hintsAndTips"
+                                  | "historyOfTheBlacktoothEmpire"
+                                  | "hooter"
+                                  | "hushPuppies"
+                                  | "installNative"
+                                  | "installPwa"
+                                  | "penitentiary"
+                                  | "reincarnationFish"
+                                  | "safari"
+                                  | "springs"
+                                  | "switches"
+                                  | "swopKey"
+                                  | "teleportBack"
+                                  | "teleports"
+                                  | "theEmperorsGuardian"
+                                  | "theGame";
+                              }
+                            | {
+                                gives:
+                                  | "bag"
+                                  | "doughnuts"
+                                  | "extra-life"
+                                  | "fast"
+                                  | "hooter"
+                                  | "jumps"
+                                  | "reincarnation"
+                                  | "shield";
+                              };
+                        }
+                      | {
+                          type: "portableBlock";
+                          config: {
+                            style: "cube" | "drum" | "sticks";
+                          };
+                        }
+                      | {
+                          type: "portableTeleporter";
+                          config: {
+                            times?: {
+                              x?: number;
+                              y?: number;
+                              z?: number;
+                            };
+                            /**
+                             * the teleporter only works once this planet has been liberated (its crown
+                             * collected); always works when not given
+                             */
+                            activatedIfPlanetLiberated?:
+                              | "blacktooth"
+                              | "bookworld"
+                              | "egyptus"
+                              | "penitentiary"
+                              | "safari";
+                            /**
+                             * an item in the destination room this teleporter should go to - the
+                             * player will be moved to atop this item
+                             *
+                             * If not given, will find the (only teleporter) in the destination room
+                             *
+                             * note: not RoomItemId because that is the ids of items in *this* room, but this
+                             * is pointing to another room
+                             */
+                            toItemId?: string;
+                            /**
+                             * note that if the other room contains exactly one teleporter, we need not
+                             * give the position or the item.
+                             */
+                            toRoom?: "$$final" | string;
+                          };
+                        }
+                      | {
+                          type: "pushableBlock";
+                          config: Record<string, never>;
+                        }
+                      | {
+                          type: "sceneryCrown";
+                          config: {
+                            planet:
+                              | "blacktooth"
+                              | "bookworld"
+                              | "egyptus"
+                              | "penitentiary"
+                              | "safari";
+                          };
+                        }
+                      | {
+                          type: "sceneryPlayer";
+                          config: {
+                            which: "head" | "headOverHeels" | "heels";
+                            startDirection:
+                              | "away"
+                              | "awayLeft"
+                              | "awayRight"
+                              | "left"
+                              | "right"
+                              | "towards"
+                              | "towardsLeft"
+                              | "towardsRight";
+                          };
+                        }
+                      | {
+                          type: "slidingBlock";
+                          config: {
+                            style: "book" | "puck";
+                          };
+                        }
+                      | {
+                          type: "slidingDeadly";
+                          config: {
+                            style: "spikyBall";
+                            startingPhase: 1 | 2;
+                          };
+                        }
+                      | {
+                          type: "spring";
+                          config: Record<string, never>;
+                        };
+                    /**
+                     * relative chance of this recipe being chosen. Weights are relative to each
+                     * other, so they need not add up to anything. 0 is allowed, but if every
+                     * weight is 0 the recipes are chosen with equal probability.
+                     * undefined is treated as 1
+                     */
+                    probabilityWeight?: number;
+                  }[],
+                ];
+              }
+            | {
                 type: "pushableBlock";
-                config: Record<string, never>;
+                config: Record<string, any>;
               }
             | {
                 type: "sceneryCrown";
@@ -1536,7 +5651,7 @@ export type RoomJsonSchema = {
               }
             | {
                 type: "spring";
-                config: Record<string, never>;
+                config: Record<string, any>;
               };
           /**
            * how long between emissions?
@@ -1696,7 +5811,7 @@ export type RoomJsonSchema = {
           /**
            * the lines of text to display, each rendered as a separate row
            */
-          textLines: string[];
+          textLines: [string, ...string[]];
           /**
            * the room time when this floating text starts; used to calculate the rise animation age.
            * if not given, will start right away at time zero.
@@ -1973,7 +6088,7 @@ export type RoomJsonSchema = {
           | {
               gives: "scroll";
               source: "inline";
-              markdown: string | string[];
+              markdown: [string, ...string[]] | string;
             }
           | {
               gives: "scroll";
@@ -2302,32 +6417,706 @@ export type RoomJsonSchema = {
                       quantityEmitted?: number;
                       playerInsideAtRoomTime?: number;
                       /**
-                       * what does this emitter emit? Could be (potentially) any free item
+                       * what does this emitter emit? Could be (potentially) any free item. Can
+                       * also cycle through several recipes in order, or choose between them
+                       * pseudo-randomly
                        */
-                      emits?: {
-                        type:
-                          | "ball"
-                          | "charles"
-                          | "firedDoughnut"
-                          | "floatingText"
-                          | "monster"
-                          | "moveableDeadly"
-                          | "movingPlatform"
-                          | "pickup"
-                          | "portableBlock"
-                          | "portableTeleporter"
-                          | "pushableBlock"
-                          | "sceneryCrown"
-                          | "sceneryPlayer"
-                          | "slidingBlock"
-                          | "slidingDeadly"
-                          | "spring";
-                        config:
-                          | {
+                      emits?:
+                        | {
+                            type: "ball";
+                            config: Record<string, any>;
+                          }
+                        | {
+                            type: "charles";
+                            config: {
+                              activated?: false | true;
+                            };
+                          }
+                        | {
+                            type: "cyclic";
+                            /**
+                             * recipes emitted in order, starting again from the first after the last
+                             */
+                            cycle: [
+                              (
+                                | {
+                                    type: "ball";
+                                    config: Record<string, any>;
+                                  }
+                                | {
+                                    type: "charles";
+                                    config: {
+                                      activated?: false | true;
+                                    };
+                                  }
+                                | {
+                                    type: "firedDoughnut";
+                                    config: {
+                                      direction?:
+                                        | "away"
+                                        | "awayLeft"
+                                        | "awayRight"
+                                        | "left"
+                                        | "right"
+                                        | "towards"
+                                        | "towardsLeft"
+                                        | "towardsRight";
+                                    };
+                                  }
+                                | {
+                                    type: "floatingText";
+                                    config: {
+                                      /**
+                                       * the lines of text to display, each rendered as a separate row
+                                       */
+                                      textLines: [string, ...string[]];
+                                      /**
+                                       * the room time when this floating text starts; used to calculate the rise animation age.
+                                       * if not given, will start right away at time zero.
+                                       * if given, will delay starting until this time
+                                       */
+                                      appearanceRoomTime?: number;
+                                      /**
+                                       * if true, lines oscillate horizontally as they rise
+                                       */
+                                      sway?: false | true;
+                                    };
+                                  }
+                                | {
+                                    type: "monster";
+                                    config:
+                                      | {
+                                          which: "bubbleRobot";
+                                          movement: "patrol-randomly-xy8";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "computerBot";
+                                          movement:
+                                            | "patrol-randomly-xy4-and-reverse"
+                                            | "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "cyberman";
+                                          activated:
+                                            "after-player-near" | "off" | "on";
+                                          movement: "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                        }
+                                      | {
+                                          which: "dalek";
+                                          movement: "patrol-randomly-diagonal";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "elephant";
+                                          movement: "patrol-randomly-xy4";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "elephantHead";
+                                          movement: "turn-to-player";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "emperor";
+                                          movement: "towards-analogue";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "emperorsGuardian";
+                                          movement: "towards-analogue-unless-planet-crowns";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "helicopterBug";
+                                          movement:
+                                            | "patrol-randomly-xy8"
+                                            | "towards-analogue";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "homingBot";
+                                          movement: "towards-tripped-on-axis-xy4";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "monkey";
+                                          movement:
+                                            | "patrol-randomly-xy4"
+                                            | "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "skiHead";
+                                          activated: "off" | "on";
+                                          movement:
+                                            | "back-forth"
+                                            | "clockwise"
+                                            | "forwards";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          style:
+                                            "greenAndPink" | "starsAndStripes";
+                                        }
+                                      | {
+                                          which: "turtle";
+                                          movement:
+                                            | "anticlockwise"
+                                            | "back-forth"
+                                            | "clockwise"
+                                            | "forwards";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        };
+                                  }
+                                | {
+                                    type: "moveableDeadly";
+                                    config: {
+                                      style: "deadFish";
+                                    };
+                                  }
+                                | {
+                                    type: "movingPlatform";
+                                    config: {
+                                      movement:
+                                        | "back-forth"
+                                        | "clockwise"
+                                        | "towards-analogue";
+                                      activated: "off" | "on-stand" | "on";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                    };
+                                  }
+                                | {
+                                    type: "pickup";
+                                    config:
+                                      | {
+                                          gives: "crown";
+                                          planet:
+                                            | "blacktooth"
+                                            | "bookworld"
+                                            | "egyptus"
+                                            | "penitentiary"
+                                            | "safari";
+                                        }
+                                      | {
+                                          gives: "scroll";
+                                          source: "inline";
+                                          markdown:
+                                            [string, ...string[]] | string;
+                                        }
+                                      | {
+                                          gives: "scroll";
+                                          source: "manual";
+                                          page:
+                                            | "bag"
+                                            | "blacktooth"
+                                            | "bookWorld"
+                                            | "conveyorBelts"
+                                            | "credits"
+                                            | "crowns"
+                                            | "cuddlyStuffedWhiteRabbits"
+                                            | "doughnuts"
+                                            | "egyptus"
+                                            | "head"
+                                            | "heels"
+                                            | "hintsAndTips"
+                                            | "historyOfTheBlacktoothEmpire"
+                                            | "hooter"
+                                            | "hushPuppies"
+                                            | "installNative"
+                                            | "installPwa"
+                                            | "penitentiary"
+                                            | "reincarnationFish"
+                                            | "safari"
+                                            | "springs"
+                                            | "switches"
+                                            | "swopKey"
+                                            | "teleportBack"
+                                            | "teleports"
+                                            | "theEmperorsGuardian"
+                                            | "theGame";
+                                        }
+                                      | {
+                                          gives:
+                                            | "bag"
+                                            | "doughnuts"
+                                            | "extra-life"
+                                            | "fast"
+                                            | "hooter"
+                                            | "jumps"
+                                            | "reincarnation"
+                                            | "shield";
+                                        };
+                                  }
+                                | {
+                                    type: "portableBlock";
+                                    config: {
+                                      style: "cube" | "drum" | "sticks";
+                                    };
+                                  }
+                                | {
+                                    type: "portableTeleporter";
+                                    config: {
+                                      times?: {
+                                        x?: number;
+                                        y?: number;
+                                        z?: number;
+                                      };
+                                      /**
+                                       * the teleporter only works once this planet has been liberated (its crown
+                                       * collected); always works when not given
+                                       */
+                                      activatedIfPlanetLiberated?:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                      /**
+                                       * an item in the destination room this teleporter should go to - the
+                                       * player will be moved to atop this item
+                                       *
+                                       * If not given, will find the (only teleporter) in the destination room
+                                       *
+                                       * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                       * is pointing to another room
+                                       */
+                                      toItemId?: string;
+                                      /**
+                                       * note that if the other room contains exactly one teleporter, we need not
+                                       * give the position or the item.
+                                       */
+                                      toRoom?: string;
+                                    };
+                                  }
+                                | {
+                                    type: "pushableBlock";
+                                    config: Record<string, any>;
+                                  }
+                                | {
+                                    type: "sceneryCrown";
+                                    config: {
+                                      planet:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                    };
+                                  }
+                                | {
+                                    type: "sceneryPlayer";
+                                    config: {
+                                      which: "head" | "headOverHeels" | "heels";
+                                      startDirection:
+                                        | "away"
+                                        | "awayLeft"
+                                        | "awayRight"
+                                        | "left"
+                                        | "right"
+                                        | "towards"
+                                        | "towardsLeft"
+                                        | "towardsRight";
+                                    };
+                                  }
+                                | {
+                                    type: "slidingBlock";
+                                    config: {
+                                      style: "book" | "puck";
+                                    };
+                                  }
+                                | {
+                                    type: "slidingDeadly";
+                                    config: {
+                                      style: "spikyBall";
+                                      startingPhase: 1 | 2;
+                                    };
+                                  }
+                                | {
+                                    type: "spring";
+                                    config: Record<string, any>;
+                                  }
+                              ),
+                              ...(
+                                | {
+                                    type: "ball";
+                                    config: Record<string, any>;
+                                  }
+                                | {
+                                    type: "charles";
+                                    config: {
+                                      activated?: false | true;
+                                    };
+                                  }
+                                | {
+                                    type: "firedDoughnut";
+                                    config: {
+                                      direction?:
+                                        | "away"
+                                        | "awayLeft"
+                                        | "awayRight"
+                                        | "left"
+                                        | "right"
+                                        | "towards"
+                                        | "towardsLeft"
+                                        | "towardsRight";
+                                    };
+                                  }
+                                | {
+                                    type: "floatingText";
+                                    config: {
+                                      /**
+                                       * the lines of text to display, each rendered as a separate row
+                                       */
+                                      textLines: [string, ...string[]];
+                                      /**
+                                       * the room time when this floating text starts; used to calculate the rise animation age.
+                                       * if not given, will start right away at time zero.
+                                       * if given, will delay starting until this time
+                                       */
+                                      appearanceRoomTime?: number;
+                                      /**
+                                       * if true, lines oscillate horizontally as they rise
+                                       */
+                                      sway?: false | true;
+                                    };
+                                  }
+                                | {
+                                    type: "monster";
+                                    config:
+                                      | {
+                                          which: "bubbleRobot";
+                                          movement: "patrol-randomly-xy8";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "computerBot";
+                                          movement:
+                                            | "patrol-randomly-xy4-and-reverse"
+                                            | "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "cyberman";
+                                          activated:
+                                            "after-player-near" | "off" | "on";
+                                          movement: "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                        }
+                                      | {
+                                          which: "dalek";
+                                          movement: "patrol-randomly-diagonal";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "elephant";
+                                          movement: "patrol-randomly-xy4";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "elephantHead";
+                                          movement: "turn-to-player";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "emperor";
+                                          movement: "towards-analogue";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "emperorsGuardian";
+                                          movement: "towards-analogue-unless-planet-crowns";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "helicopterBug";
+                                          movement:
+                                            | "patrol-randomly-xy8"
+                                            | "towards-analogue";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "homingBot";
+                                          movement: "towards-tripped-on-axis-xy4";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "monkey";
+                                          movement:
+                                            | "patrol-randomly-xy4"
+                                            | "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "skiHead";
+                                          activated: "off" | "on";
+                                          movement:
+                                            | "back-forth"
+                                            | "clockwise"
+                                            | "forwards";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          style:
+                                            "greenAndPink" | "starsAndStripes";
+                                        }
+                                      | {
+                                          which: "turtle";
+                                          movement:
+                                            | "anticlockwise"
+                                            | "back-forth"
+                                            | "clockwise"
+                                            | "forwards";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        };
+                                  }
+                                | {
+                                    type: "moveableDeadly";
+                                    config: {
+                                      style: "deadFish";
+                                    };
+                                  }
+                                | {
+                                    type: "movingPlatform";
+                                    config: {
+                                      movement:
+                                        | "back-forth"
+                                        | "clockwise"
+                                        | "towards-analogue";
+                                      activated: "off" | "on-stand" | "on";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                    };
+                                  }
+                                | {
+                                    type: "pickup";
+                                    config:
+                                      | {
+                                          gives: "crown";
+                                          planet:
+                                            | "blacktooth"
+                                            | "bookworld"
+                                            | "egyptus"
+                                            | "penitentiary"
+                                            | "safari";
+                                        }
+                                      | {
+                                          gives: "scroll";
+                                          source: "inline";
+                                          markdown:
+                                            [string, ...string[]] | string;
+                                        }
+                                      | {
+                                          gives: "scroll";
+                                          source: "manual";
+                                          page:
+                                            | "bag"
+                                            | "blacktooth"
+                                            | "bookWorld"
+                                            | "conveyorBelts"
+                                            | "credits"
+                                            | "crowns"
+                                            | "cuddlyStuffedWhiteRabbits"
+                                            | "doughnuts"
+                                            | "egyptus"
+                                            | "head"
+                                            | "heels"
+                                            | "hintsAndTips"
+                                            | "historyOfTheBlacktoothEmpire"
+                                            | "hooter"
+                                            | "hushPuppies"
+                                            | "installNative"
+                                            | "installPwa"
+                                            | "penitentiary"
+                                            | "reincarnationFish"
+                                            | "safari"
+                                            | "springs"
+                                            | "switches"
+                                            | "swopKey"
+                                            | "teleportBack"
+                                            | "teleports"
+                                            | "theEmperorsGuardian"
+                                            | "theGame";
+                                        }
+                                      | {
+                                          gives:
+                                            | "bag"
+                                            | "doughnuts"
+                                            | "extra-life"
+                                            | "fast"
+                                            | "hooter"
+                                            | "jumps"
+                                            | "reincarnation"
+                                            | "shield";
+                                        };
+                                  }
+                                | {
+                                    type: "portableBlock";
+                                    config: {
+                                      style: "cube" | "drum" | "sticks";
+                                    };
+                                  }
+                                | {
+                                    type: "portableTeleporter";
+                                    config: {
+                                      times?: {
+                                        x?: number;
+                                        y?: number;
+                                        z?: number;
+                                      };
+                                      /**
+                                       * the teleporter only works once this planet has been liberated (its crown
+                                       * collected); always works when not given
+                                       */
+                                      activatedIfPlanetLiberated?:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                      /**
+                                       * an item in the destination room this teleporter should go to - the
+                                       * player will be moved to atop this item
+                                       *
+                                       * If not given, will find the (only teleporter) in the destination room
+                                       *
+                                       * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                       * is pointing to another room
+                                       */
+                                      toItemId?: string;
+                                      /**
+                                       * note that if the other room contains exactly one teleporter, we need not
+                                       * give the position or the item.
+                                       */
+                                      toRoom?: string;
+                                    };
+                                  }
+                                | {
+                                    type: "pushableBlock";
+                                    config: Record<string, any>;
+                                  }
+                                | {
+                                    type: "sceneryCrown";
+                                    config: {
+                                      planet:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                    };
+                                  }
+                                | {
+                                    type: "sceneryPlayer";
+                                    config: {
+                                      which: "head" | "headOverHeels" | "heels";
+                                      startDirection:
+                                        | "away"
+                                        | "awayLeft"
+                                        | "awayRight"
+                                        | "left"
+                                        | "right"
+                                        | "towards"
+                                        | "towardsLeft"
+                                        | "towardsRight";
+                                    };
+                                  }
+                                | {
+                                    type: "slidingBlock";
+                                    config: {
+                                      style: "book" | "puck";
+                                    };
+                                  }
+                                | {
+                                    type: "slidingDeadly";
+                                    config: {
+                                      style: "spikyBall";
+                                      startingPhase: 1 | 2;
+                                    };
+                                  }
+                                | {
+                                    type: "spring";
+                                    config: Record<string, any>;
+                                  }
+                              )[],
+                            ];
+                          }
+                        | {
+                            type: "firedDoughnut";
+                            config: {
+                              direction?:
+                                | "away"
+                                | "awayLeft"
+                                | "awayRight"
+                                | "left"
+                                | "right"
+                                | "towards"
+                                | "towardsLeft"
+                                | "towardsRight";
+                            };
+                          }
+                        | {
+                            type: "floatingText";
+                            config: {
                               /**
                                * the lines of text to display, each rendered as a separate row
                                */
-                              textLines: string[];
+                              textLines: [string, ...string[]];
                               /**
                                * the room time when this floating text starts; used to calculate the rise animation age.
                                * if not given, will start right away at time zero.
@@ -2338,107 +7127,186 @@ export type RoomJsonSchema = {
                                * if true, lines oscillate horizontally as they rise
                                */
                               sway?: false | true;
-                            }
-                          | {
-                              activated?: false | true;
-                            }
-                          | {
-                              direction?:
-                                | "away"
-                                | "awayLeft"
-                                | "awayRight"
-                                | "left"
-                                | "right"
-                                | "towards"
-                                | "towardsLeft"
-                                | "towardsRight";
-                            }
-                          | {
-                              gives: "crown";
-                              planet:
-                                | "blacktooth"
-                                | "bookworld"
-                                | "egyptus"
-                                | "penitentiary"
-                                | "safari";
-                            }
-                          | {
-                              gives: "scroll";
-                              source: "inline";
-                              markdown: string | string[];
-                            }
-                          | {
-                              gives: "scroll";
-                              source: "manual";
-                              page:
-                                | "bag"
-                                | "blacktooth"
-                                | "bookWorld"
-                                | "conveyorBelts"
-                                | "credits"
-                                | "crowns"
-                                | "cuddlyStuffedWhiteRabbits"
-                                | "doughnuts"
-                                | "egyptus"
-                                | "head"
-                                | "heels"
-                                | "hintsAndTips"
-                                | "historyOfTheBlacktoothEmpire"
-                                | "hooter"
-                                | "hushPuppies"
-                                | "installNative"
-                                | "installPwa"
-                                | "penitentiary"
-                                | "reincarnationFish"
-                                | "safari"
-                                | "springs"
-                                | "switches"
-                                | "swopKey"
-                                | "teleportBack"
-                                | "teleports"
-                                | "theEmperorsGuardian"
-                                | "theGame";
-                            }
-                          | {
-                              gives:
-                                | "bag"
-                                | "doughnuts"
-                                | "extra-life"
-                                | "fast"
-                                | "hooter"
-                                | "jumps"
-                                | "reincarnation"
-                                | "shield";
-                            }
-                          | {
+                            };
+                          }
+                        | {
+                            type: "monster";
+                            config:
+                              | {
+                                  which: "bubbleRobot";
+                                  movement: "patrol-randomly-xy8";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "computerBot";
+                                  movement:
+                                    | "patrol-randomly-xy4-and-reverse"
+                                    | "towards-on-shortest-axis-xy4";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "cyberman";
+                                  activated: "after-player-near" | "off" | "on";
+                                  movement: "towards-on-shortest-axis-xy4";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                }
+                              | {
+                                  which: "dalek";
+                                  movement: "patrol-randomly-diagonal";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "elephant";
+                                  movement: "patrol-randomly-xy4";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "elephantHead";
+                                  movement: "turn-to-player";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "emperor";
+                                  movement: "towards-analogue";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "emperorsGuardian";
+                                  movement: "towards-analogue-unless-planet-crowns";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "helicopterBug";
+                                  movement:
+                                    "patrol-randomly-xy8" | "towards-analogue";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "homingBot";
+                                  movement: "towards-tripped-on-axis-xy4";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "monkey";
+                                  movement:
+                                    | "patrol-randomly-xy4"
+                                    | "towards-on-shortest-axis-xy4";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "skiHead";
+                                  activated: "off" | "on";
+                                  movement:
+                                    "back-forth" | "clockwise" | "forwards";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  style: "greenAndPink" | "starsAndStripes";
+                                }
+                              | {
+                                  which: "turtle";
+                                  movement:
+                                    | "anticlockwise"
+                                    | "back-forth"
+                                    | "clockwise"
+                                    | "forwards";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  activated: "off" | "on";
+                                };
+                          }
+                        | {
+                            type: "moveableDeadly";
+                            config: {
+                              style: "deadFish";
+                            };
+                          }
+                        | {
+                            type: "movingPlatform";
+                            config: {
                               movement:
                                 "back-forth" | "clockwise" | "towards-analogue";
                               activated: "off" | "on-stand" | "on";
                               startDirection:
                                 "away" | "left" | "right" | "towards";
-                            }
-                          | {
-                              planet:
-                                | "blacktooth"
-                                | "bookworld"
-                                | "egyptus"
-                                | "penitentiary"
-                                | "safari";
-                            }
-                          | {
-                              style: "book" | "puck";
-                            }
-                          | {
+                            };
+                          }
+                        | {
+                            type: "pickup";
+                            config:
+                              | {
+                                  gives: "crown";
+                                  planet:
+                                    | "blacktooth"
+                                    | "bookworld"
+                                    | "egyptus"
+                                    | "penitentiary"
+                                    | "safari";
+                                }
+                              | {
+                                  gives: "scroll";
+                                  source: "inline";
+                                  markdown: [string, ...string[]] | string;
+                                }
+                              | {
+                                  gives: "scroll";
+                                  source: "manual";
+                                  page:
+                                    | "bag"
+                                    | "blacktooth"
+                                    | "bookWorld"
+                                    | "conveyorBelts"
+                                    | "credits"
+                                    | "crowns"
+                                    | "cuddlyStuffedWhiteRabbits"
+                                    | "doughnuts"
+                                    | "egyptus"
+                                    | "head"
+                                    | "heels"
+                                    | "hintsAndTips"
+                                    | "historyOfTheBlacktoothEmpire"
+                                    | "hooter"
+                                    | "hushPuppies"
+                                    | "installNative"
+                                    | "installPwa"
+                                    | "penitentiary"
+                                    | "reincarnationFish"
+                                    | "safari"
+                                    | "springs"
+                                    | "switches"
+                                    | "swopKey"
+                                    | "teleportBack"
+                                    | "teleports"
+                                    | "theEmperorsGuardian"
+                                    | "theGame";
+                                }
+                              | {
+                                  gives:
+                                    | "bag"
+                                    | "doughnuts"
+                                    | "extra-life"
+                                    | "fast"
+                                    | "hooter"
+                                    | "jumps"
+                                    | "reincarnation"
+                                    | "shield";
+                                };
+                          }
+                        | {
+                            type: "portableBlock";
+                            config: {
                               style: "cube" | "drum" | "sticks";
-                            }
-                          | {
-                              style: "deadFish";
-                            }
-                          | {
-                              style: "spikyBall";
-                              startingPhase: 1 | 2;
-                            }
-                          | {
+                            };
+                          }
+                        | {
+                            type: "portableTeleporter";
+                            config: {
                               times?: {
                                 x?: number;
                                 y?: number;
@@ -2469,56 +7337,716 @@ export type RoomJsonSchema = {
                                * give the position or the item.
                                */
                               toRoom?: string;
-                            }
-                          | {
-                              which: "bubbleRobot";
-                              movement: "patrol-randomly-xy8";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "computerBot";
-                              movement:
-                                | "patrol-randomly-xy4-and-reverse"
-                                | "towards-on-shortest-axis-xy4";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "cyberman";
-                              activated: "after-player-near" | "off" | "on";
-                              movement: "towards-on-shortest-axis-xy4";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                            }
-                          | {
-                              which: "dalek";
-                              movement: "patrol-randomly-diagonal";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "elephant";
-                              movement: "patrol-randomly-xy4";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "elephantHead";
-                              movement: "turn-to-player";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "emperor";
-                              movement: "towards-analogue";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "emperorsGuardian";
-                              movement: "towards-analogue-unless-planet-crowns";
-                              activated: "off" | "on";
-                            }
-                          | {
+                            };
+                          }
+                        | {
+                            type: "probabilistic";
+                            /**
+                             * one of these is chosen at random for each emission, pseudo-randomly from
+                             * the emitter's hash and the room time, so the same emission at the same
+                             * time in the same room always chooses the same recipe
+                             */
+                            choices: [
+                              {
+                                emits:
+                                  | {
+                                      type: "ball";
+                                      config: Record<string, any>;
+                                    }
+                                  | {
+                                      type: "charles";
+                                      config: {
+                                        activated?: false | true;
+                                      };
+                                    }
+                                  | {
+                                      type: "firedDoughnut";
+                                      config: {
+                                        direction?:
+                                          | "away"
+                                          | "awayLeft"
+                                          | "awayRight"
+                                          | "left"
+                                          | "right"
+                                          | "towards"
+                                          | "towardsLeft"
+                                          | "towardsRight";
+                                      };
+                                    }
+                                  | {
+                                      type: "floatingText";
+                                      config: {
+                                        /**
+                                         * the lines of text to display, each rendered as a separate row
+                                         */
+                                        textLines: [string, ...string[]];
+                                        /**
+                                         * the room time when this floating text starts; used to calculate the rise animation age.
+                                         * if not given, will start right away at time zero.
+                                         * if given, will delay starting until this time
+                                         */
+                                        appearanceRoomTime?: number;
+                                        /**
+                                         * if true, lines oscillate horizontally as they rise
+                                         */
+                                        sway?: false | true;
+                                      };
+                                    }
+                                  | {
+                                      type: "monster";
+                                      config:
+                                        | {
+                                            which: "bubbleRobot";
+                                            movement: "patrol-randomly-xy8";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "computerBot";
+                                            movement:
+                                              | "patrol-randomly-xy4-and-reverse"
+                                              | "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "cyberman";
+                                            activated:
+                                              | "after-player-near"
+                                              | "off"
+                                              | "on";
+                                            movement: "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                          }
+                                        | {
+                                            which: "dalek";
+                                            movement: "patrol-randomly-diagonal";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "elephant";
+                                            movement: "patrol-randomly-xy4";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "elephantHead";
+                                            movement: "turn-to-player";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "emperor";
+                                            movement: "towards-analogue";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "emperorsGuardian";
+                                            movement: "towards-analogue-unless-planet-crowns";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "helicopterBug";
+                                            movement:
+                                              | "patrol-randomly-xy8"
+                                              | "towards-analogue";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "homingBot";
+                                            movement: "towards-tripped-on-axis-xy4";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "monkey";
+                                            movement:
+                                              | "patrol-randomly-xy4"
+                                              | "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "skiHead";
+                                            activated: "off" | "on";
+                                            movement:
+                                              | "back-forth"
+                                              | "clockwise"
+                                              | "forwards";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            style:
+                                              | "greenAndPink"
+                                              | "starsAndStripes";
+                                          }
+                                        | {
+                                            which: "turtle";
+                                            movement:
+                                              | "anticlockwise"
+                                              | "back-forth"
+                                              | "clockwise"
+                                              | "forwards";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          };
+                                    }
+                                  | {
+                                      type: "moveableDeadly";
+                                      config: {
+                                        style: "deadFish";
+                                      };
+                                    }
+                                  | {
+                                      type: "movingPlatform";
+                                      config: {
+                                        movement:
+                                          | "back-forth"
+                                          | "clockwise"
+                                          | "towards-analogue";
+                                        activated: "off" | "on-stand" | "on";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                      };
+                                    }
+                                  | {
+                                      type: "pickup";
+                                      config:
+                                        | {
+                                            gives: "crown";
+                                            planet:
+                                              | "blacktooth"
+                                              | "bookworld"
+                                              | "egyptus"
+                                              | "penitentiary"
+                                              | "safari";
+                                          }
+                                        | {
+                                            gives: "scroll";
+                                            source: "inline";
+                                            markdown:
+                                              [string, ...string[]] | string;
+                                          }
+                                        | {
+                                            gives: "scroll";
+                                            source: "manual";
+                                            page:
+                                              | "bag"
+                                              | "blacktooth"
+                                              | "bookWorld"
+                                              | "conveyorBelts"
+                                              | "credits"
+                                              | "crowns"
+                                              | "cuddlyStuffedWhiteRabbits"
+                                              | "doughnuts"
+                                              | "egyptus"
+                                              | "head"
+                                              | "heels"
+                                              | "hintsAndTips"
+                                              | "historyOfTheBlacktoothEmpire"
+                                              | "hooter"
+                                              | "hushPuppies"
+                                              | "installNative"
+                                              | "installPwa"
+                                              | "penitentiary"
+                                              | "reincarnationFish"
+                                              | "safari"
+                                              | "springs"
+                                              | "switches"
+                                              | "swopKey"
+                                              | "teleportBack"
+                                              | "teleports"
+                                              | "theEmperorsGuardian"
+                                              | "theGame";
+                                          }
+                                        | {
+                                            gives:
+                                              | "bag"
+                                              | "doughnuts"
+                                              | "extra-life"
+                                              | "fast"
+                                              | "hooter"
+                                              | "jumps"
+                                              | "reincarnation"
+                                              | "shield";
+                                          };
+                                    }
+                                  | {
+                                      type: "portableBlock";
+                                      config: {
+                                        style: "cube" | "drum" | "sticks";
+                                      };
+                                    }
+                                  | {
+                                      type: "portableTeleporter";
+                                      config: {
+                                        times?: {
+                                          x?: number;
+                                          y?: number;
+                                          z?: number;
+                                        };
+                                        /**
+                                         * the teleporter only works once this planet has been liberated (its crown
+                                         * collected); always works when not given
+                                         */
+                                        activatedIfPlanetLiberated?:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                        /**
+                                         * an item in the destination room this teleporter should go to - the
+                                         * player will be moved to atop this item
+                                         *
+                                         * If not given, will find the (only teleporter) in the destination room
+                                         *
+                                         * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                         * is pointing to another room
+                                         */
+                                        toItemId?: string;
+                                        /**
+                                         * note that if the other room contains exactly one teleporter, we need not
+                                         * give the position or the item.
+                                         */
+                                        toRoom?: string;
+                                      };
+                                    }
+                                  | {
+                                      type: "pushableBlock";
+                                      config: Record<string, any>;
+                                    }
+                                  | {
+                                      type: "sceneryCrown";
+                                      config: {
+                                        planet:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                      };
+                                    }
+                                  | {
+                                      type: "sceneryPlayer";
+                                      config: {
+                                        which:
+                                          "head" | "headOverHeels" | "heels";
+                                        startDirection:
+                                          | "away"
+                                          | "awayLeft"
+                                          | "awayRight"
+                                          | "left"
+                                          | "right"
+                                          | "towards"
+                                          | "towardsLeft"
+                                          | "towardsRight";
+                                      };
+                                    }
+                                  | {
+                                      type: "slidingBlock";
+                                      config: {
+                                        style: "book" | "puck";
+                                      };
+                                    }
+                                  | {
+                                      type: "slidingDeadly";
+                                      config: {
+                                        style: "spikyBall";
+                                        startingPhase: 1 | 2;
+                                      };
+                                    }
+                                  | {
+                                      type: "spring";
+                                      config: Record<string, any>;
+                                    };
+                                /**
+                                 * relative chance of this recipe being chosen. Weights are relative to each
+                                 * other, so they need not add up to anything. 0 is allowed, but if every
+                                 * weight is 0 the recipes are chosen with equal probability.
+                                 * undefined is treated as 1
+                                 */
+                                probabilityWeight?: number;
+                              },
+                              ...{
+                                emits:
+                                  | {
+                                      type: "ball";
+                                      config: Record<string, any>;
+                                    }
+                                  | {
+                                      type: "charles";
+                                      config: {
+                                        activated?: false | true;
+                                      };
+                                    }
+                                  | {
+                                      type: "firedDoughnut";
+                                      config: {
+                                        direction?:
+                                          | "away"
+                                          | "awayLeft"
+                                          | "awayRight"
+                                          | "left"
+                                          | "right"
+                                          | "towards"
+                                          | "towardsLeft"
+                                          | "towardsRight";
+                                      };
+                                    }
+                                  | {
+                                      type: "floatingText";
+                                      config: {
+                                        /**
+                                         * the lines of text to display, each rendered as a separate row
+                                         */
+                                        textLines: [string, ...string[]];
+                                        /**
+                                         * the room time when this floating text starts; used to calculate the rise animation age.
+                                         * if not given, will start right away at time zero.
+                                         * if given, will delay starting until this time
+                                         */
+                                        appearanceRoomTime?: number;
+                                        /**
+                                         * if true, lines oscillate horizontally as they rise
+                                         */
+                                        sway?: false | true;
+                                      };
+                                    }
+                                  | {
+                                      type: "monster";
+                                      config:
+                                        | {
+                                            which: "bubbleRobot";
+                                            movement: "patrol-randomly-xy8";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "computerBot";
+                                            movement:
+                                              | "patrol-randomly-xy4-and-reverse"
+                                              | "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "cyberman";
+                                            activated:
+                                              | "after-player-near"
+                                              | "off"
+                                              | "on";
+                                            movement: "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                          }
+                                        | {
+                                            which: "dalek";
+                                            movement: "patrol-randomly-diagonal";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "elephant";
+                                            movement: "patrol-randomly-xy4";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "elephantHead";
+                                            movement: "turn-to-player";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "emperor";
+                                            movement: "towards-analogue";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "emperorsGuardian";
+                                            movement: "towards-analogue-unless-planet-crowns";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "helicopterBug";
+                                            movement:
+                                              | "patrol-randomly-xy8"
+                                              | "towards-analogue";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "homingBot";
+                                            movement: "towards-tripped-on-axis-xy4";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "monkey";
+                                            movement:
+                                              | "patrol-randomly-xy4"
+                                              | "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "skiHead";
+                                            activated: "off" | "on";
+                                            movement:
+                                              | "back-forth"
+                                              | "clockwise"
+                                              | "forwards";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            style:
+                                              | "greenAndPink"
+                                              | "starsAndStripes";
+                                          }
+                                        | {
+                                            which: "turtle";
+                                            movement:
+                                              | "anticlockwise"
+                                              | "back-forth"
+                                              | "clockwise"
+                                              | "forwards";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          };
+                                    }
+                                  | {
+                                      type: "moveableDeadly";
+                                      config: {
+                                        style: "deadFish";
+                                      };
+                                    }
+                                  | {
+                                      type: "movingPlatform";
+                                      config: {
+                                        movement:
+                                          | "back-forth"
+                                          | "clockwise"
+                                          | "towards-analogue";
+                                        activated: "off" | "on-stand" | "on";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                      };
+                                    }
+                                  | {
+                                      type: "pickup";
+                                      config:
+                                        | {
+                                            gives: "crown";
+                                            planet:
+                                              | "blacktooth"
+                                              | "bookworld"
+                                              | "egyptus"
+                                              | "penitentiary"
+                                              | "safari";
+                                          }
+                                        | {
+                                            gives: "scroll";
+                                            source: "inline";
+                                            markdown:
+                                              [string, ...string[]] | string;
+                                          }
+                                        | {
+                                            gives: "scroll";
+                                            source: "manual";
+                                            page:
+                                              | "bag"
+                                              | "blacktooth"
+                                              | "bookWorld"
+                                              | "conveyorBelts"
+                                              | "credits"
+                                              | "crowns"
+                                              | "cuddlyStuffedWhiteRabbits"
+                                              | "doughnuts"
+                                              | "egyptus"
+                                              | "head"
+                                              | "heels"
+                                              | "hintsAndTips"
+                                              | "historyOfTheBlacktoothEmpire"
+                                              | "hooter"
+                                              | "hushPuppies"
+                                              | "installNative"
+                                              | "installPwa"
+                                              | "penitentiary"
+                                              | "reincarnationFish"
+                                              | "safari"
+                                              | "springs"
+                                              | "switches"
+                                              | "swopKey"
+                                              | "teleportBack"
+                                              | "teleports"
+                                              | "theEmperorsGuardian"
+                                              | "theGame";
+                                          }
+                                        | {
+                                            gives:
+                                              | "bag"
+                                              | "doughnuts"
+                                              | "extra-life"
+                                              | "fast"
+                                              | "hooter"
+                                              | "jumps"
+                                              | "reincarnation"
+                                              | "shield";
+                                          };
+                                    }
+                                  | {
+                                      type: "portableBlock";
+                                      config: {
+                                        style: "cube" | "drum" | "sticks";
+                                      };
+                                    }
+                                  | {
+                                      type: "portableTeleporter";
+                                      config: {
+                                        times?: {
+                                          x?: number;
+                                          y?: number;
+                                          z?: number;
+                                        };
+                                        /**
+                                         * the teleporter only works once this planet has been liberated (its crown
+                                         * collected); always works when not given
+                                         */
+                                        activatedIfPlanetLiberated?:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                        /**
+                                         * an item in the destination room this teleporter should go to - the
+                                         * player will be moved to atop this item
+                                         *
+                                         * If not given, will find the (only teleporter) in the destination room
+                                         *
+                                         * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                         * is pointing to another room
+                                         */
+                                        toItemId?: string;
+                                        /**
+                                         * note that if the other room contains exactly one teleporter, we need not
+                                         * give the position or the item.
+                                         */
+                                        toRoom?: string;
+                                      };
+                                    }
+                                  | {
+                                      type: "pushableBlock";
+                                      config: Record<string, any>;
+                                    }
+                                  | {
+                                      type: "sceneryCrown";
+                                      config: {
+                                        planet:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                      };
+                                    }
+                                  | {
+                                      type: "sceneryPlayer";
+                                      config: {
+                                        which:
+                                          "head" | "headOverHeels" | "heels";
+                                        startDirection:
+                                          | "away"
+                                          | "awayLeft"
+                                          | "awayRight"
+                                          | "left"
+                                          | "right"
+                                          | "towards"
+                                          | "towardsLeft"
+                                          | "towardsRight";
+                                      };
+                                    }
+                                  | {
+                                      type: "slidingBlock";
+                                      config: {
+                                        style: "book" | "puck";
+                                      };
+                                    }
+                                  | {
+                                      type: "slidingDeadly";
+                                      config: {
+                                        style: "spikyBall";
+                                        startingPhase: 1 | 2;
+                                      };
+                                    }
+                                  | {
+                                      type: "spring";
+                                      config: Record<string, any>;
+                                    };
+                                /**
+                                 * relative chance of this recipe being chosen. Weights are relative to each
+                                 * other, so they need not add up to anything. 0 is allowed, but if every
+                                 * weight is 0 the recipes are chosen with equal probability.
+                                 * undefined is treated as 1
+                                 */
+                                probabilityWeight?: number;
+                              }[],
+                            ];
+                          }
+                        | {
+                            type: "pushableBlock";
+                            config: Record<string, any>;
+                          }
+                        | {
+                            type: "sceneryCrown";
+                            config: {
+                              planet:
+                                | "blacktooth"
+                                | "bookworld"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari";
+                            };
+                          }
+                        | {
+                            type: "sceneryPlayer";
+                            config: {
                               which: "head" | "headOverHeels" | "heels";
                               startDirection:
                                 | "away"
@@ -2529,48 +8057,25 @@ export type RoomJsonSchema = {
                                 | "towards"
                                 | "towardsLeft"
                                 | "towardsRight";
-                            }
-                          | {
-                              which: "helicopterBug";
-                              movement:
-                                "patrol-randomly-xy8" | "towards-analogue";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "homingBot";
-                              movement: "towards-tripped-on-axis-xy4";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "monkey";
-                              movement:
-                                | "patrol-randomly-xy4"
-                                | "towards-on-shortest-axis-xy4";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "skiHead";
-                              activated: "off" | "on";
-                              movement: "back-forth" | "clockwise" | "forwards";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              style: "greenAndPink" | "starsAndStripes";
-                            }
-                          | {
-                              which: "turtle";
-                              movement:
-                                | "anticlockwise"
-                                | "back-forth"
-                                | "clockwise"
-                                | "forwards";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              activated: "off" | "on";
-                            }
-                          | Record<string, any>;
-                      };
+                            };
+                          }
+                        | {
+                            type: "slidingBlock";
+                            config: {
+                              style: "book" | "puck";
+                            };
+                          }
+                        | {
+                            type: "slidingDeadly";
+                            config: {
+                              style: "spikyBall";
+                              startingPhase: 1 | 2;
+                            };
+                          }
+                        | {
+                            type: "spring";
+                            config: Record<string, any>;
+                          };
                       /**
                        * how long between emissions?
                        */
@@ -2599,32 +8104,706 @@ export type RoomJsonSchema = {
                       quantityEmitted?: number;
                       playerInsideAtRoomTime?: number;
                       /**
-                       * what does this emitter emit? Could be (potentially) any free item
+                       * what does this emitter emit? Could be (potentially) any free item. Can
+                       * also cycle through several recipes in order, or choose between them
+                       * pseudo-randomly
                        */
-                      emits?: {
-                        type:
-                          | "ball"
-                          | "charles"
-                          | "firedDoughnut"
-                          | "floatingText"
-                          | "monster"
-                          | "moveableDeadly"
-                          | "movingPlatform"
-                          | "pickup"
-                          | "portableBlock"
-                          | "portableTeleporter"
-                          | "pushableBlock"
-                          | "sceneryCrown"
-                          | "sceneryPlayer"
-                          | "slidingBlock"
-                          | "slidingDeadly"
-                          | "spring";
-                        config:
-                          | {
+                      emits?:
+                        | {
+                            type: "ball";
+                            config: Record<string, any>;
+                          }
+                        | {
+                            type: "charles";
+                            config: {
+                              activated?: false | true;
+                            };
+                          }
+                        | {
+                            type: "cyclic";
+                            /**
+                             * recipes emitted in order, starting again from the first after the last
+                             */
+                            cycle: [
+                              (
+                                | {
+                                    type: "ball";
+                                    config: Record<string, any>;
+                                  }
+                                | {
+                                    type: "charles";
+                                    config: {
+                                      activated?: false | true;
+                                    };
+                                  }
+                                | {
+                                    type: "firedDoughnut";
+                                    config: {
+                                      direction?:
+                                        | "away"
+                                        | "awayLeft"
+                                        | "awayRight"
+                                        | "left"
+                                        | "right"
+                                        | "towards"
+                                        | "towardsLeft"
+                                        | "towardsRight";
+                                    };
+                                  }
+                                | {
+                                    type: "floatingText";
+                                    config: {
+                                      /**
+                                       * the lines of text to display, each rendered as a separate row
+                                       */
+                                      textLines: [string, ...string[]];
+                                      /**
+                                       * the room time when this floating text starts; used to calculate the rise animation age.
+                                       * if not given, will start right away at time zero.
+                                       * if given, will delay starting until this time
+                                       */
+                                      appearanceRoomTime?: number;
+                                      /**
+                                       * if true, lines oscillate horizontally as they rise
+                                       */
+                                      sway?: false | true;
+                                    };
+                                  }
+                                | {
+                                    type: "monster";
+                                    config:
+                                      | {
+                                          which: "bubbleRobot";
+                                          movement: "patrol-randomly-xy8";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "computerBot";
+                                          movement:
+                                            | "patrol-randomly-xy4-and-reverse"
+                                            | "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "cyberman";
+                                          activated:
+                                            "after-player-near" | "off" | "on";
+                                          movement: "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                        }
+                                      | {
+                                          which: "dalek";
+                                          movement: "patrol-randomly-diagonal";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "elephant";
+                                          movement: "patrol-randomly-xy4";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "elephantHead";
+                                          movement: "turn-to-player";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "emperor";
+                                          movement: "towards-analogue";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "emperorsGuardian";
+                                          movement: "towards-analogue-unless-planet-crowns";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "helicopterBug";
+                                          movement:
+                                            | "patrol-randomly-xy8"
+                                            | "towards-analogue";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "homingBot";
+                                          movement: "towards-tripped-on-axis-xy4";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "monkey";
+                                          movement:
+                                            | "patrol-randomly-xy4"
+                                            | "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "skiHead";
+                                          activated: "off" | "on";
+                                          movement:
+                                            | "back-forth"
+                                            | "clockwise"
+                                            | "forwards";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          style:
+                                            "greenAndPink" | "starsAndStripes";
+                                        }
+                                      | {
+                                          which: "turtle";
+                                          movement:
+                                            | "anticlockwise"
+                                            | "back-forth"
+                                            | "clockwise"
+                                            | "forwards";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        };
+                                  }
+                                | {
+                                    type: "moveableDeadly";
+                                    config: {
+                                      style: "deadFish";
+                                    };
+                                  }
+                                | {
+                                    type: "movingPlatform";
+                                    config: {
+                                      movement:
+                                        | "back-forth"
+                                        | "clockwise"
+                                        | "towards-analogue";
+                                      activated: "off" | "on-stand" | "on";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                    };
+                                  }
+                                | {
+                                    type: "pickup";
+                                    config:
+                                      | {
+                                          gives: "crown";
+                                          planet:
+                                            | "blacktooth"
+                                            | "bookworld"
+                                            | "egyptus"
+                                            | "penitentiary"
+                                            | "safari";
+                                        }
+                                      | {
+                                          gives: "scroll";
+                                          source: "inline";
+                                          markdown:
+                                            [string, ...string[]] | string;
+                                        }
+                                      | {
+                                          gives: "scroll";
+                                          source: "manual";
+                                          page:
+                                            | "bag"
+                                            | "blacktooth"
+                                            | "bookWorld"
+                                            | "conveyorBelts"
+                                            | "credits"
+                                            | "crowns"
+                                            | "cuddlyStuffedWhiteRabbits"
+                                            | "doughnuts"
+                                            | "egyptus"
+                                            | "head"
+                                            | "heels"
+                                            | "hintsAndTips"
+                                            | "historyOfTheBlacktoothEmpire"
+                                            | "hooter"
+                                            | "hushPuppies"
+                                            | "installNative"
+                                            | "installPwa"
+                                            | "penitentiary"
+                                            | "reincarnationFish"
+                                            | "safari"
+                                            | "springs"
+                                            | "switches"
+                                            | "swopKey"
+                                            | "teleportBack"
+                                            | "teleports"
+                                            | "theEmperorsGuardian"
+                                            | "theGame";
+                                        }
+                                      | {
+                                          gives:
+                                            | "bag"
+                                            | "doughnuts"
+                                            | "extra-life"
+                                            | "fast"
+                                            | "hooter"
+                                            | "jumps"
+                                            | "reincarnation"
+                                            | "shield";
+                                        };
+                                  }
+                                | {
+                                    type: "portableBlock";
+                                    config: {
+                                      style: "cube" | "drum" | "sticks";
+                                    };
+                                  }
+                                | {
+                                    type: "portableTeleporter";
+                                    config: {
+                                      times?: {
+                                        x?: number;
+                                        y?: number;
+                                        z?: number;
+                                      };
+                                      /**
+                                       * the teleporter only works once this planet has been liberated (its crown
+                                       * collected); always works when not given
+                                       */
+                                      activatedIfPlanetLiberated?:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                      /**
+                                       * an item in the destination room this teleporter should go to - the
+                                       * player will be moved to atop this item
+                                       *
+                                       * If not given, will find the (only teleporter) in the destination room
+                                       *
+                                       * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                       * is pointing to another room
+                                       */
+                                      toItemId?: string;
+                                      /**
+                                       * note that if the other room contains exactly one teleporter, we need not
+                                       * give the position or the item.
+                                       */
+                                      toRoom?: string;
+                                    };
+                                  }
+                                | {
+                                    type: "pushableBlock";
+                                    config: Record<string, any>;
+                                  }
+                                | {
+                                    type: "sceneryCrown";
+                                    config: {
+                                      planet:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                    };
+                                  }
+                                | {
+                                    type: "sceneryPlayer";
+                                    config: {
+                                      which: "head" | "headOverHeels" | "heels";
+                                      startDirection:
+                                        | "away"
+                                        | "awayLeft"
+                                        | "awayRight"
+                                        | "left"
+                                        | "right"
+                                        | "towards"
+                                        | "towardsLeft"
+                                        | "towardsRight";
+                                    };
+                                  }
+                                | {
+                                    type: "slidingBlock";
+                                    config: {
+                                      style: "book" | "puck";
+                                    };
+                                  }
+                                | {
+                                    type: "slidingDeadly";
+                                    config: {
+                                      style: "spikyBall";
+                                      startingPhase: 1 | 2;
+                                    };
+                                  }
+                                | {
+                                    type: "spring";
+                                    config: Record<string, any>;
+                                  }
+                              ),
+                              ...(
+                                | {
+                                    type: "ball";
+                                    config: Record<string, any>;
+                                  }
+                                | {
+                                    type: "charles";
+                                    config: {
+                                      activated?: false | true;
+                                    };
+                                  }
+                                | {
+                                    type: "firedDoughnut";
+                                    config: {
+                                      direction?:
+                                        | "away"
+                                        | "awayLeft"
+                                        | "awayRight"
+                                        | "left"
+                                        | "right"
+                                        | "towards"
+                                        | "towardsLeft"
+                                        | "towardsRight";
+                                    };
+                                  }
+                                | {
+                                    type: "floatingText";
+                                    config: {
+                                      /**
+                                       * the lines of text to display, each rendered as a separate row
+                                       */
+                                      textLines: [string, ...string[]];
+                                      /**
+                                       * the room time when this floating text starts; used to calculate the rise animation age.
+                                       * if not given, will start right away at time zero.
+                                       * if given, will delay starting until this time
+                                       */
+                                      appearanceRoomTime?: number;
+                                      /**
+                                       * if true, lines oscillate horizontally as they rise
+                                       */
+                                      sway?: false | true;
+                                    };
+                                  }
+                                | {
+                                    type: "monster";
+                                    config:
+                                      | {
+                                          which: "bubbleRobot";
+                                          movement: "patrol-randomly-xy8";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "computerBot";
+                                          movement:
+                                            | "patrol-randomly-xy4-and-reverse"
+                                            | "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "cyberman";
+                                          activated:
+                                            "after-player-near" | "off" | "on";
+                                          movement: "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                        }
+                                      | {
+                                          which: "dalek";
+                                          movement: "patrol-randomly-diagonal";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "elephant";
+                                          movement: "patrol-randomly-xy4";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "elephantHead";
+                                          movement: "turn-to-player";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "emperor";
+                                          movement: "towards-analogue";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "emperorsGuardian";
+                                          movement: "towards-analogue-unless-planet-crowns";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "helicopterBug";
+                                          movement:
+                                            | "patrol-randomly-xy8"
+                                            | "towards-analogue";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "homingBot";
+                                          movement: "towards-tripped-on-axis-xy4";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "monkey";
+                                          movement:
+                                            | "patrol-randomly-xy4"
+                                            | "towards-on-shortest-axis-xy4";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        }
+                                      | {
+                                          which: "skiHead";
+                                          activated: "off" | "on";
+                                          movement:
+                                            | "back-forth"
+                                            | "clockwise"
+                                            | "forwards";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          style:
+                                            "greenAndPink" | "starsAndStripes";
+                                        }
+                                      | {
+                                          which: "turtle";
+                                          movement:
+                                            | "anticlockwise"
+                                            | "back-forth"
+                                            | "clockwise"
+                                            | "forwards";
+                                          startDirection:
+                                            | "away"
+                                            | "left"
+                                            | "right"
+                                            | "towards";
+                                          activated: "off" | "on";
+                                        };
+                                  }
+                                | {
+                                    type: "moveableDeadly";
+                                    config: {
+                                      style: "deadFish";
+                                    };
+                                  }
+                                | {
+                                    type: "movingPlatform";
+                                    config: {
+                                      movement:
+                                        | "back-forth"
+                                        | "clockwise"
+                                        | "towards-analogue";
+                                      activated: "off" | "on-stand" | "on";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                    };
+                                  }
+                                | {
+                                    type: "pickup";
+                                    config:
+                                      | {
+                                          gives: "crown";
+                                          planet:
+                                            | "blacktooth"
+                                            | "bookworld"
+                                            | "egyptus"
+                                            | "penitentiary"
+                                            | "safari";
+                                        }
+                                      | {
+                                          gives: "scroll";
+                                          source: "inline";
+                                          markdown:
+                                            [string, ...string[]] | string;
+                                        }
+                                      | {
+                                          gives: "scroll";
+                                          source: "manual";
+                                          page:
+                                            | "bag"
+                                            | "blacktooth"
+                                            | "bookWorld"
+                                            | "conveyorBelts"
+                                            | "credits"
+                                            | "crowns"
+                                            | "cuddlyStuffedWhiteRabbits"
+                                            | "doughnuts"
+                                            | "egyptus"
+                                            | "head"
+                                            | "heels"
+                                            | "hintsAndTips"
+                                            | "historyOfTheBlacktoothEmpire"
+                                            | "hooter"
+                                            | "hushPuppies"
+                                            | "installNative"
+                                            | "installPwa"
+                                            | "penitentiary"
+                                            | "reincarnationFish"
+                                            | "safari"
+                                            | "springs"
+                                            | "switches"
+                                            | "swopKey"
+                                            | "teleportBack"
+                                            | "teleports"
+                                            | "theEmperorsGuardian"
+                                            | "theGame";
+                                        }
+                                      | {
+                                          gives:
+                                            | "bag"
+                                            | "doughnuts"
+                                            | "extra-life"
+                                            | "fast"
+                                            | "hooter"
+                                            | "jumps"
+                                            | "reincarnation"
+                                            | "shield";
+                                        };
+                                  }
+                                | {
+                                    type: "portableBlock";
+                                    config: {
+                                      style: "cube" | "drum" | "sticks";
+                                    };
+                                  }
+                                | {
+                                    type: "portableTeleporter";
+                                    config: {
+                                      times?: {
+                                        x?: number;
+                                        y?: number;
+                                        z?: number;
+                                      };
+                                      /**
+                                       * the teleporter only works once this planet has been liberated (its crown
+                                       * collected); always works when not given
+                                       */
+                                      activatedIfPlanetLiberated?:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                      /**
+                                       * an item in the destination room this teleporter should go to - the
+                                       * player will be moved to atop this item
+                                       *
+                                       * If not given, will find the (only teleporter) in the destination room
+                                       *
+                                       * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                       * is pointing to another room
+                                       */
+                                      toItemId?: string;
+                                      /**
+                                       * note that if the other room contains exactly one teleporter, we need not
+                                       * give the position or the item.
+                                       */
+                                      toRoom?: string;
+                                    };
+                                  }
+                                | {
+                                    type: "pushableBlock";
+                                    config: Record<string, any>;
+                                  }
+                                | {
+                                    type: "sceneryCrown";
+                                    config: {
+                                      planet:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                    };
+                                  }
+                                | {
+                                    type: "sceneryPlayer";
+                                    config: {
+                                      which: "head" | "headOverHeels" | "heels";
+                                      startDirection:
+                                        | "away"
+                                        | "awayLeft"
+                                        | "awayRight"
+                                        | "left"
+                                        | "right"
+                                        | "towards"
+                                        | "towardsLeft"
+                                        | "towardsRight";
+                                    };
+                                  }
+                                | {
+                                    type: "slidingBlock";
+                                    config: {
+                                      style: "book" | "puck";
+                                    };
+                                  }
+                                | {
+                                    type: "slidingDeadly";
+                                    config: {
+                                      style: "spikyBall";
+                                      startingPhase: 1 | 2;
+                                    };
+                                  }
+                                | {
+                                    type: "spring";
+                                    config: Record<string, any>;
+                                  }
+                              )[],
+                            ];
+                          }
+                        | {
+                            type: "firedDoughnut";
+                            config: {
+                              direction?:
+                                | "away"
+                                | "awayLeft"
+                                | "awayRight"
+                                | "left"
+                                | "right"
+                                | "towards"
+                                | "towardsLeft"
+                                | "towardsRight";
+                            };
+                          }
+                        | {
+                            type: "floatingText";
+                            config: {
                               /**
                                * the lines of text to display, each rendered as a separate row
                                */
-                              textLines: string[];
+                              textLines: [string, ...string[]];
                               /**
                                * the room time when this floating text starts; used to calculate the rise animation age.
                                * if not given, will start right away at time zero.
@@ -2635,107 +8814,186 @@ export type RoomJsonSchema = {
                                * if true, lines oscillate horizontally as they rise
                                */
                               sway?: false | true;
-                            }
-                          | {
-                              activated?: false | true;
-                            }
-                          | {
-                              direction?:
-                                | "away"
-                                | "awayLeft"
-                                | "awayRight"
-                                | "left"
-                                | "right"
-                                | "towards"
-                                | "towardsLeft"
-                                | "towardsRight";
-                            }
-                          | {
-                              gives: "crown";
-                              planet:
-                                | "blacktooth"
-                                | "bookworld"
-                                | "egyptus"
-                                | "penitentiary"
-                                | "safari";
-                            }
-                          | {
-                              gives: "scroll";
-                              source: "inline";
-                              markdown: string | string[];
-                            }
-                          | {
-                              gives: "scroll";
-                              source: "manual";
-                              page:
-                                | "bag"
-                                | "blacktooth"
-                                | "bookWorld"
-                                | "conveyorBelts"
-                                | "credits"
-                                | "crowns"
-                                | "cuddlyStuffedWhiteRabbits"
-                                | "doughnuts"
-                                | "egyptus"
-                                | "head"
-                                | "heels"
-                                | "hintsAndTips"
-                                | "historyOfTheBlacktoothEmpire"
-                                | "hooter"
-                                | "hushPuppies"
-                                | "installNative"
-                                | "installPwa"
-                                | "penitentiary"
-                                | "reincarnationFish"
-                                | "safari"
-                                | "springs"
-                                | "switches"
-                                | "swopKey"
-                                | "teleportBack"
-                                | "teleports"
-                                | "theEmperorsGuardian"
-                                | "theGame";
-                            }
-                          | {
-                              gives:
-                                | "bag"
-                                | "doughnuts"
-                                | "extra-life"
-                                | "fast"
-                                | "hooter"
-                                | "jumps"
-                                | "reincarnation"
-                                | "shield";
-                            }
-                          | {
+                            };
+                          }
+                        | {
+                            type: "monster";
+                            config:
+                              | {
+                                  which: "bubbleRobot";
+                                  movement: "patrol-randomly-xy8";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "computerBot";
+                                  movement:
+                                    | "patrol-randomly-xy4-and-reverse"
+                                    | "towards-on-shortest-axis-xy4";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "cyberman";
+                                  activated: "after-player-near" | "off" | "on";
+                                  movement: "towards-on-shortest-axis-xy4";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                }
+                              | {
+                                  which: "dalek";
+                                  movement: "patrol-randomly-diagonal";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "elephant";
+                                  movement: "patrol-randomly-xy4";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "elephantHead";
+                                  movement: "turn-to-player";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "emperor";
+                                  movement: "towards-analogue";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "emperorsGuardian";
+                                  movement: "towards-analogue-unless-planet-crowns";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "helicopterBug";
+                                  movement:
+                                    "patrol-randomly-xy8" | "towards-analogue";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "homingBot";
+                                  movement: "towards-tripped-on-axis-xy4";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "monkey";
+                                  movement:
+                                    | "patrol-randomly-xy4"
+                                    | "towards-on-shortest-axis-xy4";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  activated: "off" | "on";
+                                }
+                              | {
+                                  which: "skiHead";
+                                  activated: "off" | "on";
+                                  movement:
+                                    "back-forth" | "clockwise" | "forwards";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  style: "greenAndPink" | "starsAndStripes";
+                                }
+                              | {
+                                  which: "turtle";
+                                  movement:
+                                    | "anticlockwise"
+                                    | "back-forth"
+                                    | "clockwise"
+                                    | "forwards";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                  activated: "off" | "on";
+                                };
+                          }
+                        | {
+                            type: "moveableDeadly";
+                            config: {
+                              style: "deadFish";
+                            };
+                          }
+                        | {
+                            type: "movingPlatform";
+                            config: {
                               movement:
                                 "back-forth" | "clockwise" | "towards-analogue";
                               activated: "off" | "on-stand" | "on";
                               startDirection:
                                 "away" | "left" | "right" | "towards";
-                            }
-                          | {
-                              planet:
-                                | "blacktooth"
-                                | "bookworld"
-                                | "egyptus"
-                                | "penitentiary"
-                                | "safari";
-                            }
-                          | {
-                              style: "book" | "puck";
-                            }
-                          | {
+                            };
+                          }
+                        | {
+                            type: "pickup";
+                            config:
+                              | {
+                                  gives: "crown";
+                                  planet:
+                                    | "blacktooth"
+                                    | "bookworld"
+                                    | "egyptus"
+                                    | "penitentiary"
+                                    | "safari";
+                                }
+                              | {
+                                  gives: "scroll";
+                                  source: "inline";
+                                  markdown: [string, ...string[]] | string;
+                                }
+                              | {
+                                  gives: "scroll";
+                                  source: "manual";
+                                  page:
+                                    | "bag"
+                                    | "blacktooth"
+                                    | "bookWorld"
+                                    | "conveyorBelts"
+                                    | "credits"
+                                    | "crowns"
+                                    | "cuddlyStuffedWhiteRabbits"
+                                    | "doughnuts"
+                                    | "egyptus"
+                                    | "head"
+                                    | "heels"
+                                    | "hintsAndTips"
+                                    | "historyOfTheBlacktoothEmpire"
+                                    | "hooter"
+                                    | "hushPuppies"
+                                    | "installNative"
+                                    | "installPwa"
+                                    | "penitentiary"
+                                    | "reincarnationFish"
+                                    | "safari"
+                                    | "springs"
+                                    | "switches"
+                                    | "swopKey"
+                                    | "teleportBack"
+                                    | "teleports"
+                                    | "theEmperorsGuardian"
+                                    | "theGame";
+                                }
+                              | {
+                                  gives:
+                                    | "bag"
+                                    | "doughnuts"
+                                    | "extra-life"
+                                    | "fast"
+                                    | "hooter"
+                                    | "jumps"
+                                    | "reincarnation"
+                                    | "shield";
+                                };
+                          }
+                        | {
+                            type: "portableBlock";
+                            config: {
                               style: "cube" | "drum" | "sticks";
-                            }
-                          | {
-                              style: "deadFish";
-                            }
-                          | {
-                              style: "spikyBall";
-                              startingPhase: 1 | 2;
-                            }
-                          | {
+                            };
+                          }
+                        | {
+                            type: "portableTeleporter";
+                            config: {
                               times?: {
                                 x?: number;
                                 y?: number;
@@ -2766,56 +9024,716 @@ export type RoomJsonSchema = {
                                * give the position or the item.
                                */
                               toRoom?: string;
-                            }
-                          | {
-                              which: "bubbleRobot";
-                              movement: "patrol-randomly-xy8";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "computerBot";
-                              movement:
-                                | "patrol-randomly-xy4-and-reverse"
-                                | "towards-on-shortest-axis-xy4";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "cyberman";
-                              activated: "after-player-near" | "off" | "on";
-                              movement: "towards-on-shortest-axis-xy4";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                            }
-                          | {
-                              which: "dalek";
-                              movement: "patrol-randomly-diagonal";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "elephant";
-                              movement: "patrol-randomly-xy4";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "elephantHead";
-                              movement: "turn-to-player";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "emperor";
-                              movement: "towards-analogue";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "emperorsGuardian";
-                              movement: "towards-analogue-unless-planet-crowns";
-                              activated: "off" | "on";
-                            }
-                          | {
+                            };
+                          }
+                        | {
+                            type: "probabilistic";
+                            /**
+                             * one of these is chosen at random for each emission, pseudo-randomly from
+                             * the emitter's hash and the room time, so the same emission at the same
+                             * time in the same room always chooses the same recipe
+                             */
+                            choices: [
+                              {
+                                emits:
+                                  | {
+                                      type: "ball";
+                                      config: Record<string, any>;
+                                    }
+                                  | {
+                                      type: "charles";
+                                      config: {
+                                        activated?: false | true;
+                                      };
+                                    }
+                                  | {
+                                      type: "firedDoughnut";
+                                      config: {
+                                        direction?:
+                                          | "away"
+                                          | "awayLeft"
+                                          | "awayRight"
+                                          | "left"
+                                          | "right"
+                                          | "towards"
+                                          | "towardsLeft"
+                                          | "towardsRight";
+                                      };
+                                    }
+                                  | {
+                                      type: "floatingText";
+                                      config: {
+                                        /**
+                                         * the lines of text to display, each rendered as a separate row
+                                         */
+                                        textLines: [string, ...string[]];
+                                        /**
+                                         * the room time when this floating text starts; used to calculate the rise animation age.
+                                         * if not given, will start right away at time zero.
+                                         * if given, will delay starting until this time
+                                         */
+                                        appearanceRoomTime?: number;
+                                        /**
+                                         * if true, lines oscillate horizontally as they rise
+                                         */
+                                        sway?: false | true;
+                                      };
+                                    }
+                                  | {
+                                      type: "monster";
+                                      config:
+                                        | {
+                                            which: "bubbleRobot";
+                                            movement: "patrol-randomly-xy8";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "computerBot";
+                                            movement:
+                                              | "patrol-randomly-xy4-and-reverse"
+                                              | "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "cyberman";
+                                            activated:
+                                              | "after-player-near"
+                                              | "off"
+                                              | "on";
+                                            movement: "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                          }
+                                        | {
+                                            which: "dalek";
+                                            movement: "patrol-randomly-diagonal";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "elephant";
+                                            movement: "patrol-randomly-xy4";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "elephantHead";
+                                            movement: "turn-to-player";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "emperor";
+                                            movement: "towards-analogue";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "emperorsGuardian";
+                                            movement: "towards-analogue-unless-planet-crowns";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "helicopterBug";
+                                            movement:
+                                              | "patrol-randomly-xy8"
+                                              | "towards-analogue";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "homingBot";
+                                            movement: "towards-tripped-on-axis-xy4";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "monkey";
+                                            movement:
+                                              | "patrol-randomly-xy4"
+                                              | "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "skiHead";
+                                            activated: "off" | "on";
+                                            movement:
+                                              | "back-forth"
+                                              | "clockwise"
+                                              | "forwards";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            style:
+                                              | "greenAndPink"
+                                              | "starsAndStripes";
+                                          }
+                                        | {
+                                            which: "turtle";
+                                            movement:
+                                              | "anticlockwise"
+                                              | "back-forth"
+                                              | "clockwise"
+                                              | "forwards";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          };
+                                    }
+                                  | {
+                                      type: "moveableDeadly";
+                                      config: {
+                                        style: "deadFish";
+                                      };
+                                    }
+                                  | {
+                                      type: "movingPlatform";
+                                      config: {
+                                        movement:
+                                          | "back-forth"
+                                          | "clockwise"
+                                          | "towards-analogue";
+                                        activated: "off" | "on-stand" | "on";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                      };
+                                    }
+                                  | {
+                                      type: "pickup";
+                                      config:
+                                        | {
+                                            gives: "crown";
+                                            planet:
+                                              | "blacktooth"
+                                              | "bookworld"
+                                              | "egyptus"
+                                              | "penitentiary"
+                                              | "safari";
+                                          }
+                                        | {
+                                            gives: "scroll";
+                                            source: "inline";
+                                            markdown:
+                                              [string, ...string[]] | string;
+                                          }
+                                        | {
+                                            gives: "scroll";
+                                            source: "manual";
+                                            page:
+                                              | "bag"
+                                              | "blacktooth"
+                                              | "bookWorld"
+                                              | "conveyorBelts"
+                                              | "credits"
+                                              | "crowns"
+                                              | "cuddlyStuffedWhiteRabbits"
+                                              | "doughnuts"
+                                              | "egyptus"
+                                              | "head"
+                                              | "heels"
+                                              | "hintsAndTips"
+                                              | "historyOfTheBlacktoothEmpire"
+                                              | "hooter"
+                                              | "hushPuppies"
+                                              | "installNative"
+                                              | "installPwa"
+                                              | "penitentiary"
+                                              | "reincarnationFish"
+                                              | "safari"
+                                              | "springs"
+                                              | "switches"
+                                              | "swopKey"
+                                              | "teleportBack"
+                                              | "teleports"
+                                              | "theEmperorsGuardian"
+                                              | "theGame";
+                                          }
+                                        | {
+                                            gives:
+                                              | "bag"
+                                              | "doughnuts"
+                                              | "extra-life"
+                                              | "fast"
+                                              | "hooter"
+                                              | "jumps"
+                                              | "reincarnation"
+                                              | "shield";
+                                          };
+                                    }
+                                  | {
+                                      type: "portableBlock";
+                                      config: {
+                                        style: "cube" | "drum" | "sticks";
+                                      };
+                                    }
+                                  | {
+                                      type: "portableTeleporter";
+                                      config: {
+                                        times?: {
+                                          x?: number;
+                                          y?: number;
+                                          z?: number;
+                                        };
+                                        /**
+                                         * the teleporter only works once this planet has been liberated (its crown
+                                         * collected); always works when not given
+                                         */
+                                        activatedIfPlanetLiberated?:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                        /**
+                                         * an item in the destination room this teleporter should go to - the
+                                         * player will be moved to atop this item
+                                         *
+                                         * If not given, will find the (only teleporter) in the destination room
+                                         *
+                                         * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                         * is pointing to another room
+                                         */
+                                        toItemId?: string;
+                                        /**
+                                         * note that if the other room contains exactly one teleporter, we need not
+                                         * give the position or the item.
+                                         */
+                                        toRoom?: string;
+                                      };
+                                    }
+                                  | {
+                                      type: "pushableBlock";
+                                      config: Record<string, any>;
+                                    }
+                                  | {
+                                      type: "sceneryCrown";
+                                      config: {
+                                        planet:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                      };
+                                    }
+                                  | {
+                                      type: "sceneryPlayer";
+                                      config: {
+                                        which:
+                                          "head" | "headOverHeels" | "heels";
+                                        startDirection:
+                                          | "away"
+                                          | "awayLeft"
+                                          | "awayRight"
+                                          | "left"
+                                          | "right"
+                                          | "towards"
+                                          | "towardsLeft"
+                                          | "towardsRight";
+                                      };
+                                    }
+                                  | {
+                                      type: "slidingBlock";
+                                      config: {
+                                        style: "book" | "puck";
+                                      };
+                                    }
+                                  | {
+                                      type: "slidingDeadly";
+                                      config: {
+                                        style: "spikyBall";
+                                        startingPhase: 1 | 2;
+                                      };
+                                    }
+                                  | {
+                                      type: "spring";
+                                      config: Record<string, any>;
+                                    };
+                                /**
+                                 * relative chance of this recipe being chosen. Weights are relative to each
+                                 * other, so they need not add up to anything. 0 is allowed, but if every
+                                 * weight is 0 the recipes are chosen with equal probability.
+                                 * undefined is treated as 1
+                                 */
+                                probabilityWeight?: number;
+                              },
+                              ...{
+                                emits:
+                                  | {
+                                      type: "ball";
+                                      config: Record<string, any>;
+                                    }
+                                  | {
+                                      type: "charles";
+                                      config: {
+                                        activated?: false | true;
+                                      };
+                                    }
+                                  | {
+                                      type: "firedDoughnut";
+                                      config: {
+                                        direction?:
+                                          | "away"
+                                          | "awayLeft"
+                                          | "awayRight"
+                                          | "left"
+                                          | "right"
+                                          | "towards"
+                                          | "towardsLeft"
+                                          | "towardsRight";
+                                      };
+                                    }
+                                  | {
+                                      type: "floatingText";
+                                      config: {
+                                        /**
+                                         * the lines of text to display, each rendered as a separate row
+                                         */
+                                        textLines: [string, ...string[]];
+                                        /**
+                                         * the room time when this floating text starts; used to calculate the rise animation age.
+                                         * if not given, will start right away at time zero.
+                                         * if given, will delay starting until this time
+                                         */
+                                        appearanceRoomTime?: number;
+                                        /**
+                                         * if true, lines oscillate horizontally as they rise
+                                         */
+                                        sway?: false | true;
+                                      };
+                                    }
+                                  | {
+                                      type: "monster";
+                                      config:
+                                        | {
+                                            which: "bubbleRobot";
+                                            movement: "patrol-randomly-xy8";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "computerBot";
+                                            movement:
+                                              | "patrol-randomly-xy4-and-reverse"
+                                              | "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "cyberman";
+                                            activated:
+                                              | "after-player-near"
+                                              | "off"
+                                              | "on";
+                                            movement: "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                          }
+                                        | {
+                                            which: "dalek";
+                                            movement: "patrol-randomly-diagonal";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "elephant";
+                                            movement: "patrol-randomly-xy4";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "elephantHead";
+                                            movement: "turn-to-player";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "emperor";
+                                            movement: "towards-analogue";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "emperorsGuardian";
+                                            movement: "towards-analogue-unless-planet-crowns";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "helicopterBug";
+                                            movement:
+                                              | "patrol-randomly-xy8"
+                                              | "towards-analogue";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "homingBot";
+                                            movement: "towards-tripped-on-axis-xy4";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "monkey";
+                                            movement:
+                                              | "patrol-randomly-xy4"
+                                              | "towards-on-shortest-axis-xy4";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          }
+                                        | {
+                                            which: "skiHead";
+                                            activated: "off" | "on";
+                                            movement:
+                                              | "back-forth"
+                                              | "clockwise"
+                                              | "forwards";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            style:
+                                              | "greenAndPink"
+                                              | "starsAndStripes";
+                                          }
+                                        | {
+                                            which: "turtle";
+                                            movement:
+                                              | "anticlockwise"
+                                              | "back-forth"
+                                              | "clockwise"
+                                              | "forwards";
+                                            startDirection:
+                                              | "away"
+                                              | "left"
+                                              | "right"
+                                              | "towards";
+                                            activated: "off" | "on";
+                                          };
+                                    }
+                                  | {
+                                      type: "moveableDeadly";
+                                      config: {
+                                        style: "deadFish";
+                                      };
+                                    }
+                                  | {
+                                      type: "movingPlatform";
+                                      config: {
+                                        movement:
+                                          | "back-forth"
+                                          | "clockwise"
+                                          | "towards-analogue";
+                                        activated: "off" | "on-stand" | "on";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                      };
+                                    }
+                                  | {
+                                      type: "pickup";
+                                      config:
+                                        | {
+                                            gives: "crown";
+                                            planet:
+                                              | "blacktooth"
+                                              | "bookworld"
+                                              | "egyptus"
+                                              | "penitentiary"
+                                              | "safari";
+                                          }
+                                        | {
+                                            gives: "scroll";
+                                            source: "inline";
+                                            markdown:
+                                              [string, ...string[]] | string;
+                                          }
+                                        | {
+                                            gives: "scroll";
+                                            source: "manual";
+                                            page:
+                                              | "bag"
+                                              | "blacktooth"
+                                              | "bookWorld"
+                                              | "conveyorBelts"
+                                              | "credits"
+                                              | "crowns"
+                                              | "cuddlyStuffedWhiteRabbits"
+                                              | "doughnuts"
+                                              | "egyptus"
+                                              | "head"
+                                              | "heels"
+                                              | "hintsAndTips"
+                                              | "historyOfTheBlacktoothEmpire"
+                                              | "hooter"
+                                              | "hushPuppies"
+                                              | "installNative"
+                                              | "installPwa"
+                                              | "penitentiary"
+                                              | "reincarnationFish"
+                                              | "safari"
+                                              | "springs"
+                                              | "switches"
+                                              | "swopKey"
+                                              | "teleportBack"
+                                              | "teleports"
+                                              | "theEmperorsGuardian"
+                                              | "theGame";
+                                          }
+                                        | {
+                                            gives:
+                                              | "bag"
+                                              | "doughnuts"
+                                              | "extra-life"
+                                              | "fast"
+                                              | "hooter"
+                                              | "jumps"
+                                              | "reincarnation"
+                                              | "shield";
+                                          };
+                                    }
+                                  | {
+                                      type: "portableBlock";
+                                      config: {
+                                        style: "cube" | "drum" | "sticks";
+                                      };
+                                    }
+                                  | {
+                                      type: "portableTeleporter";
+                                      config: {
+                                        times?: {
+                                          x?: number;
+                                          y?: number;
+                                          z?: number;
+                                        };
+                                        /**
+                                         * the teleporter only works once this planet has been liberated (its crown
+                                         * collected); always works when not given
+                                         */
+                                        activatedIfPlanetLiberated?:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                        /**
+                                         * an item in the destination room this teleporter should go to - the
+                                         * player will be moved to atop this item
+                                         *
+                                         * If not given, will find the (only teleporter) in the destination room
+                                         *
+                                         * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                         * is pointing to another room
+                                         */
+                                        toItemId?: string;
+                                        /**
+                                         * note that if the other room contains exactly one teleporter, we need not
+                                         * give the position or the item.
+                                         */
+                                        toRoom?: string;
+                                      };
+                                    }
+                                  | {
+                                      type: "pushableBlock";
+                                      config: Record<string, any>;
+                                    }
+                                  | {
+                                      type: "sceneryCrown";
+                                      config: {
+                                        planet:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                      };
+                                    }
+                                  | {
+                                      type: "sceneryPlayer";
+                                      config: {
+                                        which:
+                                          "head" | "headOverHeels" | "heels";
+                                        startDirection:
+                                          | "away"
+                                          | "awayLeft"
+                                          | "awayRight"
+                                          | "left"
+                                          | "right"
+                                          | "towards"
+                                          | "towardsLeft"
+                                          | "towardsRight";
+                                      };
+                                    }
+                                  | {
+                                      type: "slidingBlock";
+                                      config: {
+                                        style: "book" | "puck";
+                                      };
+                                    }
+                                  | {
+                                      type: "slidingDeadly";
+                                      config: {
+                                        style: "spikyBall";
+                                        startingPhase: 1 | 2;
+                                      };
+                                    }
+                                  | {
+                                      type: "spring";
+                                      config: Record<string, any>;
+                                    };
+                                /**
+                                 * relative chance of this recipe being chosen. Weights are relative to each
+                                 * other, so they need not add up to anything. 0 is allowed, but if every
+                                 * weight is 0 the recipes are chosen with equal probability.
+                                 * undefined is treated as 1
+                                 */
+                                probabilityWeight?: number;
+                              }[],
+                            ];
+                          }
+                        | {
+                            type: "pushableBlock";
+                            config: Record<string, any>;
+                          }
+                        | {
+                            type: "sceneryCrown";
+                            config: {
+                              planet:
+                                | "blacktooth"
+                                | "bookworld"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari";
+                            };
+                          }
+                        | {
+                            type: "sceneryPlayer";
+                            config: {
                               which: "head" | "headOverHeels" | "heels";
                               startDirection:
                                 | "away"
@@ -2826,48 +9744,25 @@ export type RoomJsonSchema = {
                                 | "towards"
                                 | "towardsLeft"
                                 | "towardsRight";
-                            }
-                          | {
-                              which: "helicopterBug";
-                              movement:
-                                "patrol-randomly-xy8" | "towards-analogue";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "homingBot";
-                              movement: "towards-tripped-on-axis-xy4";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "monkey";
-                              movement:
-                                | "patrol-randomly-xy4"
-                                | "towards-on-shortest-axis-xy4";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "skiHead";
-                              activated: "off" | "on";
-                              movement: "back-forth" | "clockwise" | "forwards";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              style: "greenAndPink" | "starsAndStripes";
-                            }
-                          | {
-                              which: "turtle";
-                              movement:
-                                | "anticlockwise"
-                                | "back-forth"
-                                | "clockwise"
-                                | "forwards";
-                              startDirection:
-                                "away" | "left" | "right" | "towards";
-                              activated: "off" | "on";
-                            }
-                          | Record<string, any>;
-                      };
+                            };
+                          }
+                        | {
+                            type: "slidingBlock";
+                            config: {
+                              style: "book" | "puck";
+                            };
+                          }
+                        | {
+                            type: "slidingDeadly";
+                            config: {
+                              style: "spikyBall";
+                              startingPhase: 1 | 2;
+                            };
+                          }
+                        | {
+                            type: "spring";
+                            config: Record<string, any>;
+                          };
                       /**
                        * how long between emissions?
                        */
@@ -3000,55 +9895,106 @@ export type RoomJsonSchema = {
                          * Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player
                          * or ['head'] eg for doughnuts that only head can collect
                          */
-                        byType?: (
-                          | "ball"
-                          | "barrier"
-                          | "block"
-                          | "blocker"
-                          | "bubbles"
-                          | "button"
-                          | "charles"
-                          | "conveyor"
-                          | "deadlyBlock"
-                          | "doorFrame"
-                          | "doorLegs"
-                          | "editorGhost"
-                          | "emitter"
-                          | "firedDoughnut"
-                          | "floatingText"
-                          | "floor"
-                          | "head"
-                          | "headOverHeels"
-                          | "heels"
-                          | "hushPuppy"
-                          | "joystick"
-                          | "lamp"
-                          | "lift"
-                          | "lightBeam"
-                          | "mirror"
-                          | "monster"
-                          | "moveableDeadly"
-                          | "movingPlatform"
-                          | "outOfBounds"
-                          | "particle"
-                          | "pickup"
-                          | "portableBlock"
-                          | "portableTeleporter"
-                          | "portal"
-                          | "pushableBlock"
-                          | "sceneryCrown"
-                          | "sceneryPlayer"
-                          | "slidingBlock"
-                          | "slidingDeadly"
-                          | "soundEffect"
-                          | "spikes"
-                          | "spring"
-                          | "stopAutowalk"
-                          | "switch"
-                          | "teleporter"
-                          | "timer"
-                          | "wall"
-                        )[];
+                        byType?: [
+                          (
+                            | "ball"
+                            | "barrier"
+                            | "block"
+                            | "blocker"
+                            | "bubbles"
+                            | "button"
+                            | "charles"
+                            | "conveyor"
+                            | "deadlyBlock"
+                            | "doorFrame"
+                            | "doorLegs"
+                            | "editorGhost"
+                            | "emitter"
+                            | "firedDoughnut"
+                            | "floatingText"
+                            | "floor"
+                            | "head"
+                            | "headOverHeels"
+                            | "heels"
+                            | "hushPuppy"
+                            | "joystick"
+                            | "lamp"
+                            | "lift"
+                            | "lightBeam"
+                            | "mirror"
+                            | "monster"
+                            | "moveableDeadly"
+                            | "movingPlatform"
+                            | "outOfBounds"
+                            | "particle"
+                            | "pickup"
+                            | "portableBlock"
+                            | "portableTeleporter"
+                            | "portal"
+                            | "pushableBlock"
+                            | "sceneryCrown"
+                            | "sceneryPlayer"
+                            | "slidingBlock"
+                            | "slidingDeadly"
+                            | "soundEffect"
+                            | "spikes"
+                            | "spring"
+                            | "stopAutowalk"
+                            | "switch"
+                            | "teleporter"
+                            | "timer"
+                            | "wall"
+                          ),
+                          ...(
+                            | "ball"
+                            | "barrier"
+                            | "block"
+                            | "blocker"
+                            | "bubbles"
+                            | "button"
+                            | "charles"
+                            | "conveyor"
+                            | "deadlyBlock"
+                            | "doorFrame"
+                            | "doorLegs"
+                            | "editorGhost"
+                            | "emitter"
+                            | "firedDoughnut"
+                            | "floatingText"
+                            | "floor"
+                            | "head"
+                            | "headOverHeels"
+                            | "heels"
+                            | "hushPuppy"
+                            | "joystick"
+                            | "lamp"
+                            | "lift"
+                            | "lightBeam"
+                            | "mirror"
+                            | "monster"
+                            | "moveableDeadly"
+                            | "movingPlatform"
+                            | "outOfBounds"
+                            | "particle"
+                            | "pickup"
+                            | "portableBlock"
+                            | "portableTeleporter"
+                            | "portal"
+                            | "pushableBlock"
+                            | "sceneryCrown"
+                            | "sceneryPlayer"
+                            | "slidingBlock"
+                            | "slidingDeadly"
+                            | "soundEffect"
+                            | "spikes"
+                            | "spring"
+                            | "stopAutowalk"
+                            | "switch"
+                            | "teleporter"
+                            | "timer"
+                            | "wall"
+                          )[],
+                        ];
                       } | null;
                       /**
                        * activated for us is a boolean, not the many-states from the json config, ie it is stateful
@@ -3084,55 +10030,106 @@ export type RoomJsonSchema = {
                          * Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player
                          * or ['head'] eg for doughnuts that only head can collect
                          */
-                        byType?: (
-                          | "ball"
-                          | "barrier"
-                          | "block"
-                          | "blocker"
-                          | "bubbles"
-                          | "button"
-                          | "charles"
-                          | "conveyor"
-                          | "deadlyBlock"
-                          | "doorFrame"
-                          | "doorLegs"
-                          | "editorGhost"
-                          | "emitter"
-                          | "firedDoughnut"
-                          | "floatingText"
-                          | "floor"
-                          | "head"
-                          | "headOverHeels"
-                          | "heels"
-                          | "hushPuppy"
-                          | "joystick"
-                          | "lamp"
-                          | "lift"
-                          | "lightBeam"
-                          | "mirror"
-                          | "monster"
-                          | "moveableDeadly"
-                          | "movingPlatform"
-                          | "outOfBounds"
-                          | "particle"
-                          | "pickup"
-                          | "portableBlock"
-                          | "portableTeleporter"
-                          | "portal"
-                          | "pushableBlock"
-                          | "sceneryCrown"
-                          | "sceneryPlayer"
-                          | "slidingBlock"
-                          | "slidingDeadly"
-                          | "soundEffect"
-                          | "spikes"
-                          | "spring"
-                          | "stopAutowalk"
-                          | "switch"
-                          | "teleporter"
-                          | "timer"
-                          | "wall"
-                        )[];
+                        byType?: [
+                          (
+                            | "ball"
+                            | "barrier"
+                            | "block"
+                            | "blocker"
+                            | "bubbles"
+                            | "button"
+                            | "charles"
+                            | "conveyor"
+                            | "deadlyBlock"
+                            | "doorFrame"
+                            | "doorLegs"
+                            | "editorGhost"
+                            | "emitter"
+                            | "firedDoughnut"
+                            | "floatingText"
+                            | "floor"
+                            | "head"
+                            | "headOverHeels"
+                            | "heels"
+                            | "hushPuppy"
+                            | "joystick"
+                            | "lamp"
+                            | "lift"
+                            | "lightBeam"
+                            | "mirror"
+                            | "monster"
+                            | "moveableDeadly"
+                            | "movingPlatform"
+                            | "outOfBounds"
+                            | "particle"
+                            | "pickup"
+                            | "portableBlock"
+                            | "portableTeleporter"
+                            | "portal"
+                            | "pushableBlock"
+                            | "sceneryCrown"
+                            | "sceneryPlayer"
+                            | "slidingBlock"
+                            | "slidingDeadly"
+                            | "soundEffect"
+                            | "spikes"
+                            | "spring"
+                            | "stopAutowalk"
+                            | "switch"
+                            | "teleporter"
+                            | "timer"
+                            | "wall"
+                          ),
+                          ...(
+                            | "ball"
+                            | "barrier"
+                            | "block"
+                            | "blocker"
+                            | "bubbles"
+                            | "button"
+                            | "charles"
+                            | "conveyor"
+                            | "deadlyBlock"
+                            | "doorFrame"
+                            | "doorLegs"
+                            | "editorGhost"
+                            | "emitter"
+                            | "firedDoughnut"
+                            | "floatingText"
+                            | "floor"
+                            | "head"
+                            | "headOverHeels"
+                            | "heels"
+                            | "hushPuppy"
+                            | "joystick"
+                            | "lamp"
+                            | "lift"
+                            | "lightBeam"
+                            | "mirror"
+                            | "monster"
+                            | "moveableDeadly"
+                            | "movingPlatform"
+                            | "outOfBounds"
+                            | "particle"
+                            | "pickup"
+                            | "portableBlock"
+                            | "portableTeleporter"
+                            | "portal"
+                            | "pushableBlock"
+                            | "sceneryCrown"
+                            | "sceneryPlayer"
+                            | "slidingBlock"
+                            | "slidingDeadly"
+                            | "soundEffect"
+                            | "spikes"
+                            | "spring"
+                            | "stopAutowalk"
+                            | "switch"
+                            | "teleporter"
+                            | "timer"
+                            | "wall"
+                          )[],
+                        ];
                       } | null;
                       /**
                        * activated for us is a boolean, not the many-states from the json config, ie it is stateful
@@ -3360,32 +10357,662 @@ export type RoomJsonSchema = {
                   quantityEmitted?: number;
                   playerInsideAtRoomTime?: number;
                   /**
-                   * what does this emitter emit? Could be (potentially) any free item
+                   * what does this emitter emit? Could be (potentially) any free item. Can
+                   * also cycle through several recipes in order, or choose between them
+                   * pseudo-randomly
                    */
-                  emits?: {
-                    type:
-                      | "ball"
-                      | "charles"
-                      | "firedDoughnut"
-                      | "floatingText"
-                      | "monster"
-                      | "moveableDeadly"
-                      | "movingPlatform"
-                      | "pickup"
-                      | "portableBlock"
-                      | "portableTeleporter"
-                      | "pushableBlock"
-                      | "sceneryCrown"
-                      | "sceneryPlayer"
-                      | "slidingBlock"
-                      | "slidingDeadly"
-                      | "spring";
-                    config:
-                      | {
+                  emits?:
+                    | {
+                        type: "ball";
+                        config: Record<string, any>;
+                      }
+                    | {
+                        type: "charles";
+                        config: {
+                          activated?: false | true;
+                        };
+                      }
+                    | {
+                        type: "cyclic";
+                        /**
+                         * recipes emitted in order, starting again from the first after the last
+                         */
+                        cycle: [
+                          (
+                            | {
+                                type: "ball";
+                                config: Record<string, any>;
+                              }
+                            | {
+                                type: "charles";
+                                config: {
+                                  activated?: false | true;
+                                };
+                              }
+                            | {
+                                type: "firedDoughnut";
+                                config: {
+                                  direction?:
+                                    | "away"
+                                    | "awayLeft"
+                                    | "awayRight"
+                                    | "left"
+                                    | "right"
+                                    | "towards"
+                                    | "towardsLeft"
+                                    | "towardsRight";
+                                };
+                              }
+                            | {
+                                type: "floatingText";
+                                config: {
+                                  /**
+                                   * the lines of text to display, each rendered as a separate row
+                                   */
+                                  textLines: [string, ...string[]];
+                                  /**
+                                   * the room time when this floating text starts; used to calculate the rise animation age.
+                                   * if not given, will start right away at time zero.
+                                   * if given, will delay starting until this time
+                                   */
+                                  appearanceRoomTime?: number;
+                                  /**
+                                   * if true, lines oscillate horizontally as they rise
+                                   */
+                                  sway?: false | true;
+                                };
+                              }
+                            | {
+                                type: "monster";
+                                config:
+                                  | {
+                                      which: "bubbleRobot";
+                                      movement: "patrol-randomly-xy8";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "computerBot";
+                                      movement:
+                                        | "patrol-randomly-xy4-and-reverse"
+                                        | "towards-on-shortest-axis-xy4";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "cyberman";
+                                      activated:
+                                        "after-player-near" | "off" | "on";
+                                      movement: "towards-on-shortest-axis-xy4";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                    }
+                                  | {
+                                      which: "dalek";
+                                      movement: "patrol-randomly-diagonal";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "elephant";
+                                      movement: "patrol-randomly-xy4";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "elephantHead";
+                                      movement: "turn-to-player";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "emperor";
+                                      movement: "towards-analogue";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "emperorsGuardian";
+                                      movement: "towards-analogue-unless-planet-crowns";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "helicopterBug";
+                                      movement:
+                                        | "patrol-randomly-xy8"
+                                        | "towards-analogue";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "homingBot";
+                                      movement: "towards-tripped-on-axis-xy4";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "monkey";
+                                      movement:
+                                        | "patrol-randomly-xy4"
+                                        | "towards-on-shortest-axis-xy4";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "skiHead";
+                                      activated: "off" | "on";
+                                      movement:
+                                        "back-forth" | "clockwise" | "forwards";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      style: "greenAndPink" | "starsAndStripes";
+                                    }
+                                  | {
+                                      which: "turtle";
+                                      movement:
+                                        | "anticlockwise"
+                                        | "back-forth"
+                                        | "clockwise"
+                                        | "forwards";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      activated: "off" | "on";
+                                    };
+                              }
+                            | {
+                                type: "moveableDeadly";
+                                config: {
+                                  style: "deadFish";
+                                };
+                              }
+                            | {
+                                type: "movingPlatform";
+                                config: {
+                                  movement:
+                                    | "back-forth"
+                                    | "clockwise"
+                                    | "towards-analogue";
+                                  activated: "off" | "on-stand" | "on";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                };
+                              }
+                            | {
+                                type: "pickup";
+                                config:
+                                  | {
+                                      gives: "crown";
+                                      planet:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                    }
+                                  | {
+                                      gives: "scroll";
+                                      source: "inline";
+                                      markdown: [string, ...string[]] | string;
+                                    }
+                                  | {
+                                      gives: "scroll";
+                                      source: "manual";
+                                      page:
+                                        | "bag"
+                                        | "blacktooth"
+                                        | "bookWorld"
+                                        | "conveyorBelts"
+                                        | "credits"
+                                        | "crowns"
+                                        | "cuddlyStuffedWhiteRabbits"
+                                        | "doughnuts"
+                                        | "egyptus"
+                                        | "head"
+                                        | "heels"
+                                        | "hintsAndTips"
+                                        | "historyOfTheBlacktoothEmpire"
+                                        | "hooter"
+                                        | "hushPuppies"
+                                        | "installNative"
+                                        | "installPwa"
+                                        | "penitentiary"
+                                        | "reincarnationFish"
+                                        | "safari"
+                                        | "springs"
+                                        | "switches"
+                                        | "swopKey"
+                                        | "teleportBack"
+                                        | "teleports"
+                                        | "theEmperorsGuardian"
+                                        | "theGame";
+                                    }
+                                  | {
+                                      gives:
+                                        | "bag"
+                                        | "doughnuts"
+                                        | "extra-life"
+                                        | "fast"
+                                        | "hooter"
+                                        | "jumps"
+                                        | "reincarnation"
+                                        | "shield";
+                                    };
+                              }
+                            | {
+                                type: "portableBlock";
+                                config: {
+                                  style: "cube" | "drum" | "sticks";
+                                };
+                              }
+                            | {
+                                type: "portableTeleporter";
+                                config: {
+                                  times?: {
+                                    x?: number;
+                                    y?: number;
+                                    z?: number;
+                                  };
+                                  /**
+                                   * the teleporter only works once this planet has been liberated (its crown
+                                   * collected); always works when not given
+                                   */
+                                  activatedIfPlanetLiberated?:
+                                    | "blacktooth"
+                                    | "bookworld"
+                                    | "egyptus"
+                                    | "penitentiary"
+                                    | "safari";
+                                  /**
+                                   * an item in the destination room this teleporter should go to - the
+                                   * player will be moved to atop this item
+                                   *
+                                   * If not given, will find the (only teleporter) in the destination room
+                                   *
+                                   * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                   * is pointing to another room
+                                   */
+                                  toItemId?: string;
+                                  /**
+                                   * note that if the other room contains exactly one teleporter, we need not
+                                   * give the position or the item.
+                                   */
+                                  toRoom?: string;
+                                };
+                              }
+                            | {
+                                type: "pushableBlock";
+                                config: Record<string, any>;
+                              }
+                            | {
+                                type: "sceneryCrown";
+                                config: {
+                                  planet:
+                                    | "blacktooth"
+                                    | "bookworld"
+                                    | "egyptus"
+                                    | "penitentiary"
+                                    | "safari";
+                                };
+                              }
+                            | {
+                                type: "sceneryPlayer";
+                                config: {
+                                  which: "head" | "headOverHeels" | "heels";
+                                  startDirection:
+                                    | "away"
+                                    | "awayLeft"
+                                    | "awayRight"
+                                    | "left"
+                                    | "right"
+                                    | "towards"
+                                    | "towardsLeft"
+                                    | "towardsRight";
+                                };
+                              }
+                            | {
+                                type: "slidingBlock";
+                                config: {
+                                  style: "book" | "puck";
+                                };
+                              }
+                            | {
+                                type: "slidingDeadly";
+                                config: {
+                                  style: "spikyBall";
+                                  startingPhase: 1 | 2;
+                                };
+                              }
+                            | {
+                                type: "spring";
+                                config: Record<string, any>;
+                              }
+                          ),
+                          ...(
+                            | {
+                                type: "ball";
+                                config: Record<string, any>;
+                              }
+                            | {
+                                type: "charles";
+                                config: {
+                                  activated?: false | true;
+                                };
+                              }
+                            | {
+                                type: "firedDoughnut";
+                                config: {
+                                  direction?:
+                                    | "away"
+                                    | "awayLeft"
+                                    | "awayRight"
+                                    | "left"
+                                    | "right"
+                                    | "towards"
+                                    | "towardsLeft"
+                                    | "towardsRight";
+                                };
+                              }
+                            | {
+                                type: "floatingText";
+                                config: {
+                                  /**
+                                   * the lines of text to display, each rendered as a separate row
+                                   */
+                                  textLines: [string, ...string[]];
+                                  /**
+                                   * the room time when this floating text starts; used to calculate the rise animation age.
+                                   * if not given, will start right away at time zero.
+                                   * if given, will delay starting until this time
+                                   */
+                                  appearanceRoomTime?: number;
+                                  /**
+                                   * if true, lines oscillate horizontally as they rise
+                                   */
+                                  sway?: false | true;
+                                };
+                              }
+                            | {
+                                type: "monster";
+                                config:
+                                  | {
+                                      which: "bubbleRobot";
+                                      movement: "patrol-randomly-xy8";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "computerBot";
+                                      movement:
+                                        | "patrol-randomly-xy4-and-reverse"
+                                        | "towards-on-shortest-axis-xy4";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "cyberman";
+                                      activated:
+                                        "after-player-near" | "off" | "on";
+                                      movement: "towards-on-shortest-axis-xy4";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                    }
+                                  | {
+                                      which: "dalek";
+                                      movement: "patrol-randomly-diagonal";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "elephant";
+                                      movement: "patrol-randomly-xy4";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "elephantHead";
+                                      movement: "turn-to-player";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "emperor";
+                                      movement: "towards-analogue";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "emperorsGuardian";
+                                      movement: "towards-analogue-unless-planet-crowns";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "helicopterBug";
+                                      movement:
+                                        | "patrol-randomly-xy8"
+                                        | "towards-analogue";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "homingBot";
+                                      movement: "towards-tripped-on-axis-xy4";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "monkey";
+                                      movement:
+                                        | "patrol-randomly-xy4"
+                                        | "towards-on-shortest-axis-xy4";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "skiHead";
+                                      activated: "off" | "on";
+                                      movement:
+                                        "back-forth" | "clockwise" | "forwards";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      style: "greenAndPink" | "starsAndStripes";
+                                    }
+                                  | {
+                                      which: "turtle";
+                                      movement:
+                                        | "anticlockwise"
+                                        | "back-forth"
+                                        | "clockwise"
+                                        | "forwards";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      activated: "off" | "on";
+                                    };
+                              }
+                            | {
+                                type: "moveableDeadly";
+                                config: {
+                                  style: "deadFish";
+                                };
+                              }
+                            | {
+                                type: "movingPlatform";
+                                config: {
+                                  movement:
+                                    | "back-forth"
+                                    | "clockwise"
+                                    | "towards-analogue";
+                                  activated: "off" | "on-stand" | "on";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                };
+                              }
+                            | {
+                                type: "pickup";
+                                config:
+                                  | {
+                                      gives: "crown";
+                                      planet:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                    }
+                                  | {
+                                      gives: "scroll";
+                                      source: "inline";
+                                      markdown: [string, ...string[]] | string;
+                                    }
+                                  | {
+                                      gives: "scroll";
+                                      source: "manual";
+                                      page:
+                                        | "bag"
+                                        | "blacktooth"
+                                        | "bookWorld"
+                                        | "conveyorBelts"
+                                        | "credits"
+                                        | "crowns"
+                                        | "cuddlyStuffedWhiteRabbits"
+                                        | "doughnuts"
+                                        | "egyptus"
+                                        | "head"
+                                        | "heels"
+                                        | "hintsAndTips"
+                                        | "historyOfTheBlacktoothEmpire"
+                                        | "hooter"
+                                        | "hushPuppies"
+                                        | "installNative"
+                                        | "installPwa"
+                                        | "penitentiary"
+                                        | "reincarnationFish"
+                                        | "safari"
+                                        | "springs"
+                                        | "switches"
+                                        | "swopKey"
+                                        | "teleportBack"
+                                        | "teleports"
+                                        | "theEmperorsGuardian"
+                                        | "theGame";
+                                    }
+                                  | {
+                                      gives:
+                                        | "bag"
+                                        | "doughnuts"
+                                        | "extra-life"
+                                        | "fast"
+                                        | "hooter"
+                                        | "jumps"
+                                        | "reincarnation"
+                                        | "shield";
+                                    };
+                              }
+                            | {
+                                type: "portableBlock";
+                                config: {
+                                  style: "cube" | "drum" | "sticks";
+                                };
+                              }
+                            | {
+                                type: "portableTeleporter";
+                                config: {
+                                  times?: {
+                                    x?: number;
+                                    y?: number;
+                                    z?: number;
+                                  };
+                                  /**
+                                   * the teleporter only works once this planet has been liberated (its crown
+                                   * collected); always works when not given
+                                   */
+                                  activatedIfPlanetLiberated?:
+                                    | "blacktooth"
+                                    | "bookworld"
+                                    | "egyptus"
+                                    | "penitentiary"
+                                    | "safari";
+                                  /**
+                                   * an item in the destination room this teleporter should go to - the
+                                   * player will be moved to atop this item
+                                   *
+                                   * If not given, will find the (only teleporter) in the destination room
+                                   *
+                                   * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                   * is pointing to another room
+                                   */
+                                  toItemId?: string;
+                                  /**
+                                   * note that if the other room contains exactly one teleporter, we need not
+                                   * give the position or the item.
+                                   */
+                                  toRoom?: string;
+                                };
+                              }
+                            | {
+                                type: "pushableBlock";
+                                config: Record<string, any>;
+                              }
+                            | {
+                                type: "sceneryCrown";
+                                config: {
+                                  planet:
+                                    | "blacktooth"
+                                    | "bookworld"
+                                    | "egyptus"
+                                    | "penitentiary"
+                                    | "safari";
+                                };
+                              }
+                            | {
+                                type: "sceneryPlayer";
+                                config: {
+                                  which: "head" | "headOverHeels" | "heels";
+                                  startDirection:
+                                    | "away"
+                                    | "awayLeft"
+                                    | "awayRight"
+                                    | "left"
+                                    | "right"
+                                    | "towards"
+                                    | "towardsLeft"
+                                    | "towardsRight";
+                                };
+                              }
+                            | {
+                                type: "slidingBlock";
+                                config: {
+                                  style: "book" | "puck";
+                                };
+                              }
+                            | {
+                                type: "slidingDeadly";
+                                config: {
+                                  style: "spikyBall";
+                                  startingPhase: 1 | 2;
+                                };
+                              }
+                            | {
+                                type: "spring";
+                                config: Record<string, any>;
+                              }
+                          )[],
+                        ];
+                      }
+                    | {
+                        type: "firedDoughnut";
+                        config: {
+                          direction?:
+                            | "away"
+                            | "awayLeft"
+                            | "awayRight"
+                            | "left"
+                            | "right"
+                            | "towards"
+                            | "towardsLeft"
+                            | "towardsRight";
+                        };
+                      }
+                    | {
+                        type: "floatingText";
+                        config: {
                           /**
                            * the lines of text to display, each rendered as a separate row
                            */
-                          textLines: string[];
+                          textLines: [string, ...string[]];
                           /**
                            * the room time when this floating text starts; used to calculate the rise animation age.
                            * if not given, will start right away at time zero.
@@ -3396,106 +11023,184 @@ export type RoomJsonSchema = {
                            * if true, lines oscillate horizontally as they rise
                            */
                           sway?: false | true;
-                        }
-                      | {
-                          activated?: false | true;
-                        }
-                      | {
-                          direction?:
-                            | "away"
-                            | "awayLeft"
-                            | "awayRight"
-                            | "left"
-                            | "right"
-                            | "towards"
-                            | "towardsLeft"
-                            | "towardsRight";
-                        }
-                      | {
-                          gives: "crown";
-                          planet:
-                            | "blacktooth"
-                            | "bookworld"
-                            | "egyptus"
-                            | "penitentiary"
-                            | "safari";
-                        }
-                      | {
-                          gives: "scroll";
-                          source: "inline";
-                          markdown: string | string[];
-                        }
-                      | {
-                          gives: "scroll";
-                          source: "manual";
-                          page:
-                            | "bag"
-                            | "blacktooth"
-                            | "bookWorld"
-                            | "conveyorBelts"
-                            | "credits"
-                            | "crowns"
-                            | "cuddlyStuffedWhiteRabbits"
-                            | "doughnuts"
-                            | "egyptus"
-                            | "head"
-                            | "heels"
-                            | "hintsAndTips"
-                            | "historyOfTheBlacktoothEmpire"
-                            | "hooter"
-                            | "hushPuppies"
-                            | "installNative"
-                            | "installPwa"
-                            | "penitentiary"
-                            | "reincarnationFish"
-                            | "safari"
-                            | "springs"
-                            | "switches"
-                            | "swopKey"
-                            | "teleportBack"
-                            | "teleports"
-                            | "theEmperorsGuardian"
-                            | "theGame";
-                        }
-                      | {
-                          gives:
-                            | "bag"
-                            | "doughnuts"
-                            | "extra-life"
-                            | "fast"
-                            | "hooter"
-                            | "jumps"
-                            | "reincarnation"
-                            | "shield";
-                        }
-                      | {
+                        };
+                      }
+                    | {
+                        type: "monster";
+                        config:
+                          | {
+                              which: "bubbleRobot";
+                              movement: "patrol-randomly-xy8";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "computerBot";
+                              movement:
+                                | "patrol-randomly-xy4-and-reverse"
+                                | "towards-on-shortest-axis-xy4";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "cyberman";
+                              activated: "after-player-near" | "off" | "on";
+                              movement: "towards-on-shortest-axis-xy4";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                            }
+                          | {
+                              which: "dalek";
+                              movement: "patrol-randomly-diagonal";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "elephant";
+                              movement: "patrol-randomly-xy4";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "elephantHead";
+                              movement: "turn-to-player";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "emperor";
+                              movement: "towards-analogue";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "emperorsGuardian";
+                              movement: "towards-analogue-unless-planet-crowns";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "helicopterBug";
+                              movement:
+                                "patrol-randomly-xy8" | "towards-analogue";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "homingBot";
+                              movement: "towards-tripped-on-axis-xy4";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "monkey";
+                              movement:
+                                | "patrol-randomly-xy4"
+                                | "towards-on-shortest-axis-xy4";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "skiHead";
+                              activated: "off" | "on";
+                              movement: "back-forth" | "clockwise" | "forwards";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              style: "greenAndPink" | "starsAndStripes";
+                            }
+                          | {
+                              which: "turtle";
+                              movement:
+                                | "anticlockwise"
+                                | "back-forth"
+                                | "clockwise"
+                                | "forwards";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              activated: "off" | "on";
+                            };
+                      }
+                    | {
+                        type: "moveableDeadly";
+                        config: {
+                          style: "deadFish";
+                        };
+                      }
+                    | {
+                        type: "movingPlatform";
+                        config: {
                           movement:
                             "back-forth" | "clockwise" | "towards-analogue";
                           activated: "off" | "on-stand" | "on";
                           startDirection: "away" | "left" | "right" | "towards";
-                        }
-                      | {
-                          planet:
-                            | "blacktooth"
-                            | "bookworld"
-                            | "egyptus"
-                            | "penitentiary"
-                            | "safari";
-                        }
-                      | {
-                          style: "book" | "puck";
-                        }
-                      | {
+                        };
+                      }
+                    | {
+                        type: "pickup";
+                        config:
+                          | {
+                              gives: "crown";
+                              planet:
+                                | "blacktooth"
+                                | "bookworld"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari";
+                            }
+                          | {
+                              gives: "scroll";
+                              source: "inline";
+                              markdown: [string, ...string[]] | string;
+                            }
+                          | {
+                              gives: "scroll";
+                              source: "manual";
+                              page:
+                                | "bag"
+                                | "blacktooth"
+                                | "bookWorld"
+                                | "conveyorBelts"
+                                | "credits"
+                                | "crowns"
+                                | "cuddlyStuffedWhiteRabbits"
+                                | "doughnuts"
+                                | "egyptus"
+                                | "head"
+                                | "heels"
+                                | "hintsAndTips"
+                                | "historyOfTheBlacktoothEmpire"
+                                | "hooter"
+                                | "hushPuppies"
+                                | "installNative"
+                                | "installPwa"
+                                | "penitentiary"
+                                | "reincarnationFish"
+                                | "safari"
+                                | "springs"
+                                | "switches"
+                                | "swopKey"
+                                | "teleportBack"
+                                | "teleports"
+                                | "theEmperorsGuardian"
+                                | "theGame";
+                            }
+                          | {
+                              gives:
+                                | "bag"
+                                | "doughnuts"
+                                | "extra-life"
+                                | "fast"
+                                | "hooter"
+                                | "jumps"
+                                | "reincarnation"
+                                | "shield";
+                            };
+                      }
+                    | {
+                        type: "portableBlock";
+                        config: {
                           style: "cube" | "drum" | "sticks";
-                        }
-                      | {
-                          style: "deadFish";
-                        }
-                      | {
-                          style: "spikyBall";
-                          startingPhase: 1 | 2;
-                        }
-                      | {
+                        };
+                      }
+                    | {
+                        type: "portableTeleporter";
+                        config: {
                           times?: {
                             x?: number;
                             y?: number;
@@ -3526,53 +11231,672 @@ export type RoomJsonSchema = {
                            * give the position or the item.
                            */
                           toRoom?: string;
-                        }
-                      | {
-                          which: "bubbleRobot";
-                          movement: "patrol-randomly-xy8";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "computerBot";
-                          movement:
-                            | "patrol-randomly-xy4-and-reverse"
-                            | "towards-on-shortest-axis-xy4";
-                          startDirection: "away" | "left" | "right" | "towards";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "cyberman";
-                          activated: "after-player-near" | "off" | "on";
-                          movement: "towards-on-shortest-axis-xy4";
-                          startDirection: "away" | "left" | "right" | "towards";
-                        }
-                      | {
-                          which: "dalek";
-                          movement: "patrol-randomly-diagonal";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "elephant";
-                          movement: "patrol-randomly-xy4";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "elephantHead";
-                          movement: "turn-to-player";
-                          startDirection: "away" | "left" | "right" | "towards";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "emperor";
-                          movement: "towards-analogue";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "emperorsGuardian";
-                          movement: "towards-analogue-unless-planet-crowns";
-                          activated: "off" | "on";
-                        }
-                      | {
+                        };
+                      }
+                    | {
+                        type: "probabilistic";
+                        /**
+                         * one of these is chosen at random for each emission, pseudo-randomly from
+                         * the emitter's hash and the room time, so the same emission at the same
+                         * time in the same room always chooses the same recipe
+                         */
+                        choices: [
+                          {
+                            emits:
+                              | {
+                                  type: "ball";
+                                  config: Record<string, any>;
+                                }
+                              | {
+                                  type: "charles";
+                                  config: {
+                                    activated?: false | true;
+                                  };
+                                }
+                              | {
+                                  type: "firedDoughnut";
+                                  config: {
+                                    direction?:
+                                      | "away"
+                                      | "awayLeft"
+                                      | "awayRight"
+                                      | "left"
+                                      | "right"
+                                      | "towards"
+                                      | "towardsLeft"
+                                      | "towardsRight";
+                                  };
+                                }
+                              | {
+                                  type: "floatingText";
+                                  config: {
+                                    /**
+                                     * the lines of text to display, each rendered as a separate row
+                                     */
+                                    textLines: [string, ...string[]];
+                                    /**
+                                     * the room time when this floating text starts; used to calculate the rise animation age.
+                                     * if not given, will start right away at time zero.
+                                     * if given, will delay starting until this time
+                                     */
+                                    appearanceRoomTime?: number;
+                                    /**
+                                     * if true, lines oscillate horizontally as they rise
+                                     */
+                                    sway?: false | true;
+                                  };
+                                }
+                              | {
+                                  type: "monster";
+                                  config:
+                                    | {
+                                        which: "bubbleRobot";
+                                        movement: "patrol-randomly-xy8";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "computerBot";
+                                        movement:
+                                          | "patrol-randomly-xy4-and-reverse"
+                                          | "towards-on-shortest-axis-xy4";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "cyberman";
+                                        activated:
+                                          "after-player-near" | "off" | "on";
+                                        movement: "towards-on-shortest-axis-xy4";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                      }
+                                    | {
+                                        which: "dalek";
+                                        movement: "patrol-randomly-diagonal";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "elephant";
+                                        movement: "patrol-randomly-xy4";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "elephantHead";
+                                        movement: "turn-to-player";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "emperor";
+                                        movement: "towards-analogue";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "emperorsGuardian";
+                                        movement: "towards-analogue-unless-planet-crowns";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "helicopterBug";
+                                        movement:
+                                          | "patrol-randomly-xy8"
+                                          | "towards-analogue";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "homingBot";
+                                        movement: "towards-tripped-on-axis-xy4";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "monkey";
+                                        movement:
+                                          | "patrol-randomly-xy4"
+                                          | "towards-on-shortest-axis-xy4";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "skiHead";
+                                        activated: "off" | "on";
+                                        movement:
+                                          | "back-forth"
+                                          | "clockwise"
+                                          | "forwards";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        style:
+                                          "greenAndPink" | "starsAndStripes";
+                                      }
+                                    | {
+                                        which: "turtle";
+                                        movement:
+                                          | "anticlockwise"
+                                          | "back-forth"
+                                          | "clockwise"
+                                          | "forwards";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        activated: "off" | "on";
+                                      };
+                                }
+                              | {
+                                  type: "moveableDeadly";
+                                  config: {
+                                    style: "deadFish";
+                                  };
+                                }
+                              | {
+                                  type: "movingPlatform";
+                                  config: {
+                                    movement:
+                                      | "back-forth"
+                                      | "clockwise"
+                                      | "towards-analogue";
+                                    activated: "off" | "on-stand" | "on";
+                                    startDirection:
+                                      "away" | "left" | "right" | "towards";
+                                  };
+                                }
+                              | {
+                                  type: "pickup";
+                                  config:
+                                    | {
+                                        gives: "crown";
+                                        planet:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                      }
+                                    | {
+                                        gives: "scroll";
+                                        source: "inline";
+                                        markdown:
+                                          [string, ...string[]] | string;
+                                      }
+                                    | {
+                                        gives: "scroll";
+                                        source: "manual";
+                                        page:
+                                          | "bag"
+                                          | "blacktooth"
+                                          | "bookWorld"
+                                          | "conveyorBelts"
+                                          | "credits"
+                                          | "crowns"
+                                          | "cuddlyStuffedWhiteRabbits"
+                                          | "doughnuts"
+                                          | "egyptus"
+                                          | "head"
+                                          | "heels"
+                                          | "hintsAndTips"
+                                          | "historyOfTheBlacktoothEmpire"
+                                          | "hooter"
+                                          | "hushPuppies"
+                                          | "installNative"
+                                          | "installPwa"
+                                          | "penitentiary"
+                                          | "reincarnationFish"
+                                          | "safari"
+                                          | "springs"
+                                          | "switches"
+                                          | "swopKey"
+                                          | "teleportBack"
+                                          | "teleports"
+                                          | "theEmperorsGuardian"
+                                          | "theGame";
+                                      }
+                                    | {
+                                        gives:
+                                          | "bag"
+                                          | "doughnuts"
+                                          | "extra-life"
+                                          | "fast"
+                                          | "hooter"
+                                          | "jumps"
+                                          | "reincarnation"
+                                          | "shield";
+                                      };
+                                }
+                              | {
+                                  type: "portableBlock";
+                                  config: {
+                                    style: "cube" | "drum" | "sticks";
+                                  };
+                                }
+                              | {
+                                  type: "portableTeleporter";
+                                  config: {
+                                    times?: {
+                                      x?: number;
+                                      y?: number;
+                                      z?: number;
+                                    };
+                                    /**
+                                     * the teleporter only works once this planet has been liberated (its crown
+                                     * collected); always works when not given
+                                     */
+                                    activatedIfPlanetLiberated?:
+                                      | "blacktooth"
+                                      | "bookworld"
+                                      | "egyptus"
+                                      | "penitentiary"
+                                      | "safari";
+                                    /**
+                                     * an item in the destination room this teleporter should go to - the
+                                     * player will be moved to atop this item
+                                     *
+                                     * If not given, will find the (only teleporter) in the destination room
+                                     *
+                                     * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                     * is pointing to another room
+                                     */
+                                    toItemId?: string;
+                                    /**
+                                     * note that if the other room contains exactly one teleporter, we need not
+                                     * give the position or the item.
+                                     */
+                                    toRoom?: string;
+                                  };
+                                }
+                              | {
+                                  type: "pushableBlock";
+                                  config: Record<string, any>;
+                                }
+                              | {
+                                  type: "sceneryCrown";
+                                  config: {
+                                    planet:
+                                      | "blacktooth"
+                                      | "bookworld"
+                                      | "egyptus"
+                                      | "penitentiary"
+                                      | "safari";
+                                  };
+                                }
+                              | {
+                                  type: "sceneryPlayer";
+                                  config: {
+                                    which: "head" | "headOverHeels" | "heels";
+                                    startDirection:
+                                      | "away"
+                                      | "awayLeft"
+                                      | "awayRight"
+                                      | "left"
+                                      | "right"
+                                      | "towards"
+                                      | "towardsLeft"
+                                      | "towardsRight";
+                                  };
+                                }
+                              | {
+                                  type: "slidingBlock";
+                                  config: {
+                                    style: "book" | "puck";
+                                  };
+                                }
+                              | {
+                                  type: "slidingDeadly";
+                                  config: {
+                                    style: "spikyBall";
+                                    startingPhase: 1 | 2;
+                                  };
+                                }
+                              | {
+                                  type: "spring";
+                                  config: Record<string, any>;
+                                };
+                            /**
+                             * relative chance of this recipe being chosen. Weights are relative to each
+                             * other, so they need not add up to anything. 0 is allowed, but if every
+                             * weight is 0 the recipes are chosen with equal probability.
+                             * undefined is treated as 1
+                             */
+                            probabilityWeight?: number;
+                          },
+                          ...{
+                            emits:
+                              | {
+                                  type: "ball";
+                                  config: Record<string, any>;
+                                }
+                              | {
+                                  type: "charles";
+                                  config: {
+                                    activated?: false | true;
+                                  };
+                                }
+                              | {
+                                  type: "firedDoughnut";
+                                  config: {
+                                    direction?:
+                                      | "away"
+                                      | "awayLeft"
+                                      | "awayRight"
+                                      | "left"
+                                      | "right"
+                                      | "towards"
+                                      | "towardsLeft"
+                                      | "towardsRight";
+                                  };
+                                }
+                              | {
+                                  type: "floatingText";
+                                  config: {
+                                    /**
+                                     * the lines of text to display, each rendered as a separate row
+                                     */
+                                    textLines: [string, ...string[]];
+                                    /**
+                                     * the room time when this floating text starts; used to calculate the rise animation age.
+                                     * if not given, will start right away at time zero.
+                                     * if given, will delay starting until this time
+                                     */
+                                    appearanceRoomTime?: number;
+                                    /**
+                                     * if true, lines oscillate horizontally as they rise
+                                     */
+                                    sway?: false | true;
+                                  };
+                                }
+                              | {
+                                  type: "monster";
+                                  config:
+                                    | {
+                                        which: "bubbleRobot";
+                                        movement: "patrol-randomly-xy8";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "computerBot";
+                                        movement:
+                                          | "patrol-randomly-xy4-and-reverse"
+                                          | "towards-on-shortest-axis-xy4";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "cyberman";
+                                        activated:
+                                          "after-player-near" | "off" | "on";
+                                        movement: "towards-on-shortest-axis-xy4";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                      }
+                                    | {
+                                        which: "dalek";
+                                        movement: "patrol-randomly-diagonal";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "elephant";
+                                        movement: "patrol-randomly-xy4";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "elephantHead";
+                                        movement: "turn-to-player";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "emperor";
+                                        movement: "towards-analogue";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "emperorsGuardian";
+                                        movement: "towards-analogue-unless-planet-crowns";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "helicopterBug";
+                                        movement:
+                                          | "patrol-randomly-xy8"
+                                          | "towards-analogue";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "homingBot";
+                                        movement: "towards-tripped-on-axis-xy4";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "monkey";
+                                        movement:
+                                          | "patrol-randomly-xy4"
+                                          | "towards-on-shortest-axis-xy4";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "skiHead";
+                                        activated: "off" | "on";
+                                        movement:
+                                          | "back-forth"
+                                          | "clockwise"
+                                          | "forwards";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        style:
+                                          "greenAndPink" | "starsAndStripes";
+                                      }
+                                    | {
+                                        which: "turtle";
+                                        movement:
+                                          | "anticlockwise"
+                                          | "back-forth"
+                                          | "clockwise"
+                                          | "forwards";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        activated: "off" | "on";
+                                      };
+                                }
+                              | {
+                                  type: "moveableDeadly";
+                                  config: {
+                                    style: "deadFish";
+                                  };
+                                }
+                              | {
+                                  type: "movingPlatform";
+                                  config: {
+                                    movement:
+                                      | "back-forth"
+                                      | "clockwise"
+                                      | "towards-analogue";
+                                    activated: "off" | "on-stand" | "on";
+                                    startDirection:
+                                      "away" | "left" | "right" | "towards";
+                                  };
+                                }
+                              | {
+                                  type: "pickup";
+                                  config:
+                                    | {
+                                        gives: "crown";
+                                        planet:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                      }
+                                    | {
+                                        gives: "scroll";
+                                        source: "inline";
+                                        markdown:
+                                          [string, ...string[]] | string;
+                                      }
+                                    | {
+                                        gives: "scroll";
+                                        source: "manual";
+                                        page:
+                                          | "bag"
+                                          | "blacktooth"
+                                          | "bookWorld"
+                                          | "conveyorBelts"
+                                          | "credits"
+                                          | "crowns"
+                                          | "cuddlyStuffedWhiteRabbits"
+                                          | "doughnuts"
+                                          | "egyptus"
+                                          | "head"
+                                          | "heels"
+                                          | "hintsAndTips"
+                                          | "historyOfTheBlacktoothEmpire"
+                                          | "hooter"
+                                          | "hushPuppies"
+                                          | "installNative"
+                                          | "installPwa"
+                                          | "penitentiary"
+                                          | "reincarnationFish"
+                                          | "safari"
+                                          | "springs"
+                                          | "switches"
+                                          | "swopKey"
+                                          | "teleportBack"
+                                          | "teleports"
+                                          | "theEmperorsGuardian"
+                                          | "theGame";
+                                      }
+                                    | {
+                                        gives:
+                                          | "bag"
+                                          | "doughnuts"
+                                          | "extra-life"
+                                          | "fast"
+                                          | "hooter"
+                                          | "jumps"
+                                          | "reincarnation"
+                                          | "shield";
+                                      };
+                                }
+                              | {
+                                  type: "portableBlock";
+                                  config: {
+                                    style: "cube" | "drum" | "sticks";
+                                  };
+                                }
+                              | {
+                                  type: "portableTeleporter";
+                                  config: {
+                                    times?: {
+                                      x?: number;
+                                      y?: number;
+                                      z?: number;
+                                    };
+                                    /**
+                                     * the teleporter only works once this planet has been liberated (its crown
+                                     * collected); always works when not given
+                                     */
+                                    activatedIfPlanetLiberated?:
+                                      | "blacktooth"
+                                      | "bookworld"
+                                      | "egyptus"
+                                      | "penitentiary"
+                                      | "safari";
+                                    /**
+                                     * an item in the destination room this teleporter should go to - the
+                                     * player will be moved to atop this item
+                                     *
+                                     * If not given, will find the (only teleporter) in the destination room
+                                     *
+                                     * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                     * is pointing to another room
+                                     */
+                                    toItemId?: string;
+                                    /**
+                                     * note that if the other room contains exactly one teleporter, we need not
+                                     * give the position or the item.
+                                     */
+                                    toRoom?: string;
+                                  };
+                                }
+                              | {
+                                  type: "pushableBlock";
+                                  config: Record<string, any>;
+                                }
+                              | {
+                                  type: "sceneryCrown";
+                                  config: {
+                                    planet:
+                                      | "blacktooth"
+                                      | "bookworld"
+                                      | "egyptus"
+                                      | "penitentiary"
+                                      | "safari";
+                                  };
+                                }
+                              | {
+                                  type: "sceneryPlayer";
+                                  config: {
+                                    which: "head" | "headOverHeels" | "heels";
+                                    startDirection:
+                                      | "away"
+                                      | "awayLeft"
+                                      | "awayRight"
+                                      | "left"
+                                      | "right"
+                                      | "towards"
+                                      | "towardsLeft"
+                                      | "towardsRight";
+                                  };
+                                }
+                              | {
+                                  type: "slidingBlock";
+                                  config: {
+                                    style: "book" | "puck";
+                                  };
+                                }
+                              | {
+                                  type: "slidingDeadly";
+                                  config: {
+                                    style: "spikyBall";
+                                    startingPhase: 1 | 2;
+                                  };
+                                }
+                              | {
+                                  type: "spring";
+                                  config: Record<string, any>;
+                                };
+                            /**
+                             * relative chance of this recipe being chosen. Weights are relative to each
+                             * other, so they need not add up to anything. 0 is allowed, but if every
+                             * weight is 0 the recipes are chosen with equal probability.
+                             * undefined is treated as 1
+                             */
+                            probabilityWeight?: number;
+                          }[],
+                        ];
+                      }
+                    | {
+                        type: "pushableBlock";
+                        config: Record<string, any>;
+                      }
+                    | {
+                        type: "sceneryCrown";
+                        config: {
+                          planet:
+                            | "blacktooth"
+                            | "bookworld"
+                            | "egyptus"
+                            | "penitentiary"
+                            | "safari";
+                        };
+                      }
+                    | {
+                        type: "sceneryPlayer";
+                        config: {
                           which: "head" | "headOverHeels" | "heels";
                           startDirection:
                             | "away"
@@ -3583,44 +11907,25 @@ export type RoomJsonSchema = {
                             | "towards"
                             | "towardsLeft"
                             | "towardsRight";
-                        }
-                      | {
-                          which: "helicopterBug";
-                          movement: "patrol-randomly-xy8" | "towards-analogue";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "homingBot";
-                          movement: "towards-tripped-on-axis-xy4";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "monkey";
-                          movement:
-                            | "patrol-randomly-xy4"
-                            | "towards-on-shortest-axis-xy4";
-                          startDirection: "away" | "left" | "right" | "towards";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "skiHead";
-                          activated: "off" | "on";
-                          movement: "back-forth" | "clockwise" | "forwards";
-                          startDirection: "away" | "left" | "right" | "towards";
-                          style: "greenAndPink" | "starsAndStripes";
-                        }
-                      | {
-                          which: "turtle";
-                          movement:
-                            | "anticlockwise"
-                            | "back-forth"
-                            | "clockwise"
-                            | "forwards";
-                          startDirection: "away" | "left" | "right" | "towards";
-                          activated: "off" | "on";
-                        }
-                      | Record<string, any>;
-                  };
+                        };
+                      }
+                    | {
+                        type: "slidingBlock";
+                        config: {
+                          style: "book" | "puck";
+                        };
+                      }
+                    | {
+                        type: "slidingDeadly";
+                        config: {
+                          style: "spikyBall";
+                          startingPhase: 1 | 2;
+                        };
+                      }
+                    | {
+                        type: "spring";
+                        config: Record<string, any>;
+                      };
                   /**
                    * how long between emissions?
                    */
@@ -3649,32 +11954,662 @@ export type RoomJsonSchema = {
                   quantityEmitted?: number;
                   playerInsideAtRoomTime?: number;
                   /**
-                   * what does this emitter emit? Could be (potentially) any free item
+                   * what does this emitter emit? Could be (potentially) any free item. Can
+                   * also cycle through several recipes in order, or choose between them
+                   * pseudo-randomly
                    */
-                  emits?: {
-                    type:
-                      | "ball"
-                      | "charles"
-                      | "firedDoughnut"
-                      | "floatingText"
-                      | "monster"
-                      | "moveableDeadly"
-                      | "movingPlatform"
-                      | "pickup"
-                      | "portableBlock"
-                      | "portableTeleporter"
-                      | "pushableBlock"
-                      | "sceneryCrown"
-                      | "sceneryPlayer"
-                      | "slidingBlock"
-                      | "slidingDeadly"
-                      | "spring";
-                    config:
-                      | {
+                  emits?:
+                    | {
+                        type: "ball";
+                        config: Record<string, any>;
+                      }
+                    | {
+                        type: "charles";
+                        config: {
+                          activated?: false | true;
+                        };
+                      }
+                    | {
+                        type: "cyclic";
+                        /**
+                         * recipes emitted in order, starting again from the first after the last
+                         */
+                        cycle: [
+                          (
+                            | {
+                                type: "ball";
+                                config: Record<string, any>;
+                              }
+                            | {
+                                type: "charles";
+                                config: {
+                                  activated?: false | true;
+                                };
+                              }
+                            | {
+                                type: "firedDoughnut";
+                                config: {
+                                  direction?:
+                                    | "away"
+                                    | "awayLeft"
+                                    | "awayRight"
+                                    | "left"
+                                    | "right"
+                                    | "towards"
+                                    | "towardsLeft"
+                                    | "towardsRight";
+                                };
+                              }
+                            | {
+                                type: "floatingText";
+                                config: {
+                                  /**
+                                   * the lines of text to display, each rendered as a separate row
+                                   */
+                                  textLines: [string, ...string[]];
+                                  /**
+                                   * the room time when this floating text starts; used to calculate the rise animation age.
+                                   * if not given, will start right away at time zero.
+                                   * if given, will delay starting until this time
+                                   */
+                                  appearanceRoomTime?: number;
+                                  /**
+                                   * if true, lines oscillate horizontally as they rise
+                                   */
+                                  sway?: false | true;
+                                };
+                              }
+                            | {
+                                type: "monster";
+                                config:
+                                  | {
+                                      which: "bubbleRobot";
+                                      movement: "patrol-randomly-xy8";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "computerBot";
+                                      movement:
+                                        | "patrol-randomly-xy4-and-reverse"
+                                        | "towards-on-shortest-axis-xy4";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "cyberman";
+                                      activated:
+                                        "after-player-near" | "off" | "on";
+                                      movement: "towards-on-shortest-axis-xy4";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                    }
+                                  | {
+                                      which: "dalek";
+                                      movement: "patrol-randomly-diagonal";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "elephant";
+                                      movement: "patrol-randomly-xy4";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "elephantHead";
+                                      movement: "turn-to-player";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "emperor";
+                                      movement: "towards-analogue";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "emperorsGuardian";
+                                      movement: "towards-analogue-unless-planet-crowns";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "helicopterBug";
+                                      movement:
+                                        | "patrol-randomly-xy8"
+                                        | "towards-analogue";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "homingBot";
+                                      movement: "towards-tripped-on-axis-xy4";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "monkey";
+                                      movement:
+                                        | "patrol-randomly-xy4"
+                                        | "towards-on-shortest-axis-xy4";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "skiHead";
+                                      activated: "off" | "on";
+                                      movement:
+                                        "back-forth" | "clockwise" | "forwards";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      style: "greenAndPink" | "starsAndStripes";
+                                    }
+                                  | {
+                                      which: "turtle";
+                                      movement:
+                                        | "anticlockwise"
+                                        | "back-forth"
+                                        | "clockwise"
+                                        | "forwards";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      activated: "off" | "on";
+                                    };
+                              }
+                            | {
+                                type: "moveableDeadly";
+                                config: {
+                                  style: "deadFish";
+                                };
+                              }
+                            | {
+                                type: "movingPlatform";
+                                config: {
+                                  movement:
+                                    | "back-forth"
+                                    | "clockwise"
+                                    | "towards-analogue";
+                                  activated: "off" | "on-stand" | "on";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                };
+                              }
+                            | {
+                                type: "pickup";
+                                config:
+                                  | {
+                                      gives: "crown";
+                                      planet:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                    }
+                                  | {
+                                      gives: "scroll";
+                                      source: "inline";
+                                      markdown: [string, ...string[]] | string;
+                                    }
+                                  | {
+                                      gives: "scroll";
+                                      source: "manual";
+                                      page:
+                                        | "bag"
+                                        | "blacktooth"
+                                        | "bookWorld"
+                                        | "conveyorBelts"
+                                        | "credits"
+                                        | "crowns"
+                                        | "cuddlyStuffedWhiteRabbits"
+                                        | "doughnuts"
+                                        | "egyptus"
+                                        | "head"
+                                        | "heels"
+                                        | "hintsAndTips"
+                                        | "historyOfTheBlacktoothEmpire"
+                                        | "hooter"
+                                        | "hushPuppies"
+                                        | "installNative"
+                                        | "installPwa"
+                                        | "penitentiary"
+                                        | "reincarnationFish"
+                                        | "safari"
+                                        | "springs"
+                                        | "switches"
+                                        | "swopKey"
+                                        | "teleportBack"
+                                        | "teleports"
+                                        | "theEmperorsGuardian"
+                                        | "theGame";
+                                    }
+                                  | {
+                                      gives:
+                                        | "bag"
+                                        | "doughnuts"
+                                        | "extra-life"
+                                        | "fast"
+                                        | "hooter"
+                                        | "jumps"
+                                        | "reincarnation"
+                                        | "shield";
+                                    };
+                              }
+                            | {
+                                type: "portableBlock";
+                                config: {
+                                  style: "cube" | "drum" | "sticks";
+                                };
+                              }
+                            | {
+                                type: "portableTeleporter";
+                                config: {
+                                  times?: {
+                                    x?: number;
+                                    y?: number;
+                                    z?: number;
+                                  };
+                                  /**
+                                   * the teleporter only works once this planet has been liberated (its crown
+                                   * collected); always works when not given
+                                   */
+                                  activatedIfPlanetLiberated?:
+                                    | "blacktooth"
+                                    | "bookworld"
+                                    | "egyptus"
+                                    | "penitentiary"
+                                    | "safari";
+                                  /**
+                                   * an item in the destination room this teleporter should go to - the
+                                   * player will be moved to atop this item
+                                   *
+                                   * If not given, will find the (only teleporter) in the destination room
+                                   *
+                                   * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                   * is pointing to another room
+                                   */
+                                  toItemId?: string;
+                                  /**
+                                   * note that if the other room contains exactly one teleporter, we need not
+                                   * give the position or the item.
+                                   */
+                                  toRoom?: string;
+                                };
+                              }
+                            | {
+                                type: "pushableBlock";
+                                config: Record<string, any>;
+                              }
+                            | {
+                                type: "sceneryCrown";
+                                config: {
+                                  planet:
+                                    | "blacktooth"
+                                    | "bookworld"
+                                    | "egyptus"
+                                    | "penitentiary"
+                                    | "safari";
+                                };
+                              }
+                            | {
+                                type: "sceneryPlayer";
+                                config: {
+                                  which: "head" | "headOverHeels" | "heels";
+                                  startDirection:
+                                    | "away"
+                                    | "awayLeft"
+                                    | "awayRight"
+                                    | "left"
+                                    | "right"
+                                    | "towards"
+                                    | "towardsLeft"
+                                    | "towardsRight";
+                                };
+                              }
+                            | {
+                                type: "slidingBlock";
+                                config: {
+                                  style: "book" | "puck";
+                                };
+                              }
+                            | {
+                                type: "slidingDeadly";
+                                config: {
+                                  style: "spikyBall";
+                                  startingPhase: 1 | 2;
+                                };
+                              }
+                            | {
+                                type: "spring";
+                                config: Record<string, any>;
+                              }
+                          ),
+                          ...(
+                            | {
+                                type: "ball";
+                                config: Record<string, any>;
+                              }
+                            | {
+                                type: "charles";
+                                config: {
+                                  activated?: false | true;
+                                };
+                              }
+                            | {
+                                type: "firedDoughnut";
+                                config: {
+                                  direction?:
+                                    | "away"
+                                    | "awayLeft"
+                                    | "awayRight"
+                                    | "left"
+                                    | "right"
+                                    | "towards"
+                                    | "towardsLeft"
+                                    | "towardsRight";
+                                };
+                              }
+                            | {
+                                type: "floatingText";
+                                config: {
+                                  /**
+                                   * the lines of text to display, each rendered as a separate row
+                                   */
+                                  textLines: [string, ...string[]];
+                                  /**
+                                   * the room time when this floating text starts; used to calculate the rise animation age.
+                                   * if not given, will start right away at time zero.
+                                   * if given, will delay starting until this time
+                                   */
+                                  appearanceRoomTime?: number;
+                                  /**
+                                   * if true, lines oscillate horizontally as they rise
+                                   */
+                                  sway?: false | true;
+                                };
+                              }
+                            | {
+                                type: "monster";
+                                config:
+                                  | {
+                                      which: "bubbleRobot";
+                                      movement: "patrol-randomly-xy8";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "computerBot";
+                                      movement:
+                                        | "patrol-randomly-xy4-and-reverse"
+                                        | "towards-on-shortest-axis-xy4";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "cyberman";
+                                      activated:
+                                        "after-player-near" | "off" | "on";
+                                      movement: "towards-on-shortest-axis-xy4";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                    }
+                                  | {
+                                      which: "dalek";
+                                      movement: "patrol-randomly-diagonal";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "elephant";
+                                      movement: "patrol-randomly-xy4";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "elephantHead";
+                                      movement: "turn-to-player";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "emperor";
+                                      movement: "towards-analogue";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "emperorsGuardian";
+                                      movement: "towards-analogue-unless-planet-crowns";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "helicopterBug";
+                                      movement:
+                                        | "patrol-randomly-xy8"
+                                        | "towards-analogue";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "homingBot";
+                                      movement: "towards-tripped-on-axis-xy4";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "monkey";
+                                      movement:
+                                        | "patrol-randomly-xy4"
+                                        | "towards-on-shortest-axis-xy4";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      activated: "off" | "on";
+                                    }
+                                  | {
+                                      which: "skiHead";
+                                      activated: "off" | "on";
+                                      movement:
+                                        "back-forth" | "clockwise" | "forwards";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      style: "greenAndPink" | "starsAndStripes";
+                                    }
+                                  | {
+                                      which: "turtle";
+                                      movement:
+                                        | "anticlockwise"
+                                        | "back-forth"
+                                        | "clockwise"
+                                        | "forwards";
+                                      startDirection:
+                                        "away" | "left" | "right" | "towards";
+                                      activated: "off" | "on";
+                                    };
+                              }
+                            | {
+                                type: "moveableDeadly";
+                                config: {
+                                  style: "deadFish";
+                                };
+                              }
+                            | {
+                                type: "movingPlatform";
+                                config: {
+                                  movement:
+                                    | "back-forth"
+                                    | "clockwise"
+                                    | "towards-analogue";
+                                  activated: "off" | "on-stand" | "on";
+                                  startDirection:
+                                    "away" | "left" | "right" | "towards";
+                                };
+                              }
+                            | {
+                                type: "pickup";
+                                config:
+                                  | {
+                                      gives: "crown";
+                                      planet:
+                                        | "blacktooth"
+                                        | "bookworld"
+                                        | "egyptus"
+                                        | "penitentiary"
+                                        | "safari";
+                                    }
+                                  | {
+                                      gives: "scroll";
+                                      source: "inline";
+                                      markdown: [string, ...string[]] | string;
+                                    }
+                                  | {
+                                      gives: "scroll";
+                                      source: "manual";
+                                      page:
+                                        | "bag"
+                                        | "blacktooth"
+                                        | "bookWorld"
+                                        | "conveyorBelts"
+                                        | "credits"
+                                        | "crowns"
+                                        | "cuddlyStuffedWhiteRabbits"
+                                        | "doughnuts"
+                                        | "egyptus"
+                                        | "head"
+                                        | "heels"
+                                        | "hintsAndTips"
+                                        | "historyOfTheBlacktoothEmpire"
+                                        | "hooter"
+                                        | "hushPuppies"
+                                        | "installNative"
+                                        | "installPwa"
+                                        | "penitentiary"
+                                        | "reincarnationFish"
+                                        | "safari"
+                                        | "springs"
+                                        | "switches"
+                                        | "swopKey"
+                                        | "teleportBack"
+                                        | "teleports"
+                                        | "theEmperorsGuardian"
+                                        | "theGame";
+                                    }
+                                  | {
+                                      gives:
+                                        | "bag"
+                                        | "doughnuts"
+                                        | "extra-life"
+                                        | "fast"
+                                        | "hooter"
+                                        | "jumps"
+                                        | "reincarnation"
+                                        | "shield";
+                                    };
+                              }
+                            | {
+                                type: "portableBlock";
+                                config: {
+                                  style: "cube" | "drum" | "sticks";
+                                };
+                              }
+                            | {
+                                type: "portableTeleporter";
+                                config: {
+                                  times?: {
+                                    x?: number;
+                                    y?: number;
+                                    z?: number;
+                                  };
+                                  /**
+                                   * the teleporter only works once this planet has been liberated (its crown
+                                   * collected); always works when not given
+                                   */
+                                  activatedIfPlanetLiberated?:
+                                    | "blacktooth"
+                                    | "bookworld"
+                                    | "egyptus"
+                                    | "penitentiary"
+                                    | "safari";
+                                  /**
+                                   * an item in the destination room this teleporter should go to - the
+                                   * player will be moved to atop this item
+                                   *
+                                   * If not given, will find the (only teleporter) in the destination room
+                                   *
+                                   * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                   * is pointing to another room
+                                   */
+                                  toItemId?: string;
+                                  /**
+                                   * note that if the other room contains exactly one teleporter, we need not
+                                   * give the position or the item.
+                                   */
+                                  toRoom?: string;
+                                };
+                              }
+                            | {
+                                type: "pushableBlock";
+                                config: Record<string, any>;
+                              }
+                            | {
+                                type: "sceneryCrown";
+                                config: {
+                                  planet:
+                                    | "blacktooth"
+                                    | "bookworld"
+                                    | "egyptus"
+                                    | "penitentiary"
+                                    | "safari";
+                                };
+                              }
+                            | {
+                                type: "sceneryPlayer";
+                                config: {
+                                  which: "head" | "headOverHeels" | "heels";
+                                  startDirection:
+                                    | "away"
+                                    | "awayLeft"
+                                    | "awayRight"
+                                    | "left"
+                                    | "right"
+                                    | "towards"
+                                    | "towardsLeft"
+                                    | "towardsRight";
+                                };
+                              }
+                            | {
+                                type: "slidingBlock";
+                                config: {
+                                  style: "book" | "puck";
+                                };
+                              }
+                            | {
+                                type: "slidingDeadly";
+                                config: {
+                                  style: "spikyBall";
+                                  startingPhase: 1 | 2;
+                                };
+                              }
+                            | {
+                                type: "spring";
+                                config: Record<string, any>;
+                              }
+                          )[],
+                        ];
+                      }
+                    | {
+                        type: "firedDoughnut";
+                        config: {
+                          direction?:
+                            | "away"
+                            | "awayLeft"
+                            | "awayRight"
+                            | "left"
+                            | "right"
+                            | "towards"
+                            | "towardsLeft"
+                            | "towardsRight";
+                        };
+                      }
+                    | {
+                        type: "floatingText";
+                        config: {
                           /**
                            * the lines of text to display, each rendered as a separate row
                            */
-                          textLines: string[];
+                          textLines: [string, ...string[]];
                           /**
                            * the room time when this floating text starts; used to calculate the rise animation age.
                            * if not given, will start right away at time zero.
@@ -3685,106 +12620,184 @@ export type RoomJsonSchema = {
                            * if true, lines oscillate horizontally as they rise
                            */
                           sway?: false | true;
-                        }
-                      | {
-                          activated?: false | true;
-                        }
-                      | {
-                          direction?:
-                            | "away"
-                            | "awayLeft"
-                            | "awayRight"
-                            | "left"
-                            | "right"
-                            | "towards"
-                            | "towardsLeft"
-                            | "towardsRight";
-                        }
-                      | {
-                          gives: "crown";
-                          planet:
-                            | "blacktooth"
-                            | "bookworld"
-                            | "egyptus"
-                            | "penitentiary"
-                            | "safari";
-                        }
-                      | {
-                          gives: "scroll";
-                          source: "inline";
-                          markdown: string | string[];
-                        }
-                      | {
-                          gives: "scroll";
-                          source: "manual";
-                          page:
-                            | "bag"
-                            | "blacktooth"
-                            | "bookWorld"
-                            | "conveyorBelts"
-                            | "credits"
-                            | "crowns"
-                            | "cuddlyStuffedWhiteRabbits"
-                            | "doughnuts"
-                            | "egyptus"
-                            | "head"
-                            | "heels"
-                            | "hintsAndTips"
-                            | "historyOfTheBlacktoothEmpire"
-                            | "hooter"
-                            | "hushPuppies"
-                            | "installNative"
-                            | "installPwa"
-                            | "penitentiary"
-                            | "reincarnationFish"
-                            | "safari"
-                            | "springs"
-                            | "switches"
-                            | "swopKey"
-                            | "teleportBack"
-                            | "teleports"
-                            | "theEmperorsGuardian"
-                            | "theGame";
-                        }
-                      | {
-                          gives:
-                            | "bag"
-                            | "doughnuts"
-                            | "extra-life"
-                            | "fast"
-                            | "hooter"
-                            | "jumps"
-                            | "reincarnation"
-                            | "shield";
-                        }
-                      | {
+                        };
+                      }
+                    | {
+                        type: "monster";
+                        config:
+                          | {
+                              which: "bubbleRobot";
+                              movement: "patrol-randomly-xy8";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "computerBot";
+                              movement:
+                                | "patrol-randomly-xy4-and-reverse"
+                                | "towards-on-shortest-axis-xy4";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "cyberman";
+                              activated: "after-player-near" | "off" | "on";
+                              movement: "towards-on-shortest-axis-xy4";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                            }
+                          | {
+                              which: "dalek";
+                              movement: "patrol-randomly-diagonal";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "elephant";
+                              movement: "patrol-randomly-xy4";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "elephantHead";
+                              movement: "turn-to-player";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "emperor";
+                              movement: "towards-analogue";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "emperorsGuardian";
+                              movement: "towards-analogue-unless-planet-crowns";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "helicopterBug";
+                              movement:
+                                "patrol-randomly-xy8" | "towards-analogue";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "homingBot";
+                              movement: "towards-tripped-on-axis-xy4";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "monkey";
+                              movement:
+                                | "patrol-randomly-xy4"
+                                | "towards-on-shortest-axis-xy4";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "skiHead";
+                              activated: "off" | "on";
+                              movement: "back-forth" | "clockwise" | "forwards";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              style: "greenAndPink" | "starsAndStripes";
+                            }
+                          | {
+                              which: "turtle";
+                              movement:
+                                | "anticlockwise"
+                                | "back-forth"
+                                | "clockwise"
+                                | "forwards";
+                              startDirection:
+                                "away" | "left" | "right" | "towards";
+                              activated: "off" | "on";
+                            };
+                      }
+                    | {
+                        type: "moveableDeadly";
+                        config: {
+                          style: "deadFish";
+                        };
+                      }
+                    | {
+                        type: "movingPlatform";
+                        config: {
                           movement:
                             "back-forth" | "clockwise" | "towards-analogue";
                           activated: "off" | "on-stand" | "on";
                           startDirection: "away" | "left" | "right" | "towards";
-                        }
-                      | {
-                          planet:
-                            | "blacktooth"
-                            | "bookworld"
-                            | "egyptus"
-                            | "penitentiary"
-                            | "safari";
-                        }
-                      | {
-                          style: "book" | "puck";
-                        }
-                      | {
+                        };
+                      }
+                    | {
+                        type: "pickup";
+                        config:
+                          | {
+                              gives: "crown";
+                              planet:
+                                | "blacktooth"
+                                | "bookworld"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari";
+                            }
+                          | {
+                              gives: "scroll";
+                              source: "inline";
+                              markdown: [string, ...string[]] | string;
+                            }
+                          | {
+                              gives: "scroll";
+                              source: "manual";
+                              page:
+                                | "bag"
+                                | "blacktooth"
+                                | "bookWorld"
+                                | "conveyorBelts"
+                                | "credits"
+                                | "crowns"
+                                | "cuddlyStuffedWhiteRabbits"
+                                | "doughnuts"
+                                | "egyptus"
+                                | "head"
+                                | "heels"
+                                | "hintsAndTips"
+                                | "historyOfTheBlacktoothEmpire"
+                                | "hooter"
+                                | "hushPuppies"
+                                | "installNative"
+                                | "installPwa"
+                                | "penitentiary"
+                                | "reincarnationFish"
+                                | "safari"
+                                | "springs"
+                                | "switches"
+                                | "swopKey"
+                                | "teleportBack"
+                                | "teleports"
+                                | "theEmperorsGuardian"
+                                | "theGame";
+                            }
+                          | {
+                              gives:
+                                | "bag"
+                                | "doughnuts"
+                                | "extra-life"
+                                | "fast"
+                                | "hooter"
+                                | "jumps"
+                                | "reincarnation"
+                                | "shield";
+                            };
+                      }
+                    | {
+                        type: "portableBlock";
+                        config: {
                           style: "cube" | "drum" | "sticks";
-                        }
-                      | {
-                          style: "deadFish";
-                        }
-                      | {
-                          style: "spikyBall";
-                          startingPhase: 1 | 2;
-                        }
-                      | {
+                        };
+                      }
+                    | {
+                        type: "portableTeleporter";
+                        config: {
                           times?: {
                             x?: number;
                             y?: number;
@@ -3815,53 +12828,672 @@ export type RoomJsonSchema = {
                            * give the position or the item.
                            */
                           toRoom?: string;
-                        }
-                      | {
-                          which: "bubbleRobot";
-                          movement: "patrol-randomly-xy8";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "computerBot";
-                          movement:
-                            | "patrol-randomly-xy4-and-reverse"
-                            | "towards-on-shortest-axis-xy4";
-                          startDirection: "away" | "left" | "right" | "towards";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "cyberman";
-                          activated: "after-player-near" | "off" | "on";
-                          movement: "towards-on-shortest-axis-xy4";
-                          startDirection: "away" | "left" | "right" | "towards";
-                        }
-                      | {
-                          which: "dalek";
-                          movement: "patrol-randomly-diagonal";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "elephant";
-                          movement: "patrol-randomly-xy4";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "elephantHead";
-                          movement: "turn-to-player";
-                          startDirection: "away" | "left" | "right" | "towards";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "emperor";
-                          movement: "towards-analogue";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "emperorsGuardian";
-                          movement: "towards-analogue-unless-planet-crowns";
-                          activated: "off" | "on";
-                        }
-                      | {
+                        };
+                      }
+                    | {
+                        type: "probabilistic";
+                        /**
+                         * one of these is chosen at random for each emission, pseudo-randomly from
+                         * the emitter's hash and the room time, so the same emission at the same
+                         * time in the same room always chooses the same recipe
+                         */
+                        choices: [
+                          {
+                            emits:
+                              | {
+                                  type: "ball";
+                                  config: Record<string, any>;
+                                }
+                              | {
+                                  type: "charles";
+                                  config: {
+                                    activated?: false | true;
+                                  };
+                                }
+                              | {
+                                  type: "firedDoughnut";
+                                  config: {
+                                    direction?:
+                                      | "away"
+                                      | "awayLeft"
+                                      | "awayRight"
+                                      | "left"
+                                      | "right"
+                                      | "towards"
+                                      | "towardsLeft"
+                                      | "towardsRight";
+                                  };
+                                }
+                              | {
+                                  type: "floatingText";
+                                  config: {
+                                    /**
+                                     * the lines of text to display, each rendered as a separate row
+                                     */
+                                    textLines: [string, ...string[]];
+                                    /**
+                                     * the room time when this floating text starts; used to calculate the rise animation age.
+                                     * if not given, will start right away at time zero.
+                                     * if given, will delay starting until this time
+                                     */
+                                    appearanceRoomTime?: number;
+                                    /**
+                                     * if true, lines oscillate horizontally as they rise
+                                     */
+                                    sway?: false | true;
+                                  };
+                                }
+                              | {
+                                  type: "monster";
+                                  config:
+                                    | {
+                                        which: "bubbleRobot";
+                                        movement: "patrol-randomly-xy8";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "computerBot";
+                                        movement:
+                                          | "patrol-randomly-xy4-and-reverse"
+                                          | "towards-on-shortest-axis-xy4";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "cyberman";
+                                        activated:
+                                          "after-player-near" | "off" | "on";
+                                        movement: "towards-on-shortest-axis-xy4";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                      }
+                                    | {
+                                        which: "dalek";
+                                        movement: "patrol-randomly-diagonal";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "elephant";
+                                        movement: "patrol-randomly-xy4";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "elephantHead";
+                                        movement: "turn-to-player";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "emperor";
+                                        movement: "towards-analogue";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "emperorsGuardian";
+                                        movement: "towards-analogue-unless-planet-crowns";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "helicopterBug";
+                                        movement:
+                                          | "patrol-randomly-xy8"
+                                          | "towards-analogue";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "homingBot";
+                                        movement: "towards-tripped-on-axis-xy4";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "monkey";
+                                        movement:
+                                          | "patrol-randomly-xy4"
+                                          | "towards-on-shortest-axis-xy4";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "skiHead";
+                                        activated: "off" | "on";
+                                        movement:
+                                          | "back-forth"
+                                          | "clockwise"
+                                          | "forwards";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        style:
+                                          "greenAndPink" | "starsAndStripes";
+                                      }
+                                    | {
+                                        which: "turtle";
+                                        movement:
+                                          | "anticlockwise"
+                                          | "back-forth"
+                                          | "clockwise"
+                                          | "forwards";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        activated: "off" | "on";
+                                      };
+                                }
+                              | {
+                                  type: "moveableDeadly";
+                                  config: {
+                                    style: "deadFish";
+                                  };
+                                }
+                              | {
+                                  type: "movingPlatform";
+                                  config: {
+                                    movement:
+                                      | "back-forth"
+                                      | "clockwise"
+                                      | "towards-analogue";
+                                    activated: "off" | "on-stand" | "on";
+                                    startDirection:
+                                      "away" | "left" | "right" | "towards";
+                                  };
+                                }
+                              | {
+                                  type: "pickup";
+                                  config:
+                                    | {
+                                        gives: "crown";
+                                        planet:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                      }
+                                    | {
+                                        gives: "scroll";
+                                        source: "inline";
+                                        markdown:
+                                          [string, ...string[]] | string;
+                                      }
+                                    | {
+                                        gives: "scroll";
+                                        source: "manual";
+                                        page:
+                                          | "bag"
+                                          | "blacktooth"
+                                          | "bookWorld"
+                                          | "conveyorBelts"
+                                          | "credits"
+                                          | "crowns"
+                                          | "cuddlyStuffedWhiteRabbits"
+                                          | "doughnuts"
+                                          | "egyptus"
+                                          | "head"
+                                          | "heels"
+                                          | "hintsAndTips"
+                                          | "historyOfTheBlacktoothEmpire"
+                                          | "hooter"
+                                          | "hushPuppies"
+                                          | "installNative"
+                                          | "installPwa"
+                                          | "penitentiary"
+                                          | "reincarnationFish"
+                                          | "safari"
+                                          | "springs"
+                                          | "switches"
+                                          | "swopKey"
+                                          | "teleportBack"
+                                          | "teleports"
+                                          | "theEmperorsGuardian"
+                                          | "theGame";
+                                      }
+                                    | {
+                                        gives:
+                                          | "bag"
+                                          | "doughnuts"
+                                          | "extra-life"
+                                          | "fast"
+                                          | "hooter"
+                                          | "jumps"
+                                          | "reincarnation"
+                                          | "shield";
+                                      };
+                                }
+                              | {
+                                  type: "portableBlock";
+                                  config: {
+                                    style: "cube" | "drum" | "sticks";
+                                  };
+                                }
+                              | {
+                                  type: "portableTeleporter";
+                                  config: {
+                                    times?: {
+                                      x?: number;
+                                      y?: number;
+                                      z?: number;
+                                    };
+                                    /**
+                                     * the teleporter only works once this planet has been liberated (its crown
+                                     * collected); always works when not given
+                                     */
+                                    activatedIfPlanetLiberated?:
+                                      | "blacktooth"
+                                      | "bookworld"
+                                      | "egyptus"
+                                      | "penitentiary"
+                                      | "safari";
+                                    /**
+                                     * an item in the destination room this teleporter should go to - the
+                                     * player will be moved to atop this item
+                                     *
+                                     * If not given, will find the (only teleporter) in the destination room
+                                     *
+                                     * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                     * is pointing to another room
+                                     */
+                                    toItemId?: string;
+                                    /**
+                                     * note that if the other room contains exactly one teleporter, we need not
+                                     * give the position or the item.
+                                     */
+                                    toRoom?: string;
+                                  };
+                                }
+                              | {
+                                  type: "pushableBlock";
+                                  config: Record<string, any>;
+                                }
+                              | {
+                                  type: "sceneryCrown";
+                                  config: {
+                                    planet:
+                                      | "blacktooth"
+                                      | "bookworld"
+                                      | "egyptus"
+                                      | "penitentiary"
+                                      | "safari";
+                                  };
+                                }
+                              | {
+                                  type: "sceneryPlayer";
+                                  config: {
+                                    which: "head" | "headOverHeels" | "heels";
+                                    startDirection:
+                                      | "away"
+                                      | "awayLeft"
+                                      | "awayRight"
+                                      | "left"
+                                      | "right"
+                                      | "towards"
+                                      | "towardsLeft"
+                                      | "towardsRight";
+                                  };
+                                }
+                              | {
+                                  type: "slidingBlock";
+                                  config: {
+                                    style: "book" | "puck";
+                                  };
+                                }
+                              | {
+                                  type: "slidingDeadly";
+                                  config: {
+                                    style: "spikyBall";
+                                    startingPhase: 1 | 2;
+                                  };
+                                }
+                              | {
+                                  type: "spring";
+                                  config: Record<string, any>;
+                                };
+                            /**
+                             * relative chance of this recipe being chosen. Weights are relative to each
+                             * other, so they need not add up to anything. 0 is allowed, but if every
+                             * weight is 0 the recipes are chosen with equal probability.
+                             * undefined is treated as 1
+                             */
+                            probabilityWeight?: number;
+                          },
+                          ...{
+                            emits:
+                              | {
+                                  type: "ball";
+                                  config: Record<string, any>;
+                                }
+                              | {
+                                  type: "charles";
+                                  config: {
+                                    activated?: false | true;
+                                  };
+                                }
+                              | {
+                                  type: "firedDoughnut";
+                                  config: {
+                                    direction?:
+                                      | "away"
+                                      | "awayLeft"
+                                      | "awayRight"
+                                      | "left"
+                                      | "right"
+                                      | "towards"
+                                      | "towardsLeft"
+                                      | "towardsRight";
+                                  };
+                                }
+                              | {
+                                  type: "floatingText";
+                                  config: {
+                                    /**
+                                     * the lines of text to display, each rendered as a separate row
+                                     */
+                                    textLines: [string, ...string[]];
+                                    /**
+                                     * the room time when this floating text starts; used to calculate the rise animation age.
+                                     * if not given, will start right away at time zero.
+                                     * if given, will delay starting until this time
+                                     */
+                                    appearanceRoomTime?: number;
+                                    /**
+                                     * if true, lines oscillate horizontally as they rise
+                                     */
+                                    sway?: false | true;
+                                  };
+                                }
+                              | {
+                                  type: "monster";
+                                  config:
+                                    | {
+                                        which: "bubbleRobot";
+                                        movement: "patrol-randomly-xy8";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "computerBot";
+                                        movement:
+                                          | "patrol-randomly-xy4-and-reverse"
+                                          | "towards-on-shortest-axis-xy4";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "cyberman";
+                                        activated:
+                                          "after-player-near" | "off" | "on";
+                                        movement: "towards-on-shortest-axis-xy4";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                      }
+                                    | {
+                                        which: "dalek";
+                                        movement: "patrol-randomly-diagonal";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "elephant";
+                                        movement: "patrol-randomly-xy4";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "elephantHead";
+                                        movement: "turn-to-player";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "emperor";
+                                        movement: "towards-analogue";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "emperorsGuardian";
+                                        movement: "towards-analogue-unless-planet-crowns";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "helicopterBug";
+                                        movement:
+                                          | "patrol-randomly-xy8"
+                                          | "towards-analogue";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "homingBot";
+                                        movement: "towards-tripped-on-axis-xy4";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "monkey";
+                                        movement:
+                                          | "patrol-randomly-xy4"
+                                          | "towards-on-shortest-axis-xy4";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        activated: "off" | "on";
+                                      }
+                                    | {
+                                        which: "skiHead";
+                                        activated: "off" | "on";
+                                        movement:
+                                          | "back-forth"
+                                          | "clockwise"
+                                          | "forwards";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        style:
+                                          "greenAndPink" | "starsAndStripes";
+                                      }
+                                    | {
+                                        which: "turtle";
+                                        movement:
+                                          | "anticlockwise"
+                                          | "back-forth"
+                                          | "clockwise"
+                                          | "forwards";
+                                        startDirection:
+                                          "away" | "left" | "right" | "towards";
+                                        activated: "off" | "on";
+                                      };
+                                }
+                              | {
+                                  type: "moveableDeadly";
+                                  config: {
+                                    style: "deadFish";
+                                  };
+                                }
+                              | {
+                                  type: "movingPlatform";
+                                  config: {
+                                    movement:
+                                      | "back-forth"
+                                      | "clockwise"
+                                      | "towards-analogue";
+                                    activated: "off" | "on-stand" | "on";
+                                    startDirection:
+                                      "away" | "left" | "right" | "towards";
+                                  };
+                                }
+                              | {
+                                  type: "pickup";
+                                  config:
+                                    | {
+                                        gives: "crown";
+                                        planet:
+                                          | "blacktooth"
+                                          | "bookworld"
+                                          | "egyptus"
+                                          | "penitentiary"
+                                          | "safari";
+                                      }
+                                    | {
+                                        gives: "scroll";
+                                        source: "inline";
+                                        markdown:
+                                          [string, ...string[]] | string;
+                                      }
+                                    | {
+                                        gives: "scroll";
+                                        source: "manual";
+                                        page:
+                                          | "bag"
+                                          | "blacktooth"
+                                          | "bookWorld"
+                                          | "conveyorBelts"
+                                          | "credits"
+                                          | "crowns"
+                                          | "cuddlyStuffedWhiteRabbits"
+                                          | "doughnuts"
+                                          | "egyptus"
+                                          | "head"
+                                          | "heels"
+                                          | "hintsAndTips"
+                                          | "historyOfTheBlacktoothEmpire"
+                                          | "hooter"
+                                          | "hushPuppies"
+                                          | "installNative"
+                                          | "installPwa"
+                                          | "penitentiary"
+                                          | "reincarnationFish"
+                                          | "safari"
+                                          | "springs"
+                                          | "switches"
+                                          | "swopKey"
+                                          | "teleportBack"
+                                          | "teleports"
+                                          | "theEmperorsGuardian"
+                                          | "theGame";
+                                      }
+                                    | {
+                                        gives:
+                                          | "bag"
+                                          | "doughnuts"
+                                          | "extra-life"
+                                          | "fast"
+                                          | "hooter"
+                                          | "jumps"
+                                          | "reincarnation"
+                                          | "shield";
+                                      };
+                                }
+                              | {
+                                  type: "portableBlock";
+                                  config: {
+                                    style: "cube" | "drum" | "sticks";
+                                  };
+                                }
+                              | {
+                                  type: "portableTeleporter";
+                                  config: {
+                                    times?: {
+                                      x?: number;
+                                      y?: number;
+                                      z?: number;
+                                    };
+                                    /**
+                                     * the teleporter only works once this planet has been liberated (its crown
+                                     * collected); always works when not given
+                                     */
+                                    activatedIfPlanetLiberated?:
+                                      | "blacktooth"
+                                      | "bookworld"
+                                      | "egyptus"
+                                      | "penitentiary"
+                                      | "safari";
+                                    /**
+                                     * an item in the destination room this teleporter should go to - the
+                                     * player will be moved to atop this item
+                                     *
+                                     * If not given, will find the (only teleporter) in the destination room
+                                     *
+                                     * note: not RoomItemId because that is the ids of items in *this* room, but this
+                                     * is pointing to another room
+                                     */
+                                    toItemId?: string;
+                                    /**
+                                     * note that if the other room contains exactly one teleporter, we need not
+                                     * give the position or the item.
+                                     */
+                                    toRoom?: string;
+                                  };
+                                }
+                              | {
+                                  type: "pushableBlock";
+                                  config: Record<string, any>;
+                                }
+                              | {
+                                  type: "sceneryCrown";
+                                  config: {
+                                    planet:
+                                      | "blacktooth"
+                                      | "bookworld"
+                                      | "egyptus"
+                                      | "penitentiary"
+                                      | "safari";
+                                  };
+                                }
+                              | {
+                                  type: "sceneryPlayer";
+                                  config: {
+                                    which: "head" | "headOverHeels" | "heels";
+                                    startDirection:
+                                      | "away"
+                                      | "awayLeft"
+                                      | "awayRight"
+                                      | "left"
+                                      | "right"
+                                      | "towards"
+                                      | "towardsLeft"
+                                      | "towardsRight";
+                                  };
+                                }
+                              | {
+                                  type: "slidingBlock";
+                                  config: {
+                                    style: "book" | "puck";
+                                  };
+                                }
+                              | {
+                                  type: "slidingDeadly";
+                                  config: {
+                                    style: "spikyBall";
+                                    startingPhase: 1 | 2;
+                                  };
+                                }
+                              | {
+                                  type: "spring";
+                                  config: Record<string, any>;
+                                };
+                            /**
+                             * relative chance of this recipe being chosen. Weights are relative to each
+                             * other, so they need not add up to anything. 0 is allowed, but if every
+                             * weight is 0 the recipes are chosen with equal probability.
+                             * undefined is treated as 1
+                             */
+                            probabilityWeight?: number;
+                          }[],
+                        ];
+                      }
+                    | {
+                        type: "pushableBlock";
+                        config: Record<string, any>;
+                      }
+                    | {
+                        type: "sceneryCrown";
+                        config: {
+                          planet:
+                            | "blacktooth"
+                            | "bookworld"
+                            | "egyptus"
+                            | "penitentiary"
+                            | "safari";
+                        };
+                      }
+                    | {
+                        type: "sceneryPlayer";
+                        config: {
                           which: "head" | "headOverHeels" | "heels";
                           startDirection:
                             | "away"
@@ -3872,44 +13504,25 @@ export type RoomJsonSchema = {
                             | "towards"
                             | "towardsLeft"
                             | "towardsRight";
-                        }
-                      | {
-                          which: "helicopterBug";
-                          movement: "patrol-randomly-xy8" | "towards-analogue";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "homingBot";
-                          movement: "towards-tripped-on-axis-xy4";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "monkey";
-                          movement:
-                            | "patrol-randomly-xy4"
-                            | "towards-on-shortest-axis-xy4";
-                          startDirection: "away" | "left" | "right" | "towards";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "skiHead";
-                          activated: "off" | "on";
-                          movement: "back-forth" | "clockwise" | "forwards";
-                          startDirection: "away" | "left" | "right" | "towards";
-                          style: "greenAndPink" | "starsAndStripes";
-                        }
-                      | {
-                          which: "turtle";
-                          movement:
-                            | "anticlockwise"
-                            | "back-forth"
-                            | "clockwise"
-                            | "forwards";
-                          startDirection: "away" | "left" | "right" | "towards";
-                          activated: "off" | "on";
-                        }
-                      | Record<string, any>;
-                  };
+                        };
+                      }
+                    | {
+                        type: "slidingBlock";
+                        config: {
+                          style: "book" | "puck";
+                        };
+                      }
+                    | {
+                        type: "slidingDeadly";
+                        config: {
+                          style: "spikyBall";
+                          startingPhase: 1 | 2;
+                        };
+                      }
+                    | {
+                        type: "spring";
+                        config: Record<string, any>;
+                      };
                   /**
                    * how long between emissions?
                    */
@@ -4042,55 +13655,106 @@ export type RoomJsonSchema = {
                      * Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player
                      * or ['head'] eg for doughnuts that only head can collect
                      */
-                    byType?: (
-                      | "ball"
-                      | "barrier"
-                      | "block"
-                      | "blocker"
-                      | "bubbles"
-                      | "button"
-                      | "charles"
-                      | "conveyor"
-                      | "deadlyBlock"
-                      | "doorFrame"
-                      | "doorLegs"
-                      | "editorGhost"
-                      | "emitter"
-                      | "firedDoughnut"
-                      | "floatingText"
-                      | "floor"
-                      | "head"
-                      | "headOverHeels"
-                      | "heels"
-                      | "hushPuppy"
-                      | "joystick"
-                      | "lamp"
-                      | "lift"
-                      | "lightBeam"
-                      | "mirror"
-                      | "monster"
-                      | "moveableDeadly"
-                      | "movingPlatform"
-                      | "outOfBounds"
-                      | "particle"
-                      | "pickup"
-                      | "portableBlock"
-                      | "portableTeleporter"
-                      | "portal"
-                      | "pushableBlock"
-                      | "sceneryCrown"
-                      | "sceneryPlayer"
-                      | "slidingBlock"
-                      | "slidingDeadly"
-                      | "soundEffect"
-                      | "spikes"
-                      | "spring"
-                      | "stopAutowalk"
-                      | "switch"
-                      | "teleporter"
-                      | "timer"
-                      | "wall"
-                    )[];
+                    byType?: [
+                      (
+                        | "ball"
+                        | "barrier"
+                        | "block"
+                        | "blocker"
+                        | "bubbles"
+                        | "button"
+                        | "charles"
+                        | "conveyor"
+                        | "deadlyBlock"
+                        | "doorFrame"
+                        | "doorLegs"
+                        | "editorGhost"
+                        | "emitter"
+                        | "firedDoughnut"
+                        | "floatingText"
+                        | "floor"
+                        | "head"
+                        | "headOverHeels"
+                        | "heels"
+                        | "hushPuppy"
+                        | "joystick"
+                        | "lamp"
+                        | "lift"
+                        | "lightBeam"
+                        | "mirror"
+                        | "monster"
+                        | "moveableDeadly"
+                        | "movingPlatform"
+                        | "outOfBounds"
+                        | "particle"
+                        | "pickup"
+                        | "portableBlock"
+                        | "portableTeleporter"
+                        | "portal"
+                        | "pushableBlock"
+                        | "sceneryCrown"
+                        | "sceneryPlayer"
+                        | "slidingBlock"
+                        | "slidingDeadly"
+                        | "soundEffect"
+                        | "spikes"
+                        | "spring"
+                        | "stopAutowalk"
+                        | "switch"
+                        | "teleporter"
+                        | "timer"
+                        | "wall"
+                      ),
+                      ...(
+                        | "ball"
+                        | "barrier"
+                        | "block"
+                        | "blocker"
+                        | "bubbles"
+                        | "button"
+                        | "charles"
+                        | "conveyor"
+                        | "deadlyBlock"
+                        | "doorFrame"
+                        | "doorLegs"
+                        | "editorGhost"
+                        | "emitter"
+                        | "firedDoughnut"
+                        | "floatingText"
+                        | "floor"
+                        | "head"
+                        | "headOverHeels"
+                        | "heels"
+                        | "hushPuppy"
+                        | "joystick"
+                        | "lamp"
+                        | "lift"
+                        | "lightBeam"
+                        | "mirror"
+                        | "monster"
+                        | "moveableDeadly"
+                        | "movingPlatform"
+                        | "outOfBounds"
+                        | "particle"
+                        | "pickup"
+                        | "portableBlock"
+                        | "portableTeleporter"
+                        | "portal"
+                        | "pushableBlock"
+                        | "sceneryCrown"
+                        | "sceneryPlayer"
+                        | "slidingBlock"
+                        | "slidingDeadly"
+                        | "soundEffect"
+                        | "spikes"
+                        | "spring"
+                        | "stopAutowalk"
+                        | "switch"
+                        | "teleporter"
+                        | "timer"
+                        | "wall"
+                      )[],
+                    ];
                   } | null;
                   /**
                    * activated for us is a boolean, not the many-states from the json config, ie it is stateful
@@ -4126,55 +13790,106 @@ export type RoomJsonSchema = {
                      * Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player
                      * or ['head'] eg for doughnuts that only head can collect
                      */
-                    byType?: (
-                      | "ball"
-                      | "barrier"
-                      | "block"
-                      | "blocker"
-                      | "bubbles"
-                      | "button"
-                      | "charles"
-                      | "conveyor"
-                      | "deadlyBlock"
-                      | "doorFrame"
-                      | "doorLegs"
-                      | "editorGhost"
-                      | "emitter"
-                      | "firedDoughnut"
-                      | "floatingText"
-                      | "floor"
-                      | "head"
-                      | "headOverHeels"
-                      | "heels"
-                      | "hushPuppy"
-                      | "joystick"
-                      | "lamp"
-                      | "lift"
-                      | "lightBeam"
-                      | "mirror"
-                      | "monster"
-                      | "moveableDeadly"
-                      | "movingPlatform"
-                      | "outOfBounds"
-                      | "particle"
-                      | "pickup"
-                      | "portableBlock"
-                      | "portableTeleporter"
-                      | "portal"
-                      | "pushableBlock"
-                      | "sceneryCrown"
-                      | "sceneryPlayer"
-                      | "slidingBlock"
-                      | "slidingDeadly"
-                      | "soundEffect"
-                      | "spikes"
-                      | "spring"
-                      | "stopAutowalk"
-                      | "switch"
-                      | "teleporter"
-                      | "timer"
-                      | "wall"
-                    )[];
+                    byType?: [
+                      (
+                        | "ball"
+                        | "barrier"
+                        | "block"
+                        | "blocker"
+                        | "bubbles"
+                        | "button"
+                        | "charles"
+                        | "conveyor"
+                        | "deadlyBlock"
+                        | "doorFrame"
+                        | "doorLegs"
+                        | "editorGhost"
+                        | "emitter"
+                        | "firedDoughnut"
+                        | "floatingText"
+                        | "floor"
+                        | "head"
+                        | "headOverHeels"
+                        | "heels"
+                        | "hushPuppy"
+                        | "joystick"
+                        | "lamp"
+                        | "lift"
+                        | "lightBeam"
+                        | "mirror"
+                        | "monster"
+                        | "moveableDeadly"
+                        | "movingPlatform"
+                        | "outOfBounds"
+                        | "particle"
+                        | "pickup"
+                        | "portableBlock"
+                        | "portableTeleporter"
+                        | "portal"
+                        | "pushableBlock"
+                        | "sceneryCrown"
+                        | "sceneryPlayer"
+                        | "slidingBlock"
+                        | "slidingDeadly"
+                        | "soundEffect"
+                        | "spikes"
+                        | "spring"
+                        | "stopAutowalk"
+                        | "switch"
+                        | "teleporter"
+                        | "timer"
+                        | "wall"
+                      ),
+                      ...(
+                        | "ball"
+                        | "barrier"
+                        | "block"
+                        | "blocker"
+                        | "bubbles"
+                        | "button"
+                        | "charles"
+                        | "conveyor"
+                        | "deadlyBlock"
+                        | "doorFrame"
+                        | "doorLegs"
+                        | "editorGhost"
+                        | "emitter"
+                        | "firedDoughnut"
+                        | "floatingText"
+                        | "floor"
+                        | "head"
+                        | "headOverHeels"
+                        | "heels"
+                        | "hushPuppy"
+                        | "joystick"
+                        | "lamp"
+                        | "lift"
+                        | "lightBeam"
+                        | "mirror"
+                        | "monster"
+                        | "moveableDeadly"
+                        | "movingPlatform"
+                        | "outOfBounds"
+                        | "particle"
+                        | "pickup"
+                        | "portableBlock"
+                        | "portableTeleporter"
+                        | "portal"
+                        | "pushableBlock"
+                        | "sceneryCrown"
+                        | "sceneryPlayer"
+                        | "slidingBlock"
+                        | "slidingDeadly"
+                        | "soundEffect"
+                        | "spikes"
+                        | "spring"
+                        | "stopAutowalk"
+                        | "switch"
+                        | "teleporter"
+                        | "timer"
+                        | "wall"
+                      )[],
+                    ];
                   } | null;
                   /**
                    * activated for us is a boolean, not the many-states from the json config, ie it is stateful
@@ -4232,7 +13947,7 @@ export type RoomJsonSchema = {
           /**
            * the tiles to show - the length of this array also determines the size of the wall
            */
-          tiles: any[];
+          tiles: [any, ...any[]];
         };
       }
   >;

@@ -29,8 +29,8 @@ describe("roomJsonSpecialCase", () => {
       expect(result).toContain('type: "conveyor"');
       expect(result).toContain('type: "block"');
       expect(result).toContain("toRoom: string");
-      // The actual output has tiles: any[] instead of tiles?: string[]
-      expect(result).toContain("tiles: any[]");
+      // wall tiles are a non-empty tuple, with the scenery's tile names as any
+      expect(result).toContain("tiles: [any, ...any[]]");
       // Remove speed check - it's not in the test fixture
       // expect(result).toContain("speed?: number");
       expect(result).toContain("style:");

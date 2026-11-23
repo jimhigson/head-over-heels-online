@@ -16,7 +16,7 @@ import type {
   PreviewedRoomItemEdits,
 } from "../levelEditorSlice";
 import type { MultiplyPlan, MultiplyType } from "../multiplyPlan";
-import { previewedItemsIter } from "../previewedItemsIter";
+import { applyItemToolInPlace } from "./applyItemToolReducers";
 import {
   addTimesDeltaToJsonItemInPlace,
   moveOrResizeOutcome,
@@ -121,9 +121,9 @@ export const multiplyItemsReducers = {
 
   /**
    * grow (or shrink) the item held by the current item tool one block along a
-   * world direction's axis, so the next placement is that size. Also resizes
-   * the hover preview, so it keeps matching the tool. No-op unless an item
-   * tool is active
+   * world direction's axis, so the next placement is that size. Also makes the
+   * hover preview again, so it keeps matching the tool. No-op unless an item
+   * tool holding a single item is active
    */
   multiplyCurrentToolItem(
     _state,
@@ -141,27 +141,22 @@ export const multiplyItemsReducers = {
     // see multiplySelectedItems for why the WritableDraft<> wrapper is cast away:
     const state = _state as LevelEditorState;
 
-    if (state.tool.type !== "item") {
+    if (state.tool.type !== "item" || state.tool.items.length !== 1) {
       return;
     }
+    const [toolItem] = state.tool.items;
     const { timesDelta } =
       multiplyType === "multiplyOrGrow" ?
         growArgs(direction)
       : shrinkArgs(direction);
     const fullTimesDelta = { ...originXyz, ...timesDelta };
-    // ItemTool is {type, config} with no position; only its type and times are
-    // read and written:
+    // only the item's type and times are read and written:
     addTimesDeltaToJsonItemInPlace(
-      state.tool.item as EditorJsonItemWithTimes,
+      toolItem as EditorJsonItemWithTimes,
       fullTimesDelta,
     );
     if (state.pendingEdits?.madeBy.type === "itemTool") {
-      for (const itemPreview of previewedItemsIter(state.pendingEdits)) {
-        addTimesDeltaToJsonItemInPlace(
-          itemPreview as EditorJsonItemWithTimes,
-          fullTimesDelta,
-        );
-      }
+      applyItemToolInPlace(state, state.pendingEdits.madeBy.placement);
     }
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

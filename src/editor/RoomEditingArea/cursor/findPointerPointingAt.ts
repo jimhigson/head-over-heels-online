@@ -13,6 +13,7 @@ import type {
 } from "../../editorTypes";
 import type { GridResolution } from "../../slice/levelEditorSlice";
 import { snapGridResolution } from "../../snapGridResolution";
+import { isDoorToolItems } from "../interactivity/isDoorToolItems";
 import type { Tool } from "../interactivity/Tool";
 import { frontItemFromPointerIntersections } from "./frontItemFromPointerIntersections";
 import { pointerIntersectionCorner } from "./pointerIntersectionCorner";
@@ -103,7 +104,9 @@ const worldPositionOnFaceForScreenPosition = (
     // the tool's item may need placing on a coarser grid:
     snapGridResolution(
       gridResolution,
-      tool.type === "item" ? [tool.item.type] : emptyArray,
+      tool.type === "item" ?
+        tool.items.map((toolItem) => toolItem.type)
+      : emptyArray,
     ),
   );
 
@@ -131,7 +134,7 @@ const isPointableItemForTool =
 
     const itemIsSolid = !item[itemBehaviourKey].isNonSolid(item);
 
-    if (tool.type === "item" && tool.item.type === "door") {
+    if (tool.type === "item" && isDoorToolItems(tool.items)) {
       // when placing a door, we can only place it on (so only point at) walls
       return itemIsSolid && item.type === "wall";
     }

@@ -21,7 +21,10 @@ const monkey: ItemTool = {
     movement: "patrol-randomly-xy4",
   },
 };
-const monkeyTool: Tool = { type: "item", item: monkey };
+const monkeyTool: Tool = {
+  type: "item",
+  items: [{ ...monkey }],
+};
 
 test.for(
   visibleSideFaces.flatMap(({ cameraAngle, apparentRight, apparentTowards }) =>

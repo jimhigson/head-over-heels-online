@@ -364,6 +364,8 @@ to keep non-serialisable data in a store key'd by something in the store, but th
 necessary, not to avoid updating our data model elsewhere or to avoid code churn that would put us at the
 better model.
 
+* Do not do extra work at run-time to work around issues at typecheck time, if the work provides no extra protection. Typescript is here to describe and protect our js source, it should not be making the js slower, or more complex than it would otherwise be. If we need to, this is a sign that our ts types are wrong.
+
 ### Comments 
  * no single-line tsdoc comments - always put the text on its own line(s):
  ```ts

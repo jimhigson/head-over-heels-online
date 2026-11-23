@@ -1,4 +1,5 @@
 import type { SceneryName, Wall } from "../../sprites/planets";
+import type { WritableNonEmptyTuple } from "../../utils/types/WritableNonEmptyTuple";
 import type { DirectionXy4, Xy, Xyz } from "../../utils/vectors/vectors";
 
 /**
@@ -13,7 +14,7 @@ import type { DirectionXy4, Xy, Xyz } from "../../utils/vectors/vectors";
 export type WallJsonConfig<ScN extends SceneryName = SceneryName> = {
   direction: DirectionXy4;
   /** the tiles to show - the length of this array also determines the size of the wall */
-  tiles: Array<Wall<ScN>>;
+  tiles: WritableNonEmptyTuple<Wall<ScN>>;
 };
 
 /**

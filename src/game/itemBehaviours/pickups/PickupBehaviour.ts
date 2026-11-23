@@ -11,6 +11,7 @@ import type { RoomState } from "../../../model/RoomState";
 import { pickupCollected } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { selectRoomPickupsCollected } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
+import type { WritableNonEmptyTuple } from "../../../utils/types/WritableNonEmptyTuple";
 import { addXyz, boxWithSize, originXyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
@@ -121,7 +122,7 @@ export abstract class PickupBehaviour extends FreeItemBehaviour {
   protected floatingText<RoomId extends string, RoomItemId extends string>(
     pickup: ItemInPlay<"pickup", RoomId, RoomItemId>,
     { roomTime }: RoomState<RoomId, RoomItemId>,
-    textLines: string[],
+    textLines: WritableNonEmptyTuple<string>,
   ): ItemInPlay<"floatingText", RoomId, RoomItemId> {
     const pickupCentre = itemInPlayCentre(pickup);
     const config = {
@@ -157,7 +158,7 @@ export abstract class PickupBehaviour extends FreeItemBehaviour {
   protected addFloatingText<RoomId extends string, RoomItemId extends string>(
     pickup: ItemInPlay<"pickup", RoomId, RoomItemId>,
     room: RoomState<RoomId, RoomItemId>,
-    textLines: string[],
+    textLines: WritableNonEmptyTuple<string>,
   ): void {
     addItemToRoom({ room, item: this.floatingText(pickup, room, textLines) });
   }

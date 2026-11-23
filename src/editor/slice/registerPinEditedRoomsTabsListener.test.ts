@@ -96,7 +96,12 @@ test("putting an item in a room keeps its preview tab", () => {
     isRoomBTabPreviewAfter(
       setTool({
         type: "item",
-        item: { type: "block", config: { style: "organic" } },
+        items: [
+          {
+            type: "block",
+            config: { style: "organic" },
+          },
+        ],
       }),
       applyItemTool({
         roomId: roomB,
@@ -114,7 +119,12 @@ test("previewing an item in a room leaves its tab a preview", () => {
     isRoomBTabPreviewAfter(
       setTool({
         type: "item",
-        item: { type: "block", config: { style: "organic" } },
+        items: [
+          {
+            type: "block",
+            config: { style: "organic" },
+          },
+        ],
       }),
       applyItemTool({
         roomId: roomB,

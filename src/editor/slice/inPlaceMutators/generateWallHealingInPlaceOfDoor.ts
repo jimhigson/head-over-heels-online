@@ -1,4 +1,4 @@
-import { rotatingSceneryTiles } from "../../../model/inPlaceMutators/rotatingSceneryTiles";
+import { rotatingSceneryWallTiles } from "../../../model/inPlaceMutators/rotatingSceneryWallTiles";
 import type { WallJsonConfig } from "../../../model/json/WallJsonConfig";
 import type { SceneryName } from "../../../sprites/planets";
 import { doorAlongAxis } from "../../../utils/vectors/vectors";
@@ -14,13 +14,11 @@ export function* generateWallHealingInPlaceOfDoor(
     type: "wall" as const,
     config: {
       direction: item.config.direction,
-      tiles: [
-        ...rotatingSceneryTiles(
-          planet,
-          2,
-          item.position[doorAlongAxis(item.config.direction)],
-        ),
-      ],
+      tiles: rotatingSceneryWallTiles(
+        planet,
+        2,
+        item.position[doorAlongAxis(item.config.direction)],
+      ),
     } satisfies WallJsonConfig,
     position: { ...item.position, z: 0 },
   } satisfies EditorJsonItem<"wall">;

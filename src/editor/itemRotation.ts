@@ -4,10 +4,14 @@ import { flippedMirrorOrientation } from "../model/MirrorOrientation";
 import { getJsonItemTimes, optimiseTimesXyz } from "../model/times";
 import { unitVectors } from "../utils/vectors/unitVectors";
 import {
+  addXyz,
   alongAxisOfDirectionXy,
+  originXyz,
   perpendicularAxisXy,
   rotateDirectionXy4,
   rotateDirectionXy8,
+  subXyz,
+  type Xy,
   type Xyz,
 } from "../utils/vectors/vectors";
 import type {
@@ -17,6 +21,7 @@ import type {
   EditorRoomJson,
 } from "./editorTypes";
 import { directionForItem, setItemDirectionInPlace } from "./itemDirection";
+import type { ItemToolItems } from "./RoomEditingArea/interactivity/Tool";
 
 export type RotationSense = "anticlockwise" | "clockwise";
 
@@ -59,6 +64,12 @@ const rotateFacingInPlace = (
 
 const hasTimes = (item: EditorJsonItemUnion): item is EditorJsonItemWithTimes =>
   "times" in item.config;
+
+const hasFacing = (item: EditorJsonItemUnion): boolean =>
+  item.type === "mirror" ||
+  item.type === "barrier" ||
+  item.type === "conveyor" ||
+  directionForItem(item)?.type === "facingOnXyPlane";
 
 /**
  * whether the item covers more than one block in x or y - so a quarter-turn
@@ -115,13 +126,9 @@ export const isRotatable = (item: EditorJsonItemUnion): boolean => {
   if (item.type === "floor") {
     return false;
   }
-  const hasFacing =
-    item.type === "mirror" ||
-    item.type === "barrier" ||
-    item.type === "conveyor" ||
-    directionForItem(item)?.type === "facingOnXyPlane";
   return (
-    (hasFacing || isMultiBlockInXy(item)) && timesFitAfterQuarterTurn(item)
+    (hasFacing(item) || isMultiBlockInXy(item)) &&
+    timesFitAfterQuarterTurn(item)
   );
 };
 
@@ -146,6 +153,80 @@ export const rotateItemInPlace = (
     } else {
       item.config.times = swappedTimes;
     }
+  }
+};
+
+/**
+ * turn an xy vector a quarter-turn, the way a facing turns
+ */
+const rotateXyQuarterTurn = ({ x, y }: Xy, sense: RotationSense): Xy => {
+  const turnedXAxis = unitVectors[rotateDirectionXy4("left", sense)];
+  const turnedYAxis = unitVectors[rotateDirectionXy4("away", sense)];
+  return {
+    x: x * turnedXAxis.x + y * turnedYAxis.x,
+    y: x * turnedXAxis.y + y * turnedYAxis.y,
+  };
+};
+
+/**
+ * whether the item tool's items can be rotated: a single item can if it is
+ * rotatable, and several can if each either turns or has nothing to turn (one
+ * block, no facing) - they all move round together
+ */
+export const areToolItemsRotatable = (toolItems: ItemToolItems): boolean => {
+  const [firstItem] = toolItems;
+  // ItemToolItem has the type, config and position that make up a json item:
+  if (toolItems.length === 1) {
+    return isRotatable(firstItem as EditorJsonItemUnion);
+  }
+  return toolItems.every((toolItem) => {
+    const item = toolItem as EditorJsonItemUnion;
+    return isRotatable(item) || (!hasFacing(item) && !isMultiBlockInXy(item));
+  });
+};
+
+/**
+ * turn the item tool's items a quarter-turn as a whole, in place: each item
+ * turns as `rotateItemInPlace` does and swings round to where it goes in the
+ * turned set. The first item stays where it was, so a single item still goes
+ * where the tool puts down
+ */
+export const rotateToolItemsInPlace = (
+  toolItems: ItemToolItems,
+  sense: RotationSense,
+): void => {
+  const [firstItem] = toolItems;
+  const firstItemHadNoPosition = firstItem.position === undefined;
+  const firstItemPositionBefore = { ...(firstItem.position ?? originXyz) };
+
+  for (const toolItem of toolItems) {
+    const item = toolItem as EditorJsonItemUnion;
+    const { x: timesX, y: timesY } = getJsonItemTimes(item);
+    const { position = originXyz } = toolItem;
+    const nearCorner = rotateXyQuarterTurn(position, sense);
+    const farCorner = rotateXyQuarterTurn(
+      { x: position.x + timesX, y: position.y + timesY },
+      sense,
+    );
+    // the turned item's footprint starts at the lowest of its corners:
+    toolItem.position = {
+      ...position,
+      x: Math.min(nearCorner.x, farCorner.x),
+      y: Math.min(nearCorner.y, farCorner.y),
+    };
+    rotateItemInPlace(item, sense);
+  }
+
+  const shift = subXyz(
+    firstItemPositionBefore,
+    firstItem.position ?? originXyz,
+  );
+  for (const toolItem of toolItems) {
+    toolItem.position = addXyz(toolItem.position ?? originXyz, shift);
+  }
+  if (firstItemHadNoPosition) {
+    // still at the origin, where an item with no position goes:
+    delete firstItem.position;
   }
 };
 
