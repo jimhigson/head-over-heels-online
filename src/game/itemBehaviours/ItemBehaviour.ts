@@ -169,16 +169,6 @@ export class ItemBehaviour {
     return this.#isNonSolid;
   }
 
-  /**
-   * whether the stander can stand on this item
-   */
-  isStandable<RoomId extends string, RoomItemId extends string>(
-    item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-    stander: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-  ): boolean {
-    return !this.isNonSolid(item, stander);
-  }
-
   isDeadly<RoomId extends string, RoomItemId extends string>(
     _item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   ): boolean {

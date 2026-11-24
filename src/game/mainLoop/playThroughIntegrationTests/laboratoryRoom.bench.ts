@@ -86,9 +86,26 @@ v27 against "laboratory" v14
   0.5468  1,795.32  1,858.56  1,828.78  1,840.15  1,858.56  ±0.72%  10
 
 (33.4% faster at mean vs v27)
+
+2026-11-23 (branch two-items-on-lift-sound-bug)
+===============================================
+
+against "laboratory" v16
+
+* collisions sorted by priority, then overlap, then id, without allocating
+* collision records gather across all of a frame's sub-ticks
+* flush landings pick what to stand on by priority, then overlap
+* every solid item is standable (no isStandable)
+* optimise: find what is stood on is one loop - no iterator helpers, arrays or reduce
+* bench @ 120fps (same tick count)
+
+   name                                                hz       min       max      mean       p75       p99      p995      p999     rme  samples
+   laboratory v16 for 60s @ 120 fps (7200 frames)  0.5309  1,863.09  1,901.09  1,883.85  1,896.00  1,900.89  1,900.99  1,901.07  ±0.51%       10
+
+(2.4% slower at mean vs previous, but against a later campaign version)
 */
 
-const fps = 60;
+const fps = 120;
 const simulatedSeconds = 60;
 
 const laboratoryCampaign = await loadCampaignFromDb(postgrestDbClient, {
@@ -102,11 +119,9 @@ console.log(
   findStartingRoomsInCampaign(laboratoryCampaign),
 );
 
-test("load and play the laboratory room for 60 simulated seconds", async ({
-  bench,
-}) => {
+test("load and play laboratory room", async ({ bench }) => {
   await bench(
-    "load and play the laboratory room for 60 simulated seconds",
+    `laboratory v${laboratoryCampaign.locator.version} for ${simulatedSeconds}s @ ${fps} fps (${simulatedSeconds * fps} frames)`,
     () => {
       // the store would otherwise still have the previous iteration's game running:
       resetStore();

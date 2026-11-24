@@ -56,13 +56,6 @@ export class PortalBehaviour extends ItemBehaviour {
     );
   }
 
-  /**
-   * where it is solid, a portal still can't be stood on
-   */
-  override isStandable(): boolean {
-    return false;
-  }
-
   override soundsToPreload<RoomId extends string, RoomItemId extends string>(
     portal: ItemTypeUnion<"portal", RoomId, RoomItemId>,
     campaign: Campaign<RoomId>,

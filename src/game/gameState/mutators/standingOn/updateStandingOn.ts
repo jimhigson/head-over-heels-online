@@ -1,7 +1,4 @@
-import {
-  forEachRoomItem,
-  roomItemsIterable,
-} from "../../../../model/roomItemsInPlayIterators";
+import { forEachRoomItem } from "../../../../model/roomItemsInPlayIterators";
 import type { RoomState } from "../../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../../model/stoodOnItemsLookup";
 import {
@@ -46,7 +43,7 @@ export const updateStandingOn = <
           // the very next frame that we can walk)
           const newStandingOn = findStandingOnWithHighestPriorityAndMostOverlap(
             top,
-            roomItemsIterable(room.items),
+            room.items,
           );
           if (newStandingOn !== undefined) {
             setStandingOnWithoutRemovingOldFirst({

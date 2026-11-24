@@ -7,7 +7,6 @@ import {
 } from "../../../model/ItemInPlayNarrowedUnions";
 import type { HeelsAbilities } from "../../../model/ItemStateMap";
 import type { CharacterName } from "../../../model/modelTypes";
-import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import type { RoomState } from "../../../model/RoomState";
 import { getEffectivelyStandingOnItemIdForPlayable } from "../../../model/stoodOnItemsLookup";
 import { originXyz } from "../../../utils/vectors/vectors";
@@ -119,13 +118,10 @@ export const findItemToPickup = <
     // can only pick up deadly items if you have a shield:
     (hasShield || !i[itemBehaviourKey].isDeadly(i));
 
-  const portableItemsIter = roomItemsIterable(room.items).filter(
-    itemIsPortableForCarrier,
-  );
-
   const straightStoodOn = findStandingOnWithHighestPriorityAndMostOverlap(
     carrier,
-    portableItemsIter,
+    room.items,
+    itemIsPortableForCarrier,
   );
 
   if (straightStoodOn) {

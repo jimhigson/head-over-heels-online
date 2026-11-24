@@ -147,7 +147,7 @@ const isApproximatelyCollidingTowards = (
  * touching the sides of it that it is travelling towards. Each is appended
  * once, even if it occupies several of the cells searched.
  *
- * By appending, we allow moveItem to use a @see collisionsStack
+ * Appending lets callers collect into an array they reuse, without allocating.
  */
 export const appendApproximateCollisionsTowardsWithIndex = <
   C extends CollideableItem,

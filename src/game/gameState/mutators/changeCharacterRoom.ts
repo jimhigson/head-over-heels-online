@@ -27,6 +27,7 @@ import {
   selectRoomPickupsCollected,
 } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
+import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import {
   addXyz,
@@ -497,6 +498,11 @@ export function changeCharacterRoom<
   playableItem.state.latentMovement = [];
   // carried speed is timed in the old room's time:
   playableItem.state.liftVel = { z: 0, atRoomTime: neverTime };
+  // collisions are timed in the old room's time, and were with its items:
+  playableItem.state.collidedWith = {
+    roomTime: neverTime,
+    by: emptyObject as Record<RoomItemId, true>,
+  };
   // previous standing on (from the old room) no longer applies:
   playableItem.state.previousStandingOnItemId = null;
   playableItem.state.standingOnUntilRoomTime = neverTime;

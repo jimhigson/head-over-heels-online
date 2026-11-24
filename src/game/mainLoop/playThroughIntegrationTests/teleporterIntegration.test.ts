@@ -9,6 +9,7 @@ import { headState, heelsState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
+import { keys } from "../../../utils/entries";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 
 beforeEach(() => {
@@ -113,6 +114,86 @@ test("can teleport to the next room (with `config.toItemId`)", () => {
       "zd": 12,
     }
   `);
+});
+
+test("collisions from the room teleported from are not kept once moved into the next room", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 0, y: 2, z: 1 },
+        config: {
+          which: "heels",
+        },
+      },
+      teleporter: {
+        type: "teleporter",
+        position: { x: 0, y: 2, z: 0 },
+        config: { toRoom: secondRoomId, toItemId: "teleporterLanding" },
+      },
+      blockBesideTeleporter: {
+        type: "block",
+        position: { x: 1, y: 2, z: 1 },
+        config: { style: "organic" },
+      },
+    },
+    secondRoomItems: {
+      // long enough for heels to walk along to the block beside it:
+      teleporterLanding: {
+        type: "block",
+        position: { x: 4, y: 4, z: 2 },
+        config: { style: "organic", times: { x: 2 } },
+      },
+      blockBesideLanding: {
+        type: "block",
+        position: { x: 6, y: 4, z: 3 },
+        config: { style: "organic" },
+      },
+    },
+  });
+
+  // the first room's time runs on ahead of the second room's, which starts
+  // when heels arrives:
+  playGameThrough(gameState, {
+    frameRate: { fps: [15] }, // keep frame rate low to reduce computation
+    forTime: 2_000,
+  });
+
+  playGameThrough(gameState, {
+    frameRate: { fps: [15] },
+    setupInitialInput(mockInputStateTracker) {
+      // left walks into the block beside her in both rooms:
+      mockInputStateTracker.mockDirectionPressed = "left";
+    },
+    until(gameState) {
+      return (
+        heelsState(gameState).collidedWith.by.blockBesideTeleporter !==
+        undefined
+      );
+    },
+    failAfter: 1_000,
+  });
+
+  playGameThrough(gameState, {
+    frameRate: { fps: [15] },
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockDirectionPressed = "left";
+      mockInputStateTracker.mockPressing("jump");
+    },
+    until(gameState) {
+      if (heelsState(gameState).teleporting !== null) {
+        gameState.inputStateTracker.mockNotPressing("jump");
+      }
+      return (
+        heelsState(gameState).collidedWith.by.blockBesideLanding !== undefined
+      );
+    },
+    failAfter: 5_000,
+  });
+
+  expect(keys(heelsState(gameState).collidedWith.by)).toEqual([
+    "blockBesideLanding",
+  ]);
 });
 
 test("can teleport to the next room (with `config.toItemId`) to a taller item than the teleporter", () => {

@@ -1,3 +1,4 @@
+import type { RoomState } from "../../model/RoomState";
 import type { GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import type { ProgressGameState } from "./progressGameState";
@@ -17,17 +18,20 @@ export const progressWithSubTicks =
     */
     swopPlayablesIfInput(gameState);
 
-    const room = selectCurrentRoomState(gameState);
-    if (room !== undefined) {
-      // a new frame is starting in the current room:
-      room.roomFrameStartTime = room.roomTime;
-    }
-
     const numberOfSubTicks = Math.max(1, Math.ceil(deltaMS / maxStepDeltaMs));
 
     const stepDeltaMs = deltaMS / numberOfSubTicks;
 
+    let roomOfLastSubTick: RoomState<RoomId, string> | undefined = undefined;
+
     for (let i = 0; i < numberOfSubTicks; i++) {
+      const room = selectCurrentRoomState<RoomId, string>(gameState);
+      const roomChangedMidFrame =
+        room !== undefined && room !== roomOfLastSubTick;
+      if (roomChangedMidFrame) {
+        room.roomFrameStartTime = room.roomTime;
+      }
+      roomOfLastSubTick = room;
       progress(gameState, stepDeltaMs);
     }
   };

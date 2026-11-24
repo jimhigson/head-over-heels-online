@@ -8,7 +8,10 @@ import {
 import { heelsState, itemState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import { hasCollided } from "../../../_testUtils/playThroughUntilHelpers";
+import {
+  hasCollided,
+  isStandingOn,
+} from "../../../_testUtils/playThroughUntilHelpers";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
@@ -1013,5 +1016,57 @@ test("a monster partly in a beam slides out of it, and the beam reaches the wall
     // from the lamp's face at x=0 to the far wall:
     beamLength: 112,
     monsterClearOfBeamRow: true,
+  });
+});
+
+test("a monster falling onto a light beam stands on it, walks, and falls onto the floor", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 3, y: 4, z: 0 },
+        config: { which: "heels" },
+      },
+      // under the beam, so falling through it lands here, not on the floor:
+      b: {
+        type: "block",
+        position: { x: 0, y: 7, z: 0 },
+        config: { style: "artificial", times: { x: 6 } },
+      },
+      la: {
+        type: "lamp",
+        position: { x: 0, y: 7, z: 1 },
+        config: { direction: "left", activated: true },
+      },
+      // above the beam:
+      m: {
+        type: "monster",
+        position: { x: 2, y: 7, z: 3 },
+        config: {
+          which: "skiHead",
+          style: "greenAndPink",
+          activated: "on",
+          movement: "back-forth",
+          startDirection: "left",
+        },
+      },
+      // stands still, its body stopping the beam just past the end of the blocks:
+      m1: {
+        type: "monster",
+        position: { x: 6, y: 7, z: 0 },
+        config: {
+          which: "skiHead",
+          style: "greenAndPink",
+          activated: "off",
+          movement: "back-forth",
+          startDirection: "left",
+        },
+      },
+    },
+  });
+
+  playGameThrough(gameState, {
+    until: isStandingOn("m", "floor"),
+    failAfter: 5_000,
   });
 });

@@ -589,6 +589,71 @@ describedForAllFrameRates((frameRate) => {
     },
   );
 
+  test("pushing a pushableBlock into a wall beside a volcano, once stuck the pushableBlock protects heels", () => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          // overlap the pushable block and the volcano - to be more punishing,
+          // closer to the volcano (75/25 percent overlap)
+          position: { x: 5, y: 3.75, z: 0 },
+          config: {
+            which: "heels",
+          },
+        },
+        // half a block from the wall, so will be pushed until its face is
+        // level with the volcano's, after which it will protect from it
+        pushable: {
+          type: "pushableBlock",
+          position: { x: 6.5, y: 3, z: 0 },
+          config: {},
+        },
+        volcano: {
+          type: "deadlyBlock",
+          position: { x: 7, y: 4, z: 0 },
+          config: { style: "volcano" },
+        },
+      },
+    });
+    const startingLives = heelsState(gameState).lives;
+
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "left";
+      },
+      frameRate,
+      until: hasCollidedWithItemOfType("pushable", "wall"),
+      failAfter: 3_000,
+    });
+
+    // keep walking into both:
+    playGameThrough(gameState, {
+      frameRate,
+      forTime: 1_000,
+    });
+
+    expect(heelsState(gameState).lives).toBe(startingLives);
+
+    // for good measure, hit it again by backing off and hitting again:
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "right";
+      },
+      frameRate,
+      forTime: 500,
+    });
+
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "left";
+      },
+      frameRate,
+      forTime: 1_000,
+    });
+
+    expect(heelsState(gameState).lives).toBe(startingLives);
+  });
+
   describe.for<{ safeItem: ItemsInTestRoomJson[string] }>([
     {
       safeItem: {

@@ -30,6 +30,7 @@ import {
   collision2Items,
 } from "../../collision/aabbCollision";
 import { boxFacesJustTouchingAxis } from "../../collision/boxFacesJustTouchingAxis";
+import { findStandingOnWithHighestPriorityAndMostOverlapInRange } from "../../collision/checkStandingOn";
 import type { GameState } from "../../gameState/GameState";
 import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
 import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
@@ -105,8 +106,9 @@ export type MoveItemOptions<
 /**
  * a move that ends exactly against an item it was moving towards, having been
  * apart from it, is a collision even though they don't overlap - it is recorded
- * as one (eg, for a bump sound), but isn't a touch. Arriving exactly on top of
- * an item is landing on it
+ * as one (eg, for a bump sound), but isn't a touch.
+ *
+ * @returns whether the subject landed on it - arrived exactly on top of it
  */
 const recordArrivingJustTouching = <
   RoomId extends string,
@@ -125,19 +127,19 @@ const recordArrivingJustTouching = <
    * subject - starts on the path stack
    */
   pathStart: number,
-) => {
+): boolean => {
   if (
     pushPathStack.includes(nearbyItem.id, pathStart) ||
     nearbyItem[itemBehaviourKey].isNonSolid(nearbyItem, subjectItem) ||
     subjectItem[itemBehaviourKey].isNonSolid(subjectItem)
   ) {
-    return;
+    return false;
   }
   const { box } = subjectItem.state;
   const { box: nearbyBox } = nearbyItem.state;
   const axis = boxFacesJustTouchingAxis(box, nearbyBox);
   if (axis === undefined) {
-    return;
+    return false;
   }
   const sizeAxis = sizeAxes[axis];
   const nearbyIsAhead = nearbyBox[axis] >= box[axis] + box[sizeAxis] - epsilon;
@@ -148,27 +150,22 @@ const recordArrivingJustTouching = <
       nearbyBox[axis] - (originalBox[axis] + originalBox[sizeAxis])
     : originalBox[axis] - (nearbyBox[axis] + nearbyBox[sizeAxis]);
   if (!movingTowards || gapBefore < epsilon) {
-    return;
+    return false;
   }
   if (isFreeItem(subjectItem)) {
-    if (
+    recordCollision(subjectItem, nearbyItem, room);
+    return (
       axis === "z" &&
       !nearbyIsAhead &&
-      subjectItem.state.standingOnItemId === null &&
-      nearbyItem[itemBehaviourKey].isStandable(nearbyItem, subjectItem)
-    ) {
-      // landed on it, with no overlap for the collision handling to find:
-      setStandingOnWithoutRemovingOldFirst({
-        above: subjectItem,
-        below: nearbyItem,
-      });
-    }
-    recordCollision(subjectItem, nearbyItem, room);
-  } else if (isFreeItem(nearbyItem)) {
+      subjectItem.state.standingOnItemId === null
+    );
+  }
+  if (isFreeItem(nearbyItem)) {
     // a mover that isn't free (eg, a lift) has nowhere to record the collision,
     // but the free item it arrived against does:
     recordCollision(nearbyItem, subjectItem, room);
   }
+  return false;
 };
 
 /**
@@ -876,10 +873,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     // check if we landed on the item we collided with to take over the standingOn slot::
     if (
       isFreeItem(subjectItem) &&
-      collidedWithItem[itemBehaviourKey].isStandable(
-        collidedWithItem,
-        subjectItem,
-      ) &&
       // item is pushing us off it vertically - a good sign that we're standing on it
       backingOffMtv.z > 0 &&
       // have to be moving downwards to stand on something. It is possible to have a positive
@@ -954,6 +947,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
   // arriving against an item is judged from where the subject ended up, after
   // backing off from what it collided with:
+  let landed = false;
   for (let i = collisionsEnd; i < touchedEnd; i++) {
     // only this call's items are read, so they are of its room's types:
     const touchedItem = collisionsStack[i] as UnionOfAllItemInPlayTypes<
@@ -961,7 +955,8 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       RoomItemId
     >;
     // touch handling might have removed it:
-    if (room.items[touchedItem.id] !== undefined) {
+    if (
+      room.items[touchedItem.id] !== undefined &&
       recordArrivingJustTouching(
         subjectItem,
         touchedItem,
@@ -969,7 +964,31 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         posDelta,
         room,
         pathStart,
+      )
+    ) {
+      landed = true;
+    }
+  }
+
+  if (landed) {
+    // only free items can land, so assume is free:
+    const freeSubjectItem = subjectItem as FreeItem<RoomId, RoomItemId>;
+
+    // landed with no overlap for the collision handling to find, maybe on
+    // several items at once (eg, across the seam between two blocks):
+    const maybeStandingOn =
+      findStandingOnWithHighestPriorityAndMostOverlapInRange(
+        freeSubjectItem,
+        // only this call's items are read, so they are of its room's types:
+        collisionsStack as Array<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>,
+        collisionsEnd,
+        touchedEnd,
       );
+    if (maybeStandingOn !== undefined) {
+      setStandingOnWithoutRemovingOldFirst({
+        above: freeSubjectItem,
+        below: maybeStandingOn,
+      });
     }
   }
 
