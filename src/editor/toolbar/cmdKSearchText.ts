@@ -1,4 +1,4 @@
-import type { EditorCommand } from "../commands/EditorCommand";
+import type { EditorCommandPresentation } from "../commands/EditorCommand";
 
 /**
  * what the cmd-k search matches a command against: its label, its dotted key
@@ -6,5 +6,5 @@ import type { EditorCommand } from "../commands/EditorCommand";
  */
 export const cmdKSearchText = (
   key: string,
-  { label, synonyms = [] }: EditorCommand,
+  { label, synonyms = [] }: EditorCommandPresentation,
 ): string => [label, key, ...synonyms].join(" ");

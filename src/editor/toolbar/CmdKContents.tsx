@@ -12,13 +12,13 @@ import { shortcutHint } from "../../ui/menuBar/shortcutHint";
 import { useTip } from "../../ui/tip/useTip";
 import { entries } from "../../utils/entries";
 import type {
-  EditorCommand,
   EditorCommandDefinition,
+  EditorCommandPresentation,
 } from "../commands/EditorCommand";
 import { buttonSizeClassNames } from "./buttonSizeClassNames";
 import { cmdKSearchText } from "./cmdKSearchText";
 
-export type CmdKContentsProps<TCommand extends EditorCommand> = {
+export type CmdKContentsProps<TCommand extends EditorCommandPresentation> = {
   /** what can be listed, by key */
   commandDefinitions: Record<string, EditorCommandDefinition<TCommand>>;
   /**
@@ -38,13 +38,13 @@ export type CmdKContentsProps<TCommand extends EditorCommand> = {
   onKeyDown?: CommandProps["onKeyDown"];
 };
 
-type CmdKEntryProps<TCommand extends EditorCommand> = {
+type CmdKEntryProps<TCommand extends EditorCommandPresentation> = {
   entryKey: string;
   command: TCommand;
   onSelect: (command: TCommand) => void;
 };
 
-const CmdKEntry = <TCommand extends EditorCommand>({
+const CmdKEntry = <TCommand extends EditorCommandPresentation>({
   entryKey,
   command,
   onSelect,
@@ -94,7 +94,7 @@ const CmdKEntry = <TCommand extends EditorCommand>({
 };
 
 /** a searchable list of commands, eg the items the editor can place */
-export const CmdKContents = <TCommand extends EditorCommand>({
+export const CmdKContents = <TCommand extends EditorCommandPresentation>({
   commandDefinitions,
   resolveEntry,
   onSelect,
