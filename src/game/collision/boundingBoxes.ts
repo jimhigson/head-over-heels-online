@@ -6,7 +6,7 @@ import { blockSizePx } from "../physics/mechanicsConstants";
 export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.z };
 const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.z };
 export const fullBlockAabb: Aabb = { x: 16, y: 16, z: blockSizePx.z };
-export const doubleHeightCharacterAabb: Aabb = {
+const doubleHeightCharacterAabb: Aabb = {
   ...smallItemAabb,
   z: blockSizePx.z * 2,
 };
@@ -17,7 +17,7 @@ export const headAabb = smallItemAabb;
 export const heelsAabb = smallItemAabb;
 export const headOverHeelsAabb = doubleHeightCharacterAabb;
 
-export const towerAabb: Aabb = { x: 11, y: 11, z: blockSizePx.z };
+const towerAabb: Aabb = { x: 11, y: 11, z: blockSizePx.z };
 const scrollAabb: Aabb = { x: 16, y: 4, z: 13 };
 // match the compressed size, since this is when the item will be stood on,
 // which is when the z-size most matters:
@@ -113,6 +113,7 @@ export const boundingBoxForItem = (
     case "barrier":
       return item.config.axis === "y" ? barrierYAabb : barrierXAabb;
 
+    case "player":
     case "sceneryPlayer":
       switch (item.config.which) {
         case "head":
@@ -123,7 +124,7 @@ export const boundingBoxForItem = (
           return headOverHeelsAabb;
         default:
           item.config.which satisfies never;
-          throw new Error(`unknown sceneryPlayer character`);
+          throw new Error(`unknown ${item.type} character`);
       }
 
     case "floatingText":

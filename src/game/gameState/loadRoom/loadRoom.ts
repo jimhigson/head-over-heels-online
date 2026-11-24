@@ -126,7 +126,7 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
     }
     const newStandingOn = findStandingOnWithHighestPriorityAndMostOverlap(
       i,
-      roomItemsIterable(items).filter((j) => j.id !== i.id),
+      items,
     );
     if (newStandingOn !== undefined) {
       setStandingOnWithoutRemovingOldFirst({ above: i, below: newStandingOn });
@@ -139,6 +139,7 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
     roomJson,
     items,
     roomTime: 0,
+    roomFrameStartTime: 0,
     progression: 0 as Progression,
     [roomSpatialIndexKey]: spatialIndex,
   };

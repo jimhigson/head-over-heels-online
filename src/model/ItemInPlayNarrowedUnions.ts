@@ -75,27 +75,6 @@ export type SlidingItem<
   { state: { vels: { sliding: unknown } } }
 >;
 
-/**
- * sliding items keep their momentum when pushed
- * Same duck-typing as the SlidingItem type applies on the type level to ensure consistency
- */
-export const isSlidingItem = <RoomId extends string, RoomItemId extends string>(
-  item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-): item is SlidingItem<RoomId, RoomItemId> =>
-  "vels" in item.state && "sliding" in item.state.vels;
-
-export const isPlayableItem = <
-  RoomId extends string,
-  RoomItemId extends string,
->(
-  item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-): item is PlayableItem<CharacterName, RoomId, RoomItemId> => {
-  return (
-    item.type === "head" ||
-    item.type === "heels" ||
-    item.type === "headOverHeels"
-  );
-};
 export type PlayableItem<
   C extends CharacterName = CharacterName,
   RoomId extends string = string,

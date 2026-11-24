@@ -11,12 +11,12 @@ import {
   heelsState,
   itemState,
 } from "../../../_testUtils/characterState";
+import { describedForAllFrameRates } from "../../../_testUtils/describedForAllFrameRates";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import {
   playGameThrough,
   stopJumpingAMomentAfterStartingPlay,
 } from "../../../_testUtils/playGameThrough";
-import { testFrameRates } from "../../../_testUtils/testFrameRates";
 import { individualCharacterNames } from "../../../model/modelTypes";
 import { boxAt } from "../../../utils/vectors/vectors";
 import { smallItemAabb } from "../../collision/boundingBoxes";
@@ -29,9 +29,8 @@ beforeEach(() => {
   resetStore();
 });
 
-test.each(testFrameRates)(
-  "head can jump between two blocks forming a ladder (%j)",
-  (frameRate) => {
+describedForAllFrameRates((frameRate) => {
+  test("head can jump between two blocks forming a ladder", () => {
     const gameState = setUpBasicGame({
       firstRoomItems: {
         head: {
@@ -73,12 +72,11 @@ test.each(testFrameRates)(
       ],
     });
     expect(headState(gameState).standingOnItemId).toEqual("lowerBlock");
-  },
-);
+  });
+});
 
-test.each(testFrameRates)(
-  "doesn't snag on the boundary between bounding boxes on the way up a jump (%j)",
-  (frameRate) => {
+describedForAllFrameRates((frameRate) => {
+  test("doesn't snag on the boundary between bounding boxes on the way up a jump", () => {
     const gameState = setUpBasicGame({
       firstRoomItems: {
         head: {
@@ -113,12 +111,11 @@ test.each(testFrameRates)(
     });
 
     expect(headState(gameState).standingOnItemId).toEqual("highBlock");
-  },
-);
+  });
+});
 
-test.each(testFrameRates)(
-  "doesn't snag on the boundary between bounding boxes while falling (%j)",
-  (frameRate) => {
+describedForAllFrameRates((frameRate) => {
+  test("doesn't snag on the boundary between bounding boxes while falling", () => {
     const gameState = setUpBasicGame({
       firstRoomItems: {
         head: {
@@ -170,20 +167,89 @@ test.each(testFrameRates)(
     });
     expect(headState(gameState).box.z).toBe(0);
     expect(headState(gameState).standingOnItemId).toEqual("floor");
-  },
-);
+  });
+});
 
-describe.each(testFrameRates)("max jump heights (%j)", (frameRate) => {
-  describe.each(individualCharacterNames)(
-    `%s (without a spring) jump height`,
-    (name) => {
-      const expectedJumpHeight = playerJumpHeightPx[name];
-      test(`expect a height of ${expectedJumpHeight}px`, () => {
+describedForAllFrameRates((frameRate) => {
+  describe("max jump heights", () => {
+    describe.each(individualCharacterNames)(
+      `%s (without a spring) jump height`,
+      (name) => {
+        const expectedJumpHeight = playerJumpHeightPx[name];
+        test(`expect a height of ${expectedJumpHeight}px`, () => {
+          const gameState = setUpBasicGame({
+            firstRoomItems: {
+              [name]: {
+                type: "player",
+                position: { x: 1, y: 0, z: 1 },
+                config: {
+                  which: name,
+                },
+              },
+            },
+          });
+
+          let maxFoundHeight = Number.NEGATIVE_INFINITY;
+          playGameThrough(gameState, {
+            frameRate,
+            until: 3_000,
+            setupInitialInput(mockInputStateTracker) {
+              mockInputStateTracker.mockDirectionPressed = "right";
+              mockInputStateTracker.mockPressing("jump");
+            },
+            frameCallbacks(gameState, mockInputStateTracker) {
+              const state = currentPlayableState(gameState);
+              maxFoundHeight = Math.max(maxFoundHeight, state.box.z);
+
+              if (state.jumped) {
+                // stop pressing jump once we are jumping:
+                mockInputStateTracker.mockNotPressing("jump");
+              }
+            },
+          });
+
+          /* 
+            Not so much allowable error, as FOUND error!
+
+            Variable tick step simulations aren't that accurate :-/
+            to get better than this, we'd need to account for deceleration
+            that happens between the velocity being reduced once per frame,
+            or have a lower maximum tick delta ms
+
+            ~2px between lowest and highest jump height isn't that fair
+            to players on different spec hardware!
+           */
+          const allowableError = [-0.66, 1];
+
+          expect(maxFoundHeight).toBeGreaterThan(
+            expectedJumpHeight + allowableError[0],
+          );
+          expect(maxFoundHeight).toBeLessThan(
+            expectedJumpHeight + allowableError[1],
+          );
+        });
+      },
+    );
+  });
+});
+
+describedForAllFrameRates((frameRate) => {
+  describe("distance", () => {
+    const expectedJumpDistances = {
+      head: blockSizePx.x * 3 - 1.5,
+      // expect heels to be able to (only just) bridge a 2-block gap:
+      heels: blockSizePx.x * 2 - smallItemAabb.x + 0.75,
+    };
+
+    describe.each(individualCharacterNames)(`%s`, (name) => {
+      const expectedJumpDistance = expectedJumpDistances[name];
+
+      test(`expect a distance of ~${expectedJumpDistance}px`, () => {
         const gameState = setUpBasicGame({
           firstRoomItems: {
             [name]: {
               type: "player",
-              position: { x: 1, y: 0, z: 1 },
+              position: { x: 1, y: 0, z: 0 },
               config: {
                 which: name,
               },
@@ -191,24 +257,43 @@ describe.each(testFrameRates)("max jump heights (%j)", (frameRate) => {
           },
         });
 
-        let maxFoundHeight = Number.NEGATIVE_INFINITY;
+        expect(currentPlayableState(gameState).standingOnItemId).toEqual(
+          "floor",
+        );
+
+        const startX = currentPlayableState(gameState).box.x;
+
         playGameThrough(gameState, {
           frameRate,
-          until: 3_000,
+
           setupInitialInput(mockInputStateTracker) {
-            mockInputStateTracker.mockDirectionPressed = "right";
+            mockInputStateTracker.mockDirectionPressed = "left";
             mockInputStateTracker.mockPressing("jump");
           },
-          frameCallbacks(gameState, mockInputStateTracker) {
-            const state = currentPlayableState(gameState);
-            maxFoundHeight = Math.max(maxFoundHeight, state.box.z);
-
-            if (state.jumped) {
-              // stop pressing jump once we are jumping:
-              mockInputStateTracker.mockNotPressing("jump");
-            }
+          until() {
+            return (
+              // until the jump starts:
+              currentPlayableState(gameState).standingOnItemId === null
+            );
           },
         });
+
+        playGameThrough(gameState, {
+          frameRate,
+          setupInitialInput(mockInputStateTracker) {
+            mockInputStateTracker.mockDirectionPressed = "left";
+            mockInputStateTracker.mockNotPressing("jump");
+          },
+
+          until() {
+            return (
+              // until lands again
+              currentPlayableState(gameState).standingOnItemId === "floor"
+            );
+          },
+        });
+
+        const jumpDistance = currentPlayableState(gameState).box.x - startX;
 
         /* 
             Not so much allowable error, as FOUND error!
@@ -221,105 +306,22 @@ describe.each(testFrameRates)("max jump heights (%j)", (frameRate) => {
             ~2px between lowest and highest jump height isn't that fair
             to players on different spec hardware!
            */
-        const allowableError = [-0.66, 1];
+        const allowableError = [0, 2.3];
 
-        expect(maxFoundHeight).toBeGreaterThan(
-          expectedJumpHeight + allowableError[0],
+        expect(jumpDistance).toBeGreaterThan(
+          expectedJumpDistance + allowableError[0],
         );
-        expect(maxFoundHeight).toBeLessThan(
-          expectedJumpHeight + allowableError[1],
+        expect(jumpDistance).toBeLessThan(
+          expectedJumpDistance + allowableError[1],
         );
       });
-    },
-  );
-});
-
-describe.each(testFrameRates)("distance %j", (frameRate) => {
-  const expectedJumpDistances = {
-    head: blockSizePx.x * 3 - 1.5,
-    // expect heels to be able to (only just) bridge a 2-block gap:
-    heels: blockSizePx.x * 2 - smallItemAabb.x + 0.75,
-  };
-
-  describe.each(individualCharacterNames)(`%s`, (name) => {
-    const expectedJumpDistance = expectedJumpDistances[name];
-
-    test(`expect a distance of ~${expectedJumpDistance}px`, () => {
-      const gameState = setUpBasicGame({
-        firstRoomItems: {
-          [name]: {
-            type: "player",
-            position: { x: 1, y: 0, z: 0 },
-            config: {
-              which: name,
-            },
-          },
-        },
-      });
-
-      expect(currentPlayableState(gameState).standingOnItemId).toEqual("floor");
-
-      const startX = currentPlayableState(gameState).box.x;
-
-      playGameThrough(gameState, {
-        frameRate,
-
-        setupInitialInput(mockInputStateTracker) {
-          mockInputStateTracker.mockDirectionPressed = "left";
-          mockInputStateTracker.mockPressing("jump");
-        },
-        until() {
-          return (
-            // until the jump starts:
-            currentPlayableState(gameState).standingOnItemId === null
-          );
-        },
-      });
-
-      playGameThrough(gameState, {
-        frameRate,
-        setupInitialInput(mockInputStateTracker) {
-          mockInputStateTracker.mockDirectionPressed = "left";
-          mockInputStateTracker.mockNotPressing("jump");
-        },
-
-        until() {
-          return (
-            // until lands again
-            currentPlayableState(gameState).standingOnItemId === "floor"
-          );
-        },
-      });
-
-      const jumpDistance = currentPlayableState(gameState).box.x - startX;
-
-      /* 
-            Not so much allowable error, as FOUND error!
-
-            Variable tick step simulations aren't that accurate :-/
-            to get better than this, we'd need to account for deceleration
-            that happens between the velocity being reduced once per frame,
-            or have a lower maximum tick delta ms
-
-            ~2px between lowest and highest jump height isn't that fair
-            to players on different spec hardware!
-           */
-      const allowableError = [0, 2.3];
-
-      expect(jumpDistance).toBeGreaterThan(
-        expectedJumpDistance + allowableError[0],
-      );
-      expect(jumpDistance).toBeLessThan(
-        expectedJumpDistance + allowableError[1],
-      );
     });
   });
 });
 
 describe("springs", () => {
-  test.each(testFrameRates)(
-    "head can get onto a 4-high tower by jumping from a spring (%j)",
-    (frameRate) => {
+  describedForAllFrameRates((frameRate) => {
+    test("head can get onto a 4-high tower by jumping from a spring", () => {
       // similar to safari9triple (except that needs more blocks under the spring)
       const gameState = setUpBasicGame({
         firstRoomItems: {
@@ -358,11 +360,10 @@ describe("springs", () => {
         },
       });
       expect(headState(gameState).standingOnItemId).toEqual("tower");
-    },
-  );
-  test.each(testFrameRates)(
-    "head can't get onto a 5-high tower by jumping from a spring (%j)",
-    (frameRate) => {
+    });
+  });
+  describedForAllFrameRates((frameRate) => {
+    test("head can't get onto a 5-high tower by jumping from a spring", () => {
       // similar to safari9triple (except that needs more blocks under the spring)
       const gameState = setUpBasicGame({
         firstRoomItems: {
@@ -401,8 +402,8 @@ describe("springs", () => {
         },
       });
       expect(headState(gameState).standingOnItemId).not.toEqual("tower");
-    },
-  );
+    });
+  });
 
   test("heels jump-putting-down a spring", () => {
     const gameState = setUpBasicGame({
@@ -546,9 +547,8 @@ describe("springs", () => {
   });
 });
 
-describe.each(testFrameRates)(
-  "head jumping while a block in on him (%j)",
-  (frameRate) => {
+describedForAllFrameRates((frameRate) => {
+  describe("head jumping while a block in on him", () => {
     test("lifts it by about 1 block", () => {
       const gameState = setUpBasicGame({
         firstRoomItems: {
@@ -628,8 +628,8 @@ describe.each(testFrameRates)(
         },
       });
     });
-  },
-);
+  });
+});
 
 describe("jump grace", () => {
   const jumpingFixture: ItemsInTestRoomJson = {

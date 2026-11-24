@@ -1,10 +1,10 @@
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
-import { keysIter } from "../../../utils/entries";
 import {
   resolveSpriteDirectionIndexXy4,
   spriteFlipXAtAngle,
 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import type { DirectionIndexXy4 } from "../../../utils/vectors/vectors";
+import { isActedOnNowByItemOfType } from "../../physics/isActedOnNowByItemOfType";
 import { createStackedSprites } from "./createStackedSprites";
 import type { ItemAppearance } from "./ItemAppearance";
 
@@ -23,18 +23,15 @@ export const charlesAppearance: ItemAppearance<
 > = ({
   renderContext: {
     isReflection,
-    item: {
-      state: {
-        facing,
-        actedOnAt: { roomTime: roomTimeActedOn, by },
-        activated = true,
-      },
-    },
-    room: { roomTime, items },
+    item,
+    room,
     general: { spritesheets, cameraAngle },
   },
   currentRendering,
 }) => {
+  const {
+    state: { facing, activated = true },
+  } = item;
   const currentlyRenderedProps = currentRendering?.renderProps;
 
   // the facing resolves to a sprite-variant index with its paired flip - the
@@ -47,9 +44,7 @@ export const charlesAppearance: ItemAppearance<
   );
   const flipX = spriteFlipXAtAngle(cameraAngle);
 
-  const controlledByJoystick =
-    roomTime === roomTimeActedOn &&
-    keysIter(by).some((id) => items[id].type === "joystick");
+  const controlledByJoystick = isActedOnNowByItemOfType(item, room, "joystick");
 
   const render =
     currentlyRenderedProps === undefined ||

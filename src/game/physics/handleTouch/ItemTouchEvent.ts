@@ -1,7 +1,7 @@
-import {
-  isPlayableItem,
-  type PlayableItem,
-  type UnionOfAllItemInPlayTypes,
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import type {
+  PlayableItem,
+  UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
@@ -41,5 +41,5 @@ export const movingItemIsPlayable = <
   PlayableItem<CharacterName, RoomId, RoomItemId>,
   TouchedItem
 > => {
-  return isPlayableItem(e.movingItem);
+  return e.movingItem[itemBehaviourKey].isPlayable(e.movingItem);
 };

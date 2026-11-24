@@ -28,11 +28,4 @@ export class LightBeamBehaviour extends ItemBehaviour {
   ): boolean {
     return toucher === undefined || toucher.type !== "monster";
   }
-
-  /**
-   * nothing can stand on light
-   */
-  override isStandable(): boolean {
-    return false;
-  }
 }

@@ -6,15 +6,6 @@ import type { ItemInPlay } from "./ItemInPlay";
 import type { UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
 import type { RoomStateItems } from "./RoomState";
 
-export const roomItemsArray = <
-  RoomId extends string,
-  RoomItemId extends string,
-  ScN extends SceneryName = SceneryName,
->(
-  roomItems: RoomStateItems<RoomId, RoomItemId, ScN>,
-): Array<ValueOf<typeof roomItems>> => {
-  return Object.values(roomItems);
-};
 /** Re-export of valuesIter under a more convenient type specialised for room items */
 
 export const roomItemsIterable = valuesIter as <

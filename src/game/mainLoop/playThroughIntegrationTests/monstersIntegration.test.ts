@@ -2,6 +2,7 @@ import { beforeEach, expect, test } from "vitest";
 
 import { setUpBasicGame } from "../../../_testUtils/basicRoom";
 import { headState, itemState } from "../../../_testUtils/characterState";
+import { describedForAllFrameRates } from "../../../_testUtils/describedForAllFrameRates";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import type { CharacterName } from "../../../model/modelTypes";
@@ -372,3 +373,57 @@ test.for([1, 2] as const)(
     });
   },
 );
+
+describedForAllFrameRates((frameRate) => {
+  test("a monster walking into two cubes at once, against a wall, turns around once, as off a wall", () => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          // well out of the monster's way:
+          position: { x: 0, y: 7, z: 0 },
+          config: { which: "heels" },
+        },
+        monster: {
+          type: "monster",
+          position: { x: 1, y: 3.5, z: 0 },
+          config: {
+            which: "turtle",
+            activated: "on",
+            movement: "back-forth",
+            startDirection: "left",
+          },
+        },
+        // 12px items, so placed flush against the wall and each other, across the monster's path:
+        cube1: {
+          type: "portableBlock",
+          position: { x: 7.125, y: 3.125, z: 0 },
+          config: { style: "cube" },
+        },
+        cube2: {
+          type: "portableBlock",
+          position: { x: 7.125, y: 3.875, z: 0 },
+          config: { style: "cube" },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      frameRate,
+      until: (gameState) =>
+        itemState<"monster">(gameState, "monster").facing.x < 0,
+      failAfter: 10_000,
+    });
+
+    playGameThrough(gameState, {
+      frameRate,
+      forTime: 500,
+      frameCallbacks(gameState) {
+        // checked every frame, so a failure reports when it turned again:
+        expect(
+          itemState<"monster">(gameState, "monster").facing.x,
+        ).toBeLessThan(0);
+      },
+    });
+  });
+});

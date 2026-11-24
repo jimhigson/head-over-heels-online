@@ -1,8 +1,9 @@
 // @vitest-environment happy-dom
-import { afterEach, beforeEach, describe, expect, test } from "vitest";
+import { afterEach, beforeEach, expect, test } from "vitest";
 
 import { setUpBasicGame } from "../../../_testUtils/basicRoom";
 import { itemState } from "../../../_testUtils/characterState";
+import { describedForAllFrameRates } from "../../../_testUtils/describedForAllFrameRates";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { makeTestRenderState } from "../../../_testUtils/makeTestRenderState";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
@@ -15,7 +16,6 @@ import {
   soundPlayback,
   soundsPlaying,
 } from "../../../_testUtils/sounds/soundTestUtils";
-import { testFrameRates } from "../../../_testUtils/testFrameRates";
 
 beforeEach(async () => {
   resetStore();
@@ -25,7 +25,7 @@ beforeEach(async () => {
 afterEach(() => {
   resetSoundsForTest();
 });
-describe.for(testFrameRates)("at $fps fps", (frameRate) => {
+describedForAllFrameRates((frameRate) => {
   test("bumping into a portableBlock and pushing it into a fixed block", () => {
     const gameState = setUpBasicGame({
       firstRoomItems: {

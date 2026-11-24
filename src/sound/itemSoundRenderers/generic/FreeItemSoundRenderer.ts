@@ -62,8 +62,24 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
 
   #fallBracketedSound: BracketedSound | undefined;
   #standingOnBracketedSound: BracketedSound | undefined;
-  #collisionBracketedSound: BracketedSound | undefined;
+  /**
+   * plays for each bump - its value is the number of the bump being heard
+   */
+  #collisionBracketedSound: BracketedSound<number | undefined> | undefined;
   #pushedBracketedSound: BracketedSound | undefined;
+
+  /**
+   * counts the separate bumps. A collision on the tick straight after another
+   * is part of the same bump, unless it is with something new - so a ball
+   * knocked into a wall is two bumps, but one caught again by what knocked it
+   * is one
+   */
+  #bumpNumber = 0;
+  /**
+   * the items collided with as of the last tick - empty if there was no
+   * collision then
+   */
+  readonly #collidedWithOnLastTick = new Set<string>();
 
   currentPositionZ: number = 0;
 
@@ -104,7 +120,11 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
     collisionChannel.connect(this.output);
     this.#collisionBracketedSound =
       options?.collision &&
-      new BracketedSound({ start: options.collision }, collisionChannel);
+      new BracketedSound<number | undefined>(
+        // a new bump straight after another changes the value, so plays too:
+        { start: options.collision, change: options.collision },
+        collisionChannel,
+      );
 
     const pushedChannel: GainNode = audioCtx.createGain();
     pushedChannel.connect(this.output);
@@ -174,7 +194,28 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
       const collidedWithSomething =
         collidedSinceLastTick && !isEmptyObject(collidedWith);
 
-      this.#collisionBracketedSound.tick(collidedWithSomething);
+      let collidedWithSomethingNew = false;
+      if (collidedWithSomething) {
+        for (const collidedWithItemId in collidedWith) {
+          if (!this.#collidedWithOnLastTick.has(collidedWithItemId)) {
+            collidedWithSomethingNew = true;
+          }
+        }
+      }
+      if (collidedWithSomethingNew) {
+        this.#bumpNumber++;
+      }
+
+      this.#collidedWithOnLastTick.clear();
+      if (collidedWithSomething) {
+        for (const collidedWithItemId in collidedWith) {
+          this.#collidedWithOnLastTick.add(collidedWithItemId);
+        }
+      }
+
+      this.#collisionBracketedSound.tick(
+        collidedWithSomething ? this.#bumpNumber : undefined,
+      );
     }
 
     if (this.#pushedBracketedSound !== undefined) {

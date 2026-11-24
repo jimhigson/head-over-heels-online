@@ -37,7 +37,9 @@ type SavedGameStateFields = (typeof savedGameStateFields)[number];
 type SavedGameState<RoomId extends string> = SetOptional<
   Pick<GameState<RoomId>, Exclude<SavedGameStateFields, "characterRooms">>,
   // saves made before the camera could rotate have no camera angle at all;
-  // such games resume at the base view (defaulted on load - see loadGameState)
+  // such games resume at the base view (defaulted on load - see loadGameState).
+  //
+  // Needed for saves from v26 (released July 2026) and earlier.
   "targetCameraAngle"
 > & {
   characterRooms: SavedCharacterRooms<RoomId>;

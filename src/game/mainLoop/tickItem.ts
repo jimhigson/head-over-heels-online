@@ -2,6 +2,7 @@ import type { KeysOfUnion } from "type-fest";
 
 import { itemBehaviourKey, type ItemInPlayType } from "../../model/ItemInPlay";
 import {
+  type FreeItem,
   isFreeItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlayNarrowedUnions";
@@ -18,7 +19,7 @@ import {
 import type { GameState } from "../gameState/GameState";
 import { makeItemFadeOut } from "../gameState/mutators/makeItemFadeOut";
 import type { MechanicResult } from "../physics/MechanicResult";
-import { latentMovement } from "../physics/mechanics/latentMovement";
+import { forEachLatentMovement } from "../physics/mechanics/forEachLatentMovement";
 import { moveItem } from "../physics/moveItem/moveItem";
 import { recordActedOnBy } from "../physics/recordActedOnBy";
 import { applyMechanicsResults } from "./applyMechanicsResults";
@@ -198,27 +199,34 @@ export const tickItem = <RoomId extends string, RoomItemId extends string>(
     // now, apply latent movement. this isn't a normal mechanic because
     // it also has a movedBy property, which is used to record who the actor
     // on the moved item is
-    for (const { movedBy, posDelta } of latentMovement(
-      item,
-      room,
-      gameState,
-      deltaMS,
-    )) {
-      recordActedOnBy(
-        movedBy,
-        item,
-        room,
-        posDelta.x !== 0 || posDelta.y !== 0,
-        posDelta.z !== 0,
-      );
-      moveItem({
-        subjectItem: item,
-        posDelta,
-        gameState,
-        room,
-        deltaMS,
-        handleTouches: true,
-      });
-    }
+    forEachLatentMovement(item, room, gameState, deltaMS, applyLatentMovement);
   }
+};
+
+/**
+ * moves the item by one frame of its latent movement
+ */
+const applyLatentMovement = <RoomId extends string, RoomItemId extends string>(
+  item: FreeItem<RoomId, RoomItemId>,
+  movedBy: RoomItemId,
+  posDelta: Xyz,
+  room: RoomState<RoomId, RoomItemId>,
+  gameState: GameState<RoomId>,
+  deltaMS: number,
+): void => {
+  recordActedOnBy(
+    movedBy,
+    item,
+    room,
+    posDelta.x !== 0 || posDelta.y !== 0,
+    posDelta.z !== 0,
+  );
+  moveItem({
+    subjectItem: item,
+    posDelta,
+    gameState,
+    room,
+    deltaMS,
+    handleTouches: true,
+  });
 };

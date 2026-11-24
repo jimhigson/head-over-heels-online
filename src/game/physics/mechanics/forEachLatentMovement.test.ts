@@ -7,8 +7,8 @@ import type { RoomState } from "../../../model/RoomState";
 import type { GameState } from "../../gameState/GameState";
 import {
   type ApplicableLatentMovement,
-  latentMovement,
-} from "./latentMovement";
+  forEachLatentMovement,
+} from "./forEachLatentMovement";
 
 type TestItem = FreeItem<string, string>;
 type TestRoomState = RoomState<string, string>;
@@ -32,13 +32,22 @@ const createTestRoomAtTime = (roomTime: number): RoomState<string, string> => {
   } satisfies PartialDeep<TestRoomState> as TestRoomState;
 };
 
-describe("latentMovement", () => {
+describe("forEachLatentMovement", () => {
   it("should apply no movement when there are no latent movement frames", () => {
     const item = createTestItemWithLatentMovement([]);
     const room = createTestRoomAtTime(100);
     const gameState = {} as GameState<string>;
 
-    const results = [...latentMovement(item, room, gameState, 16)];
+    const results: Array<ApplicableLatentMovement<string>> = [];
+    forEachLatentMovement(
+      item,
+      room,
+      gameState,
+      16,
+      (_item, movedBy, posDelta) => {
+        results.push({ movedBy, posDelta: { ...posDelta } });
+      },
+    );
 
     expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([]);
     expect(item.state.latentMovement).toEqual<
@@ -60,7 +69,16 @@ describe("latentMovement", () => {
     const room = createTestRoomAtTime(100);
     const gameState = {} as GameState<string>;
 
-    const results = [...latentMovement(item, room, gameState, 16)];
+    const results: Array<ApplicableLatentMovement<string>> = [];
+    forEachLatentMovement(
+      item,
+      room,
+      gameState,
+      16,
+      (_item, movedBy, posDelta) => {
+        results.push({ movedBy, posDelta: { ...posDelta } });
+      },
+    );
 
     // Movement: velocity 2 px/ms × 16ms full tick = 32 pixels
     expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([
@@ -88,7 +106,16 @@ describe("latentMovement", () => {
     const room = createTestRoomAtTime(100);
     const gameState = {} as GameState<string>;
 
-    const results = [...latentMovement(item, room, gameState, 20)];
+    const results: Array<ApplicableLatentMovement<string>> = [];
+    forEachLatentMovement(
+      item,
+      room,
+      gameState,
+      20,
+      (_item, movedBy, posDelta) => {
+        results.push({ movedBy, posDelta: { ...posDelta } });
+      },
+    );
 
     // Movement: velocity 3 px/ms × 10ms active time = 30 pixels
     expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([
@@ -115,7 +142,16 @@ describe("latentMovement", () => {
     const room = createTestRoomAtTime(100);
     const gameState = {} as GameState<string>;
 
-    const results = [...latentMovement(item, room, gameState, 15)];
+    const results: Array<ApplicableLatentMovement<string>> = [];
+    forEachLatentMovement(
+      item,
+      room,
+      gameState,
+      15,
+      (_item, movedBy, posDelta) => {
+        results.push({ movedBy, posDelta: { ...posDelta } });
+      },
+    );
 
     // Movement: velocity 4 px/ms × 10ms active time = 40 pixels
     expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([
@@ -150,7 +186,16 @@ describe("latentMovement", () => {
     const room = createTestRoomAtTime(100);
     const gameState = {} as GameState<string>;
 
-    const results = [...latentMovement(item, room, gameState, 10)]; // 90-100
+    const results: Array<ApplicableLatentMovement<string>> = []; // 90-100
+    forEachLatentMovement(
+      item,
+      room,
+      gameState,
+      10,
+      (_item, movedBy, posDelta) => {
+        results.push({ movedBy, posDelta: { ...posDelta } });
+      },
+    );
 
     // Both frames active for full 10ms (from 90 to 100)
     expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([
@@ -185,7 +230,16 @@ describe("latentMovement", () => {
     const room = createTestRoomAtTime(100);
     const gameState = {} as GameState<string>;
 
-    const results = [...latentMovement(item, room, gameState, 16)]; // 84-100
+    const results: Array<ApplicableLatentMovement<string>> = []; // 84-100
+    forEachLatentMovement(
+      item,
+      room,
+      gameState,
+      16,
+      (_item, movedBy, posDelta) => {
+        results.push({ movedBy, posDelta: { ...posDelta } });
+      },
+    );
 
     // First frame active from 84 to 100 = full 16ms
     expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([
@@ -216,7 +270,16 @@ describe("latentMovement", () => {
     const room = createTestRoomAtTime(100);
     const gameState = {} as GameState<string>;
 
-    const results = [...latentMovement(item, room, gameState, 16)];
+    const results: Array<ApplicableLatentMovement<string>> = [];
+    forEachLatentMovement(
+      item,
+      room,
+      gameState,
+      16,
+      (_item, movedBy, posDelta) => {
+        results.push({ movedBy, posDelta: { ...posDelta } });
+      },
+    );
 
     expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([]);
     expect(item.state.latentMovement).toHaveLength(1);
@@ -240,7 +303,16 @@ describe("latentMovement", () => {
     const room = createTestRoomAtTime(100); // Previous time would be 84
     const gameState = {} as GameState<string>;
 
-    const results = [...latentMovement(item, room, gameState, 16)];
+    const results: Array<ApplicableLatentMovement<string>> = [];
+    forEachLatentMovement(
+      item,
+      room,
+      gameState,
+      16,
+      (_item, movedBy, posDelta) => {
+        results.push({ movedBy, posDelta: { ...posDelta } });
+      },
+    );
 
     expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([]);
     // Old frame should be removed, only future frame remains
@@ -262,7 +334,16 @@ describe("latentMovement", () => {
     const room = createTestRoomAtTime(100);
     const gameState = {} as GameState<string>;
 
-    const results = [...latentMovement(item, room, gameState, 20)]; // 80-100
+    const results: Array<ApplicableLatentMovement<string>> = []; // 80-100
+    forEachLatentMovement(
+      item,
+      room,
+      gameState,
+      20,
+      (_item, movedBy, posDelta) => {
+        results.push({ movedBy, posDelta: { ...posDelta } });
+      },
+    );
 
     expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([
       {
@@ -287,7 +368,16 @@ describe("latentMovement", () => {
     const room = createTestRoomAtTime(100);
     const gameState = {} as GameState<string>;
 
-    const results = [...latentMovement(item, room, gameState, 10)]; // 90-100
+    const results: Array<ApplicableLatentMovement<string>> = []; // 90-100
+    forEachLatentMovement(
+      item,
+      room,
+      gameState,
+      10,
+      (_item, movedBy, posDelta) => {
+        results.push({ movedBy, posDelta: { ...posDelta } });
+      },
+    );
 
     // Movement: velocity 5 px/ms × 4ms active time = 20 pixels
     expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([
@@ -325,7 +415,16 @@ describe("latentMovement", () => {
     const room = createTestRoomAtTime(100);
     const gameState = {} as GameState<string>;
 
-    const results = [...latentMovement(item, room, gameState, 20)]; // 80-100
+    const results: Array<ApplicableLatentMovement<string>> = []; // 80-100
+    forEachLatentMovement(
+      item,
+      room,
+      gameState,
+      20,
+      (_item, movedBy, posDelta) => {
+        results.push({ movedBy, posDelta: { ...posDelta } });
+      },
+    );
 
     // Frame 1: active from 80 to 90 = 10ms × 1 px/ms = 10 pixels in x
     // Frame 2: active from 80 to 95 = 15ms × 1 px/ms = 15 pixels in y

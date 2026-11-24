@@ -1,7 +1,8 @@
+import type { SetNonNullableDeep } from "type-fest";
+
 import type { UnindexedRoomState } from "../game/gameState/saving/SavedGameState";
 import { coyoteTime } from "../game/physics/mechanicsConstants";
-import { emptyIterator, isEmptyObject } from "../utils/empty";
-import { keysIter } from "../utils/entries";
+import { itemBehaviourKey } from "./ItemInPlay";
 import type {
   FreeItem,
   UnionOfAllItemInPlayTypes,
@@ -15,38 +16,50 @@ export const itemIsStandingOnSomething = <
   RoomItemId extends string,
 >(
   item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-): item is FreeItem<RoomId, RoomItemId> & {
-  state: { standingOnItemId: string };
-} => {
+): item is SetNonNullableDeep<
+  FreeItem<RoomId, RoomItemId>,
+  "state.standingOnItemId"
+> => {
   return !!(item.state as { standingOnItemId?: null | string })
     .standingOnItemId;
 };
 
 /**
- * iterate stood on by, while giving the item objects, not the item ids that are stored on the
- * item that is stood on
+ * the item object for an id in another item's stoodOnBy - loop over stoodOnBy
+ * with for...in and look each up with this, which allocates nothing
  */
+export const stoodOnByItem = <RoomId extends string, RoomItemId extends string>(
+  /**
+   * an id from the stood on item's stoodOnBy
+   */
+  standerId: RoomItemId,
+  room: UnindexedRoomState<RoomId, RoomItemId>,
+): FreeItem<RoomId, RoomItemId> => {
+  const standingItem = room.items[standerId];
+  if (standingItem === undefined) {
+    throw new Error(`item ${standerId} in stoodOnBy is not in the room`);
+  }
+  // cast: we know that only free items can stand on something:
+  return standingItem as FreeItem<RoomId, RoomItemId>;
+};
 
-export const iterateStoodOnByItems = <
+/**
+ * whether a playable character is standing on the item whose stoodOnBy this is
+ */
+export const isStoodOnByPlayable = <
   RoomId extends string,
   RoomItemId extends string,
 >(
   stoodOnBy: StoodOnBy<RoomItemId>,
   room: UnindexedRoomState<RoomId, RoomItemId>,
-): IteratorObject<FreeItem<RoomId, RoomItemId>, undefined, unknown> => {
-  // for items that stand on by nothing we can skip allocating an iterator:
-  if (isEmptyObject(stoodOnBy)) {
-    return emptyIterator;
-  }
-  return keysIter(stoodOnBy).map((stoodOnByItemId) => {
-    const standingItem = room.items[stoodOnByItemId];
-    if (standingItem === undefined) {
-      throw new Error(
-        `item ${stoodOnByItemId} in stoodOnBy is not in the room`,
-      );
+): boolean => {
+  for (const standerId in stoodOnBy) {
+    const stander = stoodOnByItem(standerId, room);
+    if (stander[itemBehaviourKey].isPlayable(stander)) {
+      return true;
     }
-    return standingItem;
-  }) as IterableIterator<FreeItem<RoomId, RoomItemId>>; // cast: we know that only free items can stand on something:
+  }
+  return false;
 };
 
 /**

@@ -86,9 +86,69 @@ v27 against "laboratory" v14
   0.5468  1,795.32  1,858.56  1,828.78  1,840.15  1,858.56  ±0.72%  10
 
 (33.4% faster at mean vs v27)
+
+2026-11-23 (branch two-items-on-lift-sound-bug)
+===============================================
+
+against "laboratory" v16
+
+* collisions sorted by priority, then overlap, then id, without allocating
+* collision records gather across all of a frame's sub-ticks
+* flush landings pick what to stand on by priority, then overlap
+* every solid item is standable (no isStandable)
+* optimise: find what is stood on is one loop - no iterator helpers, arrays or reduce
+* bench @ 120fps (same tick count)
+
+   name                                                hz       min       max      mean       p75       p99      p995      p999     rme  samples
+   laboratory v16 for 60s @ 120 fps (7200 frames)  0.5309  1,863.09  1,901.09  1,883.85  1,896.00  1,900.89  1,900.99  1,901.07  ±0.51%       10
+
+(2.4% slower at mean vs previous, but against a later campaign version)
+
+2026-11-24 (branch two-items-on-lift-sound-bug)
+===============================================
+
+against "laboratory" v16, @ 120fps. Before the changes below:
+
+  hz      min       max       mean      p75       p99       rme     samples
+  0.5224  1,874.04  1,949.72  1,914.44  1,926.19  1,948.32  ±0.77%  10
+
+* each sub-tick sorts the room's items in a reused array, not a new one
+* items stood on are looped with for...in, not a generator and iterator helper
+* helpful movement vector sensors collect into a reused array, without reduce
+* latent movement is applied by callback with a reused buffer, not a generator
+* homing monsters look up the playables directly, not with a generator
+* shadow and mirror renderers collect into reused arrays
+* charles' joystick check and the on-screen controls loop without iterators
+
+  hz      min       max       mean      p75       p99       rme     samples
+  0.5627  1,750.83  1,815.80  1,777.22  1,790.30  1,813.95  ±0.85%  10
+
+(7.2% faster at mean than before these changes)
+
+2026-11-24 (branch two-items-on-lift-sound-bug)
+===============================================
+
+against "laboratory" v16, @ 120fps
+
+* experiment: playable and sliding checks as item behaviour methods
+  (isPlayable, isSliding), not type guards on the item's type and state
+
+  hz      min       max       mean      p75       p99       rme     samples
+  0.5463  1,769.98  1,883.42  1,831.04  1,849.09  1,881.06  ±1.22%  10
+  0.5425  1,815.57  1,884.66  1,843.58  1,850.30  1,883.14  ±0.80%  10
+
+(3.0% and 3.7% slower at mean than the type guards)
+
+* as above, but isPlayable/isSliding return false on the base behaviour and are
+  overridden to return true, not read from a constructor option
+
+  hz      min       max       mean      p75       p99       rme     samples
+  0.5599  1,755.59  1,814.55  1,786.14  1,792.29  1,813.33  ±0.63%  10
+
+(0.5% slower at mean than the type guards - within the noise)
 */
 
-const fps = 60;
+const fps = 120;
 const simulatedSeconds = 60;
 
 const laboratoryCampaign = await loadCampaignFromDb(postgrestDbClient, {
@@ -102,11 +162,9 @@ console.log(
   findStartingRoomsInCampaign(laboratoryCampaign),
 );
 
-test("load and play the laboratory room for 60 simulated seconds", async ({
-  bench,
-}) => {
+test("load and play laboratory room", async ({ bench }) => {
   await bench(
-    "load and play the laboratory room for 60 simulated seconds",
+    `laboratory v${laboratoryCampaign.locator.version} for ${simulatedSeconds}s @ ${fps} fps (${simulatedSeconds * fps} frames)`,
     () => {
       // the store would otherwise still have the previous iteration's game running:
       resetStore();

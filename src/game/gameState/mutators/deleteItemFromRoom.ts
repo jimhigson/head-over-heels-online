@@ -3,7 +3,7 @@ import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowe
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import {
   itemIsStandingOnSomething,
-  iterateStoodOnByItems,
+  stoodOnByItem,
 } from "../../../model/stoodOnItemsLookup";
 import type { UnindexedRoomState } from "../saving/SavedGameState";
 import { removeStandingOn } from "./standingOn/removeStandingOn";
@@ -47,8 +47,8 @@ export const deleteItemFromUnindexedRoom = <
     removeStandingOn(item, room);
   }
   // and nothing can be stood on us either:
-  for (const standerOn of iterateStoodOnByItems(item.state.stoodOnBy, room)) {
-    removeStandingOn(standerOn, room);
+  for (const standerId in item.state.stoodOnBy) {
+    removeStandingOn(stoodOnByItem(standerId, room), room);
   }
 
   if (typeof itemParam === "string") {

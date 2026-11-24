@@ -211,11 +211,15 @@ const holdKeysUntilFrozen = async (
 export const clickCheat = async (page: Page, testId: string) => {
   // let the character come to rest first: a summoned pickup lands where they
   // are, so summoning while they are still walking into the room leaves it
-  // behind them, to be walked away from rather than collected
+  // behind them, to be walked away from rather than collected. Walking in
+  // through a door, they stand on the doorway's floor before they are in:
   await advanceUntil(page, () =>
     page.evaluate(() => {
       const playable = window.__e2e_currentPlayable?.();
-      return playable === undefined || playable.state.standingOnItemId !== null;
+      return (
+        playable === undefined ||
+        (playable.state.standingOnItemId !== null && !playable.state.autoWalk)
+      );
     }),
   );
 

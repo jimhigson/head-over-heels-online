@@ -5,6 +5,7 @@ import type {
   FreeItem,
   UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlayNarrowedUnions";
+import type { RoomStateItems } from "../../model/RoomState";
 import { epsilon } from "../../utils/epsilon";
 import { collisionsPriorityComparator } from "../physics/collisionsOrder";
 import { type CollideableItem, collision2Items } from "./aabbCollision";
@@ -107,41 +108,119 @@ export const spatiallyCheckStandingOn = <
 };
 
 /**
- * find the stood on item with the most overlap out of those given, ignoring the previous
- * standingOn property (is not sticky)
+ * the xy overlap area with the item maybe being stood on, if it is stood on and
+ * is preferred to the item preferred so far - otherwise undefined
+ */
+const overlapAreaIfPreferredStoodOn = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  item: FreeItem<RoomId, RoomItemId>,
+  itemMaybeBeingStoodOn: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  /**
+   * the item preferred so far, if any
+   */
+  preferredStoodOn: undefined | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  /**
+   * the xy overlap area with the item preferred so far
+   */
+  preferredOverlapArea: number,
+): number | undefined => {
+  if (!spatiallyCheckStandingOn(item, itemMaybeBeingStoodOn)) {
+    return undefined;
+  }
+
+  const priorityComparison =
+    preferredStoodOn === undefined ? -1 : (
+      collisionsPriorityComparator(itemMaybeBeingStoodOn, preferredStoodOn)
+    );
+  if (priorityComparison > 0) {
+    return undefined;
+  }
+
+  const overlapArea = itemXyOverlapArea(item, itemMaybeBeingStoodOn);
+  return priorityComparison < 0 || overlapArea > preferredOverlapArea ?
+      overlapArea
+    : undefined;
+};
+
+/**
+ * find the item stood on with the highest priority, then the most overlap, out
+ * of the room's items, ignoring the previous standingOn property (is not sticky)
  */
 export const findStandingOnWithHighestPriorityAndMostOverlap = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  item: FreeItem<RoomId, RoomItemId>,
+  roomItems: RoomStateItems<RoomId, RoomItemId>,
+  /**
+   * if given, only the items this accepts are considered
+   */
+  isConsidered?: (
+    itemMaybeBeingStoodOn: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  ) => boolean,
+): undefined | UnionOfAllItemInPlayTypes<RoomId, RoomItemId> => {
+  let preferredStoodOn:
+    undefined | UnionOfAllItemInPlayTypes<RoomId, RoomItemId> = undefined;
+  let preferredOverlapArea = 0;
+
+  for (const itemId in roomItems) {
+    const itemMaybeBeingStoodOn = roomItems[itemId];
+    if (isConsidered !== undefined && !isConsidered(itemMaybeBeingStoodOn)) {
+      continue;
+    }
+    const maybeOverlapArea = overlapAreaIfPreferredStoodOn(
+      item,
+      itemMaybeBeingStoodOn,
+      preferredStoodOn,
+      preferredOverlapArea,
+    );
+    if (maybeOverlapArea !== undefined) {
+      preferredStoodOn = itemMaybeBeingStoodOn;
+      preferredOverlapArea = maybeOverlapArea;
+    }
+  }
+
+  return preferredStoodOn;
+};
+
+/**
+ * as {@link findStandingOnWithHighestPriorityAndMostOverlap}, out of a range of
+ * an array of items
+ */
+export const findStandingOnWithHighestPriorityAndMostOverlapInRange = <
   RoomId extends string,
   RoomItemId extends string,
   Item extends UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
 >(
   item: FreeItem<RoomId, RoomItemId>,
-  itemsMaybeBeingStoodOn: Iterable<Item>,
+  itemsMaybeBeingStoodOn: ReadonlyArray<Item>,
+  /**
+   * the index of the first item considered
+   */
+  start: number,
+  /**
+   * the index after the last item considered
+   */
+  end: number,
 ): Item | undefined => {
-  const potentiallyStoodOn = Iterator.from(itemsMaybeBeingStoodOn).filter((i) =>
-    spatiallyCheckStandingOn(item, i),
-  );
+  let preferredStoodOn: Item | undefined = undefined;
+  let preferredOverlapArea = 0;
 
-  const potentiallyStoodOnArray = [...potentiallyStoodOn];
+  for (let i = start; i < end; i++) {
+    const itemMaybeBeingStoodOn = itemsMaybeBeingStoodOn[i];
+    const maybeOverlapArea = overlapAreaIfPreferredStoodOn(
+      item,
+      itemMaybeBeingStoodOn,
+      preferredStoodOn,
+      preferredOverlapArea,
+    );
+    if (maybeOverlapArea !== undefined) {
+      preferredStoodOn = itemMaybeBeingStoodOn;
+      preferredOverlapArea = maybeOverlapArea;
+    }
+  }
 
-  const itemWithMaxOverlap =
-    potentiallyStoodOnArray.length === 0 ?
-      undefined
-    : potentiallyStoodOnArray.reduce((ac, iCol) => {
-        const priorityComparison = collisionsPriorityComparator(iCol, ac);
-
-        if (priorityComparison < 0) {
-          return iCol;
-        }
-
-        if (
-          priorityComparison === 0 &&
-          itemXyOverlapArea(item, iCol) > itemXyOverlapArea(item, ac)
-        ) {
-          return iCol;
-        }
-        return ac;
-      });
-
-  return itemWithMaxOverlap;
+  return preferredStoodOn;
 };

@@ -1,13 +1,11 @@
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import {
   isFreeItem,
-  isSlidingItem,
   type PlayableItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
 import type { HeelsAbilities } from "../../../model/ItemStateMap";
 import type { CharacterName } from "../../../model/modelTypes";
-import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import type { RoomState } from "../../../model/RoomState";
 import { getEffectivelyStandingOnItemIdForPlayable } from "../../../model/stoodOnItemsLookup";
 import { originXyz } from "../../../utils/vectors/vectors";
@@ -95,7 +93,7 @@ const pickUpItem = <RoomId extends string, RoomItemId extends string>(
     // still in the bag, so nothing should carry over to when it is put down:
     itemToCarry.state.vels.gravity = originXyz;
     itemToCarry.state.vels.movingFloor = originXyz;
-    if (isSlidingItem(itemToCarry)) {
+    if (itemToCarry[itemBehaviourKey].isSliding(itemToCarry)) {
       itemToCarry.state.vels.sliding = originXyz;
     }
   }
@@ -119,13 +117,10 @@ export const findItemToPickup = <
     // can only pick up deadly items if you have a shield:
     (hasShield || !i[itemBehaviourKey].isDeadly(i));
 
-  const portableItemsIter = roomItemsIterable(room.items).filter(
-    itemIsPortableForCarrier,
-  );
-
   const straightStoodOn = findStandingOnWithHighestPriorityAndMostOverlap(
     carrier,
-    portableItemsIter,
+    room.items,
+    itemIsPortableForCarrier,
   );
 
   if (straightStoodOn) {

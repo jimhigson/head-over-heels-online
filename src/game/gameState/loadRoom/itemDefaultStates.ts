@@ -14,6 +14,7 @@ import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   type Aabb,
   boxWithSize,
+  originXy,
   originXyz,
   scaleXyz,
 } from "../../../utils/vectors/vectors";
@@ -50,7 +51,7 @@ export const defaultFreeItemState = <RoomItemId extends string>() =>
       roomTime: neverTime,
       by: emptyObject as Record<RoomItemId, true>,
     },
-    controlledWithJoystickAtRoomTime: neverTime,
+    joystickVotes: { atRoomTime: neverTime, total: originXy },
     standingOnItemId: null,
     standingOnUntilRoomTime: neverTime,
     previousStandingOnItemId: null,

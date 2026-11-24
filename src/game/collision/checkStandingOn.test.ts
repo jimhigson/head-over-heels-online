@@ -9,11 +9,11 @@ import { buildRoomJsonDirectionalIndex } from "../gameState/loadRoom/buildRoomJs
 import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
 import { blockSizePx } from "../physics/mechanicsConstants";
 import {
-  findStandingOnWithHighestPriorityAndMostOverlap,
+  findStandingOnWithHighestPriorityAndMostOverlapInRange,
   spatiallyCheckStandingOn,
 } from "./checkStandingOn";
 
-describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
+describe("findStandingOnWithHighestPriorityAndMostOverlapInRange", () => {
   test("prefers blocks over conveyors even if the conveyor has more overlap", () => {
     const roomJson = basicEmptyRoom();
     const [movable] = loadItemFromJson(
@@ -27,37 +27,40 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
       noPlanetsLiberated,
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
-    const result = findStandingOnWithHighestPriorityAndMostOverlap(
-      movable as FreeItem<string, string>,
-      [
-        ...loadItemFromJson(
-          "conv",
-          {
-            type: "conveyor",
-            config: {
-              direction: "right",
-            },
-            position: { x: 2, y: 0, z: 0 },
+    const itemsMaybeBeingStoodOn = [
+      ...loadItemFromJson(
+        "conv",
+        {
+          type: "conveyor",
+          config: {
+            direction: "right",
           },
-          roomJson,
-          noPlanetsLiberated,
-          buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
-        ),
+          position: { x: 2, y: 0, z: 0 },
+        },
+        roomJson,
+        noPlanetsLiberated,
+        buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
+      ),
 
-        ...loadItemFromJson(
-          "block",
-          {
-            type: "block",
-            config: {
-              style: "organic",
-            },
-            position: { x: 3, y: 0, z: 0 },
+      ...loadItemFromJson(
+        "block",
+        {
+          type: "block",
+          config: {
+            style: "organic",
           },
-          roomJson,
-          noPlanetsLiberated,
-          buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
-        ),
-      ],
+          position: { x: 3, y: 0, z: 0 },
+        },
+        roomJson,
+        noPlanetsLiberated,
+        buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
+      ),
+    ];
+    const result = findStandingOnWithHighestPriorityAndMostOverlapInRange(
+      movable as FreeItem<string, string>,
+      itemsMaybeBeingStoodOn,
+      0,
+      itemsMaybeBeingStoodOn.length,
     );
 
     expect(result?.id).toBe("block");
@@ -76,37 +79,40 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
       noPlanetsLiberated,
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
-    const result = findStandingOnWithHighestPriorityAndMostOverlap(
-      movable as FreeItem<string, string>,
-      [
-        ...loadItemFromJson(
-          "block1",
-          {
-            type: "block",
-            config: {
-              style: "organic",
-            },
-            position: { x: 2, y: 0, z: 0 },
+    const itemsMaybeBeingStoodOn = [
+      ...loadItemFromJson(
+        "block1",
+        {
+          type: "block",
+          config: {
+            style: "organic",
           },
-          roomJson,
-          noPlanetsLiberated,
-          buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
-        ),
+          position: { x: 2, y: 0, z: 0 },
+        },
+        roomJson,
+        noPlanetsLiberated,
+        buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
+      ),
 
-        ...loadItemFromJson(
-          "block2",
-          {
-            type: "block",
-            config: {
-              style: "organic",
-            },
-            position: { x: 3, y: 0, z: 0 },
+      ...loadItemFromJson(
+        "block2",
+        {
+          type: "block",
+          config: {
+            style: "organic",
           },
-          roomJson,
-          noPlanetsLiberated,
-          buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
-        ),
-      ],
+          position: { x: 3, y: 0, z: 0 },
+        },
+        roomJson,
+        noPlanetsLiberated,
+        buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
+      ),
+    ];
+    const result = findStandingOnWithHighestPriorityAndMostOverlapInRange(
+      movable as FreeItem<string, string>,
+      itemsMaybeBeingStoodOn,
+      0,
+      itemsMaybeBeingStoodOn.length,
     );
 
     expect(result?.id).toBe("block1");

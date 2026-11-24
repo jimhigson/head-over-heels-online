@@ -90,9 +90,19 @@ export type RoomState<
     roomJson: RoomJson<RoomId, RoomItemId, ScN>;
     /**
      * how long (in ms) this room has been in play for - only advanced while the room
-     * is the current room
+     * is the current room.
+     *
+     * Advances once per tick, before that tick's mechanics
+     * run, so during a tick it is the time the tick advances to (last time of the tick).
+     * A frame is 1 or  several ticks, so this can be incremented several times within one frame
      */
     roomTime: number;
+    /**
+     * the roomTime when the current frame started in this room. This is sometimes needed to
+     * know if events happened in the same frame, such as recording collisions, since we overwrite
+     * collisions from previous frames
+     */
+    roomFrameStartTime: number;
     /**
      * how many times this room's state has progressed: bumped on every
      * progressing mutation (an item moving, resizing, or entering the room)

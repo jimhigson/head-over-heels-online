@@ -1,10 +1,9 @@
 import type { WritableDeep } from "type-fest";
 
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import {
-  type FreeItem,
-  isPlayableItem,
-  type UnionOfAllItemInPlayTypes,
+import type {
+  FreeItem,
+  UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { epsilon, veryClose } from "../../../utils/epsilon";
@@ -18,8 +17,8 @@ import {
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import {
+  appendCollisionsBoxWithIndex,
   type CollideableItem,
-  collisionItemWithIndex,
   hasCollisionItemWithIndex,
 } from "../../collision/aabbCollision";
 
@@ -72,6 +71,51 @@ const slideScoreColWithNonSliding = 4;
 const slideSpeedCoef = 0.75;
 
 /**
+ * the items at the sensor; reused so sensing doesn't allocate it
+ */
+const sensorCollisions: Array<UnionOfAllItemInPlayTypes<string, string>> = [];
+
+// collisions with each sensor get a score:
+//  0: nothing there (hmv goes towards if other is non-zero)
+//  1: something there, but is pushable (hmv goes towards if other is not pushable)
+//  2: something there, not pushable
+const collisionSlideScore = <RoomId extends string, RoomItemId extends string>(
+  subjectItem: FreeItem<RoomId, RoomItemId>,
+  c: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+): number =>
+  c === subjectItem || c[itemBehaviourKey].isNonSolid(c, subjectItem) ?
+    slideScoreColWithNone
+  : c.type === "doorFrame" ? slideScoreColWithDoorFrame
+  : c[itemBehaviourKey].isPushableBy(c, subjectItem, false) ?
+    slideScoreColWithPushable
+    // non-hmv items (joysticks, switches) — player should snag on these to keep pushing:
+  : c[itemBehaviourKey].snagsHelpfulMovement ? slideScoreColWithNonSliding
+  : slideScoreColWithUnpushable;
+
+/**
+ * the highest slide score of the items where the sensor buffer is now
+ */
+const sensorSlideScore = <RoomId extends string, RoomItemId extends string>(
+  subjectItem: FreeItem<RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
+): number => {
+  appendCollisionsBoxWithIndex(
+    sensorBuffer.state.box,
+    room[roomSpatialIndexKey],
+    sensorCollisions,
+  );
+  let slideScore = slideScoreColWithNone;
+  for (let i = 0; i < sensorCollisions.length; i++) {
+    slideScore = Math.max(
+      slideScore,
+      collisionSlideScore(subjectItem, sensorCollisions[i]),
+    );
+  }
+  sensorCollisions.length = 0;
+  return slideScore;
+};
+
+/**
  * Not standard mtv-based sliding collision: work out items we collided with but probably
  * wanted to move past (for eligible moving items). This only applies if we have zero
  * movement in the frame, but were trying to move.
@@ -85,9 +129,16 @@ export const helpfulMovementVector = <
   originalPosDelta: Xyz,
   deltaMs: number,
   room: RoomState<RoomId, RoomItemId>,
-  collisions: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>[],
+  /**
+   * the items the subject collided with are the ones from `collisionsStart`,
+   * up to (not including) `collisionsEnd`
+   */
+  collisions: ReadonlyArray<UnionOfAllItemInPlayTypes<string, string>>,
+  collisionsStart: number,
+  collisionsEnd: number,
 ): undefined | Xyz => {
-  if (collisions.length === 0) {
+  if (collisionsEnd === collisionsStart) {
+    // only gets hmv if any collisions:
     return;
   }
 
@@ -132,7 +183,13 @@ export const helpfulMovementVector = <
 
   const movementAxis = unmovingInX ? "y" : "x";
 
-  const collidesWithDoorFrame = collisions.some((i) => i.type === "doorFrame");
+  let collidesWithDoorFrame = false;
+  for (let i = collisionsStart; i < collisionsEnd; i++) {
+    if (collisions[i].type === "doorFrame") {
+      collidesWithDoorFrame = true;
+      break;
+    }
+  }
 
   const sensorWidth =
     collidesWithDoorFrame ? sensorWidthWhenCollidingWithDoorFrame
@@ -159,31 +216,7 @@ export const helpfulMovementVector = <
   // test negative direction in cross axis:
   sensorBuffer.state.box[crossAxis] = subjectItem.state.box[crossAxis];
 
-  // collisions with each sensor get a score:
-  //  0: nothing there (hmv goes towards if other is non-zero)
-  //  1: something there, but is pushable (hmv goes towards if other is not pushable)
-  //  2: something there, not pushable
-  const accumulateCollisionScore = (
-    ac: number,
-    c: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-  ): number => {
-    const score: number =
-      c === subjectItem || c[itemBehaviourKey].isNonSolid(c, subjectItem) ?
-        slideScoreColWithNone
-      : c.type === "doorFrame" ? slideScoreColWithDoorFrame
-      : c[itemBehaviourKey].isPushableBy(c, subjectItem, false) ?
-        slideScoreColWithPushable
-        // non-hmv items (joysticks, switches) — player should snag on these to keep pushing:
-      : c[itemBehaviourKey].snagsHelpfulMovement ? slideScoreColWithNonSliding
-      : slideScoreColWithUnpushable;
-
-    return Math.max(ac, score);
-  };
-
-  const slideScoreNegSide: number = collisionItemWithIndex(
-    sensorBuffer,
-    room[roomSpatialIndexKey],
-  ).reduce(accumulateCollisionScore, 0);
+  const slideScoreNegSide = sensorSlideScore(subjectItem, room);
 
   if (slideScoreNegSide === slideScoreColWithNonSliding) {
     // colliding with a non-hmv item that prohibits sliding
@@ -204,7 +237,10 @@ export const helpfulMovementVector = <
     room[roomSpatialIndexKey],
     (c) =>
       !c[itemBehaviourKey].isNonSolid(c, subjectItem) &&
-      !(isPlayableItem(subjectItem) && c[itemBehaviourKey].isDeadly(c)),
+      !(
+        subjectItem[itemBehaviourKey].isPlayable(subjectItem) &&
+        c[itemBehaviourKey].isDeadly(c)
+      ),
   );
 
   const somewhereToSlideToOnNegSide = standingOnNothing || collidesNegSideBelow;
@@ -213,10 +249,7 @@ export const helpfulMovementVector = <
   sensorBuffer.state.box[crossAxis] =
     boxMaxOnAxis(subjectItem.state.box, crossAxis) - sensorWidthPx;
 
-  const slideScorePosSide: number = collisionItemWithIndex(
-    sensorBuffer,
-    room[roomSpatialIndexKey],
-  ).reduce(accumulateCollisionScore, 0);
+  const slideScorePosSide = sensorSlideScore(subjectItem, room);
 
   if (slideScorePosSide === slideScoreColWithNonSliding) {
     // colliding with a non-hmv item that prohibits sliding
@@ -231,7 +264,10 @@ export const helpfulMovementVector = <
     room[roomSpatialIndexKey],
     (c) =>
       !c[itemBehaviourKey].isNonSolid(c, subjectItem) &&
-      !(isPlayableItem(subjectItem) && c[itemBehaviourKey].isDeadly(c)),
+      !(
+        subjectItem[itemBehaviourKey].isPlayable(subjectItem) &&
+        c[itemBehaviourKey].isDeadly(c)
+      ),
   );
 
   const somewhereToSlideToOnPosSide = standingOnNothing || collidesPosSideBelow;

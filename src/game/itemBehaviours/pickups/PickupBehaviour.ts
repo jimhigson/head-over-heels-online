@@ -1,10 +1,9 @@
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
 import { itemInPlayCentre } from "../../../model/itemInPlayCentre";
-import {
-  isPlayableItem,
-  type PlayableItem,
-  type UnionOfAllItemInPlayTypes,
+import type {
+  PlayableItem,
+  UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
@@ -65,7 +64,7 @@ export abstract class PickupBehaviour extends FreeItemBehaviour {
   ): void {
     // the playable on the other side of the touch, whichever moved:
     const other = isMover ? e.touchedItem : e.movingItem;
-    if (isPlayableItem(other)) {
+    if (other[itemBehaviourKey].isPlayable(other)) {
       this.#collect(pickup, other, e.room, e.gameState);
     }
     super.onTouch(pickup, e, isMover);
@@ -79,7 +78,7 @@ export abstract class PickupBehaviour extends FreeItemBehaviour {
     _deltaMS: number,
   ): void {
     // a pickup standing on (ie, fallen onto) a player:
-    if (isPlayableItem(standingOn)) {
+    if (standingOn[itemBehaviourKey].isPlayable(standingOn)) {
       this.#collect(pickup, standingOn, room, gameState);
     }
   }

@@ -1,5 +1,5 @@
+import { isActedOnNowByItemOfType } from "../../game/physics/isActedOnNowByItemOfType";
 import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
-import { keysIter } from "../../utils/entries";
 import { audioCtx } from "../audioCtx";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import type {
@@ -48,20 +48,14 @@ export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
 
   tick(tickContext: ItemTickContext) {
     const {
-      renderContext: {
-        item,
-        room: { roomTime, items },
-      },
+      renderContext: { item, room },
     } = this;
-    const {
-      state: {
-        actedOnAt: { roomTime: roomTimeActedOn, by },
-      },
-    } = item;
 
-    const controlledByJoystick =
-      roomTime === roomTimeActedOn &&
-      keysIter(by).some((id) => items[id].type === "joystick");
+    const controlledByJoystick = isActedOnNowByItemOfType(
+      item,
+      room,
+      "joystick",
+    );
 
     this.#servoBracketed.tick(controlledByJoystick);
     this.#activatedBracketed.tick(item.state.activated ?? true);

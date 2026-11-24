@@ -41,6 +41,12 @@ export class OnScreenControls<
 
   #hudElements;
 
+  /**
+   * array version of the buttons in #hudElements, listed once so can iterate quickly
+   * without allocating
+   */
+  #buttonRenderersArray;
+
   readonly renderContext: OnScreenControlsRenderContext<RoomId>;
 
   constructor(renderContext: OnScreenControlsRenderContext<RoomId>) {
@@ -112,6 +118,8 @@ export class OnScreenControls<
         general,
       }),
     };
+
+    this.#buttonRenderersArray = Object.values(this.#hudElements.buttons);
 
     this.#hudElements.look.joystickRenderer = this.#hudElements.joystick;
     this.#hudElements.joystick.lookRenderer = this.#hudElements.look;
@@ -196,11 +204,13 @@ export class OnScreenControls<
     this.#hudElements.mainButtonNest.visible = !paused;
     this.#hudElements.joystick.output.visible = !paused;
 
-    for (const b of valuesIter(this.#hudElements.buttons)) {
-      b.tick({
-        ...tickContext,
-        currentPlayable: selectCurrentPlayableItem(gameState),
-      });
+    // one context shared by every button:
+    const buttonTickContext = {
+      ...tickContext,
+      currentPlayable: selectCurrentPlayableItem(gameState),
+    };
+    for (let i = 0; i < this.#buttonRenderersArray.length; i++) {
+      this.#buttonRenderersArray[i].tick(buttonTickContext);
     }
     this.#hudElements.joystick.tick(tickContext);
     this.#hudElements.look.tick(tickContext);

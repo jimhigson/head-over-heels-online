@@ -27,6 +27,7 @@ import {
   selectRoomPickupsCollected,
 } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
+import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import {
   addXyz,
@@ -308,6 +309,11 @@ const changeRoom = <RoomId extends string, RoomItemId extends string>(
   deleteItemFromRoom({ room: leavingRoom, item: playableItem });
   addItemToRoom({ room: toRoom, item: playableItem, atPosition });
   gameState.characterRooms[playableItem.id as CharacterName] = toRoom;
+  if (toRoom !== leavingRoom) {
+    // entered part way through a frame, so the room we are going to
+    // now has a frame start at this time
+    toRoom.roomFrameStartTime = toRoom.roomTime;
+  }
 };
 
 // back off one square, and push iteratively/ progressively into the room
@@ -492,6 +498,11 @@ export function changeCharacterRoom<
   playableItem.state.latentMovement = [];
   // carried speed is timed in the old room's time:
   playableItem.state.liftVel = { z: 0, atRoomTime: neverTime };
+  // collisions are timed in the old room's time, and were with its items:
+  playableItem.state.collidedWith = {
+    roomTime: neverTime,
+    by: emptyObject as Record<RoomItemId, true>,
+  };
   // previous standing on (from the old room) no longer applies:
   playableItem.state.previousStandingOnItemId = null;
   playableItem.state.standingOnUntilRoomTime = neverTime;

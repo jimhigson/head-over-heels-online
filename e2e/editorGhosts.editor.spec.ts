@@ -26,6 +26,9 @@ test("a placed lift and emitter are drawn with their editor ghosts", async ({
   });
   // put the item tool down, so its preview under the pointer isn't drawn:
   await selectTool(page, "Pointer tool");
+  // move off the toolbar, so the tool button's tooltip can't open over the room:
+  await page.mouse.move(0, 0);
+  await expect(page.locator("[popover]:popover-open")).toHaveCount(0);
   await paintEditorFrame(page);
 
   const roomPane = page.locator(

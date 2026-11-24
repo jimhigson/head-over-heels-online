@@ -1,10 +1,7 @@
 import type { ExportedSoundId } from "../../_generated/sfxdex/soundIds";
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import type { ItemInPlay } from "../../model/ItemInPlay";
-import {
-  isPlayableItem,
-  type UnionOfAllItemInPlayTypes,
-} from "../../model/ItemInPlayNarrowedUnions";
+import { itemBehaviourKey, type ItemInPlay } from "../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
 import { exitGameRoomId } from "../../model/json/ItemConfigMap";
 import {
   type Campaign,
@@ -48,19 +45,13 @@ export class PortalBehaviour extends ItemBehaviour {
     return (
       // players by design collide with portals while they enter rooms, so it is
       // unsolid for them
-      (toucher !== undefined && isPlayableItem(toucher)) ||
+      (toucher !== undefined &&
+        toucher[itemBehaviourKey].isPlayable(toucher)) ||
       // the floor portal needs to be unsolid since baddies can fall down there
       // and out of the world. Test in #penitentiary2 and #penitentiary21.
       // ceiling portals need to be non-solid to let lifts through
       portal.config.direction.z !== 0
     );
-  }
-
-  /**
-   * where it is solid, a portal still can't be stood on
-   */
-  override isStandable(): boolean {
-    return false;
   }
 
   override soundsToPreload<RoomId extends string, RoomItemId extends string>(

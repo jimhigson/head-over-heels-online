@@ -1,8 +1,7 @@
 import { itemBehaviourKey } from "../../model/ItemInPlay";
-import {
-  isPlayableItem,
-  isSlidingItem,
-  type SlidingItem,
+import type {
+  SlidingItem,
+  UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlayNarrowedUnions";
 import { epsilon } from "../../utils/epsilon";
 import {
@@ -27,6 +26,12 @@ const log = import.meta.env.VITE_LOG_MOVE_ITEM;
  * items that keep sliding once pushed, until they hit something
  */
 export class SlidingItemBehaviour extends FreeItemBehaviour {
+  override isSliding<RoomId extends string, RoomItemId extends string>(
+    _item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  ): _item is SlidingItem<RoomId, RoomItemId> {
+    return true;
+  }
+
   override onTouch<RoomId extends string, RoomItemId extends string>(
     slidingItem: SlidingItem<RoomId, RoomItemId>,
     e: ItemTouchEvent<RoomId, RoomItemId>,
@@ -39,7 +44,11 @@ export class SlidingItemBehaviour extends FreeItemBehaviour {
 
     const { touchedItem } = e;
     // playables and sliding items react to this before it stops on them:
-    if (isPlayableItem(touchedItem) || isSlidingItem(touchedItem)) {
+    const touchedBehaviour = touchedItem[itemBehaviourKey];
+    if (
+      touchedBehaviour.isPlayable(touchedItem) ||
+      touchedBehaviour.isSliding(touchedItem)
+    ) {
       super.onTouch(slidingItem, e, isMover);
       this.#touching(slidingItem, e);
     } else {

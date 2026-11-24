@@ -129,7 +129,7 @@ export type EmitterEmits =
   CyclicEmits | EmittableItemRecipe | ProbabilisticEmits;
 
 export const portableBlockStyles = ["cube", "drum", "sticks"] as const;
-export type PortableBlockStyle = (typeof portableBlockStyles)[number];
+type PortableBlockStyle = (typeof portableBlockStyles)[number];
 export const deadlyBlockStyles = ["volcano", "toaster"] as const;
 export type DeadlyBlockStyle = (typeof deadlyBlockStyles)[number];
 

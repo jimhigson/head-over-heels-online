@@ -3,6 +3,7 @@ const repeat = (n: number, value: number): number[] => Array(n).fill(value);
 export type FrameRateSpec = { fps: Array<number> };
 
 export const testFrameRates: Array<FrameRateSpec> = [
+  { fps: [10] }, // the longest frame the game simulates (a stalled tab), so the most sub-ticks
   { fps: [12.5] }, // original game: every other frame, PAL
   { fps: [25] }, // PAL
   { fps: [29.97] }, // NTSC real
@@ -12,6 +13,7 @@ export const testFrameRates: Array<FrameRateSpec> = [
   { fps: [46] },
   { fps: [50] }, // double original (interlaced)
   { fps: [50.04] }, // double original (interlaced, measured)
+  { fps: [55] }, // two sub-ticks, each of the largest size
   { fps: [60] }, // most common; ios Safari throttle
   { fps: [75] }, // typical/high
   { fps: [79.638] }, // boundary found for head being able to jump too high (failed, frame rate not fast enough) - before sub-steps
@@ -19,6 +21,8 @@ export const testFrameRates: Array<FrameRateSpec> = [
   { fps: [80] },
   { fps: [90] },
   { fps: [100] }, // fast PAL/SECAM (flicker-free crt etc)
+  { fps: [109.9] }, // just too slow for one sub-tick: two of half the size
+  { fps: [110] }, // one sub-tick, of the largest size
   { fps: [120] }, // eg macbook pro w/promotion
   { fps: [144] }, // high desktop monitor update rate
   { fps: [200] }, // very fast PAL/SECAM
@@ -78,4 +82,6 @@ export const testFrameRates: Array<FrameRateSpec> = [
   },
   // stuttering low-spec
   { fps: [15, 40, 36, 12.5, 60, 30, 60, 30] },
+  // smooth, but with one stalled frame:
+  { fps: [60, 60, 10, 60] },
 ];

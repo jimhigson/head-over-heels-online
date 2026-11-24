@@ -6,7 +6,7 @@ import type {
 import type { LatentMovementFrame } from "../../../model/ItemStateMap";
 import { forEachRoomItem } from "../../../model/roomItemsInPlayIterators";
 import type { RoomState } from "../../../model/RoomState";
-import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
+import { stoodOnByItem } from "../../../model/stoodOnItemsLookup";
 import {
   originXy,
   scaleXyz,
@@ -18,7 +18,7 @@ import { originalFramePeriod } from "../../render/animationTimings";
 
 // since the original game pushes items every other frame, the practical latency
 // for standing-on items is two frames (80ms)
-const defaultLatency = 2 * originalFramePeriod;
+export const standingOnLatencyMs = 2 * originalFramePeriod;
 
 export const assignLatentMovement = <
   RoomId extends string,
@@ -28,7 +28,10 @@ export const assignLatentMovement = <
   room: RoomState<RoomId, RoomItemId>,
   movementDelta: Xyz,
   deltaMS: number,
-  latency = defaultLatency,
+  /**
+   * how long after this tick's end (the current room time) the movement starts
+   */
+  latency: number,
 ) => {
   const latentMovementFrame: LatentMovementFrame<RoomItemId> = {
     endAtRoomTime: room.roomTime + deltaMS + latency,
@@ -40,6 +43,75 @@ export const assignLatentMovement = <
   };
 
   itemToMove.state.latentMovement.push(latentMovementFrame);
+};
+
+/**
+ * whether one item pushed both of these during this tick
+ */
+const pushedBySameItem = <RoomId extends string, RoomItemId extends string>(
+  a: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  b: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
+): boolean => {
+  const { actedOnAt: aActedOnAt } = a.state;
+  const { actedOnAt: bActedOnAt } = b.state;
+  if (
+    aActedOnAt.roomTime !== room.roomTime ||
+    bActedOnAt.roomTime !== room.roomTime
+  ) {
+    return false;
+  }
+  for (const pusherId in aActedOnAt.by) {
+    if (bActedOnAt.by[pusherId] === true) {
+      return true;
+    }
+  }
+  return false;
+};
+
+/**
+ * the part of a mover's movement on one axis beyond the stander's own - never
+ * backwards, against the mover's movement
+ */
+const movementBeyond = (
+  moverMovement: number,
+  standerMovement: number,
+): number =>
+  moverMovement > 0 ? Math.max(0, moverMovement - standerMovement)
+  : moverMovement < 0 ? Math.min(0, moverMovement - standerMovement)
+  : 0;
+
+/**
+ * how far a mover's movement this tick carries an item standing on it. When one
+ * item pushed both, that push already moved the stander along with the mover,
+ * so it is carried only by any of the mover's movement beyond its own
+ */
+const carriedMovement = <RoomId extends string, RoomItemId extends string>(
+  moverItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  standerItem: FreeItem<RoomId, RoomItemId>,
+  /**
+   * how far the mover moved this tick
+   */
+  moverMovement: Xyz,
+  /**
+   * item id -> box when this tick started
+   */
+  startingPositions: ReadonlyMap<string, Xyz>,
+  room: RoomState<RoomId, RoomItemId>,
+): Xyz => {
+  const standerStart = startingPositions.get(standerItem.id);
+  if (
+    standerStart === undefined ||
+    !pushedBySameItem(moverItem, standerItem, room)
+  ) {
+    return moverMovement;
+  }
+  const standerMovement = subXyz(standerItem.state.box, standerStart);
+  return {
+    x: movementBeyond(moverMovement.x, standerMovement.x),
+    y: movementBeyond(moverMovement.y, standerMovement.y),
+    z: 0,
+  };
 };
 
 const isStoodOnByAnything = (item: UnionOfAllItemInPlayTypes) => {
@@ -96,11 +168,27 @@ export const assignLatentMovementFromStandingOn = <
     latentMovement.z = 0;
 
     if (!xyEqual(latentMovement, originXy)) {
-      for (const standerItem of iterateStoodOnByItems(
-        moverItem.state.stoodOnBy,
-        room,
-      )) {
-        assignLatentMovement(standerItem, room, latentMovement, deltaMS);
+      for (const standerId in moverItem.state.stoodOnBy) {
+        const standerItem = stoodOnByItem(standerId, room);
+        const carried = carriedMovement(
+          moverItem,
+          standerItem,
+          latentMovement,
+          startingPositions,
+          room,
+        );
+        if (xyEqual(carried, originXy)) {
+          continue;
+        }
+        assignLatentMovement(
+          standerItem,
+          room,
+          carried,
+          deltaMS,
+          // the mover moved over the whole tick just gone, so its movement is
+          // replayed the latency after it started, not after the tick ended:
+          standingOnLatencyMs - deltaMS,
+        );
       }
     }
   });

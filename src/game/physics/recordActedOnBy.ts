@@ -63,18 +63,19 @@ export const recordCollision = <
   ) => {
     const { collidedWith } = a.state;
 
-    if (collidedWith.roomTime === room.roomTime) {
-      // add to the collidedWith since it is recording the same time
+    if (collidedWith.roomTime > room.roomFrameStartTime) {
+      // add to the collidedWith since it is recording the same frame - which
+      // can be run as several ticks
       //if (pusher) { <- not sure why we needed this condition - this meant if subject item
       //  is not a first cause :-/
       collidedWith.by[b.id] = true;
       //}
     } else {
-      // throw away collided with since it is for an older time which can now be
+      // throw away collided with since it is for an earlier frame which can now be
       // overwritten
       collidedWith.by = { [b.id]: true } as Record<RoomItemId, true>;
-      collidedWith.roomTime = room.roomTime;
     }
+    collidedWith.roomTime = room.roomTime;
   };
 
   add(colliderItem, collidedWithItem);

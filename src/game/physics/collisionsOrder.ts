@@ -1,83 +1,11 @@
 import type { ItemInPlayType } from "../../model/ItemInPlay";
-import { dotProductXyz, type Xyz } from "../../utils/vectors/vectors";
+import { boxOverlapVolume, type XyzBox } from "../../utils/vectors/vectors";
 import type { CollideableItem } from "../collision/aabbCollision";
 
 export type SortableObstacle = CollideableItem & {
   type: ItemInPlayType;
 };
 
-/**
- * since conveyors can lead to other conveyors, sort them so that the
- * active conveyor will always be the first one in the chain when two
- * are stood on at once. This allows objects to be nicely moved around
- * conveyor corners (see blacktooth26)
- */
-/*
-const conveyorOrderComparator = (
-  a: ItemInPlay<"conveyor">,
-  b: ItemInPlay<"conveyor">,
-) => {
-  const aLeadsTo = addXyz(
-    a.state.box,
-    scaleXyz(unitVectors[a.config.direction], blockSizePx.w * a.config.count),
-  );
-
-  if (
-    xyzEqual(aLeadsTo, b.state.box) ||
-    xyzEqual(
-      addXyz(aLeadsTo, blockSizeXyzPx),
-      addXyz(b.state.box, {
-        x: b.state.box.xd,
-        y: b.state.box.yd,
-        z: b.state.box.zd,
-      }),
-    )
-  ) {
-    return -1;
-  }
-
-  const bLeadsTo = addXyz(
-    b.state.box,
-    scaleXyz(unitVectors[b.config.direction], blockSizePx.w * b.config.count),
-  );
-
-  if (
-    xyzEqual(bLeadsTo, a.state.box) ||
-    xyzEqual(
-      addXyz(bLeadsTo, blockSizeXyzPx),
-      addXyz(a.state.box, {
-        x: a.state.box.xd,
-        y: a.state.box.yd,
-        z: a.state.box.zd,
-      }),
-    )
-  ) {
-    return 1;
-  }
-
-  return 0;
-};
-*/
-
-const obstaclePointEarliestPointInVector = (
-  vector: Xyz,
-  obstacle: SortableObstacle,
-): Xyz => {
-  return {
-    x:
-      vector.x > 0 ?
-        obstacle.state.box.x
-      : obstacle.state.box.x + obstacle.state.box.xd,
-    y:
-      vector.y > 0 ?
-        obstacle.state.box.y
-      : obstacle.state.box.y + obstacle.state.box.yd,
-    z:
-      vector.z > 0 ?
-        obstacle.state.box.z
-      : obstacle.state.box.z + obstacle.state.box.zd,
-  };
-};
 /**
  * When hitting two items simultaneously, the order for which to collide with first.
  * Lower is sooner.
@@ -167,50 +95,87 @@ export const collisionsPriorityComparator = <I extends SortableObstacle>(
   return typeOrderPreference[a.type] - typeOrderPreference[b.type];
 };
 
-export const sortObstaclesAboutPriorityAndVector = <I extends SortableObstacle>(
-  vector: Xyz,
-  obstacles: ReadonlyArray<I>,
-): Array<I> => {
-  return obstacles.toSorted((obsA, obsB) => {
-    /*
-     * the most important factor in this sort is the type of the items collided with. Less impactful items are moved
-     * to the start of the ordering so that they 'protect' against more impactful ones. Eg, if landing simultaneously
-     * on a block and a monster, the block should be processed first so that the monster is not touched (and the block
-     * becomes the `.standingOn` property of the player)
-     */
-    const priorityOrder = collisionsPriorityComparator(obsA, obsB);
-    if (priorityOrder !== 0) {
-      return priorityOrder;
+/**
+ * the order to handle the obstacles in: by type priority, then by how much the
+ * subject overlaps them, then by id
+ */
+const compareObstaclesAboutPriorityAndOverlap = <I extends SortableObstacle>(
+  subjectBox: Readonly<XyzBox>,
+  obsA: I,
+  obsB: I,
+): number => {
+  /*
+   * the most important factor in this sort is the type of the items collided with. Less impactful items are moved
+   * to the start of the ordering so that they 'protect' against more impactful ones. Eg, if landing simultaneously
+   * on a block and a monster, the block should be processed first so that the monster is not touched (and the block
+   * becomes the `.standingOn` property of the player)
+   */
+  const priorityOrder = collisionsPriorityComparator(obsA, obsB);
+  if (priorityOrder !== 0) {
+    return priorityOrder;
+  }
+
+  /*
+   * the most-overlapped obstacle first:
+
+   *  - when falling dragging on a stack of (non-coalesced) blocks, falling
+   *    while moving towards it, and between two blocks, we don't want to switch
+   *    to colliding first with a lower block the moment we start colliding with it,
+   *    or else it could give an extra push up, if the mtv with it is on the corner
+   *    and the vertical vector is the shortest way out of it.
+   *  - likewise, if we switch too late, we can get extra boosts downwards, because
+   *    a block now mostly above is collided with first, and the mtv that is shortest
+   *    could be downwards, making fall more quickly
+   *  - equivalent in xy plane: when walking at 45° along a row of non-coalesced
+   *    blocks, boost or snag the subject along the row
+   */
+  const overlapOrder =
+    boxOverlapVolume(subjectBox, obsB.state.box) -
+    boxOverlapVolume(subjectBox, obsA.state.box);
+  if (Math.abs(overlapOrder) >= 0.000_1) {
+    return overlapOrder;
+  }
+
+  // these are effectively overlapped as much as each other. Arbitrarily
+  // choose based on the alphabetical order of the ids. This means that
+  // the order is stable between frames. Otherwise, it would flicker back
+  // and forth due to floating point errors, for example if in a nest of
+  // joysticks like on#blacktooth47market an moving at exactly 45 degrees,
+  // so both joysticks touched have equal claim at being touched first
+  return obsA.id < obsB.id ? -1 : 1;
+};
+
+/**
+ * sorts the obstacles in `[start, end)` in place, ordered as
+ * {@link compareObstaclesAboutPriorityAndOverlap}. An insertion sort, since a
+ * move rarely collides with more than a few items
+ */
+export const sortObstaclesAboutPriorityAndOverlapInPlace = <
+  I extends SortableObstacle,
+>(
+  /**
+   * the subject's box, after its travel. Every @see obstacle must overlap it
+   * - the order is not defined for any that don't
+   */
+  subjectBox: Readonly<XyzBox>,
+  obstacles: I[],
+  start: number,
+  end: number,
+): void => {
+  for (let i = start + 1; i < end; i++) {
+    const obstacle = obstacles[i];
+    let j = i - 1;
+    while (
+      j >= start &&
+      compareObstaclesAboutPriorityAndOverlap(
+        subjectBox,
+        obstacles[j],
+        obstacle,
+      ) > 0
+    ) {
+      obstacles[j + 1] = obstacles[j];
+      j--;
     }
-
-    /*
-     * If of the same type, sort obstacles so that the ones the subject will see first (travelling along the
-     * @param vector) are first in the list. This gives the natural order of collision
-     * to process the mtvs in.
-     *
-     * Without this, the order of the obstacles can be arbitrary and snagging is possible
-     * on the boundary of two adjacent obstacles, for example if falling while holding
-     * the direction towards a tower of blocks
-     */
-    const aDistance = dotProductXyz(
-      vector,
-      obstaclePointEarliestPointInVector(vector, obsA),
-    );
-    const bDistance = dotProductXyz(
-      vector,
-      obstaclePointEarliestPointInVector(vector, obsB),
-    );
-
-    if (Math.abs(aDistance - bDistance) < 0.000_1) {
-      // these are effectively being touched at the same time. Arbitrarily
-      // choose based on the alphabetical order of the ids. This means that
-      // the order is stable between frames. Otherwise, it would flicker back
-      // and forth due to floating point errors, for example if in a nest of
-      // joysticks like on#blacktooth47market an moving at exactly 45 degrees,
-      // so both joysticks touched have equal claim at being touched first
-      return obsA.id < obsB.id ? -1 : 1;
-    }
-
-    return aDistance - bDistance;
-  });
+    obstacles[j + 1] = obstacle;
+  }
 };
