@@ -1,8 +1,6 @@
-import { isPlayableItem } from "../../model/ItemInPlayNarrowedUnions";
-import {
-  forEachRoomItem,
-  roomItemsArray,
-} from "../../model/roomItemsInPlayIterators";
+import { itemBehaviourKey } from "../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import { forEachRoomItem } from "../../model/roomItemsInPlayIterators";
 import type { Xyz } from "../../utils/vectors/vectors";
 import type { GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
@@ -25,6 +23,9 @@ const extraDebugChecks = 0;
 
 // item id -> box at the start of the tick; reused so ticks don't allocate it
 const startingPositions = new Map<string, Xyz>();
+
+// the room's items in tick order; reused so ticks don't allocate it
+const sortedItems: Array<UnionOfAllItemInPlayTypes<string, string>> = [];
 
 export type ProgressGameState<RoomId extends string> = (
   gameState: GameState<RoomId>,
@@ -65,7 +66,7 @@ export const progressGameState = <
   forEachRoomItem(room.items, (item) => {
     if (itemHasExpired(item, room)) {
       deleteItemFromRoom({ room, item });
-      if (isPlayableItem(item)) {
+      if (item[itemBehaviourKey].isPlayable(item)) {
         // playableLosesLife may put the playable character back into the room,
         // if they have lives left:
         playableLosesLife(gameState, item);
@@ -74,9 +75,19 @@ export const progressGameState = <
     }
   });
 
-  const sortedItems = roomItemsArray(room.items).sort(itemTickOrderComparator);
+  // emptied first, in case an error ended the last tick part way through:
+  sortedItems.length = 0;
+  for (const itemId in room.items) {
+    sortedItems.push(room.items[itemId]);
+  }
+  sortedItems.sort(itemTickOrderComparator);
 
-  for (const item of sortedItems) {
+  for (let i = 0; i < sortedItems.length; i++) {
+    // only this room's items are in it, so they are of its room's types:
+    const item = sortedItems[i] as UnionOfAllItemInPlayTypes<
+      RoomId,
+      RoomItemId
+    >;
     const playable = selectCurrentPlayableItem(gameState);
     if (playable === undefined) {
       // all physics is suspended if no characters left (lost all lives) or
@@ -97,6 +108,8 @@ export const progressGameState = <
       });
     }
   }
+  // don't keep the items from being GC'd until the next tick:
+  sortedItems.length = 0;
 
   addParticlesForPlayablesInRoom(room, deltaMS);
 

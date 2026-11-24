@@ -30,6 +30,7 @@ import {
   stampWithMovedProgression,
   updateItemBox,
 } from "../gameState/mutators/updateItemBox";
+import type { SpatialIndex } from "../physics/gridSpace/SpatialIndex";
 import type { MechanicResult } from "../physics/MechanicResult";
 import {
   blockSizePx,
@@ -98,6 +99,26 @@ const turnOfReflection = (
   from.x * to.y - from.y * to.x > 0 ? "reflect-left" : "reflect-right";
 
 /**
+ * a world position on a horizontal axis → the spatial index cell on that axis
+ */
+const worldToCell = <RoomId extends string, RoomItemId extends string>(
+  index: SpatialIndex<RoomId, RoomItemId>,
+  axis: AxisXy,
+  world: number,
+): number =>
+  axis === "x" ? index.worldXToCellX(world) : index.worldYToCellY(world);
+
+/**
+ * a spatial index cell on a horizontal axis → the world position of its low edge
+ */
+const cellToWorld = <RoomId extends string, RoomItemId extends string>(
+  index: SpatialIndex<RoomId, RoomItemId>,
+  axis: AxisXy,
+  cell: number,
+): number =>
+  axis === "x" ? index.cellXToWorldX(cell) : index.cellYToWorldY(cell);
+
+/**
  * walk one block-row of the beam from the lamp, reflecting at mirrors,
  * stopping at the first solid item in its path. Yields one segment per
  * straight run. Each row is cast independently, so a tall beam that only
@@ -147,22 +168,22 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
     const index = room[roomSpatialIndexKey];
     const extent = index.getOccupiedCuboidCellExtent();
     if (extent !== undefined) {
-      const cellSize = blockSizePx.x * 2; // SpatialIndex cell width/depth
-      const toAlongCell = (world: number) =>
-        axis === "x" ? index.worldXToCellX(world) : index.worldYToCellY(world);
-      const toPerpCell = (world: number) =>
-        perpAxis === "x" ?
-          index.worldXToCellX(world)
-        : index.worldYToCellY(world);
-
       // the beam is no wider than a cell, so straddles at most two perpendicular cells:
-      const perpCellLo = toPerpCell(perpMin);
-      const perpCellHi = toPerpCell(perpMin + lightBeamWidthPx);
+      const perpCellLo = worldToCell(index, perpAxis, perpMin);
+      const perpCellHi = worldToCell(
+        index,
+        perpAxis,
+        perpMin + lightBeamWidthPx,
+      );
 
-      const startCell = toAlongCell(startPlane);
+      const startCell = worldToCell(index, axis, startPlane);
       // bound the walk: never past the index's occupied extent on this axis,
       // nor past the hard max-length cap (the open, wall-less edge fallback):
-      const capCell = toAlongCell(startPlane + sign * maxBeamLengthPx);
+      const capCell = worldToCell(
+        index,
+        axis,
+        startPlane + sign * maxBeamLengthPx,
+      );
       const extentCell =
         sign > 0 ?
           axis === "x" ?
@@ -183,7 +204,9 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
         // cells are visited in increasing along-distance, so once a cell's
         // near edge is beyond the nearest hit so far, nothing closer remains:
         const cellNearAlong =
-          sign > 0 ? alongCell * cellSize : (alongCell + 1) * cellSize;
+          sign > 0 ?
+            cellToWorld(index, axis, alongCell)
+          : cellToWorld(index, axis, alongCell + 1);
         const cellNearDistance =
           sign > 0 ? cellNearAlong - startPlane : startPlane - cellNearAlong;
         if (cellNearDistance > nearestDistance) {

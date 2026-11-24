@@ -271,6 +271,14 @@ export class SpatialIndex<
   worldYToCellY(worldY: number): number {
     return Math.floor(worldY / cellDepth);
   }
+  /** cuboid cell x → the world x of its low edge */
+  cellXToWorldX(cellX: number): number {
+    return cellX * cellWidth;
+  }
+  /** cuboid cell y → the world y of its low edge */
+  cellYToWorldY(cellY: number): number {
+    return cellY * cellDepth;
+  }
 
   /**
    * The live Set of items occupying one cuboid cell, by integer cell coords.
@@ -371,6 +379,40 @@ export class SpatialIndex<
       context,
       excludeItem,
       undefined,
+    );
+  }
+
+  /**
+   * as {@link filterInBox}, but appends the accepted items to `appendTo`,
+   * rather than returning a new array
+   */
+  appendInBox<Context>(
+    /**
+     * The cuboid region (position + dimensions) to check
+     */
+    box: Readonly<XyzBox>,
+    predicate: (item: Item, box: Readonly<XyzBox>, context: Context) => boolean,
+    context: Context,
+    /**
+     * item to never offer (usually the querying item)
+     */
+    excludeItem: Indexable | undefined,
+    /**
+     * the array to append to - only the items this call appends are
+     * deduplicated, not any already in it
+     */
+    appendTo: Item[],
+  ): void {
+    this.#appendInBoxWithMargins(
+      box,
+      0,
+      0,
+      0,
+      0,
+      predicate,
+      context,
+      excludeItem,
+      appendTo,
     );
   }
 

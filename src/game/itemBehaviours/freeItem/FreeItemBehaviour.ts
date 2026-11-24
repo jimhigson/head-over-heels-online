@@ -2,11 +2,10 @@ import {
   itemBehaviourKey,
   type ItemInPlayType,
 } from "../../../model/ItemInPlay";
-import {
-  type FreeItem,
-  type FreeItemTypes,
-  isPlayableItem,
-  type UnionOfAllItemInPlayTypes,
+import type {
+  FreeItem,
+  FreeItemTypes,
+  UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
 import type { RoomState } from "../../../model/RoomState";
 import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
@@ -68,7 +67,7 @@ export class FreeItemBehaviour extends ItemBehaviour {
     item: FreeItem<RoomId, RoomItemId>,
     room: RoomState<RoomId, RoomItemId>,
   ): MechanicResult<FreeItemTypes, RoomId, RoomItemId> {
-    if (isPlayableItem(item) && item.state.teleporting !== null) {
+    if (this.isPlayable(item) && item.state.teleporting !== null) {
       return resetMovingFloor;
     }
 

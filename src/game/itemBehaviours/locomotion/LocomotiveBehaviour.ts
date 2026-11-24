@@ -5,10 +5,7 @@ import {
   type ItemInPlay,
   type ItemInPlayType,
 } from "../../../model/ItemInPlay";
-import {
-  isPlayableItem,
-  isSlidingItem,
-} from "../../../model/ItemInPlayNarrowedUnions";
+import type {} from "../../../model/ItemInPlayNarrowedUnions";
 import type { RoomState } from "../../../model/RoomState";
 import { originXyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
@@ -108,7 +105,11 @@ export class LocomotiveBehaviour extends FreeItemBehaviour {
 
     const { touchedItem } = e;
     // playables and sliding items react to this before it turns or stops:
-    if (isPlayableItem(touchedItem) || isSlidingItem(touchedItem)) {
+    const touchedBehaviour = touchedItem[itemBehaviourKey];
+    if (
+      touchedBehaviour.isPlayable(touchedItem) ||
+      touchedBehaviour.isSliding(touchedItem)
+    ) {
       super.onTouch(locomotiveItem, e, isMover);
       this.#touching(locomotiveItem, e);
     } else {

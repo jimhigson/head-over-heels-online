@@ -120,6 +120,50 @@ export function collisionBoxWithIndex<C extends CollideableItem>(
 }
 
 /**
+ * as {@link collisionBoxWithIndex}, but appends the colliding items to
+ * `appendTo`, so callers can collect into an array they reuse, without
+ * allocating
+ */
+export function appendCollisionsBoxWithIndex<
+  C extends CollideableItem,
+  GuardedType extends C,
+>(
+  box: Readonly<XyzBox>,
+  index: SpatialIndex<string, string, C>,
+  appendTo: GuardedType[],
+  considerItem: (item: C) => item is GuardedType,
+  excludeItem?: CollideableItem,
+): void;
+export function appendCollisionsBoxWithIndex<C extends CollideableItem>(
+  box: Readonly<XyzBox>,
+  index: SpatialIndex<string, string, C>,
+  appendTo: C[],
+  considerItem?: (item: C) => boolean,
+  excludeItem?: CollideableItem,
+): void;
+export function appendCollisionsBoxWithIndex<C extends CollideableItem>(
+  box: Readonly<XyzBox>,
+  index: SpatialIndex<string, string, C>,
+  /**
+   * only the items this call appends are deduplicated, not any already in it
+   */
+  appendTo: C[],
+  considerItem: (item: C) => boolean = alwaysUseForCollision,
+  /**
+   * an item to leave out of the results, usually the one querying
+   */
+  excludeItem?: CollideableItem,
+): void {
+  index.appendInBox(
+    box,
+    isConsideredAndColliding,
+    considerItem,
+    excludeItem,
+    appendTo,
+  );
+}
+
+/**
  * whether the candidate is colliding with the box, or touching or almost
  * touching a side of it that the box is travelling towards - less than epsilon
  * apart on those sides, while overlapping on every other axis

@@ -1,7 +1,6 @@
 import { teleporterIsActive } from "../../game/physics/mechanics/teleporterIsActive";
 import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
-import { isPlayableItem } from "../../model/ItemInPlayNarrowedUnions";
-import { iterateStoodOnByItems } from "../../model/stoodOnItemsLookup";
+import { isStoodOnByPlayable } from "../../model/stoodOnItemsLookup";
 import { audioCtx } from "../audioCtx";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
@@ -58,7 +57,7 @@ export class TeleporterSoundRenderer implements ItemSoundRenderer<
 
     this.#sirenBracket.tick(
       teleporterIsActive(item, planetsLiberated) &&
-        iterateStoodOnByItems(item.state.stoodOnBy, room).some(isPlayableItem),
+        isStoodOnByPlayable(item.state.stoodOnBy, room),
     );
 
     this.#freeItemSoundRenderer?.tick(tickContext);

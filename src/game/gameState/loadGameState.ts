@@ -1,4 +1,4 @@
-import { isPlayableItem } from "../../model/ItemInPlayNarrowedUnions";
+import { itemBehaviourKey } from "../../model/ItemInPlay";
 import type {
   Campaign,
   CharacterName,
@@ -134,9 +134,12 @@ const attachBehavioursToSavedCharacterRooms = <RoomId extends string>(
       loadedRoomState.items,
     )) {
       loadedRoomState.items[itemId] = attachBehaviourToItem(item);
+      const itemWithBehaviour = loadedRoomState.items[itemId];
       // carried items are held in heels' state, not in the room:
       const heelsAbilities =
-        isPlayableItem(item) ? selectHeelsAbilities(item) : undefined;
+        itemWithBehaviour[itemBehaviourKey].isPlayable(itemWithBehaviour) ?
+          selectHeelsAbilities(itemWithBehaviour)
+        : undefined;
       if (heelsAbilities !== undefined && heelsAbilities.carrying !== null) {
         heelsAbilities.carrying = attachBehaviourToItem(
           heelsAbilities.carrying,

@@ -103,8 +103,6 @@ What each type of item does is given by its behaviour - a stateless [Type Object
 * symbols don't serialise, so saved games have no behaviours: `loadGameState` re-attaches them with `attachBehaviourToItem` to every room item and Heels' carried item. Code that works on a saved copy (eg `createSavedGame`) must not use behaviours
 * behaviours form a class hierarchy (eg `ItemBehaviour` → `FreeItemBehaviour` → `LocomotiveBehaviour` → `MonsterBehaviour` → `CybermanBehaviour`); subclasses narrow item params with the generated `ItemTypeUnion` types. Types that behave the same share one instance
 * capabilities are behaviour fields and methods - `isNonSolid`, `isStandable`, `isDeadly`, `isPushableBy`, `isHeavy`... - not functions branching on item type
-* per-type constants (capability flags, shadow texture...) are passed to the `ItemBehaviour` constructor as `ItemBehaviourOptions`; override a method only when its answer depends on the item. Types differing only in such constants share a class, as separate or shared instances (eg the monsters in `itemBehaviourCache.ts`)
-* what an item's state (or config) has is not a behaviour: free, portable, sliding and in-room modifier items are told apart by duck-typed guards - `isFreeItem`, `isPortableItem`, `isSlidingItem`, `isInRoomModifierItem` - beside their `Extract`ed types in `src/model/ItemInPlayNarrowedUnions.ts`. Which items get that state is decided once, in the per-type state builders (`itemDefaultStates.ts`)
 * to narrow to a type, compare inline (`item.type === "monster"`) - the type is the union's discriminant, so this narrows as well as a guard function would
 * ticking: `tickItem` asks the behaviour for its `mechanicResults`, pushed onto a reused array (all gathered before any apply), and its standing-on and after-mechanics hooks
 * touching: `moveItem` calls only the mover's `onTouch(item, e, isMover)`; the base passes the touch on to the touched item, and an override chooses the order by when it calls `super`
@@ -137,6 +135,16 @@ Similarly, when iterating over `RoomJsonItems` (editor/JSON room items), use the
 - `iterateRoomJsonItemsWithIds(roomJson.items, ...types?)` - returns iterator helper with `[id, item]` tuples, optionally filtered by item type
 
 Prefer `roomJsonItemsIterable` when you only need items without ids. Use `iterateRoomJsonItemsWithIds` when you need the id or want built-in type filtering.
+
+### Avoiding allocation in per-tick and per-frame code
+Physics runs every sub-tick (up to ~110 times a second) and rendering every frame, so allocating there means GC pauses. In that code:
+* loop with plain `for` or `for...in` - not generators (incl. `valuesIter`/`keysIter`/`roomItemsIterable`), iterator helpers (`.map`, `.filter`, `.some`, `.reduce`...) or spreads. The iterator advice elsewhere in this file is for code off these paths
+* iterate room items with `forEachRoomItem` or `for...in` over `room.items`; iterate `stoodOnBy` with `for...in`, looking each up with `stoodOnByItem`
+* collect into reused arrays (module-level, or one per renderer) emptied with `length = 0`, not a new array per call. Spatial index queries that append (`appendCollisionsBoxWithIndex`, `appendApproximateCollisionsTowardsWithIndex`) fill these without allocating
+* write vectors into reused buffers (the `*InPlace`/`*WriteInto` vector utils), and never keep a reference to a buffer across a call that may reuse it
+* for callbacks, prefer a once-declared function that takes what it needs as arguments (eg `forEachLatentMovement`'s) over a closure made per call
+* allocating once at construction (eg a renderer listing its sprites) is fine
+* measure with the laboratory bench (`pnpm bench --run laboratoryRoom`), and record each run in its header comment
 
 ## Loading
 
@@ -234,7 +242,7 @@ and we trust that to pre-load in the service worker for us, so the actual game e
 * don't document other module's internals in comments. ALL COMMENTS should ONLY
 reflect the module they are documenting. Interactions with other modules should be restricted to ONLY the use of their PUBLIC API. Doing otherwise makes for comments that are out-of-place and get stale once other modules are refactored.
 
-* use iterator helper methods, and don't turn iterators into arrays using `[...iter]` unless really necessary; for example, use the helper methods to call `.map` or `.filter` directly on the iter. Only write to an array if we need to pass to an api that requires one, or we need to refer to the collection more than once. In this case, use `.toArray()` to convert it.
+* outside per-tick and per-frame game code (see *Avoiding allocation in per-tick and per-frame code*), use iterator helper methods, and don't turn iterators into arrays using `[...iter]` unless really necessary; for example, use the helper methods to call `.map` or `.filter` directly on the iter. Only write to an array if we need to pass to an api that requires one, or we need to refer to the collection more than once. In this case, use `.toArray()` to convert it.
 
 * when working with object entries or keys, use the custom `entries()` and `keys()` functions from `src/utils/entries` instead of `Object.entries()` or `Object.keys()`. These preserve type information, avoiding the need for type casts:
  ```ts

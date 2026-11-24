@@ -1,6 +1,6 @@
 import { forEachRoomItem } from "../../../../model/roomItemsInPlayIterators";
 import type { RoomState } from "../../../../model/RoomState";
-import { iterateStoodOnByItems } from "../../../../model/stoodOnItemsLookup";
+import { stoodOnByItem } from "../../../../model/stoodOnItemsLookup";
 import {
   findStandingOnWithHighestPriorityAndMostOverlap,
   spatiallyCheckStandingOn,
@@ -29,7 +29,8 @@ export const updateStandingOn = <
     try {
       // check what is standing on this item. Since the standing relationship is linked two-way,
       // also implies checking what the items are stood on.
-      for (const top of iterateStoodOnByItems(bottom.state.stoodOnBy, room)) {
+      for (const topId in bottom.state.stoodOnBy) {
+        const top = stoodOnByItem(topId, room);
         if (!room.items[top.id]) {
           // stander is no longer in the room:
           removeStandingOn(top, room);

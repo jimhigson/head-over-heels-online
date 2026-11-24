@@ -91,7 +91,10 @@ export type EmittableItemJson = Extract<
   }
 >;
 
-type EmittableItemRecipe = DistributedOmit<EmittableItemJson, "position">;
+export type EmittableItemRecipe = DistributedOmit<
+  EmittableItemJson,
+  "position"
+>;
 
 export type WeightedEmittableItemRecipe = {
   emits: EmittableItemRecipe;

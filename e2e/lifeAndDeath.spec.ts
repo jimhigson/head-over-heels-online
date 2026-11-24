@@ -241,6 +241,9 @@ ${mobile ? "Tap screen to continue" : "Press JUMP to continue:\nSpace\n🕹A"}`,
       await advanceUntil(
         page,
         async () => (await openDeathDialogs(page)).length > 0,
+        // the monsters reach the characters about 70ms apart, so one step
+        // takes in both deaths before the first dialog pauses the game:
+        { stepMs: 2_000 },
       ),
     ).toBe(true);
     const deathMessage = page.locator(

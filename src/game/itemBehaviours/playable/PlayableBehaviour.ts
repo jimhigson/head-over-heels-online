@@ -83,6 +83,12 @@ export class PlayableBehaviour extends FreeItemBehaviour {
     });
   }
 
+  override isPlayable<RoomId extends string, RoomItemId extends string>(
+    _item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  ): _item is PlayableItem<CharacterName, RoomId, RoomItemId> {
+    return true;
+  }
+
   override isJumpOffable<RoomId extends string, RoomItemId extends string>(
     playable: PlayableItem<CharacterName, RoomId, RoomItemId>,
   ): boolean {

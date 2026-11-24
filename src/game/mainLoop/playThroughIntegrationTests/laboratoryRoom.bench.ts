@@ -103,6 +103,49 @@ against "laboratory" v16
    laboratory v16 for 60s @ 120 fps (7200 frames)  0.5309  1,863.09  1,901.09  1,883.85  1,896.00  1,900.89  1,900.99  1,901.07  ±0.51%       10
 
 (2.4% slower at mean vs previous, but against a later campaign version)
+
+2026-11-24 (branch two-items-on-lift-sound-bug)
+===============================================
+
+against "laboratory" v16, @ 120fps. Before the changes below:
+
+  hz      min       max       mean      p75       p99       rme     samples
+  0.5224  1,874.04  1,949.72  1,914.44  1,926.19  1,948.32  ±0.77%  10
+
+* each sub-tick sorts the room's items in a reused array, not a new one
+* items stood on are looped with for...in, not a generator and iterator helper
+* helpful movement vector sensors collect into a reused array, without reduce
+* latent movement is applied by callback with a reused buffer, not a generator
+* homing monsters look up the playables directly, not with a generator
+* shadow and mirror renderers collect into reused arrays
+* charles' joystick check and the on-screen controls loop without iterators
+
+  hz      min       max       mean      p75       p99       rme     samples
+  0.5627  1,750.83  1,815.80  1,777.22  1,790.30  1,813.95  ±0.85%  10
+
+(7.2% faster at mean than before these changes)
+
+2026-11-24 (branch two-items-on-lift-sound-bug)
+===============================================
+
+against "laboratory" v16, @ 120fps
+
+* experiment: playable and sliding checks as item behaviour methods
+  (isPlayable, isSliding), not type guards on the item's type and state
+
+  hz      min       max       mean      p75       p99       rme     samples
+  0.5463  1,769.98  1,883.42  1,831.04  1,849.09  1,881.06  ±1.22%  10
+  0.5425  1,815.57  1,884.66  1,843.58  1,850.30  1,883.14  ±0.80%  10
+
+(3.0% and 3.7% slower at mean than the type guards)
+
+* as above, but isPlayable/isSliding return false on the base behaviour and are
+  overridden to return true, not read from a constructor option
+
+  hz      min       max       mean      p75       p99       rme     samples
+  0.5599  1,755.59  1,814.55  1,786.14  1,792.29  1,813.33  ±0.63%  10
+
+(0.5% slower at mean than the type guards - within the noise)
 */
 
 const fps = 120;

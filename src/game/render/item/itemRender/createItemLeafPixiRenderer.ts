@@ -1,5 +1,7 @@
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import { isPlayableItem } from "../../../../model/ItemInPlayNarrowedUnions";
+import {
+  itemBehaviourKey,
+  type ItemInPlayType,
+} from "../../../../model/ItemInPlay";
 import {
   appearanceForItem,
   type ItemTypeWithAppearance,
@@ -22,7 +24,7 @@ const isPlayableRenderContext = (
   renderContext: ItemLeafRenderContext<ItemInPlayType>,
 ): renderContext is ItemLeafRenderContext<PlayableRenderedType> =>
   renderContext.item.type === "sceneryPlayer" ||
-  isPlayableItem(renderContext.item);
+  renderContext.item[itemBehaviourKey].isPlayable(renderContext.item);
 
 /**
  * build the bare item graphics renderer for an item

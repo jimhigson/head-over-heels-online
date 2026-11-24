@@ -9,8 +9,8 @@ import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVector
 import { rotateXy } from "../../../../utils/vectors/rotateXy";
 import type { Xy } from "../../../../utils/vectors/vectors";
 import {
+  appendCollisionsBoxWithIndex,
   type CollideableItem,
-  collisionItemWithIndex,
 } from "../../../collision/aabbCollision";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import type { ItemLeafPixiRenderer } from "../../item/itemRender/ItemPixiRenderer";
@@ -134,6 +134,13 @@ export class ReflectionRenderers {
    * the post-pass can drop entries not seen this tick (mark-and-sweep)
    */
   #tickCount = 0;
+  /**
+   * the items near enough the mirror to maybe reflect, found each tick; reused
+   * so ticks don't allocate it
+   */
+  readonly #reflectedItems: Array<
+    ItemTypeUnion<ReflectedItemType, string, string>
+  > = [];
   readonly #mirror: ItemTypeUnion<"mirror", string, string>;
   readonly #renderContext: ItemRenderContext<"mirror">;
 
@@ -179,7 +186,7 @@ export class ReflectionRenderers {
     // index, rather than scanning every item in the room. Which world side of
     // the mirror faces the camera depends on the camera angle, so the box
     // covers both sides (the in-front test below drops the behind items); it
-    // spans the mirror's full height - collisionItemWithIndex does the precise
+    // spans the mirror's full height - appendCollisionsBoxWithIndex does the precise
     // x/y/z overlap:
     reflectionSearchBuffer.state.box.x = mirrorBox.x - searchSizeX;
     reflectionSearchBuffer.state.box.y = mirrorBox.y - searchSizeY;
@@ -222,11 +229,18 @@ export class ReflectionRenderers {
     // drop entries not seen this tick (mark-and-sweep, no parallel set):
     const thisTick = ++this.#tickCount;
 
-    for (const item of collisionItemWithIndex(
-      reflectionSearchBuffer,
+    const reflectedItems = this.#reflectedItems;
+    reflectedItems.length = 0;
+    appendCollisionsBoxWithIndex(
+      reflectionSearchBuffer.state.box,
       this.#renderContext.room[roomSpatialIndexKey],
+      reflectedItems,
       isReflectedItemType,
-    )) {
+      reflectionSearchBuffer,
+    );
+
+    for (let i = 0; i < reflectedItems.length; i++) {
+      const item = reflectedItems[i];
       const itemPosition = item.state.box;
 
       // the reflection maths below is written for the camera-facing (screen

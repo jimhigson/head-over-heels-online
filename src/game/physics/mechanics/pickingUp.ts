@@ -1,7 +1,6 @@
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import {
   isFreeItem,
-  isSlidingItem,
   type PlayableItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
@@ -94,7 +93,7 @@ const pickUpItem = <RoomId extends string, RoomItemId extends string>(
     // still in the bag, so nothing should carry over to when it is put down:
     itemToCarry.state.vels.gravity = originXyz;
     itemToCarry.state.vels.movingFloor = originXyz;
-    if (isSlidingItem(itemToCarry)) {
+    if (itemToCarry[itemBehaviourKey].isSliding(itemToCarry)) {
       itemToCarry.state.vels.sliding = originXyz;
     }
   }

@@ -2,14 +2,10 @@ import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import {
   type FreeItem,
   isFreeItem,
-  isSlidingItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
-import {
-  iterateStoodOnByItems,
-  stoodOnItem,
-} from "../../../model/stoodOnItemsLookup";
+import { stoodOnByItem, stoodOnItem } from "../../../model/stoodOnItemsLookup";
 import { epsilon, veryClose } from "../../../utils/epsilon";
 import {
   addXyz,
@@ -378,9 +374,9 @@ const pushVectorMultiplierByMass = <
   const pusherMassShare = pusherMass / (pusherMass + pushedMass);
   const multiplierXy =
     // sliding items move the whole way in xy:
-    isSlidingItem(pushed) ? 1 : (
-      pushMultiplierForMassShare(pusherMassShare, equalMassPushMultiplierXy)
-    );
+    pushed[itemBehaviourKey].isSliding(pushed) ?
+      1
+    : pushMultiplierForMassShare(pusherMassShare, equalMassPushMultiplierXy);
   pushMultiplierBuffer.x = -multiplierXy;
   pushMultiplierBuffer.y = -multiplierXy;
   pushMultiplierBuffer.z = -pushMultiplierForMassShare(
@@ -1096,7 +1092,8 @@ const moveRidersDown = <RoomId extends string, RoomItemId extends string>(
    */
   pathStart: number,
 ) => {
-  for (const rider of iterateStoodOnByItems(movedItem.state.stoodOnBy, room)) {
+  for (const riderId in movedItem.state.stoodOnBy) {
+    const rider = stoodOnByItem(riderId, room);
     const riderTerminalFallVelocity =
       -rider[itemBehaviourKey].terminalFallVelocity(rider) * deltaMS;
 

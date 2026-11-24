@@ -23,8 +23,8 @@ import {
   type Xyz,
 } from "../../../../utils/vectors/vectors";
 import {
+  appendCollisionsBoxWithIndex,
   type CollideableItem,
-  collisionItemWithIndex,
 } from "../../../collision/aabbCollision";
 import { veryHighZ } from "../../../physics/mechanicsConstants";
 import type { SpecifiedTextureCreateSpriteOptions } from "../../createSprite";
@@ -108,6 +108,24 @@ const castsShapedShadowOnTop = (
     cameraQuarterAngle,
   ) || caster.state.box.z > receiver.state.box.z + receiver.state.box.zd;
 
+/**
+ * whether an item above the receiver casts a shadow onto it at this angle
+ */
+const castsShadowOnto = (
+  maybeCaster: UnionOfAllItemInPlayTypes,
+  receiver: UnionOfAllItemInPlayTypes,
+  cameraQuarterAngle: Xy,
+): boolean => {
+  const casterBehaviour = maybeCaster[itemBehaviourKey];
+  return (
+    casterBehaviour.shadowCastTexture(maybeCaster, cameraQuarterAngle) !==
+      undefined &&
+    !casterBehaviour
+      .noShadowCastOn(maybeCaster, cameraQuarterAngle)
+      ?.includes(receiver.type)
+  );
+};
+
 // Buffer to avoid allocating memory for the pseudo-item used to find shadow casters
 const spaceAboveSurfaceBuffer: WritableDeep<CollideableItem> = {
   id: "spaceAbove",
@@ -169,6 +187,12 @@ class ItemShadowRenderer<
    * "the thing to tint" and does not depend on it being the parent.
    */
   #wholeShadowTintContainer: Container;
+
+  /**
+   * the items casting a shadow onto this one, found each tick; reused so ticks
+   * don't allocate it
+   */
+  #castersAbove: Array<UnionOfAllItemInPlayTypes> = [];
 
   constructor(
     renderContext: ItemRenderContext<T>,
@@ -337,21 +361,24 @@ class ItemShadowRenderer<
     spaceAboveSurfaceBuffer.state.box.yd = item.state.box.yd;
     // zd remains veryHighZ as set in the buffer initialization
 
-    const castersAbove = collisionItemWithIndex(
-      spaceAboveSurfaceBuffer,
+    const castersAbove = this.#castersAbove;
+    castersAbove.length = 0;
+    appendCollisionsBoxWithIndex(
+      spaceAboveSurfaceBuffer.state.box,
       room[roomSpatialIndexKey],
-      (maybeCaster) => {
-        const casterBehaviour = maybeCaster[itemBehaviourKey];
-        return (
-          maybeCaster !== item &&
-          casterBehaviour.shadowCastTexture(maybeCaster, cameraQuarterAngle) !==
-            undefined &&
-          !casterBehaviour
-            .noShadowCastOn(maybeCaster, cameraQuarterAngle)
-            ?.includes(item.type)
-        );
-      },
+      castersAbove,
+      undefined,
+      item,
     );
+    // keep only the items casting a shadow onto this one:
+    let casterCount = 0;
+    for (let i = 0; i < castersAbove.length; i++) {
+      const maybeCaster = castersAbove[i];
+      if (castsShadowOnto(maybeCaster, item, cameraQuarterAngle)) {
+        castersAbove[casterCount++] = maybeCaster;
+      }
+    }
+    castersAbove.length = casterCount;
 
     // if the whole-shadow casters above this item together cover it, darken the whole item
     // with a single tint on top of its shaped shadows. Colourised only - uncolourised cast

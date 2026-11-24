@@ -1,9 +1,9 @@
-import { playablesInRoom } from "../../../model/roomItemsInPlayIterators";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import { characterNames } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
 import { selectHasAllPlanetCrowns } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
-import { valuesIter } from "../../../utils/entries";
 import { nonZero } from "../../../utils/epsilon";
 import { hashNumberToNumber0to1 } from "../../../utils/maths/hashing";
 import { smoothstep } from "../../../utils/maths/maths";
@@ -297,7 +297,9 @@ const RushesTowardsPlayerXy4Mixin = <B extends LocomotiveBehaviourClass>(
         };
       }
 
-      for (const player of valuesIter(playablesInRoom(room.items))) {
+      for (let i = 0; i < characterNames.length; i++) {
+        const player = room.items[characterNames[i] as RoomItemId] as
+          undefined | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
         if (player === undefined) {
           continue;
         }

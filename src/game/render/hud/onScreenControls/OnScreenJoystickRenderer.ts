@@ -61,6 +61,12 @@ export class OnScreenJoystickRenderer implements Renderer<
 
   #arrowSprites: Partial<Record<DirectionXy8, Container>>;
 
+  /**
+   * the arrow sprites with their directions, listed once so ticks don't
+   * allocate iterating them
+   */
+  #arrowSpriteEntries: Array<[DirectionXy8, Container]>;
+
   #joystickSprite;
 
   #curPointerId: number | undefined;
@@ -169,6 +175,7 @@ export class OnScreenJoystickRenderer implements Renderer<
         }
       : {}),
     };
+    this.#arrowSpriteEntries = objectEntriesIter(this.#arrowSprites).toArray();
 
     this.output.addChild(this.#joystickSprite);
 
@@ -300,9 +307,8 @@ export class OnScreenJoystickRenderer implements Renderer<
     const activeTint = tintForHud(spritesheetMeta, room.color, true);
     const notActiveTint = tintForHud(spritesheetMeta, room.color, false);
 
-    for (const [directionXy8, sprite] of objectEntriesIter(
-      this.#arrowSprites,
-    )) {
+    for (let i = 0; i < this.#arrowSpriteEntries.length; i++) {
+      const [directionXy8, sprite] = this.#arrowSpriteEntries[i];
       sprite.tint =
         directionXy8 === highlightDirectionXy8 ? activeTint : notActiveTint;
     }

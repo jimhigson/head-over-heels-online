@@ -1,5 +1,4 @@
-import type { ItemInPlay } from "../../model/ItemInPlay";
-import { isPlayableItem } from "../../model/ItemInPlayNarrowedUnions";
+import { itemBehaviourKey, type ItemInPlay } from "../../model/ItemInPlay";
 import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
 import { playableResetAfterOutOfBounds } from "../gameState/mutators/playableLosesLife";
 import type { ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";
@@ -31,7 +30,7 @@ export class OutOfBoundsBehaviour extends ItemBehaviour {
       return;
     }
     const { movingItem, gameState, room } = e;
-    if (isPlayableItem(movingItem)) {
+    if (movingItem[itemBehaviourKey].isPlayable(movingItem)) {
       console.warn(
         `an item of type ${movingItem.type} touched out of bounds and is being reset`,
       );

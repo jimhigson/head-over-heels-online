@@ -1,7 +1,6 @@
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import {
   isFreeItem,
-  isSlidingItem,
   type PlayableItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
@@ -173,10 +172,10 @@ export const puttingDown = <RoomId extends string, RoomItemId extends string>(
           carrierVelZ / 2
         : carrierVelZ,
     };
-    if (isSlidingItem(carrying)) {
+    if (carrying[itemBehaviourKey].isSliding(carrying)) {
       carrying.state.vels.sliding = originXyz;
     }
-  } else if (isSlidingItem(carrying)) {
+  } else if (carrying[itemBehaviourKey].isSliding(carrying)) {
     carrying.state.vels.sliding = addXyz(
       carrier.state.vels.walking,
       carrier.state.vels.movingFloor,

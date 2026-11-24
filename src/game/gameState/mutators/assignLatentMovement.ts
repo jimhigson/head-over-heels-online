@@ -6,7 +6,7 @@ import type {
 import type { LatentMovementFrame } from "../../../model/ItemStateMap";
 import { forEachRoomItem } from "../../../model/roomItemsInPlayIterators";
 import type { RoomState } from "../../../model/RoomState";
-import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
+import { stoodOnByItem } from "../../../model/stoodOnItemsLookup";
 import {
   originXy,
   scaleXyz,
@@ -168,10 +168,8 @@ export const assignLatentMovementFromStandingOn = <
     latentMovement.z = 0;
 
     if (!xyEqual(latentMovement, originXy)) {
-      for (const standerItem of iterateStoodOnByItems(
-        moverItem.state.stoodOnBy,
-        room,
-      )) {
+      for (const standerId in moverItem.state.stoodOnBy) {
+        const standerItem = stoodOnByItem(standerId, room);
         const carried = carriedMovement(
           moverItem,
           standerItem,

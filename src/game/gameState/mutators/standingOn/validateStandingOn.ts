@@ -1,6 +1,6 @@
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import type { RoomState } from "../../../../model/RoomState";
-import { iterateStoodOnByItems } from "../../../../model/stoodOnItemsLookup";
+import { stoodOnByItem } from "../../../../model/stoodOnItemsLookup";
 
 /** debug code - checks standingOn two-way linking for every item in a room */
 export const validateStandingOn = <
@@ -12,7 +12,8 @@ export const validateStandingOn = <
   for (const bottom of roomItemsIterable(room.items)) {
     // check what is standing on this item. Since the standing relationship is linked two-way,
     // also implies checking what the items are stood on.
-    for (const top of iterateStoodOnByItems(bottom.state.stoodOnBy, room)) {
+    for (const topId in bottom.state.stoodOnBy) {
+      const top = stoodOnByItem(topId, room);
       if (top.state.standingOnItemId !== bottom.id) {
         throw new Error(
           `broken two-way linking. ${bottom.id} reports being stood on by ${top.id} (full list is ${Object.keys(bottom.state.stoodOnBy)}),

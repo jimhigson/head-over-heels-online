@@ -1,7 +1,6 @@
 import type { Sprite } from "pixi.js";
 
-import { isPlayableItem } from "../../../../model/ItemInPlayNarrowedUnions";
-import { iterateStoodOnByItems } from "../../../../model/stoodOnItemsLookup";
+import { isStoodOnByPlayable } from "../../../../model/stoodOnItemsLookup";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/bakeContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
 import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
@@ -42,9 +41,7 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
 
   const activated = teleporterIsActive(item, planetsLiberated);
 
-  const flashing =
-    activated &&
-    iterateStoodOnByItems(stoodOnBy, room).find(isPlayableItem) !== undefined;
+  const flashing = activated && isStoodOnByPlayable(stoodOnBy, room);
 
   const render =
     currentlyRenderedProps === undefined ||

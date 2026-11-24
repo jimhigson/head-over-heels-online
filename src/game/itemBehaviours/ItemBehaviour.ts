@@ -2,11 +2,13 @@ import type { ExportedSoundId } from "../../_generated/sfxdex/soundIds";
 import { itemBehaviourKey, type ItemInPlayType } from "../../model/ItemInPlay";
 import type {
   FreeItem,
+  PlayableItem,
   PositionlessItem,
+  SlidingItem,
   UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlayNarrowedUnions";
 import type { SwitchItemModificationUnion } from "../../model/json/SwitchConfig";
-import type { Campaign } from "../../model/modelTypes";
+import type { Campaign, CharacterName } from "../../model/modelTypes";
 import type { RoomState } from "../../model/RoomState";
 import { emptyArray } from "../../utils/empty";
 import type { Xy, Xyz } from "../../utils/vectors/vectors";
@@ -129,6 +131,24 @@ export class ItemBehaviour {
     this.snagsHelpfulMovement = snagsHelpfulMovement;
   }
   // ---- capabilities ----
+
+  /**
+   * whether the item is a playable character - head, heels, or both joined
+   */
+  isPlayable<RoomId extends string, RoomItemId extends string>(
+    _item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  ): _item is PlayableItem<CharacterName, RoomId, RoomItemId> {
+    return false;
+  }
+
+  /**
+   * whether the item slides when pushed
+   */
+  isSliding<RoomId extends string, RoomItemId extends string>(
+    _item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  ): _item is SlidingItem<RoomId, RoomItemId> {
+    return false;
+  }
 
   /**
    * relative mass - how hard this item pushes, and is pushed by, others

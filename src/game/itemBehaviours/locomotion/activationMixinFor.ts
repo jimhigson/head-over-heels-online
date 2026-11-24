@@ -1,6 +1,5 @@
-import { isPlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import type { RoomState } from "../../../model/RoomState";
-import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
+import { isStoodOnByPlayable } from "../../../model/stoodOnItemsLookup";
 import type { GameState } from "../../gameState/GameState";
 import {
   type MechanicResult,
@@ -106,11 +105,7 @@ const ActivatesOnStandMixin = <B extends LocomotiveBehaviourClass>(Base: B) =>
         return unitMechanicalResult;
       }
 
-      return (
-          iterateStoodOnByItems(locomotiveItem.state.stoodOnBy, room).some(
-            isPlayableItem,
-          )
-        ) ?
+      return isStoodOnByPlayable(locomotiveItem.state.stoodOnBy, room) ?
           activateResult
         : unitMechanicalResult;
     }

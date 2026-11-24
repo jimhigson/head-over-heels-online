@@ -1,5 +1,4 @@
-import { isPlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
-import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
+import { isStoodOnByPlayable } from "../../../model/stoodOnItemsLookup";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import {
   asReuseSprite,
@@ -49,8 +48,7 @@ export const teleporterAppearance: ItemAppearance<
 
   const activated = teleporterIsActive(item, planetsLiberated);
 
-  const flashing =
-    activated && iterateStoodOnByItems(stoodOnBy, room).some(isPlayableItem);
+  const flashing = activated && isStoodOnByPlayable(stoodOnBy, room);
 
   const render =
     currentlyRenderedProps === undefined ||
