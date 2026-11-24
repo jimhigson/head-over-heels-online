@@ -1,6 +1,7 @@
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
+import type { DirectionXyz8 } from "../../../utils/vectors/vectors";
 import type { EditorJsonItemUnion, EditorRoomItemId } from "../../editorTypes";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
@@ -103,6 +104,63 @@ test("sets a lamp's beam direction (its `direction` field, not startDirection)",
   expect(lampSetDirection["lamp" as EditorRoomItemId]).toEqual({
     type: "lamp",
     config: { direction: "left", activated: true },
+    position: { x: 0, y: 0, z: 0 },
+  });
+});
+
+const conveyorAfterSettingDirection = (
+  conveyor: EditorJsonItemUnion,
+  startDirection: DirectionXyz8,
+): EditorJsonItemUnion | undefined =>
+  selectCurrentCommittedRoomJsonFromLevelEditorState(
+    reduceLevelEditorActions(
+      produce(editorStateWithOneRoomWithNoItems, (draft) => {
+        draft.campaignInProgress.rooms[testRoomId].items[
+          "conveyor" as EditorRoomItemId
+        ] = conveyor;
+      }),
+      setSelectedItemsInRoom({
+        selection: [
+          {
+            jsonItemId: "conveyor" as EditorRoomItemId,
+            whichEditorGhost: undefined,
+          },
+        ],
+      }),
+      setSelectedItemsStartDirection({ startDirection, timestamp: 0 }),
+    ),
+  ).items["conveyor" as EditorRoomItemId];
+
+test("turns a one-block conveyor to the other axis", () => {
+  expect<EditorJsonItemUnion | undefined>(
+    conveyorAfterSettingDirection(
+      {
+        type: "conveyor",
+        config: { direction: "left" },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      "away",
+    ),
+  ).toEqual<EditorJsonItemUnion>({
+    type: "conveyor",
+    config: { direction: "away" },
+    position: { x: 0, y: 0, z: 0 },
+  });
+});
+
+test("reverses a longer conveyor, keeping its times", () => {
+  expect<EditorJsonItemUnion | undefined>(
+    conveyorAfterSettingDirection(
+      {
+        type: "conveyor",
+        config: { direction: "left", times: { x: 3 } },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      "right",
+    ),
+  ).toEqual<EditorJsonItemUnion>({
+    type: "conveyor",
+    config: { direction: "right", times: { x: 3 } },
     position: { x: 0, y: 0, z: 0 },
   });
 });

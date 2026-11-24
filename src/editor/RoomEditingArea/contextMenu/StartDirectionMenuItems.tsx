@@ -19,8 +19,8 @@ const directionLabel = (direction: DirectionXyz8): string =>
  * Direction arrows for the selection, one per direction valid for every
  * selected item (4-way, or 8-way when all are sceneryPlayers), the current one
  * highlighted. Choosing an arrow sets it, leaving the menu open. Works for any item with an editable facing -
- * a monster's start direction, a lamp's beam direction or a lift's up or down
- * (see directionForItem)
+ * a monster's start direction, a lamp's beam direction, a conveyor's direction
+ * or a lift's up or down (see directionForItem)
  * - and is hidden unless every selected item has one.
  */
 export const StartDirectionMenuItems = () => {

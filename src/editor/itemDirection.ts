@@ -2,13 +2,17 @@ import {
   type LiftDirection,
   liftDirections,
 } from "../model/json/ItemConfigMap";
+import { getJsonItemTimes } from "../model/times";
 import {
   directionsXy4,
   directionsXy8,
   type DirectionXy8,
   type DirectionXyz8,
+  oppositeDirection,
+  tangentAxis,
 } from "../utils/vectors/vectors";
 import type { EditorJsonItemUnion } from "./editorTypes";
+import { swapItemTimesXyInPlace } from "./swapItemTimesXyInPlace";
 
 export type ItemDirection =
   | {
@@ -18,7 +22,10 @@ export type ItemDirection =
       type: "facingOnXyPlane";
       /** which config field stores this item's facing */
       field: "direction" | "startDirection";
-      /** the directions this item can face (4-way, or 8-way for sceneryPlayers) */
+      /**
+       * the directions this item can face (4-way, or 8-way for sceneryPlayers, or
+       * for a conveyor longer than a block only its own and the opposite)
+       */
       supported: readonly DirectionXy8[];
       /** the direction the item currently faces */
       current: DirectionXy8;
@@ -35,8 +42,9 @@ export type ItemDirection =
 
 /**
  * describe how an item stores a settable direction - the monster's
- * `startDirection`, the lamp's beam `direction`, the lift's up or down
- * `startDirection` - or undefined for item types with no editable direction.
+ * `startDirection`, the lamp's beam `direction`, the conveyor's `direction`, the
+ * lift's up or down `startDirection` - or undefined for item types with no
+ * editable direction.
  */
 export const directionForItem = (
   item: EditorJsonItemUnion,
@@ -65,6 +73,24 @@ export const directionForItem = (
       current: item.config.direction,
     };
   }
+  if (item.type === "conveyor") {
+    const { direction } = item.config;
+    const { x: timesX, y: timesY } = getJsonItemTimes(item);
+    const reversedDirection = oppositeDirection(direction);
+    return {
+      type: "facingOnXyPlane",
+      field: "direction",
+      supported:
+        timesX === 1 && timesY === 1 ?
+          directionsXy4
+          // a longer run can only reverse and stay in the same footprint:
+        : directionsXy4.filter(
+            (candidate) =>
+              candidate === direction || candidate === reversedDirection,
+          ),
+      current: direction,
+    };
+  }
   return undefined;
 };
 
@@ -72,7 +98,7 @@ export const directionForItem = (
  * set an item's direction, writing whichever config field it uses.
  * No-op for item types with no editable direction. The menu only offers
  * directions valid for the item, so writing past the per-item direction type
- * is safe.
+ * is safe. A conveyor turned onto the other axis takes its times with it.
  */
 export const setItemDirectionInPlace = (
   item: EditorJsonItemUnion,
@@ -82,7 +108,15 @@ export const setItemDirectionInPlace = (
   if (itemDirection === undefined) {
     return;
   }
+  const maybeConveyorAxisBefore =
+    item.type === "conveyor" ? tangentAxis(item.config.direction) : undefined;
   (item.config as Record<"direction" | "startDirection", DirectionXyz8>)[
     itemDirection.field
   ] = direction;
+  if (
+    item.type === "conveyor" &&
+    tangentAxis(item.config.direction) !== maybeConveyorAxisBefore
+  ) {
+    swapItemTimesXyInPlace(item);
+  }
 };
