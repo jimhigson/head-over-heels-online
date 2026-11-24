@@ -44,10 +44,12 @@ describe(
 
       const a0 = setTool({
         type: "item",
-        item: {
-          type: "block",
-          config: { style: "organic" },
-        },
+        items: [
+          {
+            type: "block",
+            config: { style: "organic" },
+          },
+        ],
       });
 
       const state1 = reduce(state0, a0);
@@ -118,7 +120,12 @@ describe(
         state0,
         setTool({
           type: "item",
-          item: { type: "block", config: { style: "organic" } },
+          items: [
+            {
+              type: "block",
+              config: { style: "organic" },
+            },
+          ],
         }),
       );
 
@@ -204,7 +211,12 @@ describe(
         state0,
         setTool({
           type: "item",
-          item: { type: "block", config: { style: "organic" } },
+          items: [
+            {
+              type: "block",
+              config: { style: "organic" },
+            },
+          ],
         }),
       );
 

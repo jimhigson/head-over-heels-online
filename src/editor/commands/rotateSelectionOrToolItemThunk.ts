@@ -6,8 +6,8 @@ import { fromEntries } from "../../utils/entries";
 import { subXyz } from "../../utils/vectors/vectors";
 import type { EditorJsonItemUnion, EditorRoomState } from "../editorTypes";
 import {
+  areToolItemsRotatable,
   isPlacedItemRotatable,
-  isRotatable,
   rotatePlacedItemInPlace,
   type RotationSense,
 } from "../itemRotation";
@@ -40,12 +40,10 @@ const selectSelectionIsRotatable = (state: EditorRootState): boolean => {
 
 const selectToolItemIsRotatable = (state: EditorRootState): boolean => {
   const tool = selectTool(state);
-  // ItemTool is {type, config}; EditorJsonItemUnion is assignable to it, so the
-  // cast just gives isRotatable the discriminated view it expects:
-  return tool.type === "item" && isRotatable(tool.item as EditorJsonItemUnion);
+  return tool.type === "item" && areToolItemsRotatable(tool.items);
 };
 
-/** whether there is anything to rotate: the selection, or else the tool's item */
+/** whether there is anything to rotate: the selection, or else the tool's items */
 export const selectSelectionOrToolItemIsRotatable = (
   state: EditorRootState,
 ): boolean =>

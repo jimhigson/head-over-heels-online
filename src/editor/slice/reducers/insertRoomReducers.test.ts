@@ -4,6 +4,7 @@ import { describe, expect, test } from "vitest";
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
 import { roomGridPositions } from "../../../model/map/roomGridPositions";
 import { subRoomById } from "../../../model/RoomJson";
+import { repeatedNonEmptyTuple } from "../../../utils/repeatedNonEmptyTuple";
 import type {
   EditorJsonItem,
   EditorRoomId,
@@ -891,10 +892,12 @@ describe("placing a door tool in a non-origin subroom of a multi-chunk room", ()
       changeToRoom({ roomId: multiChunkRoomId, subRoomId: "1" }),
       setTool({
         type: "item",
-        item: {
-          type: "door",
-          config: { direction: "away", toRoom: "+" },
-        },
+        items: [
+          {
+            type: "door",
+            config: { direction: "away", toRoom: "+" },
+          },
+        ],
       }),
       applyItemTool({
         roomId: multiChunkRoomId,
@@ -903,7 +906,7 @@ describe("placing a door tool in a non-origin subroom of a multi-chunk room", ()
           type: "wall",
           config: {
             direction: "towards",
-            tiles: Array(16).fill("plain"),
+            tiles: repeatedNonEmptyTuple("plain", 16),
           },
           position: { x: 0, y: 0, z: 0 },
         },

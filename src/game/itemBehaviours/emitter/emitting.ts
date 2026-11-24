@@ -4,7 +4,10 @@ import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { store } from "../../../store/store";
-import { hashXyzToNumber0to1 } from "../../../utils/maths/hashing";
+import {
+  hashNumberToNumber0to1,
+  hashXyzToNumber0to1,
+} from "../../../utils/maths/hashing";
 import {
   addXyz,
   boxAt,
@@ -23,6 +26,7 @@ import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { periodicItemShouldAct } from "../../physics/mechanics/periodicItemShouldAct";
 import { blockSizePx } from "../../physics/mechanicsConstants";
+import { chooseEmittableRecipe } from "./chooseEmittableRecipe";
 
 const hasFewerThanInRoom = <RoomId extends string, RoomItemId extends string>(
   limit: number,
@@ -109,13 +113,17 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
     const maximumAtOnce = state.maximumAtOnce ?? Infinity;
 
     if (hasFewerThanInRoom(maximumAtOnce, emitterId, room)) {
-      const { emits } = state;
+      const recipe = chooseEmittableRecipe(
+        state.emits,
+        quantityEmitted,
+        hashNumberToNumber0to1(emitter.hash + room.roomTime),
+      );
 
       // we need to structured clone the emits recipe, otherwise we would be mutating
       // the emitter's config when we set the position for the emitted item, which would
       // likely fail if we loaded from the db via rtk query since it would be immutable
       // - we also later need to write appearanceRoomTime onto the config
-      const emitsCloned = structuredClone(emits) as EmittableItemJson;
+      const emitsCloned = structuredClone(recipe) as EmittableItemJson;
       // temporary position, to be overwritten in item-in-play
       emitsCloned.position = originXyz;
 

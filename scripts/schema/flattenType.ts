@@ -2,7 +2,7 @@
 
 import { Command } from "commander";
 import * as path from "path";
-import { type JSDoc, Project, type Type, type TypeChecker } from "ts-morph";
+import { type JSDoc, Project, ts, type Type, type TypeChecker } from "ts-morph";
 import { fileURLToPath } from "url";
 
 import { normalizeTypeOutput } from "./normalizeTypeOutput";
@@ -50,6 +50,37 @@ export class TypeFlattener {
       return typeName;
     }
     return typeName.charAt(0).toUpperCase() + typeName.slice(1);
+  }
+
+  #processTuple(type: Type, typeName: string, depth: number): string {
+    // ts-morph does not expose which tuple elements are optional or rest
+    const {
+      target: { elementFlags },
+    } = type.compilerType as ts.TupleTypeReference;
+
+    const elementDefinitions = type
+      .getTupleElements()
+      .map((elementType, index) => {
+        const flags = elementFlags[index];
+        const isOptional = (flags & ts.ElementFlags.Optional) !== 0;
+        const elementTypeName = this.processType(
+          elementType,
+          `${typeName}Element`,
+          depth + 1,
+          // the `?` already says an optional element may be absent
+          isOptional,
+        );
+        if (flags & ts.ElementFlags.Rest) {
+          // parentheses keep unions intact - prettier removes them if unnecessary
+          return `...(${elementTypeName})[]`;
+        }
+        if (isOptional) {
+          return `(${elementTypeName})?`;
+        }
+        return elementTypeName;
+      });
+
+    return `[${elementDefinitions.join(", ")}]`;
   }
 
   // Process object types with optional property support
@@ -304,6 +335,11 @@ export class TypeFlattener {
         );
         return `Record<string, ${valueType}>`;
       }
+    }
+
+    // Tuples, including ones with a rest element such as type-fest's NonEmptyTuple
+    if (type.isTuple()) {
+      return this.#processTuple(type, typeName, depth);
     }
 
     // Handle Partial<T> types specially

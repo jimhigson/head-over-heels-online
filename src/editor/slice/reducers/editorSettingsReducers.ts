@@ -5,6 +5,7 @@ import type {
 } from "@reduxjs/toolkit";
 
 import { doorItemTool } from "../../RoomEditingArea/interactivity/doorItemTool";
+import { isDoorToolItems } from "../../RoomEditingArea/interactivity/isDoorToolItems";
 import type { GridResolution, LevelEditorState } from "../levelEditorSlice";
 
 export const editorSettingsReducers = {
@@ -30,11 +31,11 @@ export const editorSettingsReducers = {
     // a selected door tool becomes the door tool for the new setting:
     if (
       levelEditorState.tool.type === "item" &&
-      levelEditorState.tool.item.type === "door"
+      isDoorToolItems(levelEditorState.tool.items)
     ) {
       levelEditorState.tool = {
         type: "item",
-        item: doorItemTool(doorAutoAddsRoom),
+        items: [doorItemTool(doorAutoAddsRoom)],
       };
     }
   },

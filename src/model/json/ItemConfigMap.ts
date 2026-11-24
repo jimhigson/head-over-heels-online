@@ -1,9 +1,10 @@
-import type { Arrayable } from "type-fest";
+import type { DistributedOmit } from "type-fest";
 
 import type { ExportedSoundId } from "../../_generated/sfxdex/soundIds";
 import type { MarkdownPageName } from "../../manual/pages";
 import type { PlanetName, SceneryName } from "../../sprites/planets";
 import type { Subset } from "../../utils/Subset";
+import type { WritableNonEmptyTuple } from "../../utils/types/WritableNonEmptyTuple";
 import type {
   AxisXy,
   DirectionXy4,
@@ -35,7 +36,7 @@ export type ScrollConfig =
   | {
       gives: "scroll";
       source: "inline";
-      markdown: Arrayable<string>;
+      markdown: string | WritableNonEmptyTuple<string>;
     }
   | {
       gives: "scroll";
@@ -90,7 +91,42 @@ export type EmittableItemJson = Extract<
   }
 >;
 
-export type EmittableItemRecipe = Omit<EmittableItemJson, "position">;
+export type EmittableItemRecipe = DistributedOmit<
+  EmittableItemJson,
+  "position"
+>;
+
+export type WeightedEmittableItemRecipe = {
+  emits: EmittableItemRecipe;
+  /**
+   * relative chance of this recipe being chosen. Weights are relative to each
+   * other, so they need not add up to anything. 0 is allowed, but if every
+   * weight is 0 the recipes are chosen with equal probability.
+   * undefined is treated as 1
+   */
+  probabilityWeight?: number;
+};
+
+export type CyclicEmits = {
+  type: "cyclic";
+  /**
+   * recipes emitted in order, starting again from the first after the last
+   */
+  cycle: WritableNonEmptyTuple<EmittableItemRecipe>;
+};
+
+export type ProbabilisticEmits = {
+  type: "probabilistic";
+  /**
+   * one of these is chosen at random for each emission, pseudo-randomly from
+   * the emitter's hash and the room time, so the same emission at the same
+   * time in the same room always chooses the same recipe
+   */
+  choices: WritableNonEmptyTuple<WeightedEmittableItemRecipe>;
+};
+
+export type EmitterEmits =
+  CyclicEmits | EmittableItemRecipe | ProbabilisticEmits;
 
 export const portableBlockStyles = ["cube", "drum", "sticks"] as const;
 export type PortableBlockStyle = (typeof portableBlockStyles)[number];
@@ -176,7 +212,7 @@ export type ItemConfigMap<
 
   floatingText: {
     /** the lines of text to display, each rendered as a separate row */
-    textLines: string[];
+    textLines: WritableNonEmptyTuple<string>;
     /**
      * the room time when this floating text starts; used to calculate the rise animation age.
      * if not given, will start right away at time zero.
@@ -252,9 +288,11 @@ export type ItemConfigMap<
   };
   emitter: {
     /**
-     * what does this emitter emit? Could be (potentially) any free item
+     * what does this emitter emit? Could be (potentially) any free item. Can
+     * also cycle through several recipes in order, or choose between them
+     * pseudo-randomly
      */
-    emits: EmittableItemRecipe;
+    emits: EmitterEmits;
     /**
      * how long between emissions?
      */

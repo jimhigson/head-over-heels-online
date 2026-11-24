@@ -194,7 +194,8 @@ const wallDraggedAlongFloorEnd = (
     },
     config: {
       ...wall.config,
-      tiles: tiles.slice(start - movedStart, end - movedStart),
+      // the wall moves with the floor's end, so some of it stays on the floor:
+      tiles: tiles.slice(start - movedStart, end - movedStart) as typeof tiles,
     },
   };
 };

@@ -6,17 +6,13 @@ import type {
 } from "../../../../../../editor/commands/EditorCommand";
 import { itemToolCommandDefinitions } from "../../../../../../editor/commands/itemToolCommandDefinitions";
 import { CmdKContents } from "../../../../../../editor/toolbar/CmdKContents";
-import type {
-  JsonItemConfig,
-  JsonItemType,
-} from "../../../../../../model/json/JsonItem";
 import { useAppDispatch } from "../../../../../../store/hooks";
 import { closeMenuThunk } from "../../../../../../store/slices/gameMenus/closeMenuThunk";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { summonItemAbovePlayable } from "../../../../cheats/summonItemAbovePlayable";
+import { summonItemsAbovePlayable } from "../../../../cheats/summonItemsAbovePlayable";
 import { useGameApi } from "../../../../GameApiContext";
 
 // state-dependent entries need the editor, so can't be summoned
@@ -31,7 +27,7 @@ const stopKeydownReachingGame = (e: KeyboardEvent<HTMLDivElement>) => {
   }
 };
 
-/** the cmd-k menu, in-game: summons the chosen item above the playable */
+/** the cmd-k menu, in-game: summons the chosen items above the playable */
 export const CheatsCmdKDialog = <RoomId extends string>() => {
   const gameApi = useGameApi<RoomId>();
   const dispatch = useAppDispatch();
@@ -48,13 +44,8 @@ export const CheatsCmdKDialog = <RoomId extends string>() => {
           commandDefinitions={itemToolCommandDefinitions}
           resolveEntry={resolveEntryForSummoning}
           placeholder="Search items..."
-          onSelect={({ itemTool }) => {
-            summonItemAbovePlayable(
-              gameApi,
-              itemTool.type,
-              // editor tool room ids are not this campaign's room ids:
-              itemTool.config as JsonItemConfig<JsonItemType, RoomId>,
-            );
+          onSelect={({ items }) => {
+            summonItemsAbovePlayable(gameApi, items);
             dispatch(closeMenuThunk("cmdk"));
           }}
           onKeyDown={stopKeydownReachingGame}

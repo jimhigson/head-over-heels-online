@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import { capitalize } from "string-transform";
 
 import { playableTailwindSpriteClassname } from "../../game/components/tailwindSprites/playableTailwindSpriteClassname";
-import { rotatingSceneryTiles } from "../../model/inPlaceMutators/rotatingSceneryTiles";
+import { rotatingSceneryWallTiles } from "../../model/inPlaceMutators/rotatingSceneryWallTiles";
 import { type PlanetName, planets } from "../../sprites/planets";
 import type {
   AnimatedTextureTailwindClass,
@@ -39,10 +39,12 @@ export const itemToolCommandDefinitions = {
   "block.organic": {
     label: "Organic block",
     type: "itemTool",
-    itemTool: {
-      type: "block",
-      config: { style: "organic" },
-    },
+    items: [
+      {
+        type: "block",
+        config: { style: "organic" },
+      },
+    ],
     shortcutKeys: ["B"],
     tooltipContent: `## Block
 The basic block`,
@@ -55,10 +57,12 @@ The basic block`,
   "block.organic.disappearing": {
     label: "Disappearing organic block",
     type: "itemTool",
-    itemTool: {
-      type: "block",
-      config: { style: "organic", disappearing: { on: "stand" } },
-    },
+    items: [
+      {
+        type: "block",
+        config: { style: "organic", disappearing: { on: "stand" } },
+      },
+    ],
     shortcutKeys: ["⇧B"],
     tooltipContent: `## Block
 Disappearing basic block`,
@@ -73,7 +77,7 @@ Disappearing basic block`,
   "block.artificial": {
     label: "Artificial block",
     type: "itemTool",
-    itemTool: { type: "block", config: { style: "artificial" } },
+    items: [{ type: "block", config: { style: "artificial" } }],
     shortcutKeys: ["⌥B"],
     tooltipContent: `## Block
 Basic block with a metallic look`,
@@ -86,10 +90,12 @@ Basic block with a metallic look`,
   "block.artificial.disappearing": {
     label: "Disappearing artificial block",
     type: "itemTool",
-    itemTool: {
-      type: "block",
-      config: { style: "artificial", disappearing: { on: "stand" } },
-    },
+    items: [
+      {
+        type: "block",
+        config: { style: "artificial", disappearing: { on: "stand" } },
+      },
+    ],
     shortcutKeys: ["⌥⇧B"],
     tooltipContent: `## Block
 Disappearing metallic look block`,
@@ -104,7 +110,7 @@ Disappearing metallic look block`,
   "block.tower": {
     label: "Tower",
     type: "itemTool",
-    itemTool: { type: "block", config: { style: "tower" } },
+    items: [{ type: "block", config: { style: "tower" } }],
     shortcutKeys: ["T"],
     tooltipContent: `## Tower
 Very high block`,
@@ -117,7 +123,7 @@ Very high block`,
   "block.book": {
     label: "Book block",
     type: "itemTool",
-    itemTool: { type: "block", config: { style: "book" } },
+    items: [{ type: "block", config: { style: "book" } }],
     icon: (
       <span
         class={`sprite ${"texture-book_d0" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -127,7 +133,7 @@ Very high block`,
   "barrier.x": {
     label: "Barrier on x axis",
     type: "itemTool",
-    itemTool: { type: "barrier", config: { axis: "x" } },
+    items: [{ type: "barrier", config: { axis: "x" } }],
     icon: (
       <span
         class={`sprite ${"texture-barrier_d0" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -137,7 +143,7 @@ Very high block`,
   "barrier.y": {
     label: "Barrier on y axis",
     type: "itemTool",
-    itemTool: { type: "barrier", config: { axis: "y" } },
+    items: [{ type: "barrier", config: { axis: "y" } }],
     icon: (
       <span
         class={`sprite ${"texture-barrier_d2" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -147,10 +153,12 @@ Very high block`,
   "barrier.x.disappearing": {
     label: "Disappearing barrier on x axis",
     type: "itemTool",
-    itemTool: {
-      type: "barrier",
-      config: { axis: "x", disappearing: { on: "touch" } },
-    },
+    items: [
+      {
+        type: "barrier",
+        config: { axis: "x", disappearing: { on: "touch" } },
+      },
+    ],
     icon: (
       <DissapearingItemToolbarIcon
         iconClassName={twClass<TextureTailwindClass>("texture-barrier_d0")}
@@ -160,10 +168,12 @@ Very high block`,
   "barrier.y.disappearing": {
     label: "Disappearing barrier on y axis",
     type: "itemTool",
-    itemTool: {
-      type: "barrier",
-      config: { axis: "y", disappearing: { on: "touch" } },
-    },
+    items: [
+      {
+        type: "barrier",
+        config: { axis: "y", disappearing: { on: "touch" } },
+      },
+    ],
     icon: (
       <DissapearingItemToolbarIcon
         iconClassName={twClass<TextureTailwindClass>("texture-barrier_d2")}
@@ -174,14 +184,16 @@ Very high block`,
     label: "Mojo (dalek)",
     synonyms: ["robot"],
     type: "itemTool",
-    itemTool: {
-      type: "monster",
-      config: {
-        which: "dalek",
-        movement: "patrol-randomly-diagonal",
-        activated: "on",
+    items: [
+      {
+        type: "monster",
+        config: {
+          which: "dalek",
+          movement: "patrol-randomly-diagonal",
+          activated: "on",
+        },
       },
-    },
+    ],
     tooltipContent: `## mojo
 the emperor's worker bots
 
@@ -196,15 +208,17 @@ patrols randomly in a diagonal pattern`,
     label: "Guard (cyberman)",
     synonyms: ["robot", "soldier"],
     type: "itemTool",
-    itemTool: {
-      type: "monster",
-      config: {
-        which: "cyberman",
-        activated: "on",
-        movement: "towards-on-shortest-axis-xy4",
-        startDirection: "towards",
+    items: [
+      {
+        type: "monster",
+        config: {
+          which: "cyberman",
+          activated: "on",
+          movement: "towards-on-shortest-axis-xy4",
+          startDirection: "towards",
+        },
       },
-    },
+    ],
     tooltipContent: `## guard
 hovers towards the player on the shortest axis
 
@@ -221,16 +235,18 @@ place on a toaster to make a charging guard`,
   "monster.skiHead": {
     label: "Ski-head monster",
     type: "itemTool",
-    itemTool: {
-      type: "monster",
-      config: {
-        which: "skiHead",
-        style: "greenAndPink",
-        activated: "on",
-        movement: "back-forth",
-        startDirection: "towards",
+    items: [
+      {
+        type: "monster",
+        config: {
+          which: "skiHead",
+          style: "greenAndPink",
+          activated: "on",
+          movement: "back-forth",
+          startDirection: "towards",
+        },
       },
-    },
+    ],
     tooltipContent: `## monster
 moves *back and forth* by default
 
@@ -244,14 +260,16 @@ or can be set to *patrol clockwise*`,
   "monster.helicopterBug": {
     label: "Helicopter bug",
     type: "itemTool",
-    itemTool: {
-      type: "monster",
-      config: {
-        which: "helicopterBug",
-        activated: "on",
-        movement: "patrol-randomly-xy8",
+    items: [
+      {
+        type: "monster",
+        config: {
+          which: "helicopterBug",
+          activated: "on",
+          movement: "patrol-randomly-xy8",
+        },
       },
-    },
+    ],
     icon: (
       <span
         class={`sprite ${"texture-helicopterBug_1" satisfies TextureTailwindClass} ${"activated:texture-animated-helicopterBug" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -261,15 +279,17 @@ or can be set to *patrol clockwise*`,
   "monster.turtle": {
     label: "Turtle",
     type: "itemTool",
-    itemTool: {
-      type: "monster",
-      config: {
-        which: "turtle",
-        activated: "on",
-        movement: "clockwise",
-        startDirection: "towards",
+    items: [
+      {
+        type: "monster",
+        config: {
+          which: "turtle",
+          activated: "on",
+          movement: "clockwise",
+          startDirection: "towards",
+        },
       },
-    },
+    ],
     tooltipContent: `## turtle
 plods along in a clockwise pattern`,
     icon: (
@@ -281,14 +301,16 @@ plods along in a clockwise pattern`,
   "monster.homingBot": {
     label: "Homing bot",
     type: "itemTool",
-    itemTool: {
-      type: "monster",
-      config: {
-        which: "homingBot",
-        activated: "on",
-        movement: "towards-tripped-on-axis-xy4",
+    items: [
+      {
+        type: "monster",
+        config: {
+          which: "homingBot",
+          activated: "on",
+          movement: "towards-tripped-on-axis-xy4",
+        },
       },
-    },
+    ],
     tooltipContent: `## homing bot
 detects a player in a straight line on an axis and rushes towards them`,
     icon: (
@@ -300,15 +322,17 @@ detects a player in a straight line on an axis and rushes towards them`,
   "monster.computerBot": {
     label: "Computer bot",
     type: "itemTool",
-    itemTool: {
-      type: "monster",
-      config: {
-        which: "computerBot",
-        activated: "on",
-        startDirection: "towards",
-        movement: "patrol-randomly-xy4-and-reverse",
+    items: [
+      {
+        type: "monster",
+        config: {
+          which: "computerBot",
+          activated: "on",
+          startDirection: "towards",
+          movement: "patrol-randomly-xy4-and-reverse",
+        },
       },
-    },
+    ],
     tooltipContent: `## Computer bot
 usually patrols randomly, but can be programmed to move towards the player`,
     icon: (
@@ -320,14 +344,16 @@ usually patrols randomly, but can be programmed to move towards the player`,
   "monster.bubbleRobot": {
     label: "Bubble bot",
     type: "itemTool",
-    itemTool: {
-      type: "monster",
-      config: {
-        which: "bubbleRobot",
-        activated: "on",
-        movement: "patrol-randomly-xy8",
+    items: [
+      {
+        type: "monster",
+        config: {
+          which: "bubbleRobot",
+          activated: "on",
+          movement: "patrol-randomly-xy8",
+        },
       },
-    },
+    ],
     tooltipContent: `## Bubble bot
 patrols randomly in 8 directions
 
@@ -342,15 +368,17 @@ fast and dangerous`,
   "monster.monkey": {
     label: "Monkey",
     type: "itemTool",
-    itemTool: {
-      type: "monster",
-      config: {
-        which: "monkey",
-        activated: "on",
-        startDirection: "towards",
-        movement: "patrol-randomly-xy4",
+    items: [
+      {
+        type: "monster",
+        config: {
+          which: "monkey",
+          activated: "on",
+          startDirection: "towards",
+          movement: "patrol-randomly-xy4",
+        },
       },
-    },
+    ],
     icon: (
       <StackedToolbarIcons
         topClasses={`${"texture-monkey_d6" satisfies TextureTailwindClass} ${"activated:texture-monkey_d4" satisfies TextureTailwindClass}`}
@@ -360,14 +388,16 @@ fast and dangerous`,
   "monster.elephant": {
     label: "Elephant",
     type: "itemTool",
-    itemTool: {
-      type: "monster",
-      config: {
-        which: "elephant",
-        activated: "on",
-        movement: "patrol-randomly-xy4",
+    items: [
+      {
+        type: "monster",
+        config: {
+          which: "elephant",
+          activated: "on",
+          movement: "patrol-randomly-xy4",
+        },
       },
-    },
+    ],
     icon: (
       <StackedToolbarIcons
         topClasses={`${"texture-elephant_d6" satisfies TextureTailwindClass} ${"activated:texture-elephant_d4" satisfies TextureTailwindClass}`}
@@ -377,15 +407,17 @@ fast and dangerous`,
   "monster.elephantHead": {
     label: "Elephant head",
     type: "itemTool",
-    itemTool: {
-      type: "monster",
-      config: {
-        which: "elephantHead",
-        activated: "on",
-        movement: "turn-to-player",
-        startDirection: "towards",
+    items: [
+      {
+        type: "monster",
+        config: {
+          which: "elephantHead",
+          activated: "on",
+          movement: "turn-to-player",
+          startDirection: "towards",
+        },
       },
-    },
+    ],
     tooltipContent: `## Elephant head
 Things have gone weird
 
@@ -400,14 +432,16 @@ Stationary, but deadly`,
     label: "Emperor's guardian",
     synonyms: ["boss"],
     type: "itemTool",
-    itemTool: {
-      type: "monster",
-      config: {
-        which: "emperorsGuardian",
-        activated: "on",
-        movement: "towards-analogue-unless-planet-crowns",
+    items: [
+      {
+        type: "monster",
+        config: {
+          which: "emperorsGuardian",
+          activated: "on",
+          movement: "towards-analogue-unless-planet-crowns",
+        },
       },
-    },
+    ],
     toolbarClass: "inline relative",
     tooltipContent: `## Emperor's Guardian
 
@@ -427,14 +461,16 @@ does not *like doughnuts*
   "monster.emperor": {
     label: "Emperor",
     type: "itemTool",
-    itemTool: {
-      type: "monster",
-      config: {
-        which: "emperor",
-        activated: "on",
-        movement: "towards-analogue",
+    items: [
+      {
+        type: "monster",
+        config: {
+          which: "emperor",
+          activated: "on",
+          movement: "towards-analogue",
+        },
       },
-    },
+    ],
     tooltipContent: `## Emperor
 The end boss, usually found guarding his Blacktooth crown`,
     icon: (
@@ -447,7 +483,7 @@ The end boss, usually found guarding his Blacktooth crown`,
     label: "Extra life pickup",
     synonyms: ["bunny", "rabbit", "lives"],
     type: "itemTool",
-    itemTool: { type: "pickup", config: { gives: "extra-life" } },
+    items: [{ type: "pickup", config: { gives: "extra-life" } }],
     icon: (
       <LabelledToolbarIcon
         iconClasses={
@@ -461,7 +497,7 @@ The end boss, usually found guarding his Blacktooth crown`,
     label: "Shield pickup",
     synonyms: ["invincible", "invulnerable", "iron pills", "bunny", "rabbit"],
     type: "itemTool",
-    itemTool: { type: "pickup", config: { gives: "shield" } },
+    items: [{ type: "pickup", config: { gives: "shield" } }],
     icon: (
       <LabelledToolbarIcon
         iconClasses={
@@ -475,7 +511,7 @@ The end boss, usually found guarding his Blacktooth crown`,
     label: "Extra jumps pickup",
     synonyms: ["spring", "bunny", "rabbit"],
     type: "itemTool",
-    itemTool: { type: "pickup", config: { gives: "jumps" } },
+    items: [{ type: "pickup", config: { gives: "jumps" } }],
     icon: (
       <LabelledToolbarIcon
         iconClasses={"texture-whiteRabbit_jumps" satisfies TextureTailwindClass}
@@ -487,7 +523,7 @@ The end boss, usually found guarding his Blacktooth crown`,
     label: "Speed pickup",
     synonyms: ["quick", "bunny", "rabbit"],
     type: "itemTool",
-    itemTool: { type: "pickup", config: { gives: "fast" } },
+    items: [{ type: "pickup", config: { gives: "fast" } }],
     icon: (
       <LabelledToolbarIcon
         iconClasses={"texture-whiteRabbit_fast" satisfies TextureTailwindClass}
@@ -499,7 +535,7 @@ The end boss, usually found guarding his Blacktooth crown`,
     label: "Bag pickup",
     synonyms: ["handbag", "purse", "carry"],
     type: "itemTool",
-    itemTool: { type: "pickup", config: { gives: "bag" } },
+    items: [{ type: "pickup", config: { gives: "bag" } }],
     icon: (
       <span
         class={`sprite ${"texture-bag" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -510,10 +546,12 @@ The end boss, usually found guarding his Blacktooth crown`,
     label: "Hooter pickup",
     synonyms: ["horn", "weapon"],
     type: "itemTool",
-    itemTool: {
-      type: "pickup",
-      config: { gives: "hooter" },
-    },
+    items: [
+      {
+        type: "pickup",
+        config: { gives: "hooter" },
+      },
+    ],
     tooltipContent: `## hooter
 
 head's doughnut firing hooter`,
@@ -527,7 +565,7 @@ head's doughnut firing hooter`,
     label: "Doughnuts pickup",
     synonyms: ["ammo", "tray"],
     type: "itemTool",
-    itemTool: { type: "pickup", config: { gives: "doughnuts" } },
+    items: [{ type: "pickup", config: { gives: "doughnuts" } }],
     icon: (
       <span
         class={`sprite ${"texture-doughnuts" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -538,7 +576,7 @@ head's doughnut firing hooter`,
     label: "Reincarnation pickup",
     synonyms: ["fish", "save", "checkpoint"],
     type: "itemTool",
-    itemTool: { type: "pickup", config: { gives: "reincarnation" } },
+    items: [{ type: "pickup", config: { gives: "reincarnation" } }],
     icon: (
       <span
         class={`sprite ${"texture-fish_1" satisfies TextureTailwindClass} ${"activated:texture-animated-fish" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -552,10 +590,12 @@ head's doughnut firing hooter`,
         label: `${capitalize(planet)} crown pickup`,
         synonyms: ["crown", "planet"],
         type: "itemTool",
-        itemTool: {
-          type: "pickup",
-          config: { gives: "crown", planet },
-        },
+        items: [
+          {
+            type: "pickup",
+            config: { gives: "crown", planet },
+          },
+        ],
         icon: (
           <span
             class={`sprite ${crownTextureClasses[planet]} ${buttonSpriteRevertColourClasses}`}
@@ -567,14 +607,16 @@ head's doughnut firing hooter`,
   "pickup.scroll": {
     label: "Scroll",
     type: "itemTool",
-    itemTool: {
-      type: "pickup",
-      config: {
-        gives: "scroll",
-        source: "inline",
-        markdown: "#Write me\n\nTODO: Put content here",
+    items: [
+      {
+        type: "pickup",
+        config: {
+          gives: "scroll",
+          source: "inline",
+          markdown: "#Write me\n\nTODO: Put content here",
+        },
       },
-    },
+    ],
     icon: (
       <span
         class={`sprite ${"texture-scroll" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -585,7 +627,7 @@ head's doughnut firing hooter`,
     label: "Volcano",
     synonyms: ["hazard"],
     type: "itemTool",
-    itemTool: { type: "deadlyBlock", config: { style: "volcano" } },
+    items: [{ type: "deadlyBlock", config: { style: "volcano" } }],
     tooltipContent: `## Volcano`,
     shortcutKeys: ["V"],
     icon: (
@@ -598,7 +640,7 @@ head's doughnut firing hooter`,
     label: "Toaster",
     synonyms: ["hazard"],
     type: "itemTool",
-    itemTool: { type: "deadlyBlock", config: { style: "toaster" } },
+    items: [{ type: "deadlyBlock", config: { style: "toaster" } }],
     tooltipContent: `## Toaster\n\ncharging stations for the Emperor's Guardians`,
     icon: (
       <span
@@ -610,10 +652,12 @@ head's doughnut firing hooter`,
     label: "Spiky ball",
     synonyms: ["hazard"],
     type: "itemTool",
-    itemTool: {
-      type: "slidingDeadly",
-      config: { style: "spikyBall", startingPhase: 1 },
-    },
+    items: [
+      {
+        type: "slidingDeadly",
+        config: { style: "spikyBall", startingPhase: 1 },
+      },
+    ],
     tooltipContent: `## Spiky ball
 rolls fast if pushed
 
@@ -627,10 +671,12 @@ deadly to touch`,
   lamp: {
     label: "Lamp",
     type: "itemTool",
-    itemTool: {
-      type: "lamp",
-      config: { direction: "towards", activated: true },
-    },
+    items: [
+      {
+        type: "lamp",
+        config: { direction: "towards", activated: true },
+      },
+    ],
     tooltipContent: `## Lamp
 
 shines a beam of light along an axis
@@ -647,10 +693,12 @@ can be turned on/off by switches and buttons`,
   mirror: {
     label: "Mirror",
     type: "itemTool",
-    itemTool: {
-      type: "mirror",
-      config: { orientation: "awayRight" },
-    },
+    items: [
+      {
+        type: "mirror",
+        config: { orientation: "awayRight" },
+      },
+    ],
     tooltipContent: `## Mirror
 
 sits diagonally to the axes and reflects light beams
@@ -668,7 +716,7 @@ rotates to the other diagonal when collided with`,
     label: "Spikes",
     synonyms: ["deadly", "hazard"],
     type: "itemTool",
-    itemTool: { type: "spikes", config: emptyObject },
+    items: [{ type: "spikes", config: emptyObject }],
     tooltipContent: `## spikes
 
 deadly to touch on top
@@ -684,7 +732,7 @@ safe to run into the sides`,
     label: "Dead fish",
     synonyms: ["deadly fish", "poison"],
     type: "itemTool",
-    itemTool: { type: "moveableDeadly", config: { style: "deadFish" } },
+    items: [{ type: "moveableDeadly", config: { style: "deadFish" } }],
     tooltipContent: `## dead fish
 
 (deadly to touch)
@@ -700,7 +748,7 @@ turns so poisonous that a single lick can kill`,
   charles: {
     label: "Charles bot",
     type: "itemTool",
-    itemTool: { type: "charles", config: emptyObject },
+    items: [{ type: "charles", config: emptyObject }],
     icon: (
       <StackedToolbarIcons
         topClasses={`${"texture-charles_d6" satisfies TextureTailwindClass} ${"activated:texture-charles_d4" satisfies TextureTailwindClass}`}
@@ -710,12 +758,14 @@ turns so poisonous that a single lick can kill`,
   joystick: {
     label: "Joystick",
     type: "itemTool",
-    itemTool: {
-      type: "joystick",
-      config: {
-        // omit list of charles by default = controls all in the room
+    items: [
+      {
+        type: "joystick",
+        config: {
+          // omit list of charles by default = controls all in the room
+        },
       },
-    },
+    ],
     tooltipContent: `## Joystick
 Controls one or more Charles bots
 
@@ -730,13 +780,15 @@ Change *which* Charles in the json`,
     label: "Switch",
     synonyms: ["toggle"],
     type: "itemTool",
-    itemTool: {
-      type: "switch",
-      config: {
-        initialSetting: "left",
-        modifies: emptyArray,
+    items: [
+      {
+        type: "switch",
+        config: {
+          initialSetting: "left",
+          modifies: emptyArray,
+        },
       },
-    },
+    ],
     tooltipContent: `## Switch
 toggles when touched.
 
@@ -758,12 +810,14 @@ edit the json to choose:
     label: "Button",
     synonyms: ["toggle"],
     type: "itemTool",
-    itemTool: {
-      type: "button",
-      config: {
-        modifies: emptyArray,
+    items: [
+      {
+        type: "button",
+        config: {
+          modifies: emptyArray,
+        },
       },
-    },
+    ],
     tooltipContent: `## button`,
     icon: (
       <span
@@ -774,38 +828,44 @@ edit the json to choose:
   emitter: {
     label: "Emitter",
     type: "itemTool",
-    itemTool: {
-      type: "emitter",
-      config: {
-        emits: { type: "firedDoughnut", config: { direction: "left" } },
-        period: 4_000,
-        maximum: 10,
+    items: [
+      {
+        type: "emitter",
+        config: {
+          emits: { type: "firedDoughnut", config: { direction: "left" } },
+          period: 4_000,
+          maximum: 10,
+        },
       },
-    },
+    ],
     tooltipContent: `## Emitter\nCreates items at regular intervals\n\nEdit the json to configure what it emits`,
     icon: <span class="text-single-line">E</span>,
   },
   timer: {
     label: "Timer",
     type: "itemTool",
-    itemTool: {
-      type: "timer",
-      config: {
-        period: 2_000,
-        initialSetting: "left",
-        modifies: [],
+    items: [
+      {
+        type: "timer",
+        config: {
+          period: 2_000,
+          initialSetting: "left",
+          modifies: [],
+        },
       },
-    },
+    ],
     tooltipContent: `## Timer\nPeriodically toggles switch-style modifications\n\nEdit the json to configure targets`,
     icon: <span class="text-single-line">T</span>,
   },
   spring: {
     label: "Spring",
     type: "itemTool",
-    itemTool: {
-      type: "spring",
-      config: {},
-    },
+    items: [
+      {
+        type: "spring",
+        config: {},
+      },
+    ],
     icon: (
       <span
         class={`sprite ${"texture-spring_released" satisfies TextureTailwindClass} ${"activated:texture-spring_compressed" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -816,7 +876,7 @@ edit the json to choose:
     label: "Portable cube",
     synonyms: ["carry", "pick up"],
     type: "itemTool",
-    itemTool: { type: "portableBlock", config: { style: "cube" } },
+    items: [{ type: "portableBlock", config: { style: "cube" } }],
     icon: (
       <span
         class={`sprite ${"texture-cube" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -827,7 +887,7 @@ edit the json to choose:
     label: "Portable drum",
     synonyms: ["carry", "pick up"],
     type: "itemTool",
-    itemTool: { type: "portableBlock", config: { style: "drum" } },
+    items: [{ type: "portableBlock", config: { style: "drum" } }],
     icon: (
       <span
         class={`sprite ${"texture-drum" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -838,7 +898,7 @@ edit the json to choose:
     label: "Portable sticks",
     synonyms: ["carry", "pick up"],
     type: "itemTool",
-    itemTool: { type: "portableBlock", config: { style: "sticks" } },
+    items: [{ type: "portableBlock", config: { style: "sticks" } }],
     icon: (
       <span
         class={`sprite ${"texture-sticks" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -848,7 +908,7 @@ edit the json to choose:
   pushableBlock: {
     label: "Pushable step stool",
     type: "itemTool",
-    itemTool: { type: "pushableBlock", config: {} },
+    items: [{ type: "pushableBlock", config: {} }],
     icon: (
       <span
         class={`sprite ${"texture-stepStool" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -858,7 +918,7 @@ edit the json to choose:
   ball: {
     label: "Ball",
     type: "itemTool",
-    itemTool: { type: "ball", config: emptyObject },
+    items: [{ type: "ball", config: emptyObject }],
     icon: (
       <span
         class={`sprite ${"texture-ball" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -868,10 +928,12 @@ edit the json to choose:
   "slidingBlock.puck": {
     label: "Sliding puck",
     type: "itemTool",
-    itemTool: {
-      type: "slidingBlock",
-      config: { style: "puck" },
-    },
+    items: [
+      {
+        type: "slidingBlock",
+        config: { style: "puck" },
+      },
+    ],
     tooltipContent: `## Sliding puck
 
 Small item that can be stood on and slides when touched`,
@@ -884,10 +946,12 @@ Small item that can be stood on and slides when touched`,
   "slidingBlock.book": {
     label: "Sliding book",
     type: "itemTool",
-    itemTool: {
-      type: "slidingBlock",
-      config: { style: "book" },
-    },
+    items: [
+      {
+        type: "slidingBlock",
+        config: { style: "book" },
+      },
+    ],
     tooltipContent: `## Sliding book
 
 Why are the books slippery?`,
@@ -901,7 +965,7 @@ Why are the books slippery?`,
     label: "Lift",
     synonyms: ["elevator"],
     type: "itemTool",
-    itemTool: { type: "lift", config: { top: 11, bottom: 0 } },
+    items: [{ type: "lift", config: { top: 11, bottom: 0 } }],
     toolbarClass: "inline relative",
     icon: (
       <>
@@ -918,7 +982,7 @@ Why are the books slippery?`,
     label: "Conveyor moving away",
     synonyms: ["belt"],
     type: "itemTool",
-    itemTool: { type: "conveyor", config: { direction: "away" } },
+    items: [{ type: "conveyor", config: { direction: "away" } }],
     icon: (
       <LabelledToolbarIcon
         iconClasses={`${"texture-conveyor_d2_1" satisfies TextureTailwindClass} ${"activated:texture-animated-conveyor_d2" satisfies AnimatedTextureTailwindClass}`}
@@ -930,7 +994,7 @@ Why are the books slippery?`,
     label: "Conveyor moving towards",
     synonyms: ["belt"],
     type: "itemTool",
-    itemTool: { type: "conveyor", config: { direction: "towards" } },
+    items: [{ type: "conveyor", config: { direction: "towards" } }],
     icon: (
       <LabelledToolbarIcon
         iconClasses={`${"texture-conveyor_d2_1" satisfies TextureTailwindClass} ${"activated:texture-animated-reversed-conveyor_d2" satisfies AnimatedTextureTailwindClass}`}
@@ -942,7 +1006,7 @@ Why are the books slippery?`,
     label: "Conveyor moving left",
     synonyms: ["belt"],
     type: "itemTool",
-    itemTool: { type: "conveyor", config: { direction: "left" } },
+    items: [{ type: "conveyor", config: { direction: "left" } }],
     icon: (
       <LabelledToolbarIcon
         iconClasses={`${"texture-conveyor_d0_1" satisfies TextureTailwindClass} ${"activated:texture-animated-conveyor_d0" satisfies AnimatedTextureTailwindClass}`}
@@ -954,7 +1018,7 @@ Why are the books slippery?`,
     label: "Conveyor moving right",
     synonyms: ["belt"],
     type: "itemTool",
-    itemTool: { type: "conveyor", config: { direction: "right" } },
+    items: [{ type: "conveyor", config: { direction: "right" } }],
     icon: (
       <LabelledToolbarIcon
         iconClasses={`${"texture-conveyor_d0_1" satisfies TextureTailwindClass} ${"activated:texture-animated-reversed-conveyor_d0" satisfies AnimatedTextureTailwindClass}`}
@@ -966,10 +1030,12 @@ Why are the books slippery?`,
     label: "Teleporter",
     synonyms: ["transporter"],
     type: "itemTool",
-    itemTool: {
-      type: "teleporter",
-      config: {},
-    },
+    items: [
+      {
+        type: "teleporter",
+        config: {},
+      },
+    ],
     icon: (
       <span
         class={`sprite ${"texture-teleporter" satisfies TextureTailwindClass} ${"activated:texture-animated-teleporter_flashing" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -979,10 +1045,12 @@ Why are the books slippery?`,
   portableTeleporter: {
     label: "Portable teleporter",
     type: "itemTool",
-    itemTool: {
-      type: "portableTeleporter",
-      config: {},
-    },
+    items: [
+      {
+        type: "portableTeleporter",
+        config: {},
+      },
+    ],
     icon: (
       <span
         class={`sprite ${"texture-portableTeleporter" satisfies TextureTailwindClass} ${"activated:texture-animated-portableTeleporter_flashing" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -992,14 +1060,16 @@ Why are the books slippery?`,
   movingPlatform: {
     label: "Moving platform",
     type: "itemTool",
-    itemTool: {
-      type: "movingPlatform",
-      config: {
-        movement: "clockwise",
-        activated: "on",
-        startDirection: "towards",
+    items: [
+      {
+        type: "movingPlatform",
+        config: {
+          movement: "clockwise",
+          activated: "on",
+          startDirection: "towards",
+        },
       },
-    },
+    ],
     tooltipContent: `## Moving Platform
 Clockwise or back-and-forth
 
@@ -1016,10 +1086,12 @@ Why a sandwich?`,
     label: "Hush puppy",
     synonyms: ["dog", "vanishing block"],
     type: "itemTool",
-    itemTool: {
-      type: "hushPuppy",
-      config: {},
-    },
+    items: [
+      {
+        type: "hushPuppy",
+        config: {},
+      },
+    ],
     icon: (
       <span
         class={`sprite ${"texture-hushPuppy" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -1029,14 +1101,16 @@ Why a sandwich?`,
   floor: {
     label: "Floor",
     type: "itemTool",
-    itemTool: {
-      type: "floor",
-      config: {
-        floorType: "standable",
-        scenery: "blacktooth",
-        times: { x: 1, y: 1 },
+    items: [
+      {
+        type: "floor",
+        config: {
+          floorType: "standable",
+          scenery: "blacktooth",
+          times: { x: 1, y: 1 },
+        },
       },
-    },
+    ],
     icon: (
       <span
         class={`sprite ${"texture-blacktooth_floor" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
@@ -1047,10 +1121,12 @@ Why a sandwich?`,
     label: "Head start position",
     synonyms: ["spawn"],
     type: "itemTool",
-    itemTool: {
-      type: "player",
-      config: { which: "head" },
-    },
+    items: [
+      {
+        type: "player",
+        config: { which: "head" },
+      },
+    ],
     tooltipContent: `## Head
 
 Place on of these into one room
@@ -1066,10 +1142,12 @@ This is where head will start the game`,
     label: "Heels start position",
     synonyms: ["spawn"],
     type: "itemTool",
-    itemTool: {
-      type: "player",
-      config: { which: "heels" },
-    },
+    items: [
+      {
+        type: "player",
+        config: { which: "heels" },
+      },
+    ],
     tooltipContent: `## Heels
 
 Place on of these into one room
@@ -1084,10 +1162,12 @@ This is where head will start the game`,
   "sceneryPlayer.head": {
     label: "NPC head",
     type: "itemTool",
-    itemTool: {
-      type: "sceneryPlayer",
-      config: { which: "head", startDirection: "towards" },
-    },
+    items: [
+      {
+        type: "sceneryPlayer",
+        config: { which: "head", startDirection: "towards" },
+      },
+    ],
     tooltipContent: `## NPC head
 Citizens of Freedom
 
@@ -1101,10 +1181,12 @@ stand around not doing much`,
   "sceneryPlayer.heels": {
     label: "NPC heels",
     type: "itemTool",
-    itemTool: {
-      type: "sceneryPlayer",
-      config: { which: "heels", startDirection: "towards" },
-    },
+    items: [
+      {
+        type: "sceneryPlayer",
+        config: { which: "heels", startDirection: "towards" },
+      },
+    ],
     tooltipContent: `## NPC heels
 Citizens of Freedom
 
@@ -1118,10 +1200,12 @@ stand around not doing much`,
   "sceneryPlayer.headOverHeels": {
     label: "NPC head over heels",
     type: "itemTool",
-    itemTool: {
-      type: "sceneryPlayer",
-      config: { which: "headOverHeels", startDirection: "towards" },
-    },
+    items: [
+      {
+        type: "sceneryPlayer",
+        config: { which: "headOverHeels", startDirection: "towards" },
+      },
+    ],
     tooltipContent: `## NPC head over heels
 Citizens of Freedom
 
@@ -1158,13 +1242,15 @@ stand around not doing much`,
       return {
         label: "Wall",
         type: "itemTool",
-        itemTool: {
-          type: "wall" as "wall",
-          config: {
-            direction: "away" as "away",
-            tiles: Array.from(rotatingSceneryTiles(scenery, 1)),
+        items: [
+          {
+            type: "wall" as "wall",
+            config: {
+              direction: "away" as "away",
+              tiles: rotatingSceneryWallTiles(scenery, 1),
+            },
           },
-        },
+        ],
         icon: (
           <span
             class={`sprite ${textureClassname} ${buttonSpriteRevertColourClasses}`}
@@ -1187,7 +1273,7 @@ stand around not doing much`,
       return {
         label: doorAutoAddsRoom ? "Door (adds adjacent room)" : "Door",
         type: "itemTool",
-        itemTool: doorItemTool(doorAutoAddsRoom),
+        items: [doorItemTool(doorAutoAddsRoom)],
         shortcutKeys: ["D"],
         icon: (
           <LabelledToolbarIcon

@@ -1,6 +1,5 @@
-import nanoEqual from "nano-equal";
-
 import type { EditorRootState } from "../../store/store";
+import { isItemToolCurrent } from "../RoomEditingArea/interactivity/isItemToolCurrent";
 import { selectTool } from "../slice/levelEditorSlice";
 import type { EditorCommand } from "./EditorCommand";
 
@@ -13,11 +12,7 @@ export const selectCommandIsActive = (
   state: EditorRootState,
 ): boolean | undefined => {
   if (command.type === "itemTool") {
-    const currentTool = selectTool(state);
-    return nanoEqual(
-      currentTool.type === "item" && currentTool.item,
-      command.itemTool,
-    );
+    return isItemToolCurrent(selectTool(state), command.items);
   }
   return command.selectIsActive?.(state);
 };

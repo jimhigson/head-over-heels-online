@@ -9,7 +9,9 @@ import { completeTimesXy } from "../../../../model/times";
 import type { EditorRootState, EditorThunk } from "../../../../store/store";
 import { noopFunction } from "../../../../utils/empty";
 import {
+  addXyz,
   nonZeroVectorClosestDirectionXy4,
+  originXyz,
   type Xyz,
 } from "../../../../utils/vectors/vectors";
 import type {
@@ -33,13 +35,14 @@ import { snapGridResolution } from "../../../snapGridResolution";
 import { addingItemCollisionCheck } from "../../cursor/editWouldCollide";
 import { itemToolPutDownLocation } from "../../cursor/itemToolPutDownLocation";
 import type { MaybePointingAtSomething } from "../../cursor/PointingAt";
+import { isDoorToolItems } from "../isDoorToolItems";
 import { jsonItemAndIdForInPlayItem } from "../jsonItemAndIdForInPlayItem";
 import {
   candidatesAround,
   nearestCandidatesFirst,
   placementReachBlocks,
 } from "../nearestCandidatesFirst";
-import type { Tool } from "../Tool";
+import type { ItemToolItem, ItemToolItems, Tool } from "../Tool";
 import type {
   MouseDownParams,
   MouseLeaveParams,
@@ -64,11 +67,11 @@ const selectItemTool = (
 };
 
 /**
- * where the item tool would put its item down with the pointer here, and the
+ * where the item tool would put its items down with the pointer here, and the
  * item pointed at - or undefined if pointing at nothing it can go on, or if it
  * would collide everywhere near there. Searches around where it is pointed,
- * on the same level, for the nearest spot that fits - except doors, which only
- * go where they are pointed, on the wall
+ * on the same level, for the nearest spot where all of the items fit - except
+ * doors, which only go where they are pointed, on the wall
  */
 const itemToolPlacement = (
   storeState: EditorRootState,
@@ -94,67 +97,82 @@ const itemToolPlacement = (
   }
   const [, jsonItem] = asJson;
 
+  const { items: toolItems } = tool;
+  const [firstItem] = toolItems;
   const putDownBlockPosition = itemToolPutDownLocation(
     pointingAt,
     pointingAtItem,
-    tool.item,
+    firstItem,
   );
   if (putDownBlockPosition === undefined) {
     return undefined;
   }
 
-  const { item } = tool;
+  const isDoor = isDoorToolItems(toolItems);
   // if tool is a door, need to switch it to the side of the wall it is on.
   // otherwise, the collision detection will fail to detect properly because
   // different door directions would protrude differently
-  const toolItem =
-    item.type === "door" ?
-      produce(item, (draft) => {
-        const wall = pointingAtItem as EditorItemInPlayUnion<"wall">;
-        (draft.config as DoorConfig<EditorRoomId>).direction =
-          nonZeroVectorClosestDirectionXy4(wall.config.direction);
-      })
+  const itemsToPlace: ItemToolItems =
+    isDoor ?
+      [
+        produce(toolItems[0], (draft) => {
+          const wall = pointingAtItem as EditorItemInPlayUnion<"wall">;
+          (draft.config as DoorConfig<EditorRoomId>).direction =
+            nonZeroVectorClosestDirectionXy4(wall.config.direction);
+        }),
+      ]
       // otherwise, can use as-is
-    : tool.item;
+    : toolItems;
 
-  const wouldCollideAt = addingItemCollisionCheck({
-    roomState,
-    itemTool: toolItem,
-    // the tool's own preview isn't in the way:
-    previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(
-      storeState,
-      roomState.id,
-    ),
-  });
+  const previewOnlyJsonItemIds = selectPreviewOnlyJsonItemIds(
+    storeState,
+    roomState.id,
+  );
+  const wouldCollideChecks = itemsToPlace.map((itemToPlace) =>
+    addingItemCollisionCheck({
+      roomState,
+      itemTool: itemToPlace,
+      // the tool's own preview isn't in the way:
+      previewOnlyJsonItemIds,
+    }),
+  );
   const candidates =
-    item.type === "door" ?
+    isDoor ?
       [putDownBlockPosition]
     : nearestCandidatesFirst(
         candidatesAround(
           putDownBlockPosition,
-          snapGridResolution(storeState.levelEditor.gridResolution, [
-            item.type,
-          ]),
+          snapGridResolution(
+            storeState.levelEditor.gridResolution,
+            itemsToPlace.map((itemToPlace) => itemToPlace.type),
+          ),
           placementReachBlocks,
         ),
         putDownBlockPosition,
         cameraAngle,
       );
   const footprints = roomFootprints(roomState.roomJson);
-  const times = completeTimesXy(
-    ("times" in toolItem.config ? toolItem.config.times : undefined) ?? {},
-  );
-  const isInRoom = ({ x, y }: Xyz) =>
-    isXyRectInFootprints(
+  const isInRoom = (itemToPlace: ItemToolItem, candidate: Xyz) => {
+    const { x, y } = addXyz(candidate, itemToPlace.position ?? originXyz);
+    const times = completeTimesXy(
+      ("times" in itemToPlace.config ? itemToPlace.config.times : undefined) ??
+        {},
+    );
+    return isXyRectInFootprints(
       footprints,
       { x, y },
       { x: x + times.x, y: y + times.y },
     );
-  const blockPosition = candidates.find(
-    (candidate) =>
-      // doors go in the walls themselves:
-      (item.type === "door" || isInRoom(candidate)) &&
-      !wouldCollideAt(candidate),
+  };
+  const blockPosition = candidates.find((candidate) =>
+    itemsToPlace.every(
+      (itemToPlace, i) =>
+        // doors go in the walls themselves:
+        (isDoor || isInRoom(itemToPlace, candidate)) &&
+        !wouldCollideChecks[i](
+          addXyz(candidate, itemToPlace.position ?? originXyz),
+        ),
+    ),
   );
   if (blockPosition === undefined) {
     return undefined;

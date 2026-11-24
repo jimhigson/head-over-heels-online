@@ -79,7 +79,7 @@ Edits (including auto-fixes) are not saved to the database until saved - say so.
 - **Change part of an item**: `setRoomItemValues`, eg pattern `[type=door].config.toRoom` value `"room_3"` - rather than rewriting the whole room json.
 - **Edit a room's json**: read it with `getCurrentRoomJson`, edit a copy, dispatch `levelEditor/roomJsonEdited` `{roomJson, timestamp: Date.now()}`. It replaces the **current** room - `changeToRoom` first. To rename any room (repointing every reference to it), dispatch `levelEditor/renameRoom` `{fromRoomId, toRoomId, timestamp: Date.now()}`. Setting a `nonContiguousRelationship` on one room mirrors it onto the partner automatically.
 - **Scenery / colour**: `levelEditor/changeRoomScenery` `{sceneryName, timestamp}` and `levelEditor/changeRoomColour` `{colour, timestamp}` act on the **selected** rooms.
-- **Tool**: `levelEditor/setTool` eg `{type: "pointer"}` or `{type: "item", item: {type: "door", config: {direction: "away", toRoom: "+"}}}`.
+- **Tool**: `levelEditor/setTool` eg `{type: "pointer"}` or `{type: "item", items: [{type: "door", config: {direction: "away", toRoom: "+"}, position: {x: 0, y: 0, z: 0}}]}`. An item tool can hold several items, each `position` relative to where the tool puts them down.
 
 ## Gotchas
 

@@ -1,6 +1,6 @@
 import { produce } from "immer";
 
-import { rotatingSceneryTiles } from "../../../../model/inPlaceMutators/rotatingSceneryTiles";
+import { rotatingSceneryWallTiles } from "../../../../model/inPlaceMutators/rotatingSceneryWallTiles";
 import { nowhereRoomId } from "../../../../model/json/ItemConfigMap";
 import type { EditorThunk } from "../../../../store/store";
 import type { EditorRoomId, EditorRoomItemId } from "../../../editorTypes";
@@ -16,17 +16,21 @@ import type { TabGroupId, TabId } from "../../PaneLayout";
 
 export const doorItemToolWithAutoAddRooms: Tool = {
   type: "item",
-  item: {
-    type: "door",
-    config: { toRoom: "+", direction: "towards" },
-  },
+  items: [
+    {
+      type: "door",
+      config: { toRoom: "+", direction: "towards" },
+    },
+  ],
 };
 export const doorItemToolWithoutAutoAddRooms: Tool = {
   type: "item",
-  item: {
-    type: "door",
-    config: { toRoom: nowhereRoomId, direction: "towards" },
-  },
+  items: [
+    {
+      type: "door",
+      config: { toRoom: nowhereRoomId, direction: "towards" },
+    },
+  ],
 };
 
 export const testRoomId = "testRoomId" as EditorRoomId;
@@ -92,7 +96,7 @@ export const editorStateWithOneRoomWithOneAwayWall: LevelEditorState = produce(
       type: "wall",
       config: {
         direction: "away",
-        tiles: [...rotatingSceneryTiles("blacktooth", 5)],
+        tiles: rotatingSceneryWallTiles("blacktooth", 5),
       },
       position: { x: 0, y: 5, z: 0 },
     };

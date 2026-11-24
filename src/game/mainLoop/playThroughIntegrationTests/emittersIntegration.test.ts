@@ -1,6 +1,9 @@
 import { beforeEach, describe, expect, test } from "vitest";
 
-import { setUpBasicGame } from "../../../_testUtils/basicRoom";
+import {
+  type ItemsInTestRoomJson,
+  setUpBasicGame,
+} from "../../../_testUtils/basicRoom";
 import { item } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
@@ -20,7 +23,7 @@ const coarseFrameRate: FrameRateSpec = { fps: [15] };
 const countEmittedItems = (gameState: ReturnType<typeof setUpBasicGame>) => {
   const room = selectCurrentRoomState(gameState)!;
   return roomItemsIterable(room.items)
-    .filter((item) => item.state.createdByEmitter === "emitter")
+    .filter((item) => item.state.createdByEmitter !== undefined)
     .toArray().length;
 };
 
@@ -521,3 +524,247 @@ describe("whenPlayableInside", () => {
     expect(countEmittedItems(gameState)).toBeGreaterThan(emittedAfterLeaving);
   });
 });
+
+const emittedBlockStyles = (gameState: ReturnType<typeof setUpBasicGame>) =>
+  roomItemsIterable(selectCurrentRoomState(gameState)!.items)
+    .filter((item) => item.state.createdByEmitter !== undefined)
+    .filter((item) => item.type === "portableBlock")
+    .map((item) => item.config.style)
+    .toArray();
+
+test("a cyclic emitter emits its recipes in order, repeating from the start", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 4, y: 4, z: 0 },
+        config: { which: "heels" },
+      },
+      emitter: {
+        type: "emitter",
+        position: { x: 0, y: 0, z: 10 },
+        config: {
+          emits: {
+            type: "cyclic",
+            cycle: [
+              { type: "portableBlock", config: { style: "cube" } },
+              { type: "portableBlock", config: { style: "drum" } },
+              { type: "portableBlock", config: { style: "sticks" } },
+            ],
+          },
+          period: 500,
+          maximum: 6,
+        },
+      },
+    },
+  });
+
+  playGameThrough(gameState, {
+    until: (gameState) => countEmittedItems(gameState) === 6,
+    failAfter: 10_000,
+    frameRate: fineFrameRate,
+  });
+
+  expect(emittedBlockStyles(gameState)).toEqual([
+    "cube",
+    "drum",
+    "sticks",
+    "cube",
+    "drum",
+    "sticks",
+  ]);
+});
+
+test("a probabilistic emitter never chooses a recipe with weight 0", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 4, y: 4, z: 0 },
+        config: { which: "heels" },
+      },
+      emitter: {
+        type: "emitter",
+        position: { x: 0, y: 0, z: 10 },
+        config: {
+          emits: {
+            type: "probabilistic",
+            choices: [
+              {
+                emits: { type: "portableBlock", config: { style: "cube" } },
+                probabilityWeight: 0,
+              },
+              {
+                emits: { type: "portableBlock", config: { style: "drum" } },
+                probabilityWeight: 5,
+              },
+            ],
+          },
+          period: 500,
+          maximum: 6,
+        },
+      },
+    },
+  });
+
+  playGameThrough(gameState, {
+    until: (gameState) => countEmittedItems(gameState) === 6,
+    failAfter: 10_000,
+    frameRate: fineFrameRate,
+  });
+
+  expect(emittedBlockStyles(gameState)).toEqual([
+    "drum",
+    "drum",
+    "drum",
+    "drum",
+    "drum",
+    "drum",
+  ]);
+});
+
+test("a probabilistic emitter chooses all of its recipes, the same way every time the room is played", () => {
+  const firstPlayGameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 4, y: 4, z: 0 },
+        config: { which: "heels" },
+      },
+      emitter: {
+        type: "emitter",
+        // high enough that the twelve stacked emitted blocks don't block it
+        position: { x: 0, y: 0, z: 15 },
+        config: {
+          emits: {
+            type: "probabilistic",
+            choices: [
+              { emits: { type: "portableBlock", config: { style: "cube" } } },
+              { emits: { type: "portableBlock", config: { style: "drum" } } },
+            ],
+          },
+          period: 500,
+          maximum: 12,
+        },
+      },
+    },
+  });
+  playGameThrough(firstPlayGameState, {
+    until: (gameState) => countEmittedItems(gameState) === 12,
+    failAfter: 15_000,
+    frameRate: fineFrameRate,
+  });
+  const firstPlayStyles = emittedBlockStyles(firstPlayGameState);
+
+  resetStore();
+  const secondPlayGameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 4, y: 4, z: 0 },
+        config: { which: "heels" },
+      },
+      emitter: {
+        type: "emitter",
+        position: { x: 0, y: 0, z: 15 },
+        config: {
+          emits: {
+            type: "probabilistic",
+            choices: [
+              { emits: { type: "portableBlock", config: { style: "cube" } } },
+              { emits: { type: "portableBlock", config: { style: "drum" } } },
+            ],
+          },
+          period: 500,
+          maximum: 12,
+        },
+      },
+    },
+  });
+  playGameThrough(secondPlayGameState, {
+    until: (gameState) => countEmittedItems(gameState) === 12,
+    failAfter: 15_000,
+    frameRate: fineFrameRate,
+  });
+
+  expect(new Set(firstPlayStyles)).toEqual(new Set(["cube", "drum"]));
+  expect(emittedBlockStyles(secondPlayGameState)).toEqual(firstPlayStyles);
+});
+
+test.for([
+  { cubeWeight: 1, drumWeight: 1 },
+  { cubeWeight: 3, drumWeight: 1 },
+  { cubeWeight: 1, drumWeight: 9 },
+])(
+  "emitters weighted $cubeWeight cube to $drumWeight drum emit about that share of cubes",
+  ({ cubeWeight, drumWeight }) => {
+    const emissionsPerEmitter = 12;
+    // spread over the room, so no emitter is blocked by the blocks of another:
+    const emitterCoordinates = [0, 2, 4, 6];
+    const emitterItems: ItemsInTestRoomJson = Object.fromEntries(
+      emitterCoordinates.flatMap((x) =>
+        emitterCoordinates.map((y): [string, ItemsInTestRoomJson[string]] => [
+          `emitter${x}_${y}`,
+          {
+            type: "emitter",
+            // high enough that the stacked emitted blocks don't block it
+            position: { x, y, z: 15 },
+            config: {
+              emits: {
+                type: "probabilistic",
+                choices: [
+                  {
+                    emits: {
+                      type: "portableBlock",
+                      config: { style: "cube" },
+                    },
+                    probabilityWeight: cubeWeight,
+                  },
+                  {
+                    emits: {
+                      type: "portableBlock",
+                      config: { style: "drum" },
+                    },
+                    probabilityWeight: drumWeight,
+                  },
+                ],
+              },
+              period: 100,
+              maximum: emissionsPerEmitter,
+            },
+          },
+        ]),
+      ),
+    );
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 7, y: 7, z: 0 },
+          config: { which: "heels" },
+        },
+        ...emitterItems,
+      },
+    });
+    const totalEmissions = emitterCoordinates.length ** 2 * emissionsPerEmitter;
+
+    playGameThrough(gameState, {
+      until: (gameState) => countEmittedItems(gameState) === totalEmissions,
+      failAfter: 10_000,
+      frameRate: fineFrameRate,
+    });
+
+    const cubeChance = cubeWeight / (cubeWeight + drumWeight);
+    const expectedCubes = totalEmissions * cubeChance;
+    // three standard deviations of a binomial - the outcome is fixed, but this
+    // keeps it from breaking if the hashing changes
+    const allowedDeviation =
+      3 * Math.sqrt(totalEmissions * cubeChance * (1 - cubeChance));
+    expect(
+      Math.abs(
+        emittedBlockStyles(gameState).filter((style) => style === "cube")
+          .length - expectedCubes,
+      ),
+    ).toBeLessThanOrEqual(allowedDeviation);
+  },
+);

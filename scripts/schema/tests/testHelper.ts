@@ -34,7 +34,8 @@ export async function flattenFixture(
       fixturePath.includes("mapped") ||
       fixturePath.includes("conditional") ||
       fixturePath.includes("requireAtLeastOne") ||
-      fixturePath.includes("nonEmptyRecord")
+      fixturePath.includes("nonEmptyRecord") ||
+      fixturePath.includes("nonEmptyTuple")
     ) {
       testProject.addSourceFilesAtPaths("node_modules/type-fest/**/*.d.ts");
     }

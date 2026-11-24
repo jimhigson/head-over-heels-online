@@ -15,7 +15,7 @@ export const setToolInPlace = (state: LevelEditorState, tool: Tool) => {
   }
   // kept as it is left, so its rotation etc. comes back with it:
   if (state.tool.type === "item") {
-    state.lastItemTool = state.tool.item;
+    state.lastItemToolItems = state.tool.items;
   }
 
   state.tool = tool;

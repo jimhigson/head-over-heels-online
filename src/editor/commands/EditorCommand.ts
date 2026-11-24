@@ -3,7 +3,7 @@ import type { ComponentChildren, VNode } from "preact";
 import type { TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import type { EditorRootState, EditorThunk } from "../../store/store";
 import type { ShortcutKeys } from "../../ui/useKeyboardShortcut";
-import type { ItemTool } from "../RoomEditingArea/interactivity/Tool";
+import type { ItemToolItems } from "../RoomEditingArea/interactivity/Tool";
 import type { EditorSaveSliceAction } from "../slice/editorSaveSlice";
 import type { LevelEditorSliceAction } from "../slice/levelEditorSlice";
 
@@ -38,15 +38,15 @@ type EditorCommandPresentation = {
   selectIsAvailable?: (state: EditorRootState) => boolean;
 };
 
-/** picks an item tool, to place that item in the editor (or summon it for in-game cheats) */
+/** picks an item tool, to place its items in the editor (or summon them for in-game cheats) */
 export type ItemToolCommand = EditorCommandPresentation & {
   type: "itemTool";
   /**
-   * itemTool actions describe the item instead of providing an action method,
-   * this allows the in-game cheats to inspect and use these actions in the cheats cmd-k menu
-   * to summon items.
+   * itemTool actions describe the items the tool puts down, the same as the tool
+   * itself holds, instead of providing an action method. This allows the in-game
+   * cheats to inspect and use these actions in the cheats cmd-k menu to summon items.
    */
-  itemTool: ItemTool;
+  items: ItemToolItems;
 };
 
 export type ActionCommand = EditorCommandPresentation & {

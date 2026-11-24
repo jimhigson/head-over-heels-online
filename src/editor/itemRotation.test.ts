@@ -1,5 +1,6 @@
 import { expect, test } from "vitest";
 
+import { repeatedNonEmptyTuple } from "../utils/repeatedNonEmptyTuple";
 import type {
   EditorJsonItem,
   EditorJsonItemUnion,
@@ -196,7 +197,7 @@ test("a wall standing on the floor can be rotated in the room", () => {
 test("a wall on the room's edge can't be rotated in the room", () => {
   const wall: EditorJsonItem<"wall"> = {
     type: "wall",
-    config: { direction: "away", tiles: Array(8).fill("plain") },
+    config: { direction: "away", tiles: repeatedNonEmptyTuple("plain", 8) },
     position: { x: 0, y: 8, z: 0 },
   };
 
@@ -206,7 +207,7 @@ test("a wall on the room's edge can't be rotated in the room", () => {
 test("a wall on the floor that would turn off its edge can't be rotated in the room", () => {
   const wall: EditorJsonItem<"wall"> = {
     type: "wall",
-    config: { direction: "away", tiles: Array(6).fill("plain") },
+    config: { direction: "away", tiles: repeatedNonEmptyTuple("plain", 6) },
     position: { x: 0, y: 2, z: 0 },
   };
 

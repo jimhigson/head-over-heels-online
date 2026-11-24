@@ -71,12 +71,14 @@ describe("applying tools", () => {
         ...editorStateWithOneRoomWithNoItems,
         tool: {
           type: "item",
-          item: {
-            type: "pickup",
-            config: {
-              gives: "bag",
+          items: [
+            {
+              type: "pickup",
+              config: {
+                gives: "bag",
+              },
             },
-          },
+          ],
         },
       };
       const state1 = reduceLevelEditorActions(
@@ -101,57 +103,152 @@ describe("applying tools", () => {
       });
     });
 
+    describe("adding a tool of several items", () => {
+      const floor: EditorJsonItemUnion = {
+        type: "floor",
+        config: {
+          floorType: "standable",
+          scenery: "blacktooth",
+          times: { x: 8, y: 8 },
+        },
+        position: originXyz,
+      };
+      const state0TwoItemTool: LevelEditorState = {
+        ...editorStateWithOneRoomWithNoItems,
+        tool: {
+          type: "item",
+          items: [
+            {
+              type: "block",
+              config: { style: "organic" },
+            },
+            {
+              type: "pickup",
+              config: { gives: "bag" },
+              position: { x: 2, y: 1, z: 3 },
+            },
+          ],
+        },
+      };
+
+      test("puts each item down at its position from where the tool puts down", () => {
+        const state1 = reduceLevelEditorActions(
+          state0TwoItemTool,
+          applyItemTool({
+            roomId: testRoomId,
+            blockPosition: { x: 3, y: 3, z: 0 },
+            pointedAtItemJson: floor,
+            preview: false,
+            timestamp: 0,
+          }),
+        );
+
+        expect(
+          Object.values(state1.campaignInProgress.rooms[testRoomId].items).map(
+            ({ type, position }) => ({ type, position }),
+          ),
+        ).toEqual([
+          { type: "block", position: { x: 3, y: 3, z: 0 } },
+          { type: "pickup", position: { x: 5, y: 4, z: 3 } },
+        ]);
+      });
+
+      test("puts them all down as one undoable edit", () => {
+        const state1 = reduceLevelEditorActions(
+          state0TwoItemTool,
+          applyItemTool({
+            roomId: testRoomId,
+            blockPosition: { x: 3, y: 3, z: 0 },
+            pointedAtItemJson: floor,
+            preview: false,
+            timestamp: 0,
+          }),
+        );
+
+        expect(state1.history[testRoomId]?.undo).toHaveLength(1);
+      });
+
+      test("previews each item under an id of its own", () => {
+        const state1 = reduceLevelEditorActions(
+          state0TwoItemTool,
+          applyItemTool({
+            roomId: testRoomId,
+            blockPosition: { x: 3, y: 3, z: 0 },
+            pointedAtItemJson: floor,
+            preview: true,
+            timestamp: 0,
+          }),
+        );
+
+        expect(
+          Object.values(state1.pendingEdits?.edits[testRoomId] ?? {}).map(
+            (previewedItem) => previewedItem?.type,
+          ),
+        ).toEqual(["block", "pickup"]);
+      });
+    });
+
     describe("adding cybermen", () => {
-      test.each([
+      test.for([
         {
           style: "volcano",
           activated: "on",
-          deadlyBlockPosition: { x: 16, y: 32, z: 0 },
+          deadlyBlockPosition: { x: 1, y: 2, z: 0 },
         },
         {
           style: "toaster",
           activated: "off",
-          deadlyBlockPosition: { x: 16, y: 32, z: 0 },
+          deadlyBlockPosition: { x: 1, y: 2, z: 0 },
         },
         // toaster but alongside, not below:
         {
           style: "toaster",
           activated: "on",
-          deadlyBlockPosition: { x: 16, y: 16, z: 12 },
+          deadlyBlockPosition: { x: 2, y: 2, z: 0 },
         },
       ] as const)(
-        "clicking on a volcano adds a normal cyberman",
+        "a cyberman put down above a $style at $deadlyBlockPosition is activated: $activated",
         ({ activated, style, deadlyBlockPosition }) => {
+          const deadlyBlock: EditorJsonItemUnion = {
+            type: "deadlyBlock",
+            config: {
+              style,
+            },
+            position: deadlyBlockPosition,
+          };
           const actionPayload: ApplyToolToRoomJsonPayload = {
             roomId: testRoomId,
             blockPosition: { x: 1, y: 2, z: 1 },
-            pointedAtItemJson: {
-              type: "deadlyBlock",
-              config: {
-                style,
-              },
-              position: deadlyBlockPosition,
-            },
+            pointedAtItemJson: deadlyBlock,
             preview: false,
             timestamp: 0,
           };
 
           const addCybermanTool: Tool = {
             type: "item",
-            item: {
-              type: "monster",
-              config: {
-                which: "cyberman",
-                activated: "on",
-                movement: "towards-on-shortest-axis-xy4",
-                startDirection: "towards",
+            items: [
+              {
+                type: "monster",
+                config: {
+                  which: "cyberman",
+                  activated: "on",
+                  movement: "towards-on-shortest-axis-xy4",
+                  startDirection: "towards",
+                },
               },
+            ],
+          };
+          const state0: LevelEditorState = produce(
+            {
+              ...editorStateWithOneRoomWithNoItems,
+              tool: addCybermanTool,
             },
-          };
-          const state0: LevelEditorState = {
-            ...editorStateWithOneRoomWithNoItems,
-            tool: addCybermanTool,
-          };
+            (draft) => {
+              draft.campaignInProgress.rooms[testRoomId].items[
+                "deadlyBlock" as EditorRoomItemId
+              ] = deadlyBlock;
+            },
+          );
           const state1 = reduceLevelEditorActions(
             state0,
             applyItemTool(actionPayload),
@@ -175,6 +272,85 @@ describe("applying tools", () => {
               },
             },
           });
+        },
+      );
+
+      test.for<{ description: string; toasters: EditorJsonItemUnion[] }>([
+        {
+          description: "three toasters in a row",
+          toasters: [1, 2, 3].map((x) => ({
+            type: "deadlyBlock",
+            config: { style: "toaster" },
+            position: { x, y: 2, z: 0 },
+          })),
+        },
+        {
+          description: "one toaster three long",
+          toasters: [
+            {
+              type: "deadlyBlock",
+              config: { style: "toaster", times: { x: 3 } },
+              position: { x: 1, y: 2, z: 0 },
+            },
+          ],
+        },
+      ])(
+        "a row of three cybermen put down above $description are all deactivated",
+        ({ toasters }) => {
+          const cybermanConfig = {
+            which: "cyberman",
+            activated: "on",
+            movement: "towards-on-shortest-axis-xy4",
+            startDirection: "towards",
+          } as const;
+          const state0: LevelEditorState = produce(
+            {
+              ...editorStateWithOneRoomWithNoItems,
+              tool: {
+                type: "item",
+                items: [
+                  {
+                    type: "monster",
+                    config: cybermanConfig,
+                  },
+                  {
+                    type: "monster",
+                    config: cybermanConfig,
+                    position: { x: 1, y: 0, z: 0 },
+                  },
+                  {
+                    type: "monster",
+                    config: cybermanConfig,
+                    position: { x: 2, y: 0, z: 0 },
+                  },
+                ],
+              },
+            } satisfies LevelEditorState,
+            (draft) => {
+              for (const [index, toaster] of toasters.entries()) {
+                draft.campaignInProgress.rooms[testRoomId].items[
+                  `toaster${index}` as EditorRoomItemId
+                ] = toaster;
+              }
+            },
+          );
+          const state1 = reduceLevelEditorActions(
+            state0,
+            applyItemTool({
+              roomId: testRoomId,
+              blockPosition: { x: 1, y: 2, z: 1 },
+              pointedAtItemJson: toasters[0],
+              preview: false,
+              timestamp: 0,
+            }),
+          );
+
+          expect(
+            roomJsonItemsIterable(state1.campaignInProgress.rooms[testRoomId])
+              .filter((item) => item.type === "monster")
+              .map((cyberman) => cyberman.config.activated)
+              .toArray(),
+          ).toEqual(["off", "off", "off"]);
         },
       );
     });
@@ -492,7 +668,12 @@ describe("applying tools", () => {
         state0,
         setTool({
           type: "item",
-          item: { type: "deadlyBlock", config: { style: "toaster" } },
+          items: [
+            {
+              type: "deadlyBlock",
+              config: { style: "toaster" },
+            },
+          ],
         }),
         (dispatch, getState) => {
           dispatch(
@@ -533,15 +714,17 @@ describe("applying tools", () => {
         state1WithTwoToasters,
         setTool({
           type: "item",
-          item: {
-            type: "monster",
-            config: {
-              which: "cyberman",
-              activated: "after-player-near",
-              movement: "towards-on-shortest-axis-xy4",
-              startDirection: "towards",
+          items: [
+            {
+              type: "monster",
+              config: {
+                which: "cyberman",
+                activated: "after-player-near",
+                movement: "towards-on-shortest-axis-xy4",
+                startDirection: "towards",
+              },
             },
-          },
+          ],
         }),
         applyItemTool({
           roomId: selectCursorRoomIdFromLevelEditorState(state0),
@@ -592,7 +775,12 @@ describe("applying tools", () => {
       state0,
       setTool({
         type: "item",
-        item: { type: "block", config: { style: "organic" } },
+        items: [
+          {
+            type: "block",
+            config: { style: "organic" },
+          },
+        ],
       }),
       setAutoCoalesce(false),
       (dispatch, getState) => {
@@ -692,7 +880,12 @@ test("previewing an item in a room other than the cursor room previews it there,
     changeToRoom(roomB),
     setTool({
       type: "item",
-      item: { type: "block", config: { style: "organic" } },
+      items: [
+        {
+          type: "block",
+          config: { style: "organic" },
+        },
+      ],
     }),
     applyItemTool({
       roomId: testRoomId,

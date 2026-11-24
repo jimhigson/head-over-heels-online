@@ -36,8 +36,8 @@ export const setToolReducers = {
     const state = _state as LevelEditorState;
     if (state.tool.type !== "pointer") {
       setToolInPlace(state, pointerTool);
-    } else if (state.lastItemTool !== undefined) {
-      setToolInPlace(state, { type: "item", item: state.lastItemTool });
+    } else if (state.lastItemToolItems !== undefined) {
+      setToolInPlace(state, { type: "item", items: state.lastItemToolItems });
     }
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

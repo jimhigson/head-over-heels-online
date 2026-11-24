@@ -13,6 +13,7 @@ import type { WallJsonConfig } from "../../../../model/json/WallJsonConfig";
 import { wallTimes } from "../../../../model/times";
 import type { SceneryName } from "../../../../sprites/planets";
 import type { EditorRootState } from "../../../../store/store";
+import { repeatedNonEmptyTuple } from "../../../../utils/repeatedNonEmptyTuple";
 import type { Xyz } from "../../../../utils/vectors/vectors";
 import type {
   EditorJsonItem,
@@ -234,7 +235,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 0, z: 0 },
             config: {
               direction: "towards",
-              tiles: Array(8).fill("plain"),
+              tiles: repeatedNonEmptyTuple("plain", 8),
             },
           };
 
@@ -243,7 +244,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 0, z: 0 },
             config: {
               direction: "right",
-              tiles: Array(8).fill("plain"),
+              tiles: repeatedNonEmptyTuple("plain", 8),
             },
           };
 
@@ -252,7 +253,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 8, z: 0 },
             config: {
               direction: "away",
-              tiles: Array(8).fill("plain"), // 8 tiles
+              tiles: repeatedNonEmptyTuple("plain", 8), // 8 tiles
             },
           };
 
@@ -261,7 +262,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 8, y: 0, z: 0 },
             config: {
               direction: "left",
-              tiles: Array(8).fill("plain"), // 8 tiles
+              tiles: repeatedNonEmptyTuple("plain", 8), // 8 tiles
             },
           };
         },
@@ -392,7 +393,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 0, z: 0 },
             config: {
               direction: "towards",
-              tiles: Array(10).fill("plain"),
+              tiles: repeatedNonEmptyTuple("plain", 10),
             },
           };
 
@@ -401,7 +402,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 0, z: 0 },
             config: {
               direction: "right",
-              tiles: Array(10).fill("plain"),
+              tiles: repeatedNonEmptyTuple("plain", 10),
             },
           };
 
@@ -410,7 +411,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 10, z: 0 },
             config: {
               direction: "away",
-              tiles: Array(10).fill("plain"), // 10 tiles
+              tiles: repeatedNonEmptyTuple("plain", 10), // 10 tiles
             },
           };
 
@@ -419,7 +420,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 10, y: 0, z: 0 },
             config: {
               direction: "left",
-              tiles: Array(10).fill("plain"), // 10 tiles
+              tiles: repeatedNonEmptyTuple("plain", 10), // 10 tiles
             },
           };
         },
@@ -549,7 +550,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 0, z: 0 },
             config: {
               direction: "towards",
-              tiles: Array(6).fill("plain"),
+              tiles: repeatedNonEmptyTuple("plain", 6),
             },
           };
 
@@ -558,7 +559,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 0, z: 0 },
             config: {
               direction: "right",
-              tiles: Array(6).fill("plain"),
+              tiles: repeatedNonEmptyTuple("plain", 6),
             },
           };
 
@@ -567,7 +568,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 6, z: 0 },
             config: {
               direction: "away",
-              tiles: Array(6).fill("plain"), // 6 tiles
+              tiles: repeatedNonEmptyTuple("plain", 6), // 6 tiles
             },
           };
 
@@ -576,7 +577,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 6, y: 0, z: 0 },
             config: {
               direction: "left",
-              tiles: Array(6).fill("plain"), // 6 tiles
+              tiles: repeatedNonEmptyTuple("plain", 6), // 6 tiles
             },
           };
         },
@@ -707,7 +708,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 2, y: 2, z: 0 },
             config: {
               direction: "towards",
-              tiles: Array(3).fill("plain"),
+              tiles: ["plain", "plain", "plain"],
             },
           };
 
@@ -716,7 +717,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 2, y: 2, z: 0 },
             config: {
               direction: "right",
-              tiles: Array(3).fill("plain"),
+              tiles: ["plain", "plain", "plain"],
             },
           };
 
@@ -792,7 +793,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 1, y: 1, z: 0 },
             config: {
               direction: "towards",
-              tiles: Array(2).fill("plain"),
+              tiles: ["plain", "plain"],
             },
           };
         },
@@ -845,7 +846,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 1, y: 0, z: 0 },
             config: {
               direction: "towards",
-              tiles: Array(3).fill("plain"),
+              tiles: ["plain", "plain", "plain"],
             },
           };
         },
@@ -898,7 +899,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 3, y: 0, z: 0 },
             config: {
               direction: "towards",
-              tiles: Array(2).fill("plain"), // extends from x:3 to x:5
+              tiles: ["plain", "plain"], // extends from x:3 to x:5
             },
           };
 
@@ -908,7 +909,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 0, z: 0 },
             config: {
               direction: "towards",
-              tiles: Array(2).fill("plain"), // extends from x:0 to x:2
+              tiles: ["plain", "plain"], // extends from x:0 to x:2
             },
           };
         },
@@ -965,7 +966,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 1, z: 0 },
             config: {
               direction: "right",
-              tiles: Array(2).fill("plain"), // extends from y:1 to y:3
+              tiles: ["plain", "plain"], // extends from y:1 to y:3
             },
           };
 
@@ -1374,17 +1375,26 @@ describe("changeWallsForFloorChangeInPlace", () => {
             [towardsWallId]: {
               type: "wall",
               position: { x: 0, y: 0, z: 0 },
-              config: { direction: "towards", tiles: Array(8).fill("plain") },
+              config: {
+                direction: "towards",
+                tiles: repeatedNonEmptyTuple("plain", 8),
+              },
             },
             [awayWallId]: {
               type: "wall",
               position: { x: 0, y: 5, z: 0 },
-              config: { direction: "away", tiles: Array(8).fill("plain") },
+              config: {
+                direction: "away",
+                tiles: repeatedNonEmptyTuple("plain", 8),
+              },
             },
             [rightWallId]: {
               type: "wall",
               position: { x: 0, y: 0, z: 0 },
-              config: { direction: "right", tiles: Array(3).fill("plain") },
+              config: {
+                direction: "right",
+                tiles: ["plain", "plain", "plain"],
+              },
             },
             [rightDoorId]: {
               type: "door",
@@ -1410,7 +1420,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             [leftWallAfterDoorId]: {
               type: "wall",
               position: { x: 8, y: 3, z: 0 },
-              config: { direction: "left", tiles: Array(2).fill("plain") },
+              config: { direction: "left", tiles: ["plain", "plain"] },
             },
           };
         },
@@ -1456,17 +1466,26 @@ describe("changeWallsForFloorChangeInPlace", () => {
             [towardsWallId]: {
               type: "wall",
               position: { x: 0, y: 0, z: 0 },
-              config: { direction: "towards", tiles: Array(8).fill("plain") },
+              config: {
+                direction: "towards",
+                tiles: repeatedNonEmptyTuple("plain", 8),
+              },
             },
             [awayWallId]: {
               type: "wall",
               position: { x: 0, y: 5, z: 0 },
-              config: { direction: "away", tiles: Array(8).fill("plain") },
+              config: {
+                direction: "away",
+                tiles: repeatedNonEmptyTuple("plain", 8),
+              },
             },
             [rightWallId]: {
               type: "wall",
               position: { x: 0, y: 0, z: 0 },
-              config: { direction: "right", tiles: Array(3).fill("plain") },
+              config: {
+                direction: "right",
+                tiles: ["plain", "plain", "plain"],
+              },
             },
             [rightDoorId]: {
               type: "door",
@@ -1492,7 +1511,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             [leftWallAfterDoorId]: {
               type: "wall",
               position: { x: 8, y: 3, z: 0 },
-              config: { direction: "left", tiles: Array(2).fill("plain") },
+              config: { direction: "left", tiles: ["plain", "plain"] },
             },
           };
         },
@@ -1544,17 +1563,26 @@ describe("changeWallsForFloorChangeInPlace", () => {
             [towardsWallId]: {
               type: "wall",
               position: { x: 0, y: 0, z: 0 },
-              config: { direction: "towards", tiles: Array(8).fill("plain") },
+              config: {
+                direction: "towards",
+                tiles: repeatedNonEmptyTuple("plain", 8),
+              },
             },
             [awayWallId]: {
               type: "wall",
               position: { x: 0, y: 5, z: 0 },
-              config: { direction: "away", tiles: Array(8).fill("plain") },
+              config: {
+                direction: "away",
+                tiles: repeatedNonEmptyTuple("plain", 8),
+              },
             },
             [rightWallId]: {
               type: "wall",
               position: { x: 0, y: 0, z: 0 },
-              config: { direction: "right", tiles: Array(3).fill("plain") },
+              config: {
+                direction: "right",
+                tiles: ["plain", "plain", "plain"],
+              },
             },
             [rightDoorId]: {
               type: "door",
@@ -1580,7 +1608,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             [leftWallAfterDoorId]: {
               type: "wall",
               position: { x: 8, y: 3, z: 0 },
-              config: { direction: "left", tiles: Array(2).fill("plain") },
+              config: { direction: "left", tiles: ["plain", "plain"] },
             },
           };
         },
@@ -1632,17 +1660,26 @@ describe("changeWallsForFloorChangeInPlace", () => {
             [towardsWallId]: {
               type: "wall",
               position: { x: 0, y: 0, z: 0 },
-              config: { direction: "towards", tiles: Array(8).fill("plain") },
+              config: {
+                direction: "towards",
+                tiles: repeatedNonEmptyTuple("plain", 8),
+              },
             },
             [awayWallId]: {
               type: "wall",
               position: { x: 0, y: 5, z: 0 },
-              config: { direction: "away", tiles: Array(8).fill("plain") },
+              config: {
+                direction: "away",
+                tiles: repeatedNonEmptyTuple("plain", 8),
+              },
             },
             [rightWallId]: {
               type: "wall",
               position: { x: 0, y: 0, z: 0 },
-              config: { direction: "right", tiles: Array(3).fill("plain") },
+              config: {
+                direction: "right",
+                tiles: ["plain", "plain", "plain"],
+              },
             },
             [rightDoorId]: {
               type: "door",
@@ -1668,7 +1705,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             [leftWallAfterDoorId]: {
               type: "wall",
               position: { x: 8, y: 3, z: 0 },
-              config: { direction: "left", tiles: Array(2).fill("plain") },
+              config: { direction: "left", tiles: ["plain", "plain"] },
             },
           };
         },
@@ -1720,17 +1757,26 @@ describe("changeWallsForFloorChangeInPlace", () => {
             [towardsWallId]: {
               type: "wall",
               position: { x: 0, y: 0, z: 0 },
-              config: { direction: "towards", tiles: Array(8).fill("plain") },
+              config: {
+                direction: "towards",
+                tiles: repeatedNonEmptyTuple("plain", 8),
+              },
             },
             [awayWallId]: {
               type: "wall",
               position: { x: 0, y: 5, z: 0 },
-              config: { direction: "away", tiles: Array(8).fill("plain") },
+              config: {
+                direction: "away",
+                tiles: repeatedNonEmptyTuple("plain", 8),
+              },
             },
             [rightWallId]: {
               type: "wall",
               position: { x: 0, y: 0, z: 0 },
-              config: { direction: "right", tiles: Array(3).fill("plain") },
+              config: {
+                direction: "right",
+                tiles: ["plain", "plain", "plain"],
+              },
             },
             [rightDoorId]: {
               type: "door",
@@ -1756,7 +1802,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             [leftWallAfterDoorId]: {
               type: "wall",
               position: { x: 8, y: 3, z: 0 },
-              config: { direction: "left", tiles: Array(2).fill("plain") },
+              config: { direction: "left", tiles: ["plain", "plain"] },
             },
           };
         },
@@ -1802,17 +1848,26 @@ describe("changeWallsForFloorChangeInPlace", () => {
             [towardsWallId]: {
               type: "wall",
               position: { x: 0, y: 0, z: 0 },
-              config: { direction: "towards", tiles: Array(8).fill("plain") },
+              config: {
+                direction: "towards",
+                tiles: repeatedNonEmptyTuple("plain", 8),
+              },
             },
             [awayWallId]: {
               type: "wall",
               position: { x: 0, y: 5, z: 0 },
-              config: { direction: "away", tiles: Array(8).fill("plain") },
+              config: {
+                direction: "away",
+                tiles: repeatedNonEmptyTuple("plain", 8),
+              },
             },
             [rightWallId]: {
               type: "wall",
               position: { x: 0, y: 0, z: 0 },
-              config: { direction: "right", tiles: Array(3).fill("plain") },
+              config: {
+                direction: "right",
+                tiles: ["plain", "plain", "plain"],
+              },
             },
             [rightDoorId]: {
               type: "door",
@@ -1838,7 +1893,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             [leftWallAfterDoorId]: {
               type: "wall",
               position: { x: 8, y: 3, z: 0 },
-              config: { direction: "left", tiles: Array(2).fill("plain") },
+              config: { direction: "left", tiles: ["plain", "plain"] },
             },
           };
         },
@@ -1930,7 +1985,10 @@ describe("changeWallsForFloorChangeInPlace", () => {
           room.items[wallBeforeDoorId] = {
             type: "wall",
             position: { x: 0, y: 8, z: 0 },
-            config: { direction: "away", tiles: Array(6).fill("plain") },
+            config: {
+              direction: "away",
+              tiles: repeatedNonEmptyTuple("plain", 6),
+            },
           };
           room.items[doorId] = {
             type: "door",
@@ -1943,7 +2001,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           room.items[wallAfterDoorId] = {
             type: "wall",
             position: { x: 8, y: 8, z: 0 },
-            config: { direction: "away", tiles: Array(3).fill("plain") },
+            config: { direction: "away", tiles: ["plain", "plain", "plain"] },
           };
         },
       );
@@ -1984,7 +2042,10 @@ describe("changeWallsForFloorChangeInPlace", () => {
         room.items[awayWallId] = {
           type: "wall",
           position: { x: 0, y: 8, z: 0 },
-          config: { direction: "away", tiles: Array(8).fill("plain") },
+          config: {
+            direction: "away",
+            tiles: repeatedNonEmptyTuple("plain", 8),
+          },
         };
         // in the last row of the floor before the away wall:
         room.items[blockId] = {
@@ -2035,17 +2096,26 @@ describe("changeWallsForFloorChangeInPlace", () => {
             [towardsWallId]: {
               type: "wall",
               position: { x: -1, y: 0, z: 0 },
-              config: { direction: "towards", tiles: Array(12).fill("plain") },
+              config: {
+                direction: "towards",
+                tiles: repeatedNonEmptyTuple("plain", 12),
+              },
             },
             [rightWallId]: {
               type: "wall",
               position: { x: -1, y: 0, z: 0 },
-              config: { direction: "right", tiles: Array(8).fill("plain") },
+              config: {
+                direction: "right",
+                tiles: repeatedNonEmptyTuple("plain", 8),
+              },
             },
             [awayWallBeforeDoorId]: {
               type: "wall",
               position: { x: -1, y: 8, z: 0 },
-              config: { direction: "away", tiles: Array(7).fill("plain") },
+              config: {
+                direction: "away",
+                tiles: repeatedNonEmptyTuple("plain", 7),
+              },
             },
             [awayDoorId]: {
               type: "door",
@@ -2058,12 +2128,12 @@ describe("changeWallsForFloorChangeInPlace", () => {
             [awayWallAfterDoorId]: {
               type: "wall",
               position: { x: 8, y: 8, z: 0 },
-              config: { direction: "away", tiles: Array(3).fill("plain") },
+              config: { direction: "away", tiles: ["plain", "plain", "plain"] },
             },
             [leftWallBeforeDoorId]: {
               type: "wall",
               position: { x: 11, y: 0, z: 0 },
-              config: { direction: "left", tiles: Array(2).fill("plain") },
+              config: { direction: "left", tiles: ["plain", "plain"] },
             },
             [leftDoorId]: {
               type: "door",
@@ -2076,7 +2146,10 @@ describe("changeWallsForFloorChangeInPlace", () => {
             [leftWallAfterDoorId]: {
               type: "wall",
               position: { x: 11, y: 4, z: 0 },
-              config: { direction: "left", tiles: Array(4).fill("plain") },
+              config: {
+                direction: "left",
+                tiles: repeatedNonEmptyTuple("plain", 4),
+              },
             },
           };
         },
@@ -2123,22 +2196,31 @@ describe("changeWallsForFloorChangeInPlace", () => {
               [towardsWallId]: {
                 type: "wall",
                 position: { x: 0, y: 0, z: 0 },
-                config: { direction: "towards", tiles: Array(8).fill("plain") },
+                config: {
+                  direction: "towards",
+                  tiles: repeatedNonEmptyTuple("plain", 8),
+                },
               },
               [awayWallId]: {
                 type: "wall",
                 position: { x: 0, y: 5, z: 0 },
-                config: { direction: "away", tiles: Array(8).fill("plain") },
+                config: {
+                  direction: "away",
+                  tiles: repeatedNonEmptyTuple("plain", 8),
+                },
               },
               [rightWallId]: {
                 type: "wall",
                 position: { x: 0, y: 0, z: 0 },
-                config: { direction: "right", tiles: Array(5).fill("plain") },
+                config: {
+                  direction: "right",
+                  tiles: repeatedNonEmptyTuple("plain", 5),
+                },
               },
               [leftWallBeforeDoorId]: {
                 type: "wall",
                 position: { x: 8, y: 0, z: 0 },
-                config: { direction: "left", tiles: Array(2).fill("plain") },
+                config: { direction: "left", tiles: ["plain", "plain"] },
               },
               [leftDoorId]: {
                 type: "door",
@@ -2196,7 +2278,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 2, y: 0, z: 0 },
             config: {
               direction: "towards",
-              tiles: Array(1).fill("plain"),
+              tiles: ["plain"],
             },
           };
         },
@@ -2246,7 +2328,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 10, y: 10, z: 0 },
             config: {
               direction: "towards",
-              tiles: Array(3).fill("plain"),
+              tiles: ["plain", "plain", "plain"],
             },
           };
         },
@@ -2298,7 +2380,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 0, z: 1 },
             config: {
               direction: "towards",
-              tiles: Array(3).fill("plain"),
+              tiles: ["plain", "plain", "plain"],
             },
           };
         },
@@ -2353,7 +2435,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 0, y: 0, z: 0 },
               config: {
                 direction: "towards",
-                tiles: Array(10).fill("plain"),
+                tiles: repeatedNonEmptyTuple("plain", 10),
               },
             };
           },
@@ -2411,7 +2493,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 5, y: 5, z: 0 },
               config: {
                 direction: "towards",
-                tiles: Array(10).fill("plain"),
+                tiles: repeatedNonEmptyTuple("plain", 10),
               },
             };
           },
@@ -2469,7 +2551,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 0, y: 0, z: 0 },
               config: {
                 direction: "towards",
-                tiles: Array(10).fill("plain"),
+                tiles: repeatedNonEmptyTuple("plain", 10),
               },
             };
           },
@@ -2527,7 +2609,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 0, y: 10, z: 0 },
               config: {
                 direction: "away",
-                tiles: Array(10).fill("plain"),
+                tiles: repeatedNonEmptyTuple("plain", 10),
               },
             };
           },
@@ -2543,7 +2625,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           position: { x: 0, y: 13, z: 0 },
           config: {
             direction: "away",
-            tiles: Array(10).fill("plain"),
+            tiles: repeatedNonEmptyTuple("plain", 10),
           },
         });
 
@@ -2585,7 +2667,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 0, y: 0, z: 0 },
               config: {
                 direction: "right",
-                tiles: Array(10).fill("plain"),
+                tiles: repeatedNonEmptyTuple("plain", 10),
               },
             };
           },
@@ -2643,7 +2725,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 10, y: 0, z: 0 },
               config: {
                 direction: "left",
-                tiles: Array(10).fill("plain"),
+                tiles: repeatedNonEmptyTuple("plain", 10),
               },
             };
           },
@@ -2659,7 +2741,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           position: { x: 13, y: 0, z: 0 },
           config: {
             direction: "left",
-            tiles: Array(10).fill("plain"),
+            tiles: repeatedNonEmptyTuple("plain", 10),
           },
         });
 
@@ -2703,7 +2785,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 0, y: 0, z: 0 },
               config: {
                 direction: "towards",
-                tiles: Array(4).fill("plain"),
+                tiles: repeatedNonEmptyTuple("plain", 4),
               },
             };
           },
@@ -2761,7 +2843,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 0, y: 0, z: 0 },
               config: {
                 direction: "towards",
-                tiles: Array(4).fill("plain"),
+                tiles: repeatedNonEmptyTuple("plain", 4),
               },
             };
           },
@@ -2821,7 +2903,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 6, y: 0, z: 0 },
               config: {
                 direction: "towards",
-                tiles: Array(4).fill("plain"),
+                tiles: repeatedNonEmptyTuple("plain", 4),
               },
             };
           },
@@ -2879,7 +2961,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 6, y: 0, z: 0 },
               config: {
                 direction: "towards",
-                tiles: Array(4).fill("plain"),
+                tiles: repeatedNonEmptyTuple("plain", 4),
               },
             };
           },
@@ -2939,7 +3021,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 3, y: 0, z: 0 },
               config: {
                 direction: "towards",
-                tiles: Array(4).fill("plain"),
+                tiles: repeatedNonEmptyTuple("plain", 4),
               },
             };
           },
@@ -2997,7 +3079,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 3, y: 0, z: 0 },
               config: {
                 direction: "towards",
-                tiles: Array(4).fill("plain"),
+                tiles: repeatedNonEmptyTuple("plain", 4),
               },
             };
           },
@@ -3072,7 +3154,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 6, y: 0, z: 0 },
             config: {
               direction: "towards",
-              tiles: Array(2).fill("plain"),
+              tiles: ["plain", "plain"],
             },
           };
         },
@@ -3159,7 +3241,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 6, y: 0, z: 0 },
             config: {
               direction: "towards",
-              tiles: Array(2).fill("plain"),
+              tiles: ["plain", "plain"],
             },
           };
         },

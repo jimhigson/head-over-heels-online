@@ -51,9 +51,13 @@ export const addItemInPlace = <T extends JsonItemType = JsonItemType>(
   isPreview: boolean,
 ): [EditorRoomItemId, EditorJsonItem<T>] => {
   const room = state.campaignInProgress.rooms[roomId] as EditorRoomJson;
-  const id = nextItemIdForItemTool(keys(room.items), itemTool, isPreview);
-
   const target = roomEditTarget(state, isPreview, roomId);
+  // items already added by this placement are only in the target when previewing:
+  const id = nextItemIdForItemTool(
+    [...keys(room.items), ...keys(target)],
+    itemTool,
+    isPreview,
+  );
 
   const itemJson = {
     type: itemTool.type,

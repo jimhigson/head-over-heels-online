@@ -10,7 +10,10 @@ import type {
 } from "../editorTypes";
 import type { PlaytestOptions } from "../PlaytestOptions";
 import type { PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
-import type { ItemTool, Tool } from "../RoomEditingArea/interactivity/Tool";
+import type {
+  ItemToolItems,
+  Tool,
+} from "../RoomEditingArea/interactivity/Tool";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
   selectCampaignHasUnsavedChangesFromLevelEditorState,
@@ -25,7 +28,10 @@ import {
 import type { OpenRoomId } from "./OpenRoom";
 import type { PaneLayout, TabGroupId } from "./PaneLayout";
 import { addOrRemoveRoomReducers } from "./reducers/addOrRemoveRoomReducers";
-import { applyItemToolReducers } from "./reducers/applyItemToolReducers";
+import {
+  applyItemToolReducers,
+  type ApplyToolToRoomJsonPayload,
+} from "./reducers/applyItemToolReducers";
 import { blockDeadlinessAndStyleReducers } from "./reducers/blockDeadlinessAndStyleReducers";
 import { campaignManagementReducers } from "./reducers/campaignManagementReducers";
 import {
@@ -127,7 +133,14 @@ export type NudgeKind = (typeof nudgeKinds)[number];
  */
 type PendingEditsMadeBy =
   | { type: "drag" }
-  | { type: "itemTool" }
+  | {
+      type: "itemTool";
+      /**
+       * where the tool was applied, so the preview can be made again if the
+       * tool changes while it is shown
+       */
+      placement: ApplyToolToRoomJsonPayload;
+    }
   | {
       type: "nudge";
       kind: NudgeKind;
@@ -204,9 +217,9 @@ export type LevelEditorState = {
   itemGrab: ItemGrab | undefined;
   tool: Tool;
   /**
-   * the item tool most recently chosen, so we can switch to the pointer and later switch back
+   * the items of the item tool most recently chosen, so we can switch to the pointer and later switch back
    */
-  lastItemTool: ItemTool | undefined;
+  lastItemToolItems: ItemToolItems | undefined;
   /** the text currently typed into the cmd-k menu's search input, retained while the menu is closed */
   cmdKSearch: string;
   gridResolution: GridResolution;

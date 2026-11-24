@@ -15,13 +15,13 @@ import {
 test("changing the door setting while the door tool is selected selects the door tool for the new setting", () => {
   const state = reduceLevelEditorActions(
     editorStateWithOneRoomWithNoItems,
-    setTool({ type: "item", item: doorItemTool(true) }),
+    setTool({ type: "item", items: [doorItemTool(true)] }),
     changeDoorAutoAddsRoom(false),
   );
 
   expect<Tool>(selectTool({ levelEditor: state })).toEqual<Tool>({
     type: "item",
-    item: doorItemTool(false),
+    items: [doorItemTool(false)],
   });
 });
 

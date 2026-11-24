@@ -9,5 +9,5 @@ export const commandAction = (
     // itemTool actions describe the item instead of providing an action method,
     // this allows the in-game cheats to inspect and use these actions in the cheats cmd-k menu
     // to summon items.
-    setTool({ type: "item", item: command.itemTool })
+    setTool({ type: "item", items: command.items })
   : command.action();

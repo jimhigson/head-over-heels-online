@@ -1,9 +1,13 @@
 import type { EditorThunk } from "../../../../store/store";
 import { noopFunction } from "../../../../utils/empty";
-import { setTool } from "../../../slice/levelEditorSlice";
+import {
+  selectOpenRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
+  setTool,
+  toggleSelectedItemInRoom,
+} from "../../../slice/levelEditorSlice";
 import { maybeLayoutNode } from "../../../slice/PaneLayout";
 import { itemsAreLocked } from "../itemsAreLocked";
-import { jsonItemAndIdForInPlayItem } from "../jsonItemAndIdForInPlayItem";
+import { sampledToolItems } from "../sampledToolItems";
 import { setHoveredItemIfChangedThunk } from "../setHoveredItemIfChangedThunk";
 import type {
   MouseDownParams,
@@ -39,10 +43,17 @@ export class EyeDropperToolHandler implements ToolHandler {
     };
   }
 
+  /**
+   * clicking an item takes it (or the whole selection, if it is part of one) as
+   * the item tool's items. With ctrl or cmd held, it instead toggles the item in
+   * the selection, as the pointer tool does, so a selection can be built to take
+   */
   handleMouseUp({
+    openRoomId,
     roomState,
     pointingAt,
     isClick,
+    mouseEvent,
   }: MouseUpParams): EditorThunk {
     if (!isClick) {
       return noopFunction;
@@ -63,19 +74,34 @@ export class EyeDropperToolHandler implements ToolHandler {
         return;
       }
 
-      const asJson = jsonItemAndIdForInPlayItem(storeState, clickedOnItem);
-      if (asJson === undefined) {
+      const clickedJsonItemId = clickedOnItem.jsonItemId;
+      if (clickedJsonItemId === undefined) {
         return;
       }
-      const [, jsonItem] = asJson;
+
+      if (mouseEvent.ctrlKey || mouseEvent.metaKey) {
+        dispatch(
+          toggleSelectedItemInRoom({
+            selectionEntry: {
+              jsonItemId: clickedJsonItemId,
+              whichEditorGhost: undefined,
+            },
+          }),
+        );
+        return;
+      }
 
       dispatch(
         setTool({
           type: "item",
-          item: {
-            type: jsonItem.type,
-            config: jsonItem.config,
-          },
+          items: sampledToolItems(
+            clickedJsonItemId,
+            selectOpenRoomSelectionJsonItemIdsWithoutEditorGhostSelections(
+              storeState,
+              openRoomId,
+            ),
+            roomState.roomJson.items,
+          ),
         }),
       );
     };
