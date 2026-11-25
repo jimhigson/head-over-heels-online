@@ -92,6 +92,7 @@ type SweepCampaign =
   | "original"
   | "quarterMaskFaultRoom"
   | "rotate-camera-test"
+  | "sequel_28"
   | "skiHeadsMeetingRoom"
   | "wallFloorSeamRoom";
 
@@ -136,7 +137,7 @@ type SweepCapture = {
 /**
  * the valid room ids for a campaign - lets each scenario's roomId/enterFrom be
  * typo-checked against the campaign it belongs to (the db-loaded
- * rotate-camera-test has no generated id union, so it stays `string`)
+ * rotate-camera-test and sequel_28 have no generated id union, so stay `string`)
  */
 type RoomsForCampaign<C extends SweepCampaign> =
   C extends "allItemsTestRoom" ? "allItemsTestRoom"
@@ -151,7 +152,7 @@ type SweepScenario<C extends SweepCampaign = SweepCampaign> = {
   /**
    * original: boot the burnt-in campaign through the menus and navigate by
    * hash. allItemsTestRoom: boot the inline test campaign via a playtest-style
-   * `data:` url. rotate-camera-test: the community campaign loaded by url,
+   * `data:` url. rotate-camera-test, sequel_28: db campaigns loaded by url,
    * entered by hash like the original
    */
   campaign: C;
@@ -466,6 +467,23 @@ const scenarios: readonly SweepScenario[] = [
     screenshotOptions: { maxDiffPixels: 1_000 },
   }),
   sweepScenario({
+    // moonbase walls with floor beyond them must show see-through windows at
+    // every settled angle reached by turning, not just the angle entered at:
+    roomId: "moonbase_home_central",
+    campaign: "sequel_28",
+    enterFrom: "moonbase_home_head",
+    character: "head",
+    // turning through a whisker either side of each 45° hand-over, then
+    // settling - each settled angle must match its baseline as if entered
+    // there:
+    angles: [
+      0, 44, 46, 90, 134, 136, 180, 224, 226, 270, 314, 316,
+      // back round to the start:
+      0,
+    ],
+    emulatedResolution: "$$default",
+  }),
+  sweepScenario({
     roomId: "blacktooth5",
     campaign: "original",
     enterFrom: "blacktooth4",
@@ -610,8 +628,11 @@ const capturesForScenario = ({
   });
 };
 
-const rotateCameraTestCampaignUrl =
-  "/?campaignName=rotate-camera-test&campaignAuthorUserId=2924c962-99f1-4dd2-9b9c-fef832dc991b&cheats=1&track=0";
+/**
+ * the url that boots a db-hosted campaign of jimAtBlockstackingUserId's
+ */
+const dbCampaignUrl = (campaignName: "rotate-camera-test" | "sequel_28") =>
+  `/?campaignName=${campaignName}&campaignAuthorUserId=2924c962-99f1-4dd2-9b9c-fef832dc991b&cheats=1&track=0`;
 
 /**
  * put the camera at an arbitrary angle (degrees anticlockwise from the base
@@ -726,8 +747,11 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
       quarterMaskFaultRoomCampaign,
       emulatedResolutionPayload(scenario),
     );
-  } else if (scenario.campaign === "rotate-camera-test") {
-    await page.goto(rotateCameraTestCampaignUrl);
+  } else if (
+    scenario.campaign === "rotate-camera-test" ||
+    scenario.campaign === "sequel_28"
+  ) {
+    await page.goto(dbCampaignUrl(scenario.campaign));
     await waitForGameReady(page);
     // zero the speed before playing on, so sprites are born frozen:
     await setZeroGameSpeed(page);
