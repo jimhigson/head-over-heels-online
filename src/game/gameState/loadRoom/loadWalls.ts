@@ -1,9 +1,7 @@
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import type { JsonItem } from "../../../model/json/JsonItem";
-import type { StoodOnBy } from "../../../model/StoodOnBy";
 import { wallTimes } from "../../../model/times";
-import { emptyObject } from "../../../utils/empty";
 import { hashXyzToNumber0to1 } from "../../../utils/maths/hashing";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
@@ -87,8 +85,6 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
     state: {
       ...defaultBaseState(),
       box: boxWithSize(wallPosition, aabb),
-      // walls can never be stood on:
-      stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
     },
   };
 };
