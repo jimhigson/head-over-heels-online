@@ -473,7 +473,14 @@ const scenarios: readonly SweepScenario[] = [
     campaign: "sequel_28",
     enterFrom: "moonbase_home_head",
     character: "head",
-    angles: [0, 90, 180, 270],
+    // turning through a whisker either side of each 45° hand-over, then
+    // settling - each settled angle must match its baseline as if entered
+    // there:
+    angles: [
+      0, 44, 46, 90, 134, 136, 180, 224, 226, 270, 314, 316,
+      // back round to the start:
+      0,
+    ],
     emulatedResolution: "$$default",
   }),
   sweepScenario({
