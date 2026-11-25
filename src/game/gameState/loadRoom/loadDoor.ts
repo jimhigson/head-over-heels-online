@@ -4,7 +4,6 @@ import {
   type ItemInPlayConfig,
 } from "../../../model/ItemInPlay";
 import type { JsonItem } from "../../../model/json/JsonItem";
-import type { StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { pick } from "../../../utils/pick";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -140,7 +139,6 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           }),
           postAabb,
         ),
-        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
     },
   };
@@ -166,7 +164,6 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       state: {
         ...defaultBaseState(),
         box: boxWithSize(framePartsOrigin, postAabb),
-        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
     },
   };
@@ -209,7 +206,6 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
             doorTunnelAabbPx,
           ),
         ),
-        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
     },
   };
@@ -243,7 +239,6 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
             { [throughDoorAxis]: doorPostWidthInThroughDoorAxis, z: veryHighZ },
           ),
         ),
-        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
     },
   };
@@ -299,7 +294,6 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
             z: doorPortalHeight,
           } as Xyz,
         ),
-        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
     },
   };
@@ -383,7 +377,6 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           z: 2,
         } as Xyz),
       ),
-      stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
     },
   };
 }
