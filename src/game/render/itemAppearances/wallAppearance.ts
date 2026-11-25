@@ -60,8 +60,8 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
     const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
     // walls only ever render inside a room renderer (they are not portable, so
     // never appear in a standalone appearance context) - the full pipeline
-    // context is available for the see-through decision's z-graph:
-    const { zEdges } = asItemRenderContext(renderContext);
+    // context is available for the see-through decision's render boxes:
+    const { renderBoxes } = asItemRenderContext(renderContext);
     const { config } = item;
 
     const { direction, tiles } = config;
@@ -108,8 +108,14 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
     // a window looks out to space (moonscape) unless there is more of this room
     // behind the wall, in which case its panes must be see-through instead - a
     // moonscape pane can't honestly sit in front of room floor. Decided per wall
-    // (uniform across its run) from the resolved z-graph:
-    const seeThrough = wallOccludesRoomFloorBehind(item, alongAxis, zEdges);
+    // (uniform across its run) at the settled quarter angle:
+    const seeThrough = wallOccludesRoomFloorBehind(
+      item,
+      alongAxis,
+      room,
+      renderBoxes,
+      cameraQuarterAngle,
+    );
 
     const wallTilesContainer = new Container({ label: "wallTiles" });
     const wallAnimationsContainer = new Container({ label: "wallAnimations" });
