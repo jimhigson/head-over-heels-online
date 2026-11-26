@@ -10,7 +10,7 @@ import {
 import { nowhereRoomId } from "../../../../model/json/ItemConfigMap";
 import { uncoveredPerimeterEdges } from "../../../../model/json/verification/helpers/roomPerimeter";
 import type { WallJsonConfig } from "../../../../model/json/WallJsonConfig";
-import { wallTimes } from "../../../../model/times";
+import { completeTimesXy, wallTimes } from "../../../../model/times";
 import type { SceneryName } from "../../../../sprites/planets";
 import type { EditorRootState } from "../../../../store/store";
 import { repeatedNonEmptyTuple } from "../../../../utils/repeatedNonEmptyTuple";
@@ -42,9 +42,10 @@ expect.extend({
     }
 
     const floorStart = floor.position;
+    const floorTimesCompleted = completeTimesXy(floor.config.times);
     const floorEnd = {
-      x: floorStart.x + floor.config.times.x,
-      y: floorStart.y + floor.config.times.y,
+      x: floorStart.x + floorTimesCompleted.x,
+      y: floorStart.y + floorTimesCompleted.y,
     };
 
     // Find all walls and doors on this floor's edges

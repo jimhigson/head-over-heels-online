@@ -1,8 +1,10 @@
-import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import {
+  itemBehaviourKey,
+  type ItemInPlay,
+} from "../../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { JsonItem } from "../../../model/json/JsonItem";
 import type { RoomState } from "../../../model/RoomState";
-import { getItemInPlayTimes } from "../../../model/times";
 import {
   hashStringToNumber0to1,
   hashXyzToNumber0to1,
@@ -13,6 +15,7 @@ import {
   originXyz,
   scaleXyz,
   subXyz,
+  unitXyz,
 } from "../../../utils/vectors/vectors";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
@@ -38,8 +41,9 @@ export const makeItemFadeOut = <
 }) => {
   deleteItemFromRoom({ room, item: touchedItem });
 
-  // Get the times for this item (will be unitXyz for items without times)
-  const times = getItemInPlayTimes(touchedItem);
+  const {
+    config: { times },
+  } = touchedItem;
 
   // Determine what the bubbles represent (same for all segments)
   const was =
@@ -54,6 +58,7 @@ export const makeItemFadeOut = <
     config: { style: "white", was },
     position: originXyz,
   };
+  const bubblesConfig = { ...bubblesJson.config, times: unitXyz };
   const bubblesAabb = boundingBoxForItem(bubblesJson);
   // bubbles animate from the hash of the box they would load with at the origin:
   const bubblesHash = hashXyzToNumber0to1(
@@ -96,10 +101,10 @@ export const makeItemFadeOut = <
           hash: bubblesHash,
           id: bubblesId,
           jsonItemId: bubblesId,
-          config: bubblesJson.config,
+          config: bubblesConfig,
           [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
             "bubbles",
-            bubblesJson.config,
+            bubblesConfig,
           ),
           state: {
             ...defaultBaseState(),

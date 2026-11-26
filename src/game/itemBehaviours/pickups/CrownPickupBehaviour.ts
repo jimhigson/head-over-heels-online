@@ -1,5 +1,5 @@
 import type { ExportedSoundId } from "../../../_generated/sfxdex/soundIds";
-import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { PlayableItem } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
 import { crownCollected } from "../../../store/slices/gameInPlay/gameInPlaySlice";
@@ -31,7 +31,9 @@ export class CrownPickupBehaviour extends PickupBehaviour {
     room: RoomState<RoomId, RoomItemId>,
     gameState: GameState<RoomId>,
   ): void {
-    const { planet } = crown.config;
+    const {
+      config: { planet },
+    } = crown;
     // a little experiment- let's go straight to the store, even though
     // we're in the game engine:
     store.dispatch(crownCollected(planet));

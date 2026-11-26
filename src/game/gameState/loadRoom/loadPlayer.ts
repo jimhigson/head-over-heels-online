@@ -1,14 +1,18 @@
 import type { SharedUnionFields } from "type-fest";
 
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
+import type { PlayableItem } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type {
   HeadOverHeelsState,
   HeadState,
   HeelsState,
-} from "../../../model/ItemStateMap";
+} from "../../../model/itemInPlay/ItemStateMap";
 import type { JsonItem } from "../../../model/json/JsonItem";
-import type { CharacterName } from "../../../model/modelTypes";
+import type {
+  CharacterName,
+  IndividualCharacterName,
+} from "../../../model/modelTypes";
+import { unitTimesConfig } from "../../../model/times";
 import type { PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
@@ -21,7 +25,7 @@ import { defaultBaseState, defaultFreeItemState } from "./itemDefaultStates";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 
 export const defaultPlayableRootAttributes = {
-  config: emptyObject,
+  config: unitTimesConfig,
 } satisfies Partial<PlayableItem<CharacterName, string>>;
 
 export const defaultCommonPlayableState = () => {
@@ -67,7 +71,7 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
   jsonItem: JsonItem<"player", RoomId, RoomItemId>,
   jsonItemId: RoomItemId | undefined,
   pokesEnabled: PokesEnabled = emptyObject,
-): PlayableItem<CharacterName, RoomId, RoomItemId> => {
+): PlayableItem<IndividualCharacterName, RoomId, RoomItemId> => {
   const { infiniteDoughnuts } = pokesEnabled;
 
   if (jsonItem.config.which === "head") {

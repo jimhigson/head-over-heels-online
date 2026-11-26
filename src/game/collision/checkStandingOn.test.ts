@@ -1,7 +1,6 @@
 import { describe, expect, test } from "vitest";
 
 import { basicEmptyRoom } from "../../_testUtils/basicRoom";
-import type { FreeItem } from "../../model/ItemInPlayNarrowedUnions";
 import { roomJsonItemsIterable } from "../../model/RoomJsonItemIterators";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { boxAt, originXyz } from "../../utils/vectors/vectors";
@@ -57,7 +56,7 @@ describe("findStandingOnWithHighestPriorityAndMostOverlapInRange", () => {
       ),
     ];
     const result = findStandingOnWithHighestPriorityAndMostOverlapInRange(
-      movable as FreeItem<string, string>,
+      movable,
       itemsMaybeBeingStoodOn,
       0,
       itemsMaybeBeingStoodOn.length,
@@ -109,7 +108,7 @@ describe("findStandingOnWithHighestPriorityAndMostOverlapInRange", () => {
       ),
     ];
     const result = findStandingOnWithHighestPriorityAndMostOverlapInRange(
-      movable as FreeItem<string, string>,
+      movable,
       itemsMaybeBeingStoodOn,
       0,
       itemsMaybeBeingStoodOn.length,
@@ -146,10 +145,7 @@ describe("spatiallyCheckStandingOn", () => {
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
-    const result = spatiallyCheckStandingOn(
-      playable as FreeItem<string, string>,
-      itemMaybeBeingStoodOn,
-    );
+    const result = spatiallyCheckStandingOn(playable, itemMaybeBeingStoodOn);
 
     expect(result).toBe(true);
   });
@@ -186,7 +182,7 @@ describe("spatiallyCheckStandingOn", () => {
     );
 
     const result = spatiallyCheckStandingOn(
-      playable as FreeItem<string, string>,
+      playable,
       itemMaybeBeingStoodOn,
       0, // no overlap is allowed
     );
@@ -226,7 +222,7 @@ describe("spatiallyCheckStandingOn", () => {
     );
 
     const result = spatiallyCheckStandingOn(
-      playable as FreeItem<string, string>,
+      playable,
       itemMaybeBeingStoodOn,
       blockSizePx.z * 0.02, // how much overlap is allowed - 2% of a block height
     );
@@ -260,10 +256,7 @@ describe("spatiallyCheckStandingOn", () => {
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
-    const result = spatiallyCheckStandingOn(
-      playable as FreeItem<string, string>,
-      itemMaybeBeingStoodOn,
-    );
+    const result = spatiallyCheckStandingOn(playable, itemMaybeBeingStoodOn);
 
     expect(result).toBe(false);
   });
@@ -300,10 +293,7 @@ describe("spatiallyCheckStandingOn", () => {
       itemMaybeBeingStoodOn.state.box,
     );
 
-    const result = spatiallyCheckStandingOn(
-      playable as FreeItem<string, string>,
-      itemMaybeBeingStoodOn,
-    );
+    const result = spatiallyCheckStandingOn(playable, itemMaybeBeingStoodOn);
 
     expect(result).toBe(false);
   });
@@ -353,10 +343,7 @@ describe("spatiallyCheckStandingOn", () => {
       itemMaybeBeingStoodOn.state.box,
     );
 
-    const result = spatiallyCheckStandingOn(
-      playable as FreeItem<string, string>,
-      itemMaybeBeingStoodOn,
-    );
+    const result = spatiallyCheckStandingOn(playable, itemMaybeBeingStoodOn);
 
     expect(result).toBe(false);
   });

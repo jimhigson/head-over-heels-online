@@ -10,6 +10,7 @@ import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import { valueMd } from "../helpers/messageMarkdown";
 import type {
   VerificationRoomId,
+  VerificationRoomItemId,
   VerificationRoomJson,
 } from "../verificationTypes";
 
@@ -229,6 +230,15 @@ const errorFix = (error: ErrorObject, narrowed: SchemaNode): ErrorFix => {
   };
 };
 
+/**
+ * the ids of the items a JSON Pointer into a room points inside - none for a
+ * pointer outside the items map
+ */
+const itemIdsAt = (pointer: string): VerificationRoomItemId[] => {
+  const [firstSegment, itemId] = pathSegments(pointer);
+  return firstSegment === "items" && itemId !== undefined ? [itemId] : [];
+};
+
 /** a segment that can be written with dot notation - a plain JS identifier */
 const isPlainIdentifier = (segment: string): boolean =>
   /^[A-Za-z_$][\w$]*$/.test(segment);
@@ -306,7 +316,7 @@ export const schemaComplianceVerifier: CampaignVerifier<SchemaNonCompliant> = {
         const at = where === "" ? "" : ` at: *${where}*`;
         yield {
           severity: "error",
-          itemIds: [],
+          itemIds: itemIdsAt(path),
           roomId,
           msg:
             fixable ?

@@ -1,7 +1,7 @@
 import type { Writable } from "type-fest";
 
 import { populatedBroadPhase } from "../__test__/populatedBroadPhase";
-import { itemBehaviourKey } from "../../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../../model/itemInPlay/ItemInPlay";
 import { Graph } from "../../../../utils/graph/Graph";
 import { cameraAngleBase } from "../../../../utils/vectors/cameraAngleVectors";
 import type { Xy } from "../../../../utils/vectors/vectors";

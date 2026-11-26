@@ -1,4 +1,4 @@
-import { itemBehaviourKey } from "../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../model/itemInPlay/ItemInPlay";
 import type {
   Campaign,
   CharacterName,
@@ -46,7 +46,9 @@ export const findStartingRoomsInCampaign = <RoomId extends string>(
   for (const [roomId, r] of entries(campaign.rooms)) {
     for (const i of Object.values(r.items)) {
       if (i.type === "player") {
-        const { which } = i.config;
+        const {
+          config: { which },
+        } = i;
         if (startingRoomIds[which] !== undefined) {
           throw new Error(`Campaign has duplicate starting rooms for ${which}`);
         }

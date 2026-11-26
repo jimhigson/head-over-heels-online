@@ -25,6 +25,10 @@ jobs:
       - name: Check gen:roomSchema is up-to-date
         run: git diff --exit-code -- src/_generated || (echo "Run 'pnpm gen:roomSchema' locally and commit the changes." && exit 1)
 
+      - run: pnpm gen:columnar
+      - name: Check gen:columnar is up-to-date
+        run: git diff --exit-code -- src/originalCampaign/campaign.columnar.json || (echo "Run 'pnpm gen:columnar' locally and commit the changes." && exit 1)
+
       - run: pnpm gen:dbTypes
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}

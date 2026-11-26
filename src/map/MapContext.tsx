@@ -2,7 +2,7 @@ import { createContext } from "preact";
 import type { PropsWithChildren } from "preact/compat";
 import { useContext } from "preact/hooks";
 
-import type { PlayableItem } from "../model/ItemInPlayNarrowedUnions";
+import type { PlayableItem } from "../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { TeleporterLink } from "../model/map/teleporterLinks";
 import type {
   CharacterName,

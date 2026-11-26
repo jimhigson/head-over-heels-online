@@ -1,7 +1,6 @@
 import type { Container } from "pixi.js";
 
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
-import { getItemInPlayTimes } from "../../../model/times";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { Xy, Xyz } from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXyOnContainer } from "../projections";
 
@@ -33,7 +32,9 @@ export const nearCornerOffsetWorldXyz = (
    */
   size?: Xyz,
 ): Xyz => {
-  const times = getItemInPlayTimes(item);
+  const {
+    config: { times },
+  } = item;
   const xSize = size?.x ?? item.state.box.xd;
   const ySize = size?.y ?? item.state.box.yd;
   const reversedAxes = cameraReversedAxes(cameraAngle);

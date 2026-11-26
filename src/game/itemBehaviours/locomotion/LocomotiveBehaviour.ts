@@ -4,8 +4,8 @@ import {
   itemBehaviourKey,
   type ItemInPlay,
   type ItemInPlayType,
-} from "../../../model/ItemInPlay";
-import type {} from "../../../model/ItemInPlayNarrowedUnions";
+} from "../../../model/itemInPlay/ItemInPlay";
+import type {} from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { RoomState } from "../../../model/RoomState";
 import { originXyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";

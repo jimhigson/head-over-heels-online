@@ -25,14 +25,9 @@ const storedTimes = (item: CampaignJsonItem): Partial<Xyz> | undefined =>
   (item.config as { times?: Partial<Xyz> }).times;
 
 /**
- * whether the stored `times` is entirely 1s, so it could be dropped. Floors are
- * excluded: their `times` is required (it sizes the floor), so a 1×1 floor's
- * `times: {x:1, y:1}` is meaningful, not redundant.
+ * whether the stored `times` is entirely 1s, so it could be dropped
  */
 const isRedundantTimes = (item: CampaignJsonItem): boolean => {
-  if (item.type === "floor") {
-    return false;
-  }
   const times = storedTimes(item);
   return (
     times !== undefined &&

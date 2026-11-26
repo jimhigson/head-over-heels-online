@@ -5,7 +5,7 @@ import { debugSpritesheetMeta } from "../../../../gfx/spritesheetMeta/debugSprit
 import { speccySpritesheetMeta } from "../../../../gfx/spritesheetMeta/speccySpritesheetMeta";
 import { toppySpritesheetMeta } from "../../../../gfx/spritesheetMeta/toppySpritesheetMeta";
 import type { ButtonId } from "../../../game/render/hud/HudButtonRenderer";
-import type { ItemInPlayType } from "../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../model/itemInPlay/ItemInPlay";
 import type { JsonItemConfig } from "../../../model/json/JsonItem";
 import type { ZxSpectrumPaletteColour } from "../../../originalGame";
 import { entries } from "../../../utils/entries";

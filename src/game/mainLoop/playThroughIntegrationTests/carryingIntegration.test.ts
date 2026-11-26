@@ -19,7 +19,7 @@ import { resetStore } from "../../../_testUtils/initStoreForTests";
 import type { GameStateWithMockInput } from "../../../_testUtils/MockInputStateTracker";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { currentRoomIs } from "../../../_testUtils/playThroughUntilHelpers";
-import { isFreeItem } from "../../../model/ItemInPlayNarrowedUnions";
+import { isFreeItem } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";

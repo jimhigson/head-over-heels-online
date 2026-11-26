@@ -1,8 +1,13 @@
 import { defaultBaseState } from "../../game/gameState/loadRoom/itemDefaultStates";
 import { getBehaviourForItemTypeAndConfig } from "../../game/itemBehaviours/attachBehaviourToItem";
-import { itemBehaviourKey } from "../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../model/itemInPlay/ItemInPlay";
 import { hashXyzToNumber0to1 } from "../../utils/maths/hashing";
-import { boxWithSize, originXyz, type Xyz } from "../../utils/vectors/vectors";
+import {
+  boxWithSize,
+  originXyz,
+  unitXyz,
+  type Xyz,
+} from "../../utils/vectors/vectors";
 import type { EditorItemInPlayUnion, EditorRoomItemId } from "../editorTypes";
 import { editorGhostWithBrushItem } from "./editorGhostWithBrushItem";
 
@@ -19,7 +24,11 @@ export const editorGhostOfParticleDot = (
    */
   jsonItemId: EditorRoomItemId | undefined,
 ): EditorItemInPlayUnion<"editorGhost"> => {
-  const config = { forCharacter: "head" as "head", animated: false };
+  const config = {
+    forCharacter: "head" as "head",
+    animated: false,
+    times: unitXyz,
+  };
   return editorGhostWithBrushItem(
     {
       hash: hashXyzToNumber0to1(position),

@@ -4,8 +4,8 @@ import type { SetRequired } from "type-fest";
 import {
   itemBehaviourKey,
   type ItemInPlayType,
-} from "../../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+} from "../../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { forEachRoomItem } from "../../../model/roomItemsInPlayIterators";
 import { audioCtx } from "../../../sound/audioCtx";
 import { soundsFadeDurationSec } from "../../../sound/soundUtils/stopWithFade";

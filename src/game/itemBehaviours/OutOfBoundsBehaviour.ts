@@ -1,4 +1,7 @@
-import { itemBehaviourKey, type ItemInPlay } from "../../model/ItemInPlay";
+import {
+  itemBehaviourKey,
+  type ItemInPlay,
+} from "../../model/itemInPlay/ItemInPlay";
 import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
 import { playableResetAfterOutOfBounds } from "../gameState/mutators/playableLosesLife";
 import type { ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";

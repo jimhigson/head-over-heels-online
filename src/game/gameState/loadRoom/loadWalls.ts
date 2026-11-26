@@ -1,7 +1,7 @@
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
 import type { JsonItem } from "../../../model/json/JsonItem";
-import { wallTimes } from "../../../model/times";
+import { completeTimesXyz, wallTimes } from "../../../model/times";
 import { hashXyzToNumber0to1 } from "../../../utils/maths/hashing";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
@@ -48,7 +48,8 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
     position,
   } = jsonWall;
 
-  const times = wallTimes(jsonWall.config);
+  // the wall's length along its axis, from its tiles (one block deep and high):
+  const times = completeTimesXyz(wallTimes(jsonWall.config));
 
   const wallTangentAxis = doorAlongAxis(direction);
 
@@ -74,7 +75,11 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
 
   // the json direction name becomes a unit vector in-play (the json stays a
   // name):
-  const config = { ...jsonWall.config, direction: unitVectors[direction] };
+  const config = {
+    ...jsonWall.config,
+    direction: unitVectors[direction],
+    times,
+  };
   return {
     type: "wall",
     hash: hashXyzToNumber0to1(wallPosition),

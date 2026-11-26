@@ -1,4 +1,4 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import {
   type Progression,
   roomSpatialIndexKey,

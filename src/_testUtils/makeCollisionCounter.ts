@@ -1,5 +1,5 @@
 import { selectCurrentRoomState } from "../game/gameState/gameStateSelectors/selectCurrentRoomState";
-import { isFreeItem } from "../model/ItemInPlayNarrowedUnions";
+import { isFreeItem } from "../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { GameStateWithMockInput } from "./MockInputStateTracker";
 
 /**

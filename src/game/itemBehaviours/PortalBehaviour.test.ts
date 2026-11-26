@@ -1,11 +1,11 @@
 import { expect, test } from "vitest";
 
 import { basicEmptyRoom } from "../../_testUtils/basicRoom";
-import { itemBehaviourKey } from "../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import { itemBehaviourKey } from "../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { unitVectors } from "../../utils/vectors/unitVectors";
-import { boxWithSize, originXyz } from "../../utils/vectors/vectors";
+import { boxWithSize, originXyz, unitXyz } from "../../utils/vectors/vectors";
 import { emptyRoomJsonDirectionalIndex } from "../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
@@ -57,6 +57,7 @@ const horizontalPortal: UnionOfAllItemInPlayTypes = attachBehaviourToItem({
     direction: unitVectors.towards,
     toRoom: "anyRoom",
     relativePoint: originXyz,
+    times: unitXyz,
   },
   state: { box: boxWithSize(originXyz, originXyz), ...defaultBaseState() },
 });
@@ -69,6 +70,7 @@ const portalToBelow: UnionOfAllItemInPlayTypes = attachBehaviourToItem({
     direction: unitVectors.down,
     toRoom: "anyRoom",
     relativePoint: originXyz,
+    times: unitXyz,
   },
   state: { box: boxWithSize(originXyz, originXyz), ...defaultBaseState() },
 });
@@ -80,6 +82,7 @@ const portalToAbove: UnionOfAllItemInPlayTypes = attachBehaviourToItem({
     direction: unitVectors.up,
     toRoom: "anyRoom",
     relativePoint: originXyz,
+    times: unitXyz,
   },
   state: { box: boxWithSize(originXyz, originXyz), ...defaultBaseState() },
 });

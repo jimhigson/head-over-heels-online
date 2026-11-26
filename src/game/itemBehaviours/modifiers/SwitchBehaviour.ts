@@ -1,5 +1,5 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { ItemInPlay } from "../../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { SwitchItemModificationUnion } from "../../../model/json/SwitchConfig";
 import type { RoomState } from "../../../model/RoomState";
 import { toggleUserSetting } from "../../../store/slices/userSettings/userSettingsSlice";

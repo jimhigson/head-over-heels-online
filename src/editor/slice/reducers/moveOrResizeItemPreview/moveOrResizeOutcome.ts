@@ -12,6 +12,8 @@ import {
 } from "../../../../model/json/verification/helpers/roomPerimeter";
 import { iterateRoomJsonItemsWithIds } from "../../../../model/RoomJsonItemIterators";
 import {
+  completeTimesXy,
+  completeTimesXyz,
   getJsonItemTimes,
   optimiseTimesXyz,
   wallTimes,
@@ -70,7 +72,8 @@ function getWallEdgeInfo(
   floor: EditorJsonItem<"floor">,
 ): null | WallEdgeInfo {
   const wTimes = wallTimes(wall.config);
-  const floorEnd = addXyz(floor.position, floor.config.times);
+  const floorTimesCompleted = completeTimesXy(floor.config.times);
+  const floorEnd = addXyz(floor.position, floorTimesCompleted);
 
   switch (wall.config.direction) {
     case "towards":
@@ -89,7 +92,7 @@ function getWallEdgeInfo(
           isOnFloorEdge: true,
           wallFullySpansFloor:
             wall.position.x === floor.position.x &&
-            wTimes.x === floor.config.times.x,
+            wTimes.x === floorTimesCompleted.x,
           wallTouchesFloorEnd: wall.position.x + (wTimes.x ?? 1) === floorEnd.x,
         };
       }
@@ -111,7 +114,7 @@ function getWallEdgeInfo(
           isOnFloorEdge: true,
           wallFullySpansFloor:
             wall.position.y === floor.position.y &&
-            wTimes.y === floor.config.times.y,
+            wTimes.y === floorTimesCompleted.y,
           wallTouchesFloorEnd: wall.position.y + (wTimes.y ?? 1) === floorEnd.y,
         };
       }
@@ -120,7 +123,7 @@ function getWallEdgeInfo(
     case "away":
       // Away walls are ON y edge (far side), extend along x
       if (
-        wall.position.y === floor.position.y + floor.config.times.y &&
+        wall.position.y === floor.position.y + floorTimesCompleted.y &&
         wall.position.x >= floor.position.x &&
         wall.position.x < floorEnd.x
       ) {
@@ -133,7 +136,7 @@ function getWallEdgeInfo(
           isOnFloorEdge: true,
           wallFullySpansFloor:
             wall.position.x === floor.position.x &&
-            wTimes.x === floor.config.times.x,
+            wTimes.x === floorTimesCompleted.x,
           wallTouchesFloorEnd: wall.position.x + (wTimes.x ?? 1) === floorEnd.x,
         };
       }
@@ -142,7 +145,7 @@ function getWallEdgeInfo(
     case "left":
       // Left walls are ON x edge (far side), extend along y
       if (
-        wall.position.x === floor.position.x + floor.config.times.x &&
+        wall.position.x === floor.position.x + floorTimesCompleted.x &&
         wall.position.y >= floor.position.y &&
         wall.position.y < floorEnd.y
       ) {
@@ -155,7 +158,7 @@ function getWallEdgeInfo(
           isOnFloorEdge: true,
           wallFullySpansFloor:
             wall.position.y === floor.position.y &&
-            wTimes.y === floor.config.times.y,
+            wTimes.y === floorTimesCompleted.y,
           wallTouchesFloorEnd: wall.position.y + (wTimes.y ?? 1) === floorEnd.y,
         };
       }
@@ -182,7 +185,9 @@ const wallDraggedAlongFloorEnd = (
    */
   floorEnd: number,
 ): EditorJsonItem<"wall"> => {
-  const { tiles } = wall.config;
+  const {
+    config: { tiles },
+  } = wall;
   const movedStart = wall.position[alongAxis] + wallPositionDelta[alongAxis];
   const start = Math.max(movedStart, floorStart);
   const end = Math.min(movedStart + tiles.length, floorEnd);
@@ -283,16 +288,24 @@ const floorEditsForWallChange = (
       floorTimesDelta.y !== 0
     ) {
       // Update the floor preview
-      const newFloorTimes = addXyz(floor.config.times, floorTimesDelta);
+      const {
+        config: { times: floorTimes, ...floorConfigWithoutTimes },
+      } = floor;
+      const newFloorTimes = addXyz(
+        completeTimesXy(floorTimes),
+        floorTimesDelta,
+      );
+      const optimisedFloorTimes = optimiseTimesXyz(
+        completeTimesXyz({ x: newFloorTimes.x, y: newFloorTimes.y }),
+      );
       const floorCopy = {
         ...floor,
         position: addXyz(floor.position, floorPositionDelta),
         config: {
-          ...floor.config,
-          times: {
-            x: newFloorTimes.x,
-            y: newFloorTimes.y,
-          },
+          ...floorConfigWithoutTimes,
+          ...(optimisedFloorTimes !== undefined && {
+            times: optimisedFloorTimes,
+          }),
         },
       } as EditorJsonItem<"floor">;
       edits[floorId] = floorCopy;
@@ -322,7 +335,7 @@ const floorEditsForWallChange = (
         addXyz(
           floor.position,
           floorPositionDelta,
-          floor.config.times,
+          completeTimesXy(floor.config.times),
           floorTimesDelta,
         )[wallEdgeInfo.tangentAxis],
       );
@@ -354,7 +367,9 @@ const isValidEdit = (
     .toArray();
 
   const wallIsOverDoor = (wall: EditorJsonItem<"wall">) => {
-    const { direction } = wall.config;
+    const {
+      config: { direction },
+    } = wall;
     const alongAxis = doorAlongAxis(direction);
     const throughAxis = tangentAxis(direction);
     const wallStart = wall.position[alongAxis];

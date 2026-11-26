@@ -1,6 +1,7 @@
 import { defaultBaseState } from "../../game/gameState/loadRoom/itemDefaultStates";
 import { getBehaviourForItemTypeAndConfig } from "../../game/itemBehaviours/attachBehaviourToItem";
-import { itemBehaviourKey } from "../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../model/itemInPlay/ItemInPlay";
+import { unitXyz } from "../../utils/vectors/vectors";
 import type {
   EditorItemInPlayUnion,
   EditorRoomItemId,
@@ -32,7 +33,12 @@ export const editorGhostWithBrushItem = (
     whichEditorGhost: undefined | WhichEditorGhostOfAnyItemType;
   },
 ): EditorItemInPlayUnion<"editorGhost"> => {
-  const config = { brushItem, drawnGreyedOut, whichEditorGhost };
+  const config = {
+    brushItem,
+    drawnGreyedOut,
+    whichEditorGhost,
+    times: unitXyz,
+  };
   return {
     hash: brushItem.hash,
     id: (jsonItemId === undefined || whichEditorGhost === undefined ?

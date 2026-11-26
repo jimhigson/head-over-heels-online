@@ -27,7 +27,9 @@ export const toSubRoomRedundancy = <RoomId extends string>(
   roomId: RoomId,
   door: JsonItem<"door", RoomId, string>,
 ): ToSubRoomRedundancy | undefined => {
-  const { toRoom } = door.config;
+  const {
+    config: { toRoom },
+  } = door;
   const toSubRoom = door.config.meta?.toSubRoom;
   if (
     toSubRoom === undefined ||

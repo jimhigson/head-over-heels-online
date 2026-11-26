@@ -79,6 +79,7 @@ test("a lamp shines a beam to the room wall", () => {
           z: expect.closeTo(0),
         },
         sourceItemId: "lamp1",
+        times: { x: 1, y: 1, z: 1 },
       },
       state: expect.objectContaining({
         box: { x: 32, y: 16, z: 2, xd: 96, yd: 16, zd: 8 },
@@ -110,6 +111,7 @@ test("the beam is cast on room load, before any game time has passed", () => {
           z: expect.closeTo(0),
         },
         sourceItemId: "lamp1",
+        times: { x: 1, y: 1, z: 1 },
       },
       state: expect.objectContaining({
         box: { x: 32, y: 16, z: 2, xd: 96, yd: 16, zd: 8 },
@@ -245,6 +247,7 @@ test("a mirror reflects the beam 90° towards away", () => {
           z: expect.closeTo(0),
         },
         sourceItemId: "lamp1",
+        times: { x: 1, y: 1, z: 1 },
       },
       state: expect.objectContaining({
         box: { x: 80, y: 32, z: 2, xd: 16, yd: 96, zd: 8 },
@@ -264,6 +267,7 @@ test("a mirror reflects the beam 90° towards away", () => {
           z: expect.closeTo(0),
         },
         sourceItemId: "lamp1",
+        times: { x: 1, y: 1, z: 1 },
       },
       state: expect.objectContaining({
         box: { x: 32, y: 16, z: 2, xd: 48, yd: 16, zd: 8 },
@@ -374,6 +378,7 @@ test("a mirror in the other orientation reflects the beam towards the camera", (
           z: expect.closeTo(0),
         },
         sourceItemId: "lamp1",
+        times: { x: 1, y: 1, z: 1 },
       },
       state: expect.objectContaining({
         box: { x: 32, y: 16, z: 2, xd: 48, yd: 16, zd: 8 },
@@ -391,6 +396,7 @@ test("a mirror in the other orientation reflects the beam towards the camera", (
           z: expect.closeTo(0),
         },
         sourceItemId: "lamp1",
+        times: { x: 1, y: 1, z: 1 },
       },
       state: expect.objectContaining({
         box: { x: 80, y: 0, z: 2, xd: 16, yd: 16, zd: 8 },
@@ -433,6 +439,7 @@ test("two mirrors chain the beam through multiple reflections", () => {
           z: expect.closeTo(0),
         },
         sourceItemId: "lamp1",
+        times: { x: 1, y: 1, z: 1 },
       },
       state: expect.objectContaining({
         box: { x: 80, y: 32, z: 2, xd: 16, yd: 32, zd: 8 },
@@ -450,6 +457,7 @@ test("two mirrors chain the beam through multiple reflections", () => {
           z: expect.closeTo(0),
         },
         sourceItemId: "lamp1",
+        times: { x: 1, y: 1, z: 1 },
       },
       state: expect.objectContaining({
         box: { x: 32, y: 16, z: 2, xd: 48, yd: 16, zd: 8 },
@@ -468,6 +476,7 @@ test("two mirrors chain the beam through multiple reflections", () => {
           z: expect.closeTo(0),
         },
         sourceItemId: "lamp1",
+        times: { x: 1, y: 1, z: 1 },
       },
       state: expect.objectContaining({
         box: { x: 0, y: 64, z: 2, xd: 80, yd: 16, zd: 8 },
@@ -523,6 +532,7 @@ test("colliding with a mirror rotates it, re-routing the light", () => {
           z: expect.closeTo(0),
         },
         sourceItemId: "lamp1",
+        times: { x: 1, y: 1, z: 1 },
       },
       state: expect.objectContaining({
         box: { x: 32, y: 16, z: 2, xd: 48, yd: 16, zd: 8 },
@@ -539,6 +549,7 @@ test("colliding with a mirror rotates it, re-routing the light", () => {
           z: expect.closeTo(0),
         },
         sourceItemId: "lamp1",
+        times: { x: 1, y: 1, z: 1 },
       },
       state: expect.objectContaining({
         box: { x: 80, y: 0, z: 2, xd: 16, yd: 16, zd: 8 },

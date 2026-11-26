@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../../model/itemInPlay/ItemInPlay";
 import { createSoundRenderer } from "../../../../sound/createSoundRenderer";
 import { SoundPanRenderer } from "../../../../sound/SoundPanRenderer";
 import { defaultUserSettings } from "../../../../store/slices/userSettings/defaultUserSettings";

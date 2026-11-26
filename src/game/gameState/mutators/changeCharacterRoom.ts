@@ -1,11 +1,14 @@
 import type { AllUnionFields, Merge } from "type-fest";
 
 import { isSoundId } from "../../../_generated/sfxdex/soundIds";
-import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
+import {
+  itemBehaviourKey,
+  type ItemInPlay,
+} from "../../../model/itemInPlay/ItemInPlay";
 import type {
   PlayableItem,
   UnionOfAllItemInPlayTypes,
-} from "../../../model/ItemInPlayNarrowedUnions";
+} from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import {
   resolveTeleporterLanding,
   type UnresolvableLandingReason,
@@ -34,6 +37,7 @@ import {
   scaleXyz,
   subXyz,
   type Xyz,
+  type XyzBox,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
 import { findCollisionBoxWithIndex } from "../../collision/aabbCollision";
@@ -106,7 +110,9 @@ const verticalDestinationPortal = <
   sourcePortal: ItemInPlay<"portal", RoomId, RoomItemId>,
   toRoom: RoomState<RoomId, RoomItemId>,
 ): ItemInPlay<"portal", RoomId, RoomItemId> | undefined => {
-  const { toSubRoom } = sourcePortal.config;
+  const {
+    config: { toSubRoom },
+  } = sourcePortal;
   if (toSubRoom !== undefined) {
     const subRoomPortal = returningPortals.find(
       ({ config: { subRoom } }) => subRoom === toSubRoom,
@@ -234,6 +240,31 @@ const heelsCarryingLandingTeleporter = <
   return carryingLanding ? heels : undefined;
 };
 
+/**
+ * @returns the position, moved in xy (not z) to be inside the footprint
+ */
+const clampedXyIntoFootprint = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  position: Xyz,
+  playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
+  footprint: XyzBox,
+): Xyz => {
+  const { xd: playableWidth, yd: playableDepth } = playableItem.state.box;
+  return {
+    x: Math.max(
+      footprint.x,
+      Math.min(position.x, footprint.x + footprint.xd - playableWidth),
+    ),
+    y: Math.max(
+      footprint.y,
+      Math.min(position.y, footprint.y + footprint.yd - playableDepth),
+    ),
+    z: position.z,
+  };
+};
+
 const findTeleporterDestinationPosition = <
   RoomId extends string,
   RoomItemId extends string,
@@ -270,30 +301,16 @@ const findTeleporterDestinationPosition = <
   }
 
   const {
-    state: {
-      box: { xd: destW, yd: destD, zd: destH, ...position },
-    },
+    state: { box: destinationBox },
   } = destinationItem;
 
-  const { xd: playerW, yd: playerD } = playableItem.state.box;
-
   const unclamped = addXyz(
-    position,
-    { z: destH },
+    destinationBox,
+    { z: destinationBox.zd },
     positionRelativeToSourcePortal,
   );
 
-  return {
-    x: Math.max(
-      position.x,
-      Math.min(unclamped.x, position.x + destW - playerW),
-    ),
-    y: Math.max(
-      position.y,
-      Math.min(unclamped.y, position.y + destD - playerD),
-    ),
-    z: unclamped.z,
-  };
+  return clampedXyIntoFootprint(unclamped, playableItem, destinationBox);
 };
 
 /**
@@ -586,7 +603,7 @@ export function changeCharacterRoom<
         );
       }
     } else {
-      const newPosition = addXyz(
+      const unclampedPosition = addXyz(
         destinationPortal.state.box,
         destinationPortal.config.relativePoint,
         positionRelativeToSourcePortal,
@@ -605,11 +622,20 @@ export function changeCharacterRoom<
           }
         : {},
       );
-      changeRoom(leavingRoom, toRoom, playableItem, gameState, newPosition);
-
       const {
         config: { direction: portalDirection },
       } = destinationPortal;
+      const newPosition =
+        // a floor or ceiling can be smaller than the one passed through:
+        portalDirection.z !== 0 ?
+          clampedXyIntoFootprint(
+            unclampedPosition,
+            playableItem,
+            destinationPortal.state.box,
+          )
+        : unclampedPosition;
+      changeRoom(leavingRoom, toRoom, playableItem, gameState, newPosition);
+
       if (
         // portal is horizontal (door) - not up or down (floor/ceiling)
         portalDirection.z === 0

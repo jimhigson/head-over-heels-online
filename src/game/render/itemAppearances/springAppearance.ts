@@ -1,6 +1,6 @@
 import type { AnimatedSprite } from "pixi.js";
 
-import { isStoodOn } from "../../../model/StoodOnBy";
+import { isStoodOn } from "../../../model/itemInPlay/StoodOnBy";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { createSprite } from "../createSprite";

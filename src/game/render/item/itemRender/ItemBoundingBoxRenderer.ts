@@ -1,6 +1,6 @@
 import { Color, type ColorSource, Container, Graphics } from "pixi.js";
 
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../../model/itemInPlay/ItemInPlay";
 import { selectShowBoundingBoxTypesSet } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
 import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";

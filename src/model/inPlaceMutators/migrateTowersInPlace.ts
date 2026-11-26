@@ -3,6 +3,7 @@ import type { Xyz } from "../../utils/vectors/vectors";
 import type { JsonItemUnion } from "../json/JsonItem";
 import { typePrefix } from "../json/typePrefix";
 import type { AnyRoomJson } from "../RoomJson";
+import { completeTimesXyz } from "../times";
 import { nextItemIdInItems } from "./nextItemId";
 
 type BlockConfig = Extract<JsonItemUnion, { type: "block" }>["config"];
@@ -42,9 +43,7 @@ export const migrateTowersInPlace = (room: AnyRoomJson): void => {
       continue;
     }
 
-    const timesX = config.times?.x ?? 1;
-    const timesY = config.times?.y ?? 1;
-    const timesZ = config.times?.z ?? 1;
+    const { x: timesX, y: timesY, z: timesZ } = completeTimesXyz(config.times);
 
     const towerConfig = (): BlockConfig =>
       ({

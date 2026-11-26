@@ -1,11 +1,11 @@
 import type { EmptyObject, Merge, SetProperty, Simplify } from "type-fest";
 
-import type { SceneryName } from "../sprites/planets";
-import type { Xy, Xyz } from "../utils/vectors/vectors";
+import type { SceneryName } from "../../sprites/planets";
+import type { Xy, Xyz } from "../../utils/vectors/vectors";
+import type { ItemConfigMap, LiftDirection } from "../json/ItemConfigMap";
+import type { MirrorOrientation } from "../MirrorOrientation";
 import type { ItemInPlayConfig, SwitchSetting } from "./ItemInPlay";
 import type { UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
-import type { ItemConfigMap, LiftDirection } from "./json/ItemConfigMap";
-import type { MirrorOrientation } from "./MirrorOrientation";
 import type { TimedRelationWithOtherItem } from "./TimedRelationWithOtherItem";
 
 /**
@@ -342,9 +342,12 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
     // vector:
     lastPushDirection: undefined | Xyz;
   } & ItemConfigMap<RoomId, RoomItemId, SceneryName>["joystick"]; // copying the config into the state means that these settings are mutable at run-time. eg, changing what the joystick controls using switches
-  teleporter: ItemConfigMap<RoomId, RoomItemId, SceneryName>["teleporter"]; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
+  teleporter: Omit<
+    ItemConfigMap<RoomId, RoomItemId, SceneryName>["teleporter"],
+    "times"
+  >; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
   portableTeleporter: FreeItemState<RoomItemId> &
-    ItemConfigMap<RoomId, RoomItemId, SceneryName>["teleporter"]; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
+    Omit<ItemConfigMap<RoomId, RoomItemId, SceneryName>["teleporter"], "times">; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
 
   deadlyBlock: {
     disabled?: boolean;
@@ -413,7 +416,9 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
     Omit<
       ItemInPlayConfig<"conveyor", RoomId, RoomItemId>,
       /** omit disappearing since it gets this now from @see BaseItemState.disappearing with a slightly different type */
-      "disappearing"
+      | "disappearing"
+      // switches can't change times, so they stay in the config:
+      | "times"
     > // copying the config into the state means that these settings are mutable at run-time. eg, by switches
   >;
   switch: {

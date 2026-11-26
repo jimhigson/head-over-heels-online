@@ -28,13 +28,13 @@ description: Game engine internals reference — vector in-place mutation safety
 
 ## Item Times and Multiplied Items
 
-Items can have a `times` property (Partial<Xyz>) that indicates repetition in 3D space.
+JSON items can have a `times` property (Partial<Xyz>) that indicates repetition in 3D space.
+
+Every in-play item's config has `times: Xyz`, complete, read directly as `item.config.times`. Loading fills it in, with `unitXyz` when the json has none (`unitTimesConfig` for a config with nothing else).
 
 **Type-safe utilities for handling times**:
 - `getJsonItemTimes(item: JsonItemUnion): Xyz` - gets complete times from JSON items
-- `getItemInPlayTimes(item: UnionOfAllItemInPlayTypes): Xyz` - gets complete times from in-play items
 - `completeTimesXyz(times: Partial<Xyz>): Xyz` - fills in missing dimensions with 1
-- Both `getJsonItemTimes` and `getItemInPlayTimes` use internal type guards to avoid `any` types
 
 Walls handle times specially based on their direction and tiles. When creating effects (like bubbles) for items with times, create one effect per segment.
 

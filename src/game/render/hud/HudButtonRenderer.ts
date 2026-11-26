@@ -1,6 +1,6 @@
 import type { Container } from "pixi.js";
 
-import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { PlayableItem } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { RoomState } from "../../../model/RoomState";
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { BooleanAction } from "../../input/actions";

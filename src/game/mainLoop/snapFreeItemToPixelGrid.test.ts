@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import type { FreeItem } from "../../model/ItemInPlayNarrowedUnions";
+import type { FreeItem } from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { snapFreeItemToPixelGrid } from "./snapInactiveItemsToPixelGrid";
 
 const createMockItem = ({

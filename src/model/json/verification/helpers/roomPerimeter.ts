@@ -6,7 +6,7 @@ import {
 } from "../../../../utils/vectors/vectors";
 import type { RoomJson } from "../../../RoomJson";
 import { roomJsonItemsIterable } from "../../../RoomJsonItemIterators";
-import { wallTimes } from "../../../times";
+import { completeTimesXy, wallTimes } from "../../../times";
 import type { VerificationRoomId } from "../verificationTypes";
 
 /** the campaign rooms carry plain-`string` item ids, so stay generic over them */
@@ -27,10 +27,9 @@ export const floorSquares = <RoomItemId extends string>(
     if (item.type !== "floor") {
       continue;
     }
-    const timesX = item.config.times?.x ?? 1;
-    const timesY = item.config.times?.y ?? 1;
-    for (let dx = 0; dx < timesX; dx++) {
-      for (let dy = 0; dy < timesY; dy++) {
+    const timesCompleted = completeTimesXy(item.config.times);
+    for (let dx = 0; dx < timesCompleted.x; dx++) {
+      for (let dy = 0; dy < timesCompleted.y; dy++) {
         squares.add(`${item.position.x + dx},${item.position.y + dy}`);
       }
     }
@@ -53,7 +52,9 @@ const wallAndDoorCovers = <RoomItemId extends string>(
     if (item.type !== "wall" && item.type !== "door") {
       continue;
     }
-    const { direction } = item.config;
+    const {
+      config: { direction },
+    } = item;
     const alongAxis = perpendicularAxisXy(tangentAxis(direction));
     const length =
       item.type === "door" ?

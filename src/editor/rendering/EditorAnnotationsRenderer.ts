@@ -10,7 +10,7 @@ import type {
   ItemTickContext,
 } from "../../game/render/ItemRenderContexts";
 import { TextContainer } from "../../game/render/text/TextContainer";
-import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../model/itemInPlay/ItemInPlay";
 import { getControlTargetJsonItemsInRoom } from "../../model/json/getControlTargetJsonItemsInRoom";
 import { exitGameRoomId } from "../../model/json/ItemConfigMap";
 import type { JsonMovement } from "../../model/json/utilityJsonConfigTypes";
@@ -314,7 +314,9 @@ class EditorAnnotationsRenderer<
           const { rooms } =
             editorStore.getState().levelEditor.campaignInProgress;
 
-          const { toRoom, toItemId } = item.config;
+          const {
+            config: { toRoom, toItemId },
+          } = item;
 
           const toRoomExists =
             // teleporter to finish game:

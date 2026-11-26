@@ -39,10 +39,10 @@ export const addItemFromJsonToRoom = <
     position: originXyz,
   };
 
-  const itemId = `${itemType}/${additionalIdPart}`;
+  const itemId = `${itemType}/${additionalIdPart}` as RoomItemId;
   const [item] = loadItemFromJson(
     itemId,
-    itemJson as JsonItemUnion<RoomId>,
+    itemJson as JsonItemUnion<RoomId, RoomItemId>,
     room.roomJson,
     store.getState().gameInPlay.gameInPlay.planetsLiberated,
     buildRoomJsonDirectionalIndex(roomJsonItemsIterable(room.roomJson)),

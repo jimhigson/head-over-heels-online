@@ -1,9 +1,9 @@
 import type { Merge } from "type-fest";
 
-import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
-import type { SceneryName } from "../sprites/planets";
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type { SceneryName } from "../../sprites/planets";
+import type { CharacterName } from "../modelTypes";
 import type { ItemInPlay, ItemInPlayType } from "./ItemInPlay";
-import type { CharacterName } from "./modelTypes";
 
 /**
  * this file has some specialised narrowed-down unions for items in play

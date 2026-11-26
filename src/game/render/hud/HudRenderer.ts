@@ -1,11 +1,11 @@
 import { type Color, Container, Sprite, type Texture } from "pixi.js";
 
 import { blockSizePx } from "../../../model/blockSizePx";
-import type { ItemInPlayType } from "../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../model/itemInPlay/ItemInPlay";
 import type {
   HeadAbilities,
   HeelsAbilities,
-} from "../../../model/ItemStateMap";
+} from "../../../model/itemInPlay/ItemStateMap";
 import {
   type CharacterName,
   type IndividualCharacterName,

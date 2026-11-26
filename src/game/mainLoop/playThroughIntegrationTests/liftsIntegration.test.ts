@@ -14,12 +14,12 @@ import {
 } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
 import {
   isFreeItem,
   type PlayableItem,
-} from "../../../model/ItemInPlayNarrowedUnions";
-import type { LiftState } from "../../../model/ItemStateMap";
+} from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
+import type { LiftState } from "../../../model/itemInPlay/ItemStateMap";
 import {
   iterateRoomItemEntries,
   roomItemsIterable,

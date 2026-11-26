@@ -4,7 +4,7 @@ import { emptyUserSettings } from "../../../../../store/slices/userSettings/empt
 import { emptyObject } from "../../../../../utils/empty";
 import { blockSizePx } from "../../../../blockSizePx";
 import { defaultRoomHeightBlocks } from "../../../../defaultRoomHeightBlocks";
-import { itemBehaviourKey } from "../../../../ItemInPlay";
+import { itemBehaviourKey } from "../../../../itemInPlay/ItemInPlay";
 import { roomItemsIterable } from "../../../../roomItemsInPlayIterators";
 import { roomSpatialIndexKey } from "../../../../RoomState";
 import type {

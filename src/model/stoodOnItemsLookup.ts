@@ -2,14 +2,14 @@ import type { SetNonNullableDeep } from "type-fest";
 
 import type { UnindexedRoomState } from "../game/gameState/saving/SavedGameState";
 import { coyoteTime } from "../game/physics/mechanicsConstants";
-import { itemBehaviourKey } from "./ItemInPlay";
+import { itemBehaviourKey } from "./itemInPlay/ItemInPlay";
 import type {
   FreeItem,
   UnionOfAllItemInPlayTypes,
-} from "./ItemInPlayNarrowedUnions";
-import type { PlayableState } from "./ItemStateMap";
+} from "./itemInPlay/ItemInPlayNarrowedUnions";
+import type { PlayableState } from "./itemInPlay/ItemStateMap";
+import type { StoodOnBy } from "./itemInPlay/StoodOnBy";
 import type { RoomState } from "./RoomState";
-import type { StoodOnBy } from "./StoodOnBy";
 
 export const itemIsStandingOnSomething = <
   RoomId extends string,

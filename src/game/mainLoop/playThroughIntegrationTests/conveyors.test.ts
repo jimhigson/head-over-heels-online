@@ -6,7 +6,7 @@ import { describedForAllFrameRates } from "../../../_testUtils/describedForAllFr
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { hasCollided } from "../../../_testUtils/playThroughUntilHelpers";
-import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { ItemInPlay } from "../../../model/itemInPlay/ItemInPlay";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 

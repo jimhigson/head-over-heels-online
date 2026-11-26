@@ -2,15 +2,15 @@ import {
   itemBehaviourKey,
   type ItemInPlay,
   type ItemInPlayConfig,
-} from "../../../model/ItemInPlay";
-import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+} from "../../../model/itemInPlay/ItemInPlay";
+import type { PlayableItem } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import {
   addPokeableNumbers,
   pokeableToNumber,
-} from "../../../model/ItemStateMap";
+} from "../../../model/itemInPlay/ItemStateMap";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
-import { emptyObject } from "../../../utils/empty";
+import { unitTimesConfig } from "../../../model/times";
 import {
   addXyz,
   boxWithSize,
@@ -71,16 +71,15 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
       return;
     }
 
-    const config = emptyObject satisfies ItemInPlayConfig<"firedDoughnut">;
     const firedDoughnut: ItemInPlay<"firedDoughnut", RoomId, RoomItemId> = {
       type: "firedDoughnut",
       // fired doughnuts share one synced animation, so the hash (only used to
       // de-synchronise animations) is irrelevant:
       hash: 0,
-      config,
+      config: unitTimesConfig satisfies ItemInPlayConfig<"firedDoughnut">,
       [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
         "firedDoughnut",
-        config,
+        unitTimesConfig,
       ),
       id: `firedDoughnut/${firer.id}/${room.roomTime}` as RoomItemId,
       state: {

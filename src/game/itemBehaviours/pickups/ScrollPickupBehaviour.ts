@@ -1,4 +1,4 @@
-import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { PlayableItem } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
 import { scrollRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";

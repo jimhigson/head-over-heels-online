@@ -1,7 +1,6 @@
 import { describe, expect, test } from "vitest";
 
 import { basicEmptyRoom } from "../../../_testUtils/basicRoom";
-import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { emptyRoomJsonDirectionalIndex } from "../../gameState/loadRoom/buildRoomJsonDirectionalIndex";
@@ -23,7 +22,7 @@ const makeHeels = (position: Xyz) => {
     noPlanetsLiberated,
     emptyRoomJsonDirectionalIndex,
   );
-  return heels as ItemInPlay<"heels">;
+  return heels;
 };
 
 const makeHeadOverHeels = (position: Xyz) => {
@@ -51,8 +50,8 @@ const makeHeadOverHeels = (position: Xyz) => {
   );
 
   return combinePlayablesInSymbiosis({
-    head: head as ItemInPlay<"head">,
-    heels: heels as ItemInPlay<"heels">,
+    head,
+    heels,
   });
 };
 
@@ -68,7 +67,7 @@ const makeOneBlockSizedItemInPlayBlock = (position: Xyz) => {
     noPlanetsLiberated,
     emptyRoomJsonDirectionalIndex,
   );
-  return block as ItemInPlay<"block">;
+  return block;
 };
 
 const makePortableBlock = (position: Xyz) => {
@@ -83,7 +82,7 @@ const makePortableBlock = (position: Xyz) => {
     noPlanetsLiberated,
     emptyRoomJsonDirectionalIndex,
   );
-  return portableBlock as ItemInPlay<"block">;
+  return portableBlock;
 };
 
 describe("checkSpaceAvailableToPutDown", () => {

@@ -30,7 +30,9 @@ export const doorDirectionMismatchVerifier: CampaignVerifier<DoorDirectionMismat
     name: "Door direction mismatch",
     *check(campaign) {
       for (const { roomId, doorId, door } of allDoors(campaign)) {
-        const { toRoom, direction } = door.config;
+        const {
+          config: { toRoom, direction },
+        } = door;
         if (toRoom === exitGameRoomId || !(toRoom in campaign.rooms)) {
           continue;
         }

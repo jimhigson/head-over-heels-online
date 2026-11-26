@@ -4,7 +4,7 @@ import {
 } from "../game/physics/mechanicsConstants";
 import type { ItemTickContext } from "../game/render/ItemRenderContexts";
 import { projectWorldXyzToScreenX } from "../game/render/projections";
-import type { ItemInPlayType } from "../model/ItemInPlay";
+import type { ItemInPlayType } from "../model/itemInPlay/ItemInPlay";
 import { roomItemsIterable } from "../model/roomItemsInPlayIterators";
 import { rotateXyz } from "../utils/vectors/rotateXy";
 import { audioCtx } from "./audioCtx";
@@ -71,7 +71,9 @@ export class SoundPanRenderer<
     let floorsMaxY = 0;
     for (const roomItem of roomItemsIterable(renderContext.room.items)) {
       if (roomItem.type === "floor") {
-        const { naturalFootprint } = roomItem.config;
+        const {
+          config: { naturalFootprint },
+        } = roomItem;
         floorsMaxX = Math.max(
           floorsMaxX,
           naturalFootprint.position.x + naturalFootprint.aabb.x,

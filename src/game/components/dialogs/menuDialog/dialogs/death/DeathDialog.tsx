@@ -1,5 +1,5 @@
 import { livesAfterLosingLife } from "../../../../../../game/gameState/mutators/livesAfterLosingLife";
-import { pokeableToNumber } from "../../../../../../model/ItemStateMap";
+import { pokeableToNumber } from "../../../../../../model/itemInPlay/ItemStateMap";
 import { closeMenuThunk } from "../../../../../../store/slices/gameMenus/closeMenuThunk";
 import type { DeathMenuParam } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";

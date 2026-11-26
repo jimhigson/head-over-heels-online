@@ -3,9 +3,10 @@ import {
   itemBehaviourKey,
   type ItemInPlay,
   type ItemInPlayConfig,
-} from "../../model/ItemInPlay";
-import { itemInPlayCentre } from "../../model/itemInPlayCentre";
-import type { PlayableItem } from "../../model/ItemInPlayNarrowedUnions";
+  type ParticleForCharacter,
+} from "../../model/itemInPlay/ItemInPlay";
+import { itemInPlayCentre } from "../../model/itemInPlay/itemInPlayCentre";
+import type { PlayableItem } from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { playablesInRoom } from "../../model/roomItemsInPlayIterators";
 import type { RoomState } from "../../model/RoomState";
 import { epsilon } from "../../utils/epsilon";
@@ -19,6 +20,7 @@ import {
   boxWithSize,
   lengthXyz,
   originXyz,
+  unitXyz,
   type Xyz,
 } from "../../utils/vectors/vectors";
 import { fastStepsRemaining } from "../gameState/gameStateSelectors/selectPickupAbilities";
@@ -48,16 +50,33 @@ const particleByChance = (
   hashNumberToNumber0to1(itemHash + roomTime) <
   particlesFrequencyPerS * (deltaMS / 1_000);
 
+/**
+ * every particle's config, shared by all particles for the same character
+ */
+const particleConfigs = {
+  head: Object.freeze({ forCharacter: "head", animated: true, times: unitXyz }),
+  heels: Object.freeze({
+    forCharacter: "heels",
+    animated: true,
+    times: unitXyz,
+  }),
+  crown: Object.freeze({
+    forCharacter: "crown",
+    animated: true,
+    times: unitXyz,
+  }),
+} as const satisfies Record<ParticleForCharacter, ItemInPlayConfig<"particle">>;
+
 const createParticleItemInPlay = (
   forItemId: string,
-  forCharacter: ItemInPlayConfig<"particle">["forCharacter"],
+  forCharacter: ParticleForCharacter,
   position: Xyz,
   roomTime: number,
 ): ItemInPlay<"particle"> => {
   // fold roomTime in so particles spawned at the same spot at different
   // times don't start their fade animation in sync:
   const hash = hashXyzToNumber0to1(position, roomTime);
-  const config = { forCharacter, animated: true };
+  const config = particleConfigs[forCharacter];
   return {
     hash,
     id: `particle.${forItemId}.${particlesAdded++}`,

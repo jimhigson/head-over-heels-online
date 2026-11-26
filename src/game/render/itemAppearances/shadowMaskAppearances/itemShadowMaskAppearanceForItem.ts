@@ -1,21 +1,16 @@
-import { Sprite } from "pixi.js";
+import type { Sprite } from "pixi.js";
 
 import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
 import type {
   ItemInPlayConfig,
   ItemInPlayType,
-} from "../../../../model/ItemInPlay";
+} from "../../../../model/itemInPlay/ItemInPlay";
 import type { MonsterJsonConfig } from "../../../../model/json/MonsterJsonConfig";
-import { isMultipliedItem, itemInPlayTimes } from "../../../../model/times";
 import type {
   BaseAnimationIdWithPrefix,
   BaseTextureIdWithPrefix,
 } from "../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import {
-  maybeRenderContainerToSprite,
-  renderContainerToSprite,
-} from "../../../../utils/pixi/bakeContainerToSprite";
-import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
+import { maybeRenderContainerToSprite } from "../../../../utils/pixi/bakeContainerToSprite";
 import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import { octantIndexOfDirection } from "../../../../utils/vectors/octantIndexOfDirection.ts" with { type: "macro" };
 import {
@@ -70,29 +65,16 @@ const shadowMaskStaticAppearance = <T extends ItemInPlayType>(
         // rotates on screen:
         cameraQuarterAngle,
         spritesheet: spritesheets.shadowSpritesheet,
+        // repeated in x and y only:
+        times: { ...subject.config.times, z: 1 },
       } as SpecifiedTextureCreateSpriteOptions;
 
-      const times = itemInPlayTimes(subject);
-
-      const createMaskSprite = (): Sprite => {
-        if (isMultipliedItem(subject)) {
-          return maybeRenderContainerToSprite(
-            pixiRenderer,
-            renderMultipliedXy(options, times),
-          );
-        }
-        const container = createSprite(options);
-        if (container instanceof Sprite) {
-          return container;
-        }
-        return renderContainerToSprite(pixiRenderer, container);
-      };
-
-      const sprite = createMaskSprite();
+      const sprite = maybeRenderContainerToSprite(
+        pixiRenderer,
+        createSprite(options),
+      );
       // move the shadow mask up to the item's top face if multiplied in z:
-      if (times) {
-        sprite.y -= ((times.z ?? 1) - 1) * blockSizePx.z;
-      }
+      sprite.y -= (subject.config.times.z - 1) * blockSizePx.z;
       return sprite;
     },
     multipliedLayoutAngle,
@@ -133,7 +115,9 @@ const shadowMaskFromConfigAppearance =
         cameraQuarterAngle,
       )
     ) {
-      const times = itemInPlayTimes(item);
+      const {
+        config: { times },
+      } = item;
       const baseOptions = spriteOptionsFromConfig(
         item.config as ItemInPlayConfig<T, string, string>,
         cameraQuarterAngle,
@@ -144,20 +128,20 @@ const shadowMaskFromConfigAppearance =
         // rotates on screen:
         cameraQuarterAngle,
         spritesheet: spritesheets.shadowSpritesheet,
+        // repeated in x and y only:
+        times: { ...times, z: 1 },
       } as SpecifiedTextureCreateSpriteOptions;
 
       const appearanceReturn = {
         output: maybeRenderContainerToSprite(
           pixiRenderer,
-          renderMultipliedXy(options, times),
+          createSprite(options),
         ),
         renderProps: { cameraQuarterAngle },
       };
 
-      if (times) {
-        // move the shadow mast up if the item is multiplied in z:
-        appearanceReturn.output.y -= ((times.z ?? 1) - 1) * blockSizePx.z;
-      }
+      // move the shadow mast up if the item is multiplied in z:
+      appearanceReturn.output.y -= (times.z - 1) * blockSizePx.z;
 
       return appearanceReturn;
     }

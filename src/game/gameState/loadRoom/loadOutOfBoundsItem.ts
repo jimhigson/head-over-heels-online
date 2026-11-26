@@ -2,8 +2,8 @@ import {
   itemBehaviourKey,
   type ItemInPlay,
   type ItemInPlayConfig,
-} from "../../../model/ItemInPlay";
-import { emptyObject } from "../../../utils/empty";
+} from "../../../model/itemInPlay/ItemInPlay";
+import { unitTimesConfig } from "../../../model/times";
 import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { defaultBaseState } from "./itemDefaultStates";
@@ -20,7 +20,7 @@ export const loadOutOfBoundsItem = <
   RoomId extends string,
   RoomItemId extends string,
 >(): ItemInPlay<"outOfBounds", RoomId, RoomItemId> => {
-  const config = emptyObject satisfies ItemInPlayConfig<"outOfBounds">;
+  const config = unitTimesConfig satisfies ItemInPlayConfig<"outOfBounds">;
   return {
     type: "outOfBounds",
     // never animates, so the hash (only used to de-synchronise animations) is irrelevant:

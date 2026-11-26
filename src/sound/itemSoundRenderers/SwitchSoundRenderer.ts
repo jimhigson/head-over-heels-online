@@ -1,4 +1,4 @@
-import type { SwitchSetting } from "../../model/ItemInPlay";
+import type { SwitchSetting } from "../../model/itemInPlay/ItemInPlay";
 import { selectBooleanUserSetting } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../store/store";
 import { audioCtx } from "../audioCtx";

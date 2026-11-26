@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
-import { itemBehaviourKey } from "../../../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
+import { itemBehaviourKey } from "../../../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { epsilon } from "../../../../utils/epsilon";
 import type { Xy, Xyz } from "../../../../utils/vectors/vectors";
 import type { CollideableItem } from "../../../collision/aabbCollision";
@@ -62,7 +62,7 @@ const caster = (
   type: "block",
   id: "test",
   hash: 0,
-  config: { style: "artificial" },
+  config: { style: "artificial", times: { x: 1, y: 1, z: 1 } },
   state: { ...defaultBaseState(), box: { x, y, z: 0, xd: w, yd: h, zd: 0 } },
   [itemBehaviourKey]: new TestCasterBehaviour(
     opts?.castsWholeShadows ?? true,

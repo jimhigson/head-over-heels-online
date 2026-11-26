@@ -9,8 +9,8 @@ import {
 import {
   itemBehaviourKey,
   type ItemInPlayType,
-} from "../../../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
+} from "../../../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { emptySet } from "../../../../utils/empty";
 import { renderContainerToSprite } from "../../../../utils/pixi/bakeContainerToSprite";
 import { pixiContainerToString } from "../../../../utils/pixi/pixiContainerToString";

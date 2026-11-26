@@ -1,6 +1,7 @@
 import type { Xyz } from "../utils/vectors/vectors";
 import type { AnyRoomJson } from "./RoomJson";
 import { roomJsonItemsIterable } from "./RoomJsonItemIterators";
+import { completeTimesXy } from "./times";
 
 export type RoomJsonFloorsExtent = {
   from: Xyz;
@@ -34,10 +35,8 @@ export const roomJsonFloorsExtent = (
   const res = roomJsonItemsIterable(roomJson)
     .filter((item) => item.type === "floor")
     .reduce((acc: RoomJsonFloorsExtent, item) => {
-      const {
-        position,
-        config: { times },
-      } = item;
+      const { position } = item;
+      const timesCompleted = completeTimesXy(item.config.times);
       return {
         from: {
           x: Math.min(acc.from.x, position.x),
@@ -45,8 +44,8 @@ export const roomJsonFloorsExtent = (
           z: Math.min(acc.from.z, position.z),
         },
         to: {
-          x: Math.max(acc.to.x, position.x + times.x),
-          y: Math.max(acc.to.y, position.y + times.y),
+          x: Math.max(acc.to.x, position.x + timesCompleted.x),
+          y: Math.max(acc.to.y, position.y + timesCompleted.y),
           z: Math.max(acc.to.z, position.z),
         },
       };

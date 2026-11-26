@@ -4,15 +4,12 @@ import type { WritableDeep } from "type-fest";
 import {
   itemBehaviourKey,
   type ItemInPlayType,
-} from "../../../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
-import type { ConsolidatableConfig } from "../../../../model/json/utilityJsonConfigTypes";
+} from "../../../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
-import { wallInPlayTimes } from "../../../../model/times";
 import { store } from "../../../../store/store";
 import { assignRoundedXy } from "../../../../utils/pixi/assignRoundedXy";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/bakeContainerToSprite";
-import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
 import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import {
   addXy,
@@ -27,7 +24,10 @@ import {
   type CollideableItem,
 } from "../../../collision/aabbCollision";
 import { veryHighZ } from "../../../physics/mechanicsConstants";
-import type { SpecifiedTextureCreateSpriteOptions } from "../../createSprite";
+import {
+  createSprite,
+  type SpecifiedTextureCreateSpriteOptions,
+} from "../../createSprite";
 import { nearCornerOffsetWorldXyz } from "../../itemAppearances/adjustNearCornerForCameraAngle";
 import {
   type ItemShadowAppearanceOutsideView,
@@ -417,13 +417,11 @@ class ItemShadowRenderer<
         existingEntry.lastSeenTick = thisTick;
         ({ shadowSprite } = existingEntry);
       } else {
-        // wasn't casting a shadow before - create a new one. Walls don't carry
-        // a times config (their length comes from their tiles array), so
-        // derive it - their cast shadow must repeat along the wall's length:
-        const times =
-          caster.type === "wall" ?
-            wallInPlayTimes(caster.config)
-          : (caster.config as ConsolidatableConfig).times;
+        // wasn't casting a shadow before - create a new one, repeated along
+        // the caster's times (for walls, their length):
+        const {
+          config: { times },
+        } = caster;
 
         const maybeShadowCastTexture = caster[
           itemBehaviourKey
@@ -446,18 +444,17 @@ class ItemShadowRenderer<
           (flipsOnOddQuarterCameraTurns === true &&
             cameraAngleIsOddQuarterTurn(cameraQuarterAngle));
 
-        const castTextureMultiplied = renderMultipliedXy(
-          {
-            ...shadowCastTexture,
-            flipX,
-            paused: general.paused,
-            // multiplied casts tile along their world axes, which the
-            // projection rotates on screen:
-            cameraQuarterAngle,
-            spritesheet: shadowSpritesheet,
-          } as SpecifiedTextureCreateSpriteOptions,
-          times,
-        );
+        const castTextureMultiplied = createSprite({
+          ...shadowCastTexture,
+          flipX,
+          paused: general.paused,
+          // multiplied casts tile along their world axes, which the
+          // projection rotates on screen:
+          cameraQuarterAngle,
+          spritesheet: shadowSpritesheet,
+          // repeated in x and y only:
+          times: { ...times, z: 1 },
+        } as SpecifiedTextureCreateSpriteOptions);
 
         shadowSprite = maybeRenderContainerToSprite(
           pixiRenderer,

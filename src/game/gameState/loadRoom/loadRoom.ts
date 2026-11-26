@@ -1,8 +1,8 @@
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
 import {
   isFreeItem,
   type UnionOfAllItemInPlayTypes,
-} from "../../../model/ItemInPlayNarrowedUnions";
+} from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import type { RoomJson } from "../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";

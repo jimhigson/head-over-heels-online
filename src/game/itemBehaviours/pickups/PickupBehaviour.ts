@@ -1,17 +1,25 @@
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
-import { itemInPlayCentre } from "../../../model/itemInPlayCentre";
+import {
+  itemBehaviourKey,
+  type ItemInPlay,
+} from "../../../model/itemInPlay/ItemInPlay";
+import { itemInPlayCentre } from "../../../model/itemInPlay/itemInPlayCentre";
 import type {
   PlayableItem,
   UnionOfAllItemInPlayTypes,
-} from "../../../model/ItemInPlayNarrowedUnions";
+} from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
 import { pickupCollected } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { selectRoomPickupsCollected } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import type { WritableNonEmptyTuple } from "../../../utils/types/WritableNonEmptyTuple";
-import { addXyz, boxWithSize, originXyz } from "../../../utils/vectors/vectors";
+import {
+  addXyz,
+  boxWithSize,
+  originXyz,
+  unitXyz,
+} from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
@@ -127,6 +135,7 @@ export abstract class PickupBehaviour extends FreeItemBehaviour {
     const config = {
       textLines,
       appearanceRoomTime: roomTime,
+      times: unitXyz,
     };
     return {
       type: "floatingText",

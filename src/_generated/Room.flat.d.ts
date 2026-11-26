@@ -5676,7 +5676,8 @@ export type RoomJsonSchema = {
            */
           maximumAtOnce?: number;
           /**
-           * size of the emitter's collision volume in blocks; if undefined, the emitter has no volume
+           * size of the emitter's collision volume in blocks; one block if undefined.
+           * Items are emitted centred on it in x and y, standing on its base
            */
           times?: {
             x?: number;
@@ -5688,7 +5689,7 @@ export type RoomJsonSchema = {
            */
           whenPlayerInside?: false | true;
           /**
-           * offset in blocks applied to the emission position, relative to the emitter's origin
+           * offset in blocks applied to the emission position
            */
           offset?: {
             x?: number;
@@ -5837,16 +5838,16 @@ export type RoomJsonSchema = {
                * the room has no floor, but it is included to draw the floor edge
                */
               floorType: "none";
-              times: {
-                x: number;
-                y: number;
+              times?: {
+                x?: number;
+                y?: number;
               };
             }
           | {
               floorType: "deadly";
-              times: {
-                x: number;
-                y: number;
+              times?: {
+                x?: number;
+                y?: number;
               };
             }
           | {
@@ -5860,9 +5861,9 @@ export type RoomJsonSchema = {
                 | "moonbase"
                 | "penitentiary"
                 | "safari";
-              times: {
-                x: number;
-                y: number;
+              times?: {
+                x?: number;
+                y?: number;
               };
             };
       }

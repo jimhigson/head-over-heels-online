@@ -22,8 +22,8 @@ import {
   updateItemPosition,
 } from "../game/gameState/mutators/updateItemBox";
 import { blockSizePx } from "../game/physics/mechanicsConstants";
-import type { ItemInPlay } from "../model/ItemInPlay";
-import type { PlayableActionState } from "../model/ItemStateMap";
+import type { ItemInPlay } from "../model/itemInPlay/ItemInPlay";
+import type { PlayableActionState } from "../model/itemInPlay/ItemStateMap";
 import {
   type Campaign,
   type CharacterName,

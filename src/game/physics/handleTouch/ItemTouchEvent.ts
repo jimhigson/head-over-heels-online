@@ -1,8 +1,8 @@
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
 import type {
   PlayableItem,
   UnionOfAllItemInPlayTypes,
-} from "../../../model/ItemInPlayNarrowedUnions";
+} from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
 import type { Xyz } from "../../../utils/vectors/vectors";

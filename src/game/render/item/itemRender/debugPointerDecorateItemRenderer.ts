@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 
-import { isFreeItem } from "../../../../model/ItemInPlayNarrowedUnions";
+import { isFreeItem } from "../../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { exitGameRoomId } from "../../../../model/json/ItemConfigMap";
 import { findSubRoomForItem } from "../../../../model/map/itemIsInSubRoom";
 import { isWholeRoomSubRooms } from "../../../../model/RoomJson";
@@ -31,7 +31,9 @@ export const debugPointerDecorateItemRenderer: DecorateItemMaybeRenderer = (
       gameState &&
       (item.type === "teleporter" || item.type === "doorFrame")
     ) {
-      const { toRoom } = item.config;
+      const {
+        config: { toRoom },
+      } = item;
       if (toRoom !== exitGameRoomId && toRoom !== undefined) {
         changeCharacterRoom({
           gameState,

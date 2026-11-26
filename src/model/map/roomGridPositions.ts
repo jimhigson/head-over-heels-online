@@ -261,7 +261,9 @@ const visit = <RoomId extends string>(
 
   // doors
   for (const [doorId, doorItem] of doorEntries) {
-    const { toRoom } = doorItem.config;
+    const {
+      config: { toRoom },
+    } = doorItem;
     if (toRoom === exitGameRoomId) {
       continue;
     }

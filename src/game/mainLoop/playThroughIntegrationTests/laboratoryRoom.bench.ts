@@ -1,12 +1,26 @@
+import {
+  BrowserAdapter,
+  DOMAdapter,
+  type ICanvas,
+  type Renderer,
+} from "pixi.js";
 import { test } from "vitest";
 
 import { setupGameForCampaign } from "../../../_testUtils/basicRoom";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
+import type { GameStateWithMockInput } from "../../../_testUtils/MockInputStateTracker";
 import { loadCampaignFromDb } from "../../../db/campaign";
 import { postgrestDbClient } from "../../../db/postgrestDbClient";
 import { jimAtBlockstackingUserId } from "../../../gameInfo";
+import { spritesheetMetas } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { noPlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import { selectUpscale } from "../../../store/slices/upscale/upscaleSlice";
+import { emptyUserSettings } from "../../../store/slices/userSettings/emptyUserSettings";
+import { store } from "../../../store/store";
+import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 import { findStartingRoomsInCampaign } from "../../gameState/loadGameState";
 import { maxSubTickDeltaMs } from "../../physics/mechanicsConstants";
+import type { RoomRenderer } from "../../render/room/RoomRenderer";
 import { progressGameState } from "../progressGameState";
 import { progressWithSubTicks } from "../progressWithSubTicks";
 
@@ -146,6 +160,25 @@ against "laboratory" v16, @ 120fps
   0.5599  1,755.59  1,814.55  1,786.14  1,792.29  1,813.33  ±0.63%  10
 
 (0.5% slower at mean than the type guards - within the noise)
+
+2026-11-27 (branch two-items-on-lift-sound-bug)
+===============================================
+
+against "laboratory" v16, @ 120fps
+
+* in-play configs have their times completed at load (walls too), so nothing
+  completes them per frame
+* new second bench: the same play-through, also rendered up to pixi
+
+  hz      min       max       mean      p75       p99       rme     samples
+  0.5925  1,654.99  1,723.49  1,687.87  1,700.61  1,722.42  ±0.90%  10
+
+rendered up to pixi:
+
+  hz      min       max       mean      p75       p99       rme     samples
+  0.1825  5,337.59  5,594.81  5,481.67  5,519.96  5,590.14  ±0.90%  10
+
+(rendering adds 3,794ms at mean - 0.53ms per frame)
 */
 
 const fps = 120;
@@ -177,3 +210,154 @@ test("load and play laboratory room", async ({ bench }) => {
     },
   ).run({ iterations: 10, time: 0, warmupIterations: 2, warmupTime: 0 });
 });
+
+/*
+The same play-through, with the room's renderers also ticked after every
+frame's physics, as the main loop does. This measures everything up to pixi
+rendering the scene graph - z-sorting, shadows, reflections, appearances, and
+creating and updating pixi's display objects - but not pixi rendering it (its
+transform and batching pass, and the gpu), which never happens here.
+
+The test sets up node with what the room renderers need of a browser before
+benching, so none of it is in place for the bench before it, or timed.
+*/
+test(
+  "load, play and render laboratory room",
+  // more than the default, for 12 iterations of several seconds each:
+  { timeout: 300_000 },
+  async ({ bench }) => {
+    /**
+     * stands in for pixi's renderer, which this bench never draws with:
+     * rendering a scene graph, including baking a container to a texture,
+     * does nothing
+     */
+    const headlessPixiRenderer = { render() {} } as unknown as Renderer;
+
+    type LaboratoryRoomRenderer = RoomRenderer<string, string>;
+
+    /**
+     * a canvas for floating text, whose 2d context measures text by its length
+     * in (8px) characters and draws nothing
+     */
+    const textCanvas = () => {
+      const context: Partial<CanvasRenderingContext2D> = {
+        measureText: (text) => ({ width: text.length * 8 }) as TextMetrics,
+        scale() {},
+        fillText() {},
+      };
+      return { width: 0, height: 0, getContext: () => context };
+    };
+
+    /**
+     * the app ticker's next frame, which node never calls - the bench calls it
+     * once per frame instead, as the browser would, so animated sprites advance
+     */
+    let maybeAnimationFrame: FrameRequestCallback | undefined;
+
+    // no canvas, so pixi's shader programs - made as the render modules load,
+    // so before they are imported - fall back to their default precision:
+    const noCanvas: Partial<ICanvas> = { getContext: () => null };
+    DOMAdapter.set({
+      ...BrowserAdapter,
+      createCanvas: () => noCanvas as ICanvas,
+    });
+    // a document for floating text to rasterise with:
+    const textDocument: Partial<Document> = {
+      fonts: { check: () => true } as Partial<FontFaceSet> as FontFaceSet,
+      createElement: textCanvas as unknown as Document["createElement"],
+    };
+    globalThis.document = textDocument as Document;
+    globalThis.requestAnimationFrame = (animationFrame) => {
+      maybeAnimationFrame = animationFrame;
+      return 1;
+    };
+    globalThis.cancelAnimationFrame = () => {
+      maybeAnimationFrame = undefined;
+    };
+
+    const { Spritesheets } =
+      await import("../../../sprites/spritesheet/Spritesheets");
+    const { noRoomRendererDecorators, RoomRenderer } =
+      await import("../../render/room/RoomRenderer");
+
+    const spritesheets = new Spritesheets();
+    // no image to load, so the sheets are built over Texture.EMPTY:
+    await spritesheets.loadImage(headlessPixiRenderer, "blockstack");
+
+    /**
+     * the room renderer for the current room, made again (as the main loop
+     * does) if the current room has changed
+     */
+    const rendererForCurrentRoom = (
+      gameState: GameStateWithMockInput,
+      previousRoomRenderer: LaboratoryRoomRenderer | undefined,
+    ): LaboratoryRoomRenderer => {
+      const maybeRoom = selectCurrentRoomState<string, string>(gameState);
+      if (import.meta.env.DEV && maybeRoom === undefined) {
+        throw new Error("laboratory game has no current room");
+      }
+      const room = maybeRoom!;
+      if (previousRoomRenderer?.renderContext.room === room) {
+        return previousRoomRenderer;
+      }
+      previousRoomRenderer?.destroy();
+      spritesheets.rebuild(
+        headlessPixiRenderer,
+        room.planet,
+        room.color,
+        spritesheetMetas.blockstack,
+        1,
+      );
+      return new RoomRenderer<string, string>(
+        {
+          room,
+          general: {
+            displaySettings: emptyUserSettings.displaySettings,
+            // muted, so there are no sound renderers:
+            soundSettings: { mute: true },
+            pixiRenderer: headlessPixiRenderer,
+            gameState,
+            paused: false,
+            spritesheetMeta: spritesheetMetas.blockstack,
+            upscale: selectUpscale(store.getState()),
+            cameraAngle: gameState.targetCameraAngle,
+            onScreenControls: false,
+            speedCoefficient: 1,
+            spritesheets,
+            planetsLiberated: noPlanetsLiberated,
+          },
+        },
+        noRoomRendererDecorators,
+      );
+    };
+
+    /**
+     * the time given to animation frames, advanced by a frame's simulated time
+     * on each. Starts now, since the app ticker times its first frame from now
+     */
+    let animationFrameTime = performance.now();
+
+    await bench(
+      `laboratory v${laboratoryCampaign.locator.version} for ${simulatedSeconds}s @ ${fps} fps (${simulatedSeconds * fps} frames), rendered up to pixi`,
+      () => {
+        // the store would otherwise still have the previous iteration's game running:
+        resetStore();
+        const gameState = setupGameForCampaign(laboratoryCampaign);
+        const ticker = progressWithSubTicks(
+          progressGameState,
+          maxSubTickDeltaMs,
+        );
+        let roomRenderer: LaboratoryRoomRenderer | undefined;
+        for (let frame = 0; frame < simulatedSeconds * fps; frame++) {
+          ticker(gameState, 1_000 / fps);
+          gameState.inputStateTracker.mockTick();
+          roomRenderer = rendererForCurrentRoom(gameState, roomRenderer);
+          roomRenderer.tick({ deltaMS: 1_000 / fps, timingRecord: undefined });
+          animationFrameTime += 1_000 / fps;
+          maybeAnimationFrame?.(animationFrameTime);
+        }
+        roomRenderer?.destroy();
+      },
+    ).run({ iterations: 10, time: 0, warmupIterations: 2, warmupTime: 0 });
+  },
+);

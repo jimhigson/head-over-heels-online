@@ -14,7 +14,7 @@ import type {
   Xyz,
 } from "../../utils/vectors/vectors";
 import type { Disappear } from "../Disappear";
-import type { SwitchSetting } from "../ItemInPlay";
+import type { SwitchSetting } from "../itemInPlay/ItemInPlay";
 import type { MirrorOrientation } from "../MirrorOrientation";
 import type { CharacterName } from "../modelTypes";
 import type { JsonItemUnion } from "./JsonItem";
@@ -186,20 +186,26 @@ type TeleporterConfig<RoomId extends string> = ConsolidatableConfig & {
   toRoom?: ExitGameRoomId | RoomId;
 };
 
+/**
+ * floor xy is optional, left out is a unit-size floor, like
+ * for other item types
+ */
+type FloorTimes = Partial<Xy>;
+
 export type FloorConfig<ScN extends SceneryName> =
   | {
       /** the room has no floor, but it is included to draw the floor edge */
       floorType: Subset<FloorType, "none">;
-      times: Xy;
+      times?: FloorTimes;
     }
   | {
       floorType: Subset<FloorType, "deadly">;
-      times: Xy;
+      times?: FloorTimes;
     }
   | {
       floorType: Subset<FloorType, "standable">;
       scenery: ScN;
-      times: Xy;
+      times?: FloorTimes;
     };
 
 export type ItemConfigMap<
@@ -319,13 +325,18 @@ export type ItemConfigMap<
      */
     maximumAtOnce?: number;
 
-    /** size of the emitter's collision volume in blocks; if undefined, the emitter has no volume */
+    /**
+     * size of the emitter's collision volume in blocks; one block if undefined.
+     * Items are emitted centred on it in x and y, standing on its base
+     */
     times?: Partial<Xyz>;
 
     /** if true, only emits while the currently selected player overlaps the emitter's bounds; timing resets on each entry */
     whenPlayerInside?: boolean;
 
-    /** offset in blocks applied to the emission position, relative to the emitter's origin */
+    /**
+     * offset in blocks applied to the emission position
+     */
     offset?: Partial<Xyz>;
 
     /** The sound to play on emit, undefined to use the default sound, or null for no sound */

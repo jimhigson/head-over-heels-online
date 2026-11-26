@@ -1,4 +1,4 @@
-import type { PlayableItem } from "../../model/ItemInPlayNarrowedUnions";
+import type { PlayableItem } from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { CharacterName } from "../../model/modelTypes";
 import type { GameState } from "../gameState/GameState";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";

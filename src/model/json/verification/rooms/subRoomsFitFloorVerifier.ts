@@ -4,6 +4,7 @@ import { entries } from "../../../../utils/entries";
 import type { Xy } from "../../../../utils/vectors/vectors";
 import { isWholeRoomSubRooms, type SubRoom } from "../../../RoomJson";
 import { roomJsonItemsIterable } from "../../../RoomJsonItemIterators";
+import { completeTimesXy } from "../../../times";
 import type { CampaignVerifier } from "../CampaignVerification";
 import { valueMd } from "../helpers/messageMarkdown";
 import { floorSquares } from "../helpers/roomPerimeter";
@@ -32,11 +33,12 @@ type FloorRect = {
 /** the rectangle bounding all of a room's floors; undefined if it has none */
 const floorRect = (room: VerificationRoomJson): FloorRect | undefined => {
   let rect: FloorRect | undefined;
-  for (const {
-    position,
-    config: { times },
-  } of roomJsonItemsIterable(room, "floor")) {
-    const floorTo = { x: position.x + times.x, y: position.y + times.y };
+  for (const { position, config } of roomJsonItemsIterable(room, "floor")) {
+    const timesCompleted = completeTimesXy(config.times);
+    const floorTo = {
+      x: position.x + timesCompleted.x,
+      y: position.y + timesCompleted.y,
+    };
     rect =
       rect === undefined ?
         { from: { x: position.x, y: position.y }, to: floorTo }

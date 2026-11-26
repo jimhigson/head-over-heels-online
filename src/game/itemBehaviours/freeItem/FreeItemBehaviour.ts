@@ -1,12 +1,12 @@
 import {
   itemBehaviourKey,
   type ItemInPlayType,
-} from "../../../model/ItemInPlay";
+} from "../../../model/itemInPlay/ItemInPlay";
 import type {
   FreeItem,
   FreeItemTypes,
   UnionOfAllItemInPlayTypes,
-} from "../../../model/ItemInPlayNarrowedUnions";
+} from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { RoomState } from "../../../model/RoomState";
 import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 import { originXyz } from "../../../utils/vectors/vectors";

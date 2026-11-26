@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
 import { Graph } from "../../../utils/graph/Graph";
 import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";

@@ -6,10 +6,8 @@ import { editorGhostEditorBehaviours } from "../editorGhostEditorBehaviours";
 import type {
   EditorItemInPlayUnion,
   EditorJsonItem,
-  EditorRoomId,
   EditorRoomItemId,
   EditorRoomJson,
-  EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
 import type { WhichEditorGhostOf } from "../WhichEditorGhostOf";
 import { editorGhostOfParticleDot } from "./editorGhostOfParticleDot";
@@ -46,7 +44,7 @@ export const editorGhostsOfLiftEndsAndConnectors = (
       continue;
     }
     takenPositions.push(position);
-    const [brushLift] = loadItemFromJson<EditorRoomId, EditorRoomItemId>(
+    const [brushLift] = loadItemFromJson(
       `${jsonItemId}.${whichEditorGhost}` as EditorRoomItemId,
       { ...liftJson, position },
       roomJson,
@@ -54,7 +52,7 @@ export const editorGhostsOfLiftEndsAndConnectors = (
       noPlanetsLiberated,
     );
     liftEndEditorGhosts.push(
-      editorGhostWithBrushItem(brushLift as EditorUnionOfAllItemInPlayTypes, {
+      editorGhostWithBrushItem(brushLift, {
         jsonItemId,
         drawnGreyedOut: true,
         whichEditorGhost,

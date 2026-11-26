@@ -47,7 +47,7 @@ const missingEnumIssue = ({
 }: MissingEnumIssueOptions) => ({
   severity: "error",
   roomId: "roomA",
-  itemIds: [],
+  itemIds: ["m"],
   msg,
   fixable: true,
   fixText: `Set to ‘${enumValue}’`,
@@ -284,7 +284,7 @@ test("a missing non-enum required property can't be auto-fixed", () => {
     {
       severity: "error",
       roomId: "roomA",
-      itemIds: [],
+      itemIds: ["m"],
       msg: "JSON schema violated at: *items\\.m\\.config* (*required*)",
       fixable: false,
       fixText: "Needs hand-editing",
@@ -315,7 +315,7 @@ test("a scroll pickup is narrowed by two discriminators and reports only the rea
     {
       severity: "error",
       roomId: "roomA",
-      itemIds: [],
+      itemIds: ["m"],
       msg: "JSON schema violated at: *items\\.m\\.config* (*required*)",
       fixable: false,
       fixText: "Needs hand-editing",

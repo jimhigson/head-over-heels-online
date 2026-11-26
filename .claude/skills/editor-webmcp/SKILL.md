@@ -1,7 +1,10 @@
 ---
 name: editor-webmcp
-description: Drive the Head over Heels level editor through its webmcp tools - read and dispatch redux, load campaigns, add and edit rooms, and read and auto-fix the campaign's verification issues. Assumes webmcp access to the editor page already works (see use-web-mcp for getting that). The editor's own getUsageSkill tool returns this same text.
+description: Use this when the user asks to drive the editor.
 ---
+
+See skill `use-web-mcp` to get access to the webmcp tools. Do not offer to fall back to other ways such as driving
+with playwright, use the webmcp in the editor and if they are not available, simply report that instead.
 
 The level editor registers webmcp tools in every build, dev and production. This covers what they do and how to use them well; it assumes you can already call them.
 

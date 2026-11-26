@@ -4,9 +4,9 @@ import {
   itemBehaviourKey,
   type ItemInPlay,
   type ItemInPlayType,
-} from "../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
-import type { LightBeamEnd } from "../../model/ItemStateMap";
+} from "../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
+import type { LightBeamEnd } from "../../model/itemInPlay/ItemStateMap";
 import { typePrefix } from "../../model/json/typePrefix";
 import { reflectedFacingVector } from "../../model/MirrorOrientation";
 import { roomSpatialIndexKey, type RoomState } from "../../model/RoomState";
@@ -18,6 +18,7 @@ import {
   boxWithSize,
   dominantAxisXy,
   perpendicularAxisXy,
+  unitXyz,
   type Xyz,
   type XyzBox,
   xyzBoxEqual,
@@ -135,7 +136,9 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
   // the item the beam is currently being emitted from - initially the lamp,
   // then each mirror it reflects off:
   let source: UnionOfAllItemInPlayTypes<RoomId, RoomItemId> = lamp;
-  let { direction } = lamp.config;
+  let {
+    config: { direction },
+  } = lamp;
 
   // no explicit cycle guard is needed: reflection is reversible, so a lamp's
   // beam traces a simple, non-repeating path of (mirror, direction) states and
@@ -354,7 +357,7 @@ export const castBeamSegments = <
   lamp: ItemInPlay<"lamp", RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
 ): BeamSegment[] => {
-  const lampTimesZ = lamp.config.times?.z ?? 1;
+  const lampTimesZ = lamp.config.times.z;
 
   const segments: BeamSegment[] = [];
   for (let row = 0; row < lampTimesZ; row++) {
@@ -420,6 +423,7 @@ export const tickLampLightBeams = <
       const config = {
         direction: segment.direction,
         sourceItemId: lamp.id,
+        times: unitXyz,
       };
       beam = {
         type: "lightBeam",

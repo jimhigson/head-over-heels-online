@@ -1,4 +1,4 @@
-import type { ItemInPlay } from "../../model/ItemInPlay";
+import type { ItemInPlay } from "../../model/itemInPlay/ItemInPlay";
 import { flippedMirrorOrientation } from "../../model/MirrorOrientation";
 import { neverTime } from "../../utils/neverTime";
 import type { ItemTouchEvent } from "../physics/handleTouch/ItemTouchEvent";

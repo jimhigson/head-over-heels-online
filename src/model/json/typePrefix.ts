@@ -1,4 +1,4 @@
-import type { ItemInPlayType } from "../ItemInPlay";
+import type { ItemInPlayType } from "../itemInPlay/ItemInPlay";
 import type { CharacterName } from "../modelTypes";
 import type { JsonItemType } from "./JsonItem";
 

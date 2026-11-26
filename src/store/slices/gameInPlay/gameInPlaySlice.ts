@@ -9,7 +9,7 @@ import type {
   SavedStoreGameInPlay,
 } from "../../../game/gameState/saving/SavedGameState";
 import type { MarkdownPageName } from "../../../manual/pages";
-import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { PlayableItem } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { ScrollConfig } from "../../../model/json/ItemConfigMap";
 import type {
   CampaignLocator,

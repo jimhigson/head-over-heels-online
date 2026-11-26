@@ -1,5 +1,5 @@
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import type { ItemInPlayType } from "../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../model/itemInPlay/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
 import type { GameState } from "../../gameState/GameState";
 import type { MechanicResult } from "../../physics/MechanicResult";

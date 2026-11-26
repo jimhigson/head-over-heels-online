@@ -2,8 +2,8 @@ import { Container } from "pixi.js";
 import type { WritableDeep } from "type-fest";
 
 import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
+import type { ItemInPlayType } from "../../../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
 import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import { rotateXy } from "../../../../utils/vectors/rotateXy";
@@ -172,12 +172,13 @@ export class ReflectionRenderers {
     const mirror = this.#mirror;
     const {
       state: { box: mirrorBox },
-      config: { times },
+      config: {
+        times: { z: timesZ },
+      },
     } = mirror;
     const { cameraAngle } = this.#renderContext.general;
     const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
 
-    const timesZ = times?.z ?? 1;
     // search further for taller mirrors
     const searchSizeX = reflectionSearchSize.x * timesZ;
     const searchSizeY = reflectionSearchSize.y * timesZ;

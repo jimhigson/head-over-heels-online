@@ -2,8 +2,8 @@ import type { VNode } from "preact";
 import { useMemo } from "preact/hooks";
 
 import { blockSizePx } from "../game/physics/mechanicsConstants";
-import { itemInPlayCentre } from "../model/itemInPlayCentre";
-import type { PlayableItem } from "../model/ItemInPlayNarrowedUnions";
+import { itemInPlayCentre } from "../model/itemInPlay/itemInPlayCentre";
+import type { PlayableItem } from "../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { JsonItemUnion } from "../model/json/JsonItem";
 import {
   type ConsolidatableConfig,

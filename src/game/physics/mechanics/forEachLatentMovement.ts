@@ -1,4 +1,4 @@
-import type { FreeItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { FreeItem } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { RoomState } from "../../../model/RoomState";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";

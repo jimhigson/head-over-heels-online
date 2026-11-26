@@ -410,7 +410,7 @@ const patchLoadedRoomInPlace = (
     jsonItemId: EditorRoomItemId,
     jsonItem: EditorJsonItemUnion,
   ) => {
-    for (const newItem of loadItemFromJson<EditorRoomId, EditorRoomItemId>(
+    for (const newItem of loadItemFromJson(
       jsonItemId,
       jsonItem,
       roomJsonWithPreviews,
@@ -420,7 +420,7 @@ const patchLoadedRoomInPlace = (
     )) {
       addItemToRoom({
         room: loadedRoomState,
-        item: newItem as EditorUnionOfAllItemInPlayTypes,
+        item: newItem,
       });
     }
     for (const editorGhost of editorGhostsForJsonItem(

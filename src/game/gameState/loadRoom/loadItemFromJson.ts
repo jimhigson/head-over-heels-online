@@ -1,11 +1,13 @@
 import { produce } from "immer";
 
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
+import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomJson } from "../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
-import { getJsonItemTimes } from "../../../model/times";
+import { completeTimesXyz, getJsonItemTimes } from "../../../model/times";
 import type {
   PlanetsLiberated,
   RoomPickupsCollected,
@@ -29,7 +31,7 @@ import {
   type RoomDirectionalIndex,
 } from "./buildRoomJsonDirectionalIndex";
 import { initialState } from "./itemDefaultStates";
-import { loadDoor } from "./loadDoor";
+import { type DoorPartType, loadDoor } from "./loadDoor";
 import { loadFloor } from "./loadFloor";
 import { loadPlayer } from "./loadPlayer";
 import { loadWall } from "./loadWalls";
@@ -39,11 +41,24 @@ type ItemConfigMaybeWithMultiplication = {
 };
 
 /**
+ * the in-play times of a json item, which every in-play item has, complete
+ */
+const inPlayTimes = (jsonItem: JsonItemUnion): Xyz => {
+  const { times } = jsonItem.config as ItemConfigMaybeWithMultiplication;
+  return times === undefined ? unitXyz : completeTimesXyz(times);
+};
+
+/**
  * the in-play form of a json item's config: identical except that direction
  * names become unit vectors (the json stays a name) - the engine handles
- * directions only as vectors
+ * directions only as vectors - and its times are always given, complete
  */
-const inPlayConfig = (jsonItem: JsonItemUnion): unknown => {
+const inPlayConfig = (jsonItem: JsonItemUnion, times: Xyz): unknown => ({
+  ...inPlayConfigWithDirectionVectors(jsonItem),
+  times,
+});
+
+const inPlayConfigWithDirectionVectors = (jsonItem: JsonItemUnion): object => {
   switch (jsonItem.type) {
     case "lamp":
     case "conveyor":
@@ -74,11 +89,51 @@ const inPlayConfig = (jsonItem: JsonItemUnion): unknown => {
 };
 
 /**
+ * the playable a json player of `which` character loads as - any other than
+ * head loads as heels
+ */
+type LoadedPlayerType<Which extends CharacterName> =
+  Which extends "head" ? "head" : "heels";
+
+/**
+ * the in-play item types a json item loads as
+ */
+export type LoadedItemType<JsonItemToLoad extends JsonItemUnion> =
+  JsonItemToLoad extends { type: "door" } ? DoorPartType
+  : JsonItemToLoad extends (
+    { type: "player"; config: { which: infer Which extends CharacterName } }
+  ) ?
+    LoadedPlayerType<Which>
+  : // a teleporter loads with an emitter of its help text:
+  JsonItemToLoad extends { type: "teleporter" } ? "emitter" | "teleporter"
+  : JsonItemToLoad["type"];
+
+/**
  * Convert a json item to its in-play item(s). Every in-play item sets its own
  * {@link ItemInPlay.hash hash} (a {@link hashXyzToNumber0to1 hash} of its
  * initial position) inline, used to de-synchronise animations without depending
  * on the (possibly synthesised) item id.
  */
+export function loadItemFromJson<
+  RoomId extends string,
+  RoomItemId extends string,
+  JsonItemToLoad extends JsonItemUnion<RoomId, RoomItemId>,
+>(
+  // the room's item ids come from roomJson, so a mistyped id is the one blamed:
+  jsonItemId: NoInfer<RoomItemId>,
+  jsonItem: JsonItemToLoad,
+  roomJson: RoomJson<RoomId, RoomItemId>,
+  planetsLiberated: PlanetsLiberated,
+  directionalIndex?: RoomDirectionalIndex<RoomId, RoomItemId>,
+  roomPickupsCollected?: RoomPickupsCollected,
+  /** may be safely omitted if we know that the item is not a scroll */
+  scrollsRead?: ScrollsRead,
+  pokesEnabled?: PokesEnabled,
+  itemIdSuffix?: string,
+): Generator<
+  ItemTypeUnion<LoadedItemType<JsonItemToLoad>, RoomId, RoomItemId>,
+  undefined
+>;
 export function* loadItemFromJson<
   RoomId extends string,
   RoomItemId extends string,
@@ -178,11 +233,9 @@ export function* loadItemFromJson<
 
     default: {
       const singleItemAabb = boundingBoxForItem(jsonItem);
+      const times = inPlayTimes(jsonItem);
 
-      const aabb = multiplyBoundingBox(
-        singleItemAabb,
-        (jsonItem.config as ItemConfigMaybeWithMultiplication).times,
-      );
+      const aabb = multiplyBoundingBox(singleItemAabb, times);
 
       let state;
       try {
@@ -195,7 +248,7 @@ export function* loadItemFromJson<
       }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is very difficult to type correctly, but not doing so is also a source of bugs
-      const config = inPlayConfig(jsonItem) as any;
+      const config = inPlayConfig(jsonItem, times) as any;
       // each type's state matches its type, but ts can't follow that through
       // the union of json item types:
       yield {

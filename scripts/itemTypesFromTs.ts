@@ -45,7 +45,7 @@ if (!file || !unionName) {
 const union = extractUnionType(file, unionName);
 
 console.log(`
-import { ItemInPlay, ItemInPlayType } from "../../model/ItemInPlay";
+import { ItemInPlay, ItemInPlayType } from "../../model/itemInPlay/ItemInPlay";
 import { SceneryName } from "../../sprites/planets";
 
 /** this union is only here to check that it is equal to the 'live' one in the codebase */

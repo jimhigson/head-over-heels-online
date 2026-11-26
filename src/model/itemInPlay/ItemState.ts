@@ -1,8 +1,8 @@
-import type { XyzBox } from "../utils/vectors/vectors";
-import type { Disappear } from "./Disappear";
+import type { XyzBox } from "../../utils/vectors/vectors";
+import type { Disappear } from "../Disappear";
+import type { Progression } from "../RoomState";
 import type { ItemInPlayType, SwitchSetting } from "./ItemInPlay";
 import type { ItemStateMap } from "./ItemStateMap";
-import type { Progression } from "./RoomState";
 import type { StoodOnBy } from "./StoodOnBy";
 import type { TimedRelationWithOtherItemOnAxis } from "./TimedRelationWithOtherItem";
 

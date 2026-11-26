@@ -1,8 +1,8 @@
 import type { PartialDeep } from "type-fest";
 import { describe, expect, it } from "vitest";
 
-import type { FreeItem } from "../../../model/ItemInPlayNarrowedUnions";
-import type { LatentMovementFrame } from "../../../model/ItemStateMap";
+import type { FreeItem } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
+import type { LatentMovementFrame } from "../../../model/itemInPlay/ItemStateMap";
 import type { RoomState } from "../../../model/RoomState";
 import type { GameState } from "../../gameState/GameState";
 import {

@@ -1,6 +1,6 @@
 import { expect, type Page } from "@playwright/test";
 
-import type { ItemInPlay } from "../src/model/ItemInPlay";
+import type { ItemInPlay } from "../src/model/itemInPlay/ItemInPlay";
 import type { Campaign } from "../src/model/modelTypes";
 import type { RoomJson } from "../src/model/RoomJson";
 import { advanceUntil, advanceUntilInPage } from "./testUtils/advanceGameTime";

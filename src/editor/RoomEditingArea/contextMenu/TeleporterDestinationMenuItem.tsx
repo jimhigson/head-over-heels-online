@@ -36,7 +36,9 @@ export const TeleporterDestinationMenuItem = () => {
     if (item?.type !== "teleporter") {
       return null;
     }
-    const { toRoom } = item.config;
+    const {
+      config: { toRoom },
+    } = item;
     const toItemId =
       "toItemId" in item.config ? item.config.toItemId : undefined;
     destinationKeys.add(`${toRoom}/${toItemId}`);

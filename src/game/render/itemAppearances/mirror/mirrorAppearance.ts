@@ -38,12 +38,12 @@ const addPivotSprite = (
 ) => {
   const {
     item: {
-      config: { times },
+      config: {
+        times: { z: timesZ },
+      },
     },
     general: { spritesheets, cameraAngle },
   } = renderContext;
-
-  const timesZ = times?.z ?? 1;
 
   const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
   // the pivot caps flip on odd quarter turns so their painted shading stays
@@ -84,8 +84,8 @@ const buildFaceOnPane = (
     },
     general: { spritesheets },
   } = renderContext;
+  const { z: timesZ } = times;
   const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
-  const timesZ = times?.z ?? 1;
 
   const rendering = new Container({ label: "mirror" });
   rendering.addChild(

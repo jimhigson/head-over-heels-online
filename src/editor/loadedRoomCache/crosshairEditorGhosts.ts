@@ -2,11 +2,10 @@ import { collisionBoxes } from "../../game/collision/aabbCollision";
 import { blockSizePx } from "../../game/physics/mechanicsConstants";
 import { cameraReversedAxes } from "../../game/render/itemAppearances/adjustNearCornerForCameraAngle";
 import { defaultRoomHeightBlocks } from "../../model/defaultRoomHeightBlocks";
-import { itemBehaviourKey } from "../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../model/itemInPlay/ItemInPlay";
 import { isXyInFootprints, roomFootprints } from "../../model/roomFootprints";
 import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
 import { roomSpatialIndexKey } from "../../model/RoomState";
-import { getItemInPlayTimes } from "../../model/times";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
   addXyz,
@@ -42,8 +41,8 @@ const firstBlockBox = (
 ): XyzBox => {
   const {
     state: { box },
+    config: { times },
   } = item;
-  const times = getItemInPlayTimes(item);
   const reversedAxes = cameraReversedAxes(cameraAngle);
   const xd = Math.min(box.xd / times.x, blockSizePx.x);
   const yd = Math.min(box.yd / times.y, blockSizePx.y);

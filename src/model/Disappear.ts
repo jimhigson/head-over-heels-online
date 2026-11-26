@@ -1,5 +1,5 @@
 import type { WritableNonEmptyTuple } from "../utils/types/WritableNonEmptyTuple";
-import type { ItemInPlayType } from "./ItemInPlay";
+import type { ItemInPlayType } from "./itemInPlay/ItemInPlay";
 
 export type Disappear = {
   on: "stand" | "touch";

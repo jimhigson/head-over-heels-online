@@ -1,7 +1,7 @@
 import type {
   FreeItem,
   UnionOfAllItemInPlayTypes,
-} from "../../../../model/ItemInPlayNarrowedUnions";
+} from "../../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 
 /**
  * WARN: calling this could cause inconsistent state if the item

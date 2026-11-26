@@ -1,4 +1,4 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../../ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../../../itemInPlay/ItemInPlayNarrowedUnions";
 
 /**
  * a room's item as loaded for play, which is how overlaps are checked

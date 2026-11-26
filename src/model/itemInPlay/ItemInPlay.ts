@@ -5,20 +5,21 @@ import type {
   OverrideProperties,
 } from "type-fest";
 
-import type { WhichEditorGhostOfAnyItemType } from "../editor/WhichEditorGhostOf";
-import type { ItemBehaviour } from "../game/itemBehaviours/ItemBehaviour";
-import type { BracketedSegmentOptions } from "../sound/soundUtils/BracketedSound";
-import type { SceneryName } from "../sprites/planets";
-import type { Xy, Xyz } from "../utils/vectors/vectors";
-import type { UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
-import type { ItemState } from "./ItemState";
-import type { ExitGameRoomId } from "./json/ItemConfigMap";
+import type { WhichEditorGhostOfAnyItemType } from "../../editor/WhichEditorGhostOf";
+import type { ItemBehaviour } from "../../game/itemBehaviours/ItemBehaviour";
+import type { BracketedSegmentOptions } from "../../sound/soundUtils/BracketedSound";
+import type { SceneryName } from "../../sprites/planets";
+import type { Xyz } from "../../utils/vectors/vectors";
+import type { ExitGameRoomId } from "../json/ItemConfigMap";
 import {
   type JsonItemConfig,
   type JsonItemType,
   jsonItemTypes,
-} from "./json/JsonItem";
-import { characterNames, type IndividualCharacterName } from "./modelTypes";
+} from "../json/JsonItem";
+import { characterNames, type IndividualCharacterName } from "../modelTypes";
+import type { ConfigWithCompleteTimesRequired } from "./ConfigWithCompleteTimesRequired";
+import type { UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
+import type { ItemState } from "./ItemState";
 
 /** types of items in-game (as opposed to in the json) - there are a few extra types */
 export const itemInPlayTypes = [
@@ -57,6 +58,11 @@ export const itemInPlayTypes = [
 ] as const;
 
 export type ItemInPlayType = (typeof itemInPlayTypes)[number];
+
+/**
+ * what a particle is given off by
+ */
+export type ParticleForCharacter = "crown" | IndividualCharacterName;
 
 /**
  * symbol to store item behaviour objects against on the items themselves,
@@ -164,7 +170,7 @@ type ItemInPlayConfigMap<
     whichEditorGhost: undefined | WhichEditorGhostOfAnyItemType;
   };
   particle: {
-    forCharacter: "crown" | IndividualCharacterName;
+    forCharacter: ParticleForCharacter;
     /**
      * plays its fade/twinkle anim, or shows a static frame only:
      */
@@ -176,7 +182,7 @@ type ItemInPlayConfigMap<
     JsonItemConfig<"lamp", RoomId, RoomItemId>,
     { direction: Xyz }
   >;
-  wall: OverrideProperties<
+  wall: Merge<
     JsonItemConfig<"wall", RoomId, RoomItemId, ScN>,
     {
       /** the wall's outward-facing world direction as a cardinal unit vector */
@@ -194,7 +200,6 @@ type ItemInPlayConfigMap<
     {
       /** the direction the belt carries items, as a cardinal unit vector */
       direction: Xyz;
-      times?: Partial<Xy>;
     }
   >;
   sceneryPlayer: VectorisedStartDirection<
@@ -241,13 +246,14 @@ export type ItemInPlayConfig<
   RoomId extends string = string,
   RoomItemId extends string = string,
   ScN extends SceneryName = SceneryName,
-> =
+> = ConfigWithCompleteTimesRequired<
   // config type explicitly given for this item type:
   T extends keyof ItemInPlayConfigMap<RoomId, RoomItemId, ScN> ?
     ItemInPlayConfigMap<RoomId, RoomItemId, ScN>[T]
   : // fall back to the config from the json types:
   T extends JsonItemType ? JsonItemConfig<T, RoomId, RoomItemId, ScN>
-  : EmptyObject;
+  : EmptyObject
+>;
 
 export type ItemInPlay<
   T extends ItemInPlayType,

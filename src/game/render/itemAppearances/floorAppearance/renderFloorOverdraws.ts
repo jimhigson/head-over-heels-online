@@ -3,7 +3,6 @@ import { Container } from "pixi.js";
 import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import type { RoomState } from "../../../../model/RoomState";
-import { wallInPlayTimes } from "../../../../model/times";
 import type { AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
 import { axisProjectsReversed } from "../../../../utils/vectors/resolveCameraRelativeVector";
@@ -16,6 +15,7 @@ import {
   perpendicularAxisXy,
   sizeAxes,
   subXyz,
+  unitXyz,
   type Xy,
   type Xyz,
 } from "../../../../utils/vectors/vectors";
@@ -98,9 +98,9 @@ export const renderFloorOverdraws = (
           ...projectWorldXyzToScreenXy(anchorWorld, cameraQuarterAngle),
           times:
             item.type === "wall" ?
-              wallInPlayTimes(item.config)
+              item.config.times
               // doors are two blocks wide:
-            : { [alongAxis]: 2 },
+            : { ...unitXyz, [alongAxis]: 2 },
           cameraQuarterAngle,
           anchor: { x: 0, y: 1 },
           // of the two far sides, apparently-away (dominant +y) flips;

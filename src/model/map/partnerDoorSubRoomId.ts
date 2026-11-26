@@ -16,7 +16,9 @@ export const partnerDoorSubRoomId = <RoomId extends string>(
   /** the door's `toRoom`, known not to be the exit-game room */
   toRoom: RoomId,
 ): string | undefined => {
-  const { toDoor, direction } = door.config;
+  const {
+    config: { toDoor, direction },
+  } = door;
   const candidates = candidatePartnerDoors(
     rooms,
     fromRoomId,

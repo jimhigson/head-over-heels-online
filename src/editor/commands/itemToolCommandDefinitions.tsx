@@ -1107,7 +1107,6 @@ Why a sandwich?`,
         config: {
           floorType: "standable",
           scenery: "blacktooth",
-          times: { x: 1, y: 1 },
         },
       },
     ],

@@ -1,4 +1,4 @@
-import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../model/itemInPlay/ItemInPlay";
 import { boxOverlapVolume, type XyzBox } from "../../utils/vectors/vectors";
 import type { CollideableItem } from "../collision/aabbCollision";
 

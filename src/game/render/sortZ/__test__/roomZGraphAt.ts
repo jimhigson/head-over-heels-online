@@ -1,5 +1,5 @@
 import { blockStackSpritesheetMeta } from "../../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
-import { itemBehaviourKey } from "../../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../../model/itemInPlay/ItemInPlay";
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import type { RoomJson } from "../../../../model/RoomJson";
 import type { RoomState } from "../../../../model/RoomState";

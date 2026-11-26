@@ -1,7 +1,7 @@
 import type { DistributedPick } from "type-fest";
 
-import type { PlayableItem } from "../../model/ItemInPlayNarrowedUnions";
-import type { ItemState } from "../../model/ItemState";
+import type { PlayableItem } from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
+import type { ItemState } from "../../model/itemInPlay/ItemState";
 import type { CharacterName } from "../../model/modelTypes";
 
 /**

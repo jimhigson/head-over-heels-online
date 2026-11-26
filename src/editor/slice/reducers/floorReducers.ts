@@ -27,7 +27,9 @@ export const floorReducers = {
         if (item.type !== "floor" || item.config.floorType === floorType) {
           return;
         }
-        const { times } = item.config;
+        const {
+          config: { times },
+        } = item;
         item.config =
           floorType === "standable" ?
             { floorType, scenery: planet, times }

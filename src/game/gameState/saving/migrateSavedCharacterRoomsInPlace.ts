@@ -9,16 +9,20 @@ import {
   migrateWallConfigInPlace,
   migrateWallTilesInPlace,
 } from "../../../model/inPlaceMutators/migrateWallTilesInPlace";
-import type { ItemInPlay, ItemInPlayConfig } from "../../../model/ItemInPlay";
+import type {
+  ItemInPlay,
+  ItemInPlayConfig,
+} from "../../../model/itemInPlay/ItemInPlay";
 import {
   isFreeItem,
   type UnionOfAllItemInPlayTypes,
-} from "../../../model/ItemInPlayNarrowedUnions";
-import type { ItemState } from "../../../model/ItemState";
-import type { HeelsAbilities } from "../../../model/ItemStateMap";
+} from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
+import type { ItemState } from "../../../model/itemInPlay/ItemState";
+import type { HeelsAbilities } from "../../../model/itemInPlay/ItemStateMap";
 import type { CharacterName } from "../../../model/modelTypes";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import type { Progression } from "../../../model/RoomState";
+import { completeTimesXyz } from "../../../model/times";
 import { valuesIter } from "../../../utils/entries";
 import { neverTime } from "../../../utils/neverTime";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -28,6 +32,7 @@ import {
   type Direction8Xyz,
   doorAlongAxis,
   originXy,
+  unitXyz,
   type Xyz,
   type XyzBox,
 } from "../../../utils/vectors/vectors";
@@ -174,6 +179,20 @@ const migrateLiftVelInPlace = (
 };
 
 /**
+ * saves from before every in-play config had complete times hold them as
+ * the json gave them: partial, or absent
+ *
+ * Needed for saves from v27 (released August 2026) and earlier.
+ */
+const completeConfigTimesInPlace = (
+  item: UnionOfAllItemInPlayTypes<string, string>,
+): void => {
+  const config = item.config as { times?: Partial<Xyz> };
+  config.times =
+    config.times === undefined ? unitXyz : completeTimesXyz(config.times);
+};
+
+/**
  * saves from before joysticks voted on the direction of what they control hold
  * only the time it was last controlled; any votes from then have long expired.
  *
@@ -203,6 +222,7 @@ const migrateHeelsAbilitiesInPlace = (
     deleteWouldPickUpNextInPlace(heelsAbilities.carrying);
     migrateLiftVelInPlace(heelsAbilities.carrying);
     migrateJoystickVotesInPlace(heelsAbilities.carrying);
+    completeConfigTimesInPlace(heelsAbilities.carrying);
     // heels can carry a scenery player:
     if (heelsAbilities.carrying.type === "sceneryPlayer") {
       migrateSceneryPlayerInPlace(heelsAbilities.carrying);
@@ -297,6 +317,14 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
           );
           // Needed for saves from v26 (released July 2026) and earlier.
           vectoriseInPlace(config, "direction");
+          // in-play walls hold their length as times too (completed below):
+          //
+          // Needed for saves from v27 (released August 2026) and earlier.
+          const maybeTiles = config.tiles;
+          if (import.meta.env.DEV && maybeTiles === undefined) {
+            throw new Error("saved wall has no tiles after migrating them");
+          }
+          config.times = { [alongAxis]: maybeTiles!.length };
           break;
         }
         case "floor":
@@ -315,7 +343,7 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
             "direction",
           );
           break;
-        case "conveyor":
+        case "conveyor": {
           // Needed for saves from v26 (released July 2026) and earlier.
           vectoriseInPlace(
             item.config as { direction: MaybeNamedDirection },
@@ -330,6 +358,7 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
           // Needed for saves from v27 (released August 2026) and earlier.
           delete (item.state as { moving?: boolean }).moving;
           break;
+        }
         case "monster":
           // Needed for saves from v26 (released July 2026) and earlier.
           vectoriseInPlace(
@@ -381,6 +410,9 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
           migrateHeelsAbilitiesInPlace(item.state.heels);
           break;
       }
+      // after the migrations above, since some read the times as saved (eg a
+      // legacy wall's length):
+      completeConfigTimesInPlace(item);
     }
   }
 };

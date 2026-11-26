@@ -2,8 +2,8 @@ import type { Tagged } from "type-fest";
 
 import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import type { RoomRenderer } from "../game/render/room/RoomRenderer";
-import type { ItemInPlayType } from "../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../model/ItemInPlayNarrowedUnions";
+import type { ItemInPlayType } from "../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type {
   JsonItem,
   JsonItemType,

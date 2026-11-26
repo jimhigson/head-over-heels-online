@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
 import { quarterCameraAngles } from "../../../utils/vectors/cameraAngleVectors";
 import {
   boxWithSize,

@@ -63,7 +63,7 @@ export const room = inferRoomJson({
         maximum: 6,
         period: 3_000,
       },
-      position: { x: 7, y: 3.5, z: 4 },
+      position: { x: 7, y: 3.5, z: 3 },
       type: "emitter",
     },
     f: {

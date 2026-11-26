@@ -1,6 +1,9 @@
 import { useState } from "preact/hooks";
 
-import { type ItemInPlayType, itemInPlayTypes } from "../../model/ItemInPlay";
+import {
+  type ItemInPlayType,
+  itemInPlayTypes,
+} from "../../model/itemInPlay/ItemInPlay";
 import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
 import type { RoomStateItems } from "../../model/RoomState";
 import { useAppDispatch } from "../../store/hooks";

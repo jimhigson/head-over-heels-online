@@ -1,8 +1,8 @@
-import { itemBehaviourKey } from "../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../model/itemInPlay/ItemInPlay";
 import type {
   SlidingItem,
   UnionOfAllItemInPlayTypes,
-} from "../../model/ItemInPlayNarrowedUnions";
+} from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { epsilon } from "../../utils/epsilon";
 import {
   dotProductXy,

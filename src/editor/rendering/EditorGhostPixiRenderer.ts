@@ -6,7 +6,7 @@ import type {
   ItemLeafRenderContext,
   ItemLeafTickContext,
 } from "../../game/render/ItemRenderContexts";
-import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../model/itemInPlay/ItemInPlay";
 import { blockstackPixiPalettes } from "../../sprites/palette/spritesheetPixiPalettes";
 
 /**

@@ -1,8 +1,8 @@
-import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { PlayableItem } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type {
   HeadAbilities,
   HeelsAbilities,
-} from "../../../model/ItemStateMap";
+} from "../../../model/itemInPlay/ItemStateMap";
 import type {
   CharacterName,
   IndividualCharacterName,

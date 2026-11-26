@@ -3,7 +3,7 @@ import { Container, type Filter } from "pixi.js";
 import {
   itemBehaviourKey,
   type ItemInPlayType,
-} from "../../../../model/ItemInPlay";
+} from "../../../../model/itemInPlay/ItemInPlay";
 import { getRoomItem } from "../../../../model/RoomState";
 import { effectPixiColour } from "../../../../sprites/palette/pixiPalette";
 import { selectHeelsAbilities } from "../../../gameState/gameStateSelectors/selectPlayableItem";

@@ -1,4 +1,4 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { emptyArray } from "../../../utils/empty";
 import { epsilon } from "../../../utils/epsilon";
 import type { Xyz, XyzBox } from "../../../utils/vectors/vectors";

@@ -1,12 +1,15 @@
 import type { ExportedSoundId } from "../../_generated/sfxdex/soundIds";
-import { itemBehaviourKey, type ItemInPlayType } from "../../model/ItemInPlay";
+import {
+  itemBehaviourKey,
+  type ItemInPlayType,
+} from "../../model/itemInPlay/ItemInPlay";
 import type {
   FreeItem,
   PlayableItem,
   PositionlessItem,
   SlidingItem,
   UnionOfAllItemInPlayTypes,
-} from "../../model/ItemInPlayNarrowedUnions";
+} from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { SwitchItemModificationUnion } from "../../model/json/SwitchConfig";
 import type { Campaign, CharacterName } from "../../model/modelTypes";
 import type { RoomState } from "../../model/RoomState";

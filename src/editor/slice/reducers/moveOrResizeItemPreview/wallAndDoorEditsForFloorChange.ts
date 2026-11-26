@@ -1,6 +1,7 @@
 import { generateHoleInWallsForDoor } from "../../../../model/inPlaceMutators/generateHoleInWallsForDoor";
 import { doorWidth } from "../../../../model/json/verification/helpers/roomPerimeter";
 import { iterateRoomJsonItemsWithIds } from "../../../../model/RoomJsonItemIterators";
+import { completeTimesXy } from "../../../../model/times";
 import {
   addXyz,
   directionsXy4,
@@ -35,11 +36,12 @@ export const wallAndDoorEditsForFloorChange = (
   timesDelta: undefined | Xyz,
 ): PreviewedRoomItemEdits | undefined => {
   const floorStart = floor.position;
-  const floorEnd = addXyz(floor.position, floor.config.times);
+  const floorTimesCompleted = completeTimesXy(floor.config.times);
+  const floorEnd = addXyz(floor.position, floorTimesCompleted);
   const newFloorStart = addXyz(floor.position, positionDelta);
   const newFloorEnd = addXyz(
     newFloorStart,
-    timesDelta ? addXyz(floor.config.times, timesDelta) : floor.config.times,
+    timesDelta ? addXyz(floorTimesCompleted, timesDelta) : floorTimesCompleted,
   );
 
   const edits: PreviewedRoomItemEdits = {};
@@ -97,7 +99,9 @@ export const wallAndDoorEditsForFloorChange = (
     > = {};
 
     for (const [id, wall] of lineWalls) {
-      const { tiles } = wall.config;
+      const {
+        config: { tiles },
+      } = wall;
       const wallStart = wall.position[alongAxis] + shift;
 
       // cut back to the floor:

@@ -1,7 +1,7 @@
 import { type AnimatedSprite, Container, type Filter } from "pixi.js";
 
-import type { PlayableItem } from "../../../../model/ItemInPlayNarrowedUnions";
-import type { PlayableActionState } from "../../../../model/ItemStateMap";
+import type { PlayableItem } from "../../../../model/itemInPlay/ItemInPlayNarrowedUnions";
+import type { PlayableActionState } from "../../../../model/itemInPlay/ItemStateMap";
 import type {
   CharacterName,
   IndividualCharacterName,

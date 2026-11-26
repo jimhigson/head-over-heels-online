@@ -1,4 +1,5 @@
 import type { JsonItem } from "../../../model/json/JsonItem";
+import { completeTimesXy } from "../../../model/times";
 import type { RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 
 /**
@@ -15,7 +16,9 @@ export const isDoorOnFloorEdge = <
   door: JsonItem<"door", RoomId, RoomItemId>,
   { floors }: RoomDirectionalIndex<RoomId, RoomItemId>,
 ): boolean => {
-  const { direction } = door.config;
+  const {
+    config: { direction },
+  } = door;
 
   switch (direction) {
     case "right":
@@ -24,11 +27,15 @@ export const isDoorOnFloorEdge = <
       return floors.some((floor) => floor.position.y === door.position.y);
     case "left":
       return floors.some(
-        (floor) => floor.position.x + floor.config.times.x === door.position.x,
+        (floor) =>
+          floor.position.x + completeTimesXy(floor.config.times).x ===
+          door.position.x,
       );
     case "away":
       return floors.some(
-        (floor) => floor.position.y + floor.config.times.y === door.position.y,
+        (floor) =>
+          floor.position.y + completeTimesXy(floor.config.times).y ===
+          door.position.y,
       );
     default:
       return direction satisfies never;

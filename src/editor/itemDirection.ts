@@ -74,7 +74,9 @@ export const directionForItem = (
     };
   }
   if (item.type === "conveyor") {
-    const { direction } = item.config;
+    const {
+      config: { direction },
+    } = item;
     const { x: timesX, y: timesY } = getJsonItemTimes(item);
     const reversedDirection = oppositeDirection(direction);
     return {

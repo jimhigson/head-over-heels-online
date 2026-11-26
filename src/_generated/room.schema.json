@@ -697,7 +697,7 @@
                       },
                       "offset": {
                         "additionalProperties": false,
-                        "description": "offset in blocks applied to the emission position, relative to the emitter's origin",
+                        "description": "offset in blocks applied to the emission position",
                         "properties": {
                           "x": {
                             "type": "number"
@@ -803,7 +803,7 @@
                       },
                       "times": {
                         "additionalProperties": false,
-                        "description": "size of the emitter's collision volume in blocks; if undefined, the emitter has no volume",
+                        "description": "size of the emitter's collision volume in blocks; one block if undefined. Items are emitted centred on it in x and y, standing on its base",
                         "properties": {
                           "x": {
                             "type": "number",
@@ -916,10 +916,10 @@
                             "type": "string"
                           },
                           "times": {
-                            "$ref": "#/definitions/floor_times_9592f7"
+                            "$ref": "#/definitions/floor_times_320877"
                           }
                         },
-                        "required": ["floorType", "times"],
+                        "required": ["floorType"],
                         "type": "object"
                       },
                       {
@@ -930,10 +930,10 @@
                             "type": "string"
                           },
                           "times": {
-                            "$ref": "#/definitions/floor_times_9592f7"
+                            "$ref": "#/definitions/floor_times_320877"
                           }
                         },
-                        "required": ["floorType", "times"],
+                        "required": ["floorType"],
                         "type": "object"
                       },
                       {
@@ -957,10 +957,10 @@
                             "type": "string"
                           },
                           "times": {
-                            "$ref": "#/definitions/floor_times_9592f7"
+                            "$ref": "#/definitions/floor_times_320877"
                           }
                         },
-                        "required": ["floorType", "scenery", "times"],
+                        "required": ["floorType", "scenery"],
                         "type": "object"
                       }
                     ]
@@ -2659,7 +2659,7 @@
       "minItems": 1,
       "type": "array"
     },
-    "floor_times_9592f7": {
+    "floor_times_320877": {
       "additionalProperties": false,
       "properties": {
         "x": {
@@ -2675,7 +2675,6 @@
           "maximum": 99
         }
       },
-      "required": ["x", "y"],
       "type": "object"
     },
     "items_wall_c35ad8": {

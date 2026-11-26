@@ -1,7 +1,7 @@
 import { type Color, Container, type Filter } from "pixi.js";
 
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import { isInRoomModifierItem } from "../../../../model/ItemInPlayNarrowedUnions";
+import type { ItemInPlayType } from "../../../../model/itemInPlay/ItemInPlay";
+import { isInRoomModifierItem } from "../../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import { effectPixiColour } from "../../../../sprites/palette/pixiPalette";
 import { spritesheetPixiPalettes } from "../../../../sprites/palette/spritesheetPixiPalettes";

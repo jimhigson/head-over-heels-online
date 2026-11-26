@@ -1,9 +1,9 @@
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
 import {
   isFreeItem,
   type PlayableItem,
   type UnionOfAllItemInPlayTypes,
-} from "../../../model/ItemInPlayNarrowedUnions";
+} from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { CharacterName } from "../../../model/modelTypes";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { epsilon } from "../../../utils/epsilon";

@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
 import type { Xy } from "../../../utils/vectors/vectors";
 import { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
 import {

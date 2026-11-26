@@ -1,7 +1,7 @@
 import { Container } from "pixi.js";
 
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import { isFreeItem } from "../../../../model/ItemInPlayNarrowedUnions";
+import type { ItemInPlayType } from "../../../../model/itemInPlay/ItemInPlay";
+import { isFreeItem } from "../../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import { renderBobBounce } from "../../../../utils/maths/renderBob";
 import type {

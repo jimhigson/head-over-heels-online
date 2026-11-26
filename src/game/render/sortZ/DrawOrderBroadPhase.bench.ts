@@ -1,6 +1,6 @@
 import { describe, test } from "vitest";
 
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
 import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";
 import { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
 import { blockSizePx } from "../../physics/mechanicsConstants";

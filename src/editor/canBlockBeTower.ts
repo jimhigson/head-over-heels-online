@@ -1,3 +1,4 @@
+import { completeTimesXy } from "../model/times";
 import type { EditorJsonItem } from "./editorTypes";
 
 /**
@@ -5,6 +6,10 @@ import type { EditorJsonItem } from "./editorTypes";
  */
 export const canBlockBeTower = (
   blockConfig: EditorJsonItem<"block">["config"],
-): boolean =>
-  blockConfig.style === "tower" ||
-  ((blockConfig.times?.x ?? 1) <= 1 && (blockConfig.times?.y ?? 1) <= 1);
+): boolean => {
+  const timesCompleted = completeTimesXy(blockConfig.times);
+  return (
+    blockConfig.style === "tower" ||
+    (timesCompleted.x <= 1 && timesCompleted.y <= 1)
+  );
+};

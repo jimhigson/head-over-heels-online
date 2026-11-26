@@ -1,6 +1,6 @@
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import type { ItemInPlayType } from "../../model/ItemInPlay";
-import type { ItemState } from "../../model/ItemState";
+import type { ItemInPlayType } from "../../model/itemInPlay/ItemInPlay";
+import type { ItemState } from "../../model/itemInPlay/ItemState";
 import type { RoomState } from "../../model/RoomState";
 import type { Xyz } from "../../utils/vectors/vectors";
 import type { GameState } from "../gameState/GameState";

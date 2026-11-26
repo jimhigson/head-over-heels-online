@@ -1,7 +1,7 @@
 import {
   itemBehaviourKey,
   type ItemInPlayType,
-} from "../../../../model/ItemInPlay";
+} from "../../../../model/itemInPlay/ItemInPlay";
 import {
   appearanceForItem,
   type ItemTypeWithAppearance,

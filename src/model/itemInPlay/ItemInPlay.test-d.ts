@@ -1,13 +1,14 @@
 import { expectTypeOf, test } from "vitest";
 
-import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type { Xyz } from "../../utils/vectors/vectors";
+import type { EmittableItemJson, ExitGameRoomId } from "../json/ItemConfigMap";
+import type { JsonItemType } from "../json/JsonItem";
 import type { ItemInPlay, ItemInPlayType } from "./ItemInPlay";
 import type {
   FreeItemTypes,
   UnionOfAllItemInPlayTypes,
 } from "./ItemInPlayNarrowedUnions";
-import type { EmittableItemJson, ExitGameRoomId } from "./json/ItemConfigMap";
-import type { JsonItemType } from "./json/JsonItem";
 
 type ItemId = "ball" | "bat";
 
@@ -116,4 +117,10 @@ test("smaller unions are subsets of union of all items types", () => {
     // the generic is already a union. Could probably codegen something similar
     SubsetOfAllItemInPlayTypes
   >;
+});
+
+test("every in-play item has complete times", () => {
+  expectTypeOf<
+    UnionOfAllItemInPlayTypes<"kitchen", ItemId>["config"]["times"]
+  >().toEqualTypeOf<Xyz>();
 });
