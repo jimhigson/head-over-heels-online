@@ -15,7 +15,7 @@ military expansion from Blacktooth and have sent a spy from the planet Freedom
 to see if he can push the slave planets into full rebellion by finding the
 crowns lost when Blacktooth took over.
 
-![](texture-heels_standing_d4)The creatures of *Freedom* are very strange in that they are formed from a pair of
+![](texture-heels_walking_d4_2)The creatures of *Freedom* are very strange in that they are formed from a pair of
 *symbiotic animals* that have adapted to operate either independently or, to their
 mutual advantage, join together as one - **Head** saddled on **Heels**, and indeed these
 *are* their names and both are highly trained spies.
