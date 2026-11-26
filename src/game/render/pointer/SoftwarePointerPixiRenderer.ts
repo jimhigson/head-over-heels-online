@@ -48,7 +48,7 @@ export class SoftwarePointerPixiRenderer {
     const shown =
       pointerOnTube &&
       this.#pointerTracker.overCanvas &&
-      this.#pointerTracker.shown;
+      this.#pointerTracker.active;
     output.visible = shown;
     if (!shown || output.parent === null) {
       return;

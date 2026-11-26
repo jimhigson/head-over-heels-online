@@ -686,6 +686,9 @@ created beneath it is accessible without prompting for permission.
 # Agents
 
 - never write "Co-Authored-By: Claude..." or anything similar in commit messages or anywhere else
+- every commit's author AND committer is `Jim Higson <jim@blockstack.ing>` - nothing else, ever. Never commit as `noreply@anthropic.com`, as "Claude", or with any other name/email mix: a PR commit whose email differs from the merger's makes github's squash merge add a bogus `Co-authored-by:` trailer
+  - cloud sandboxes ship a global git identity of `Claude <noreply@anthropic.com>` (and may set `GIT_AUTHOR_NAME` alone), so before the first commit check `git var GIT_AUTHOR_IDENT` and `git var GIT_COMMITTER_IDENT`; the SessionStart hook sets the repo-local identity, and the pre-commit hook rejects any `@anthropic.com` identity
+  - after every push, confirm on github (eg the github mcp `get_commit` for the branch) that the pushed head's author and committer are `Jim Higson <jim@blockstack.ing>` and linked to the `jimhigson` account; if not, fix the identity, amend, push and check again
 - do not prefix branch names with the name of the agent or a random suffix, WRONG: `claude/fix-menus-3dfa4d` CORRECT: `fix-menus`
 
 ## Comms

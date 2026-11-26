@@ -9,6 +9,12 @@ if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ]; then
   exit 0
 fi
 
+# the sandbox's global git identity is Claude <noreply@anthropic.com> - commits
+# must be authored and committed as Jim (see CLAUDE.md "Agents")
+git -C "${CLAUDE_PROJECT_DIR}" config user.name "Jim Higson"
+git -C "${CLAUDE_PROJECT_DIR}" config user.email "jim@blockstack.ing"
+echo "export GIT_AUTHOR_NAME=\"Jim Higson\" GIT_AUTHOR_EMAIL=\"jim@blockstack.ing\" GIT_COMMITTER_NAME=\"Jim Higson\" GIT_COMMITTER_EMAIL=\"jim@blockstack.ing\"" >> "$CLAUDE_ENV_FILE"
+
 requiredMajor="$(tr -d '[:space:]' <"${CLAUDE_PROJECT_DIR}/.node-version")"
 
 # resolve the newest release of that major (index.json is ordered newest-first)

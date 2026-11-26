@@ -24,7 +24,7 @@ const setSpriteShown = (sprite: HTMLSpanElement, shown: boolean) => {
 
 /**
  * Draws the mouse pointer as a dom sprite instead of using the operating
- * system's cursor, so it is pixel-art and low FPS. Steps aside while the
+ * system's cursor, so it is pixel-art. Steps aside while the
  * pointer is drawn on the television instead
  */
 export const SoftwarePointerDomRenderer = (_emptyProps: EmptyObject) => {
@@ -68,7 +68,7 @@ export const SoftwarePointerDomRenderer = (_emptyProps: EmptyObject) => {
     const render = () => {
       // over dom drawn on top of the canvas, the page draws the pointer
       const shown =
-        pointerTracker.shown && !(pointerOnTube && pointerTracker.overCanvas);
+        pointerTracker.active && !(pointerOnTube && pointerTracker.overCanvas);
       if (shown) {
         // positioned before being shown, so it cannot appear at a stale position
         applyTransform(
