@@ -6,11 +6,11 @@ import Macros from "unplugin-macros/vite";
 import { defineConfig, loadEnv, type PluginOption } from "vite";
 import glsl from "vite-plugin-glsl";
 
-import { glslShortenIdentifiers } from "./buildTools/glslShortenIdentifiers";
-import { hmrOnlyPreact } from "./buildTools/hmrOnlyPreact";
-import { macroRunner } from "./buildTools/macroRunner";
-import { postcssPruneUnused } from "./buildTools/postcssPruneUnused";
-import { devFakeAuthPlugin } from "./scripts/fakeDb/devFakeAuthPlugin";
+import { glslShortenIdentifiers } from "./buildTools/glslShortenIdentifiers.ts";
+import { hmrOnlyPreact } from "./buildTools/hmrOnlyPreact.ts";
+import { macroRunner } from "./buildTools/macroRunner.ts";
+import { postcssPruneUnused } from "./buildTools/postcssPruneUnused.ts";
+import { devFakeAuthPlugin } from "./scripts/fakeDb/devFakeAuthPlugin.ts";
 
 /**
  * vite config specific to the level editor, which is a separately
@@ -57,7 +57,7 @@ export default defineConfig(({ mode: _mode }) => {
   if (mode === "local-db") {
     delete process.env.VITE_SUPABASE_URL;
   }
-  const env = loadEnv(mode, path.resolve(__dirname, "src/editor"));
+  const env = loadEnv(mode, path.resolve(import.meta.dirname, "src/editor"));
   const realSupabaseUrl = env.VITE_SUPABASE_URL;
   if (mode === "local-db") {
     // supabase is effectively on this server (proxied through)
@@ -73,19 +73,22 @@ export default defineConfig(({ mode: _mode }) => {
     base: process.env.EDITOR_BASE ?? (servedFromOwnOrigin ? "/" : "/editor/"),
 
     // Set the root to src/editor since that's where index.html is
-    root: path.resolve(__dirname, "src/editor"),
+    root: path.resolve(import.meta.dirname, "src/editor"),
 
     // don't conflict with the game's vite cache
-    cacheDir: path.resolve(__dirname, ".vite/editor"),
+    cacheDir: path.resolve(import.meta.dirname, ".vite/editor"),
 
     // Use the root public directory for static assets
-    publicDir: path.resolve(__dirname, "public"),
+    publicDir: path.resolve(import.meta.dirname, "public"),
 
     css: {
       postcss: {
         plugins: [
           tailwindcss({
-            config: path.resolve(__dirname, "tailwind.editor.config.ts"),
+            config: path.resolve(
+              import.meta.dirname,
+              "tailwind.editor.config.ts",
+            ),
           }),
           postcssPruneUnused(),
         ],
@@ -107,7 +110,9 @@ export default defineConfig(({ mode: _mode }) => {
       }) as PluginOption,
       glsl({
         minify: true,
-        onComplete: glslShortenIdentifiers(path.resolve(__dirname, "src")),
+        onComplete: glslShortenIdentifiers(
+          path.resolve(import.meta.dirname, "src"),
+        ),
       }),
       ...(mode === "local-db" ?
         [
@@ -160,7 +165,7 @@ export default defineConfig(({ mode: _mode }) => {
 
     resolve: {
       alias: {
-        gfx: path.resolve(__dirname, "./gfx"),
+        gfx: path.resolve(import.meta.dirname, "./gfx"),
       },
     },
 

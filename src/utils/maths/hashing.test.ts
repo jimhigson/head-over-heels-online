@@ -1,5 +1,7 @@
 import { expect, test } from "vitest";
 
+import { blockXyzToFineXyz } from "../../game/render/projections";
+import { addXyz } from "../vectors/vectors";
 import {
   hashNumberToNumber0to1,
   hashXyzToNumber0to1,
@@ -41,6 +43,29 @@ test("spreads small nearby coordinates across the range, not clustered at 0", ()
   // with good spread roughly half land in the upper half of [0, 1)
   expect(aboveHalf).toBeGreaterThan(lowCorner.length / 4);
 });
+
+// items load with fine positions, so neighbours differ by a whole block of them
+test.for(["x", "y", "z"] as const)(
+  "spreads items one block apart along %s as widely as random numbers",
+  (axis) => {
+    const blocks = Array.from({ length: 8 * 8 * 8 }, (_, i) => ({
+      x: i % 8,
+      y: Math.floor(i / 8) % 8,
+      z: Math.floor(i / 64),
+    }));
+    const gaps = blocks.map((block) => {
+      const difference = Math.abs(
+        hashXyzToNumber0to1(blockXyzToFineXyz(block)) -
+          hashXyzToNumber0to1(blockXyzToFineXyz(addXyz(block, { [axis]: 1 }))),
+      );
+      // phases wrap around, so 0.99 is close to 0.01:
+      return Math.min(difference, 1 - difference);
+    });
+    const meanGap = gaps.reduce((total, gap) => total + gap, 0) / gaps.length;
+    // two random phases are 0.25 apart on average
+    expect(meanGap).toBeGreaterThan(0.2);
+  },
+);
 
 test("phaseForSubItem gives a different phase per index", () => {
   expect(phaseForSubItem(0.2, 0)).not.toBe(phaseForSubItem(0.2, 1));

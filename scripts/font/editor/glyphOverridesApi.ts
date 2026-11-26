@@ -4,11 +4,11 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import { promisify } from "node:util";
 import type { Plugin } from "vite";
 
-import { smoothOutputPath } from "../node/buildFont";
+import { smoothOutputPath } from "../node/buildFont.ts";
 import {
   readGlyphOverrides,
   writeGlyphOverrides,
-} from "../node/readGlyphOverrides";
+} from "../node/readGlyphOverrides.ts";
 
 const run = promisify(execFile);
 

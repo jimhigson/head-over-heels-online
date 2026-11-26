@@ -3,15 +3,23 @@ import type { Xyz } from "../vectors/vectors";
 const fnvInitialSeed = 0x81_1c_9d_c5;
 
 /**
- * one round of the FNV-1a-style mixer shared by the numeric hashes: the
- * multiply+shift spreads even small, nearby values across the whole range (a
- * plain xor would leave them clustered near zero)
+ * one round of the FNV-1a-style mixer shared by the numeric hashes, folding in
+ * one value
  */
 const mix = (h: number, value: number): number => {
   h ^= value;
   h = Math.imul(h, 0x01_00_01_93);
   h ^= h >>> 15;
   return h;
+};
+
+/**
+ * a mixed hash as a number in `[0, 1)`. The extra round carries differences in
+ * any bits up to the top ones, so that similar inputs give unrelated results
+ */
+const finaliseToNumber0to1 = (h: number): number => {
+  h = Math.imul(h ^ (h >>> 16), 0x85_eb_ca_6b);
+  return ((h ^ (h >>> 16)) >>> 0) / 0x1_00_00_00_00;
 };
 
 /**
@@ -53,7 +61,7 @@ export const hashStringToNumber0to1 = (str: string): number => {
  * emitted at different times don't start their animations in sync.
  *
  * Positions sit on a 1/8 grid, so each value is scaled to an integer before
- * mixing - see {@link mix} for why plain xor would not do.
+ * mixing.
  */
 export const hashXyzToNumber0to1 = (
   { x, y, z }: Xyz,
@@ -70,7 +78,7 @@ export const hashXyzToNumber0to1 = (
   for (let i = 0; i < extra.length; i++) {
     h = mix(h, Math.round(extra[i] * 8));
   }
-  return (h >>> 0) / 0x1_00_00_00_00;
+  return finaliseToNumber0to1(h);
 };
 
 /**
@@ -89,7 +97,7 @@ export const hashNumberToNumber0to1 = (n: number): number => {
   let h = fnvInitialSeed;
   h = mix(h, Math.floor(n));
   h = mix(h, Math.floor((n % 1) * 0x1_00_00_00_00));
-  return (h >>> 0) / 0x1_00_00_00_00;
+  return finaliseToNumber0to1(h);
 };
 
 /**
