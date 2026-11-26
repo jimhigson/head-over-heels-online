@@ -51,6 +51,10 @@ import { usePlayableTailwindSpriteClassname } from "../tailwindSprites/playableT
 import { ConsoleDumpButton } from "./ConsoleDumpButton";
 import { GameApiConnectedRoomSelect } from "./GameApiConnectedRoomSelect";
 import { jsonStringifySafe } from "./jsonStringifySafe";
+import {
+  canOpenInEditor,
+  openCurrentRoomInEditor,
+} from "./openCurrentRoomInEditor";
 import { summonItemAbovePlayable } from "./summonItemAbovePlayable";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
 
@@ -340,6 +344,20 @@ const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 Pen
               </GoToRoomButton>
             </div>
+            {canOpenInEditor() && (
+              <div class="flex flex-row items-center">
+                <Button
+                  data-test-id="cheats-open-in-editor"
+                  class={cheatsButtonClasses}
+                  onClick={(e) => {
+                    openCurrentRoomInEditor(gameApi);
+                    (e?.currentTarget as HTMLElement | undefined)?.blur();
+                  }}
+                >
+                  Open in editor
+                </Button>
+              </div>
+            )}
             <Heading>debug rendering:</Heading>
             <div class="flex flex-row items-center gap-x-1 justify-center pb-1 pt-1 bg-shadow text-white">
               <span class="text-single-line">BB:</span>

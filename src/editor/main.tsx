@@ -16,6 +16,7 @@ import { LevelEditorLoader } from "./LevelEditorLoader";
 import { registerLoadedRoomCachesListener } from "./loadedRoomCache/loadedRoomCaches";
 import { registerRoomPreviewSnapshotListeners } from "./roomPreview/roomPreviewListeners";
 import { registerNudgeCommitListeners } from "./slice/registerNudgeCommitListeners";
+import { registerOpenRoomFromUrlListener } from "./slice/registerOpenRoomFromUrlListener";
 import { registerOpenRoomsRestoredListener } from "./slice/registerOpenRoomsRestoredListener";
 import { registerPinEditedRoomsTabsListener } from "./slice/registerPinEditedRoomsTabsListener";
 import { registerRoomHistoryListener } from "./slice/registerRoomHistoryListener";
@@ -38,6 +39,9 @@ registerOpenRoomsRestoredListener();
 registerPinEditedRoomsTabsListener();
 registerRoomHistoryListener();
 registerLoadedRoomCachesListener();
+// after the others, so it changes an editor that is restored and following
+// changes:
+registerOpenRoomFromUrlListener();
 registerEditorWebMcpTools();
 
 render(
