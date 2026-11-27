@@ -13,6 +13,7 @@ export type CommandContextValue = {
   listRef: RefObject<HTMLDivElement | null>;
 };
 
-export const CommandContext = createContext<CommandContextValue | undefined>(
-  undefined,
+export const CommandContext = createContext<CommandContextValue>(
+  // don't support root context:
+  null as unknown as CommandContextValue,
 );

@@ -14,4 +14,7 @@ export type MenuBarContextValue = {
   openIndexAtPointerDownRef: RefObject<number | undefined>;
 };
 
-export const MenuBarContext = createContext<MenuBarContextValue | null>(null);
+export const MenuBarContext = createContext<MenuBarContextValue>(
+  // don't support root context:
+  null as unknown as MenuBarContextValue,
+);

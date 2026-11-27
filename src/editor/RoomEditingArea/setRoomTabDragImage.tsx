@@ -2,12 +2,23 @@ import { render } from "preact";
 
 import { store } from "../../store/store";
 import { Tab } from "../../ui/tabs/Tab";
+import {
+  TabBarContext,
+  type TabBarContextValue,
+} from "../../ui/tabs/TabBarContext";
 import type { EditorRoomId } from "../editorTypes";
 import { cssForRoomColour } from "../toolbar/buttons/RoomColourSelect";
 import { buttonSmallHeightClassNames } from "../toolbar/buttonSizeClassNames";
 import { abbreviateRoomId } from "./abbreviateRoomId";
 
 const doNothing = () => {};
+
+// the image's tab is drawn alone, and inactive:
+const dragImageTabBarContext: TabBarContextValue = {
+  activeTabId: undefined,
+  isOnlyTab: false,
+  isSingletonTabCloseable: false,
+};
 
 /**
  * while a room is dragged in to open (eg from the map), show it as the tab it
@@ -34,14 +45,16 @@ export const setRoomTabDragImage = (
   currentTarget.appendChild(imageContainer);
   render(
     <div class="inline-flex">
-      <Tab
-        label={roomId}
-        shortLabel={abbreviateRoomId(roomId)}
-        isActive={false}
-        onSelect={doNothing}
-        class={`command-colours ${buttonSmallHeightClassNames}`}
-        style={cssForRoomColour(roomHue, uncolourised)}
-      />
+      <TabBarContext value={dragImageTabBarContext}>
+        <Tab
+          tabId={roomId}
+          label={roomId}
+          shortLabel={abbreviateRoomId(roomId)}
+          onSelect={doNothing}
+          class={`command-colours ${buttonSmallHeightClassNames}`}
+          style={cssForRoomColour(roomHue, uncolourised)}
+        />
+      </TabBarContext>
     </div>,
     imageContainer,
   );

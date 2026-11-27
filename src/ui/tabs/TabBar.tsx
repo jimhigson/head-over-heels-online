@@ -1,8 +1,8 @@
-import type { ComponentChildren } from "preact";
+import { type ComponentChildren, toChildArray } from "preact";
 import { useMemo, useRef, useState } from "preact/hooks";
 
-import { useOverflowsAtFullSize } from "../useOverflowsAtFullSize";
 import { TabBarContext } from "./TabBarContext";
+import { useFitTabLabels } from "./useFitTabLabels";
 import { useIsAcceptedDragInProgress } from "./useIsAcceptedDragInProgress";
 
 /**
@@ -31,8 +31,10 @@ const dropPlaceAmongTabs = (
 };
 
 export type TabBarProps = {
-  /** the tabs' labels - a change means they are measured again for fit */
-  tabLabels: string[];
+  /**
+   * the `tabId` of the active tab
+   */
+  activeTabId: string;
   /** names the tab list, for assistive tech */
   label: string;
   /**
@@ -53,11 +55,12 @@ export type TabBarProps = {
 };
 
 /**
- * a row of `Tab`s, as wide as they are up to the width available - marked
+ * a row of `Tab`s, as wide as they are up to the width its parent gives it,
+ * with labels shortened only as far as it takes to fit - marked
  * `data-tab-bar`, so what is around it can leave drags over it to the bar
  */
 export const TabBar = ({
-  tabLabels,
+  activeTabId,
   label,
   isSingletonTabCloseable = false,
   acceptsDrag,
@@ -66,17 +69,13 @@ export const TabBar = ({
   children,
 }: TabBarProps) => {
   const tabListRef = useRef<HTMLDivElement>(null);
-  const shortenLabels = useOverflowsAtFullSize(
-    tabListRef,
-    // as one string, so a new array of the same labels isn't a change:
-    tabLabels.join("\n"),
-  );
-  const isOnlyTab = tabLabels.length === 1;
-  const tabBarContext = useMemo(
-    () => ({ shortenLabels, isOnlyTab, isSingletonTabCloseable }),
-    [shortenLabels, isOnlyTab, isSingletonTabCloseable],
-  );
   const barRef = useRef<HTMLDivElement>(null);
+  useFitTabLabels(tabListRef, barRef);
+  const isOnlyTab = toChildArray(children).length === 1;
+  const tabBarContext = useMemo(
+    () => ({ activeTabId, isOnlyTab, isSingletonTabCloseable }),
+    [activeTabId, isOnlyTab, isSingletonTabCloseable],
+  );
   const [dropMarkerX, setDropMarkerX] = useState<number | undefined>(undefined);
   const isAcceptedDragInProgress = useIsAcceptedDragInProgress(acceptsDrag);
 

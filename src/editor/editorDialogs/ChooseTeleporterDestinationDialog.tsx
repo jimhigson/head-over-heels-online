@@ -181,13 +181,13 @@ export const ChooseTeleporterDestinationDialog = ({
           <DialogHeader>Teleport to</DialogHeader>
           {/* the tabs and what they show, with no gap between: */}
           <div class="flex flex-col flex-1 min-h-0">
-            <TabBar tabLabels={destinationTabs} label="Destination">
+            <TabBar activeTabId={tab} label="Destination">
               {destinationTabs.map((destinationTab) => (
                 <Tab
                   key={destinationTab}
+                  tabId={destinationTab}
                   label={destinationTab}
                   shortLabel={destinationTab}
-                  isActive={tab === destinationTab}
                   // a room's items can be picked only once there is a room:
                   disabled={destinationTab === "room" && toRoom === undefined}
                   onSelect={() => setTab(destinationTab)}
