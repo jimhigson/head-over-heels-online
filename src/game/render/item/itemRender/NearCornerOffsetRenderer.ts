@@ -3,8 +3,8 @@ import { Container } from "pixi.js";
 import {
   itemBehaviourKey,
   type ItemInPlayType,
-} from "../../../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
+} from "../../../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import {
   isAtQuarterAngle,
   nearestQuarterAngle,

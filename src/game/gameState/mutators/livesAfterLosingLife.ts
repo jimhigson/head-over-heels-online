@@ -2,7 +2,7 @@ import {
   addPokeableNumbers,
   type PokeableNumber,
   pokeableToNumber,
-} from "../../../model/ItemStateMap";
+} from "../../../model/itemInPlay/ItemStateMap";
 
 export type LivesAfterLosingLife = {
   /**

@@ -31,7 +31,9 @@ export const redundantToSubRoomVerifier: CampaignVerifier<RedundantToSubRoom> =
         if (redundancy === undefined) {
           continue;
         }
-        const { toRoom } = door.config;
+        const {
+          config: { toRoom },
+        } = door;
         const { type: reason, toSubRoom } = redundancy;
         yield {
           severity: "warning",

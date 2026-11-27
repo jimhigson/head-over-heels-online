@@ -1,6 +1,7 @@
 import { originXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import type { JsonItem } from "../json/JsonItem";
 import type { RoomJson, RoomJsonItems } from "../RoomJson";
+import { completeTimesXyz, optimiseTimesXyz } from "../times";
 import { rotatingSceneryWallTiles } from "./rotatingSceneryWallTiles";
 
 const starterRoomWallItems = <RoomId extends string, RoomItemId extends string>(
@@ -45,19 +46,22 @@ const starterRoomWallItems = <RoomId extends string, RoomItemId extends string>(
 export const starterRoom = <RoomId extends string, RoomItemId extends string>(
   size: Xy,
   roomOrigin: Xyz = originXyz,
-): Omit<RoomJson<RoomId, RoomItemId>, "id"> => ({
-  planet: "blacktooth",
-  color: { hue: "cyan", shade: "basic" },
-  items: {
-    ["floor" as RoomItemId]: {
-      type: "floor",
-      config: {
-        floorType: "standable",
-        scenery: "blacktooth",
-        times: size,
+): Omit<RoomJson<RoomId, RoomItemId>, "id"> => {
+  const floorTimes = optimiseTimesXyz(completeTimesXyz(size));
+  return {
+    planet: "blacktooth",
+    color: { hue: "cyan", shade: "basic" },
+    items: {
+      ["floor" as RoomItemId]: {
+        type: "floor",
+        config: {
+          floorType: "standable",
+          scenery: "blacktooth",
+          ...(floorTimes !== undefined && { times: floorTimes }),
+        },
+        position: { ...roomOrigin },
       },
-      position: { ...roomOrigin },
+      ...starterRoomWallItems<RoomId, RoomItemId>(size, roomOrigin),
     },
-    ...starterRoomWallItems<RoomId, RoomItemId>(size, roomOrigin),
-  },
-});
+  };
+};

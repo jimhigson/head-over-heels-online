@@ -19,7 +19,9 @@ export const doorGameEndReducers = {
       { verb: "Make game end", timestamp },
       (item) => {
         if (item.type === "door") {
-          const { direction } = item.config;
+          const {
+            config: { direction },
+          } = item;
           item.config = { direction, toRoom: exitGameRoomId };
         }
       },

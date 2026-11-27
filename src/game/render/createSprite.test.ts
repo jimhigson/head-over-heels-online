@@ -82,10 +82,10 @@ test("creating sprite with {textureId: undefined}", () => {
   expectTypeOf(sprite).toExtend<Sprite>();
 });
 
-test("creating sprite with {textureId, times:{x:2}} gives a container of sprites", () => {
+test("creating sprite with {textureId, times:{x:2,y:1,z:1}} gives a container of sprites", () => {
   const containerSprite = createSprite({
     textureId: "block.artificial",
-    times: { x: 2 },
+    times: { x: 2, y: 1, z: 1 },
     spritesheet,
   });
   expect(containerSprite).toBeInstanceOf(Container);
@@ -100,12 +100,12 @@ test("creating sprite with {textureId, times:{x:2}} gives a container of sprites
   expectTypeOf(containerSprite).toExtend<Container<Sprite> | Sprite>();
 });
 describe("subSpriteVariations", () => {
-  test("creating sprite with {subSpriteVariations, times:{x:2}} gives a container of sprites with different textures", () => {
+  test("creating sprite with {subSpriteVariations, times:{x:2,y:1,z:1}} gives a container of sprites with different textures", () => {
     const containerSprite = createSprite({
       subSpriteVariations(x) {
         return { textureId: x === 0 ? "block.artificial" : "block.organic" };
       },
-      times: { x: 2 },
+      times: { x: 2, y: 1, z: 1 },
       spritesheet,
     });
     expect(containerSprite).toBeInstanceOf(Container);
@@ -121,12 +121,12 @@ describe("subSpriteVariations", () => {
     expectTypeOf(containerSprite).toExtend<Container<Sprite> | Sprite>();
   });
 
-  test("creating sprite with {subSpriteVariations, times:{x:1}} gives a container of sprites", () => {
+  test("creating sprite with {subSpriteVariations, times:{x:1,y:1,z:1}} gives a container of sprites", () => {
     const containerSprite = createSprite({
       subSpriteVariations() {
         return { textureId: "block.artificial" };
       },
-      times: { x: 1 },
+      times: { x: 1, y: 1, z: 1 },
       spritesheet,
     });
     expect(containerSprite).toBeInstanceOf(Container);
@@ -144,7 +144,7 @@ describe("subSpriteVariations", () => {
             { animationId: "dalek" }
           : { textureId: "block.artificial" };
       },
-      times: { x: 2 },
+      times: { x: 2, y: 1, z: 1 },
       spritesheet,
     });
     expect(containerSprite).toBeInstanceOf(Container);
@@ -231,10 +231,10 @@ test("creating sprite with {animationId}", () => {
   expect(animatedSprite).toBeInstanceOf(AnimatedSprite);
   expectTypeOf(animatedSprite).toExtend<AnimatedSprite>();
 });
-test("creating sprite with {animationId, times: {x:2}}", () => {
+test("creating sprite with {animationId, times: {x:2, y:1, z:1}}", () => {
   const containerAnimatedSprite = createSprite({
     animationId: conveyorAnimationId,
-    times: { x: 2 },
+    times: { x: 2, y: 1, z: 1 },
     spritesheet,
   });
 
@@ -269,7 +269,7 @@ test("creating sprite with {animationId, times: undefined}", () => {
   >();
 });
 
-test("spreading CreateSpriteOptions union and adding times: Partial<Xyz> | undefined", () => {
+test("spreading CreateSpriteOptions union and adding times: Xyz | undefined", () => {
   type SpecifiedTextureCreateSpriteOptions = Exclude<
     CreateSpriteOptions,
     {
@@ -284,7 +284,7 @@ test("spreading CreateSpriteOptions union and adding times: Partial<Xyz> | undef
     spritesheet,
   } satisfies SpecifiedTextureCreateSpriteOptions as SpecifiedTextureCreateSpriteOptions;
 
-  const times: Partial<Xyz> | undefined = { x: 2 };
+  const times: undefined | Xyz = { x: 2, y: 1, z: 1 };
   const sprite = createSprite({
     ...baseOptions,
     times,

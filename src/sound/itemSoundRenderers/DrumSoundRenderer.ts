@@ -1,5 +1,5 @@
 import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
-import { isStoodOn } from "../../model/StoodOnBy";
+import { isStoodOn } from "../../model/itemInPlay/StoodOnBy";
 import { audioCtx } from "../audioCtx";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";

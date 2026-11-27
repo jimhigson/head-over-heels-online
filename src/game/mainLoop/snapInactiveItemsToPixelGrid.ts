@@ -1,9 +1,9 @@
-import { itemBehaviourKey } from "../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../model/itemInPlay/ItemInPlay";
 import {
   type FreeItem,
   isFreeItem,
   type UnionOfAllItemInPlayTypes,
-} from "../../model/ItemInPlayNarrowedUnions";
+} from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { forEachRoomItem } from "../../model/roomItemsInPlayIterators";
 import { roomSpatialIndexKey, type RoomState } from "../../model/RoomState";
 import { boxAt, type Xyz } from "../../utils/vectors/vectors";

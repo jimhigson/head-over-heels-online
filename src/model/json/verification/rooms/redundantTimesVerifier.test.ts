@@ -30,6 +30,19 @@ test("flags an item whose times is all 1s", () => {
   });
 });
 
+test("flags a floor whose times is all 1s", () => {
+  const roomA = newRoom();
+  const itemId = addItem(roomA, "floor_test", {
+    type: "floor",
+    position: { x: 2, y: 2, z: 0 },
+    config: { floorType: "none", times: { x: 1, y: 1 } },
+  });
+
+  const [issue] = runCheck(redundantTimesVerifier, campaignOf({ roomA }));
+
+  expect(issue.itemIds).toEqual([itemId]);
+});
+
 test("the fix removes the redundant times, clearing the issue", () => {
   const roomA = newRoom();
   addItem(roomA, "block_test", blockWithTimes({ x: 1, y: 1, z: 1 }));

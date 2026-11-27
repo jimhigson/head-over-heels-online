@@ -1,7 +1,7 @@
 import type { Writable } from "type-fest";
 import { expect, test } from "vitest";
 
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
 import { Graph } from "../../../utils/graph/Graph";
 import type { Xy } from "../../../utils/vectors/vectors";
 import { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";

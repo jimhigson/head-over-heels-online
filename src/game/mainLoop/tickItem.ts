@@ -1,11 +1,14 @@
 import type { KeysOfUnion } from "type-fest";
 
-import { itemBehaviourKey, type ItemInPlayType } from "../../model/ItemInPlay";
+import {
+  itemBehaviourKey,
+  type ItemInPlayType,
+} from "../../model/itemInPlay/ItemInPlay";
 import {
   type FreeItem,
   isFreeItem,
   type UnionOfAllItemInPlayTypes,
-} from "../../model/ItemInPlayNarrowedUnions";
+} from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { RoomState } from "../../model/RoomState";
 import {
   itemIsStandingOnSomething,

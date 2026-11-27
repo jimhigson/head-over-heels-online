@@ -1,5 +1,9 @@
-import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
+import {
+  itemBehaviourKey,
+  type ItemInPlay,
+} from "../../../model/itemInPlay/ItemInPlay";
 import type { EmittableItemJson } from "../../../model/json/ItemConfigMap";
+import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
@@ -8,14 +12,7 @@ import {
   hashNumberToNumber0to1,
   hashXyzToNumber0to1,
 } from "../../../utils/maths/hashing";
-import {
-  addXyz,
-  boxAt,
-  originXyz,
-  productXyz,
-  scaleXyz,
-  subXyz,
-} from "../../../utils/vectors/vectors";
+import { originXyz } from "../../../utils/vectors/vectors";
 import {
   collision2Items,
   hasCollisionItemWithIndex,
@@ -25,8 +22,8 @@ import { buildRoomJsonDirectionalIndex } from "../../gameState/loadRoom/buildRoo
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { periodicItemShouldAct } from "../../physics/mechanics/periodicItemShouldAct";
-import { blockSizePx } from "../../physics/mechanicsConstants";
 import { chooseEmittableRecipe } from "./chooseEmittableRecipe";
+import { emittedItemBox } from "./emittedItemBox";
 
 const hasFewerThanInRoom = <RoomId extends string, RoomItemId extends string>(
   limit: number,
@@ -67,7 +64,7 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
   _deltaMS: number,
 ): undefined => {
   const { id: emitterId, state } = emitter;
-  const { lastEmittedAtRoomTime, quantityEmitted, box } = state;
+  const { lastEmittedAtRoomTime, quantityEmitted } = state;
 
   const { maximum } = state;
 
@@ -123,7 +120,11 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
       // the emitter's config when we set the position for the emitted item, which would
       // likely fail if we loaded from the db via rtk query since it would be immutable
       // - we also later need to write appearanceRoomTime onto the config
-      const emitsCloned = structuredClone(recipe) as EmittableItemJson;
+      const emitsCloned = structuredClone(recipe) as JsonItemUnion<
+        RoomId,
+        RoomItemId,
+        EmittableItemJson["type"]
+      >;
       // temporary position, to be overwritten in item-in-play
       emitsCloned.position = originXyz;
 
@@ -131,7 +132,7 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
         // by using room.roomTime, this emitter can be reset by switch/button
         // and emit another number 1, 2, etc - avoids id clashes so long as no
         // two are emitted at the same millisecond
-        `${emitterId}-${quantityEmitted}-${Math.floor(room.roomTime)}`,
+        `${emitterId}-${quantityEmitted}-${Math.floor(room.roomTime)}` as RoomItemId,
         emitsCloned,
         room.roomJson,
         store.getState().gameInPlay.gameInPlay.planetsLiberated,
@@ -146,21 +147,9 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
         newlyEmittedItem.state.expires = room.roomTime + 3_000;
       }
 
-      const emitOffset =
-        emitter.config.offset ?
-          productXyz({ ...originXyz, ...emitter.config.offset }, blockSizePx)
-        : originXyz;
-
-      const emittedBox = newlyEmittedItem.state.box;
-      newlyEmittedItem.state.box = boxAt(
-        subXyz(
-          addXyz(box, emitOffset),
-          scaleXyz(
-            { x: emittedBox.xd, y: emittedBox.yd, z: emittedBox.zd },
-            0.5,
-          ),
-        ),
-        emittedBox,
+      newlyEmittedItem.state.box = emittedItemBox(
+        emitter,
+        newlyEmittedItem.state.box,
       );
 
       // recompute the hash from the final position plus roomTime, so items

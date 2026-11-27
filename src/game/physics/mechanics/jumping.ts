@@ -2,11 +2,11 @@ import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import {
   itemBehaviourKey,
   type ItemInPlayType,
-} from "../../../model/ItemInPlay";
+} from "../../../model/itemInPlay/ItemInPlay";
 import type {
   PlayableItem,
   UnionOfAllItemInPlayTypes,
-} from "../../../model/ItemInPlayNarrowedUnions";
+} from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { CharacterName } from "../../../model/modelTypes";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { getEffectivelyStandingOnItemIdForPlayable } from "../../../model/stoodOnItemsLookup";

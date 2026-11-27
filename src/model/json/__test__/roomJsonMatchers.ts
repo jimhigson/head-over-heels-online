@@ -7,7 +7,7 @@ import {
 } from "../../../utils/vectors/vectors";
 import { isWholeRoomSubRooms, type RoomJson } from "../../RoomJson";
 import { roomJsonItemsIterable } from "../../RoomJsonItemIterators";
-import { wallTimes } from "../../times";
+import { completeTimesXy, wallTimes } from "../../times";
 import type { WallJsonConfig } from "../WallJsonConfig";
 
 const doorWidth = 2;
@@ -59,9 +59,9 @@ export const roomJsonMatchers = {
         floor.position.y === expected.position.y &&
         floor.position.z === expected.position.z;
 
+      const floorTimes = completeTimesXy(floor.config.times);
       const timesMatches =
-        floor.config.times?.x === expected.times.x &&
-        floor.config.times?.y === expected.times.y;
+        floorTimes.x === expected.times.x && floorTimes.y === expected.times.y;
 
       return positionMatches && timesMatches;
     });
@@ -83,7 +83,8 @@ export const roomJsonMatchers = {
       floors.length > 0 ?
         floors
           .map((f) => {
-            return `  - Position: (${f.position.x}, ${f.position.y}, ${f.position.z}), Times: (${f.config.times?.x ?? 1}, ${f.config.times?.y ?? 1})`;
+            const timesCompleted = completeTimesXy(f.config.times);
+            return `  - Position: (${f.position.x}, ${f.position.y}, ${f.position.z}), Times: (${timesCompleted.x}, ${timesCompleted.y})`;
           })
           .join("\n")
       : "  No floors found in the room";
@@ -226,10 +227,9 @@ export const roomJsonMatchers = {
 
     const floorSet = new Set<string>();
     for (const floor of floors) {
-      const timesX = floor.config.times?.x ?? 1;
-      const timesY = floor.config.times?.y ?? 1;
-      for (let dx = 0; dx < timesX; dx++) {
-        for (let dy = 0; dy < timesY; dy++) {
+      const timesCompleted = completeTimesXy(floor.config.times);
+      for (let dx = 0; dx < timesCompleted.x; dx++) {
+        for (let dy = 0; dy < timesCompleted.y; dy++) {
           floorSet.add(`${floor.position.x + dx},${floor.position.y + dy}`);
         }
       }

@@ -1,4 +1,4 @@
-import type { SwitchSetting } from "../../../model/ItemInPlay";
+import type { SwitchSetting } from "../../../model/itemInPlay/ItemInPlay";
 import type { SwitchConfig } from "../../../model/json/SwitchConfig";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { selectBooleanUserSetting } from "../../../store/slices/gameMenus/gameMenusSelectors";

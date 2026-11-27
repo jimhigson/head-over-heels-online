@@ -1,10 +1,10 @@
 import { Container, type Sprite } from "pixi.js";
 
-import type { ItemInPlayType } from "../../../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../../../model/itemInPlay/ItemInPlay";
 import type {
   PlayableItem,
   UnionOfAllItemInPlayTypes,
-} from "../../../../../model/ItemInPlayNarrowedUnions";
+} from "../../../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { RoomState } from "../../../../../model/RoomState";
 import type { AppSpritesheetWithVariants } from "../../../../../sprites/spritesheet/AppSpritesheet";
 import { variantTextureId } from "../../../../../sprites/spritesheet/variantTextureId";

@@ -13,7 +13,7 @@ const __dirname = path.dirname(__filename);
 // declares the FreeItemTypes union
 const itemInPlayNarrowedUnionsPath = path.resolve(
   __dirname,
-  "../../src/model/ItemInPlayNarrowedUnions.ts",
+  "../../src/model/itemInPlay/ItemInPlayNarrowedUnions.ts",
 );
 
 export class TypeFlattener {

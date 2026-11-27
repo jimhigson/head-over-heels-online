@@ -1,4 +1,4 @@
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../../model/itemInPlay/ItemInPlay";
 import type { ItemSoundRenderer } from "../../../../sound/ItemSoundRenderer";
 import type {
   ItemRenderContext,

@@ -1,7 +1,10 @@
 import type { GameState } from "../game/gameState/GameState";
 import { selectCurrentRoomState } from "../game/gameState/gameStateSelectors/selectCurrentRoomState";
-import type { ItemInPlay, ItemInPlayType } from "../model/ItemInPlay";
-import type { ItemState } from "../model/ItemState";
+import type {
+  ItemInPlay,
+  ItemInPlayType,
+} from "../model/itemInPlay/ItemInPlay";
+import type { ItemState } from "../model/itemInPlay/ItemState";
 import { getRoomItem } from "../model/RoomState";
 import type { TestRoomId } from "./basicRoom";
 

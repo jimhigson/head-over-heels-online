@@ -25,7 +25,7 @@ import {
   nudgeKinds,
   selectCurrentCommittedRoomJson,
   selectCursorRoomSelection,
-  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
+  selectCursorRoomSelectionJsonItemIdsIncludingEditorGhostOwners,
   selectTool,
 } from "../slice/levelEditorSlice";
 import {
@@ -138,7 +138,7 @@ const nudgeCommand = (
 const selectCanShrinkAlong = (state: EditorRootState, direction: Xyz) => {
   const { resizedItemIds, deletedItemIds } = multiplyPlan(
     selectCurrentCommittedRoomJson(state),
-    selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections(state),
+    selectCursorRoomSelectionJsonItemIdsIncludingEditorGhostOwners(state),
     direction,
     "removeOrShrink",
   );
@@ -156,7 +156,8 @@ const selectSelectionIsMultipliable = (
   multiplyType === "multiplyOrGrow" ?
     canMultiplyAlong(
       selectCurrentCommittedRoomJson(state),
-      selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections(state),
+      // a selected editor ghost multiplies its item:
+      selectCursorRoomSelectionJsonItemIdsIncludingEditorGhostOwners(state),
       direction,
     )
   : selectCanShrinkAlong(state, direction);

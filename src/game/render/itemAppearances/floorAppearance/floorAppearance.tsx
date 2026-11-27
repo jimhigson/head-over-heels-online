@@ -1,7 +1,7 @@
 import { Container, Graphics, Rectangle, type Sprite } from "pixi.js";
 
-import type { ItemInPlay } from "../../../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
+import type { ItemInPlay } from "../../../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../../model/roomItemsInPlayIterators";
 import type { RoomState } from "../../../../model/RoomState";
 import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
@@ -246,7 +246,7 @@ const edgeSprites = ({
    * right (d4) or towards (d6)
    */
   slotDirectionIndex: Subset<DirectionIndexXy4, 4 | 6>;
-  times: Partial<Xy> | undefined;
+  times: Xyz;
   position: Partial<Xyz>;
   spritesheet: AppSpritesheetWithVariants;
   cameraQuarterAngle: Xy;
@@ -673,27 +673,27 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
           {
             vector: unitVectors.towards,
             position: { z: drawnAabb.z },
-            times: { x: edgeTilesX },
+            times: { x: edgeTilesX, y: 1, z: 1 },
           },
           {
             vector: unitVectors.away,
             position: { y: drawnAabb.y, z: drawnAabb.z },
-            times: { x: edgeTilesX },
+            times: { x: edgeTilesX, y: 1, z: 1 },
           },
           {
             vector: unitVectors.right,
             position: { z: drawnAabb.z },
-            times: { y: edgeTilesY },
+            times: { x: 1, y: edgeTilesY, z: 1 },
           },
           {
             vector: unitVectors.left,
             position: { x: drawnAabb.x, z: drawnAabb.z },
-            times: { y: edgeTilesY },
+            times: { x: 1, y: edgeTilesY, z: 1 },
           },
         ] as const satisfies ReadonlyArray<{
           vector: Xyz;
           position: Partial<Xyz>;
-          times: Partial<Xy>;
+          times: Xyz;
         }>;
 
         for (const { vector, position, times } of floorEdges) {

@@ -1,4 +1,4 @@
-import { itemBehaviourKey } from "../model/ItemInPlay";
+import { itemBehaviourKey } from "../model/itemInPlay/ItemInPlay";
 import type { Campaign } from "../model/modelTypes";
 import { roomItemsIterable } from "../model/roomItemsInPlayIterators";
 import type { RoomState } from "../model/RoomState";

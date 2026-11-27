@@ -1,4 +1,4 @@
-import type { itemBehaviourKey } from "../../../model/ItemInPlay";
+import type { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
 import type { XyzBox } from "../../../utils/vectors/vectors";
 import type { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
 

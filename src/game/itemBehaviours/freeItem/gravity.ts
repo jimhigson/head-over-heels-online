@@ -1,8 +1,8 @@
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
 import type {
   FreeItem,
   FreeItemTypes,
-} from "../../../model/ItemInPlayNarrowedUnions";
+} from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { RoomState } from "../../../model/RoomState";
 import { originXyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";

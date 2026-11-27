@@ -4,7 +4,7 @@ import { expect, test } from "vitest";
 import blacktooth33v25 from "../../../e2e/fixtures/saves/v25/blacktooth33.json";
 import bookworld21v25 from "../../../e2e/fixtures/saves/v25/bookworld21.json";
 import finalroomV25 from "../../../e2e/fixtures/saves/v25/finalroom.json";
-import { isFreeItem } from "../../model/ItemInPlayNarrowedUnions";
+import { isFreeItem } from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
 import { type Progression, roomSpatialIndexKey } from "../../model/RoomState";
 import { campaign } from "../../originalCampaign/campaign";
@@ -15,7 +15,7 @@ import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlic
 import type { SavedGamesSliceState } from "../../store/slices/savedGames/savedGamesSlice";
 import { badJsonClone } from "../../utils/badJsonClone";
 import { valuesIter } from "../../utils/entries";
-import { xyzEqual } from "../../utils/vectors/vectors";
+import { type Xyz, xyzEqual } from "../../utils/vectors/vectors";
 import type { HudInputState } from "../input/hudInputState";
 import { InputStateTracker } from "../input/InputStateTracker";
 import { loadGameState } from "./loadGameState";
@@ -252,4 +252,76 @@ test("saves without a playable's visual facing load it from its facing", async (
     );
 
   expect(playablesFacingElsewhere).toEqual([]);
+});
+
+test.for([
+  // types that have no times in json, saved without them:
+  [
+    "monster",
+    [
+      { x: 1, y: 1, z: 1 },
+      { x: 1, y: 1, z: 1 },
+    ],
+  ],
+  ["head", [{ x: 1, y: 1, z: 1 }]],
+  // saved without times:
+  ["deadlyBlock", [{ x: 1, y: 1, z: 1 }]],
+  // saved without times:
+  ["teleporter", [{ x: 1, y: 1, z: 1 }]],
+  // saved as `{ y: 8, z: 3 }`:
+  ["barrier", [{ x: 1, y: 8, z: 3 }]],
+  // saved as `{ y: 6 }`:
+  ["conveyor", [{ x: 1, y: 6, z: 1 }]],
+  // saved as `{ x: 8, y: 8 }`:
+  [
+    "floor",
+    [
+      { x: 8, y: 8, z: 1 },
+      { x: 8, y: 8, z: 1 },
+    ],
+  ],
+  // saved with only their tiles - right, towards, away, left, towards; then
+  // right, towards, away, left, left:
+  [
+    "wall",
+    [
+      { x: 1, y: 8, z: 1 },
+      { x: 3, y: 1, z: 1 },
+      { x: 8, y: 1, z: 1 },
+      { x: 1, y: 8, z: 1 },
+      { x: 3, y: 1, z: 1 },
+      { x: 1, y: 8, z: 1 },
+      { x: 8, y: 1, z: 1 },
+      { x: 8, y: 1, z: 1 },
+      { x: 1, y: 3, z: 1 },
+      { x: 1, y: 3, z: 1 },
+    ],
+  ],
+] as const)(
+  "old saves load %ss with their times complete",
+  async ([itemType, expectedTimes]) => {
+    const loadedTimes = (
+      await loadedRoomItemsFromFixture(
+        blacktooth33v25 as unknown as SaveFixture,
+      )
+    )
+      .filter((item) => item.type === itemType)
+      .map(({ config }) => config.times);
+
+    expect(loadedTimes).toEqual(expectedTimes);
+  },
+);
+
+test("old saves load emitters with their times complete", async () => {
+  const emitterTimes = (
+    await loadedRoomItemsFromFixture(finalroomV25 as unknown as SaveFixture)
+  )
+    .filter((item) => item.type === "emitter")
+    .map((emitter) => emitter.config.times);
+
+  // saved without times, then as `{ x: 1, y: 1, z: 0.1 }`:
+  expect(emitterTimes).toEqual<Array<Xyz>>([
+    { x: 1, y: 1, z: 1 },
+    { x: 1, y: 1, z: 0.1 },
+  ]);
 });

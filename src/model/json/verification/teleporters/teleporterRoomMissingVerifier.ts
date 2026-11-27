@@ -2,6 +2,7 @@ import { produce } from "immer";
 
 import { firstUntakenRoomId } from "../../../firstUntakenRoomId";
 import { createNewRoom } from "../../../inPlaceMutators/createNewRoom";
+import { completeTimesXy } from "../../../times";
 import { exitGameRoomId, nowhereRoomId } from "../../ItemConfigMap";
 import type { TeleporterLandingConfig } from "../../resolveTeleporterLanding";
 import type { CampaignVerifier } from "../CampaignVerification";
@@ -32,7 +33,9 @@ export const teleporterRoomMissingVerifier: CampaignVerifier<TeleporterRoomMissi
       for (const { roomId, teleporterId, teleporter } of allTeleporters(
         campaign,
       )) {
-        const { toRoom } = teleporter.config;
+        const {
+          config: { toRoom },
+        } = teleporter;
         // no toRoom is a same-room teleporter:
         if (
           toRoom === undefined ||
@@ -72,11 +75,11 @@ export const teleporterRoomMissingVerifier: CampaignVerifier<TeleporterRoomMissi
         );
       }
       const { position } = teleporter;
-      const times = teleporter.config.times ?? {};
+      const timesCompleted = completeTimesXy(teleporter.config.times);
       const newRoom = createNewRoom<VerificationRoomId, VerificationRoomItemId>(
         {
-          x: Math.max(newRoomMinimumSize.x, position.x + (times.x ?? 1)),
-          y: Math.max(newRoomMinimumSize.y, position.y + (times.y ?? 1)),
+          x: Math.max(newRoomMinimumSize.x, position.x + timesCompleted.x),
+          y: Math.max(newRoomMinimumSize.y, position.y + timesCompleted.y),
         },
         fromRoom.color,
         fromRoom.planet,

@@ -2,8 +2,8 @@ import type { ValueOf } from "type-fest";
 
 import type { SceneryName } from "../sprites/planets";
 import { objectEntriesIter, valuesIter } from "../utils/entries";
-import type { ItemInPlay } from "./ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
+import type { ItemInPlay } from "./itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "./itemInPlay/ItemInPlayNarrowedUnions";
 import type { RoomStateItems } from "./RoomState";
 
 /** Re-export of valuesIter under a more convenient type specialised for room items */

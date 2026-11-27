@@ -2,8 +2,8 @@ import type { PropsWithChildren } from "preact/compat";
 import { useCallback, useState } from "preact/hooks";
 import type { EmptyObject } from "type-fest";
 
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import { addPokeableNumbers } from "../../../model/ItemStateMap";
+import type { ItemInPlay } from "../../../model/itemInPlay/ItemInPlay";
+import { addPokeableNumbers } from "../../../model/itemInPlay/ItemStateMap";
 import type {
   JsonItemConfig,
   JsonItemType,

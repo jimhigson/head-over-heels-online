@@ -1,6 +1,7 @@
 import { consolidateItemsMap } from "../consolidateItems/consolidateItems";
 import type { JsonItem } from "../model/json/JsonItem";
 import type { RoomJson, RoomJsonItems } from "../model/RoomJson";
+import { roomJsonFloorsExtent } from "../model/roomJsonFloorsExtent";
 import { roomJsonItemsIterable } from "../model/RoomJsonItemIterators";
 import { type SceneryName, type Wall, wallTiles } from "../sprites/planets";
 import { keyItems } from "../utils/keyItems";
@@ -42,17 +43,20 @@ export const addPerimeterWallsToRoom = <
     );
   };
 
-  // going to assume there is only one floor in the room:
-  const floor = roomJsonItemsIterable(roomJson).find((i) => i.type === "floor");
-  if (floor === undefined) {
+  // the walls go around all the floors together:
+  const floorsExtent = roomJsonFloorsExtent(roomJson);
+  if (floorsExtent === undefined) {
     throw new Error("No floor found in room to add perimeter walls to");
   }
-  const floorSize = floor.config.times;
+  const {
+    from: { x: fromX, y: fromY },
+    to: { x: toX, y: toY },
+  } = floorsExtent;
 
   // side towards/away
-  for (let x = 0; x < floorSize.x; x++) {
-    for (const y of [0, floorSize.y]) {
-      const direction = y === 0 ? "towards" : "away";
+  for (let x = fromX; x < toX; x++) {
+    for (const y of [fromY, toY]) {
+      const direction = y === fromY ? "towards" : "away";
 
       // adds lots of single-block walls (but multi-block runs of fewer walls)
       // - to be consolidated below
@@ -71,9 +75,9 @@ export const addPerimeterWallsToRoom = <
     }
   }
   // side left/right
-  for (let y = 0; y < floorSize.y; y++) {
-    for (const x of [0, floorSize.x]) {
-      const direction = x === 0 ? "right" : "left";
+  for (let y = fromY; y < toY; y++) {
+    for (const x of [fromX, toX]) {
+      const direction = x === fromX ? "right" : "left";
 
       if (!isDoorAt({ x, y }, direction)) {
         wallBlocks.push({

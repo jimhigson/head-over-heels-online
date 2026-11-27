@@ -38,7 +38,9 @@ export const redundantToDoorVerifier: CampaignVerifier<RedundantToDoor> = {
   name: "Redundant door toDoor",
   *check(campaign) {
     for (const { roomId, doorId, door } of allDoors(campaign)) {
-      const { toRoom, toDoor, direction } = door.config;
+      const {
+        config: { toRoom, toDoor, direction },
+      } = door;
       if (
         toDoor === undefined ||
         toRoom === exitGameRoomId ||

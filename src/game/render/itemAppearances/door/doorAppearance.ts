@@ -1,6 +1,6 @@
 import type { Container } from "pixi.js";
 
-import type { ItemInPlay } from "../../../../model/ItemInPlay";
+import type { ItemInPlay } from "../../../../model/itemInPlay/ItemInPlay";
 import type { Campaign } from "../../../../model/modelTypes";
 import type { SceneryName } from "../../../../sprites/planets";
 import { planetSpecificIfExists } from "../../../../sprites/planetSpecificIfExists";
@@ -23,6 +23,7 @@ import {
   originXy,
   perpendicularAxisXy,
   rotateAxisXyByCameraAngle,
+  unitXyz,
   type Xy,
   type Xyz,
   type XyzBox,
@@ -73,7 +74,7 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
           spritesheet.data,
           isDark,
         ),
-        times: { [axis]: 2 },
+        times: { ...unitXyz, [axis]: 2 },
         cameraQuarterAngle,
         flipX,
         y: -blockSizePx.z * height,
@@ -186,7 +187,9 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs", RenderOnceProps> =
         ),
       );
 
-      const { direction } = item.config;
+      const {
+        config: { direction },
+      } = item;
       const inHiddenWall = isDoorPartInHiddenWall(
         item.config,
         cameraQuarterAngle,

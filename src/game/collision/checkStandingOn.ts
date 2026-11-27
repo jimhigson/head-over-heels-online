@@ -1,10 +1,10 @@
 import type { WritableDeep } from "type-fest";
 
-import { itemBehaviourKey } from "../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../model/itemInPlay/ItemInPlay";
 import type {
   FreeItem,
   UnionOfAllItemInPlayTypes,
-} from "../../model/ItemInPlayNarrowedUnions";
+} from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { RoomStateItems } from "../../model/RoomState";
 import { epsilon } from "../../utils/epsilon";
 import { collisionsPriorityComparator } from "../physics/collisionsOrder";

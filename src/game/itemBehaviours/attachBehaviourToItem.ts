@@ -6,7 +6,7 @@ import {
   type ItemBehaviourKey,
   type ItemInPlayConfig,
   type ItemInPlayType,
-} from "../../model/ItemInPlay";
+} from "../../model/itemInPlay/ItemInPlay";
 import type { ItemBehaviour } from "./ItemBehaviour";
 
 /**

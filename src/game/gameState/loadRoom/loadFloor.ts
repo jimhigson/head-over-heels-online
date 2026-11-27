@@ -1,5 +1,9 @@
-import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
+import {
+  itemBehaviourKey,
+  type ItemInPlay,
+} from "../../../model/itemInPlay/ItemInPlay";
 import type { JsonItem } from "../../../model/json/JsonItem";
+import { completeTimesXy, completeTimesXyz } from "../../../model/times";
 import { keys, valuesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
@@ -36,15 +40,17 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   directionalIndex: RoomDirectionalIndex<RoomId, RoomItemId>,
 ): ItemInPlay<"floor", RoomId, RoomItemId> => {
   const {
-    config: { times },
+    config: { times: jsonTimes },
     position: floorBlockPosition,
   } = floorJson;
+  // although the json can't have z, for consistency with other items, in-play floors get the full xyz
+  const timesCompleted = completeTimesXyz(jsonTimes);
 
   const naturalPositionBlocks = addXyz(floorBlockPosition, {
     z: -floorThicknessBlocks,
   });
   const naturalAabbBlocks = {
-    ...times,
+    ...timesCompleted,
     z: floorThicknessBlocks,
   };
   let adjustedPositionBlocks = naturalPositionBlocks;
@@ -57,8 +63,8 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   // can only expand once per direction:
   const expandedDirections: { [d in DirectionXy4]?: true } = {};
 
-  const thisFloorMaxX = naturalPositionBlocks.x + times.x;
-  const thisFloorMaxY = naturalPositionBlocks.y + times.y;
+  const thisFloorMaxX = naturalPositionBlocks.x + timesCompleted.x;
+  const thisFloorMaxY = naturalPositionBlocks.y + timesCompleted.y;
 
   /**
    * is there another floor at the same level lying flush against the given edge of
@@ -71,8 +77,9 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
       if (other === floorJson || other.position.z !== floorBlockPosition.z) {
         return false;
       }
-      const otherMaxX = other.position.x + other.config.times.x;
-      const otherMaxY = other.position.y + other.config.times.y;
+      const otherTimesCompleted = completeTimesXy(other.config.times);
+      const otherMaxX = other.position.x + otherTimesCompleted.x;
+      const otherMaxY = other.position.y + otherTimesCompleted.y;
       const overlapsOnX =
         other.position.x < thisFloorMaxX && naturalPositionBlocks.x < otherMaxX;
       const overlapsOnY =
@@ -113,7 +120,8 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
             doorJsonPosition.y === naturalPositionBlocks.y &&
             // in the range of the floor on the axis the door is sitting on:
             doorJsonPosition.x >= naturalPositionBlocks.x &&
-            doorJsonPosition.x <= naturalPositionBlocks.x + times.x - 2 &&
+            doorJsonPosition.x <=
+              naturalPositionBlocks.x + timesCompleted.x - 2 &&
             // unless another floor already lies against this edge (would collide):
             !hasAdjacentFloorTo(direction)
           ) {
@@ -130,10 +138,11 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
           if (
             !expandedDirections.away &&
             // in on the edge of the flor in the door's axis of travel:
-            doorJsonPosition.y === naturalPositionBlocks.y + times.y &&
+            doorJsonPosition.y === naturalPositionBlocks.y + timesCompleted.y &&
             // in the range of the floor on the axis the door is sitting on:
             doorJsonPosition.x >= naturalPositionBlocks.x &&
-            doorJsonPosition.x <= naturalPositionBlocks.x + times.x - 2 &&
+            doorJsonPosition.x <=
+              naturalPositionBlocks.x + timesCompleted.x - 2 &&
             // unless another floor already lies against this edge (would collide):
             !hasAdjacentFloorTo(direction)
           ) {
@@ -150,7 +159,8 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
             doorJsonPosition.x === naturalPositionBlocks.x &&
             // in the range of the floor on the axis the door is sitting on:
             doorJsonPosition.y >= naturalPositionBlocks.y &&
-            doorJsonPosition.y <= naturalPositionBlocks.y + times.y - 2 &&
+            doorJsonPosition.y <=
+              naturalPositionBlocks.y + timesCompleted.y - 2 &&
             // unless another floor already lies against this edge (would collide):
             !hasAdjacentFloorTo(direction)
           ) {
@@ -167,10 +177,11 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
           if (
             !expandedDirections.left &&
             // in on the edge of the flor in the door's axis of travel:
-            doorJsonPosition.x === naturalPositionBlocks.x + times.x &&
+            doorJsonPosition.x === naturalPositionBlocks.x + timesCompleted.x &&
             // in the range of the floor on the axis the door is sitting on:
             doorJsonPosition.y >= naturalPositionBlocks.y &&
-            doorJsonPosition.y <= naturalPositionBlocks.y + times.y - 2 &&
+            doorJsonPosition.y <=
+              naturalPositionBlocks.y + timesCompleted.y - 2 &&
             // unless another floor already lies against this edge (would collide):
             !hasAdjacentFloorTo(direction)
           ) {
@@ -191,6 +202,7 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
 
   const config = {
     ...floorJson.config,
+    times: timesCompleted,
     // side names become outward unit vectors in-play:
     doorExpandedSides: keys(expandedDirections).map((d) => unitVectors[d]),
     naturalFootprint: {

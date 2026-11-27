@@ -6,8 +6,8 @@ import type {
 } from "type-fest";
 
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import type { ItemInPlayType } from "../../../model/ItemInPlay";
-import { isMultipliedItem, itemInPlayTimes } from "../../../model/times";
+import type { ItemInPlayType } from "../../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type {
   BaseAnimationId,
   BaseTextureId,
@@ -85,28 +85,21 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
         false,
         false,
       );
-      if (isMultipliedItem(subject)) {
-        // reduce the multiple sprites down to one baked sprite (each
-        // sub-sprite flips individually before the bake); camera-angle
-        // re-renders bake into the previous render texture (the multiplied
-        // bake is the same size at every quarter turn):
-        return maybeRenderContainerToSprite(
-          pixiRenderer,
-          createSprite({
-            textureId,
-            flipX,
-            times: itemInPlayTimes(subject),
-            cameraQuarterAngle,
-            spritesheet,
-          }),
-          asReuseSprite(currentRendering?.output),
-        );
-      }
-      return createSprite({
-        textureId,
-        flipX,
-        spritesheet,
-      });
+      // a multiplied item's sprites reduce to one baked sprite (each
+      // sub-sprite flips individually before the bake); camera-angle
+      // re-renders bake into the previous render texture (the multiplied
+      // bake is the same size at every quarter turn):
+      return maybeRenderContainerToSprite(
+        pixiRenderer,
+        createSprite({
+          textureId,
+          flipX,
+          times: subject.config.times,
+          cameraQuarterAngle,
+          spritesheet,
+        }),
+        asReuseSprite(currentRendering?.output),
+      );
     },
     // the flip resolves per quarter turn:
     (_item, cameraQuarterAngle) => cameraQuarterAngle,
@@ -135,20 +128,12 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
         false,
         false,
       );
-      if (isMultipliedItem(subject)) {
-        return createSprite({
-          ...createSpriteOptions,
-          animationId,
-          times: itemInPlayTimes(subject),
-          paused,
-          cameraQuarterAngle,
-          spritesheet,
-        });
-      }
       return createSprite({
         ...createSpriteOptions,
         animationId,
+        times: subject.config.times,
         paused,
+        cameraQuarterAngle,
         spritesheet,
       });
     },
@@ -174,14 +159,13 @@ export const cameraQuarterAngleEqual = (a: null | Xy, b: null | Xy): boolean =>
  * never re-render for a camera rotation
  */
 export const multipliedLayoutAngle = (
-  item: Parameters<typeof isMultipliedItem>[0],
+  item: UnionOfAllItemInPlayTypes,
   cameraQuarterAngle: Xy,
 ): null | Xy => {
-  if (!isMultipliedItem(item)) {
-    return null;
-  }
-  const times = itemInPlayTimes(item);
-  return (times?.x ?? 1) > 1 || (times?.y ?? 1) > 1 ? cameraQuarterAngle : null;
+  const {
+    config: { times },
+  } = item;
+  return times.x > 1 || times.y > 1 ? cameraQuarterAngle : null;
 };
 
 export type RenderOnceProps = {

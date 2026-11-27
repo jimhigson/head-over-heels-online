@@ -37,7 +37,9 @@ export const danglingDoorTargetVerifier: CampaignVerifier<DanglingDoorTarget> =
           room.items,
           "door",
         )) {
-          const { toRoom, toDoor } = door.config;
+          const {
+            config: { toRoom, toDoor },
+          } = door;
 
           if (
             toDoor === undefined ||

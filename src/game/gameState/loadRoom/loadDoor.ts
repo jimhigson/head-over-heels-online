@@ -2,9 +2,9 @@ import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import {
   itemBehaviourKey,
   type ItemInPlayConfig,
-} from "../../../model/ItemInPlay";
+} from "../../../model/itemInPlay/ItemInPlay";
 import type { JsonItem } from "../../../model/json/JsonItem";
-import { emptyObject } from "../../../utils/empty";
+import { unitTimesConfig } from "../../../model/times";
 import { pick } from "../../../utils/pick";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
@@ -15,6 +15,7 @@ import {
   perpendicularAxisXy,
   scaleXyz,
   subXyz,
+  unitXyz,
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
@@ -38,6 +39,12 @@ import {
 } from "./loadDoorConstants";
 
 /**
+ * the in-play item types a json door loads as
+ */
+export type DoorPartType =
+  "blocker" | "doorFrame" | "doorLegs" | "portal" | "stopAutowalk" | "wall";
+
+/**
  * loads a door's items with only angle-invariant (physical) properties: the
  * drawn post widths (9px apparently-near), whether the parts render as being
  * in a hidden wall, and their render boxes are all derived at render time
@@ -46,13 +53,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   jsonDoor: JsonItem<"door", RoomId, RoomItemId>,
   jsonItemId: RoomItemId,
   directionalIndex: RoomDirectionalIndex<RoomId, RoomItemId>,
-): Generator<
-  ItemTypeUnion<
-    "blocker" | "doorFrame" | "doorLegs" | "portal" | "stopAutowalk" | "wall",
-    RoomId,
-    RoomItemId
-  >
-> {
+): Generator<ItemTypeUnion<DoorPartType, RoomId, RoomItemId>> {
   const {
     config: { direction },
     position,
@@ -116,6 +117,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     direction: unitVectors[direction],
     onFloorEdge,
     part: "far",
+    times: unitXyz,
   };
   yield {
     ...jsonDoor,
@@ -148,6 +150,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     direction: unitVectors[direction],
     onFloorEdge,
     part: "near",
+    times: unitXyz,
   };
   yield {
     ...jsonDoor,
@@ -176,6 +179,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     direction: unitVectors[direction],
     onFloorEdge,
     part: "top",
+    times: unitXyz,
   };
   yield {
     ...jsonDoor,
@@ -211,7 +215,8 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   };
 
   // wall above the door, up to the ceiling:
-  const blockerAboveConfig = emptyObject satisfies ItemInPlayConfig<"blocker">;
+  const blockerAboveConfig =
+    unitTimesConfig satisfies ItemInPlayConfig<"blocker">;
   yield {
     ...jsonDoor,
     ...{
@@ -252,6 +257,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       [throughDoorAxis]: outIsNegative ? doorTunnelLengthBlocks + 0.25 : -0.25,
     }),
     direction: unitVectors[direction],
+    times: unitXyz,
   };
   yield {
     ...jsonDoor,
@@ -307,6 +313,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       style: "none",
       side: "away", // TODO: look at typings - this isn't needed for hidden walls
       height: legHeight,
+      times: unitXyz,
     };
     yield {
       ...jsonDoor,
@@ -342,7 +349,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     };
   }
   const stopAutowalkConfig =
-    emptyObject satisfies ItemInPlayConfig<"stopAutowalk">;
+    unitTimesConfig satisfies ItemInPlayConfig<"stopAutowalk">;
   yield {
     type: "stopAutowalk",
     hash: 0,

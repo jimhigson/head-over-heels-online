@@ -9,7 +9,6 @@ import {
 } from "pixi.js";
 import type { Arrayable } from "type-fest";
 
-import { completeTimesXyz } from "../../model/times";
 import { originalGameFrameDuration } from "../../originalGame";
 import type { AppSpritesheetWithVariants } from "../../sprites/spritesheet/AppSpritesheet";
 import type { AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
@@ -57,7 +56,7 @@ export type AnimatedCreateSpriteOptions = CreateSpriteSpritesheetSpecifier & {
    * indefinitely
    */
   playOnce?: "and-destroy" | "and-stop";
-  times?: Partial<Xyz>;
+  times?: Xyz;
   /** the camera rotation, so a tiled (times) sprite tiles in the rotated direction */
   cameraQuarterAngle?: Xy;
   label?: string;
@@ -89,12 +88,12 @@ export type SpecifiedTextureCreateSpriteOptions =
   | (BaseCreateSpriteOptions &
       (
         | {
-            times?: Partial<Xyz>;
+            times?: Xyz;
             textureId: TextureId;
             subSpriteVariations?: undefined;
           }
         | {
-            times?: Partial<Xyz>;
+            times?: Xyz;
             textureId?: undefined;
             /**
              * variations (texture id, sprite id etc)
@@ -134,15 +133,14 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
   const { anchor, flipX, pivot, x, y, times, label, cameraQuarterAngle } =
     options;
 
-  // `times: undefined` or `times: {x:1}` should NOT cause the sprite to be wrapped in a container
+  // `times: undefined` or `times: {x:1, y:1, z:1}` should NOT cause the sprite to be wrapped in a container
   // even if this means the the types change between two otherwise identical calls
-  if (options.times) {
-    const completeTimes = completeTimesXyz(times);
+  if (times) {
     // only actually do multiplied rendering if we have a times vector
     // with actual multiple instances in it (not 1x1x1) - this is important
     // because other code looks at the output from createSprite and creates
     // new sprites based off the container returned if it isn't a simple sprite
-    const needsMultipliedRendering = lengthXyz(completeTimes) >= 2;
+    const needsMultipliedRendering = lengthXyz(times) >= 2;
 
     if (needsMultipliedRendering) {
       const container = new Container({ label: label ?? "timesXyz" });
@@ -155,11 +153,11 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
         projectBlockXyzToScreenXy({ x: 1 }, cameraQuarterAngle).y > 0 ? 1 : -1;
       const yDelta =
         projectBlockXyzToScreenXy({ y: 1 }, cameraQuarterAngle).y > 0 ? 1 : -1;
-      const xStart = xDelta === 1 ? 1 : completeTimes.x;
-      const yStart = yDelta === 1 ? 1 : completeTimes.y;
-      for (let x = xStart; x >= 1 && x <= completeTimes.x; x += xDelta) {
-        for (let y = yStart; y >= 1 && y <= completeTimes.y; y += yDelta) {
-          for (let z = 1; z <= completeTimes.z; z++) {
+      const xStart = xDelta === 1 ? 1 : times.x;
+      const yStart = yDelta === 1 ? 1 : times.y;
+      for (let x = xStart; x >= 1 && x <= times.x; x += xDelta) {
+        for (let y = yStart; y >= 1 && y <= times.y; y += yDelta) {
+          for (let z = 1; z <= times.z; z++) {
             const subSpriteOptions = {
               ...options,
               label: `(${x},${y},${z})`,
@@ -174,10 +172,7 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
               // vary the start frame per sub-cell so the multiplied sprites
               // don't all animate in lock-step
               const cellIndex =
-                x -
-                1 +
-                (y - 1) * completeTimes.x +
-                (z - 1) * completeTimes.x * completeTimes.y;
+                x - 1 + (y - 1) * times.x + (z - 1) * times.x * times.y;
               subSpriteOptions.startFramePhase = phaseForSubItem(
                 subSpriteOptions.startFramePhase,
                 cellIndex,
@@ -391,11 +386,11 @@ export const createSprite = (
   : createSpriteImpl) as <O extends CreateSpriteOptions>(
   options: O,
 ) => O extends AnimatedCreateSpriteOptions ?
-  O extends { times?: Partial<Xyz> } ?
+  O extends { times?: Xyz } ?
     // giving times doesn't guarantee a container, because the times could be 1x1x1 or equivalent
     AnimatedSprite | Container<AnimatedSprite>
   : AnimatedSprite
-: O extends { times?: Partial<Xyz> } ?
+: O extends { times?: Xyz } ?
   // giving times doesn't guarantee a container, because the times could be 1x1x1 or equivalent
   Container<Sprite> | Sprite
 : Sprite;

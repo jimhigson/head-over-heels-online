@@ -6,7 +6,7 @@ import {
 } from "../../../game/collision/aabbCollision";
 import { buildRoomJsonDirectionalIndex } from "../../../game/gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
 import type { JsonItemType } from "../../../model/json/JsonItem";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
@@ -114,7 +114,7 @@ export const itemMoveOrResizeWouldCollide = ({
               timesDelta,
             );
           }),
-        ] as [EditorRoomItemId, EditorJsonItemUnion],
+        ] as const,
     )
     // load the json items to in-play items (could be multiple per json item)
     .flatMap(function* ([jsonItemId, modifiedJsonItem]) {
@@ -125,11 +125,7 @@ export const itemMoveOrResizeWouldCollide = ({
         noPlanetsLiberated,
         directionalIndex,
       )) {
-        yield [jsonItemId, modifiedJsonItem, loadedItem] as [
-          EditorRoomItemId,
-          EditorJsonItemUnion,
-          EditorUnionOfAllItemInPlayTypes,
-        ];
+        yield [jsonItemId, modifiedJsonItem, loadedItem] as const;
       }
     })
     // ignore any non-solid items we just loaded:

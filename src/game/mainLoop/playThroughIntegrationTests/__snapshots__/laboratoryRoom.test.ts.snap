@@ -13,6 +13,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "book",
         "times": {
           "x": 14,
+          "y": 1,
+          "z": 1,
         },
       },
       "id": "b",
@@ -52,7 +54,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "book",
         "times": {
+          "x": 1,
           "y": 6,
+          "z": 1,
         },
       },
       "id": "b1",
@@ -91,7 +95,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "book",
         "times": {
+          "x": 1,
           "y": 10,
+          "z": 1,
         },
       },
       "id": "b10",
@@ -131,7 +137,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "book",
         "times": {
+          "x": 1,
           "y": 2,
+          "z": 1,
         },
       },
       "id": "b11",
@@ -166,6 +174,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "b12": {
       "config": {
         "style": "book",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "b12",
       "jsonItemId": "b12",
@@ -199,6 +212,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "b13": {
       "config": {
         "style": "organic",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "b13",
       "jsonItemId": "b13",
@@ -235,7 +253,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "book",
         "times": {
+          "x": 1,
           "y": 14,
+          "z": 1,
         },
       },
       "id": "b2",
@@ -274,6 +294,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "book",
         "times": {
           "x": 13,
+          "y": 1,
+          "z": 1,
         },
       },
       "id": "b3",
@@ -313,7 +335,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "book",
         "times": {
+          "x": 1,
           "y": 4,
+          "z": 1,
         },
       },
       "id": "b4",
@@ -353,6 +377,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "organic",
         "times": {
+          "x": 1,
+          "y": 1,
           "z": 5,
         },
       },
@@ -391,6 +417,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "organic",
         "times": {
+          "x": 1,
+          "y": 1,
           "z": 5,
         },
       },
@@ -427,7 +455,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "book",
         "times": {
+          "x": 1,
           "y": 2,
+          "z": 1,
         },
       },
       "id": "b7",
@@ -463,6 +493,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "organic",
         "times": {
+          "x": 1,
+          "y": 1,
           "z": 7,
         },
       },
@@ -499,6 +531,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "book",
         "times": {
+          "x": 1,
+          "y": 1,
           "z": 2,
         },
       },
@@ -534,7 +568,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "block",
     },
     "ball@10,4,0": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "ball@10,4,0",
       "jsonItemId": "ball@10,4,0",
       "position": {
@@ -598,7 +638,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "ball",
     },
     "ball@7,2,0": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "ball@7,2,0",
       "jsonItemId": "ball@7,2,0",
       "position": {
@@ -658,7 +704,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "ball",
     },
     "ball@7,4,0": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "ball@7,4,0",
       "jsonItemId": "ball@7,4,0",
       "position": {
@@ -720,7 +772,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "ball",
     },
     "ball@9,4,0": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "ball@9,4,0",
       "jsonItemId": "ball@9,4,0",
       "position": {
@@ -784,6 +842,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "barrier@10,6,0": {
       "config": {
         "axis": "x",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "barrier@10,6,0",
       "jsonItemId": "barrier@10,6,0",
@@ -820,6 +883,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": {
           "on": "touch",
         },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "barrier@10,6,1",
       "jsonItemId": "barrier@10,6,1",
@@ -855,6 +923,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "barrier@10,8,0": {
       "config": {
         "axis": "x",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "barrier@10,8,0",
       "jsonItemId": "barrier@10,8,0",
@@ -890,6 +963,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "axis": "x",
         "disappearing": {
           "on": "touch",
+        },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
         },
       },
       "id": "barrier@10,8,1",
@@ -927,7 +1005,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "organic",
         "times": {
+          "x": 1,
           "y": 2,
+          "z": 1,
         },
       },
       "id": "block@13,3,3",
@@ -965,7 +1045,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "organic",
         "times": {
+          "x": 1,
           "y": 2,
+          "z": 1,
         },
       },
       "id": "block@13,4,2",
@@ -1001,6 +1083,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "tower",
         "times": {
+          "x": 1,
+          "y": 1,
           "z": 2,
         },
       },
@@ -1036,6 +1120,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "block@13,7,0": {
       "config": {
         "style": "tower",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "block@13,7,0",
       "jsonItemId": "block@13,7,0",
@@ -1070,6 +1159,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "tower",
         "times": {
+          "x": 1,
+          "y": 1,
           "z": 2,
         },
       },
@@ -1105,6 +1196,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "block@15.5,8,0": {
       "config": {
         "style": "artificial",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "block@15.5,8,0",
       "jsonItemId": "block@15.5,8,0",
@@ -1140,6 +1236,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "block@16,8.5,1": {
       "config": {
         "style": "artificial",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "block@16,8.5,1",
       "jsonItemId": "block@16,8.5,1",
@@ -1173,6 +1274,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "block@3,3,8": {
       "config": {
         "style": "organic",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "block@3,3,8",
       "jsonItemId": "block@3,3,8",
@@ -1208,6 +1314,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "block@3,5,8": {
       "config": {
         "style": "organic",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "block@3,5,8",
       "jsonItemId": "block@3,5,8",
@@ -1243,6 +1354,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "block@4,3,0": {
       "config": {
         "style": "artificial",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "block@4,3,0",
       "jsonItemId": "block@4,3,0",
@@ -1278,6 +1394,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "block@5,0,0": {
       "config": {
         "style": "organic",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "block@5,0,0",
       "jsonItemId": "block@5,0,0",
@@ -1313,6 +1434,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "block@6,6,2": {
       "config": {
         "style": "organic",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "block@6,6,2",
       "jsonItemId": "block@6,6,2",
@@ -1350,6 +1476,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "block@8,0,0": {
       "config": {
         "style": "organic",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "block@8,0,0",
       "jsonItemId": "block@8,0,0",
@@ -1517,6 +1648,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "stand",
         },
         "style": "organic",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "block@9,0,1",
       "jsonItemId": "block@9,0,1",
@@ -1555,6 +1691,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "stand",
         },
         "style": "organic",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "block@9,0,3",
       "jsonItemId": "block@9,0,3",
@@ -1591,6 +1732,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "axis": "y",
         "times": {
+          "x": 1,
+          "y": 1,
           "z": 2,
         },
       },
@@ -1629,6 +1772,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "axis": "x",
         "times": {
+          "x": 1,
+          "y": 1,
           "z": 2,
         },
       },
@@ -1668,6 +1813,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "axis": "x",
         "times": {
           "x": 13,
+          "y": 1,
+          "z": 1,
         },
       },
       "id": "br2",
@@ -1709,6 +1856,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             "expectType": "lamp",
           },
         ],
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "bu",
       "jsonItemId": "bu",
@@ -1744,7 +1896,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "button",
     },
     "ch1": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "ch1",
       "jsonItemId": "ch1",
       "position": {
@@ -1808,7 +1966,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "charles",
     },
     "ch2": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "ch2",
       "jsonItemId": "ch2",
       "position": {
@@ -1880,6 +2044,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "times": {
           "x": 9,
+          "y": 1,
+          "z": 1,
         },
       },
       "id": "co",
@@ -1913,9 +2079,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "expires": null,
         "stoodOnBy": {},
         "switchedAtRoomTime": -9007199254740991,
-        "times": {
-          "x": 9,
-        },
       },
       "type": "conveyor",
     },
@@ -1928,6 +2091,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "times": {
           "x": 12,
+          "y": 1,
+          "z": 1,
         },
       },
       "id": "co1",
@@ -1965,9 +2130,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "m13": true,
         },
         "switchedAtRoomTime": -9007199254740991,
-        "times": {
-          "x": 12,
-        },
       },
       "type": "conveyor",
     },
@@ -1979,7 +2141,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "times": {
+          "x": 1,
           "y": 2,
+          "z": 1,
         },
       },
       "id": "conveyor@0,0,0",
@@ -2015,9 +2179,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "expires": null,
         "stoodOnBy": {},
         "switchedAtRoomTime": -9007199254740991,
-        "times": {
-          "y": 2,
-        },
       },
       "type": "conveyor",
     },
@@ -2029,7 +2190,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "times": {
+          "x": 1,
           "y": 3,
+          "z": 1,
         },
       },
       "id": "conveyor@3,6,0",
@@ -2065,9 +2228,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "expires": null,
         "stoodOnBy": {},
         "switchedAtRoomTime": -9007199254740991,
-        "times": {
-          "y": 3,
-        },
       },
       "type": "conveyor",
     },
@@ -2080,6 +2240,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "times": {
           "x": 3,
+          "y": 1,
+          "z": 1,
         },
       },
       "id": "conveyor@3,9,0",
@@ -2117,9 +2279,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "pickup@4,6,10": true,
         },
         "switchedAtRoomTime": -9007199254740991,
-        "times": {
-          "x": 3,
-        },
       },
       "type": "conveyor",
     },
@@ -2132,6 +2291,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "times": {
           "x": 3,
+          "y": 1,
+          "z": 1,
         },
       },
       "id": "conveyor@4,6,0",
@@ -2169,9 +2330,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "portableBlock@4,6,2": true,
         },
         "switchedAtRoomTime": -9007199254740991,
-        "times": {
-          "x": 3,
-        },
       },
       "type": "conveyor",
     },
@@ -2181,6 +2339,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "x": -1,
           "y": 0,
           "z": 0,
+        },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
         },
       },
       "id": "conveyor@4,6,5",
@@ -2227,7 +2390,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "times": {
+          "x": 1,
           "y": 3,
+          "z": 1,
         },
       },
       "id": "conveyor@6,7,0",
@@ -2263,15 +2428,17 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "expires": null,
         "stoodOnBy": {},
         "switchedAtRoomTime": -9007199254740991,
-        "times": {
-          "y": 3,
-        },
       },
       "type": "conveyor",
     },
     "db": {
       "config": {
         "style": "toaster",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "db",
       "jsonItemId": "db",
@@ -2308,6 +2475,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "db1": {
       "config": {
         "style": "volcano",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "db1",
       "jsonItemId": "db1",
@@ -2346,6 +2518,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "db2": {
       "config": {
         "style": "toaster",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "db2",
       "jsonItemId": "db2",
@@ -2385,7 +2562,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "volcano",
         "times": {
+          "x": 1,
           "y": 4,
+          "z": 1,
         },
       },
       "id": "deadlyBlock@17,2,0",
@@ -2422,7 +2601,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "volcano",
         "times": {
+          "x": 1,
           "y": 3,
+          "z": 1,
         },
       },
       "id": "deadlyBlock@17,3,1",
@@ -2459,7 +2640,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "style": "volcano",
         "times": {
+          "x": 1,
           "y": 2,
+          "z": 1,
         },
       },
       "id": "deadlyBlock@17,4,2",
@@ -2495,6 +2678,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "deadlyBlock@17,5,3": {
       "config": {
         "style": "volcano",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "deadlyBlock@17,5,3",
       "jsonItemId": "deadlyBlock@17,5,3",
@@ -2527,7 +2715,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "deadlyBlock",
     },
     "door@5,0,2/blockerAbove": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "door@5,0,2/blockerAbove",
       "jsonItemId": "door@5,0,2",
       "position": {
@@ -2567,6 +2761,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "onFloorEdge": true,
         "part": "far",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "toRoom": "room_0",
       },
       "id": "door@5,0,2/frameFar",
@@ -2607,6 +2806,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "onFloorEdge": true,
         "part": "near",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "toRoom": "room_0",
       },
       "id": "door@5,0,2/frameNear",
@@ -2647,6 +2851,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "onFloorEdge": true,
         "part": "top",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "toRoom": "room_0",
       },
       "id": "door@5,0,2/frameTop",
@@ -2689,6 +2898,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "onFloorEdge": true,
         "side": "away",
         "style": "none",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "toRoom": "room_0",
       },
       "id": "door@5,0,2/legs",
@@ -2733,6 +2947,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 20,
           "z": 0,
         },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "toDoor": undefined,
         "toRoom": "room_0",
       },
@@ -2766,7 +2985,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "portal",
     },
     "door@5,0,2/stopAutowalk": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "door@5,0,2/stopAutowalk",
       "jsonItemId": "door@5,0,2",
       "state": {
@@ -2801,6 +3026,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "maximum": 40,
         "period": 20000,
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "e",
       "jsonItemId": "e",
@@ -2811,20 +3041,18 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "state": {
         "actedOnAt": {
-          "actedInXY": true,
+          "actedInXY": false,
           "actedInZ": false,
-          "by": {
-            "e-0-20008": true,
-          },
-          "roomTime": 20124.999999999935,
+          "by": {},
+          "roomTime": -9007199254740991,
         },
         "box": {
-          "x": 200,
-          "xd": 0,
-          "y": 200,
-          "yd": 0,
+          "x": 192,
+          "xd": 16,
+          "y": 192,
+          "yd": 16,
           "z": 120,
-          "zd": 0,
+          "zd": 12,
         },
         "disappearing": null,
         "emits": {
@@ -2856,30 +3084,33 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "maximum": 5,
         "period": 1000,
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "emitter@17,0,7",
       "jsonItemId": "emitter@17,0,7",
       "position": {
         "x": 17,
         "y": 0,
-        "z": 7,
+        "z": 6,
       },
       "state": {
         "actedOnAt": {
-          "actedInXY": true,
+          "actedInXY": false,
           "actedInZ": false,
-          "by": {
-            "emitter@17,0,7-4-5016": true,
-          },
-          "roomTime": 5216.666666666656,
+          "by": {},
+          "roomTime": -9007199254740991,
         },
         "box": {
-          "x": 280,
-          "xd": 0,
-          "y": 8,
-          "yd": 0,
-          "z": 84,
-          "zd": 0,
+          "x": 272,
+          "xd": 16,
+          "y": 0,
+          "yd": 16,
+          "z": 72,
+          "zd": 12,
         },
         "disappearing": null,
         "emits": {
@@ -2909,6 +3140,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "x": 0,
           "y": 1,
           "z": 0,
+        },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
         },
         "which": "cyberman",
       },
@@ -2993,6 +3229,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 1,
           "z": 0,
         },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "cyberman",
       },
       "id": "emitter@17,0,7-1-2008",
@@ -3074,6 +3315,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "x": 0,
           "y": 1,
           "z": 0,
+        },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
         },
         "which": "cyberman",
       },
@@ -3157,6 +3403,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 1,
           "z": 0,
         },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "cyberman",
       },
       "id": "emitter@17,0,7-3-4008",
@@ -3236,6 +3487,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "x": 0,
           "y": 1,
           "z": 0,
+        },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
         },
         "which": "cyberman",
       },
@@ -3336,6 +3592,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "times": {
           "x": 18,
           "y": 14,
+          "z": 1,
         },
       },
       "id": "floor@0,0,0",
@@ -3408,7 +3665,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "floor",
     },
     "heels": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "heels",
       "jsonItemId": "heels",
       "state": {
@@ -3502,6 +3765,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controls": [
           "ch1",
         ],
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "joystick@4,1,0",
       "jsonItemId": "joystick@4,1,0",
@@ -3547,6 +3815,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "controls": [
           "ch2",
         ],
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "joystick@5,3,0",
       "jsonItemId": "joystick@5,3,0",
@@ -3595,6 +3868,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "la",
       "jsonItemId": "la",
@@ -3639,6 +3917,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "times": {
+          "x": 1,
+          "y": 1,
           "z": 2,
         },
       },
@@ -3684,6 +3964,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 0,
           "z": 0,
         },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "la2",
       "jsonItemId": "la2",
@@ -3725,6 +4010,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "sourceItemId": "la",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "lb",
       "state": {
@@ -3759,6 +4049,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "sourceItemId": "la1",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "lb1",
       "state": {
@@ -3793,6 +4088,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "sourceItemId": "la1",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "lb2",
       "state": {
@@ -3827,6 +4127,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "sourceItemId": "la2",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "lb3",
       "state": {
@@ -3861,6 +4166,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "sourceItemId": "la",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "lb4",
       "state": {
@@ -3890,6 +4200,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "lift@0,4,3": {
       "config": {
         "bottom": 0,
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "top": 11,
       },
       "id": "lift@0,4,3",
@@ -3934,6 +4249,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "lift@1,4,2": {
       "config": {
         "bottom": 0,
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "top": 11,
       },
       "id": "lift@1,4,2",
@@ -3980,6 +4300,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "lift@13,6,1": {
       "config": {
         "bottom": 1,
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "top": 2,
       },
       "id": "lift@13,6,1",
@@ -4024,6 +4349,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "lift@2,4,1": {
       "config": {
         "bottom": 0,
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "top": 11,
       },
       "id": "lift@2,4,1",
@@ -4068,6 +4398,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "lift@3,4,0": {
       "config": {
         "bottom": 0,
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "top": 11,
       },
       "id": "lift@3,4,0",
@@ -4113,6 +4448,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "towards-tripped-on-axis-xy4",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "homingBot",
       },
       "id": "m",
@@ -4188,6 +4528,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "towards-tripped-on-axis-xy4",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "homingBot",
       },
       "id": "m1",
@@ -4268,6 +4613,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 0,
           "z": 0,
         },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "cyberman",
       },
       "id": "m10",
@@ -4345,6 +4695,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "monkey",
       },
       "id": "m11",
@@ -4420,6 +4775,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "towards-tripped-on-axis-xy4",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "homingBot",
       },
       "id": "m12",
@@ -4498,6 +4858,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "style": "greenAndPink",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "skiHead",
       },
       "id": "m13",
@@ -4575,6 +4940,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "towards-tripped-on-axis-xy4",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "homingBot",
       },
       "id": "m2",
@@ -4650,6 +5020,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "towards-tripped-on-axis-xy4",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "homingBot",
       },
       "id": "m3",
@@ -4725,6 +5100,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "towards-tripped-on-axis-xy4",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "homingBot",
       },
       "id": "m4",
@@ -4807,6 +5187,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "elephantHead",
       },
       "id": "m5",
@@ -4884,6 +5269,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "elephantHead",
       },
       "id": "m6",
@@ -4958,6 +5348,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "patrol-randomly-diagonal",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "dalek",
       },
       "id": "m7",
@@ -5037,6 +5432,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 0,
           "z": 0,
         },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "cyberman",
       },
       "id": "m8",
@@ -5113,6 +5513,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "x": -1,
           "y": 0,
           "z": 0,
+        },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
         },
         "which": "cyberman",
       },
@@ -5192,6 +5597,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "style": "starsAndStripes",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "skiHead",
       },
       "id": "monster@0,4,1",
@@ -5272,6 +5682,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "style": "starsAndStripes",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "skiHead",
       },
       "id": "monster@1,7,0",
@@ -5352,6 +5767,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "style": "starsAndStripes",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "skiHead",
       },
       "id": "monster@1,8,0",
@@ -5432,6 +5852,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "style": "greenAndPink",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "skiHead",
       },
       "id": "monster@2,8,0",
@@ -5512,6 +5937,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "style": "greenAndPink",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "skiHead",
       },
       "id": "monster@4,0,0",
@@ -5592,6 +6022,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "style": "greenAndPink",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "skiHead",
       },
       "id": "monster@4,2,0",
@@ -5670,6 +6105,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "x": 0,
           "y": 1,
           "z": 0,
+        },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
         },
         "which": "cyberman",
       },
@@ -5750,6 +6190,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "mp",
       "jsonItemId": "mp",
@@ -5828,6 +6273,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": -1,
           "z": 0,
         },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "mp1",
       "jsonItemId": "mp1",
@@ -5898,6 +6348,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "orientation": "awayLeft",
         "times": {
+          "x": 1,
+          "y": 1,
           "z": 2,
         },
       },
@@ -5939,6 +6391,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "mr1": {
       "config": {
         "orientation": "awayRight",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "mr1",
       "jsonItemId": "mr1",
@@ -5972,7 +6429,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "mirror",
     },
     "outOfBounds": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "outOfBounds",
       "state": {
         "actedOnAt": {
@@ -5999,6 +6462,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "pickup@0,4,9": {
       "config": {
         "gives": "doughnuts",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "pickup@0,4,9",
       "jsonItemId": "pickup@0,4,9",
@@ -6066,6 +6534,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "pickup@1,4,9": {
       "config": {
         "gives": "hooter",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "pickup@1,4,9",
       "jsonItemId": "pickup@1,4,9",
@@ -6133,6 +6606,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "pickup@12,0,0": {
       "config": {
         "gives": "bag",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "pickup@12,0,0",
       "jsonItemId": "pickup@12,0,0",
@@ -6200,6 +6678,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "pickup@17,1,0": {
       "config": {
         "gives": "shield",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "pickup@17,1,0",
       "jsonItemId": "pickup@17,1,0",
@@ -6268,6 +6751,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "pickup@3,5,11": {
       "config": {
         "gives": "reincarnation",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "pickup@3,5,11",
       "jsonItemId": "pickup@3,5,11",
@@ -6334,6 +6822,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "pickup@4,6,1": {
       "config": {
         "gives": "reincarnation",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "pickup@4,6,1",
       "jsonItemId": "pickup@4,6,1",
@@ -6402,6 +6895,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "pickup@4,6,10": {
       "config": {
         "gives": "bag",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "pickup@4,6,10",
       "jsonItemId": "pickup@4,6,10",
@@ -6469,6 +6967,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "pickup@4,6,13": {
       "config": {
         "gives": "reincarnation",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "pickup@4,6,13",
       "jsonItemId": "pickup@4,6,13",
@@ -6537,6 +7040,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "pickup@4,6,9": {
       "config": {
         "gives": "extra-life",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "pickup@4,6,9",
       "jsonItemId": "pickup@4,6,9",
@@ -6607,6 +7115,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "portableBlock@0,0,2": {
       "config": {
         "style": "cube",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "portableBlock@0,0,2",
       "jsonItemId": "portableBlock@0,0,2",
@@ -6670,6 +7183,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "portableBlock@0,0,7": {
       "config": {
         "style": "cube",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "portableBlock@0,0,7",
       "jsonItemId": "portableBlock@0,0,7",
@@ -6731,6 +7249,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "portableBlock@13,1,0": {
       "config": {
         "style": "cube",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "portableBlock@13,1,0",
       "jsonItemId": "portableBlock@13,1,0",
@@ -6794,6 +7317,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "portableBlock@13,1,1": {
       "config": {
         "style": "cube",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "portableBlock@13,1,1",
       "jsonItemId": "portableBlock@13,1,1",
@@ -6857,6 +7385,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "portableBlock@13,1,2": {
       "config": {
         "style": "cube",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "portableBlock@13,1,2",
       "jsonItemId": "portableBlock@13,1,2",
@@ -6918,6 +7451,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "portableBlock@13,2,0": {
       "config": {
         "style": "sticks",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "portableBlock@13,2,0",
       "jsonItemId": "portableBlock@13,2,0",
@@ -6979,6 +7517,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "portableBlock@13,3,0": {
       "config": {
         "style": "drum",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "portableBlock@13,3,0",
       "jsonItemId": "portableBlock@13,3,0",
@@ -7036,6 +7579,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "portableBlock@13,3,4": {
       "config": {
         "style": "cube",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "portableBlock@13,3,4",
       "jsonItemId": "portableBlock@13,3,4",
@@ -7093,6 +7641,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "portableBlock@13,4,0": {
       "config": {
         "style": "cube",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "portableBlock@13,4,0",
       "jsonItemId": "portableBlock@13,4,0",
@@ -7154,6 +7707,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "portableBlock@3,13,0": {
       "config": {
         "style": "cube",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "portableBlock@3,13,0",
       "jsonItemId": "portableBlock@3,13,0",
@@ -7215,6 +7773,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "portableBlock@4,13,0": {
       "config": {
         "style": "cube",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "portableBlock@4,13,0",
       "jsonItemId": "portableBlock@4,13,0",
@@ -7272,6 +7835,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "portableBlock@4,6,2": {
       "config": {
         "style": "drum",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "portableBlock@4,6,2",
       "jsonItemId": "portableBlock@4,6,2",
@@ -7333,6 +7901,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "portableBlock@5,13,0": {
       "config": {
         "style": "cube",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "portableBlock@5,13,0",
       "jsonItemId": "portableBlock@5,13,0",
@@ -7394,6 +7967,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "portableBlock@5,6,10": {
       "config": {
         "style": "cube",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "portableBlock@5,6,10",
       "jsonItemId": "portableBlock@5,6,10",
@@ -7455,6 +8033,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "pr": {
       "config": {
         "style": "drum",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "pr",
       "jsonItemId": "pr",
@@ -7516,7 +8099,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "portableBlock",
     },
     "pushableBlock@1,6,0": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "pushableBlock@1,6,0",
       "jsonItemId": "pushableBlock@1,6,0",
       "position": {
@@ -7577,7 +8166,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "pushableBlock",
     },
     "pushableBlock@1,6,1": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "pushableBlock@1,6,1",
       "jsonItemId": "pushableBlock@1,6,1",
       "position": {
@@ -7638,7 +8233,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "pushableBlock",
     },
     "pushableBlock@1,6,2": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "pushableBlock@1,6,2",
       "jsonItemId": "pushableBlock@1,6,2",
       "position": {
@@ -7697,7 +8298,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "pushableBlock",
     },
     "pushableBlock@10,7,0": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "pushableBlock@10,7,0",
       "jsonItemId": "pushableBlock@10,7,0",
       "position": {
@@ -7754,7 +8361,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "pushableBlock",
     },
     "pushableBlock@10,7,1": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "pushableBlock@10,7,1",
       "jsonItemId": "pushableBlock@10,7,1",
       "position": {
@@ -7811,7 +8424,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "pushableBlock",
     },
     "pushableBlock@10,7,2": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "pushableBlock@10,7,2",
       "jsonItemId": "pushableBlock@10,7,2",
       "position": {
@@ -7868,7 +8487,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "pushableBlock",
     },
     "pushableBlock@10,7,3": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "pushableBlock@10,7,3",
       "jsonItemId": "pushableBlock@10,7,3",
       "position": {
@@ -7925,7 +8550,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "pushableBlock",
     },
     "pushableBlock@10,7,4": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "pushableBlock@10,7,4",
       "jsonItemId": "pushableBlock@10,7,4",
       "position": {
@@ -7982,7 +8613,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "pushableBlock",
     },
     "pushableBlock@10,7,5": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "pushableBlock@10,7,5",
       "jsonItemId": "pushableBlock@10,7,5",
       "position": {
@@ -8037,7 +8674,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "pushableBlock",
     },
     "pushableBlock@2,6,0": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "pushableBlock@2,6,0",
       "jsonItemId": "pushableBlock@2,6,0",
       "position": {
@@ -8098,7 +8741,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "pushableBlock",
     },
     "pushableBlock@2,6,1": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "pushableBlock@2,6,1",
       "jsonItemId": "pushableBlock@2,6,1",
       "position": {
@@ -8159,7 +8808,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "pushableBlock",
     },
     "pushableBlock@2,6,2": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "pushableBlock@2,6,2",
       "jsonItemId": "pushableBlock@2,6,2",
       "position": {
@@ -8218,7 +8873,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "pushableBlock",
     },
     "pushableBlock@2,9,0": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "pushableBlock@2,9,0",
       "jsonItemId": "pushableBlock@2,9,0",
       "position": {
@@ -8281,6 +8942,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "sb": {
       "config": {
         "style": "book",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "sb",
       "jsonItemId": "sb",
@@ -8343,6 +9009,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "sb1": {
       "config": {
         "style": "book",
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "sb1",
       "jsonItemId": "sb1",
@@ -8405,7 +9076,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "slidingBlock",
     },
     "spring@13,0,0": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "spring@13,0,0",
       "jsonItemId": "spring@13,0,0",
       "position": {
@@ -8464,7 +9141,13 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "type": "spring",
     },
     "spring@14,0,0": {
-      "config": {},
+      "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
+      },
       "id": "spring@14,0,0",
       "jsonItemId": "spring@14,0,0",
       "position": {
@@ -8533,6 +9216,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             ],
           },
         ],
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "sw",
       "jsonItemId": "sw",
@@ -8543,12 +9231,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "state": {
         "actedOnAt": {
-          "actedInXY": true,
+          "actedInXY": false,
           "actedInZ": false,
-          "by": {
-            "e-0-20008": true,
-          },
-          "roomTime": 22016.666666666326,
+          "by": {},
+          "roomTime": -9007199254740991,
         },
         "box": {
           "x": 82,
@@ -8577,6 +9263,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             "reverses": false,
           },
         ],
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "sw1",
       "jsonItemId": "sw1",
@@ -8622,6 +9313,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             ],
           },
         ],
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "sw2",
       "jsonItemId": "sw2",
@@ -8669,6 +9365,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             ],
           },
         ],
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "sw3",
       "jsonItemId": "sw3",
@@ -8722,6 +9423,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             ],
           },
         ],
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "type": "in-room",
       },
       "id": "switch@17,12,0",
@@ -8767,6 +9473,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "x": 0,
           "y": -1,
           "z": 0,
+        },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
         },
         "which": "turtle",
       },
@@ -8848,6 +9559,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 0,
           "z": 0,
         },
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "which": "turtle",
       },
       "id": "t2",
@@ -8920,6 +9636,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "teleporter@1,0,0": {
       "config": {
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 1,
+        },
         "toRoom": "room_1",
       },
       "id": "teleporter@1,0,0",
@@ -9047,6 +9768,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "hieroglyphics",
           "sarcophagus",
         ],
+        "times": {
+          "x": 1,
+          "y": 14,
+          "z": 1,
+        },
       },
       "id": "wall(right)@0,0,0",
       "jsonItemId": "wall(right)@0,0,0",
@@ -9088,6 +9814,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "sarcophagus",
           "sarcophagus",
         ],
+        "times": {
+          "x": 5,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "wall(towards)@0,0,0",
       "jsonItemId": "wall(towards)@0,0,0",
@@ -9142,6 +9873,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "sarcophagus",
           "hieroglyphics",
         ],
+        "times": {
+          "x": 18,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "wall@0,14,0",
       "jsonItemId": "wall@0,14,0",
@@ -9193,6 +9929,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "sarcophagus",
           "hieroglyphics",
         ],
+        "times": {
+          "x": 1,
+          "y": 14,
+          "z": 1,
+        },
       },
       "id": "wall@18,0,0",
       "jsonItemId": "wall@18,0,0",
@@ -9240,6 +9981,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "hieroglyphics",
           "hieroglyphics",
         ],
+        "times": {
+          "x": 11,
+          "y": 1,
+          "z": 1,
+        },
       },
       "id": "wall@7,0,0",
       "jsonItemId": "wall@7,0,0",
@@ -10152,7 +10898,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "position": {
           "x": 17,
           "y": 0,
-          "z": 7,
+          "z": 6,
         },
         "type": "emitter",
       },

@@ -1,10 +1,10 @@
 import {
   itemBehaviourKey,
   type ItemInPlayConfig,
-} from "../../../model/ItemInPlay";
-import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+} from "../../../model/itemInPlay/ItemInPlay";
+import type { PlayableItem } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { IndividualCharacterName } from "../../../model/modelTypes";
-import { emptyObject } from "../../../utils/empty";
+import { unitTimesConfig } from "../../../model/times";
 import { neverTime } from "../../../utils/neverTime";
 import { pick } from "../../../utils/pick";
 import { addXyz, boxWithSize } from "../../../utils/vectors/vectors";
@@ -117,7 +117,7 @@ export const combinePlayablesInSymbiosis = <
   const previouslySelectedState =
     previousPlayable === "head" ? head.state : heels.state;
 
-  const config = emptyObject satisfies ItemInPlayConfig<"headOverHeels">;
+  const config = unitTimesConfig satisfies ItemInPlayConfig<"headOverHeels">;
   return {
     id: "headOverHeels" as RoomItemId,
     type: "headOverHeels",

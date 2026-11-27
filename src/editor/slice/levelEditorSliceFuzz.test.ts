@@ -5,6 +5,7 @@ import { roomJsonMatchers } from "../../model/json/__test__/roomJsonMatchers";
 import { roomGridPositions } from "../../model/map/roomGridPositions";
 import { sortRoomGridPositions } from "../../model/map/sortRoomGridPositions";
 import { roomJsonItemsIterable } from "../../model/RoomJsonItemIterators";
+import { completeTimesXy } from "../../model/times";
 import { keys } from "../../utils/entries";
 import type { DirectionXy4 } from "../../utils/vectors/vectors";
 import { areRoomsCoalesceable } from "../EditorMap/areRoomsCoalesceable";
@@ -61,7 +62,8 @@ const roomFloorArea = (room: EditorRoomJson): number => {
   let area = 0;
   for (const item of roomJsonItemsIterable(room)) {
     if (item.type === "floor") {
-      area += item.config.times.x * item.config.times.y;
+      const timesCompleted = completeTimesXy(item.config.times);
+      area += timesCompleted.x * timesCompleted.y;
     }
   }
   return area;

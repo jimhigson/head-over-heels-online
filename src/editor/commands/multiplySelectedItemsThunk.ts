@@ -15,7 +15,7 @@ import {
 import { selectCurrentEditingRoomJsonWithPreviews } from "../slice/levelEditorSelectors";
 import {
   multiplySelectedItems,
-  selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections,
+  selectCursorRoomSelectionJsonItemIdsIncludingEditorGhostOwners,
 } from "../slice/levelEditorSlice";
 import { multiplyPlan, type MultiplyType } from "../slice/multiplyPlan";
 import { growArgs } from "../toolbar/buttons/nudgeDirections";
@@ -45,7 +45,8 @@ export const multiplySelectedItemsThunk =
     const roomJson = selectCurrentEditingRoomJsonWithPreviews(editorState);
     const plan = multiplyPlan(
       roomJson,
-      selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelections(
+      // a selected editor ghost multiplies its item:
+      selectCursorRoomSelectionJsonItemIdsIncludingEditorGhostOwners(
         editorState,
       ),
       direction,

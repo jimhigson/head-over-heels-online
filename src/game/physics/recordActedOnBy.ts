@@ -2,7 +2,7 @@ import {
   type FreeItem,
   isFreeItem,
   type UnionOfAllItemInPlayTypes,
-} from "../../model/ItemInPlayNarrowedUnions";
+} from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { RoomState } from "../../model/RoomState";
 
 export const recordActedOnBy = <

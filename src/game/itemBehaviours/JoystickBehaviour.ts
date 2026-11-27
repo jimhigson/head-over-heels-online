@@ -1,5 +1,5 @@
-import type { ItemInPlay } from "../../model/ItemInPlay";
-import type { FreeItem } from "../../model/ItemInPlayNarrowedUnions";
+import type { ItemInPlay } from "../../model/itemInPlay/ItemInPlay";
+import type { FreeItem } from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
 import { epsilon } from "../../utils/epsilon";
 import {

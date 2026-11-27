@@ -1,6 +1,6 @@
 import type { Container, Sprite } from "pixi.js";
 
-import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { ItemInPlay } from "../../../model/itemInPlay/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
 import type { AppSpritesheet } from "../../../sprites/spritesheet/AppSpritesheet";

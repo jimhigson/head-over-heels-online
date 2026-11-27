@@ -1,12 +1,15 @@
-import type { BaseItemState, ItemState } from "../../../model/ItemState";
-import type { FreeItemState } from "../../../model/ItemStateMap";
+import type {
+  BaseItemState,
+  ItemState,
+} from "../../../model/itemInPlay/ItemState";
+import type { FreeItemState } from "../../../model/itemInPlay/ItemStateMap";
+import type { StoodOnBy } from "../../../model/itemInPlay/StoodOnBy";
 import type {
   JsonItem,
   JsonItemType,
   JsonItemUnion,
 } from "../../../model/json/JsonItem";
 import type { Progression } from "../../../model/RoomState";
-import type { StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { omit } from "../../../utils/pick";
@@ -136,7 +139,7 @@ const stateBuilders: {
     ...baseState(jsonItem, aabb),
     // conveyors copy their config into state (mutable by switches), with the
     // json direction name becoming a unit vector in-play:
-    ...structuredClone(jsonItem.config),
+    ...structuredClone(omit(jsonItem.config, "times")),
     direction: unitVectors[jsonItem.config.direction],
     disappearing: jsonItem.config.disappearing ?? null,
   }),
@@ -178,7 +181,9 @@ const stateBuilders: {
     activated: jsonItem.config.activated ?? true,
   }),
   lift(jsonItem, aabb) {
-    const { startDirection = "up", ...config } = jsonItem.config;
+    const {
+      config: { startDirection = "up", ...config },
+    } = jsonItem;
     return {
       ...baseState(jsonItem, aabb),
       // config copied into state, so switches can change it at run-time:
@@ -251,7 +256,7 @@ const stateBuilders: {
     ...baseState(jsonItem, aabb),
     ...defaultFreeItemState(),
     // config copied into state, so switches can change it at run-time:
-    ...structuredClone(jsonItem.config),
+    ...structuredClone(omit(jsonItem.config, "times")),
   }),
   pushableBlock: (jsonItem, aabb) => ({
     ...baseState(jsonItem, aabb),
@@ -288,7 +293,7 @@ const stateBuilders: {
   teleporter: (jsonItem, aabb) => ({
     ...baseState(jsonItem, aabb),
     // config copied into state, so switches can change it at run-time:
-    ...structuredClone(jsonItem.config),
+    ...structuredClone(omit(jsonItem.config, "times")),
   }),
   timer: (jsonItem, aabb) => ({
     ...baseState(jsonItem, aabb),

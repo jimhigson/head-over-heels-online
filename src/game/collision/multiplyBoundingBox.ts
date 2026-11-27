@@ -1,4 +1,3 @@
-import { completeTimesXyz } from "../../model/times";
 import type { Aabb, Xyz } from "../../utils/vectors/vectors";
 import { blockSizePx } from "../physics/mechanicsConstants";
 
@@ -8,14 +7,8 @@ import { blockSizePx } from "../physics/mechanicsConstants";
  * to the repeated blocks, so this works for any box - physical aabbs (loaders)
  * and visual overdraw boxes (render-box derivation) alike
  */
-export const multiplyBoundingBox = (
-  box: Aabb,
-  times: Partial<Xyz> | undefined,
-): Aabb => {
-  const timesCompleted = completeTimesXyz(times ?? {});
-  return {
-    x: box.x + (timesCompleted.x - 1) * blockSizePx.x,
-    y: box.y + (timesCompleted.y - 1) * blockSizePx.y,
-    z: box.z + (timesCompleted.z - 1) * blockSizePx.z,
-  };
-};
+export const multiplyBoundingBox = (box: Aabb, times: Xyz): Aabb => ({
+  x: box.x + (times.x - 1) * blockSizePx.x,
+  y: box.y + (times.y - 1) * blockSizePx.y,
+  z: box.z + (times.z - 1) * blockSizePx.z,
+});

@@ -3,7 +3,7 @@ import { Container } from "pixi.js";
 import {
   itemBehaviourKey,
   type ItemInPlayType,
-} from "../../../../model/ItemInPlay";
+} from "../../../../model/itemInPlay/ItemInPlay";
 import { assignRoundedXy } from "../../../../utils/pixi/assignRoundedXy";
 import { isAtQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import {

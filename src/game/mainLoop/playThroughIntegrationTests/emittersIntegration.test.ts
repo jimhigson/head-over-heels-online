@@ -277,7 +277,7 @@ describe("emitted item position with offset", () => {
     return emitted?.state.box;
   };
 
-  test("emitted item with no offset appears centred on the emitter", () => {
+  test("emitted item with no offset appears centred on the emitter, standing on its base", () => {
     const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
@@ -305,8 +305,8 @@ describe("emitted item position with offset", () => {
     const pos = emittedItemPosition(gameState)!;
     expect(pos.x).toBe(34);
     expect(pos.y).toBe(34);
-    // emitter pixel z (10 * 12 = 120) - half portableBlock aabb z (12 / 2 = 6)
-    expect(pos.z).toBeCloseTo(114);
+    // the emitter's base, at pixel z 10 * 12:
+    expect(pos.z).toBeCloseTo(120);
   });
 
   test("offset with only z set does not shift x or y", () => {
@@ -338,8 +338,8 @@ describe("emitted item position with offset", () => {
     const pos = emittedItemPosition(gameState)!;
     expect(pos.x).toBe(34);
     expect(pos.y).toBe(34);
-    // no-offset z (114) + offset z (0.5 * 12 = 6)
-    expect(pos.z).toBeCloseTo(120);
+    // no-offset z (120) + offset z (0.5 * 12 = 6)
+    expect(pos.z).toBeCloseTo(126);
   });
 });
 

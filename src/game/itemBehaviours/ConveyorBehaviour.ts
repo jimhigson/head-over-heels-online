@@ -1,5 +1,5 @@
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import type { FreeItem } from "../../model/ItemInPlayNarrowedUnions";
+import type { FreeItem } from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import {
   dominantAxisXy,
   roundsToCardinalXy4,

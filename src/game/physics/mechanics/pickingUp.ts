@@ -1,10 +1,10 @@
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
 import {
   isFreeItem,
   type PlayableItem,
   type UnionOfAllItemInPlayTypes,
-} from "../../../model/ItemInPlayNarrowedUnions";
-import type { HeelsAbilities } from "../../../model/ItemStateMap";
+} from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
+import type { HeelsAbilities } from "../../../model/itemInPlay/ItemStateMap";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
 import { getEffectivelyStandingOnItemIdForPlayable } from "../../../model/stoodOnItemsLookup";

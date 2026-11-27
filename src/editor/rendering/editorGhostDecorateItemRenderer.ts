@@ -1,7 +1,7 @@
 import type { DecorateItemMaybeRenderer } from "../../game/render/item/itemRender/DecorateItemRenderer";
 import type { ItemChainPixiRenderer } from "../../game/render/item/itemRender/ItemPixiRenderer";
 import type { ItemRenderContext } from "../../game/render/ItemRenderContexts";
-import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../model/itemInPlay/ItemInPlay";
 import { EditorGhostPixiRenderer } from "./EditorGhostPixiRenderer";
 
 const isEditorGhostRenderContext = (

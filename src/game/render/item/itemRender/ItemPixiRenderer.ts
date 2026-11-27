@@ -1,6 +1,6 @@
 import type { Container } from "pixi.js";
 
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../../model/itemInPlay/ItemInPlay";
 import type {
   ItemLeafRenderContext,
   ItemLeafTickContext,

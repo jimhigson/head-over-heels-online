@@ -5,7 +5,7 @@ import { selectCurrentRoomState } from "../game/gameState/gameStateSelectors/sel
 import { type BooleanAction, booleanActions } from "../game/input/actions";
 import type { InputStateTrackerInterface } from "../game/input/InputStateTracker";
 import { blockSizePx } from "../game/physics/mechanicsConstants";
-import type { UnionOfAllItemInPlayTypes } from "../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../model/roomItemsInPlayIterators";
 import type { RoomState } from "../model/RoomState";
 import { selectGameSpeed } from "../store/slices/gameMenus/gameMenusSelectors";

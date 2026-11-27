@@ -1,5 +1,5 @@
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { PlanetsLiberated } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 
 /** whether the item is a teleporter, fixed or portable - whether active or not */

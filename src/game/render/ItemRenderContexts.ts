@@ -2,8 +2,8 @@ import type { Container, RenderLayer } from "pixi.js";
 import type { SetRequired } from "type-fest";
 
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import type { ItemInPlayType } from "../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import type { ItemInPlayType } from "../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { RoomState } from "../../model/RoomState";
 import type { Graph } from "../../utils/graph/Graph";
 import type { FilterCache } from "./filters/FilterCache";

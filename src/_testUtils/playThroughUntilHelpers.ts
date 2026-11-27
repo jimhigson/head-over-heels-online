@@ -1,6 +1,6 @@
 import { selectCurrentRoomState } from "../game/gameState/gameStateSelectors/selectCurrentRoomState";
-import type { ItemInPlayType } from "../model/ItemInPlay";
-import { isFreeItem } from "../model/ItemInPlayNarrowedUnions";
+import type { ItemInPlayType } from "../model/itemInPlay/ItemInPlay";
+import { isFreeItem } from "../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { CharacterName } from "../model/modelTypes";
 import { keys } from "../utils/entries";
 import type { UntilFunction } from "./playGameThrough";

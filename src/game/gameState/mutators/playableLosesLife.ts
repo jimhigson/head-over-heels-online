@@ -1,8 +1,8 @@
-import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { PlayableItem } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import {
   addPokeableNumbers,
   pokeableToNumber,
-} from "../../../model/ItemStateMap";
+} from "../../../model/itemInPlay/ItemStateMap";
 import {
   type CharacterName,
   type IndividualCharacterName,

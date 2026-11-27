@@ -3,14 +3,12 @@ import {
   doorPostHeightPx,
 } from "../../../game/gameState/loadRoom/loadDoorConstants";
 import { fineXyzToBlockXyz } from "../../../game/render/projections";
-import { completeTimesXy, wallInPlayTimes } from "../../../model/times";
 import { epsilon } from "../../../utils/epsilon";
 import {
   addXyz,
   alongAxisOfDirectionXy,
   boxMaxOnAxis,
   dominantAxisXy,
-  type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
@@ -66,7 +64,7 @@ export const itemToolPutDownLocation = (
       state: { box: wallBox },
     } = pointingAtItem;
 
-    const currentWallTimes: Xy = completeTimesXy(wallInPlayTimes(wallConfig));
+    const currentWallTimes = wallConfig.times;
 
     /** axis running along the wall the door sits on */
     const alongWallAxis = alongAxisOfDirectionXy(wallConfig.direction);

@@ -2,9 +2,9 @@ import {
   itemBehaviourKey,
   type ItemInPlay,
   type ItemInPlayConfig,
-} from "../../../model/ItemInPlay";
+} from "../../../model/itemInPlay/ItemInPlay";
 import type { JsonItem } from "../../../model/json/JsonItem";
-import { emptyObject } from "../../../utils/empty";
+import { unitTimesConfig } from "../../../model/times";
 import { valuesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
@@ -63,7 +63,9 @@ export function* maybeLoadExtraCornerShadow<
     /** the corner's ordinate on the wall's along axis */
     cornerOrd: number,
   ): boolean => {
-    const { direction } = wall.config;
+    const {
+      config: { direction },
+    } = wall;
     const alongAxis = doorAlongAxis(direction);
     const wallLength = wall.config.tiles.length;
 
@@ -125,7 +127,7 @@ export function* maybeLoadExtraCornerShadow<
           continue;
         }
 
-        const config = emptyObject satisfies ItemInPlayConfig<"blocker">;
+        const config = unitTimesConfig satisfies ItemInPlayConfig<"blocker">;
         // the cube pokes diagonally out of the room at the corner: on each
         // axis, out of the room is the bounding direction's outward normal:
         yield {

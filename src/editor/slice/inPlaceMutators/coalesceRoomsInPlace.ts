@@ -212,7 +212,9 @@ const outwardDoorLinks = (
   return layout.flatMap(({ roomId, room }) =>
     iterateRoomJsonItemsWithIds(room.items, "door")
       .flatMap(([doorId, door]): OutwardDoorLink[] => {
-        const { toRoom, toDoor, direction } = door.config;
+        const {
+          config: { toRoom, toDoor, direction },
+        } = door;
         if (layoutRoomIds.has(toRoom) || !(toRoom in rooms)) {
           return emptyArray;
         }
@@ -513,7 +515,9 @@ const removeInternalWalls = (
       continue;
     }
 
-    const { direction } = item.config;
+    const {
+      config: { direction },
+    } = item;
     const alongAxis = wallAlongAxis(direction);
     const times = wallTimes(item.config);
     const length = times[alongAxis] ?? 1;

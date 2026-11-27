@@ -9,7 +9,7 @@ import type {
 import type { MapArea, MapData } from "../../../../../../map/MapData";
 import type { RoomBehaviourComponent } from "../../../../../../map/RoomDecoratorProps";
 import { selectNotableItems } from "../../../../../../map/selectNotableItems";
-import type { PlayableItem } from "../../../../../../model/ItemInPlayNarrowedUnions";
+import type { PlayableItem } from "../../../../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { findSubRoomForItem } from "../../../../../../model/map/itemIsInSubRoom";
 import { roomGridPositions } from "../../../../../../model/map/roomGridPositions";
 import { sortRoomGridPositions } from "../../../../../../model/map/sortRoomGridPositions";

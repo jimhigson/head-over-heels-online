@@ -5,6 +5,7 @@ import {
   uncoveredPerimeterEdges,
 } from "../../model/json/verification/helpers/roomPerimeter";
 import { iterateRoomJsonItemsWithIds } from "../../model/RoomJsonItemIterators";
+import { completeTimesXy } from "../../model/times";
 import { keys } from "../../utils/entries";
 import {
   addXy,
@@ -95,7 +96,7 @@ const gapAfterEdit = (
     if (editedFloor?.type !== "floor" || editedFloor === floor) {
       continue;
     }
-    const floorEnd = addXy(floor.position, floor.config.times);
+    const floorEnd = addXy(floor.position, completeTimesXy(floor.config.times));
     const isOnFloorEdge =
       floorEdgeLineCoord(gap.direction, floor.position, floorEnd) ===
         gap.through &&
@@ -104,7 +105,7 @@ const gapAfterEdit = (
     if (isOnFloorEdge) {
       const editedFloorEnd = addXy(
         editedFloor.position,
-        editedFloor.config.times,
+        completeTimesXy(editedFloor.config.times),
       );
       const startShift =
         editedFloor.position[alongAxis] - floor.position[alongAxis];
@@ -182,13 +183,15 @@ export const perimeterGapFillingEdits = (
     const floorZ =
       iterateRoomJsonItemsWithIds(editedItems, "floor")
         .map(([, floor]) => floor)
-        .find(
-          ({ position, config: { times } }) =>
+        .find(({ position, config }) => {
+          const timesCompleted = completeTimesXy(config.times);
+          return (
             run.square.x >= position.x &&
-            run.square.x < position.x + times.x &&
+            run.square.x < position.x + timesCompleted.x &&
             run.square.y >= position.y &&
-            run.square.y < position.y + times.y,
-        )?.position.z ?? 0;
+            run.square.y < position.y + timesCompleted.y
+          );
+        })?.position.z ?? 0;
 
     const lineWalls = iterateRoomJsonItemsWithIds(
       { ...editedItems, ...fillingWalls },

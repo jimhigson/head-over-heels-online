@@ -4,8 +4,8 @@ import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import {
   itemBehaviourKey,
   type SwitchSetting,
-} from "../../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+} from "../../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { SwitchItemModificationUnion } from "../../../model/json/SwitchConfig";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import type { RoomState } from "../../../model/RoomState";

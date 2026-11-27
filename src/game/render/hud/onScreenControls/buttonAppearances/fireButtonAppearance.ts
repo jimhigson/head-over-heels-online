@@ -3,7 +3,7 @@ import { Container, type Renderer, type Sprite } from "pixi.js";
 import {
   type PokeableNumber,
   pokeableToNumber,
-} from "../../../../../model/ItemStateMap";
+} from "../../../../../model/itemInPlay/ItemStateMap";
 import type { RoomState } from "../../../../../model/RoomState";
 import type { AppSpritesheetWithVariants } from "../../../../../sprites/spritesheet/AppSpritesheet";
 import { variantTextureId } from "../../../../../sprites/spritesheet/variantTextureId";

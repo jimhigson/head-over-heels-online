@@ -1,4 +1,4 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import type { RoomJson } from "../../../model/RoomJson";
 import type {
@@ -21,7 +21,7 @@ export function* loadItems<RoomId extends string, RoomItemId extends string>(
   isNewGame: boolean,
   shouldLoadItem: (item: JsonItemUnion<RoomId, RoomItemId>) => boolean = () =>
     true,
-): Generator<UnionOfAllItemInPlayTypes<RoomId>> {
+): Generator<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>> {
   const ent = entries(roomJson.items);
   for (const [id, item] of ent) {
     if (item.type === "player" && !isNewGame) {

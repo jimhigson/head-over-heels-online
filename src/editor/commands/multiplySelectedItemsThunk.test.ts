@@ -273,3 +273,48 @@ test("shrinking straight after multiplying is a separate undoable edit", () => {
 
   expect(state1.history[testRoomId]?.undo).toHaveLength(2);
 });
+
+test("multiplying with an emitter's emitted-item ghost selected copies the emitter, and selects it and its copy", () => {
+  const emitterId = "emitter" as EditorRoomItemId;
+  const state0: LevelEditorState = produce(
+    stateWithSelectedMonkeyOnFloor,
+    (draft) => {
+      draft.campaignInProgress.rooms[testRoomId].items[emitterId] = {
+        type: "emitter",
+        position: { x: 1, y: 1, z: 1 },
+        config: {
+          emits: { type: "portableBlock", config: { style: "cube" } },
+          period: 1_000,
+          maximum: null,
+        },
+      };
+      existingLayoutNode(draft.layout, testOpenRoomId).selection = [
+        { jsonItemId: emitterId, whichEditorGhost: "emittedItem" },
+      ];
+    },
+  );
+
+  const state1 = reduceLevelEditorActions(
+    state0,
+    ...multiplyPresses([unitVectors.away]),
+  );
+
+  expect({
+    emitterPositions: iterateRoomJsonItemsWithIds(
+      state1.campaignInProgress.rooms[testRoomId].items,
+      "emitter",
+    )
+      .map(([, { position }]) => position)
+      .toArray(),
+    selection: existingLayoutNode(state1.layout, testOpenRoomId).selection.map(
+      ({ whichEditorGhost }) => whichEditorGhost,
+    ),
+  }).toEqual({
+    emitterPositions: [
+      { x: 1, y: 1, z: 1 },
+      { x: 1, y: 2, z: 1 },
+    ],
+    // the emitter and its copy, as items rather than ghosts:
+    selection: [undefined, undefined],
+  });
+});

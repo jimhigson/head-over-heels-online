@@ -23,6 +23,11 @@ import {
   iterateRoomJsonItemsWithIds,
   roomJsonItemsIterable,
 } from "../../../model/RoomJsonItemIterators";
+import {
+  completeTimesXy,
+  completeTimesXyz,
+  optimiseTimesXyz,
+} from "../../../model/times";
 import type { ZxSpectrumRoomColour } from "../../../originalGame";
 import type { SceneryName } from "../../../sprites/planets";
 import { keysIter } from "../../../utils/entries";
@@ -189,10 +194,14 @@ const holeSize: Xy = { x: 2, y: 2 };
 /**
  * a floor can have a hole made in it if the hole fits strictly inside it
  */
-export const canMakeHoleInFloor = (floor: EditorJsonItem<"floor">) =>
-  floor.config.floorType !== "none" &&
-  floor.config.times.x > holeSize.x &&
-  floor.config.times.y > holeSize.y;
+export const canMakeHoleInFloor = (floor: EditorJsonItem<"floor">) => {
+  const timesCompleted = completeTimesXy(floor.config.times);
+  return (
+    floor.config.floorType !== "none" &&
+    timesCompleted.x > holeSize.x &&
+    timesCompleted.y > holeSize.y
+  );
+};
 
 /**
  * the floors that replace `floor` once a hole is cut in its centre: a
@@ -204,33 +213,48 @@ const floorsAroundHole = (
   hole: EditorJsonItem<"floor">;
   surrounding: EditorJsonItem<"floor">[];
 } => {
-  const { position } = floor;
-  const { times } = floor.config;
+  const {
+    position,
+    config: { times, ...configWithoutTimes },
+  } = floor;
+  const timesCompleted = completeTimesXy(times);
   // rounded down for floors of odd size:
   const holeFrom: Xy = {
-    x: Math.floor((times.x - holeSize.x) / 2),
-    y: Math.floor((times.y - holeSize.y) / 2),
+    x: Math.floor((timesCompleted.x - holeSize.x) / 2),
+    y: Math.floor((timesCompleted.y - holeSize.y) / 2),
   };
   const holeTo = addXy(holeFrom, holeSize);
 
-  const floorPart = (from: Xy, partTimes: Xy): EditorJsonItem<"floor"> => ({
-    ...floor,
-    position: { ...position, x: position.x + from.x, y: position.y + from.y },
-    config: { ...floor.config, times: partTimes },
-  });
+  const floorPart = (from: Xy, partTimes: Xy): EditorJsonItem<"floor"> => {
+    const optimisedPartTimes = optimiseTimesXyz(completeTimesXyz(partTimes));
+    return {
+      ...floor,
+      position: { ...position, x: position.x + from.x, y: position.y + from.y },
+      config: {
+        ...configWithoutTimes,
+        ...(optimisedPartTimes !== undefined && { times: optimisedPartTimes }),
+      },
+    };
+  };
 
   const surrounding = [
     // in front of the hole, the floor's full width:
-    floorPart({ x: 0, y: 0 }, { x: times.x, y: holeFrom.y }),
+    floorPart({ x: 0, y: 0 }, { x: timesCompleted.x, y: holeFrom.y }),
     // behind the hole, the floor's full width:
-    floorPart({ x: 0, y: holeTo.y }, { x: times.x, y: times.y - holeTo.y }),
+    floorPart(
+      { x: 0, y: holeTo.y },
+      { x: timesCompleted.x, y: timesCompleted.y - holeTo.y },
+    ),
     // either side of the hole:
     floorPart({ x: 0, y: holeFrom.y }, { x: holeFrom.x, y: holeSize.y }),
     floorPart(
       { x: holeTo.x, y: holeFrom.y },
-      { x: times.x - holeTo.x, y: holeSize.y },
+      { x: timesCompleted.x - holeTo.x, y: holeSize.y },
     ),
-  ].filter(({ config }) => config.times.x > 0 && config.times.y > 0);
+  ].filter(({ config }) => {
+    const partTimesCompleted = completeTimesXy(config.times);
+    return partTimesCompleted.x > 0 && partTimesCompleted.y > 0;
+  });
 
   return {
     hole: {
@@ -276,12 +300,12 @@ const roomShape = (
   const extentTo: Xy = {
     x: Math.max(
       ...groundFloors.map(
-        ({ position, config }) => position.x + config.times.x,
+        ({ position, config }) => position.x + completeTimesXy(config.times).x,
       ),
     ),
     y: Math.max(
       ...groundFloors.map(
-        ({ position, config }) => position.y + config.times.y,
+        ({ position, config }) => position.y + completeTimesXy(config.times).y,
       ),
     ),
   };

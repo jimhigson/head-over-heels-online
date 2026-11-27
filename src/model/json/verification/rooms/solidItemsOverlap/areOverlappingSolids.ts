@@ -1,5 +1,5 @@
 import { collisionBoxes } from "../../../../../game/collision/aabbCollision";
-import { itemBehaviourKey } from "../../../../ItemInPlay";
+import { itemBehaviourKey } from "../../../../itemInPlay/ItemInPlay";
 import { isInsideCorner } from "./isInsideCorner";
 import type { LoadedItem } from "./LoadedItem";
 import { overlapBox } from "./overlapBox";

@@ -14,7 +14,9 @@ export const doorTargetSubRoomId = <RoomId extends string>(
   roomId: RoomId,
   door: JsonItem<"door", RoomId, string>,
 ): string => {
-  const { toRoom } = door.config;
+  const {
+    config: { toRoom },
+  } = door;
   return (
     door.config.meta?.toSubRoom ??
     (toRoom === exitGameRoomId || !(toRoom in rooms) ?

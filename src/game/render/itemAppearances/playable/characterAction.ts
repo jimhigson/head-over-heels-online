@@ -1,6 +1,6 @@
 import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
-import type { PlayableItem } from "../../../../model/ItemInPlayNarrowedUnions";
-import type { PlayableActionState } from "../../../../model/ItemStateMap";
+import type { PlayableItem } from "../../../../model/itemInPlay/ItemInPlayNarrowedUnions";
+import type { PlayableActionState } from "../../../../model/itemInPlay/ItemStateMap";
 
 /** what a character, playable or scenery, is drawn doing */
 export const characterAction = (

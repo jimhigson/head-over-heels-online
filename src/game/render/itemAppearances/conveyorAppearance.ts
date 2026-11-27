@@ -1,6 +1,6 @@
 import { AnimatedSprite, Container } from "pixi.js";
 
-import { isStoodOn } from "../../../model/StoodOnBy";
+import { isStoodOn } from "../../../model/itemInPlay/StoodOnBy";
 import type { AppSpritesheetWithVariants } from "../../../sprites/spritesheet/AppSpritesheet";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { neverTime } from "../../../utils/neverTime";
@@ -55,7 +55,7 @@ const staggerAnimation = (
 
 const createRendering = (
   direction: Xyz,
-  times: Partial<Xy> | undefined,
+  times: Xyz,
   spritesheet: AppSpritesheetWithVariants,
   frameCount: number,
   cameraQuarterAngle: Xy,

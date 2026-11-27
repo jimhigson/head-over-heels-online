@@ -1,4 +1,4 @@
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../model/roomItemsInPlayIterators";
 import type { RoomState } from "../../model/RoomState";
 import type { SceneryName, Wall } from "../../sprites/planets";

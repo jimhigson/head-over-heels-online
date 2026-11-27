@@ -148,7 +148,9 @@ const roomsBeyond = (
       rooms[roomId].items,
       "door",
     )) {
-      const { toRoom } = door.config;
+      const {
+        config: { toRoom },
+      } = door;
       const isReturnOfSplitDoor =
         door.config.direction === oppositeDir &&
         isSourceCell(toRoom, doorTargetSubRoomId(rooms, roomId, door));

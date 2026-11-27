@@ -14,7 +14,7 @@ import {
 import {
   type ItemInPlayType,
   itemInPlayTypes,
-} from "../../../model/ItemInPlay";
+} from "../../../model/itemInPlay/ItemInPlay";
 import { type ResolutionName, resolutionNames } from "../../../originalGame";
 import {
   type SpritesheetName,

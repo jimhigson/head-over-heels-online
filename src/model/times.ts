@@ -1,16 +1,11 @@
-import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
-import type { ConsolidatableJsonItemType } from "../consolidateItems/ConsolidatableJsonItem";
 import type { SceneryName } from "../sprites/planets";
 import {
-  alongAxisOfDirectionXy,
   type AxisXy,
   doorAlongAxis,
   unitXyz,
   type Xy,
   type Xyz,
 } from "../utils/vectors/vectors";
-import type { ItemInPlayConfig } from "./ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
 import type { JsonItemUnion } from "./json/JsonItem";
 import type { WallJsonConfig } from "./json/WallJsonConfig";
 
@@ -26,34 +21,12 @@ const wallTimesAlong = (alongAxis: AxisXy, tileCount: number): Partial<Xy> => ({
 export const wallTimes = (config: WallJsonConfig<SceneryName>): Partial<Xy> =>
   wallTimesAlong(doorAlongAxis(config.direction), config.tiles.length);
 
-/** {@link wallTimes} for an in-play wall, whose direction is a unit vector */
-export const wallInPlayTimes = (
-  config: ItemInPlayConfig<"wall">,
-): Partial<Xy> =>
-  wallTimesAlong(alongAxisOfDirectionXy(config.direction), config.tiles.length);
-
-export const isMultipliedItem = <
-  RoomId extends string,
-  RoomItemId extends string,
->(
-  item: UnionOfAllItemInPlayTypes<RoomId>,
-): item is ItemTypeUnion<ConsolidatableJsonItemType, RoomId, RoomItemId> => {
-  type ItemConfigMaybeWithMultiplication = {
-    times?: Partial<Xyz> | undefined;
-  };
-
-  return (item.config as ItemConfigMaybeWithMultiplication).times !== undefined;
-};
-
-export const itemInPlayTimes = (
-  item: UnionOfAllItemInPlayTypes,
-): Partial<Xyz> | undefined => {
-  return (
-    item.type === "wall" ? wallInPlayTimes(item.config)
-    : isMultipliedItem(item) ? item.config.times
-    : undefined
-  );
-};
+/**
+ * the in-play config of an item that has nothing configured but a one block times
+ */
+export const unitTimesConfig: { readonly times: Xyz } = Object.freeze({
+  times: unitXyz,
+});
 
 export const completeTimesXyz = (xyz: Partial<Xyz> = unitXyz): Xyz => {
   return {
@@ -62,7 +35,7 @@ export const completeTimesXyz = (xyz: Partial<Xyz> = unitXyz): Xyz => {
     z: xyz.z ?? 1,
   };
 };
-export const completeTimesXy = (xy: Partial<Xyz>): Xy => {
+export const completeTimesXy = (xy: Partial<Xyz> = unitXyz): Xy => {
   return {
     x: xy.x ?? 1,
     y: xy.y ?? 1,
@@ -75,35 +48,14 @@ export const completeTimesXy = (xy: Partial<Xyz>): Xy => {
  * all items
  */
 export const getJsonItemTimes = (item: JsonItemUnion): Xyz => {
-  const isMultipliedJsonItem = (
-    item: JsonItemUnion,
-  ): item is JsonItemUnion & { config: { times: Partial<Xyz> } } => {
-    type ItemConfigMaybeWithMultiplication = {
-      times?: Partial<Xyz> | undefined;
-    };
-
-    return (
-      (item.config as ItemConfigMaybeWithMultiplication).times !== undefined
-    );
+  type ItemConfigMaybeWithMultiplication = {
+    times?: Partial<Xyz> | undefined;
   };
 
-  return (
-    item.type === "wall" ? completeTimesXyz(wallTimes(item.config))
-    : isMultipliedJsonItem(item) ? completeTimesXyz(item.config.times)
-    : unitXyz
-  );
-};
-
-/**
- * for an in-play item, get the times in terms of a complete xyz vector,
- * no matter what type it is - this is a complete function that handles
- * all items
- */
-export const getItemInPlayTimes = (item: UnionOfAllItemInPlayTypes): Xyz => {
-  return (
-    item.type === "wall" ? completeTimesXyz(wallInPlayTimes(item.config))
-    : isMultipliedItem(item) ? completeTimesXyz(item.config.times)
-    : unitXyz
+  return completeTimesXyz(
+    item.type === "wall" ?
+      wallTimes(item.config)
+    : (item.config as ItemConfigMaybeWithMultiplication).times,
   );
 };
 

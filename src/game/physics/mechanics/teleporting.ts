@@ -1,5 +1,5 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { ItemInPlay } from "../../../model/itemInPlay/ItemInPlay";
+import type { PlayableItem } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
 import { store } from "../../../store/store";

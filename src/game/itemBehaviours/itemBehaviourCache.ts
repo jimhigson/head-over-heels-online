@@ -4,7 +4,7 @@
  * game code depends on it and the behaviours' own imports can't loop back here
  */
 
-import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../model/itemInPlay/ItemInPlay";
 import type { MonsterWhich } from "../../model/json/MonsterJsonConfig";
 import { emptyObject } from "../../utils/empty";
 import { entries } from "../../utils/entries";

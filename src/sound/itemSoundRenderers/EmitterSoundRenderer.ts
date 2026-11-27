@@ -22,7 +22,9 @@ export class EmitterSoundRenderer implements ItemSoundRenderer<"emitter"> {
     this.renderContext = renderContext;
     this.output.gain.value = 2.5;
 
-    const { sound = "emit" } = renderContext.item.config;
+    const {
+      config: { sound = "emit" },
+    } = renderContext.item;
     if (sound !== null) {
       const emitSoundOptions: BracketedSegmentOptions = { soundId: sound };
       this.#emitBracketedSound = new BracketedSound<number>(

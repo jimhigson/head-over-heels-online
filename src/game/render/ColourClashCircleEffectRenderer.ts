@@ -1,7 +1,7 @@
 import { Container } from "pixi.js";
 import type { SetRequired } from "type-fest";
 
-import type { PlayableItem } from "../../model/ItemInPlayNarrowedUnions";
+import type { PlayableItem } from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { characterNames } from "../../model/modelTypes";
 import type { RoomStateItems } from "../../model/RoomState";
 import { store } from "../../store/store";

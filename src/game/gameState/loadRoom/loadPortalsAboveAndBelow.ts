@@ -1,10 +1,13 @@
-import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
+import {
+  itemBehaviourKey,
+  type ItemInPlay,
+} from "../../../model/itemInPlay/ItemInPlay";
 import { roomItemsIterable } from "../../../model/roomItemsInPlayIterators";
 import { isWholeRoomSubRooms, type RoomJson } from "../../../model/RoomJson";
 import type { RoomStateItems } from "../../../model/RoomState";
 import { objectEntriesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
-import { addXyz, boxWithSize } from "../../../utils/vectors/vectors";
+import { addXyz, boxWithSize, unitXyz } from "../../../utils/vectors/vectors";
 import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
 import {
   blockSizePx,
@@ -31,49 +34,61 @@ type FloorFootprint = {
   maxY: number;
 };
 
+const unboundedFootprint: FloorFootprint = {
+  minX: -Infinity,
+  maxX: Infinity,
+  minY: -Infinity,
+  maxY: Infinity,
+};
+
 /**
- * combine all the floors of the room into one big, rectangular footprint to
- * cover the whole room:
+ * combine the parts of the floors inside a footprint into one rectangular
+ * footprint covering them all - undefined if none of them reach into it
  */
-const floorsCombinedFootprint = <
+const floorsCombinedFootprintWithin = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  roomStateItems: RoomStateItems<RoomId, RoomItemId>,
-) => {
-  const limits = roomItemsIterable(roomStateItems)
-    .filter((item) => item.type === "floor")
-    .reduce(
-      (
-        acc,
-        {
-          config: {
-            naturalFootprint: {
-              position: { x, y },
-              aabb: { x: width, y: depth },
-            },
+  floors: ItemInPlay<"floor", RoomId, RoomItemId>[],
+  within: FloorFootprint,
+): FloorFootprint | undefined => {
+  const limits = floors.reduce(
+    (
+      acc,
+      {
+        config: {
+          naturalFootprint: {
+            position: { x, y },
+            aabb: { x: width, y: depth },
           },
         },
-      ) => {
-        const xEnd = x + width;
-        const yEnd = y + depth;
-
-        return {
-          minX: Math.min(acc.minX, x),
-          maxX: Math.max(acc.maxX, xEnd),
-          minY: Math.min(acc.minY, y),
-          maxY: Math.max(acc.maxY, yEnd),
-        };
       },
-      {
-        minX: Infinity,
-        maxX: -Infinity,
-        minY: Infinity,
-        maxY: -Infinity,
-      },
-    );
+    ) => {
+      const minX = Math.max(x, within.minX);
+      const maxX = Math.min(x + width, within.maxX);
+      const minY = Math.max(y, within.minY);
+      const maxY = Math.min(y + depth, within.maxY);
+      if (minX >= maxX || minY >= maxY) {
+        // this floor is entirely outside:
+        return acc;
+      }
 
-  if (limits.minX > limits.maxY) {
+      return {
+        minX: Math.min(acc.minX, minX),
+        maxX: Math.max(acc.maxX, maxX),
+        minY: Math.min(acc.minY, minY),
+        maxY: Math.max(acc.maxY, maxY),
+      };
+    },
+    {
+      minX: Infinity,
+      maxX: -Infinity,
+      minY: Infinity,
+      maxY: -Infinity,
+    },
+  );
+
+  if (limits.minX > limits.maxX) {
     // nothing found
     return undefined;
   }
@@ -90,7 +105,14 @@ export function* loadPortalsAboveAndBelow<
   | ItemInPlay<"floor", RoomId, RoomItemId>
   | ItemInPlay<"portal", RoomId, RoomItemId>
 > {
-  const floorFootprint = floorsCombinedFootprint(roomStateItems);
+  const floors = roomItemsIterable(roomStateItems)
+    .filter((item) => item.type === "floor")
+    .toArray();
+  // combine all the floors of the room to cover the whole room:
+  const floorFootprint = floorsCombinedFootprintWithin(
+    floors,
+    unboundedFootprint,
+  );
   if (floorFootprint === undefined) {
     return;
   }
@@ -135,6 +157,7 @@ export function* loadPortalsAboveAndBelow<
         z: portalThickness + blockSizePx.z,
       },
       direction: unitVectors["down"],
+      times: unitXyz,
     };
     return {
       ...{
@@ -175,6 +198,7 @@ export function* loadPortalsAboveAndBelow<
         z: -blockSizePx.z,
       },
       direction: unitVectors["up"],
+      times: unitXyz,
     };
     return {
       ...{
@@ -207,11 +231,20 @@ export function* loadPortalsAboveAndBelow<
       [["*", subRooms["*"]]]
     : [...objectEntriesIter(subRooms)];
 
+  const noneFloors = floors.filter(
+    ({ config: { floorType } }) => floorType === "none",
+  );
+
   // one portal per cell, so arriving through one finds the cell it leads to:
   for (const [subRoomId, { above, below }] of linkHolders) {
     const footprint = footprintForSubRoom(subRoomId);
     if (below !== undefined) {
-      yield belowPortal(subRoomId, footprint, below);
+      yield belowPortal(
+        subRoomId,
+        // only the cell's floorless part can be fallen through:
+        floorsCombinedFootprintWithin(noneFloors, footprint) ?? footprint,
+        below,
+      );
     }
     if (above !== undefined) {
       yield abovePortal(subRoomId, footprint, above);

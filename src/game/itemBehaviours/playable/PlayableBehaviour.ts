@@ -1,11 +1,11 @@
 import {
   itemBehaviourKey,
   type ItemInPlayType,
-} from "../../../model/ItemInPlay";
+} from "../../../model/itemInPlay/ItemInPlay";
 import type {
   PlayableItem,
   UnionOfAllItemInPlayTypes,
-} from "../../../model/ItemInPlayNarrowedUnions";
+} from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import {
   type CharacterName,
   otherIndividualCharacterName,

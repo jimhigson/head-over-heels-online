@@ -1,4 +1,4 @@
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { DrawOrderComparable } from "./DrawOrderComparable";
 

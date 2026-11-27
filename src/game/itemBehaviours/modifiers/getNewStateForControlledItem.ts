@@ -1,6 +1,6 @@
-import type { SwitchSetting } from "../../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
-import type { ItemState } from "../../../model/ItemState";
+import type { SwitchSetting } from "../../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
+import type { ItemState } from "../../../model/itemInPlay/ItemState";
 import type { SwitchItemModificationUnion } from "../../../model/json/SwitchConfig";
 import { flippedMirrorOrientation } from "../../../model/MirrorOrientation";
 import { emptyObject } from "../../../utils/empty";

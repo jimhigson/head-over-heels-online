@@ -7,7 +7,7 @@ import {
   type KeyAssignmentPresetName,
   keyAssignmentPresets,
 } from "../../../game/input/keyAssignmentPresets";
-import type { ItemInPlayType } from "../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../model/itemInPlay/ItemInPlay";
 import type { Campaign } from "../../../model/modelTypes";
 import type { AppSpritesheetData } from "../../../sprites/spritesheet/AppSpritesheet";
 import { makeBaseSpritesheetData } from "../../../sprites/spritesheet/spritesheetData/makeBaseSpritesheetData";

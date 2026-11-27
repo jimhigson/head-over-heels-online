@@ -1,7 +1,7 @@
 import type { KeysOfUnion } from "type-fest";
 
-import type { ItemInPlayType } from "../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import type { ItemInPlayType } from "../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { RoomState } from "../../model/RoomState";
 import {
   addXyz,

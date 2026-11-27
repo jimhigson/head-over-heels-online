@@ -24,7 +24,9 @@ export const doorNoReturnVerifier: CampaignVerifier<DoorNoReturn> = {
   name: "Door with no return",
   *check(campaign) {
     for (const { roomId, doorId, door } of allDoors(campaign)) {
-      const { toRoom } = door.config;
+      const {
+        config: { toRoom },
+      } = door;
       if (toRoom === exitGameRoomId || !(toRoom in campaign.rooms)) {
         continue;
       }

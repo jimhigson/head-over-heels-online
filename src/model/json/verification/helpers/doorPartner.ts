@@ -76,7 +76,9 @@ export const resolveDoorPartner = (
   campaign: VerificationCampaign,
   ref: DoorRef,
 ): DoorPartnerResolution => {
-  const { toRoom, toDoor, direction } = ref.door.config;
+  const {
+    config: { toRoom, toDoor, direction },
+  } = ref.door;
   if (toRoom === exitGameRoomId) {
     return { kind: "exitGame" };
   }
@@ -113,7 +115,9 @@ export const unclaimedPartners = (
   ref: DoorRef,
 ): DoorRef[] => {
   const { roomId, doorId, door } = ref;
-  const { toRoom, direction } = door.config;
+  const {
+    config: { toRoom, direction },
+  } = door;
   const candidates = candidatePartners(campaign, roomId, toRoom, direction);
 
   const claimed = new Set<VerificationRoomItemId>();

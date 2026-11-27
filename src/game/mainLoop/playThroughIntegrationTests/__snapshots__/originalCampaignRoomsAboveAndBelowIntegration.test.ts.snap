@@ -1,0 +1,541 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`falling from the max x, max y corner of bookworld29 into the room below 1`] = `
+{
+  "arrivedAt": {
+    "x": 98,
+    "y": 98,
+    "z": 95.74166666666667,
+  },
+  "fallFrom": {
+    "x": 6,
+    "y": 6,
+    "z": 0,
+  },
+}
+`;
+
+exports[`falling from the max x, max y corner of penitentiary14 into the room below 1`] = `
+{
+  "arrivedAt": {
+    "x": 114,
+    "y": 50,
+    "z": 95.74166666666667,
+  },
+  "fallFrom": {
+    "x": 7,
+    "y": 4,
+    "z": 0,
+  },
+}
+`;
+
+exports[`falling from the max x, max y corner of penitentiary15 into the room below 1`] = `
+{
+  "arrivedAt": {
+    "x": 98,
+    "y": 82,
+    "z": 95.74166666666667,
+  },
+  "fallFrom": {
+    "x": 6,
+    "y": 6,
+    "z": 0,
+  },
+}
+`;
+
+exports[`falling from the max x, max y corner of penitentiary21 into the room below 1`] = `
+{
+  "arrivedAt": {
+    "x": 82,
+    "y": 82,
+    "z": 131.74166666666667,
+  },
+  "fallFrom": {
+    "x": 6,
+    "y": 6,
+    "z": 0,
+  },
+}
+`;
+
+exports[`falling from the max x, min y corner of blacktooth3 into the room below 1`] = `
+{
+  "arrivedAt": {
+    "x": 114,
+    "y": 2,
+    "z": 95.74166666666667,
+  },
+  "fallFrom": {
+    "x": 7,
+    "y": 0,
+    "z": 0,
+  },
+}
+`;
+
+exports[`falling from the max x, min y corner of bookworld29 into the room below 1`] = `
+{
+  "arrivedAt": {
+    "x": 98,
+    "y": 18,
+    "z": 95.74166666666667,
+  },
+  "fallFrom": {
+    "x": 6,
+    "y": 1,
+    "z": 0,
+  },
+}
+`;
+
+exports[`falling from the max x, min y corner of penitentiary15 into the room below 1`] = `
+{
+  "arrivedAt": {
+    "x": 98,
+    "y": 2,
+    "z": 95.74166666666667,
+  },
+  "fallFrom": {
+    "x": 6,
+    "y": 1,
+    "z": 0,
+  },
+}
+`;
+
+exports[`falling from the max x, min y corner of penitentiary21 into the room below 1`] = `
+{
+  "arrivedAt": {
+    "x": 82,
+    "y": 2,
+    "z": 131.74166666666667,
+  },
+  "fallFrom": {
+    "x": 6,
+    "y": 1,
+    "z": 0,
+  },
+}
+`;
+
+exports[`falling from the min x, max y corner of blacktooth3 into the room below 1`] = `
+{
+  "arrivedAt": {
+    "x": 2,
+    "y": 82,
+    "z": 95.74166666666667,
+  },
+  "fallFrom": {
+    "x": 0,
+    "y": 5,
+    "z": 0,
+  },
+}
+`;
+
+exports[`falling from the min x, max y corner of bookworld29 into the room below 1`] = `
+{
+  "arrivedAt": {
+    "x": 18,
+    "y": 98,
+    "z": 95.74166666666667,
+  },
+  "fallFrom": {
+    "x": 1,
+    "y": 6,
+    "z": 0,
+  },
+}
+`;
+
+exports[`falling from the min x, max y corner of penitentiary15 into the room below 1`] = `
+{
+  "arrivedAt": {
+    "x": 18,
+    "y": 82,
+    "z": 95.74166666666667,
+  },
+  "fallFrom": {
+    "x": 1,
+    "y": 6,
+    "z": 0,
+  },
+}
+`;
+
+exports[`falling from the min x, min y corner of blacktooth3 into the room below 1`] = `
+{
+  "arrivedAt": {
+    "x": 2,
+    "y": 2,
+    "z": 95.74166666666667,
+  },
+  "fallFrom": {
+    "x": 0,
+    "y": 0,
+    "z": 0,
+  },
+}
+`;
+
+exports[`falling from the min x, min y corner of bookworld29 into the room below 1`] = `
+{
+  "arrivedAt": {
+    "x": 18,
+    "y": 18,
+    "z": 95.74166666666667,
+  },
+  "fallFrom": {
+    "x": 1,
+    "y": 1,
+    "z": 0,
+  },
+}
+`;
+
+exports[`falling from the min x, min y corner of penitentiary14 into the room below 1`] = `
+{
+  "arrivedAt": {
+    "x": 2,
+    "y": 2,
+    "z": 95.74166666666667,
+  },
+  "fallFrom": {
+    "x": 0,
+    "y": 1,
+    "z": 0,
+  },
+}
+`;
+
+exports[`falling from the min x, min y corner of penitentiary15 into the room below 1`] = `
+{
+  "arrivedAt": {
+    "x": 18,
+    "y": 2,
+    "z": 95.74166666666667,
+  },
+  "fallFrom": {
+    "x": 1,
+    "y": 1,
+    "z": 0,
+  },
+}
+`;
+
+exports[`falling from the min x, min y corner of penitentiary21 into the room below 1`] = `
+{
+  "arrivedAt": {
+    "x": 2,
+    "y": 2,
+    "z": 131.9416666666667,
+  },
+  "fallFrom": {
+    "x": 1,
+    "y": 1,
+    "z": 1,
+  },
+}
+`;
+
+exports[`rising on lift l of blacktooth4 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 50,
+    "y": 82,
+    "z": 12.015336552970751,
+  },
+  "riseFrom": {
+    "x": 3,
+    "y": 5,
+    "z": 0,
+  },
+}
+`;
+
+exports[`rising on lift l of blacktooth25 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 82,
+    "y": 2,
+    "z": 12.074999999999974,
+  },
+  "riseFrom": {
+    "x": 5,
+    "y": 0,
+    "z": 7,
+  },
+}
+`;
+
+exports[`rising on lift l of blacktooth29 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 2,
+    "y": 114,
+    "z": 12.074999999999974,
+  },
+  "riseFrom": {
+    "x": 0,
+    "y": 7,
+    "z": 7,
+  },
+}
+`;
+
+exports[`rising on lift l of blacktooth33 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 114,
+    "y": 114,
+    "z": 12.015336552970751,
+  },
+  "riseFrom": {
+    "x": 7,
+    "y": 7,
+    "z": 0,
+  },
+}
+`;
+
+exports[`rising on lift l of blacktooth39 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 34,
+    "y": 2,
+    "z": 12.015336552970751,
+  },
+  "riseFrom": {
+    "x": 2,
+    "y": 0,
+    "z": 0,
+  },
+}
+`;
+
+exports[`rising on lift l of blacktooth55 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 50,
+    "y": 2,
+    "z": 12.015336552970751,
+  },
+  "riseFrom": {
+    "x": 3,
+    "y": 0,
+    "z": 0,
+  },
+}
+`;
+
+exports[`rising on lift l of bookworld28 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 50,
+    "y": 50,
+    "z": 12.244687500000182,
+  },
+  "riseFrom": {
+    "x": 3,
+    "y": 3,
+    "z": 3,
+  },
+}
+`;
+
+exports[`rising on lift l of bookworld40 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 2,
+    "y": 2,
+    "z": 12.015336552970751,
+  },
+  "riseFrom": {
+    "x": 0,
+    "y": 0,
+    "z": 0,
+  },
+}
+`;
+
+exports[`rising on lift l of egyptus14 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 2,
+    "y": 146,
+    "z": 12.048104540486122,
+  },
+  "riseFrom": {
+    "x": 0,
+    "y": 9,
+    "z": 0,
+  },
+}
+`;
+
+exports[`rising on lift l of egyptus19 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 82,
+    "y": 146,
+    "z": 12.048104540486122,
+  },
+  "riseFrom": {
+    "x": 5,
+    "y": 9,
+    "z": 0,
+  },
+}
+`;
+
+exports[`rising on lift l of egyptus30 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 82,
+    "y": 2,
+    "z": 12.015336552970751,
+  },
+  "riseFrom": {
+    "x": 5,
+    "y": 0,
+    "z": 0,
+  },
+}
+`;
+
+exports[`rising on lift l of egyptus31 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 82,
+    "y": 2,
+    "z": 12.015336552970751,
+  },
+  "riseFrom": {
+    "x": 5,
+    "y": 0,
+    "z": 0,
+  },
+}
+`;
+
+exports[`rising on lift l of egyptus36 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 2,
+    "y": 2,
+    "z": 12.015336552970751,
+  },
+  "riseFrom": {
+    "x": 0,
+    "y": 0,
+    "z": 0,
+  },
+}
+`;
+
+exports[`rising on lift l of penitentiary9 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 2,
+    "y": 66,
+    "z": 12.015336552970751,
+  },
+  "riseFrom": {
+    "x": 0,
+    "y": 4,
+    "z": 0,
+  },
+}
+`;
+
+exports[`rising on lift l of penitentiary14 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 114,
+    "y": 34,
+    "z": 12.015336552970751,
+  },
+  "riseFrom": {
+    "x": 7,
+    "y": 1,
+    "z": 0,
+  },
+}
+`;
+
+exports[`rising on lift l of penitentiary16 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 50,
+    "y": 2,
+    "z": 12.015336552970751,
+  },
+  "riseFrom": {
+    "x": 3,
+    "y": 0,
+    "z": 0,
+  },
+}
+`;
+
+exports[`rising on lift l of penitentiary23 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 66,
+    "y": 50,
+    "z": 12.052195177724084,
+  },
+  "riseFrom": {
+    "x": 4,
+    "y": 3,
+    "z": 0,
+  },
+}
+`;
+
+exports[`rising on lift l of safari12 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 114,
+    "y": 82,
+    "z": 12.015336552970751,
+  },
+  "riseFrom": {
+    "x": 7,
+    "y": 5,
+    "z": 0,
+  },
+}
+`;
+
+exports[`rising on lift l of safari34 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 114,
+    "y": 114,
+    "z": 12.015336552970751,
+  },
+  "riseFrom": {
+    "x": 7,
+    "y": 7,
+    "z": 0,
+  },
+}
+`;
+
+exports[`rising on lift l1 of blacktooth4 into the room above 1`] = `
+{
+  "arrivedAt": {
+    "x": 66,
+    "y": 82,
+    "z": 12.11563611198946,
+  },
+  "riseFrom": {
+    "x": 4,
+    "y": 5,
+    "z": 11,
+  },
+}
+`;

@@ -10,7 +10,7 @@ import type {
 } from "../../editorTypes";
 import { growArgs, shrinkArgs } from "../../toolbar/buttons/nudgeDirections";
 import { addNudgeStepToPreviewInPlace } from "../inPlaceMutators/addNudgeStepToPreviewInPlace";
-import { selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState } from "../levelEditorSelectors";
+import { selectCursorRoomSelectionJsonItemIdsIncludingEditorGhostOwnersFromLevelEditorState } from "../levelEditorSelectors";
 import type {
   LevelEditorState,
   PreviewedRoomItemEdits,
@@ -109,7 +109,9 @@ export const multiplyItemsReducers = {
         return {
           edits,
           selectedJsonItemIds: [
-            ...selectCursorRoomSelectionJsonItemIdsWithoutEditorGhostSelectionsFromLevelEditorState(
+            // a selected editor ghost was multiplied as its item, so its item
+            // stays selected in its place:
+            ...selectCursorRoomSelectionJsonItemIdsIncludingEditorGhostOwnersFromLevelEditorState(
               state,
             ).filter((id) => !deletedItemIds.has(id)),
             ...copyIds,

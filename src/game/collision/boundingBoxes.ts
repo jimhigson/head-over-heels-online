@@ -1,4 +1,4 @@
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { JsonItemUnion } from "../../model/json/JsonItem";
 import { type Aabb, originXyz } from "../../utils/vectors/vectors";
 import { blockSizePx } from "../physics/mechanicsConstants";
@@ -73,6 +73,7 @@ export const boundingBoxForItem = (
     case "mirror":
     case "teleporter":
     case "deadlyBlock":
+    case "emitter":
       return fullBlockAabb;
 
     case "block": {
@@ -130,9 +131,6 @@ export const boundingBoxForItem = (
     case "floatingText":
     case "timer":
       return originXyz;
-
-    case "emitter":
-      return item.config.times ? fullBlockAabb : originXyz;
 
     default:
       return mediumItemAabb;

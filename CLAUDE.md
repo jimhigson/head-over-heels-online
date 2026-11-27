@@ -103,7 +103,8 @@ What each type of item does is given by its behaviour - a stateless [Type Object
 * symbols don't serialise, so saved games have no behaviours: `loadGameState` re-attaches them with `attachBehaviourToItem` to every room item and Heels' carried item. Code that works on a saved copy (eg `createSavedGame`) must not use behaviours
 * behaviours form a class hierarchy (eg `ItemBehaviour` → `FreeItemBehaviour` → `LocomotiveBehaviour` → `MonsterBehaviour` → `CybermanBehaviour`); subclasses narrow item params with the generated `ItemTypeUnion` types. Types that behave the same share one instance
 * capabilities are behaviour fields and methods - `isNonSolid`, `isStandable`, `isDeadly`, `isPushableBy`, `isHeavy`... - not functions branching on item type
-* to narrow to a type, compare inline (`item.type === "monster"`) - the type is the union's discriminant, so this narrows as well as a guard function would
+* to narrow to a type, compare inline (`item.type === "monster"`) - the type is the union's discriminant, so this narrows as well as a guard function would. Only where the type genuinely varies at run time: where the code already knows the type (eg an item just loaded from json of a known type), cast instead - never branch or throw on a type that can't differ. However, if the types can be improved, to avoid the need for the cast, that is better still. Eg, a function that returns a very wide union can be
+narrowed using generics to return a single branch from the union depending on its parameters instead.
 * ticking: `tickItem` asks the behaviour for its `mechanicResults`, pushed onto a reused array (all gathered before any apply), and its standing-on and after-mechanics hooks
 * touching: `moveItem` calls only the mover's `onTouch(item, e, isMover)`; the base passes the touch on to the touched item, and an override chooses the order by when it calls `super`
 * monsters and moving platforms compose their behaviour from mixins chosen by config: a locomotion mixin (`locomotionMixins.ts`, by `config.movement`) and an activation mixin (`activationMixinFor.ts`, by `config.activated`)
@@ -166,7 +167,7 @@ and we trust that to pre-load in the service worker for us, so the actual game e
 ### Generated types
  * all _generated dirs are codegen'd - never edit them directly
  * files in `src/_generated/types/` (e.g. `ItemInPlayUnion.ts`) are regenerated via `pnpm gen:types`
- * if you add or change item types in `src/model/ItemInPlay.ts`, run `pnpm gen:types` to regenerate
+ * if you add or change item types in `src/model/itemInPlay/ItemInPlay.ts`, run `pnpm gen:types` to regenerate
 
 ### Editor types
 * types in `src/editor/editorTypes.ts` should be used over generic types such as string or Record where possible
@@ -281,6 +282,10 @@ if (import.meta.env.DEV && maybeFoo === undefined) {
 const foo = maybeFoo!;
 ```
 
+* the same goes for a value typed as a union whose member is already known (eg a loader that returns the general item
+union, called with an emitter's json): a production check would only satisfy the typechecker, so cast to the known
+member - optionally behind a dev-only throw, as above - never a run-time check that ships
+
 * if a value's typescript type is not nullable, do not add checks for it being null/undefined, even explicit checks like using `?.`
 if unsure if the type is nullable, assume that it is not nullable (or undefinable) and let the typecheck inform you later
 
@@ -373,6 +378,12 @@ necessary, not to avoid updating our data model elsewhere or to avoid code churn
 better model.
 
 * Do not do extra work at run-time to work around issues at typecheck time, if the work provides no extra protection. Typescript is here to describe and protect our js source, it should not be making the js slower, or more complex than it would otherwise be. If we need to, this is a sign that our ts types are wrong.
+
+### Empty values
+
+* to avoid malloc, when returning an immutable but empty array/object/iterator, use the utilities in
+`empty.js`
+* when returning the origin or unit vectors, use `originXyz` or `originXy`, or `unitXyz`, or pre-baked unit vectors do not allocate a new object unless it is required to be mutated
 
 ### Comments 
  * no single-line tsdoc comments - always put the text on its own line(s):

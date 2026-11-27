@@ -8,7 +8,7 @@ import {
 } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import { pokeableToNumber } from "../../../model/ItemStateMap";
+import { pokeableToNumber } from "../../../model/itemInPlay/ItemStateMap";
 
 beforeEach(() => {
   resetStore();

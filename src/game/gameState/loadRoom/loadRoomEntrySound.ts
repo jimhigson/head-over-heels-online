@@ -1,5 +1,8 @@
 import type { ExportedSoundId } from "../../../_generated/sfxdex/soundIds";
-import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
+import {
+  itemBehaviourKey,
+  type ItemInPlay,
+} from "../../../model/itemInPlay/ItemInPlay";
 import type { RoomJson } from "../../../model/RoomJson";
 import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import type { SceneryName } from "../../../sprites/planets";
@@ -11,6 +14,7 @@ import type {
 import {
   boxWithSize,
   originXyz,
+  unitXyz,
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
@@ -122,6 +126,7 @@ export const createRoomEntrySound = <
       gain,
       playbackRate,
     },
+    times: unitXyz,
   };
   return {
     id,

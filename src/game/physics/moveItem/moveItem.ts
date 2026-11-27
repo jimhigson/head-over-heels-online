@@ -1,9 +1,9 @@
-import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/itemInPlay/ItemInPlay";
 import {
   type FreeItem,
   isFreeItem,
   type UnionOfAllItemInPlayTypes,
-} from "../../../model/ItemInPlayNarrowedUnions";
+} from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { stoodOnByItem, stoodOnItem } from "../../../model/stoodOnItemsLookup";
 import { epsilon, veryClose } from "../../../utils/epsilon";
@@ -590,17 +590,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       }
     }
 
-    // record this acting on:
-    recordActedOnBy(
-      subjectItem.id,
-      collidedWithItem,
-      room,
-      // this is an approximation: assumes that the axes of the force acting on a pushed object is the same as the
-      // axes of the force on the pusher
-      posDelta.x !== 0 || posDelta.y !== 0,
-      posDelta.z !== 0,
-    );
-
     if (
       handleTouches &&
       // overlapping by no more than floating point error (eg left over from
@@ -674,6 +663,18 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       }
       continue;
     }
+
+    // record this acting on - only once both are solid, since moving through
+    // a non-solid item applies no force to it:
+    recordActedOnBy(
+      subjectItem.id,
+      collidedWithItem,
+      room,
+      // this is an approximation: assumes that the axes of the force acting on a pushed object is the same as the
+      // axes of the force on the pusher
+      posDelta.x !== 0 || posDelta.y !== 0,
+      posDelta.z !== 0,
+    );
 
     const backingOffMtv: Xyz = { x: 0, y: 0, z: 0 };
     // how far the subject has travelled so far, after any backing off already

@@ -2,8 +2,8 @@ import type { Except, Merge, Tagged } from "type-fest";
 
 import type { SpatialIndex } from "../game/physics/gridSpace/SpatialIndex";
 import type { SceneryName } from "../sprites/planets";
-import type { ItemInPlay } from "./ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
+import type { ItemInPlay } from "./itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "./itemInPlay/ItemInPlayNarrowedUnions";
 import type { RoomJson } from "./RoomJson";
 
 /*type RoomItemIdWithKnownIds = (

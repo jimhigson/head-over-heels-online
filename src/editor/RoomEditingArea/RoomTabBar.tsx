@@ -41,11 +41,11 @@ const unsavedMarked = (name: string, hasUnsavedChanges: boolean) =>
  */
 const splitMenuItems = (tabInGroup: TabInGroup): TabMenuItem[] => [
   {
-    label: "split |",
+    label: "Split |",
     onSelect: () => store.dispatch(roomTabSplit({ tabInGroup, side: "right" })),
   },
   {
-    label: "split -",
+    label: "Split -",
     onSelect: () =>
       store.dispatch(roomTabSplit({ tabInGroup, side: "bottom" })),
   },
@@ -98,7 +98,15 @@ const RoomTabButton = ({
       onSelect={() => store.dispatch(roomTabSelected(tabInGroup))}
       onClose={() => store.dispatch(closeRoomTab(tabInGroup))}
       onCloseOthers={() => store.dispatch(closeOtherRoomTabs(tabInGroup))}
-      menuItems={splitMenuItems(tabInGroup)}
+      menuItems={[
+        ...splitMenuItems(tabInGroup),
+        {
+          label: "Copy room name",
+          onSelect() {
+            navigator.clipboard.writeText(roomId);
+          },
+        },
+      ]}
       onDragStart={(dragEvent) =>
         roomTabDrag.start(dragEvent, { type: "tab", tabInGroup })
       }

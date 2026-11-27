@@ -1,4 +1,4 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import type { Xy, Xyz } from "../../../utils/vectors/vectors";
 import type { Indexable } from "../../physics/gridSpace/SpatialIndex";
 import type {

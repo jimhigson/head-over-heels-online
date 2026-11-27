@@ -1,4 +1,4 @@
-import type { FreeItem } from "../../../model/ItemInPlayNarrowedUnions";
+import type { FreeItem } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import {
   type IndividualCharacterName,
   otherIndividualCharacterName,

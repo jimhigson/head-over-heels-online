@@ -1,5 +1,5 @@
-import { itemBehaviourKey } from "../../../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
+import { itemBehaviourKey } from "../../../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { epsilon } from "../../../../utils/epsilon";
 import type { Xy } from "../../../../utils/vectors/vectors";
 import type { CollideableItem } from "../../../collision/aabbCollision";

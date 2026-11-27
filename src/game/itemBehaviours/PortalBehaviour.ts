@@ -1,7 +1,10 @@
 import type { ExportedSoundId } from "../../_generated/sfxdex/soundIds";
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import { itemBehaviourKey, type ItemInPlay } from "../../model/ItemInPlay";
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import {
+  itemBehaviourKey,
+  type ItemInPlay,
+} from "../../model/itemInPlay/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../model/itemInPlay/ItemInPlayNarrowedUnions";
 import { exitGameRoomId } from "../../model/json/ItemConfigMap";
 import {
   type Campaign,

@@ -22,7 +22,9 @@ export const doorAmbiguousLinkVerifier: CampaignVerifier<DoorAmbiguousLink> = {
   name: "Ambiguous door link",
   *check(campaign) {
     for (const { roomId, doorId, door } of allDoors(campaign)) {
-      const { toRoom, toDoor, direction } = door.config;
+      const {
+        config: { toRoom, toDoor, direction },
+      } = door;
       if (
         toDoor !== undefined ||
         toRoom === exitGameRoomId ||

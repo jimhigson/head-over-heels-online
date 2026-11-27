@@ -6,6 +6,7 @@ import {
   subRoomById,
 } from "../model/RoomJson";
 import { roomJsonItemsIterable } from "../model/RoomJsonItemIterators";
+import { completeTimesXy } from "../model/times";
 import { keys } from "../utils/entries";
 import { unitVectors } from "../utils/vectors/unitVectors";
 import { addXy, type DirectionXy4, xyEqual } from "../utils/vectors/vectors";
@@ -77,14 +78,16 @@ const floorsInCell = <RoomId extends string>(
   const cellArea = subRoomById(roomJson, subRoomId)?.physicalPosition;
   return roomJsonItemsIterable(roomJson)
     .filter((item) => item.type === "floor")
-    .filter(
-      ({ position, config: { times } }) =>
+    .filter(({ position, config }) => {
+      const timesCompleted = completeTimesXy(config.times);
+      return (
         cellArea === undefined ||
         (position.x < cellArea.to.x &&
-          position.x + times.x > cellArea.from.x &&
+          position.x + timesCompleted.x > cellArea.from.x &&
           position.y < cellArea.to.y &&
-          position.y + times.y > cellArea.from.y),
-    )
+          position.y + timesCompleted.y > cellArea.from.y)
+      );
+    })
     .toArray();
 };
 

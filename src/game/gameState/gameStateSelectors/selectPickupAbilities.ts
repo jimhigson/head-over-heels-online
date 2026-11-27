@@ -1,5 +1,5 @@
-import type { PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
-import type { HeadAbilities } from "../../../model/ItemStateMap";
+import type { PlayableItem } from "../../../model/itemInPlay/ItemInPlayNarrowedUnions";
+import type { HeadAbilities } from "../../../model/itemInPlay/ItemStateMap";
 import { blockSizePx, shieldDuration } from "../../physics/mechanicsConstants";
 
 export const shieldRemainingForAbilities = (abilities?: {
