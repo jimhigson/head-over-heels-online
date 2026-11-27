@@ -68,7 +68,7 @@ jobs:
         with:
           node-version-file: ".node-version"
           cache: pnpm
-      - uses: jimhigson/true-site-size@main
+      - uses: jimhigson/true-site-size@stored-bases
         with:
           history-branch: true-site-size-history
           backfill: ${{ inputs.backfill }}
@@ -214,7 +214,7 @@ jobs:
           fi
           json=$(printf '%s\n' "${refs[@]}" | jq -R . | jq -sc .)
           echo "json=$json" >> "$GITHUB_OUTPUT"
-      - uses: jimhigson/true-site-size@main
+      - uses: jimhigson/true-site-size@stored-bases
         if: github.event_name == 'pull_request'
         with:
           history-branch: true-site-size-history
@@ -245,7 +245,7 @@ jobs:
           journey: ${{ env.journey }}
       # every push to main runs, recording main's sizes into the history; it
       # comments only when there's an open release PR to refresh
-      - uses: jimhigson/true-site-size@main
+      - uses: jimhigson/true-site-size@stored-bases
         if: github.event_name == 'push'
         with:
           history-branch: true-site-size-history
