@@ -1,14 +1,13 @@
 import preact from "@preact/preset-vite";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import tailwindcss from "tailwindcss";
 import { unrunRunner } from "unplugin-macros";
 import Macros from "unplugin-macros/vite";
 import { defineConfig } from "vite";
 
-import { glyphOverridesApi } from "./glyphOverridesApi";
+import { glyphOverridesApi } from "./glyphOverridesApi.ts";
 
-const editorRoot = path.dirname(fileURLToPath(import.meta.url));
+const editorRoot = import.meta.dirname;
 const repoRoot = path.resolve(editorRoot, "../../..");
 
 // the borrowed ui components read the game's redux store, so this app builds

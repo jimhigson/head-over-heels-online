@@ -38,6 +38,7 @@
     "watch:type": "tsc --noEmit --watch --project ./tsconfig.app.json",
     "check:type": "tsc --build ./tsconfig.app.json",
     "check:type:e2e": "tsc --noEmit --project ./e2e/tsconfig.json",
+    "check:type:node": "tsc --noEmit --project ./tsconfig.node.json",
     "check:type:scripts": "tsc --noEmit --project ./scripts/tsconfig.json",
     "check:type:fontEditor": "tsc --noEmit --project ./scripts/font/editor/tsconfig.json",
     "check:type:workers": "tsc --noEmit --project ./workers/previews/tsconfig.json",
@@ -172,5 +173,5 @@
   "engines": {
     "node": ">=26.5.0"
   },
-  "packageManager": "pnpm@12.14.0"
+  "packageManager": "pnpm@12.23.0"
 }

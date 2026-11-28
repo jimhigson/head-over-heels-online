@@ -7,10 +7,10 @@ import { defineConfig, type PluginOption } from "vite";
 import glsl from "vite-plugin-glsl";
 import { VitePWA } from "vite-plugin-pwa";
 
-import { glslShortenIdentifiers } from "./buildTools/glslShortenIdentifiers";
-import { hmrOnlyPreact } from "./buildTools/hmrOnlyPreact";
-import { macroRunner } from "./buildTools/macroRunner";
-import { postcssPruneUnused } from "./buildTools/postcssPruneUnused";
+import { glslShortenIdentifiers } from "./buildTools/glslShortenIdentifiers.ts";
+import { hmrOnlyPreact } from "./buildTools/hmrOnlyPreact.ts";
+import { macroRunner } from "./buildTools/macroRunner.ts";
+import { postcssPruneUnused } from "./buildTools/postcssPruneUnused.ts";
 
 const oneWeekInSeconds = 60 * 60 * 24 * 7;
 
@@ -61,7 +61,10 @@ export default defineConfig(({ mode: _mode }) => {
       postcss: {
         plugins: [
           tailwindcss({
-            config: path.resolve(__dirname, "tailwind.game.config.ts"),
+            config: path.resolve(
+              import.meta.dirname,
+              "tailwind.game.config.ts",
+            ),
           }),
           postcssPruneUnused(),
         ],
@@ -137,7 +140,9 @@ export default defineConfig(({ mode: _mode }) => {
         }),
       glsl({
         minify: true,
-        onComplete: glslShortenIdentifiers(path.resolve(__dirname, "src")),
+        onComplete: glslShortenIdentifiers(
+          path.resolve(import.meta.dirname, "src"),
+        ),
       }),
     ],
 
@@ -234,7 +239,7 @@ export default defineConfig(({ mode: _mode }) => {
 
     resolve: {
       alias: {
-        gfx: path.resolve(__dirname, "./gfx"),
+        gfx: path.resolve(import.meta.dirname, "./gfx"),
       },
       // a linked dependency resolves its peers from its own directory, which for pixi
       // would pull in a second copy - and an unpatched one - alongside ours, breaking

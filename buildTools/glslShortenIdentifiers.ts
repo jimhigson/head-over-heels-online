@@ -22,7 +22,11 @@ import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { minify } from "vite-plugin-glsl";
 
-import { keysIter, objectEntriesIter, valuesIter } from "../src/utils/entries";
+import {
+  keysIter,
+  objectEntriesIter,
+  valuesIter,
+} from "../src/utils/entries.ts";
 
 const shaderExtensions = [".frag", ".vert", ".glsl"];
 

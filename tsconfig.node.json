@@ -3,15 +3,17 @@
    * Extends the app config because Node scripts and tests import from src/,
    * which needs JSX, iterator augmentations, and other app-specific settings.
    * This config adds Node types on top so that node:* imports, process, etc.
-   * are available.
+   * are available, and Vite's client types for src/'s asset imports.
    */
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
-    "types": ["umami", "node"]
+    "types": ["umami", "node", "vite/client"]
   },
   "include": [
+    "e2eAugmentations.d.ts",
     "vite.game.config.ts",
     "vite.editor.config.ts",
+    "vitest.config.ts",
     "tailwind.base.config.ts",
     "tailwind.game.config.ts",
     "tailwind.editor.config.ts",

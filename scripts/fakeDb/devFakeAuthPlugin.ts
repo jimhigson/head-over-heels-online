@@ -1,7 +1,7 @@
 import type { ServerResponse } from "node:http";
 import type { Plugin } from "vite";
 
-import { devAuthProviders } from "./devAuthProviders";
+import { devAuthProviders } from "./devAuthProviders.ts";
 
 type DevFakeAuthOptions = {
   /** the real supabase stack the password-grant + proxy target point at */

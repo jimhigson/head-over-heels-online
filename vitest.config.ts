@@ -2,7 +2,7 @@ import Macros from "unplugin-macros/vite";
 import glsl from "vite-plugin-glsl";
 import { defineConfig } from "vitest/config";
 
-import { macroRunner } from "./buildTools/macroRunner";
+import { macroRunner } from "./buildTools/macroRunner.ts";
 
 export default defineConfig({
   // glsl: item behaviours make renderers, which import shaders
