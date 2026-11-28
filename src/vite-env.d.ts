@@ -19,6 +19,7 @@ declare module "virtual:pwa-register" {
 }
 interface ImportMetaEnv {
   readonly VITE_APP: "editor" | "game";
+  readonly VITE_EDITOR_URL: string;
   readonly VITE_GAME_URL: string;
   readonly VITE_LOG_MOVE_ITEM?: string;
   readonly VITE_LOG_PUT_DOWN?: string;

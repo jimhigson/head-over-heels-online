@@ -8,7 +8,7 @@ export const openExternal = async (url: string) => {
     const { openUrl } = await importTauriOpener();
     return openUrl(url);
   }
-  window.open(url, "_blank");
+  window.open(url, "_blank", "noopener");
 };
 
 /** add to the onclick of an <a> to open in default browser instead from Tauri */
