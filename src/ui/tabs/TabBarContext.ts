@@ -1,8 +1,11 @@
 import { createContext } from "preact";
 
 export type TabBarContextValue = {
-  /** the tabs don't all fit at full size, so show their short labels */
-  shortenLabels: boolean;
+  /**
+   * the `tabId` of the active tab - undefined for a tab drawn alone, eg as a
+   * drag image
+   */
+  activeTabId: string | undefined;
   /**
    * the last tab can't be closed, unless `isSingletonTabCloseable`
    */
@@ -10,8 +13,7 @@ export type TabBarContextValue = {
   isSingletonTabCloseable: boolean;
 };
 
-export const TabBarContext = createContext<TabBarContextValue>({
-  shortenLabels: false,
-  isOnlyTab: false,
-  isSingletonTabCloseable: false,
-});
+export const TabBarContext = createContext<TabBarContextValue>(
+  // don't support root context:
+  null as unknown as TabBarContextValue,
+);

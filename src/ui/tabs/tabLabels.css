@@ -1,0 +1,17 @@
+/*
+ * a tab shows its full label, unless the tab list it is in is marked
+ * (by `data-label-shortening`) to show its short label
+ */
+.tab-short-label {
+  display: none;
+}
+[data-label-shortening="allTabs"] .tab-full-label,
+[data-label-shortening="inactiveTabs"] [aria-selected="false"] .tab-full-label {
+  display: none;
+}
+[data-label-shortening="allTabs"] .tab-short-label,
+[data-label-shortening="inactiveTabs"]
+  [aria-selected="false"]
+  .tab-short-label {
+  display: inline;
+}

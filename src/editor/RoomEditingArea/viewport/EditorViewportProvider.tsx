@@ -6,7 +6,10 @@ import type { EmptyObject } from "type-fest";
 import { useProvidedPixiApplication } from "../PixiApplicationProvider";
 import { EditorViewport } from "./EditorViewport";
 
-const EditorViewportContext = createContext<EditorViewport | null>(null);
+const EditorViewportContext = createContext<EditorViewport>(
+  // don't support root context:
+  null as unknown as EditorViewport,
+);
 
 /**
  * creates the {@link EditorViewport} and mounts its container on the pixi
@@ -32,7 +35,7 @@ export const EditorViewportProvider = ({
 
 export const useEditorViewport = (): EditorViewport => {
   const viewport = useContext(EditorViewportContext);
-  if (viewport === null) {
+  if (import.meta.env.DEV && viewport === null) {
     throw new Error(
       "useEditorViewport must be used inside an EditorViewportProvider",
     );

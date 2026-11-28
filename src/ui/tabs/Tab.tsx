@@ -8,6 +8,7 @@ import { ContextMenuItem } from "../command/ContextMenuItem";
 import { useTip } from "../tip/useTip";
 import { TabBarContext } from "./TabBarContext";
 import "./tabColours.css";
+import "./tabLabels.css";
 import { TabRenameInput } from "./TabRenameInput";
 
 /** how a tab is renamed: return takes the edited name, escape or leaving it cancels */
@@ -33,10 +34,16 @@ export type TabMenuItem = {
 };
 
 export type TabProps = {
+  /**
+   * unique among the bar's tabs - the bar's `activeTabId` is the active one's
+   */
+  tabId: string;
   label: string;
-  /** shown in place of the label while the bar's tabs don't all fit */
+  /**
+   * shown in place of the label while the bar's tabs don't all fit - for the
+   * active tab, only while they don't fit with its full label either
+   */
   shortLabel: string;
-  isActive: boolean;
   /**
    * open only until replaced - its label is slanted, as the font has no italics
    */
@@ -75,9 +82,9 @@ export type TabProps = {
  * any further choices)
  */
 export const Tab = ({
+  tabId,
   label,
   shortLabel,
-  isActive,
   isPreview = false,
   disabled = false,
   onSelect,
@@ -91,8 +98,12 @@ export const Tab = ({
   class: className,
   style,
 }: TabProps) => {
-  const { shortenLabels, isOnlyTab, isSingletonTabCloseable } =
-    useContext(TabBarContext);
+  const tabBarContext = useContext(TabBarContext);
+  if (import.meta.env.DEV && tabBarContext === null) {
+    throw new Error("Tab must be rendered inside a TabBarContext");
+  }
+  const { activeTabId, isOnlyTab, isSingletonTabCloseable } = tabBarContext;
+  const isActive = tabId === activeTabId;
   // with one tab, there are no others to close, and it is closed only where
   // the bar allows:
   const closeable =
@@ -177,7 +188,9 @@ export const Tab = ({
               interestfor={interestfor}
               class={`text-single-line ${isPreview ? "inline-block -skew-x-12" : ""}`}
             >
-              {shortenLabels ? shortLabel : label}
+              {/* both, for tabLabels.css to show the one that fits: */}
+              <span class="tab-full-label">{label}</span>
+              <span class="tab-short-label">{shortLabel}</span>
             </button>
 
         }

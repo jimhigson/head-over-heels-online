@@ -23,8 +23,8 @@ export const Menu = ({
   alignEnd = false,
   children,
 }: MenuProps) => {
-  const maybeMenuBar = useContext(MenuBarContext);
-  if (import.meta.env.DEV && maybeMenuBar === null) {
+  const menuBar = useContext(MenuBarContext);
+  if (import.meta.env.DEV && menuBar === null) {
     throw new Error("Menu must be rendered inside a MenuBar");
   }
   const {
@@ -33,7 +33,7 @@ export const Menu = ({
     openIndex,
     setOpenIndex,
     openIndexAtPointerDownRef,
-  } = maybeMenuBar!;
+  } = menuBar;
   const isOpen = openIndex === index;
   const menuNameRef = useRef<HTMLButtonElement | null>(null);
 

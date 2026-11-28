@@ -28,15 +28,17 @@ export type OpenRoomPaneContextValue = {
   loadedRoom: LoadedRoomCache;
 };
 
-export const OpenRoomPaneContext =
-  createContext<null | OpenRoomPaneContextValue>(null);
+export const OpenRoomPaneContext = createContext<OpenRoomPaneContextValue>(
+  // don't support root context:
+  null as unknown as OpenRoomPaneContextValue,
+);
 
 /**
  * the open room the enclosing pane draws
  */
 export const useOpenRoomPane = (): OpenRoomPaneContextValue => {
   const openRoomPaneContextValue = useContext(OpenRoomPaneContext);
-  if (openRoomPaneContextValue === null) {
+  if (import.meta.env.DEV && openRoomPaneContextValue === null) {
     throw new Error("useOpenRoomPane must be used inside an OpenRoomPane");
   }
   return openRoomPaneContextValue;

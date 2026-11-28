@@ -92,9 +92,9 @@ const RoomTabButton = ({
 
   return (
     <Tab
+      tabId={tabId}
       label={unsavedMarked(roomId, hasUnsavedChanges)}
       shortLabel={unsavedMarked(abbreviateRoomId(roomId), hasUnsavedChanges)}
-      isActive={isFront}
       onSelect={() => store.dispatch(roomTabSelected(tabInGroup))}
       onClose={() => store.dispatch(closeRoomTab(tabInGroup))}
       onCloseOthers={() => store.dispatch(closeOtherRoomTabs(tabInGroup))}
@@ -174,7 +174,7 @@ export const RoomTabBar = ({
 
   return (
     <TabBar
-      tabLabels={tabRoomIds}
+      activeTabId={tabGroup.frontTabId}
       label="Open rooms"
       isSingletonTabCloseable={!isOnlyPane}
       acceptsDrag={roomTabDrag.carries}

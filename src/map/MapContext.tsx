@@ -92,7 +92,10 @@ export type MapContextValue<RoomId extends string> = {
   useIsRoomSelected: (roomId: RoomId) => boolean;
 };
 
-const MapContext = createContext<MapContextValue<string> | null>(null);
+const MapContext = createContext<MapContextValue<string>>(
+  // don't support root context:
+  null as unknown as MapContextValue<string>,
+);
 
 export type MapContextProviderProps<RoomId extends string> = PropsWithChildren<{
   value: MapContextValue<RoomId>;
@@ -111,11 +114,11 @@ export const MapContextProvider = <RoomId extends string>({
 export const useMapContext = <
   RoomId extends string,
 >(): MapContextValue<RoomId> => {
-  const maybeMapContext = useContext(MapContext);
-  if (import.meta.env.DEV && maybeMapContext === null) {
+  const mapContext = useContext(MapContext);
+  if (import.meta.env.DEV && mapContext === null) {
     throw new Error("the map was drawn outside of a MapContext");
   }
-  return maybeMapContext! as unknown as MapContextValue<RoomId>;
+  return mapContext as unknown as MapContextValue<RoomId>;
 };
 
 /**

@@ -15,9 +15,14 @@ import {
 } from "./keyboardState";
 import { PointerTracker } from "./PointerTracker";
 
-const InputStateTrackerContext =
-  createContext<InputStateTrackerInterface | null>(null);
-const PointerTrackerContext = createContext<null | PointerTracker>(null);
+const InputStateTrackerContext = createContext<InputStateTrackerInterface>(
+  // don't support root context:
+  null as unknown as InputStateTrackerInterface,
+);
+const PointerTrackerContext = createContext<PointerTracker>(
+  // don't support root context:
+  null as unknown as PointerTracker,
+);
 
 export type InputStateProviderProps = PropsWithChildren<EmptyObject>;
 
@@ -55,7 +60,7 @@ export const InputStateProvider = ({ children }: InputStateProviderProps) => {
 
 export const usePointerTracker = (): PointerTracker => {
   const pointerTracker = useContext(PointerTrackerContext);
-  if (pointerTracker === null) {
+  if (import.meta.env.DEV && pointerTracker === null) {
     throw new Error("InputStateProvider required to use usePointerTracker");
   }
   return pointerTracker;
@@ -63,7 +68,7 @@ export const usePointerTracker = (): PointerTracker => {
 
 export const useInputStateTracker = (): InputStateTrackerInterface => {
   const inputStateTracker = useContext(InputStateTrackerContext);
-  if (inputStateTracker === null) {
+  if (import.meta.env.DEV && inputStateTracker === null) {
     throw new Error("InputStateProvider required to use useInputState");
   }
   return inputStateTracker;
