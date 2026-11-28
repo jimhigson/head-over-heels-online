@@ -1,4 +1,4 @@
-import { audioCtx } from "./audioCtx";
+import { audioCtx, visualRegressionSampleRate } from "./audioCtx";
 
 const cache = new Map<string, Promise<AudioBuffer>>();
 
@@ -32,7 +32,7 @@ const fetchAndDecode = async (
     // on codecs that automated browsers may not have (webkit's decodeAudioData
     // never settles without them, hanging anything gated on sound loading)
     try {
-      return audioCtx.createBuffer(2, 1, audioCtx.sampleRate);
+      return audioCtx.createBuffer(2, 1, visualRegressionSampleRate);
     } catch (e) {
       throw new Error(
         `Problem creating fake audio buffer for visual regression with:
