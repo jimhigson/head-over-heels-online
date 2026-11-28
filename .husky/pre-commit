@@ -1,5 +1,18 @@
 echo running pre-commit...
 
+# the cloud sandbox's global identity is Anthropic's noreply address - committing
+# with it makes github's squash merge add a bogus Co-authored-by trailer (see
+# CLAUDE.md "Agents")
+for identVar in GIT_AUTHOR_IDENT GIT_COMMITTER_IDENT; do
+  ident=$(git var "$identVar")
+  case "$ident" in
+  *@anthropic.com*)
+    echo "pre-commit: $identVar is '$ident' - commit as Jim Higson <jim@blockstack.ing>" >&2
+    exit 1
+    ;;
+  esac
+done
+
 # Batch oxlint --fix + prettier --write over the STAGED (index) content in a temp
 # dir, then apply once via git-format-staged (index+worktree write, unstaged
 # changes preserved). One materialise, one apply - not per-file.

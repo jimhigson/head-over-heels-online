@@ -15,18 +15,16 @@ export const pointerActivityEvents = [
   "pointerup",
 ] as const satisfies readonly (keyof WindowEventMap)[];
 
-/** the position is sampled at most this often - a retro, slightly steppy pointer */
-const pointerFps = 24;
-const pointerIntervalMs = 1_000 / pointerFps;
-
 export type PointerTrackerEvents = {
-  /** {@link PointerTracker.active}, {@link PointerTracker.shown}, the sampled position or {@link PointerTracker.overCanvas} changed */
+  /**
+   * {@link PointerTracker.active}, the position or {@link PointerTracker.overCanvas} changed
+   */
   change: void;
 };
 
 /**
  * The mouse, for pointers the game draws itself in place of the operating
- * system's: whether one is in use, and where, sampled at a low frame rate.
+ * system's: whether one is in use, and where.
  * Knows nothing about how a pointer is drawn, so every renderer of one follows
  * the same tracker and they all appear, move and disappear together.
  *
@@ -46,31 +44,21 @@ export class PointerTracker {
   #idleTracker = new IdleTracker();
 
   #active = false;
-  // where the mouse has reached, held as scalars so a move costs no allocation
-  #latestClientX = 0;
-  #latestClientY = 0;
-  #latestOverCanvas = false;
-  // the position as last sampled - what renderers draw
+  // held as scalars so a move costs no allocation
   #clientX = 0;
   #clientY = 0;
   #overCanvas = false;
-  // false until the first sample since becoming active
-  #sampled = false;
-  #sampledAtMs = -Infinity;
   #frame = 0;
 
   constructor(inputStateTracker: InputStateTrackerInterface) {
     this.#inputStateTracker = inputStateTracker;
   }
 
-  /** whether the mouse is in use - for ui that the pointer summons */
+  /**
+   * whether the mouse is in use - a pointer is drawn, and pointer-summoned ui shown
+   */
   get active(): boolean {
     return this.#active;
-  }
-
-  /** whether a pointer should be drawn: in use, and with somewhere to be */
-  get shown(): boolean {
-    return this.#active && this.#sampled;
   }
 
   get clientX(): number {
@@ -82,7 +70,7 @@ export class PointerTracker {
   }
 
   /**
-   * whether the pointer, as last sampled, is directly over a canvas - not over
+   * whether the pointer is directly over a canvas - not over
    * dom drawn on top of it
    */
   get overCanvas(): boolean {
@@ -138,54 +126,36 @@ export class PointerTracker {
       this.#idleTracker.makeIdleNow();
       return;
     }
-    this.#latestClientX = e.clientX;
-    this.#latestClientY = e.clientY;
-    this.#latestOverCanvas = e.target instanceof HTMLCanvasElement;
+    this.#clientX = e.clientX;
+    this.#clientY = e.clientY;
+    this.#overCanvas = e.target instanceof HTMLCanvasElement;
+    if (this.#active) {
+      this.events.emit("change");
+    }
+    // on becoming active, emits change itself
     this.#idleTracker.markActive();
   };
 
   #handleActive = () => {
     this.#active = true;
-    this.#frame = requestAnimationFrame(this.#sample);
+    this.#frame = requestAnimationFrame(this.#watchSteering);
     this.events.emit("change");
   };
 
   #handleIdle = () => {
     cancelAnimationFrame(this.#frame);
     this.#active = false;
-    this.#sampled = false;
-    this.#sampledAtMs = -Infinity;
     this.events.emit("change");
   };
 
   /**
-   * samples the latest position at pointerFps rather than following every
-   * move, so a pointer steps across the screen like the game's own sprites.
-   * Also watches for steering: a held direction sends no events of its own
+   * a held direction sends no events of its own, so steering is polled
    */
-  #sample = (nowMs: number) => {
-    this.#frame = requestAnimationFrame(this.#sample);
-
+  #watchSteering = () => {
     if (this.#isSteering()) {
       this.#idleTracker.makeIdleNow();
       return;
     }
-    if (nowMs - this.#sampledAtMs < pointerIntervalMs) {
-      return;
-    }
-    if (
-      this.#sampled &&
-      this.#clientX === this.#latestClientX &&
-      this.#clientY === this.#latestClientY &&
-      this.#overCanvas === this.#latestOverCanvas
-    ) {
-      return;
-    }
-    this.#sampledAtMs = nowMs;
-    this.#clientX = this.#latestClientX;
-    this.#clientY = this.#latestClientY;
-    this.#overCanvas = this.#latestOverCanvas;
-    this.#sampled = true;
-    this.events.emit("change");
+    this.#frame = requestAnimationFrame(this.#watchSteering);
   };
 }
