@@ -1,5 +1,6 @@
 import type { Page } from "@playwright/test";
 
+import { maxSmoothingFailures } from "../../src/store/slices/smoothing/smoothingSlice";
 import {
   dispatchToStore,
   snapshotE2eCursor,
@@ -29,9 +30,20 @@ export const enableSmoothUpscaledSprites = async (page: Page) => {
   await waitForEventOnBus(page, {
     name: "frameRendered",
     afterId,
-    arg: undefined,
-    match: (payload) => payload.spritesheetSmoothUpscale > 1,
+    arg: maxSmoothingFailures,
+    match: (payload, maxFailures) =>
+      payload.spritesheetSmoothUpscale > 1 ||
+      // no upscaled frame will come once failing too often turns it off:
+      window._e2e_store!.getState().smoothing.failures >= maxFailures,
   });
+  const smoothingFailures = await page.evaluate(
+    () => window._e2e_store!.getState().smoothing.failures,
+  );
+  if (smoothingFailures >= maxSmoothingFailures) {
+    throw new Error(
+      `smoothing the spritesheet failed ${smoothingFailures} times, so it was turned off - see the console for each failure`,
+    );
+  }
   const firstSmoothedFrameAt = performance.now();
   // the bake is heavy GPU work, often still running after the frame reports
   await waitForGpuToFinish(page);

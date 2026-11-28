@@ -90,7 +90,7 @@ jobs:
           - suite: gameLifecycle
             pattern: "persistOnReload reincarnationStack gameComplete quitGameFlow offlineCampaignCache"
           - suite: menusAndRendering
-            pattern: "crownsDialogs upscaleResponds onScreenControls mainMenuClosability gameRendersAfterRendererReset scrollAndKeyRebind playtestNoSave doughnuttedMonsters errorDialogSnapshot"
+            pattern: "crownsDialogs upscaleResponds onScreenControls mainMenuClosability gameRendersAfterRendererReset scrollAndKeyRebind playtestNoSave doughnuttedMonsters errorDialogSnapshot audioWithoutSampleRate"
     name: E2E ${{ matrix.suite }}
     steps:
       - uses: actions/checkout@v6

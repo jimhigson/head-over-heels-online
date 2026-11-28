@@ -58,7 +58,8 @@ export const spritesheetSmoothingManagerLoader = {
 /**
  * smooths for the settings as they are, then on every change of the smoothing
  * they ask for, and forgets smoothed sheets when all data is cleared - outside
- * the editor, whose store has none of the game state it smooths for. The
+ * the editor, whose store has none of the game state it smooths for. A failed
+ * smoothing is tried again, until failing too often turns smoothing off. The
  * smoothing manager is fetched only once a smoothing is asked for
  */
 const startSmoothingListener = () => {
@@ -67,6 +68,7 @@ const startSmoothingListener = () => {
       return (
         spritesheetSmootherStarted.match(action) ||
         clearAllData.match(action) ||
+        smoothingFailed.match(action) ||
         !nanoEqual(
           selectSmoothingInputs(currentState),
           selectSmoothingInputs(previousState),

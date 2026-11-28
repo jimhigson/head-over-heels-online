@@ -730,6 +730,12 @@ export async function* smoothingAlgorithm(
   const pixiRenderer = new WebGLRenderer();
   await pixiRenderer.init({ width: 1, height: 1, antialias: false });
   const { gl } = pixiRenderer;
+  // a context can be lost and restored between two checks of it, leaving
+  // passes reading textures that went with the old one:
+  let wasContextLost = false;
+  pixiRenderer.canvas.addEventListener("webglcontextlost", () => {
+    wasContextLost = true;
+  });
   try {
     const rawTexture = new Texture({
       source: new ImageSource({ resource: image }),
@@ -753,7 +759,7 @@ export async function* smoothingAlgorithm(
       return undefined;
     }
     try {
-      if (gl.isContextLost()) {
+      if (wasContextLost || gl.isContextLost()) {
         // whatever the smoothing drew went nowhere
         throw new Error("webgl context lost while smoothing the spritesheet");
       }
