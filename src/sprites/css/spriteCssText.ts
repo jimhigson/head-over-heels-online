@@ -10,6 +10,7 @@ import {
   keyframesForAnimatedSprite,
   spriteSpecificCssVars,
 } from "./spriteCss";
+import { animatedTextureClassName, textureClassName } from "./textureClassName";
 
 /**
  * every selector shape a `texture-*` utility is used in. `prefix` is what the
@@ -99,7 +100,7 @@ export const spriteCssText = (spritesheetData: AppSpritesheetData): string => {
   )) {
     chunks.push(
       rule(
-        selectorsForUtility(`texture-${sanitiseForClassName(textureId)}`),
+        selectorsForUtility(textureClassName(textureId)),
         spriteSpecificCssVars(
           frame.w,
           frame.h,
@@ -137,7 +138,7 @@ export const spriteCssText = (spritesheetData: AppSpritesheetData): string => {
       chunks.push(
         rule(
           selectorsForUtility(
-            `texture-animated-${reversed ? "reversed-" : ""}${sanitiseForClassName(animationName)}`,
+            animatedTextureClassName(animationName, reversed),
           ),
           {
             ...animatedSpriteSpecificCssVars(

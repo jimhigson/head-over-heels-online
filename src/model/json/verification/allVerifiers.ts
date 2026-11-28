@@ -21,6 +21,7 @@ import { redundantTimesVerifier } from "./rooms/redundantTimesVerifier";
 import { roomPerimeterCoverageVerifier } from "./rooms/roomPerimeterCoverageVerifier";
 import { solidItemsOverlapVerifier } from "./rooms/solidItemsOverlap/solidItemsOverlapVerifier";
 import { subRoomsFitFloorVerifier } from "./rooms/subRoomsFitFloorVerifier";
+import { scrollMarkdownVerifier } from "./scrolls/scrollMarkdownVerifier";
 import { nonContiguousMirrorVerifier } from "./subRooms/nonContiguousMirrorVerifier";
 import { redundantToSubRoomVerifier } from "./subRooms/redundantToSubRoomVerifier";
 import { subRoomAdjacencyVerifier } from "./subRooms/subRoomAdjacencyVerifier";
@@ -74,5 +75,6 @@ export const allVerifiers: CampaignVerifier<unknown>[] = [
   missingPlayerStartVerifier,
   missingExitVerifier,
   missingCrownVerifier,
+  scrollMarkdownVerifier,
   schemaComplianceVerifier,
 ];
